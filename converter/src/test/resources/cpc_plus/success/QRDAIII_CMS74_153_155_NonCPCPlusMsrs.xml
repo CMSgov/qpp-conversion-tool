@@ -12083,6 +12083,62 @@ QRDA Category III Measure Section (CMS EP)
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
                     </observation>
                   </entryRelationship>
+                  <!-- Stratifier for F2765AD3-E5E4-40BE-ADCF-E1CCA92B0D42-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="F2765AD3-E5E4-40BE-ADCF-E1CCA92B0D42" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for C17E38FE-4BC4-46A6-B35D-6F172C4D5F41-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="C17E38FE-4BC4-46A6-B35D-6F172C4D5F41" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
@@ -12484,6 +12540,62 @@ QRDA Category III Measure Section (CMS EP)
                       <statusCode code="completed" />
                       <value xsi:type="INT" value="1000" />
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for F2765AD3-E5E4-40BE-ADCF-E1CCA92B0D42-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="F2765AD3-E5E4-40BE-ADCF-E1CCA92B0D42" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for C17E38FE-4BC4-46A6-B35D-6F172C4D5F41-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="C17E38FE-4BC4-46A6-B35D-6F172C4D5F41" />
+                        </externalObservation>
+                      </reference>
                     </observation>
                   </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
@@ -12889,6 +13001,62 @@ QRDA Category III Measure Section (CMS EP)
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
                     </observation>
                   </entryRelationship>
+                  <!-- Stratifier for F2765AD3-E5E4-40BE-ADCF-E1CCA92B0D42-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="F2765AD3-E5E4-40BE-ADCF-E1CCA92B0D42" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for C17E38FE-4BC4-46A6-B35D-6F172C4D5F41-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="C17E38FE-4BC4-46A6-B35D-6F172C4D5F41" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
@@ -13290,6 +13458,62 @@ QRDA Category III Measure Section (CMS EP)
                       <statusCode code="completed" />
                       <value xsi:type="INT" value="800" />
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for F2765AD3-E5E4-40BE-ADCF-E1CCA92B0D42-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="F2765AD3-E5E4-40BE-ADCF-E1CCA92B0D42" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for C17E38FE-4BC4-46A6-B35D-6F172C4D5F41-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="C17E38FE-4BC4-46A6-B35D-6F172C4D5F41" />
+                        </externalObservation>
+                      </reference>
                     </observation>
                   </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
@@ -13695,6 +13919,62 @@ QRDA Category III Measure Section (CMS EP)
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
                     </observation>
                   </entryRelationship>
+                  <!-- Stratifier for 2D73F57C-3C9A-49CF-B0C0-D0C512C8A10B-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="2D73F57C-3C9A-49CF-B0C0-D0C512C8A10B" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for C18A8AFF-E1DC-49E8-B84D-74DDD399A4E2-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="C18A8AFF-E1DC-49E8-B84D-74DDD399A4E2" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
@@ -14096,6 +14376,62 @@ QRDA Category III Measure Section (CMS EP)
                       <statusCode code="completed" />
                       <value xsi:type="INT" value="1000" />
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 2D73F57C-3C9A-49CF-B0C0-D0C512C8A10B-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="2D73F57C-3C9A-49CF-B0C0-D0C512C8A10B" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for C18A8AFF-E1DC-49E8-B84D-74DDD399A4E2-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="C18A8AFF-E1DC-49E8-B84D-74DDD399A4E2" />
+                        </externalObservation>
+                      </reference>
                     </observation>
                   </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
@@ -14501,6 +14837,62 @@ QRDA Category III Measure Section (CMS EP)
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
                     </observation>
                   </entryRelationship>
+                  <!-- Stratifier for 2D73F57C-3C9A-49CF-B0C0-D0C512C8A10B-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="2D73F57C-3C9A-49CF-B0C0-D0C512C8A10B" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for C18A8AFF-E1DC-49E8-B84D-74DDD399A4E2-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="C18A8AFF-E1DC-49E8-B84D-74DDD399A4E2" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
@@ -14902,6 +15294,62 @@ QRDA Category III Measure Section (CMS EP)
                       <statusCode code="completed" />
                       <value xsi:type="INT" value="800" />
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 2D73F57C-3C9A-49CF-B0C0-D0C512C8A10B-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="2D73F57C-3C9A-49CF-B0C0-D0C512C8A10B" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for C18A8AFF-E1DC-49E8-B84D-74DDD399A4E2-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="C18A8AFF-E1DC-49E8-B84D-74DDD399A4E2" />
+                        </externalObservation>
+                      </reference>
                     </observation>
                   </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
@@ -23544,6 +23992,90 @@ QRDA Category III Measure Section (CMS EP)
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
                     </observation>
                   </entryRelationship>
+                  <!-- Stratifier for 3214695D-2EAF-43EC-8B40-EF7F8450ED7F-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="3214695D-2EAF-43EC-8B40-EF7F8450ED7F" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 8CCDE1CC-846B-46A4-B649-498A348FF78E-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="8CCDE1CC-846B-46A4-B649-498A348FF78E" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for D411C97B-9E25-40AF-B386-BD1062428D06-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="D411C97B-9E25-40AF-B386-BD1062428D06" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
@@ -23939,6 +24471,90 @@ QRDA Category III Measure Section (CMS EP)
                       <statusCode code="completed" />
                       <value xsi:type="INT" value="1000" />
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 3214695D-2EAF-43EC-8B40-EF7F8450ED7F-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="3214695D-2EAF-43EC-8B40-EF7F8450ED7F" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 8CCDE1CC-846B-46A4-B649-498A348FF78E-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="8CCDE1CC-846B-46A4-B649-498A348FF78E" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for D411C97B-9E25-40AF-B386-BD1062428D06-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="D411C97B-9E25-40AF-B386-BD1062428D06" />
+                        </externalObservation>
+                      </reference>
                     </observation>
                   </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
@@ -24338,6 +24954,90 @@ QRDA Category III Measure Section (CMS EP)
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
                     </observation>
                   </entryRelationship>
+                  <!-- Stratifier for 3214695D-2EAF-43EC-8B40-EF7F8450ED7F-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="3214695D-2EAF-43EC-8B40-EF7F8450ED7F" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 8CCDE1CC-846B-46A4-B649-498A348FF78E-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="8CCDE1CC-846B-46A4-B649-498A348FF78E" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for D411C97B-9E25-40AF-B386-BD1062428D06-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="D411C97B-9E25-40AF-B386-BD1062428D06" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
@@ -24733,6 +25433,90 @@ QRDA Category III Measure Section (CMS EP)
                       <statusCode code="completed" />
                       <value xsi:type="INT" value="100" />
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 3214695D-2EAF-43EC-8B40-EF7F8450ED7F-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="3214695D-2EAF-43EC-8B40-EF7F8450ED7F" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 8CCDE1CC-846B-46A4-B649-498A348FF78E-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="8CCDE1CC-846B-46A4-B649-498A348FF78E" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for D411C97B-9E25-40AF-B386-BD1062428D06-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="D411C97B-9E25-40AF-B386-BD1062428D06" />
+                        </externalObservation>
+                      </reference>
                     </observation>
                   </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
@@ -25173,6 +25957,62 @@ QRDA Category III Measure Section (CMS EP)
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
                     </observation>
                   </entryRelationship>
+                  <!-- Stratifier for DC0F4E18-DAEA-4DD7-8D43-44598B364B1C-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="DC0F4E18-DAEA-4DD7-8D43-44598B364B1C" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 20F1049C-E3FC-4A59-AD24-AB1F36B84198-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="20F1049C-E3FC-4A59-AD24-AB1F36B84198" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
@@ -25568,6 +26408,62 @@ QRDA Category III Measure Section (CMS EP)
                       <statusCode code="completed" />
                       <value xsi:type="INT" value="1000" />
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for DC0F4E18-DAEA-4DD7-8D43-44598B364B1C-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="DC0F4E18-DAEA-4DD7-8D43-44598B364B1C" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 20F1049C-E3FC-4A59-AD24-AB1F36B84198-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="20F1049C-E3FC-4A59-AD24-AB1F36B84198" />
+                        </externalObservation>
+                      </reference>
                     </observation>
                   </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
@@ -25967,6 +26863,62 @@ QRDA Category III Measure Section (CMS EP)
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
                     </observation>
                   </entryRelationship>
+                  <!-- Stratifier for DC0F4E18-DAEA-4DD7-8D43-44598B364B1C-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="DC0F4E18-DAEA-4DD7-8D43-44598B364B1C" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 20F1049C-E3FC-4A59-AD24-AB1F36B84198-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="20F1049C-E3FC-4A59-AD24-AB1F36B84198" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
@@ -26364,6 +27316,62 @@ QRDA Category III Measure Section (CMS EP)
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
                     </observation>
                   </entryRelationship>
+                  <!-- Stratifier for DC0F4E18-DAEA-4DD7-8D43-44598B364B1C-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="DC0F4E18-DAEA-4DD7-8D43-44598B364B1C" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 20F1049C-E3FC-4A59-AD24-AB1F36B84198-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="20F1049C-E3FC-4A59-AD24-AB1F36B84198" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
@@ -26755,7 +27763,9 @@ QRDA Category III Measure Section (CMS EP)
               <!--Measure Reference and Results-->
               <reference typeCode="REFR">
                 <externalDocument classCode="DOC" moodCode="EVN">
-                  <id root="2.16.840.1.113883.4.738" extension="40280382-5abd-fa46-015b-49a568c83894"/>
+                  <!-- <id root="2.16.840.1.113883.4.738"
+                               extension="40280382-5abd-fa46-015b-49a568c83894"/> -->
+                  <id root="2.16.840.1.113883.4.738" extension="40280382-5abd-fa46-015b-49a568c83894" />
                   <code code="57024-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Health Quality Measure Document" />
                   <text>Weight Assessment and Counselling for Nutrition and Physical Activity for Children and Adolescents</text>
                 </externalDocument>
@@ -26811,6 +27821,7 @@ QRDA Category III Measure Section (CMS EP)
                   </reference>
                 </observation>
               </component>
+
               <!--IPOP Population-->
               <component>
                 <observation classCode="OBS" moodCode="EVN">
@@ -26828,6 +27839,62 @@ QRDA Category III Measure Section (CMS EP)
                       <statusCode code="completed" />
                       <value xsi:type="INT" value="1000" />
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 4DCD5517-2884-43AC-8E6F-2D3D60B568A7-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="4DCD5517-2884-43AC-8E6F-2D3D60B568A7" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 963178F4-E8B4-4DE9-97A1-D174223277DA-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="963178F4-E8B4-4DE9-97A1-D174223277DA" />
+                        </externalObservation>
+                      </reference>
                     </observation>
                   </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
@@ -27227,6 +28294,62 @@ QRDA Category III Measure Section (CMS EP)
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
                     </observation>
                   </entryRelationship>
+                  <!-- Stratifier for 4DCD5517-2884-43AC-8E6F-2D3D60B568A7-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="4DCD5517-2884-43AC-8E6F-2D3D60B568A7" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 963178F4-E8B4-4DE9-97A1-D174223277DA-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="963178F4-E8B4-4DE9-97A1-D174223277DA" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
@@ -27622,6 +28745,62 @@ QRDA Category III Measure Section (CMS EP)
                       <statusCode code="completed" />
                       <value xsi:type="INT" value="0" />
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 4DCD5517-2884-43AC-8E6F-2D3D60B568A7-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="4DCD5517-2884-43AC-8E6F-2D3D60B568A7" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 963178F4-E8B4-4DE9-97A1-D174223277DA-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="963178F4-E8B4-4DE9-97A1-D174223277DA" />
+                        </externalObservation>
+                      </reference>
                     </observation>
                   </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
@@ -28021,6 +29200,62 @@ QRDA Category III Measure Section (CMS EP)
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
                     </observation>
                   </entryRelationship>
+                  <!-- Stratifier for 4DCD5517-2884-43AC-8E6F-2D3D60B568A7-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="4DCD5517-2884-43AC-8E6F-2D3D60B568A7" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 963178F4-E8B4-4DE9-97A1-D174223277DA-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="963178F4-E8B4-4DE9-97A1-D174223277DA" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
@@ -28399,6 +29634,7 @@ QRDA Category III Measure Section (CMS EP)
                   </entryRelationship>
                 </observation>
               </component>
+
               <!--IPOP Population-->
               <component>
                 <observation classCode="OBS" moodCode="EVN">
@@ -28416,6 +29652,62 @@ QRDA Category III Measure Section (CMS EP)
                       <statusCode code="completed" />
                       <value xsi:type="INT" value="1000" />
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 37549AFE-5FBA-4C52-80B4-06E51B8F71C2-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="37549AFE-5FBA-4C52-80B4-06E51B8F71C2" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 0DE4ECAB-1628-46DC-94B9-3A48A7389BBB-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="0DE4ECAB-1628-46DC-94B9-3A48A7389BBB" />
+                        </externalObservation>
+                      </reference>
                     </observation>
                   </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
@@ -28815,6 +30107,62 @@ QRDA Category III Measure Section (CMS EP)
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
                     </observation>
                   </entryRelationship>
+                  <!-- Stratifier for 37549AFE-5FBA-4C52-80B4-06E51B8F71C2-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="37549AFE-5FBA-4C52-80B4-06E51B8F71C2" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 0DE4ECAB-1628-46DC-94B9-3A48A7389BBB-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="0DE4ECAB-1628-46DC-94B9-3A48A7389BBB" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
@@ -29210,6 +30558,62 @@ QRDA Category III Measure Section (CMS EP)
                       <statusCode code="completed" />
                       <value xsi:type="INT" value="0" />
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 37549AFE-5FBA-4C52-80B4-06E51B8F71C2-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="37549AFE-5FBA-4C52-80B4-06E51B8F71C2" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 0DE4ECAB-1628-46DC-94B9-3A48A7389BBB-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="0DE4ECAB-1628-46DC-94B9-3A48A7389BBB" />
+                        </externalObservation>
+                      </reference>
                     </observation>
                   </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
@@ -29609,6 +31013,62 @@ QRDA Category III Measure Section (CMS EP)
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
                     </observation>
                   </entryRelationship>
+                  <!-- Stratifier for 37549AFE-5FBA-4C52-80B4-06E51B8F71C2-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="37549AFE-5FBA-4C52-80B4-06E51B8F71C2" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 0DE4ECAB-1628-46DC-94B9-3A48A7389BBB-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="0DE4ECAB-1628-46DC-94B9-3A48A7389BBB" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
@@ -29987,6 +31447,7 @@ QRDA Category III Measure Section (CMS EP)
                   </entryRelationship>
                 </observation>
               </component>
+
               <!--IPOP Population-->
               <component>
                 <observation classCode="OBS" moodCode="EVN">
@@ -30004,6 +31465,62 @@ QRDA Category III Measure Section (CMS EP)
                       <statusCode code="completed" />
                       <value xsi:type="INT" value="1000" />
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 8DB6C8B4-6613-4D50-BA69-8A771F07D6CA-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="8DB6C8B4-6613-4D50-BA69-8A771F07D6CA" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 89421757-79CD-4E7B-8228-A6F8ADA807DD-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="89421757-79CD-4E7B-8228-A6F8ADA807DD" />
+                        </externalObservation>
+                      </reference>
                     </observation>
                   </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
@@ -30403,6 +31920,62 @@ QRDA Category III Measure Section (CMS EP)
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
                     </observation>
                   </entryRelationship>
+                  <!-- Stratifier for 8DB6C8B4-6613-4D50-BA69-8A771F07D6CA-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="8DB6C8B4-6613-4D50-BA69-8A771F07D6CA" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 89421757-79CD-4E7B-8228-A6F8ADA807DD-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="89421757-79CD-4E7B-8228-A6F8ADA807DD" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
@@ -30800,6 +32373,62 @@ QRDA Category III Measure Section (CMS EP)
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
                     </observation>
                   </entryRelationship>
+                  <!-- Stratifier for 8DB6C8B4-6613-4D50-BA69-8A771F07D6CA-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="8DB6C8B4-6613-4D50-BA69-8A771F07D6CA" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 89421757-79CD-4E7B-8228-A6F8ADA807DD-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="89421757-79CD-4E7B-8228-A6F8ADA807DD" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
@@ -31195,6 +32824,62 @@ QRDA Category III Measure Section (CMS EP)
                       <statusCode code="completed" />
                       <value xsi:type="INT" value="800" />
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 8DB6C8B4-6613-4D50-BA69-8A771F07D6CA-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="8DB6C8B4-6613-4D50-BA69-8A771F07D6CA" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 89421757-79CD-4E7B-8228-A6F8ADA807DD-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="89421757-79CD-4E7B-8228-A6F8ADA807DD" />
+                        </externalObservation>
+                      </reference>
                     </observation>
                   </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
