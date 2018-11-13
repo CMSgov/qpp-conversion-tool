@@ -27,6 +27,7 @@ import org.springframework.http.ResponseEntity;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.CpcFileStatusUpdateRequest;
 import gov.cms.qpp.conversion.api.model.Metadata;
+import gov.cms.qpp.conversion.api.model.Report;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
 import gov.cms.qpp.conversion.api.services.CpcFileService;
 import gov.cms.qpp.test.MockitoExtension;
@@ -173,6 +174,20 @@ class CpcFileControllerV1Test {
 
 		assertThat(cpcResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
 		assertThat(cpcResponse.getBody()).isNull();
+	}
+
+	@Test
+	void testReportWithFeatureFlagDisabled() {
+		System.setProperty(Constants.NO_CPC_PLUS_API_ENV_VARIABLE, "trueOrWhatever");
+
+		ResponseEntity<String> cpcResponse = markProcessed();
+
+		assertThat(cpcResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+		assertThat(cpcResponse.getBody()).isNull();
+	}
+
+	private ResponseEntity<Report> report(String fileId) {
+		return cpcFileControllerV1.getReportByFileId(fileId);
 	}
 
 	private ResponseEntity<String> markProcessed() {

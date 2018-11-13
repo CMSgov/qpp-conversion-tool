@@ -557,7 +557,20 @@ public final class Metadata {
 		equals &= Objects.equals(cpcProcessed, that.cpcProcessed);
 		equals &= Objects.equals(purpose, that.purpose);
 		equals &= Objects.equals(programName, that.programName);
+		equals &= Objects.equals(errors, that.errors);
+		equals &= Objects.equals(warnings, that.warnings);
 		return equals;
+	}
+
+	/**
+	 * Computes and returns the hash code for this object.
+	 * @return The hash code.
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(uuid, tin, npi, createdDate, apm, submissionYear, submissionLocator, qppLocator, fileName,
+				overallStatus, conversionStatus, validationStatus, cpc, conversionErrorLocator, validationErrorLocator,
+				rawValidationErrorLocator, cpcProcessed, purpose, programName, errors, warnings);
 	}
 
 	/**
@@ -585,16 +598,5 @@ public final class Metadata {
 		public Instant unconvert(final String stringValue) {
 			return Instant.parse(stringValue);
 		}
-	}
-
-	/**
-	 * Computes and returns the hash code for this object.
-	 * @return The hash code.
-	 */
-	@Override
-	public int hashCode() {
-		return Objects.hash(uuid, tin, npi, createdDate, apm, submissionYear, submissionLocator, qppLocator, fileName,
-				overallStatus, conversionStatus, validationStatus, cpc, conversionErrorLocator, validationErrorLocator,
-				rawValidationErrorLocator, cpcProcessed, purpose, programName);
 	}
 }

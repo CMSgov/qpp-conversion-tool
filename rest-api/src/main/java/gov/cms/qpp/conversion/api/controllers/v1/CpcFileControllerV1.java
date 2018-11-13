@@ -154,8 +154,7 @@ public class CpcFileControllerV1 {
 
 	@GetMapping(value = "/report/{fileId}",
 			headers = {"Accept=" + Constants.V1_API_ACCEPT})
-	public ResponseEntity<Report> getReportByFileId(@PathVariable("fileId") String fileId)
-			throws IOException {
+	public ResponseEntity<Report> getReportByFileId(@PathVariable("fileId") String fileId) {
 		API_LOG.info("CPC+ report request received for fileId {}", fileId);
 
 		if (blockCpcPlusApi()) {
