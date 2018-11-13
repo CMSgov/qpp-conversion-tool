@@ -171,7 +171,8 @@ public class CpcFileControllerV1 {
 		report.setTimestamp(metadata.getCreatedDate().toEpochMilli());
 		report.setWarnings(metadata.getWarnings());
 		boolean hasWarnings = report.getWarnings() != null && !report.getWarnings().isEmpty();
-		report.setStatus(BooleanUtils.isTrue(metadata.getConversionStatus()) ? (hasWarnings ? Status.ACCEPTED_WITH_WARNINGS : Status.ACCEPTED) : Status.REJECTED);
+		report.setStatus(BooleanUtils.isTrue(metadata.getConversionStatus()) ?
+				(hasWarnings ? Status.ACCEPTED_WITH_WARNINGS : Status.ACCEPTED) : Status.REJECTED);
 		API_LOG.info("CPC+ report request succeeded");
 
 		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(report);
