@@ -32,17 +32,16 @@ elif [[ ! -z $CIRCLE_PULL_REQUESTS ]]; then
         echo "PULL_REQUEST_URL $PULL_REQUEST_URL"
 		PR_NUMBER=${PULL_REQUEST_URL##*/}
 		echo "Doing preview SonarQube run on PR $PR_NUMBER"
-		./sonar-scanner-3.2.0.1227/bin/sonar-scanner -Dsonar.analysis.mode=preview \
-		                                            -Dsonar.github.pullRequest=${PR_NUMBER} \
-		                                            -Dsonar.github.repository=CMSgov/qpp-conversion-tool \
-		                                            -Dsonar.github.oauth=${SONAR_PR_KEY} \
-		                                            -Dsonar.organization=${ORG_KEY} \
-		                                            -Dsonar.login=${SONAR_KEY_NEW} \
-		                                            -Dsonar.pullrequest.base=develop \
-		                                            -Dsonar.pullrequest.key=5 \
-		                                            -Dsonar.pullrequest.provider=GitHub \
-		                                            -Dsonar.pullrequest.github.repository=CMSgov/qpp-conversion-tool \
-		                                            -Dsonar.pullrequest.branch=${CIRCLE_BRANCH}
+
+		./sonar-scanner-3.2.0.1227/bin/sonar-scanner \
+			-Dsonar.pullrequest.base=develop \
+			-Dsonar.pullrequest.key=${PR_NUMBER} \
+			-Dsonar.pullrequest.provider=GitHub \
+			-Dsonar.pullrequest.github.repository=CMSgov/qpp-conversion-tool \
+			-Dsonar.pullrequest.branch=${CIRCLE_BRANCH} \
+			-Dsonar.github.oauth=${SONAR_PR_KEY} \
+			-Dsonar.organization=${ORG_KEY} \
+			-Dsonar.login=${SONAR_KEY_NEW}
 
 	done
 else
