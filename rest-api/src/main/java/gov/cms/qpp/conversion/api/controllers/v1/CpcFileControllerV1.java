@@ -25,7 +25,6 @@ import gov.cms.qpp.conversion.api.model.Report;
 import gov.cms.qpp.conversion.api.model.Status;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
 import gov.cms.qpp.conversion.api.services.CpcFileService;
-import gov.cms.qpp.conversion.api.services.DbService;
 import gov.cms.qpp.conversion.util.EnvironmentHelper;
 
 /**
