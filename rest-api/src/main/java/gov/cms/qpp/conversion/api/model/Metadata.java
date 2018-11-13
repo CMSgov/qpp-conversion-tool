@@ -29,6 +29,7 @@ public final class Metadata {
 	private String tin;  //this field is encrypted
 	private String npi;
 	private String apm;
+	private String programName;
 	private Long submissionYear;
 	private String submissionLocator;
 	private String qppLocator;
@@ -150,12 +151,32 @@ public final class Metadata {
 	}
 
 	/**
-	 * Sets the the APM Entity ID associated with the the conversion. Used with CPC+.
+	 * Sets the APM Entity ID associated with the the conversion. Used with CPC+.
 	 *
 	 * @param apm The APM Entity ID.
 	 */
 	public void setApm(String apm) {
 		this.apm = apm;
+	}
+
+	/**
+	 * The Program Name associated with the the conversion, such as MIPPS or CPC+.
+	 *
+	 * @return The Program Name.
+	 */
+	@DoNotEncrypt
+	@DynamoDBAttribute(attributeName = "ProgramName")
+	public String getProgramName() {
+		return programName;
+	}
+
+	/**
+	 * Sets the Program Name associated with the the conversion, such as MIPPS or CPC+.
+	 *
+	 * @param apm The Program Name.
+	 */
+	public void setProgramName(String programName) {
+		this.programName = programName;
 	}
 
 	/**
