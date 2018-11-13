@@ -1,8 +1,20 @@
 package gov.cms.qpp.acceptance;
 
+import static com.google.common.truth.Truth.assertThat;
+
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.reflections.util.ClasspathHelper;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
@@ -14,19 +26,13 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
-import java.io.BufferedWriter;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-
-import static com.google.common.truth.Truth.assertThat;
-
 class ClinicalDocumentRoundTripTest {
 
 	@Test
 	void parseClinicalDocument() throws Exception {
-		String expected = TestHelper.getFixture("clinicalDocument.json");
+		String expectedRaw = TestHelper.getFixture("clinicalDocument.json");
+		ObjectReader reader = new ObjectMapper().reader();
+		JsonNode expected = reader.readTree(expectedRaw);
 
 		InputStream stream =
 				ClasspathHelper.contextClassLoader().getResourceAsStream("valid-QRDA-III-abridged.xml");
@@ -42,8 +48,9 @@ class ClinicalDocumentRoundTripTest {
 
 		StringWriter sw = new StringWriter();
 		encoder.encode(new BufferedWriter(sw));
+		JsonNode actual = reader.readTree(sw.toString());
 
-		assertThat(sw.toString()).isEqualTo(expected);
+		assertThat(actual).isEqualTo(expected);
 	}
 
 	@Test
