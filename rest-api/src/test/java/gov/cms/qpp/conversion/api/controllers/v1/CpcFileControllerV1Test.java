@@ -192,6 +192,7 @@ class CpcFileControllerV1Test {
 	@Test
 	void testReport() {
 		Metadata testMetadata = new Metadata();
+		testMetadata.setConversionStatus(true);
 		testMetadata.setProgramName(UUID.randomUUID().toString());
 		when(cpcFileService.getMetadataById("test")).thenReturn(testMetadata);
 
@@ -204,6 +205,7 @@ class CpcFileControllerV1Test {
 	@Test
 	void testReportWithWarnings() {
 		Metadata testMetadata = new Metadata();
+		testMetadata.setConversionStatus(true);
 		List<Detail> testDetails = new ArrayList<>();
 		testMetadata.setWarnings(testDetails);
 		when(cpcFileService.getMetadataById("test")).thenReturn(testMetadata);
@@ -216,6 +218,7 @@ class CpcFileControllerV1Test {
 	@Test
 	void testReportWithErrors() {
 		Metadata testMetadata = new Metadata();
+		testMetadata.setConversionStatus(false);
 		List<Detail> testDetails = new ArrayList<>();
 		testMetadata.setErrors(testDetails);
 		when(cpcFileService.getMetadataById("test")).thenReturn(testMetadata);

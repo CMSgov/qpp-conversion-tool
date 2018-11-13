@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.api.model;
 
 import java.util.List;
+import java.util.Objects;
 
 import gov.cms.qpp.conversion.model.error.Detail;
 
@@ -59,6 +60,32 @@ public class Report {
 
 	public void setErrors(List<Detail> errors) {
 		this.errors = errors;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+
+		if (o == null || o.getClass() != getClass()) {
+			return false;
+		}
+
+		Report that = (Report) o;
+
+		boolean equals = Objects.equals(practiceSiteId, that.practiceSiteId);
+		equals &= Objects.equals(programName, that.programName);
+		equals &= Objects.equals(status, that.status);
+		equals &= Objects.equals(timestamp, that.timestamp);
+		equals &= Objects.equals(errors, that.errors);
+		equals &= Objects.equals(warnings, that.warnings);
+		return equals;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(practiceSiteId, status, timestamp, programName, errors, warnings);
 	}
 
 }
