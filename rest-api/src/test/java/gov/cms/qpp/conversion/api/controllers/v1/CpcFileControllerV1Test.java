@@ -198,7 +198,7 @@ class CpcFileControllerV1Test {
 
 		Report cpcResponse = report("test").getBody();
 
-		assertThat(cpcResponse.getProgramName()).isEqualTo(testMetadata);
+		assertThat(cpcResponse.getProgramName()).isEqualTo(testMetadata.getProgramName());
 		assertThat(cpcResponse.getStatus()).isEqualTo(Status.ACCEPTED);
 	}
 
@@ -207,6 +207,7 @@ class CpcFileControllerV1Test {
 		Metadata testMetadata = new Metadata();
 		testMetadata.setConversionStatus(true);
 		List<Detail> testDetails = new ArrayList<>();
+		testDetails.add(new Detail());
 		testMetadata.setWarnings(testDetails);
 		when(cpcFileService.getMetadataById("test")).thenReturn(testMetadata);
 

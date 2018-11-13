@@ -58,6 +58,18 @@ class DbServiceImplTest {
 	}
 
 	@Test
+	void testGetUnprocessedCpcPlusMetaDataWithMissingDynamoDbMapper() {
+		underTest = new DbServiceImpl(taskExecutor, Optional.empty(), environment);
+		assertThat(underTest.getUnprocessedCpcPlusMetaData()).isEmpty();
+	}
+
+	@Test
+	void testGetMetadataByIdWithMissingDynamoDbMapper() {
+		underTest = new DbServiceImpl(taskExecutor, Optional.empty(), environment);
+		assertThat(underTest.getMetadataById(null)).isNull();
+	}
+
+	@Test
 	void testWriteByNull() {
 		when(environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE)).thenReturn(null);
 
