@@ -12,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -28,8 +29,10 @@ import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.CpcFileStatusUpdateRequest;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.Report;
+import gov.cms.qpp.conversion.api.model.Status;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
 import gov.cms.qpp.conversion.api.services.CpcFileService;
+import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.test.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -180,10 +183,46 @@ class CpcFileControllerV1Test {
 	void testReportWithFeatureFlagDisabled() {
 		System.setProperty(Constants.NO_CPC_PLUS_API_ENV_VARIABLE, "trueOrWhatever");
 
-		ResponseEntity<String> cpcResponse = markProcessed();
+		ResponseEntity<Report> cpcResponse = report("test");
 
 		assertThat(cpcResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
 		assertThat(cpcResponse.getBody()).isNull();
+	}
+
+	@Test
+	void testReport() {
+		Metadata testMetadata = new Metadata();
+		testMetadata.setProgramName(UUID.randomUUID().toString());
+		when(cpcFileService.getMetadataById("test")).thenReturn(testMetadata);
+
+		Report cpcResponse = report("test").getBody();
+
+		assertThat(cpcResponse.getProgramName()).isEqualTo(testMetadata);
+		assertThat(cpcResponse.getStatus()).isEqualTo(Status.ACCEPTED);
+	}
+
+	@Test
+	void testReportWithWarnings() {
+		Metadata testMetadata = new Metadata();
+		List<Detail> testDetails = new ArrayList<>();
+		testMetadata.setWarnings(testDetails);
+		when(cpcFileService.getMetadataById("test")).thenReturn(testMetadata);
+
+		Report cpcResponse = report("test").getBody();
+
+		assertThat(cpcResponse.getStatus()).isEqualTo(Status.ACCEPTED_WITH_WARNINGS);
+	}
+
+	@Test
+	void testReportWithErrors() {
+		Metadata testMetadata = new Metadata();
+		List<Detail> testDetails = new ArrayList<>();
+		testMetadata.setErrors(testDetails);
+		when(cpcFileService.getMetadataById("test")).thenReturn(testMetadata);
+
+		Report cpcResponse = report("test").getBody();
+
+		assertThat(cpcResponse.getStatus()).isEqualTo(Status.REJECTED);
 	}
 
 	private ResponseEntity<Report> report(String fileId) {
