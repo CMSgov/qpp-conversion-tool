@@ -217,6 +217,19 @@ class CpcFileControllerV1Test {
 	}
 
 	@Test
+	void testReportWithEmptyWarnings() {
+		Metadata testMetadata = new Metadata();
+		testMetadata.setConversionStatus(true);
+		List<Detail> testDetails = new ArrayList<>();
+		testMetadata.setWarnings(testDetails);
+		when(cpcFileService.getMetadataById("test")).thenReturn(testMetadata);
+
+		Report cpcResponse = report("test").getBody();
+
+		assertThat(cpcResponse.getStatus()).isEqualTo(Status.ACCEPTED);
+	}
+
+	@Test
 	void testReportWithErrors() {
 		Metadata testMetadata = new Metadata();
 		testMetadata.setConversionStatus(false);
