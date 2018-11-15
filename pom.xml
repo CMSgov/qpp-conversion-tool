@@ -9,6 +9,14 @@
 	<version>1.4.4-RELEASE</version>
 	<name>QPP Conversion Tool</name>
 
+	<repositories>
+		<repository>
+			<id>qpp-internal</id>
+			<name>QPP internal repo</name>
+			<url>http://nexus.qppa.qpp.internal:8081/repository/apache_maven/</url>
+		</repository>
+	</repositories>
+
 	<properties>
 		<java.version>1.8</java.version>
 		<requiredCodeCoverage>0.95</requiredCodeCoverage>
