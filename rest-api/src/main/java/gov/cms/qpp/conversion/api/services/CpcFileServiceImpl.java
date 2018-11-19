@@ -31,7 +31,7 @@ public class CpcFileServiceImpl implements CpcFileService {
 	 * @param dbService service to persist conversion metadata
 	 * @param storageService store conversion output
 	 */
-	public CpcFileServiceImpl(final DbService dbService, final StorageService storageService) {
+	public CpcFileServiceImpl(DbService dbService, StorageService storageService) {
 		this.dbService = dbService;
 		this.storageService = storageService;
 	}
@@ -56,7 +56,7 @@ public class CpcFileServiceImpl implements CpcFileService {
 	 */
 	@Override
 	public InputStreamResource getFileById(String fileId) {
-		Metadata metadata = dbService.getMetadataById(fileId);
+		Metadata metadata = getMetadataById(fileId);
 		if (isAnUnprocessedCpcFile(metadata)) {
 			return new InputStreamResource(storageService.getFileByLocationId(metadata.getSubmissionLocator()));
 		}
@@ -71,11 +71,8 @@ public class CpcFileServiceImpl implements CpcFileService {
 	 */
 	@Override
 	public InputStreamResource getQppById(String fileId) {
-		Metadata metadata = dbService.getMetadataById(fileId);
-		if (isCpcFile(metadata)) {
-			return new InputStreamResource(storageService.getFileByLocationId(metadata.getQppLocator()));
-		}
-		throw new NoFileInDatabaseException(FILE_NOT_FOUND);
+		Metadata metadata = getMetadataById(fileId);
+		return new InputStreamResource(storageService.getFileByLocationId(metadata.getQppLocator()));
 	}
 
 	/**
@@ -86,12 +83,8 @@ public class CpcFileServiceImpl implements CpcFileService {
 	 */
 	@Override
 	public String processFileById(String fileId) {
-		Metadata metadata = dbService.getMetadataById(fileId);
-		if (metadata == null) {
-			throw new NoFileInDatabaseException(FILE_NOT_FOUND);
-		} else if (metadata.getCpc() == null) {
-			throw new InvalidFileTypeException(INVALID_FILE);
-		} else if (metadata.getCpcProcessed()) {
+		Metadata metadata = getMetadataById(fileId);
+		if (metadata.getCpcProcessed()) {
 			return FILE_FOUND_PROCESSED;
 		} else {
 			metadata.setCpcProcessed(true);
@@ -109,12 +102,8 @@ public class CpcFileServiceImpl implements CpcFileService {
 	 */
 	@Override
 	public String unprocessFileById(String fileId) {
-		Metadata metadata = dbService.getMetadataById(fileId);
-		if (metadata == null) {
-			throw new NoFileInDatabaseException(FILE_NOT_FOUND);
-		} else if (metadata.getCpc() == null) {
-			throw new InvalidFileTypeException(INVALID_FILE);
-		} else if (!metadata.getCpcProcessed()) {
+		Metadata metadata = getMetadataById(fileId);
+		if (!metadata.getCpcProcessed()) {
 			return FILE_FOUND_UNPROCESSED;
 		} else {
 			metadata.setCpcProcessed(false);
@@ -122,6 +111,17 @@ public class CpcFileServiceImpl implements CpcFileService {
 			metadataFuture.join();
 			return FILE_FOUND_UNPROCESSED;
 		}
+	}
+
+	@Override
+	public Metadata getMetadataById(String fileId) {
+		Metadata metadata = dbService.getMetadataById(fileId);
+		if (metadata == null) {
+			throw new NoFileInDatabaseException(FILE_NOT_FOUND);
+		} else if (!isCpcFile(metadata)) {
+			throw new InvalidFileTypeException(INVALID_FILE);
+		}
+		return metadata;
 	}
 
 	/**

@@ -17,6 +17,8 @@ public interface CpcFileService {
 	 */
 	List<UnprocessedCpcFileData> getUnprocessedCpcPlusFiles();
 
+	Metadata getMetadataById(String fileId);
+
 	/**
 	 * Retrieves the file location id by metadata id and uses it to retrieve the file
 	 *
