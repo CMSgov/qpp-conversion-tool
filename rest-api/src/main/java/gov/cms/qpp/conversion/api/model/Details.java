@@ -27,7 +27,7 @@ public class Details {
 			return false;
 		}
 
-		if (that.getClass() != Details.class) {
+		if (that.getClass() != getClass()) {
 			return false;
 		}
 
