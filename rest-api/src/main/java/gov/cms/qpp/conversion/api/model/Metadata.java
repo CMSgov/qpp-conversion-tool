@@ -11,6 +11,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIgnore;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConvertedJson;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverter;
 import com.amazonaws.services.dynamodbv2.datamodeling.encryption.DoNotEncrypt;
 
@@ -44,8 +45,8 @@ public final class Metadata {
 	private Instant createdDate;
 	private Boolean cpcProcessed;
 	private String purpose;
-	private List<Detail> errors;
-	private List<Detail> warnings;
+	private Details errors;
+	private Details warnings;
 
 	/**
 	 * Constructs a new {@code Metadata} with the {@code createdDate} filled in upon construction.
@@ -476,22 +477,46 @@ public final class Metadata {
 	}
 
 	@DoNotEncrypt
+	@DynamoDBTypeConvertedJson
 	@DynamoDBAttribute(attributeName = "Errors")
-	public List<Detail> getErrors() {
+	public Details getErrors() {
 		return errors;
 	}
 
 	public void setErrors(List<Detail> errors) {
+		if (errors == null) {
+			setErrors((Details) null);
+			return;
+		}
+
+		Details details = new Details();
+		details.setDetails(errors);
+		setErrors(details);
+	}
+
+	public void setErrors(Details errors) {
 		this.errors = errors;
 	}
 
 	@DoNotEncrypt
+	@DynamoDBTypeConvertedJson
 	@DynamoDBAttribute(attributeName = "Warnings")
-	public List<Detail> getWarnings() {
+	public Details getWarnings() {
 		return warnings;
 	}
 
 	public void setWarnings(List<Detail> warnings) {
+		if (warnings == null) {
+			setWarnings((Details) null);
+			return;
+		}
+
+		Details details = new Details();
+		details.setDetails(warnings);
+		setWarnings(details);
+	}
+
+	public void setWarnings(Details warnings) {
 		this.warnings = warnings;
 	}
 
