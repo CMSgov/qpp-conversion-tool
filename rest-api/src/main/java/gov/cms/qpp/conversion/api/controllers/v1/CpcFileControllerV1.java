@@ -165,11 +165,11 @@ public class CpcFileControllerV1 {
 		Metadata metadata = cpcFileService.getMetadataById(fileId);
 
 		Report report = new Report();
-		report.setErrors(metadata.getErrors());
+		report.setErrors(metadata.getErrors() == null ? null : metadata.getErrors().getDetails());
 		report.setPracticeSiteId(metadata.getApm());
 		report.setProgramName(metadata.getProgramName());
 		report.setTimestamp(metadata.getCreatedDate().toEpochMilli());
-		report.setWarnings(metadata.getWarnings());
+		report.setWarnings(metadata.getWarnings() == null ? null : metadata.getWarnings().getDetails());
 		boolean hasWarnings = report.getWarnings() != null && !report.getWarnings().isEmpty();
 		report.setStatus(BooleanUtils.isTrue(metadata.getConversionStatus())
 				? (hasWarnings ? Status.ACCEPTED_WITH_WARNINGS : Status.ACCEPTED) : Status.REJECTED);
