@@ -190,6 +190,20 @@ class CpcFileControllerV1Test {
 	}
 
 	@Test
+	void testReportWithEarlierMetadataVersion() {
+		Metadata testMetadata = new Metadata();
+		testMetadata.setConversionStatus(true);
+		testMetadata.setProgramName(UUID.randomUUID().toString());
+		testMetadata.setMetadataVersion(-1);
+		when(cpcFileService.getMetadataById("test")).thenReturn(testMetadata);
+
+		ResponseEntity<Report> cpcResponse = report("test");
+
+		assertThat(cpcResponse.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
+		assertThat(cpcResponse.getBody()).isNull();
+	}
+
+	@Test
 	void testReport() {
 		Metadata testMetadata = new Metadata();
 		testMetadata.setConversionStatus(true);
