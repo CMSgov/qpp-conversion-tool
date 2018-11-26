@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.List;
 
 import org.apache.commons.lang3.BooleanUtils;
@@ -163,6 +164,12 @@ public class CpcFileControllerV1 {
 		}
 
 		Metadata metadata = cpcFileService.getMetadataById(fileId);
+
+		// If the Metadata object was created before a certain version, it will
+		// not contain error information, so a report would be inaccurate
+		if (metadata.getMetadataVersion() == null || metadata.getMetadataVersion() < 2) {
+			return new ResponseEntity<>(null, null, HttpStatus.UNPROCESSABLE_ENTITY);
+		}
 
 		Report report = new Report();
 		report.setErrors(metadata.getErrors() == null ? null : metadata.getErrors().getDetails());
