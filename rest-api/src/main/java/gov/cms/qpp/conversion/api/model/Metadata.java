@@ -47,12 +47,14 @@ public final class Metadata {
 	private String purpose;
 	private Details errors;
 	private Details warnings;
+	private Integer metadataVersion;
 
 	/**
 	 * Constructs a new {@code Metadata} with the {@code createdDate} filled in upon construction.
 	 */
 	public Metadata() {
 		createdDate = Instant.now();
+		metadataVersion = 2;
 	}
 
 
@@ -546,6 +548,26 @@ public final class Metadata {
 	}
 
 	/**
+	 * The version associated with the the Metadata object.
+	 *
+	 * @return The Metadata Version.
+	 */
+	@DoNotEncrypt
+	@DynamoDBAttribute(attributeName = "MetadataVersion")
+	public Integer getMetadataVersion() {
+		return metadataVersion;
+	}
+
+	/**
+	 * Sets the version associated with the Metadata object
+	 *
+	 * @param metadataVersion The Metadata version to use.
+	 */
+	public void setMetadataVersion(Integer metadataVersion) {
+		this.metadataVersion = metadataVersion;
+	}
+
+	/**
 	 * Determines the equality between this object and another.
 	 *
 	 * @param o The other object.
@@ -584,6 +606,7 @@ public final class Metadata {
 		equals &= Objects.equals(programName, that.programName);
 		equals &= Objects.equals(errors, that.errors);
 		equals &= Objects.equals(warnings, that.warnings);
+		equals &= Objects.equals(metadataVersion, that.metadataVersion);
 		return equals;
 	}
 
@@ -595,7 +618,7 @@ public final class Metadata {
 	public int hashCode() {
 		return Objects.hash(uuid, tin, npi, createdDate, apm, submissionYear, submissionLocator, qppLocator, fileName,
 				overallStatus, conversionStatus, validationStatus, cpc, conversionErrorLocator, validationErrorLocator,
-				rawValidationErrorLocator, cpcProcessed, purpose, programName, errors, warnings);
+				rawValidationErrorLocator, cpcProcessed, purpose, programName, errors, warnings, metadataVersion);
 	}
 
 	/**
