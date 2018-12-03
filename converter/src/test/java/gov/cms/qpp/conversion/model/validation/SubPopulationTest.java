@@ -1,20 +1,21 @@
 package gov.cms.qpp.conversion.model.validation;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
-import org.junit.Test;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.util.List;
 
-import static com.google.common.truth.Truth.assertThat;
+import org.junit.jupiter.api.Test;
+
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 
 /**
  * SubPopulation Test class to increase JaCoCo Code Coverage
  */
-public class SubPopulationTest {
+class SubPopulationTest {
 
 	@Test
-	public void getStrata() {
+	void getStrata() {
 		SubPopulation sp = new SubPopulation();
 		List<String> strata = sp.getStrata();
 
@@ -22,7 +23,15 @@ public class SubPopulationTest {
 	}
 
 	@Test
-	public void equalsContract() {
+	void copyConstructor() {
+		SubPopulation sp = new SubPopulation();
+		SubPopulation otherSp = new SubPopulation(sp);
+		
+		assertThat(sp).isEqualTo(otherSp);
+	}
+
+	@Test
+	void equalsContract() {
 		EqualsVerifier.forClass(SubPopulation.class)
 				.usingGetClass()
 				.suppress(Warning.NONFINAL_FIELDS)

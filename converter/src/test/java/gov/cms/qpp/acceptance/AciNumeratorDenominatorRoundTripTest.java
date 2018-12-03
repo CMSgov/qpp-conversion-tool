@@ -1,8 +1,7 @@
 package gov.cms.qpp.acceptance;
 
 import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.QppXmlDecoder;
-import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
+import gov.cms.qpp.conversion.decode.QrdaDecoderEngine;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
@@ -10,14 +9,14 @@ import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class AciNumeratorDenominatorRoundTripTest {
+class AciNumeratorDenominatorRoundTripTest {
 
 	@Test
-	public void parseAciNumeratorDenominatorAsNode() throws Exception {
+	void parseAciNumeratorDenominatorAsNode() throws Exception {
 		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 				+ "<entry xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
 				+ "	<organizer classCode=\"CLUSTER\" moodCode=\"EVN\">\n"
@@ -90,12 +89,11 @@ public class AciNumeratorDenominatorRoundTripTest {
 				+ "	</organizer>\n" + "</entry>";
 
 		Context context = new Context();
-		Node numeratorDenominatorNode = new QppXmlDecoder(context).decode(XmlUtils.stringToDom(xmlFragment));
+		Node numeratorDenominatorNode = new QrdaDecoderEngine(context).decode(XmlUtils.stringToDom(xmlFragment));
 		// remove default nodes (will fail if defaults change)
-		DefaultDecoder.removeDefaultNode(numeratorDenominatorNode.getChildNodes());
 
 		String xPathExpected = "/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'organizer' " +
-		                       "and namespace-uri() = 'urn:hl7-org:v3']";
+							"and namespace-uri() = 'urn:hl7-org:v3']";
 
 		QppOutputEncoder encoder = new QppOutputEncoder(context);
 		List<Node> nodes = new ArrayList<>();

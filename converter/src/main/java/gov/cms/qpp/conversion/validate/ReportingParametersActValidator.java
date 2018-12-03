@@ -1,22 +1,31 @@
 package gov.cms.qpp.conversion.validate;
 
-
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
 
 @Validator(TemplateId.REPORTING_PARAMETERS_ACT)
 public class ReportingParametersActValidator extends NodeValidator {
-	public static final String PERFORMANCE_YEAR = "Must have a performance year";
-	public static final String SINGLE_PERFORMANCE_START = "Must have one and only one performance start";
-	private static final String SINGLE_PERFORMANCE_END = "Must have one and only one performance end";
 
 	@Override
 	protected void internalValidateSingleNode(Node node) {
+		String performanceStart = node.getValueOrDefault(ReportingParametersActDecoder.PERFORMANCE_START, "");
+
+		String performanceEnd = node.getValueOrDefault(ReportingParametersActDecoder.PERFORMANCE_END,"");
+
 		check(node)
-				.singleValue(SINGLE_PERFORMANCE_START, ReportingParametersActDecoder.PERFORMANCE_START)
-				.singleValue(SINGLE_PERFORMANCE_END, ReportingParametersActDecoder.PERFORMANCE_END)
-				.value(PERFORMANCE_YEAR, ReportingParametersActDecoder.PERFORMANCE_YEAR);
+				.singleValue(ErrorCode.REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START,
+						ReportingParametersActDecoder.PERFORMANCE_START)
+				.singleValue(ErrorCode.REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_END,
+						ReportingParametersActDecoder.PERFORMANCE_END)
+				.value(ErrorCode.REPORTING_PARAMETERS_MISSING_PERFORMANCE_YEAR,
+						ReportingParametersActDecoder.PERFORMANCE_YEAR)
+				.isValidDate(ErrorCode.INVALID_PERFORMANCE_PERIOD_FORMAT.format(
+					performanceStart),
+					ReportingParametersActDecoder.PERFORMANCE_START)
+				.isValidDate(ErrorCode.INVALID_PERFORMANCE_PERIOD_FORMAT.format(performanceEnd),
+					ReportingParametersActDecoder.PERFORMANCE_END);
 	}
 }

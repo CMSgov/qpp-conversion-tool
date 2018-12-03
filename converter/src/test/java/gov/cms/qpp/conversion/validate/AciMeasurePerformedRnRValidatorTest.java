@@ -1,23 +1,25 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
-import org.junit.Before;
-import org.junit.Test;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.util.Set;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class AciMeasurePerformedRnRValidatorTest {
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+
+class AciMeasurePerformedRnRValidatorTest {
 
 	private AciMeasurePerformedRnRValidator validator;
 	private Node aciMeasurePerformedRnRNode;
 
-	@Before
-	public void init() {
+	@BeforeEach
+	void init() {
 		validator = new AciMeasurePerformedRnRValidator();
 
 		aciMeasurePerformedRnRNode = new Node(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS);
@@ -28,28 +30,28 @@ public class AciMeasurePerformedRnRValidatorTest {
 	}
 
 	@Test
-	public void testValidateGoodData() throws Exception {
+	void testValidateGoodData() {
 		Set<Detail> errors = run();
 		assertWithMessage("no errors should be present")
 				.that(errors).isEmpty();
 	}
 
 	@Test
-	public void testWithNoMeasureId() throws Exception {
+	void testWithNoMeasureId(){
 		aciMeasurePerformedRnRNode.removeValue("measureId");
 		Set<Detail> errors = run();
 		assertWithMessage("Should result in a MEASURE_ID_IS_REQUIRED error")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(AciMeasurePerformedRnRValidator.MEASURE_ID_IS_REQUIRED);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.ACI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR);
 	}
 
 	@Test
-	public void testWithNoChildren() throws Exception {
+	void testWithNoChildren() {
 		aciMeasurePerformedRnRNode.getChildNodes().clear();
 		Set<Detail> errors = run();
-		assertWithMessage("Validation error size should be 1")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(AciMeasurePerformedRnRValidator.MEASURE_PERFORMED_IS_REQUIRED);
+		assertWithMessage("Validation error size should be 2")
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT);
 	}
 
 	private Set<Detail> run() {

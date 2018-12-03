@@ -1,19 +1,20 @@
 package gov.cms.qpp.conversion.stubs;
 
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.DecodeResult;
-import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
-import gov.cms.qpp.conversion.model.Node;
 import org.jdom2.Element;
 
-public class JennyDecoder extends DefaultDecoder {
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.DecodeResult;
+import gov.cms.qpp.conversion.decode.QrdaDecoder;
+import gov.cms.qpp.conversion.model.Node;
+
+public class JennyDecoder extends QrdaDecoder {
 
 	public JennyDecoder(Context context) {
-		super(context, "default decoder for Jenny");
+		super(context);
 	}
 
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisnode) {
+	protected DecodeResult decode(Element element, Node thisnode) {
 		thisnode.putValue("DefaultDecoderFor", "Jenny");
 		if (element.getChildren().size() > 1) {
 			thisnode.putValue( "problem", "too many children" );

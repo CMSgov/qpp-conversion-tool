@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="qrda.xsl"?>
+<ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				  xsi:schemaLocation="urn:hl7-org:v3 ../CDA_Schema_Files/infrastructure/cda/CDA_SDTC.xsd"
+				  xmlns="urn:hl7-org:v3" xmlns:voc="urn:hl7-org:v3/voc">
+	<realmCode code="US"/>
+	<typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
+	<templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01"/>
+	<templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2017-07-01"/>
+	<id root="26a42253-99f5-48e7-9274-b467c6c7f623"/>
+	<code code="55184-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+		  displayName="Quality Reporting Document Architecture Calculated Summary Report"/>
+	<title>2017 Eligible Clinicians (EC) and Eligible Professionals (EP) Sample QRDA-III</title>
+	<effectiveTime value="20170311061231"/>
+	<confidentialityCode codeSystem="2.16.840.1.113883.5.25" code="N"/>
+	<languageCode code="en"/>
+	<setId root="ae23711d-783d-4f5e-b942-4084b467848b"/>
+	<versionNumber value="1"/>
+	<recordTarget>
+		<patientRole>
+			<id nullFlavor="NA"/>
+		</patientRole>
+	</recordTarget>
+	<author>
+		<time value="20170131061231"/>
+		<assignedAuthor>
+			<id root="3d0a32f3-5164-4a6f-8922-de3badf83de4"/>
+			<assignedAuthoringDevice>
+				<softwareName>SOME Data Aggregator Transform Tool AS00016dev</softwareName>
+			</assignedAuthoringDevice>
+			<representedOrganization>
+				<id root="2.16.840.1.113883.19.5" extension="223344"/>
+				<name>Good Health Clinic</name>
+			</representedOrganization>
+		</assignedAuthor>
+	</author>
+	<author>
+		<time value="20170131114411"/>
+		<assignedAuthor>
+			<id root="2.16.840.1.113883.4.6" extension="1234567893" assigningAuthorityName="NPI"/>
+			<assignedPerson>
+				<name>
+					<given>Trevor</given>
+					<family>Philips</family>
+				</name>
+			</assignedPerson>
+			<representedOrganization>
+				<id root="2.16.840.1.113883.19.5" extension="223344"/>
+				<name>Good Health Clinic</name>
+			</representedOrganization>
+		</assignedAuthor>
+	</author>
+	<custodian>
+		<assignedCustodian>
+			<representedCustodianOrganization>
+				<id root="2.16.840.1.113883.19.5" extension="223344"/>
+				<name>Good Health Clinic</name>
+			</representedCustodianOrganization>
+		</assignedCustodian>
+	</custodian>
+	<informationRecipient>
+		<intendedRecipient>
+			<id root="2.16.840.1.113883.3.249.7" extension="MIPS"/>
+		</intendedRecipient>
+	</informationRecipient>
+	<legalAuthenticator>
+		<time value="20170312153222"/>
+		<signatureCode code="S"/>
+		<assignedEntity>
+			<id root="bc01a5d1-3a34-4286-82cc-43eb04c972a7"/>
+			<representedOrganization>
+				<id root="2.16.840.1.113883.19.5" extension="223344"/>
+				<name>Good Health Clinic</name>
+			</representedOrganization>
+		</assignedEntity>
+	</legalAuthenticator>
+	<participant typeCode="DEV">
+		<associatedEntity classCode="RGPR">
+			<id root="2.16.840.1.113883.3.2074.1"/>
+			<code code="129465004" displayName="medical record, device"
+				  codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT"/>
+		</associatedEntity>
+	</participant>
+	<documentationOf typeCode="DOC">
+		<serviceEvent classCode="PCPR">
+			<effectiveTime>
+				<low value="20170101"/>
+				<high value="20171231"/>
+			</effectiveTime>
+			<performer typeCode="PRF">
+				<time>
+					<low value="20170101"/>
+					<high value="20171231"/>
+				</time>
+				<assignedEntity>
+					<id root="2.16.840.1.113883.4.6" extension="2567891421"/>
+					<representedOrganization>
+						<id root="2.16.840.1.113883.4.2" extension="123456789"/>
+						<name>Good Health Clinic</name>
+					</representedOrganization>
+				</assignedEntity>
+			</performer>
+		</serviceEvent>
+	</documentationOf>
+	<authorization>
+		<consent>
+			<id root="da2c8a32-d76b-4c37-a1f4-137485387650"/>
+			<code code="425691002" displayName="consent given for electronic record sharing"
+				  codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT"/>
+			<statusCode code="completed"/>
+		</consent>
+	</authorization>
+	<!--
+	********************************************************
+	CDA Body
+	********************************************************
+	-->
+	<component>
+		<structuredBody>
+			<!--
+			********************************************************
+			QRDA Category III Measure Section - CMS (V2)
+			urn:hl7ii:2.16.840.1.113883.10.20.27.2.3:2016-11-01
+			********************************************************
+			-->
+			<component>
+				<section>
+					<!-- Measure Section -->
+					<templateId root="2.16.840.1.113883.10.20.24.2.2"/>
+					<!-- QRDA Category III Measure Section (V3) -->
+					<templateId root="2.16.840.1.113883.10.20.27.2.1" extension="2017-06-01"/>
+					<!-- QRDA Category III Measure Section - CMS (V2) -->
+					<templateId root="2.16.840.1.113883.10.20.27.2.3" extension="2017-07-01"/>
+					<code code="55186-1" codeSystem="2.16.840.1.113883.6.1"
+						  displayName="measure section"/>
+					<title>Measure Section</title>
+					<!--Measure Entry for CMS52v5/NQF0712: Depression Utilization of the PHQ-9 Tool -->
+					<entry>
+						<organizer classCode="CLUSTER" moodCode="EVN">
+							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
+							<templateId root="2.16.840.1.113883.10.20.27.3.1" extension="2016-09-01"/>
+							<templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2016-11-01"/>
+							<id root="40280381-51f0-825b-0152-2273af5a150b"/>
+							<statusCode code="completed"/>
+							<!--Measure Reference and Results-->
+							<reference typeCode="REFR">
+								<externalDocument classCode="DOC" moodCode="EVN">
+									<id root="2.16.840.1.113883.4.738"
+										extension="40280381-51f0-825b-0152-2273af5a150b"/>
+									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
+										  codeSystemName="LOINC"
+										  displayName="Health Quality Measure Document"/>
+									<text>Depression Utilization of the PHQ-9 Tool</text>
+								</externalDocument>
+							</reference>
+							<!--Performance Rate: Population Criteria 1 -->
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.14" extension="2016-09-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2016-11-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01"/>
+									<code code="72510-1" codeSystem="2.16.840.1.113883.6.1"
+										  codeSystemName="LOINC" displayName="Performance Rate"/>
+									<statusCode code="completed"/>
+									<value xsi:type="REAL" value="0.860177"/>
+									<reference typeCode="REFR">
+										<externalObservation classCode="OBS" moodCode="EVN">
+											<!-- The root contains the UUID for the Numerator population -->
+											<id root="631C0B49-83F4-4A54-96C4-7E0766B2407C"/>
+											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
+												  codeSystemName="ActCode"
+												  displayName="Numerator"/>
+										</externalObservation>
+									</reference>
+								</observation>
+							</component>
+							<!--Performance Rate: Population Criteria 2 -->
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.14" extension="2016-09-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2016-11-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01"/>
+									<code code="72510-1" codeSystem="2.16.840.1.113883.6.1"
+										  codeSystemName="LOINC" displayName="Performance Rate"/>
+									<statusCode code="completed"/>
+									<value xsi:type="REAL" value="0.921052"/>
+									<reference typeCode="REFR">
+										<externalObservation classCode="OBS" moodCode="EVN">
+											<!-- The root contains the UUID for the Numerator population -->
+											<id root="5B7AC4EC-547A-47E5-AC5E-618401175511"/>
+											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
+												  codeSystemName="ActCode"
+												  displayName="Numerator"/>
+										</externalObservation>
+									</reference>
+								</observation>
+							</component>
+							<!--Performance Rate: Population Criteria 3 Lowercase Performance Rate UUID-->
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.14" extension="2016-09-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2016-11-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01"/>
+									<code code="72510-1" codeSystem="2.16.840.1.113883.6.1"
+										  codeSystemName="LOINC" displayName="Performance Rate"/>
+									<statusCode code="completed"/>
+									<value xsi:type="REAL" value="0.962963"/>
+									<reference typeCode="REFR">
+										<externalObservation classCode="OBS" moodCode="EVN">
+											<!-- The root contains the UUID for the Numerator population -->
+											<id root="86f74f07-d593-44f6-aa12-405966400963"/>
+											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
+												  codeSystemName="ActCode"
+												  displayName="Numerator"/>
+										</externalObservation>
+									</reference>
+								</observation>
+							</component>
+
+							<!--IPOP Population Lowercase Measure Data UUID-->
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										  codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="IPOP"
+										   codeSystem="2.16.840.1.113883.5.1063"
+										   codeSystemName="ObservationValue"/>
+									<!--IPOP Count-->
+									<entryRelationship typeCode="SUBJ" inversionInd="true">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+												  codeSystemName="ActCode"
+												  displayName="rate aggregation"/>
+											<statusCode code="completed"/>
+											<value xsi:type="INT" value="600"/>
+											<methodCode code="COUNT"
+														codeSystem="2.16.840.1.113883.5.84"
+														codeSystemName="ObservationMethod"
+														displayName="Count"/>
+										</observation>
+									</entryRelationship>
+									<!--IPOP Population ID from eMeasure-->
+									<reference typeCode="REFR">
+										<externalObservation classCode="OBS" moodCode="EVN">
+											<id root="e681dBf8-f827-4586-b3e0-178ff19ec3a2"/>
+										</externalObservation>
+									</reference>
+								</observation>
+							</component>
+							<!--DENOM Population Lowercase Measure Data UUID-->
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										  codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="DENOM"
+										   codeSystem="2.16.840.1.113883.5.1063"
+										   codeSystemName="ObservationValue"/>
+									<!--DENOM Count-->
+									<entryRelationship typeCode="SUBJ" inversionInd="true">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+												  codeSystemName="ActCode"
+												  displayName="rate aggregation"/>
+											<statusCode code="completed"/>
+											<value xsi:type="INT" value="600"/>
+											<methodCode code="COUNT"
+														codeSystem="2.16.840.1.113883.5.84"
+														codeSystemName="ObservationMethod"
+														displayName="Count"/>
+										</observation>
+									</entryRelationship>
+									<!--DENOM Population ID from eMeasure-->
+									<reference typeCode="REFR">
+										<externalObservation classCode="OBS" moodCode="EVN">
+											<id root="04bf53ce-6993-4ea2-bFe5-66e36172b388"/>
+										</externalObservation>
+									</reference>
+								</observation>
+							</component>
+							<!--DENEXCEP Population Lowercase Measure Data UUID-->
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										  codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="DENEXCEP"
+										   codeSystem="2.16.840.1.113883.5.1063"
+										   codeSystemName="ObservationValue"/>
+									<!--DENEX Count-->
+									<entryRelationship typeCode="SUBJ" inversionInd="true">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+												  codeSystemName="ActCode"
+												  displayName="rate aggregation"/>
+											<statusCode code="completed"/>
+											<value xsi:type="INT" value="35"/>
+											<methodCode code="COUNT"
+														codeSystem="2.16.840.1.113883.5.84"
+														codeSystemName="ObservationMethod"
+														displayName="Count"/>
+										</observation>
+									</entryRelationship>
+									<!--DENEX Population ID from eMeasure-->
+									<reference typeCode="REFR">
+										<externalObservation classCode="OBS" moodCode="EVN">
+											<id root="58347456-d1f3-4bbb-9b35-5d42825a0ab3"/>
+										</externalObservation>
+									</reference>
+								</observation>
+							</component>
+							<!--NUMER Population-->
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										  codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="NUMER"
+										   codeSystem="2.16.840.1.113883.5.1063"
+										   codeSystemName="ObservationValue"/>
+									<!--NUMER Count-->
+									<entryRelationship typeCode="SUBJ" inversionInd="true">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+												  codeSystemName="ActCode"
+												  displayName="rate aggregation"/>
+											<statusCode code="completed"/>
+											<value xsi:type="INT" value="486"/>
+											<methodCode code="COUNT"
+														codeSystem="2.16.840.1.113883.5.84"
+														codeSystemName="ObservationMethod"
+														displayName="Count"/>
+										</observation>
+									</entryRelationship>
+									<!--NUMER Population ID from eMeasure-->
+									<reference typeCode="REFR">
+										<externalObservation classCode="OBS" moodCode="EVN">
+											<id root="631c0b49-83f4-4a54-96c4-7e0766b2407c"/>
+										</externalObservation>
+									</reference>
+								</observation>
+							</component>
+
+							<!-- Population Criteria 2 -->
+							<!--IPOP Population-->
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										  codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="IPOP"
+										   codeSystem="2.16.840.1.113883.5.1063"
+										   codeSystemName="ObservationValue"/>
+									<!--IPOP Count-->
+									<entryRelationship typeCode="SUBJ" inversionInd="true">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+												  codeSystemName="ActCode"
+												  displayName="rate aggregation"/>
+											<statusCode code="completed"/>
+											<value xsi:type="INT" value="800"/>
+											<methodCode code="COUNT"
+														codeSystem="2.16.840.1.113883.5.84"
+														codeSystemName="ObservationMethod"
+														displayName="Count"/>
+										</observation>
+									</entryRelationship>
+									<!--IPOP Population ID from eMeasure-->
+									<reference typeCode="REFR">
+										<externalObservation classCode="OBS" moodCode="EVN">
+											<id root="AAC578DB-1900-43BD-BBBF-50014A5457E5"/>
+										</externalObservation>
+									</reference>
+								</observation>
+							</component>
+							<!--DENOM Population-->
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										  codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="DENOM"
+										   codeSystem="2.16.840.1.113883.5.1063"
+										   codeSystemName="ObservationValue"/>
+									<!--DENOM Count-->
+									<entryRelationship typeCode="SUBJ" inversionInd="true">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+												  codeSystemName="ActCode"
+												  displayName="rate aggregation"/>
+											<statusCode code="completed"/>
+											<value xsi:type="INT" value="800"/>
+											<methodCode code="COUNT"
+														codeSystem="2.16.840.1.113883.5.84"
+														codeSystemName="ObservationMethod"
+														displayName="Count"/>
+										</observation>
+									</entryRelationship>
+									<!--DENOM Population ID from eMeasure-->
+									<reference typeCode="REFR">
+										<externalObservation classCode="OBS" moodCode="EVN">
+											<id root="1574973E-EB52-40C7-9709-25ABEDBA99A3"/>
+										</externalObservation>
+									</reference>
+								</observation>
+							</component>
+							<!--DENEXCEP Population-->
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										  codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="DENEXCEP"
+										   codeSystem="2.16.840.1.113883.5.1063"
+										   codeSystemName="ObservationValue"/>
+									<!--DENEX Count-->
+									<entryRelationship typeCode="SUBJ" inversionInd="true">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+												  codeSystemName="ActCode"
+												  displayName="rate aggregation"/>
+											<statusCode code="completed"/>
+											<value xsi:type="INT" value="40"/>
+											<methodCode code="COUNT"
+														codeSystem="2.16.840.1.113883.5.84"
+														codeSystemName="ObservationMethod"
+														displayName="Count"/>
+										</observation>
+									</entryRelationship>
+									<!--DENEX Population ID from eMeasure-->
+									<reference typeCode="REFR">
+										<externalObservation classCode="OBS" moodCode="EVN">
+											<id root="B7CCA1A6-F352-4A23-BC89-6FE9B60DC0C6"/>
+										</externalObservation>
+									</reference>
+								</observation>
+							</component>
+							<!--NUMER Population-->
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										  codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="NUMER"
+										   codeSystem="2.16.840.1.113883.5.1063"
+										   codeSystemName="ObservationValue"/>
+									<!--NUMER Count-->
+									<entryRelationship typeCode="SUBJ" inversionInd="true">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+												  codeSystemName="ActCode"
+												  displayName="rate aggregation"/>
+											<statusCode code="completed"/>
+											<value xsi:type="INT" value="700"/>
+											<methodCode code="COUNT"
+														codeSystem="2.16.840.1.113883.5.84"
+														codeSystemName="ObservationMethod"
+														displayName="Count"/>
+										</observation>
+									</entryRelationship>
+									<!--NUMER Population ID from eMeasure-->
+									<reference typeCode="REFR">
+										<externalObservation classCode="OBS" moodCode="EVN">
+											<id root="5B7AC4EC-547A-47E5-AC5E-618401175511"/>
+										</externalObservation>
+									</reference>
+								</observation>
+							</component>
+
+							<!-- Population Criteria 3 -->
+							<!--IPOP Population-->
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										  codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="IPOP"
+										   codeSystem="2.16.840.1.113883.5.1063"
+										   codeSystemName="ObservationValue"/>
+									<!--IPOP Count-->
+									<entryRelationship typeCode="SUBJ" inversionInd="true">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+												  codeSystemName="ActCode"
+												  displayName="rate aggregation"/>
+											<statusCode code="completed"/>
+											<value xsi:type="INT" value="580"/>
+											<methodCode code="COUNT"
+														codeSystem="2.16.840.1.113883.5.84"
+														codeSystemName="ObservationMethod"
+														displayName="Count"/>
+										</observation>
+									</entryRelationship>
+									<!--IPOP Population ID from eMeasure-->
+									<reference typeCode="REFR">
+										<externalObservation classCode="OBS" moodCode="EVN">
+											<id root="AF36C4A9-8BD9-4E21-838D-A47A1845EB90"/>
+										</externalObservation>
+									</reference>
+								</observation>
+							</component>
+							<!--DENOM Population-->
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										  codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="DENOM"
+										   codeSystem="2.16.840.1.113883.5.1063"
+										   codeSystemName="ObservationValue"/>
+									<!--DENOM Count-->
+									<entryRelationship typeCode="SUBJ" inversionInd="true">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+												  codeSystemName="ActCode"
+												  displayName="rate aggregation"/>
+											<statusCode code="completed"/>
+											<value xsi:type="INT" value="580"/>
+											<methodCode code="COUNT"
+														codeSystem="2.16.840.1.113883.5.84"
+														codeSystemName="ObservationMethod"
+														displayName="Count"/>
+										</observation>
+									</entryRelationship>
+									<!--DENOM Population ID from eMeasure-->
+									<reference typeCode="REFR">
+										<externalObservation classCode="OBS" moodCode="EVN">
+											<id root="B95BC0D3-572E-462B-BAA2-46CD33A865CD"/>
+										</externalObservation>
+									</reference>
+								</observation>
+							</component>
+							<!--NUMER Population-->
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										  codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="NUMER"
+										   codeSystem="2.16.840.1.113883.5.1063"
+										   codeSystemName="ObservationValue"/>
+									<!--NUMER Count-->
+									<entryRelationship typeCode="SUBJ" inversionInd="true">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+												  codeSystemName="ActCode"
+												  displayName="rate aggregation"/>
+											<statusCode code="completed"/>
+											<value xsi:type="INT" value="520"/>
+											<methodCode code="COUNT"
+														codeSystem="2.16.840.1.113883.5.84"
+														codeSystemName="ObservationMethod"
+														displayName="Count"/>
+										</observation>
+									</entryRelationship>
+									<!--NUMER Population ID from eMeasure-->
+									<reference typeCode="REFR">
+										<externalObservation classCode="OBS" moodCode="EVN">
+											<id root="86F74F07-D593-44F6-AA12-405966400963"/>
+										</externalObservation>
+									</reference>
+								</observation>
+							</component>
+						</organizer>
+					</entry>
+					<entry typeCode="DRIV">
+						<act classCode="ACT" moodCode="EVN">
+							<templateId root="2.16.840.1.113883.10.20.17.3.8"/>
+							<!-- Uppercase Measure UUID -->
+							<id root="00B669fD-FA4D-4F5C-B109-65C6BBBF73AE"/>
+							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
+								  displayName="Observation Parameters"/>
+							<effectiveTime>
+								<low value="20170201"/>
+								<high value="20170531"/>
+							</effectiveTime>
+						</act>
+					</entry>
+				</section>
+			</component>
+		</structuredBody>
+	</component>
+</ClinicalDocument>

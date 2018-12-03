@@ -1,20 +1,19 @@
 package gov.cms.qpp.conversion;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.TransformException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-
-import gov.cms.qpp.conversion.encode.JsonWrapper;
-import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.TransformException;
 
 /**
  * Calls the {@link Converter} and writes the results to a file.
@@ -22,12 +21,12 @@ import gov.cms.qpp.conversion.model.error.TransformException;
 public class ConversionFileWriterWrapper {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(ConversionFileWriterWrapper.class);
 
-	private final QrdaSource source;
+	private final Source source;
 	private final FileSystem fileSystem;
 	private Context context;
 
 	public ConversionFileWriterWrapper(Path inFile) {
-		this.source = new PathQrdaSource(inFile);
+		this.source = new PathSource(inFile);
 
 		fileSystem = inFile.getFileSystem();
 	}
@@ -67,7 +66,7 @@ public class ConversionFileWriterWrapper {
 		} catch (TransformException exception) {
 			AllErrors allErrors = exception.getDetails();
 			Path outFile = getOutputFile(source.getName(), false);
-			DEV_LOG.warn("There were errors during conversion.  Writing out errors to {} " + outFile.toString(),
+			DEV_LOG.warn("There were errors during conversion.  Writing out errors to " + outFile.toString(),
 					exception);
 			writeOutErrors(allErrors, outFile);
 		}

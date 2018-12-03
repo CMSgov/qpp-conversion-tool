@@ -1,28 +1,27 @@
 package gov.cms.qpp.acceptance;
 
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.util.JsonHelper;
-import org.junit.Test;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
 
-public class AciMeasurePerformedRoundTripTest {
+class AciMeasurePerformedRoundTripTest {
 
-	public static final Path JUNK_QRDA3_FILE = Paths.get("src/test/resources/negative/AciMeasurePerformedGarbage.xml");
+	static final Path JUNK_QRDA3_FILE = Paths.get("src/test/resources/negative/AciMeasurePerformedGarbage.xml");
 
 	@Test
-	public void testGarbage() throws IOException {
+	void testGarbage() {
 
-		Converter converter = new Converter(new PathQrdaSource(JUNK_QRDA3_FILE));
+		Converter converter = new Converter(new PathSource(JUNK_QRDA3_FILE));
 		JsonWrapper qpp = converter.transform();
 
 		List<Map<String, ?>> aciMeasures = JsonHelper.readJsonAtJsonPath(qpp.toString(),

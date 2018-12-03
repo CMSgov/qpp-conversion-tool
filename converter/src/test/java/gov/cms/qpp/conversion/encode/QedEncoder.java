@@ -13,23 +13,23 @@ import java.util.Set;
 @Encoder(TemplateId.QED)
 public class QedEncoder extends QppOutputEncoder {
 
-    public QedEncoder(Context context) {
+	public QedEncoder(Context context) {
 		super(context);
 	}
 
 	/**
-     * internal encode for QED placeholder nodes
-     *
-     * @param wrapper object to encode into
-     * @param node object to encode
-     * @throws EncodeException
-     */
-    @Override
-    public void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
-        Set<String> keys = node.getKeys();
+	 * internal encode for QED placeholder nodes
+	 *
+	 * @param wrapper object to encode into
+	 * @param node object to encode
+	 * @throws EncodeException
+	 */
+	@Override
+	public void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
+		Set<String> keys = node.getKeys();
 
-        for (String key : keys) {
-            wrapper.putString(key, node.getValue(key));
-        }
-    }
+		for (String key : keys) {
+			wrapper.putString(key, node.getValue(key));
+		}
+	}
 }

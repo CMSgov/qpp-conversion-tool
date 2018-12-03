@@ -1,37 +1,48 @@
 package gov.cms.qpp.conversion.model.error;
 
-import com.google.common.truth.StringSubject;
-import org.junit.Test;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.util.Collections;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import org.junit.jupiter.api.Test;
 
-public class ErrorTest {
+import com.google.common.truth.StringSubject;
+
+class ErrorTest {
 
 	@Test
-	public void validationErrorInit() {
+	void testValidationErrorInit() {
 		Error objectUnderTest = new Error();
 		assertWithMessage("The validation errors should have been empty at first")
 				.that(objectUnderTest.getDetails()).isEmpty();
 	}
 
 	@Test
-	public void addValidationError() {
+	void testAddValidationError() {
 		Error objectUnderTest = new Error();
-		objectUnderTest.addValidationError(new Detail("description", "path"));
-		objectUnderTest.addValidationError(new Detail("description", "path"));
+		objectUnderTest.addValidationError(new Detail());
+		objectUnderTest.addValidationError(new Detail());
 
 		assertWithMessage("The list should have two items")
 				.that(objectUnderTest.getDetails()).hasSize(2);
 	}
 
 	@Test
-	public void mutability() {
+	void testInitializesDetailsWhenNull() {
+		Error objectUnderTest = new Error();
+		objectUnderTest.setDetails(null);
+		objectUnderTest.addValidationError(new Detail());
+
+		assertWithMessage("The list should have zero items")
+				.that(objectUnderTest.getDetails()).hasSize(1);
+	}
+
+	@Test
+	void testMutability() {
 		Error objectUnderTest = new Error();
 
 		objectUnderTest.setSourceIdentifier("meep");
-		objectUnderTest.setDetails(Collections.singletonList(new Detail("description", "path")));
+		objectUnderTest.setDetails(Collections.singletonList(new Detail()));
 
 		assertWithMessage("The list should be one")
 				.that(objectUnderTest.getDetails()).hasSize(1);
@@ -40,10 +51,10 @@ public class ErrorTest {
 	}
 
 	@Test
-	public void testToString() {
+	void testToString() {
 		Error objectUnderTest = new Error();
 		objectUnderTest.setSourceIdentifier("sourceID");
-		objectUnderTest.setDetails(Collections.singletonList(new Detail("description", "path")));
+		objectUnderTest.setDetails(Collections.singletonList(Detail.forErrorCode(ErrorCode.UNEXPECTED_ERROR)));
 		objectUnderTest.setType("aType");
 		objectUnderTest.setMessage("coolMessage");
 

@@ -10,15 +10,16 @@ This document describes how to set up your development environment to build and 
 * [SonarQube](#sonarqube)
 * [Third Party Extensions](#third-party-extensions)
 
-See the [contribution guidelines](CONTRIBUTING.md)
+See the [contribution guidelines](/.github/CONTRIBUTING.md)
 if you'd like to contribute to qpp-conversion-tool.
 
 ## Additional Prerequisite Software
 
-The only additional prerequisite that was not already outlined in the
-[main README][readme] is the
-[Java Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (version `>= 1.8`). The Java Runtime
+The additional prerequisites that were not already outlined in the
+[main README][readme] are...
+- [Java Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (version `>= 1.8`). The Java Runtime
 will not suffice.
+- [Maven](https://maven.apache.org).
 
 ## Building
 
@@ -52,7 +53,7 @@ mvn clean verify -DrunLoadTests
 ```
 
 In addition, there are some extreme JMeter load tests that execute only when passing in `-DskipJmeterSuite=false`.  To run these
-tests, one must fill in the `host`, `path`, `port`, and `cookie` fields in the [benchmark pom.xml](benchmark/pom.xml) to
+tests, one must fill in the `host`, `path`, `port`, and `cookie` fields in the [benchmark pom.xml](/benchmark/pom.xml) to
 correctly connect to the test environment. Make sure you have time, the CPU performance, and network performance before deciding
 to run these tests.
 
@@ -62,14 +63,13 @@ In addition to converting input files to QPP, the ReST API can do the following.
 - Call the submission validation API to validate the QPP JSON.
 - Write the input file and output JSON to a S3 bucket.
 - Write metadata to a DynamoDB table.
- 
+
 This additional functionality depends on the environment variables set. See the [.env](.env) file for descriptions of what the
 environment variables are for.
 
 ### Amazon Web Services
 
 The ReST API depends on AWS for some of the additional functionality. Currently, a real account with AWS must be used.
-[Localstack](https://github.com/localstack/localstack) is used in tests.
 
 Ensure that credentials are set such that the
 [Default Credential Provider Chain](http://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html) can find them.
@@ -83,12 +83,12 @@ The DynamoDB table requires the partition key be named `Uuid` and of type `Strin
 
 ## SonarQube
 
-We have a [SonarQube](http://sonar.shareddev.flexion.us:9000/dashboard?id=gov.cms.qpp.conversion%3Aqpp-conversion) server to
+We have a [SonarQube](https://sonarcloud.io/dashboard?id=gov.cms.qpp.conversion%3Aqpp-conversion) server to
 measure how clean the codebase is.
 
 ## Third Party Extensions
 
-Finished a cool new feature or fix for the conversion tool? Please feel free submit a pull request to our repository (https://github.com/CMSgov/qpp-conversion-tool) for any changes made. We appreciate and thank you for your patronage!
-See the [contribution guidelines](https://github.com/CMSgov/qpp-conversion-tool/blob/master/CONTRIBUTING.md) on how to submit a Pull Request.
+Finished a cool new feature or fix for the conversion tool? Please feel free submit a pull request to [our repository](https://github.com/CMSgov/qpp-conversion-tool) for any changes made. We appreciate and thank you for your patronage!
+See the [contribution guidelines](/.github/CONTRIBUTING.md) on how to submit a Pull Request.
 
-[readme]: https://github.com/CMSgov/qpp-conversion-tool/blob/master/README.md
+[readme]: /README.md

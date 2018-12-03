@@ -1,16 +1,16 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.decode.QualityMeasureIdDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
 
 /**
  * Validates a Quality Measure Section node.
  */
 @Validator(TemplateId.MEASURE_SECTION_V2)
 public class QualityMeasureSectionValidator extends NodeValidator {
-	protected static final String REQUIRED_REPORTING_PARAM_REQUIREMENT_ERROR
-			= "The Quality Measure Section must have only one Reporting Parameter ACT";
 
 	/**
 	 * Validate that the Quality Measure Section contains...
@@ -20,9 +20,9 @@ public class QualityMeasureSectionValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		check(node)
-			.childMinimum(REQUIRED_REPORTING_PARAM_REQUIREMENT_ERROR, 1,
-					TemplateId.REPORTING_PARAMETERS_ACT)
-			.childMaximum(REQUIRED_REPORTING_PARAM_REQUIREMENT_ERROR, 1,
-					TemplateId.REPORTING_PARAMETERS_ACT);
+			.childExact(ErrorCode.QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT, 1,
+				TemplateId.REPORTING_PARAMETERS_ACT)
+		    .oneChildPolicy(ErrorCode.MEASURE_GUID_MISSING, TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2,
+					childNode -> childNode.getValue(QualityMeasureIdDecoder.MEASURE_ID));
 	}
 }

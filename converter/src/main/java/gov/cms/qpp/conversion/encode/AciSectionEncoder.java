@@ -1,15 +1,19 @@
 package gov.cms.qpp.conversion.encode;
 
+import com.google.common.base.Strings;
 import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Encoder to serialize ACI Section and it's measures
@@ -41,6 +45,7 @@ public class AciSectionEncoder extends QppOutputEncoder {
 
 		wrapper.putObject("measurements", measurementsWrapper);
 
+		Optional.ofNullable(node.getParent()).ifPresent(parent -> pilferParent(wrapper, parent));
 		encodeReportingParameter(wrapper, node);
 	}
 
@@ -67,10 +72,37 @@ public class AciSectionEncoder extends QppOutputEncoder {
 					childEncoder.encode(childWrapper, currentChild);
 					measurementsWrapper.putObject(childWrapper);
 				} else {
-					addValidationError(new Detail("Failed to find an encoder for child node " + currentChild.getType(),
-						currentChild.getPath()));
+					Detail detail = Detail.forErrorCode(ErrorCode.ENCODER_MISSING);
+					detail.setPath(currentChild.getPath());
+					addValidationError(detail);
 				}
 			}
+		}
+	}
+
+	/**
+	 * Mine information from section parent.
+	 *
+	 * @param wrapper section's wrapper
+	 * @param parent the clinical document node
+	 */
+	private void pilferParent(JsonWrapper wrapper, Node parent) {
+		wrapper.putString(ClinicalDocumentDecoder.PROGRAM_NAME,
+				parent.getValue(ClinicalDocumentDecoder.PROGRAM_NAME));
+		maintainContinuity(wrapper, parent, ClinicalDocumentDecoder.PROGRAM_NAME);
+		encodeEntityId(wrapper, parent);
+	}
+
+	/**
+	 * This will add the entityId from the Clinical Document Node
+	 *
+	 * @param wrapper will hold the json format of nodes
+	 * @param parent holds the decoded node sections of clinical document
+	 */
+	private void encodeEntityId(JsonWrapper wrapper, Node parent) {
+		String entityId = parent.getValue(ClinicalDocumentDecoder.ENTITY_ID);
+		if (!Strings.isNullOrEmpty(entityId)) {
+			wrapper.putString(ClinicalDocumentDecoder.ENTITY_ID, entityId);
 		}
 	}
 
@@ -87,7 +119,7 @@ public class AciSectionEncoder extends QppOutputEncoder {
 			DEV_LOG.error("Missing Reporting Parameters from ACI Section");
 			return;
 		}
-		reportingParamEncoder.encode(wrapper, reportingChild);
+		reportingParamEncoder.encode(wrapper, reportingChild, false);
 		maintainContinuity(wrapper, reportingChild, ReportingParametersActDecoder.PERFORMANCE_END);
 		maintainContinuity(wrapper, reportingChild, ReportingParametersActDecoder.PERFORMANCE_START);
 	}

@@ -1,7 +1,8 @@
 package gov.cms.qpp.conversion.api.services;
 
-
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.ConversionReport;
+import gov.cms.qpp.conversion.InputStreamSupplierSource;
+import gov.cms.qpp.conversion.Source;
 import gov.cms.qpp.conversion.api.exceptions.UncheckedInterruptedException;
 import gov.cms.qpp.conversion.api.helper.MetadataHelper;
 import gov.cms.qpp.conversion.api.model.Constants;
@@ -19,18 +20,17 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.core.env.Environment;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeoutException;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
-
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({MetadataHelper.class})
@@ -48,16 +48,17 @@ public class AuditServiceImplTest {
 	private DbService dbService;
 
 	@Mock
-	private Converter.ConversionReport report;
+	private ConversionReport report;
 
 	@Mock
 	private Environment environment;
 
 	private Metadata metadata;
-	private InputStream fileContent = new ByteArrayInputStream("Hello".getBytes());
+	private String content = "Hello";
+	private Source fileContentSource = new InputStreamSupplierSource(FILENAME, new ByteArrayInputStream(content.getBytes()));
 
 	@Before
-	public void before() throws NoSuchFieldException, IllegalAccessException {
+	public void before() {
 		metadata = new Metadata();
 
 		mockStatic(MetadataHelper.class);
@@ -98,7 +99,7 @@ public class AuditServiceImplTest {
 		allGood();
 		underTest.success(report);
 
-		verify(storageService, times(0)).store(any(String.class), any(InputStream.class));
+		verify(storageService, times(0)).store(any(String.class), any(), anyLong());
 		verify(dbService, times(0)).write(metadata);
 	}
 
@@ -118,7 +119,7 @@ public class AuditServiceImplTest {
 		successfulEncodingPrep();
 		problematic();
 		final Waiter waiter = new Waiter();
-		CompletableFuture<Void> future = underTest.success(report);
+		CompletableFuture<Metadata> future = underTest.success(report);
 
 		future.whenComplete((nada, ex) -> {
 			waiter.assertNull(metadata.getQppLocator());
@@ -149,7 +150,7 @@ public class AuditServiceImplTest {
 		allGood();
 		underTest.failConversion(report);
 
-		verify(storageService, times(0)).store(any(String.class), any(InputStream.class));
+		verify(storageService, times(0)).store(any(String.class), any(), anyLong());
 		verify(dbService, times(0)).write(metadata);
 	}
 
@@ -175,7 +176,7 @@ public class AuditServiceImplTest {
 		allGood();
 		underTest.failValidation(report);
 
-		verify(storageService, times(0)).store(any(String.class), any(InputStream.class));
+		verify(storageService, times(0)).store(any(String.class), any(), anyLong());
 		verify(dbService, times(0)).write(metadata);
 	}
 
@@ -184,33 +185,33 @@ public class AuditServiceImplTest {
 		JsonWrapper wrapper = new JsonWrapper();
 		wrapper.putString("meep", "mawp");
 
-		when(report.getEncoded()).thenReturn(wrapper);
+		when(report.getQppSource()).thenReturn(wrapper.toSource());
 	}
 
 	private void errorPrep() {
 		prepOverlap();
 
-		when(report.streamRawValidationDetails()).thenReturn(fileContent);
-		when(report.streamDetails()).thenReturn(fileContent);
+
+		when(report.getRawValidationErrorsOrEmptySource()).thenReturn(fileContentSource);
+		when(report.getValidationErrorsSource()).thenReturn(fileContentSource);
 	}
 
 	private void prepOverlap() {
 		Node node = new Node();
 		node.putValue("meep", "mawp");
 
-		when(report.getFileInput()).thenReturn(fileContent);
+		when(report.getQrdaSource()).thenReturn(fileContentSource);
 		when(report.getDecoded()).thenReturn(node);
-		when(report.getFilename()).thenReturn(FILENAME);
 	}
 
 	private void allGood() {
-		when(storageService.store(any(String.class), any(InputStream.class)))
+		when(storageService.store(any(String.class), any(), anyLong()))
 				.thenReturn(CompletableFuture.completedFuture(AN_ID));
 	}
 
 	private void problematic() {
-		when(storageService.store(any(String.class), any(InputStream.class)))
-				.thenReturn(CompletableFuture.supplyAsync( () -> {
+		when(storageService.store(any(String.class), any(), anyLong()))
+				.thenReturn(CompletableFuture.supplyAsync(() -> {
 					throw new UncheckedInterruptedException(new InterruptedException());
 				}));
 	}

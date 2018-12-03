@@ -2,12 +2,11 @@ package gov.cms.qpp.conversion.correlation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
-import gov.cms.qpp.conversion.correlation.model.Config;
+import gov.cms.qpp.conversion.correlation.model.CorrelationConfig;
 import gov.cms.qpp.conversion.correlation.model.Correlation;
 import gov.cms.qpp.conversion.correlation.model.Goods;
 import gov.cms.qpp.conversion.correlation.model.PathCorrelation;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
-import java.util.Objects;
 import org.reflections.util.ClasspathHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Maintains associations between QPP json paths and their pre-transformation xpaths.
@@ -29,19 +27,24 @@ public class PathCorrelator {
 	public static final String KEY_DELIMITER = "#";
 	private static final String ENCODE_LABEL = "encodeLabel";
 	private static String config = "pathing/path-correlation.json";
-	private static PathCorrelation pathCorrelation;
 	private static Map<String, Goods> pathCorrelationMap = new HashMap<>();
+	private static String uriSubstitution = "";
+
 
 	static {
-		initPathCorrelation();
+		uriSubstitution = loadPathCorrelation().getUriSubstitution();
 	}
 
 	private PathCorrelator() {}
 
 	/**
 	 * Initializes correlations between json paths and xpaths
+	 *
+	 * @return a holder for path correlations
 	 */
-	private static void initPathCorrelation() {
+	private static PathCorrelation loadPathCorrelation() {
+		PathCorrelation pathCorrelation;
+
 		try {
 			InputStream input = ClasspathHelper.contextClassLoader().getResourceAsStream(config);
 			ObjectMapper mapper = new ObjectMapper();
@@ -52,6 +55,8 @@ public class PathCorrelator {
 			DEV_LOG.error(message, ioe);
 			throw new PathCorrelationException(message, ioe);
 		}
+
+		return pathCorrelation;
 	}
 
 	/**
@@ -61,19 +66,17 @@ public class PathCorrelator {
 	 * @param pathCorrelation deserialized representation of the aforementioned correlation configuration
 	 */
 	private static void flattenCorrelations(PathCorrelation pathCorrelation) {
-		Map<String, List<Config>> config = pathCorrelation.getCorrelations().stream()
+		Map<String, List<CorrelationConfig>> config = pathCorrelation.getCorrelations().stream()
 				.collect(Collectors.toMap(Correlation::getCorrelationId, Correlation::getConfig));
 		pathCorrelation.getTemplates().forEach(template -> {
-			List<Config> configs = config.get(template.getCorrelationId());
+			List<CorrelationConfig> configs = config.get(template.getCorrelationId());
 			configs.forEach(conf -> {
 				if (null != conf.getDecodeLabel()) {
 					pathCorrelationMap.put(
 							getKey(template.getTemplateId(), conf.getDecodeLabel()), conf.getGoods());
 				}
-				if (null != conf.getEncodeLabels()) {
-					conf.getEncodeLabels().forEach(label ->
-						pathCorrelationMap.put(getKey(template.getTemplateId(), label), conf.getGoods()));
-				}
+				conf.getEncodeLabels().forEach(label ->
+					pathCorrelationMap.put(getKey(template.getTemplateId(), label), conf.getGoods()));
 			});
 		});
 	}
@@ -84,7 +87,7 @@ public class PathCorrelator {
 	 * @return substitution place holder
 	 */
 	static String getUriSubstitution() {
-		return pathCorrelation.getUriSubstitution();
+		return uriSubstitution;
 	}
 
 	/**
@@ -110,7 +113,7 @@ public class PathCorrelator {
 		String key = PathCorrelator.getKey(base, attribute);
 		Goods goods = pathCorrelationMap.get(key);
 		return (goods == null) ? null :
-				goods.getRelativeXPath().replaceAll(pathCorrelation.getUriSubstitution(), uri);
+				goods.getRelativeXPath().replace(uriSubstitution, uri);
 	}
 
 	/**
@@ -131,12 +134,12 @@ public class PathCorrelator {
 			leaf = jsonPath.substring(lastIndex + 1);
 		}
 
-
 		JsonPath compiledPath = JsonPath.compile(base);
 		Map<String, Object> jsonMap = compiledPath.read(metaWrapper.toString());
+
 		Map<String, String> metaMap = getMetaMap(jsonMap, leaf);
 		String preparedPath = "";
-		if (!Objects.isNull(metaMap)) {
+		if (metaMap != null) {
 			preparedPath = makePath(metaMap, leaf);
 		}
 		return preparedPath;
@@ -152,16 +155,18 @@ public class PathCorrelator {
 	@SuppressWarnings("unchecked")
 	private static Map<String, String> getMetaMap(Map<String, Object> jsonMap, final String leaf) {
 		List<Map<String, String>> metaHolder = (List<Map<String, String>>) jsonMap.get("metadata_holder");
-		Stream<Map<String, String>> sorted = metaHolder.stream()
-				.sorted(labeledFirst());
-		return sorted.filter(entry -> {
-			if (entry.get(ENCODE_LABEL).equals(leaf)) {
-				return leaf.isEmpty()
-						|| PathCorrelator.getXpath(entry.get("template"), leaf, entry.get("nsuri")) != null;
-			} else {
-				return entry.get(ENCODE_LABEL).isEmpty();
-			}
-		}).findFirst().orElse(null);
+		return metaHolder.stream()
+				.sorted(labeledFirst())
+				.filter(entry -> {
+					String encodeLabel = entry.get(ENCODE_LABEL);
+					if (encodeLabel.equals(leaf)) {
+						return leaf.isEmpty()
+								|| PathCorrelator.getXpath(entry.get("template"), leaf, entry.get("nsuri")) != null;
+					}
+					return encodeLabel.isEmpty();
+				})
+				.findFirst()
+				.orElse(null);
 	}
 
 	/**
@@ -174,16 +179,8 @@ public class PathCorrelator {
 		return (Map<String, String> map1, Map<String, String> map2) -> {
 			String map1Label = map1.get(ENCODE_LABEL);
 			String map2Label = map2.get(ENCODE_LABEL);
-			int reply;
-			if ((!map1Label.isEmpty() && !map2Label.isEmpty())
-					|| (map1Label.isEmpty() && map2Label.isEmpty())) {
-				reply = 0;
-			} else if (map1Label.isEmpty()) {
-				reply = 1;
-			} else {
-				reply = -1;
-			}
-			return reply;
+			
+			return Boolean.compare(map1Label.isEmpty(), map2Label.isEmpty());
 		};
 	}
 
@@ -199,6 +196,6 @@ public class PathCorrelator {
 		String baseTemplate = metadata.get("template");
 		String baseXpath = metadata.get("path");
 		String relativeXpath = PathCorrelator.getXpath(baseTemplate, leaf, nsUri);
-		return (relativeXpath != null) ? baseXpath + "/" + relativeXpath : baseXpath;
+		return (relativeXpath != null) ? (baseXpath + "/" + relativeXpath) : baseXpath;
 	}
 }

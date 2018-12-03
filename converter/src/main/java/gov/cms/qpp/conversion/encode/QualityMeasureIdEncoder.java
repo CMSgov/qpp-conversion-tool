@@ -6,12 +6,14 @@ import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
-import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.Strata;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
-import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
+import gov.cms.qpp.conversion.util.MeasureConfigHelper;
+
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,8 +45,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 */
 	@Override
 	public void internalEncode(JsonWrapper wrapper, Node node) {
-		Map<String, MeasureConfig> configurationMap = MeasureConfigs.getConfigurationMap();
-		MeasureConfig measureConfig = configurationMap.get(node.getValue(MEASURE_ID));
+		MeasureConfig measureConfig = MeasureConfigHelper.getMeasureConfig(node);
 		String measureId = measureConfig.getMeasureId();
 		wrapper.putString(MEASURE_ID, measureId);
 
@@ -106,7 +107,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 				.filter(childNode -> TemplateId.MEASURE_DATA_CMS_V2 == childNode.getType())
 				.forEach(childNode -> {
 					String populationId = childNode.getValue(MeasureDataDecoder.MEASURE_POPULATION);
-					Integer subPopIndex = mapPopulationIdToSubPopIndex.get(populationId);
+					Integer subPopIndex = mapPopulationIdToSubPopIndex.get(populationId.toUpperCase(Locale.ENGLISH));
 					if (subPopIndex != null) {
 						Node newParentNode = subPopNodes.get(subPopIndex);
 						newParentNode.addChildNode(childNode);
@@ -197,10 +198,10 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param parentNode holder of the the numerator node
 	 */
 	private void encodePerformanceMet(JsonWrapper wrapper, Node parentNode) {
-		Node numeratorNode = parentNode.findChildNode(n -> SubPopulations.NUMER.equals(n.getValue(TYPE)));
+		Node numeratorNode = parentNode.findChildNode(n -> SubPopulationLabel.NUMER.hasAlias(n.getValue(TYPE)));
 		Optional.ofNullable(numeratorNode).ifPresent(
 			node -> {
-				Node aggCount = node.getChildNodes().get(0);
+				Node aggCount = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
 				maintainContinuity(wrapper, aggCount, "performanceMet");
 				wrapper.putInteger("performanceMet", aggCount.getValue(AGGREGATE_COUNT));
 			});
@@ -215,11 +216,12 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param measureConfig The measure configuration for the current measure.
 	 */
 	private void encodeStratum(JsonWrapper wrapper, Node parentNode, final MeasureConfig measureConfig) {
-		Node numeratorNode = parentNode.findChildNode(n -> SubPopulations.NUMER.equals(n.getValue(TYPE)));
+		Node numeratorNode = parentNode.findChildNode(n -> SubPopulationLabel.NUMER.hasAlias(n.getValue(TYPE)));
 		Optional.ofNullable(numeratorNode).ifPresent(
 				node -> {
 					maintainContinuity(wrapper, node, "stratum");
-					String numeratorPopulationId = node.getValue(MeasureDataDecoder.MEASURE_POPULATION);
+					String numeratorPopulationId =
+							node.getValue(MeasureDataDecoder.MEASURE_POPULATION).toUpperCase(Locale.ENGLISH);
 					String stratum = stratumForNumeratorUuid(numeratorPopulationId, measureConfig);
 					wrapper.putString("stratum", stratum);
 				});
@@ -249,14 +251,14 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param parentNode holder of the denominator and denominator exclusion nodes
 	 */
 	private void encodePerformanceNotMet(JsonWrapper wrapper, Node parentNode) {
-		Node numeratorNode = parentNode.findChildNode(n -> SubPopulations.NUMER.equals(n.getValue(TYPE)));
-		Node denominatorNode = parentNode.findChildNode(n -> SubPopulations.DENOM.equals(n.getValue(TYPE)));
-		Node denomExclusionNode = parentNode.findChildNode(n -> SubPopulations.DENEX.equals(n.getValue(TYPE)));
-		Node denomExceptionNode = parentNode.findChildNode(n -> SubPopulations.DENEXCEP.equals(n.getValue(TYPE)));
+		Node numeratorNode = parentNode.findChildNode(n -> SubPopulationLabel.NUMER.hasAlias(n.getValue(TYPE)));
+		Node denominatorNode = parentNode.findChildNode(n -> SubPopulationLabel.DENOM.hasAlias(n.getValue(TYPE)));
+		Node denomExclusionNode = parentNode.findChildNode(n -> SubPopulationLabel.DENEX.hasAlias(n.getValue(TYPE)));
+		Node denomExceptionNode = parentNode.findChildNode(n -> SubPopulationLabel.DENEXCEP.hasAlias(n.getValue(TYPE)));
 
 		Optional.ofNullable(denomExclusionNode).ifPresent(
 				node -> {
-					Node aggCount = node.getChildNodes().get(0);
+					Node aggCount = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
 					maintainContinuity(wrapper, aggCount, "eligiblePopulationExclusion");
 					String value = aggCount.getValue(AGGREGATE_COUNT);
 					wrapper.putInteger("eligiblePopulationExclusion", value);
@@ -264,7 +266,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 
 		Optional.ofNullable(denomExceptionNode).ifPresent(
 				node -> {
-					Node aggCount = node.getChildNodes().get(0);
+					Node aggCount = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
 					maintainContinuity(wrapper, aggCount, "eligiblePopulationException");
 					String value = aggCount.getValue(AGGREGATE_COUNT);
 					wrapper.putInteger("eligiblePopulationException", value);
@@ -274,7 +276,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 				node -> {
 					String performanceNotMet = calculatePerformanceNotMet(numeratorNode, denominatorNode,
 							denomExclusionNode, denomExceptionNode);
-					Node aggCount = node.getChildNodes().get(0);
+					Node aggCount = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
 					//for eCQMs, will be equal to
 					// denominator - numerator - denominator exclusion - denominator exception
 					maintainContinuity(wrapper, aggCount, "performanceNotMet");
@@ -293,13 +295,13 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 											Node denomExclusionNode, Node denomExceptionNode) {
 
 		String denominatorValue = denominatorNode == null ? "0" :
-				denominatorNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
+				denominatorNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT).getValue(AGGREGATE_COUNT);
 		String denomExclusionValue = denomExclusionNode == null ? "0" :
-				denomExclusionNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
+				denomExclusionNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT).getValue(AGGREGATE_COUNT);
 		String numeratorValue = numeratorNode == null ? "0" :
-				numeratorNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
+				numeratorNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT).getValue(AGGREGATE_COUNT);
 		String denomExceptionValue = denomExceptionNode == null ? "0" :
-				denomExceptionNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
+				denomExceptionNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT).getValue(AGGREGATE_COUNT);
 
 		// for eCQMs, will be equal to denominator - numerator - denominator exclusion - denominator exception
 		return Integer.toString(Integer.parseInt(denominatorValue)

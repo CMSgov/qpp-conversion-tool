@@ -1,27 +1,24 @@
 package gov.cms.qpp.conversion.decode;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
 import org.jdom2.Element;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 
-public class AciSectionDecoderTest {
+import static com.google.common.truth.Truth.assertThat;
+
+class AciSectionDecoderTest {
 
 	@Test
-	public void testInternalDecode() {
+	void testInternalDecode() {
 		Element element = new Element("testElement");
 		Node node = new Node();
 
 		AciSectionDecoder aciSectionDecoder = new AciSectionDecoder(new Context());
-		aciSectionDecoder.internalDecode(element, node);
+		aciSectionDecoder.decode(element, node);
 
-		assertWithMessage("Node Category must be aci")
-				.that(node.getValue("category"))
+		assertThat(node.getValue("category"))
 				.isEqualTo("aci");
 	}
 }

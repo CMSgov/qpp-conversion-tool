@@ -1,49 +1,41 @@
 package gov.cms.qpp.acceptance;
 
+import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.Test;
+import org.reflections.util.ClasspathHelper;
+
+import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.XmlInputDecoder;
-import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
+import gov.cms.qpp.conversion.decode.QrdaDecoderEngine;
+import gov.cms.qpp.conversion.decode.XmlDecoderEngine;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+
 import java.io.BufferedWriter;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
-import org.apache.commons.io.IOUtils;
-import org.junit.Test;
-import org.reflections.util.ClasspathHelper;
 
 import static com.google.common.truth.Truth.assertThat;
 
-public class ClinicalDocumentRoundTripTest {
-
-	private static final String EXPECTED = "{\n  \"performanceYear\" : 2017,\n  \"programName\" : \"mips\",\n  \"entityType\" : \"individual\",\n  "
-			+ "\"taxpayerIdentificationNumber\" : \"123456789\",\n  \"nationalProviderIdentifier\" : \"2567891421\",\n  "
-			+ "\"measurementSets\" : [ {\n    \"category\" : \"aci\",\n    "
-			+ "\"submissionMethod\" : \"electronicHealthRecord\",\n    "
-			+ "\"measurements\" : [ {\n      \"measureId\" : \"ACI-PEA-1\",\n      \"value\" : {\n        "
-			+ "\"numerator\" : 600,\n        \"denominator\" : 800\n      }\n    }, {\n      \"measureId\" : \"ACI_EP_1\",\n      "
-			+ "\"value\" : {\n        \"numerator\" : 500,\n        \"denominator\" : 700\n      }\n    }, {\n      "
-			+ "\"measureId\" : \"ACI_CCTPE_3\",\n      \"value\" : {\n        \"numerator\" : 400,\n        "
-			+ "\"denominator\" : 600\n      }\n    } ],\n    \"performanceStart\" : \"2017-01-01\",\n    "
-			+ "\"performanceEnd\" : \"2017-12-31\"\n  }, "
-			+ "{\n    \"category\" : \"ia\",\n    \"submissionMethod\" : \"electronicHealthRecord\",\n    "
-			+ "\"measurements\" : [ {\n      \"measureId\" : \"IA_EPA_1\",\n      \"value\" : true\n    } ],\n    "
-			+ "\"performanceStart\" : \"2017-01-01\",\n    \"performanceEnd\" : \"2017-12-31\"\n  } ]\n}";
+class ClinicalDocumentRoundTripTest {
 
 	@Test
-	public void parseClinicalDocument() throws Exception {
+	void parseClinicalDocument() throws Exception {
+		String expected = TestHelper.getFixture("clinicalDocument.json");
+
 		InputStream stream =
 				ClasspathHelper.contextClassLoader().getResourceAsStream("valid-QRDA-III-abridged.xml");
-		String xmlFragment = IOUtils.toString(stream, Charset.defaultCharset());
+		String xmlFragment = IOUtils.toString(stream, StandardCharsets.UTF_8);
 
 		Context context = new Context();
-		Node clinicalDocumentNode = XmlInputDecoder.decodeXml(context, XmlUtils.stringToDom(xmlFragment));
+		Node clinicalDocumentNode = XmlDecoderEngine.decodeXml(context, XmlUtils.stringToDom(xmlFragment));
 
 		// remove default nodes (will fail if defaults change)
-		DefaultDecoder.removeDefaultNode(clinicalDocumentNode.getChildNodes());
 
 		QppOutputEncoder encoder = new QppOutputEncoder(context);
 		encoder.setNodes(Collections.singletonList(clinicalDocumentNode));
@@ -51,7 +43,22 @@ public class ClinicalDocumentRoundTripTest {
 		StringWriter sw = new StringWriter();
 		encoder.encode(new BufferedWriter(sw));
 
-		assertThat(sw.toString()).isEqualTo(EXPECTED);
+		assertThat(sw.toString()).isEqualTo(expected);
 	}
 
+	@Test
+	void checkCorrectClinicalDocumentTemplateIdWins() throws XmlException {
+		String similarClinicalDocumentBlob = "<ClinicalDocument xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
+			+ "\t\t\t\t  xsi:schemaLocation=\"urn:hl7-org:v3 ../CDA_Schema_Files/infrastructure/cda/CDA_SDTC.xsd\"\n"
+			+ "\t\t\t\t  xmlns=\"urn:hl7-org:v3\" xmlns:voc=\"urn:hl7-org:v3/voc\">\n"
+			+ "\t<realmCode code=\"US\"/>\n"
+			+ "\t<typeId root=\"2.16.840.1.113883.1.3\" extension=\"POCD_HD000040\"/>\n"
+			+ "\t<templateId root=\"2.16.840.1.113883.10.20.27.1.2\"/>\n"
+			+ "\t<templateId root=\"2.16.840.1.113883.10.20.27.1.2\" extension=\"2017-07-01\"/>\n"
+			+ "</ClinicalDocument>";
+
+		Node root = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(similarClinicalDocumentBlob));
+
+		assertThat(root.getType()).isEqualTo(TemplateId.CLINICAL_DOCUMENT);
+	}
 }

@@ -2,32 +2,32 @@ package gov.cms.qpp.acceptance;
 
 import gov.cms.qpp.acceptance.helper.MarkupManipulator;
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.InputStreamSupplierQrdaSource;
-import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.InputStreamSupplierSource;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.error.TransformException;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
-import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.util.JsonHelper;
-import gov.cms.qpp.conversion.validate.MipsQualityMeasureIdValidator;
-import java.io.IOException;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.xml.parsers.ParserConfigurationException;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.xml.sax.SAXException;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class QualityMeasureIdMultiRoundTripTest {
+class QualityMeasureIdMultiRoundTripTest {
+
 	private static final String REQUIRE_ELIGIBLE_POPULATION_TOTAL = "Must have a required eligiblePopulation";
 	private static final String REQUIRE_PERFORMANCE_MET = "Must have a required performanceMet";
 	private static final String REQUIRE_ELIGIBLE_POPULATION_EXCEPTIONS = "Must have a required eligiblePopulationException";
@@ -43,15 +43,16 @@ public class QualityMeasureIdMultiRoundTripTest {
 
 	private static MarkupManipulator manipulator;
 
-	@BeforeClass
-	public static void setup() throws ParserConfigurationException, SAXException, IOException {
+	@BeforeAll
+	static void setup() {
 		manipulator = new MarkupManipulator.MarkupManipulatorBuilder()
 			.setPathname(JUNK_QRDA3_FILE).build();
 	}
 
 	@Test
-	public void testRoundTripForQualityMeasureId() throws IOException {
-		Converter converter = new Converter(new PathQrdaSource(JUNK_QRDA3_FILE));
+	void testRoundTripForQualityMeasureId() {
+		Converter converter = new Converter(new PathSource(JUNK_QRDA3_FILE));
+
 		JsonWrapper qpp = converter.transform();
 		String json = qpp.toString();
 
@@ -76,44 +77,44 @@ public class QualityMeasureIdMultiRoundTripTest {
 	}
 
 	@Test
-	public void testRoundTripForQualityMeasureIdWithDuplicateIpopMeasureType() {
+	void testRoundTripForQualityMeasureIdWithDuplicateIpopMeasureType() {
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[4]/observation/value/@code";
 
 		List<Detail> details = executeScenario(path, false);
 
-		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(MipsQualityMeasureIdValidator.SINGLE_MEASURE_TYPE);
+		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_TYPE);
 	}
 
 	@Test
-	public void testRoundTripForQualityMeasureIdWithDuplicateDenomMeasureType() {
+	void testRoundTripForQualityMeasureIdWithDuplicateDenomMeasureType() {
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[5]/observation/value/@code";
 
 		List<Detail> details = executeScenario(path, false);
 
 		assertThat(details).hasSize(1);
-		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(MipsQualityMeasureIdValidator.SINGLE_MEASURE_TYPE);
+		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_TYPE);
 	}
 
 	@Test
-	public void testRoundTripForQualityMeasureIdWithNoDenomMeasureType() {
-		String message = String.format(
-				MipsQualityMeasureIdValidator.INCORRECT_POPULATION_CRITERIA_COUNT, "CMS52v5", 3, SubPopulations.DENOM, 2);
+	void testRoundTripForQualityMeasureIdWithNoDenomMeasureType() {
+		LocalizedError error =
+			ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS52v5", 3, SubPopulationLabel.DENOM.name(), 2);
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[5]/observation/value/@code";
 
 		List<Detail> details = executeScenario(path, true);
 
 		assertThat(details)
-				.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.contains(message);
+				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.contains(error);
 	}
 
 	@Test
-	public void testRoundTripForQualityMeasureIdWithDuplicateDenomMeasurePopulation() {
+	void testRoundTripForQualityMeasureIdWithDuplicateDenomMeasurePopulation() {
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[5]/observation/reference/externalObservation/id";
 
@@ -121,25 +122,26 @@ public class QualityMeasureIdMultiRoundTripTest {
 
 		assertThat(details).hasSize(1);
 		assertThat(details)
-				.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(MipsQualityMeasureIdValidator.SINGLE_MEASURE_POPULATION);
+				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION);
 	}
 
 	@Test
-	public void testRoundTripForQualityMeasureIdWithNoDenomMeasurePopulation() {
+	void testRoundTripForQualityMeasureIdWithNoDenomMeasurePopulation() {
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[5]/observation/reference/externalObservation/id";
 
 		List<Detail> details = executeScenario(path, true);
 
 		assertThat(details).hasSize(2);
-		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.contains(MipsQualityMeasureIdValidator.SINGLE_MEASURE_POPULATION);
+		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.contains(ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION);
 	}
 
 	@Test
-	public void testRoundTripQualityMeasureIdWithDenomGreaterThanIpop() {
-		Converter converter = new Converter(new PathQrdaSource(DENOM_GREATER_THAN_IPOP));
+
+	void testRoundTripQualityMeasureIdWithDenomGreaterThanIpop() {
+		Converter converter = new Converter(new PathSource(DENOM_GREATER_THAN_IPOP));
 		List<Detail> details = new ArrayList<>();
 		try {
 			converter.transform();
@@ -149,12 +151,12 @@ public class QualityMeasureIdMultiRoundTripTest {
 		}
 
 		assertThat(details).hasSize(3);
-		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.contains(MipsQualityMeasureIdValidator.REQUIRE_VALID_DENOMINATOR_COUNT);
+		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.contains(ErrorCode.DENOMINATOR_COUNT_INVALID);
 	}
 
 	@Test
-	public void testRoundTripQualityMeasureMissingOnePerformanceRateSuccess() {
+	void testRoundTripQualityMeasureMissingOnePerformanceRateSuccess() {
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[1]";
 		List<Detail> expectedOutput = executeScenario(path, true);
@@ -164,7 +166,7 @@ public class QualityMeasureIdMultiRoundTripTest {
 	private List<Detail> executeScenario(String path, boolean remove) {
 		InputStream modified = manipulator.upsetTheNorm(path, remove);
 		Converter converter = new Converter(
-				new InputStreamSupplierQrdaSource(JUNK_QRDA3_FILE.toString(), () -> modified));
+				new InputStreamSupplierSource(JUNK_QRDA3_FILE.toString(), modified));
 		List<Detail> details = new ArrayList<>();
 		try {
 			converter.transform();

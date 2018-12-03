@@ -3,6 +3,7 @@ jacoco.exec
 *.orig
 target/
 .settings/
+.scannerwork/
 benchmark/*.json
 .classpath
 .project
@@ -11,6 +12,8 @@ benchmark/*.json
 .idea/
 *.swp
 qrdaToQppAssociations.txt
+
+*/.checkstyle
 
 # package directories
 node_modules

@@ -1,26 +1,25 @@
 package gov.cms.qpp.conversion.api.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.ErrorMessage;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
-import gov.cms.qpp.conversion.util.JsonHelper;
+import gov.cms.qpp.test.MockitoExtension;
+import gov.cms.qpp.test.helper.JsonTestHelper;
+
 import org.apache.commons.io.FileUtils;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.Mockito;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -29,14 +28,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
@@ -44,10 +46,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-public class ValidationServiceImplTest {
+@ExtendWith(MockitoExtension.class)
+class ValidationServiceImplTest {
 
-	@InjectMocks
 	private ValidationServiceImpl objectUnderTest;
 
 	@Mock
@@ -59,9 +60,6 @@ public class ValidationServiceImplTest {
 	@Mock
 	private Converter converter;
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	private static Path pathToSubmissionError;
 	private static Path pathToSubmissionDuplicateEntryError;
 	private static JsonWrapper qppWrapper;
@@ -69,33 +67,40 @@ public class ValidationServiceImplTest {
 	private static ErrorMessage submissionError;
 	private static ValidationServiceImpl service;
 
-	@BeforeClass
-	public static void setup() throws IOException {
-		service = new ValidationServiceImpl();
+	@BeforeAll
+	static void setup() throws IOException {
+		service = new ValidationServiceImpl(null);
 		pathToSubmissionError = Paths.get("src/test/resources/submissionErrorFixture.json");
 		pathToSubmissionDuplicateEntryError = Paths.get("src/test/resources/submissionDuplicateEntryErrorFixture.json");
 		Path toConvert = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
-		qppWrapper = new JsonWrapper(new Converter(new PathQrdaSource(toConvert)).transform(), false);
+		qppWrapper = new JsonWrapper(new Converter(new PathSource(toConvert)).transform(), false);
 		prepAllErrors();
 	}
 
 	private static void prepAllErrors() throws IOException {
-		submissionError = JsonHelper.readJsonAtJsonPath(
+		submissionError = JsonTestHelper.readJsonAtJsonPath(
 			pathToSubmissionError, "$", ErrorMessage.class);
 
 		String errorJson = new ObjectMapper().writeValueAsString(submissionError);
 		convertedErrors = service.convertQppValidationErrorsToQrda(errorJson, qppWrapper);
 	}
 
-	@Before
-	public void before() {
-		Converter.ConversionReport report = mock(Converter.ConversionReport.class);
+	@BeforeEach
+	void before() throws NoSuchFieldException, IllegalAccessException {
+		ValidationServiceImpl meep = new ValidationServiceImpl(environment);
+		Field rt = meep.getClass().getDeclaredField("restTemplate");
+		rt.setAccessible(true);
+		rt.set(meep, restTemplate);
+		rt.setAccessible(false);
+		objectUnderTest = spy(meep);
+
+		ConversionReport report = mock(ConversionReport.class);
 		when(report.getEncoded()).thenReturn(qppWrapper);
 		when(converter.getReport()).thenReturn(report);
 	}
 
 	@Test
-	public void testNullValidationUrl() {
+	void testNullValidationUrl() {
 		when(environment.getProperty(eq(Constants.VALIDATION_URL_ENV_VARIABLE))).thenReturn(null);
 
 		objectUnderTest.validateQpp(null);
@@ -104,7 +109,7 @@ public class ValidationServiceImplTest {
 	}
 
 	@Test
-	public void testEmptyValidationUrl() {
+	void testEmptyValidationUrl() {
 		when(environment.getProperty(eq(Constants.VALIDATION_URL_ENV_VARIABLE))).thenReturn("");
 
 		objectUnderTest.validateQpp(null);
@@ -113,7 +118,7 @@ public class ValidationServiceImplTest {
 	}
 
 	@Test
-	public void testValidationPass() {
+	void testValidationPass() {
 		String validationUrl = "https://qpp.net/validate";
 
 		when(environment.getProperty(eq(Constants.VALIDATION_URL_ENV_VARIABLE))).thenReturn(validationUrl);
@@ -126,21 +131,20 @@ public class ValidationServiceImplTest {
 	}
 
 	@Test
-	public void testValidationFail() throws IOException {
+	void testValidationFail() throws IOException {
 		String validationUrl = "https://qpp.net/validate";
 
 		when(environment.getProperty(eq(Constants.VALIDATION_URL_ENV_VARIABLE))).thenReturn(validationUrl);
 		ResponseEntity<String> spiedResponseEntity = spy(new ResponseEntity<>(FileUtils.readFileToString(pathToSubmissionError.toFile(), "UTF-8") ,HttpStatus.UNPROCESSABLE_ENTITY));
 		when(restTemplate.postForEntity(eq(validationUrl), any(HttpEntity.class), eq(String.class))).thenReturn(spiedResponseEntity);
 
-		thrown.expect(TransformException.class);
-		thrown.expectMessage("Converted QPP failed validation");
-
-		objectUnderTest.validateQpp(converter.getReport());
+		TransformException thrown = assertThrows(TransformException.class,
+				() -> objectUnderTest.validateQpp(converter.getReport()));
+		assertThat(thrown).hasMessageThat().isEqualTo("Converted QPP failed validation");
 	}
 
 	@Test
-	public void testHeaderCreation() {
+	void testHeaderCreation() {
 		HttpHeaders headers = objectUnderTest.getHeaders();
 
 		assertThat(headers.getFirst(HttpHeaders.CONTENT_TYPE)).isEqualTo(ValidationServiceImpl.CONTENT_TYPE);
@@ -148,21 +152,21 @@ public class ValidationServiceImplTest {
 	}
 
 	@Test
-	public void testHeaderCreationNoAuth() {
+	void testHeaderCreationNoAuth() {
 		when(environment.getProperty(eq(Constants.SUBMISSION_API_TOKEN_ENV_VARIABLE))).thenReturn(null);
 		HttpHeaders headers = objectUnderTest.getHeaders();
 		assertThat(headers.get(HttpHeaders.AUTHORIZATION)).isNull();
 	}
 
 	@Test
-	public void testHeaderCreationNoAuthEmpty() {
+	void testHeaderCreationNoAuthEmpty() {
 		when(environment.getProperty(eq(Constants.SUBMISSION_API_TOKEN_ENV_VARIABLE))).thenReturn("");
 		HttpHeaders headers = objectUnderTest.getHeaders();
 		assertThat(headers.get(HttpHeaders.AUTHORIZATION)).isNull();
 	}
 
 	@Test
-	public void testHeaderCreationAuth() {
+	void testHeaderCreationAuth() {
 		when(environment.getProperty(eq(Constants.SUBMISSION_API_TOKEN_ENV_VARIABLE))).thenReturn("meep");
 		HttpHeaders headers = objectUnderTest.getHeaders();
 
@@ -170,29 +174,55 @@ public class ValidationServiceImplTest {
 	}
 
 	@Test
-	public void testJsonDeserialization() {
+	void testJsonDeserialization() {
 		assertWithMessage("Error json should map to AllErrors")
 				.that(convertedErrors.getErrors())
 				.hasSize(1);
 	}
 
 	@Test
-	public void testJsonDesrializationDuplicateEntry() throws IOException {
+	void testJsonDesrializationDuplicateEntry() throws IOException {
 		String errorJson = new String(Files.readAllBytes(pathToSubmissionDuplicateEntryError));
 		convertedErrors = service.convertQppValidationErrorsToQrda(errorJson, qppWrapper);
 
 		assertWithMessage("Error json should map to AllErrors")
 				.that(convertedErrors.getErrors())
 				.hasSize(1);
+
+		assertThat(convertedErrors.getErrors().get(0).getDetails().get(0).getMessage())
+			.startsWith(ValidationServiceImpl.SV_LABEL);
 	}
 
 	@Test
-	public void testQppToQrdaErrorPathConversion() {
+	void testQppToQrdaErrorPathConversion() {
 		Detail detail = submissionError.getError().getDetails().get(0);
 		Detail mappedDetails = convertedErrors.getErrors().get(0).getDetails().get(0);
 
 		assertWithMessage("Json path should be converted to xpath")
 				.that(detail.getPath())
 				.isNotEqualTo(mappedDetails.getPath());
+	}
+
+	@Test
+	void testCheckForValidationUrlVariableLoggingIfPresent() {
+		when(environment.getProperty(eq(Constants.VALIDATION_URL_ENV_VARIABLE))).thenReturn("mock");
+		objectUnderTest.checkForValidationUrlVariable();
+		Mockito.verify(objectUnderTest, Mockito.times(1)).apiLog(Constants.VALIDATION_URL_ENV_VARIABLE + " is set to mock");
+	}
+
+	@Test
+	void testCheckForValidationUrlVariableLoggingIfAbsent() {
+		objectUnderTest.checkForValidationUrlVariable();
+		Mockito.verify(objectUnderTest, Mockito.times(1)).apiLog(Constants.VALIDATION_URL_ENV_VARIABLE + " is unset");
+	}
+
+	@Test
+	void testInvalidSubmissionResponseJsonPath() throws IOException {
+		pathToSubmissionError = Paths.get("src/test/resources/invalidSubmissionErrorFixture.json");
+		String errorJson = FileUtils.readFileToString(pathToSubmissionError.toFile(), StandardCharsets.UTF_8);
+		convertedErrors = service.convertQppValidationErrorsToQrda(errorJson, qppWrapper);
+
+		convertedErrors.getErrors().stream().flatMap(error -> error.getDetails().stream())
+			.map(Detail::getPath).forEach(path -> assertThat(path).isEqualTo(ValidationServiceImpl.UNABLE_PROVIDE_XPATH));
 	}
 }

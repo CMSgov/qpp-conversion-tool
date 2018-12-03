@@ -1,64 +1,78 @@
 package gov.cms.qpp.conversion.api.helper;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+
+import gov.cms.qpp.conversion.api.helper.MetadataHelper.Outcome;
+import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
-import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.junit.Test;
-
-import java.util.Arrays;
+import gov.cms.qpp.test.enums.EnumContract;
+import gov.cms.qpp.test.helper.HelperContract;
 
 import static com.google.common.truth.Truth.assertThat;
 
-public class MetadataHelperTest {
+class MetadataHelperTest implements HelperContract {
 
 	private static final String MOCK_STRING = "some random mock value";
 
-	@Test(expected = NullPointerException.class)
-	public void testGenerateMetadataForNullNodeThrowsNullPointerException() {
-		MetadataHelper.generateMetadata(null, MetadataHelper.Outcome.SUCCESS);
-	}
+	@Test
+	void testGenerateMetadataForNullNodeReturnsSkinnyMetadata() {
+		MetadataHelper.Outcome outcome = MetadataHelper.Outcome.VALIDATION_ERROR;
+		Metadata comparison = new Metadata();
+		comparison.setOverallStatus(false);
+		comparison.setConversionStatus(true);
+		comparison.setValidationStatus(false);
 
-	@Test(expected = NullPointerException.class)
-	public void testGenerateMetadataForNullOutcomeThrowsNullPointerException() {
-		MetadataHelper.generateMetadata(new Node(), null);
+		Metadata metadata = MetadataHelper.generateMetadata(null, outcome);
+		metadata.setCreatedDate(comparison.getCreatedDate());
+
+		assertThat(metadata).isEqualTo(comparison);
 	}
 
 	@Test
-	public void testExtractsCpcProgramType() {
+	void testGenerateMetadataForNullOutcomeThrowsNullPointerException() {
+		Assertions.assertThrows(NullPointerException.class, () ->
+			MetadataHelper.generateMetadata(new Node(), null));
+	}
+
+	@Test
+	void testExtractsCpcProgramType() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "CPCPLUS");
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "CPCPLUS");
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
-		assertThat(metadata.getCpc()).isTrue();
+		assertThat(metadata.getCpc()).startsWith(Constants.CPC_DYNAMO_PARTITION_START);
 	}
 
 	@Test
-	public void testExtractsCpcProgramTypeFromChild() {
-		Node node = new Node();
-		Node child = new Node();
-		child.setType(TemplateId.CLINICAL_DOCUMENT);
-		child.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "CPCPLUS");
-		node.addChildNode(child);
-
-		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
-		assertThat(metadata.getCpc()).isTrue();
-	}
-
-	@Test
-	public void testChildLacksCpcPlus() {
+	void testExtractsCpcProgramTypeFromChild() {
 		Node node = new Node();
 		Node child = new Node();
 		child.setType(TemplateId.CLINICAL_DOCUMENT);
+		child.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "CPCPLUS");
 		node.addChildNode(child);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
-		assertThat(metadata.getCpc()).isFalse();
+		assertThat(metadata.getCpc()).startsWith(Constants.CPC_DYNAMO_PARTITION_START);
 	}
 
 	@Test
-	public void testExtractsApm() {
+	void testChildLacksCpcPlus() {
+		Node node = new Node();
+		Node child = new Node();
+		child.setType(TemplateId.CLINICAL_DOCUMENT);
+		node.addChildNode(child);
+
+		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
+		assertThat(metadata.getCpc()).isNull();
+	}
+
+	@Test
+	void testExtractsApm() {
 		Node node = new Node();
 		node.putValue(ClinicalDocumentDecoder.ENTITY_ID, MOCK_STRING);
 
@@ -67,7 +81,7 @@ public class MetadataHelperTest {
 	}
 
 	@Test
-	public void testExtractsApmFromChild() {
+	void testExtractsApmFromChild() {
 		Node node = new Node();
 		Node child = new Node();
 		child.setType(TemplateId.CLINICAL_DOCUMENT);
@@ -79,7 +93,7 @@ public class MetadataHelperTest {
 	}
 
 	@Test
-	public void testChildLacksApm() {
+	void testChildLacksApm() {
 		Node node = new Node();
 		Node child = new Node();
 		child.setType(TemplateId.CLINICAL_DOCUMENT);
@@ -90,20 +104,20 @@ public class MetadataHelperTest {
 	}
 
 	@Test
-	public void testExtractsTin() {
+	void testExtractsTin() {
 		Node node = new Node();
-		node.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, MOCK_STRING);
+		node.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, MOCK_STRING);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
 		assertThat(metadata.getTin()).isEqualTo(MOCK_STRING);
 	}
 
 	@Test
-	public void testExtractsTinFromChild() {
+	void testExtractsTinFromChild() {
 		Node node = new Node();
 		Node child = new Node();
 		child.setType(TemplateId.CLINICAL_DOCUMENT);
-		child.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, MOCK_STRING);
+		child.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, MOCK_STRING);
 		node.addChildNode(child);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
@@ -111,7 +125,7 @@ public class MetadataHelperTest {
 	}
 
 	@Test
-	public void testChildLacksTin() {
+	void testChildLacksTin() {
 		Node node = new Node();
 		Node child = new Node();
 		child.setType(TemplateId.CLINICAL_DOCUMENT);
@@ -122,20 +136,20 @@ public class MetadataHelperTest {
 	}
 
 	@Test
-	public void testExtractsNpi() {
+	void testExtractsNpi() {
 		Node node = new Node();
-		node.putValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER, MOCK_STRING);
+		node.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, MOCK_STRING);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
 		assertThat(metadata.getNpi()).isEqualTo(MOCK_STRING);
 	}
 
 	@Test
-	public void testExtractsNpiFromChild() {
+	void testExtractsNpiFromChild() {
 		Node node = new Node();
 		Node child = new Node();
 		child.setType(TemplateId.CLINICAL_DOCUMENT);
-		child.putValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER, MOCK_STRING);
+		child.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, MOCK_STRING);
 		node.addChildNode(child);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
@@ -143,7 +157,7 @@ public class MetadataHelperTest {
 	}
 
 	@Test
-	public void testChildLacksNpi() {
+	void testChildLacksNpi() {
 		Node node = new Node();
 		Node child = new Node();
 		child.setType(TemplateId.CLINICAL_DOCUMENT);
@@ -154,7 +168,7 @@ public class MetadataHelperTest {
 	}
 
 	@Test
-	public void testSuccessOutcome() {
+	void testSuccessOutcome() {
 		Metadata metadata = MetadataHelper.generateMetadata(new Node(), MetadataHelper.Outcome.SUCCESS);
 
 		assertThat(metadata.getOverallStatus()).isTrue();
@@ -163,7 +177,7 @@ public class MetadataHelperTest {
 	}
 
 	@Test
-	public void testConversionFailureOutcome() {
+	void testConversionFailureOutcome() {
 		Metadata metadata = MetadataHelper.generateMetadata(new Node(), MetadataHelper.Outcome.CONVERSION_ERROR);
 
 		assertThat(metadata.getOverallStatus()).isFalse();
@@ -172,7 +186,7 @@ public class MetadataHelperTest {
 	}
 
 	@Test
-	public void testValidationFailureOutcome() {
+	void testValidationFailureOutcome() {
 		Metadata metadata = MetadataHelper.generateMetadata(new Node(), MetadataHelper.Outcome.VALIDATION_ERROR);
 
 		assertThat(metadata.getOverallStatus()).isFalse();
@@ -180,12 +194,19 @@ public class MetadataHelperTest {
 		assertThat(metadata.getValidationStatus()).isFalse();
 	}
 
-	@Test
-	public void testOutcomeValueOf() {
-		Arrays.stream(MetadataHelper.Outcome.values())
-				.forEach(outcome -> {
-					assertThat(outcome).isSameAs(MetadataHelper.Outcome.valueOf(outcome.name()));
-				});
+	@Nested
+	static class OutcomeTest implements EnumContract {
+
+		@Override
+		public Class<? extends Enum<?>> getEnumType() {
+			return Outcome.class;
+		}
+
+	}
+
+	@Override
+	public Class<?> getHelperClass() {
+		return MetadataHelper.class;
 	}
 
 }

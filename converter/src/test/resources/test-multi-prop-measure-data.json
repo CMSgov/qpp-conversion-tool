@@ -18,21 +18,21 @@
 			{
 				"name": "test1strata1",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "ipop1",
-					"denominatorUuid": "denom1",
-					"denominatorExclusionUuid": "denex1",
-					"numeratorUuid": "numer1",
-					"denominatorExceptionUuid": "denexcep1"
+					"initialPopulationUuid": "IPOP1",
+					"denominatorUuid": "DENOM1",
+					"denominatorExclusionUuid": "DENEX1",
+					"numeratorUuid": "NUMER1",
+					"denominatorExceptionUuid": "DENEXCEP1"
 				}
 			},
 			{
 				"name": "test1strata2",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "ipop2",
-					"denominatorUuid": "denom2",
-					"denominatorExclusionUuid": "denex2",
-					"numeratorUuid": "numer2",
-					"denominatorExceptionUuid": "denexcep2"
+					"initialPopulationUuid": "IPOP2",
+					"denominatorUuid": "DENOM2",
+					"denominatorExclusionUuid": "DENEX2",
+					"numeratorUuid": "NUMER2",
+					"denominatorExceptionUuid": "DENEXCEP2"
 				}
 			}
 		],

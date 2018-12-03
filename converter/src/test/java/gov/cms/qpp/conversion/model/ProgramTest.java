@@ -1,86 +1,114 @@
 package gov.cms.qpp.conversion.model;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-
-import java.util.stream.Stream;
-
-import org.junit.Test;
-
-import com.google.common.truth.Truth;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
+import gov.cms.qpp.test.enums.EnumContract;
 
-public class ProgramTest {
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Stream;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
+
+class ProgramTest implements EnumContract {
+
 	@Test
-	public void instanceRetrievalMips() {
-		Stream.of("MIPS_GROUP", "MIPS_INDIV", "MIPS").forEach(mip ->
+	void instanceRetrievalMips() {
+		Stream.of("MIPS_GROUP", "MIPS_INDIV").forEach(mip ->
 			assertWithMessage("Program other than %s was returned", Program.MIPS)
 					.that(Program.getInstance(mip)).isSameAs(Program.MIPS)
 		);
 	}
 
 	@Test
-	public void instanceRetrievalCpcPlus() {
+	void instanceRetrievalCpcPlus() {
 		assertWithMessage("Program other than %s was returned", Program.CPC)
 				.that(Program.getInstance("CPCPLUS")).isSameAs(Program.CPC);
 	}
 
 	@Test
-	public void instanceRetrievalDefault() {
+	void instanceRetrievalDefault() {
 		assertWithMessage("Program other than %s was returned", Program.ALL)
 				.that(Program.getInstance("meep")).isSameAs(Program.ALL);
 	}
 
 	@Test
-	public void instanceRetrievalNullProgramName() {
+	void instanceRetrievalNullProgramName() {
 		assertWithMessage("Program other than %s was returned", Program.ALL)
 				.that(Program.getInstance(null)).isSameAs(Program.ALL);
 	}
 
-	@Test(expected = NullPointerException.class)
-	public void testIsCpcPlusForNullThrowsNullPointerException() {
-		Program.isCpc(null);
+	@Test
+	void testIsCpcPlusForNullThrowsNullPointerException() {
+		Assertions.assertThrows(NullPointerException.class, () -> Program.isCpc(null));
 	}
 
 	@Test
-	public void testIsCpcPlusForNullStringIsFalse() {
+	void testIsCpcPlusForNullStringIsFalse() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, null);
-		Truth.assertThat(Program.isCpc(node)).isFalse();
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, null);
+		assertThat(Program.isCpc(node)).isFalse();
 	}
 
 	@Test
-	public void testIsCpcPlusForRandomStringIsFalse() {
+	void testIsCpcPlusForRandomStringIsFalse() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "some fake mock value");
-		Truth.assertThat(Program.isCpc(node)).isFalse();
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "some fake mock value");
+		assertThat(Program.isCpc(node)).isFalse();
 	}
 
 	@Test
-	public void testIsCpcPlusForMipsIsFalse() {
+	void testIsCpcPlusForMipsIsFalse() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "MIPS");
-		Truth.assertThat(Program.isCpc(node)).isFalse();
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_INDIV");
+		assertThat(Program.isCpc(node)).isFalse();
 	}
 
 	@Test
-	public void testIsCpcPlusForCpcplusUppercaseIsTrue() {
+	void testIsCpcPlusForCpcplusUppercaseIsTrue() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "CPCPLUS");
-		Truth.assertThat(Program.isCpc(node)).isTrue();
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "CPCPLUS");
+		assertThat(Program.isCpc(node)).isTrue();
 	}
 
 	@Test
-	public void testIsCpcPlusForCpcplusLowercaseIsTrue() {
+	void testIsCpcPlusForCpcplusLowercaseIsTrue() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "cpcplus");
-		Truth.assertThat(Program.isCpc(node)).isTrue();
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "cpcplus");
+		assertThat(Program.isCpc(node)).isTrue();
 	}
 
 	@Test
-	public void testIsCpcPlusForCpcplusMixedCaseIsTrue() {
+	void testIsCpcPlusForCpcplusMixedCaseIsTrue() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "cPcPlUs");
-		Truth.assertThat(Program.isCpc(node)).isTrue();
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "cPcPlUs");
+		assertThat(Program.isCpc(node)).isTrue();
+	}
+
+	@Test
+	void testExtractProgramForMips() {
+		Node node = new Node();
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_INDIV");
+		assertThat(Program.extractProgram(node)).isEqualTo(Program.MIPS);
+	}
+
+	@Test
+	void testSetOfProgramNames() {
+		Set<String> actual = Program.setOfAliases();
+
+		Set<String> expected = new HashSet<>();
+		for (Program program : Program.values()) {
+			expected.addAll(program.getAliases());
+		}
+
+		assertThat(actual).containsAllIn(expected);
+	}
+
+	@Override
+	public Class<? extends Enum<?>> getEnumType() {
+		return Program.class;
 	}
 }

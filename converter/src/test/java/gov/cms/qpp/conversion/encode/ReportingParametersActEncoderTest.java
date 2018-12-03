@@ -3,16 +3,17 @@ package gov.cms.qpp.conversion.encode;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 /**
  * Test class for ReportingParametersActEncoder
  */
-public class ReportingParametersActEncoderTest {
+class ReportingParametersActEncoderTest {
+
 	@Test
-	public void internalEncode() throws Exception {
+	void internalEncode() throws Exception {
 		Node reportingParametersActNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		reportingParametersActNode.putValue(ReportingParametersActEncoder.PERFORMANCE_START,"20170101");
 		reportingParametersActNode.putValue(ReportingParametersActEncoder.PERFORMANCE_END,"20171231");
@@ -22,14 +23,12 @@ public class ReportingParametersActEncoderTest {
 		String performanceStart = outputWrapper.getString(ReportingParametersActEncoder.PERFORMANCE_START);
 		String performanceEnd = outputWrapper.getString(ReportingParametersActEncoder.PERFORMANCE_END);
 
-		assertWithMessage("Performance Start = 2017-01-01")
-				.that(performanceStart).isEqualTo("2017-01-01");
-		assertWithMessage("Performance End = 2017-12-31")
-				.that(performanceEnd).isEqualTo("2017-12-31");
+		assertThat(performanceStart).isEqualTo("2017-01-01");
+		assertThat(performanceEnd).isEqualTo("2017-12-31");
 	}
 
 	@Test
-	public void missingValuesTest() throws Exception {
+	void missingValuesTest() throws Exception {
 		Node reportingParametersActNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 
 		JsonWrapper outputWrapper = new JsonWrapper();
@@ -38,9 +37,7 @@ public class ReportingParametersActEncoderTest {
 		String performanceStart = outputWrapper.getString(ReportingParametersActEncoder.PERFORMANCE_START);
 		String performanceEnd = outputWrapper.getString(ReportingParametersActEncoder.PERFORMANCE_END);
 
-		assertWithMessage("Performance Start is null")
-				.that(performanceStart).isNull();
-		assertWithMessage("Performance End = is null")
-				.that(performanceEnd).isNull();
+		assertThat(performanceStart).isNull();
+		assertThat(performanceEnd).isNull();
 	}
 }
