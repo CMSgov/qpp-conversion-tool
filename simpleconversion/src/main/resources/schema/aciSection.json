@@ -1,0 +1,12 @@
+{
+	"type" : "object",
+	"id":"#aciSection",
+	"properties" : {
+		"category": {"type" : "string"},
+		"measurements": {
+			"type": "array",
+			"items":  {"$ref": "aciNumeratorDenominator.json"}
+		}
+	},
+	"additionalProperties": false
+}
