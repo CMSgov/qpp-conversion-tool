@@ -1,7 +1,0 @@
-QPPCT - 342
-1. Open the Converstion Tool
-2. Send through the QRDA III file with the Performance Rate being removed.
-3. Display the Error File.
-4. Show the JSON files in the JIRA ticket for others to view.
-
-Filename for Submitting: valid-QRDA-III-latest_CPCPLUS_PerformanceRateRemoved.xml

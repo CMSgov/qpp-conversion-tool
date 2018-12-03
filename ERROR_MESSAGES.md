@@ -2,85 +2,67 @@
 Current list of all error messages being output by the converter.
 Any text in the following format `(Example)` are considered variables to be filled in.
 
-## List of errors that output to users upon decoding and encoding failures:
-* Unexpected exception occurred during conversion
-* The file is not a valid XML document
-* The file is not a QRDA-III XML document
-* Failure to encode
-* Failed to find an encoder
-* Failed to find an encoder for child node `(specific template id name)`
-	* Ex. : Failed to find an encoder for child node AGGREGATE_COUNT
-* No encoder for decoder : `(specific template id name)`
-	* Ex. : No encoder for decoder : AGGREGATE_COUNT
-* Error parsing reporting parameter performance start
-* Error parsing reporting parameter performance end
-
-## List of errors that output to users upon validation failure:
-* This Denominator Node does not have an Aggregate Count Node
-* This Denominator Node Aggregate Value is not an integer
-* This Denominator Node Aggregate Value has an invalid value
-* This Denominator Node does not have any child Nodes
-* This Denominator Node has too many child Nodes
-* An ACI Measure Performed RnR's requires a single Measure ID
-* The ACI Measure Performed RnR's Measure Performed is required
-* The ACI Measure Performed RnR's Measure Performed can only be present once
-* This ACI Numerator Denominator Node should have an ACI Section Node as a parent
-* This ACI Numerator Denominator Node does not contain a measure name ID
-* This ACI Numerator Denominator Node does not contain a Numerator Node child
-* This ACI Numerator Denominator Node contains too many Numerator Node children
-* This ACI Numerator Denominator Node does not contain a Denominator Node child
-* This ACI Numerator Denominator Node contains too many Denominator Node children
-* This ACI Numerator Denominator Node does not have any child Nodes
-* This Numerator Node does not have an Aggregate Count Node
-* This Numerator Node Aggregate Value is not an integer
-* This Numerator Node Aggregate Value has an invalid value
-* This Numerator Node does not have any child Nodes
-* This Numerator Node has too many child Nodes
-* The ACI Section must have one Reporting Parameter ACT
-* A single aggregate count value is required.
-* Aggregate count value must be an integer.
-* Clinical Document Node must have at least one Aci or IA or eCQM Section Node as a child
-* Clinical Document must have one and only one program name
-* Clinical Document program name is not recognized
-* Clinical Document contains duplicate ACI sections
-* Clinical Document contains duplicate IA sections
-* Clinical Document contains duplicate eCQM sections
-* Must contain a practice site address for CPC+ conversions
-* One and only one Alternative Payment Model (APM) Entity Identifier should be specified
-* Must contain one Measure (eCQM) section
-* Must have at least one NPI/TIN combination
-* Must be 01/01/2017 _Performance Start Period_
-* Must be 12/31/2017 _Performance End Period_
-* Must contain correct number of performance rate(s). Correct Number is `(Number of performance rates required)`
-	* Ex. : Must contain correct number of performance rate(s). Correct Number is 3
-* Missing strata `(Reporting Stratum UUID)` for `(Current subpopulation type)` measure `(Current subpopulation UUID)`
-	* Ex. : Missing strata EFB5B088-CE10-43DE-ACCD-9913B7AC12A2 for DENEX measure (56BC7FA2-C22A-4440-8652-2D3568852C60) 
-* Amount of stratifications `(Current number of Reporting Stratifiers)` does not meet expectations `(Number of stratifiers required)` for `(Current subpopulation type)` measure `(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`
-	* Ex. : Amount of stratifications 0 does not meet expectations 2 for DENEX measure (56BC7FA2-C22A-4440-8652-2D3568852C60). Expected strata: \[EFB5B088-CE10-43DE-ACCD-9913B7AC12A2, 94B9555F-8700-45EF-B69F-433EBEDE8051\]
-* A single measure performed value is required and must be either a Y or an N.
-* Measure performed must have exactly one child.
-* The IA Section must have at least one IA Measure
-* The IA Section must have one Reporting Parameter ACT
-* The IA Section must contain only measures and reporting parameter
-* Measure performed must have exactly one Aggregate Count.
-* Measure data must be a positive integer value
-* Clinical Document Node is required
-* Only one Clinical Document Node is allowed
-* Must enter a valid Performance Rate value
-* The measure reference results must have a measure GUID
-* The measure reference results must have a single measure population
-* The measure reference results must have a single measure type
-* The measure reference results must have at least one measure
-* The Denominator count must be less than or equal to Initial Population count 
-for an eCQM that is proportion measure
-* The eCQM (electronic measure id: `(Current eMeasure ID)`) requires `(Number of Subpopulations required)` `(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`
-	* Ex. : The eCQM (electronic measure id: CMS165v5) requires 1 DENEX(s) but there are 0
-* The eCQM (electronic measure id: `(Current eMeasure ID)`) requires a `(Subpopulation type)` with the correct UUID of `(Correct uuid required)`
-	* Ex. : The eCQM (electronic measure id: CMS165v5) requires a DENEX with the correct UUID of 55A6D5F3-2029-4896-B850-4C7894161D7D
-* The eCQM (electronic measure id: `(Current eMeasure ID)`) has a performanceRateId with an incorrect UUID of `(Incorrect UUID)`
-	* Ex. : The eCQM (electronic measure id: CMS68v6) has a performanceRateUuid with an incorrect UUID of 00000000-0000-0000-0000-1NV4L1D
-* A Performance Rate must contain a single Performance Rate UUID
-* The Quality Measure Section must have only one Reporting Parameter ACT
-* Must have a performance year
-* Must have one and only one performance start
-* Must have one and only one performance end
+### Format - Error Code : Error Message
+* 1 : CT - Failed to find an encoder
+* 2 : CT - The file is not a valid XML document. The file you are submitting is not a properly formatted XML document. Please check your document to ensure proper formatting.
+* 3 : CT - Unexpected exception occurred during conversion. Please contact the Service Center for assistance via phone at 1-866-288-8292 or TTY: 1-877-715-6222, or by emailing QPP@cms.hhs.gov
+* 4 : CT - Unexpected exception occurred during encoding. Please contact the Service Center for assistance via phone at 1-866-288-8292 or TTY: 1-877-715-6222, or by emailing QPP@cms.hhs.gov
+* 5 : CT - The file is not a QRDA-III XML document. Please ensure that the submission complies with the `(Submission year's)` implementation guide. `(Implementation guide link)`
+* 6 : CT - The measure GUID supplied `(Provided measure id)` is invalid. Please see the `(Submission year's)` IG https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=88 for valid measure GUIDs.
+* 7 : CT - The measure reference results must have at least one measure. Please review the measures section of your file as it cannot be empty.
+* 8 : CT - The `(Parent element)` has `(number of aggregate counts)` aggregate count values. A single aggregate count value is required.
+* 9 : CT - Aggregate count value must be an integer
+* 11 : CT - This ACI Reference and Results is missing a required Measure Performed child
+* 12 : CT - This ACI Measure Performed Reference and Results requires a single Measure ID
+* 13 : CT - Denominator count must be less than or equal to Initial Population count for a measure that is a proportion measure
+* 14 : CT - The electronic measure id: `(Current eMeasure ID)` requires `(Number of Subpopulations required)` `(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`
+* 15 : CT - ACI Numerator Denominator element should have an ACI Section element as a parent
+* 16 : CT - ACI Numerator Denominator element does not contain a measure name ID
+* 17 : CT - ACI Numerator Denominator element does not have any child elements
+* 18 : CT - This ACI Numerator Denominator element requires exactly one `(Denominator|Numerator)` element child
+* 22 : CT - The ACI Section must have one Reporting Parameter Act. Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). Here is a link to the IG Reporting Parameter Act section: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=80
+* 23 : CT - Clinical Document element must have at least one child element of type ACI, IA, or Measure section
+* 24 : CT - Clinical Document must have one and only one program name. Valid program names are `(list of valid program names)`
+* 25 : CT - The Clinical Document program name `(program name)` is not recognized. Valid program names are `(list of valid program names)`.
+* 26 : CT - Clinical Document contains duplicate ACI sections
+* 27 : CT - Clinical Document contains duplicate IA sections
+* 28 : CT - Clinical Document contains duplicate Measure sections
+* 29 : CT - Must have one and only one performance period start. Please see the Implementation Guide for information on the performance period here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=17
+* 30 : CT - Must have one and only one performance period end. Please see the Implementation Guide for information on the performance period here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=17
+* 31 : CT - Must have a performance year. Please see the Implementation Guide for information on the performance period here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=17
+* 32 : CT - The Quality Measure Section must have exactly one Reporting Parameter Act. Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). Here is a link to the IG Reporting Parameter Act section: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=80
+* 33 : CT - The Performance Rate `(supplied value)` is invalid. It must be a decimal between 0 and 1.
+* 34 : CT - CPC+ submissions must contain a practice site address. Please refer to the `(Submission year's)` IG for more details https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=25 regarding practice site addresses.
+* 35 : CT - One and only one Alternative Payment Model (APM) Entity Identifier should be specified. Here is a link to the IG section on identifiers: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=15
+* 36 : CT - CPC+ submissions must contain one Measure section
+* 37 : CT - CPC+ submissions must contain correct number of performance rate(s). Correct Number is `(Expected value)` for measure `(Given measure id)`
+* 39 : CT - This ACI `(Numerator or Denominator)` element has an incorrect number of Aggregate Count children. An ACI `(Numerator or Denominator)` must have exactly one Aggregate Count element
+* 41 : CT - This ACI `(Numerator or Denominator)` element Aggregate Value '`(value)`' is not an integer
+* 42 : CT - This ACI `(Numerator or Denominator)` element Aggregate Value has an invalid value of '`(value)`'
+* 43 : CT - The IA Section must have at least one Improvement Activity
+* 44 : CT - The IA Section must have one Reporting Parameter Act. Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). Here is a link to the IG Reporting Parameter Act section: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=80
+* 45 : CT - The IA Section must contain only Improvement Activities and a Reporting Parameter Act
+* 46 : CT - Clinical Document Node is required
+* 48 : CT - Missing strata `(Reporting Stratum UUID)` for `(Current subpopulation type)` measure `(Current subpopulation UUID)`. Here is a link to the IG valid Measure Ids section: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=88
+* 49 : CT - Amount of stratifications `(Current number of Reporting Stratifiers)` does not meet expectations `(Number of stratifiers required)` for `(Current subpopulation type)` measure `(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`. Please refer to the Implementation Guide for correct stratification UUID's here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=88
+* 50 : CT - An IA performed measure reference and results must have exactly one measure performed child
+* 51 : CT - A single measure performed value is required and must be either a Y or an N.
+* 52 : CT - The measure data with population id '`(population id)`' must have exactly one Aggregate Count.
+* 53 : CT - Measure data with population id '`(population id)`' must be a whole number greater than or equal to 0
+* 55 : CT - A CPC Plus Performance period start must be 01/01/2017. Please refer to the IG for more information here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=14
+* 56 : CT - A CPC Plus Performance period end must be 12/31/2017. Please refer to the IG for more information here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=14
+* 57 : CT - The measure reference results must have a single measure population
+* 58 : CT - The measure reference results must have a single measure type
+* 59 : CT - The electronic measure id: `(Current eMeasure ID)` requires a `(Subpopulation type)` with the correct UUID of `(Correct uuid required)`. Here is a link to the IG containing all the valid measure ids: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=88
+* 61 : CT - A Performance Rate must contain a single Numerator UUID reference.
+* 62 : CT - The Alternative Payment Model (APM) Entity Identifier must not be empty. Here is a link to the IG section on identifiers: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=15
+* 63 : CT - The Alternative Payment Model (APM) Entity Identifier is not valid.  Here is a link to the IG section on identifiers: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=15
+* 64 : CT - CPC+ Submissions must have at least `(CPC+ measure group minimum)` of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`
+* 65 : CT - CPC+ Submissions must have at least `(Overall CPC+ measure minimum)` of the following measures: `(Listing of all CPC+ measure ids)`.
+* 66 : CT - Missing the `(Supplemental Type)` - `(Type Qualification)` supplemental data for code `(Supplemental Data Code)` for the measure id `(Measure Id)`'s Sub-population `(Sub Population)`
+* 67 : CT - Must have one count for Supplemental Data `(Supplemental Data Code)` on Sub-population `(Sub Population)` for the measure id `(Measure Id)`
+* 68 : CT - Your CPC+ submission was made after the CPC+ Measure section submission deadline of `(Submission end date)`. Your CPC+ QRDA III file has not been processed. Please contact CPC+ Support at `(CPC+ contact email)` for assistance.
+* 69 : CT - `(Performance period start or end date)` is an invalid date format. Please use a standard ISO date format. Example valid values are 2017-02-26, 2017/02/26T01:45:23, or 2017-02-26T01:45:23.123. Please see the Implementation Guide for information on the performance period here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=17
+* 70 : CT - The measure section measure reference and results has an incorrect number of measure GUID supplied. Please ensure that only one measure GUID is provided per measure.
+* 71 : CT - Two or more different measure section measure reference and results have the same measure GUID. Please ensure that each measure section measure reference and results do not have the same measure GUID.
+* 72 : CT - The Performance Rate is missing

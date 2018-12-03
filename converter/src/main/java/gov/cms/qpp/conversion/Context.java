@@ -1,26 +1,25 @@
 package gov.cms.qpp.conversion;
 
+import gov.cms.qpp.conversion.model.Program;
+import gov.cms.qpp.conversion.model.Registry;
+import gov.cms.qpp.conversion.segmentation.QrdaScope;
+
 import java.lang.annotation.Annotation;
 import java.util.EnumSet;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Set;
 
-import gov.cms.qpp.conversion.model.Program;
-import gov.cms.qpp.conversion.model.Registry;
-import gov.cms.qpp.conversion.segmentation.QrdaScope;
-
 /**
  * Stateful converter context. The values in this data structure will change
  * throughout the conversion.
  */
 public class Context {
-
+	public static final String REPORTING_YEAR = "2017";
 	private final Map<Class<? extends Annotation>, Registry<?>> registries = new IdentityHashMap<>();
 	private Program program = Program.ALL;
 	private Set<QrdaScope> scope = EnumSet.noneOf(QrdaScope.class);
 	private boolean historical;
-	private boolean doDefaults = true;
 	private boolean doValidation = true;
 
 	/**
@@ -87,24 +86,6 @@ public class Context {
 	}
 
 	/**
-	 * Whether this context wants default conversion performed
-	 *
-	 * @return doDefaults
-	 */
-	public boolean isDoDefaults() {
-		return doDefaults;
-	}
-
-	/**
-	 * Switch for enabling or disabling inclusion of default nodes.
-	 *
-	 * @param doDefaults whether the converter should perform defaults
-	 */
-	public void setDoDefaults(boolean doDefaults) {
-		this.doDefaults = doDefaults;
-	}
-
-	/**
 	 * Whether this context wants validation performed
 	 *
 	 * @return doValidation
@@ -125,6 +106,8 @@ public class Context {
 	/**
 	 * Looks up or creates a new {@link Registry} for the given annotation type under this context
 	 *
+	 * @param <A> Marker annotation that helps identify registry types
+	 * @param <R> Types that comprise the registry
 	 * @param annotation The annotation type to use for class path searching in the {@link Registry}
 	 * @return The existing or new {@link Registry}
 	 */

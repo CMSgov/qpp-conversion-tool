@@ -1,18 +1,21 @@
 package gov.cms.qpp.conversion.segmentation;
 
-
-import org.junit.Test;
-
-import java.util.HashSet;
-import java.util.Set;
-
 import static com.google.common.truth.Truth.assertWithMessage;
 import static gov.cms.qpp.conversion.segmentation.QrdaScope.ACI_AGGREGATE_COUNT;
 import static gov.cms.qpp.conversion.segmentation.QrdaScope.MEASURE_PERFORMED;
 
-public class QrdaScopeTest {
+import java.util.HashSet;
+import java.util.Set;
+
+import gov.cms.qpp.conversion.model.TemplateId;
+import org.junit.jupiter.api.Test;
+
+import gov.cms.qpp.test.enums.EnumContract;
+
+class QrdaScopeTest implements EnumContract {
+
 	@Test
-	public void testGetTemplates() {
+	void testGetTemplates() {
 		//when
 		Set<QrdaScope> scopes = new HashSet<>();
 		scopes.add(ACI_AGGREGATE_COUNT);
@@ -24,24 +27,30 @@ public class QrdaScopeTest {
 	}
 
 	@Test
-	public void testGetTemplatesNull() {
+	void testGetIaSectionTemplates() {
+		//then
+		assertWithMessage("IaSection contents")
+			.that(QrdaScope.IA_SECTION.getValue())
+			.containsExactly(TemplateId.MEASURE_PERFORMED, TemplateId.IA_MEASURE,
+				TemplateId.IA_SECTION, TemplateId.REPORTING_PARAMETERS_ACT);
+	}
+
+	@Test
+	void testGetTemplatesNull() {
 		//expect
 		assertWithMessage("Should be no scopes")
 				.that(QrdaScope.getTemplates(null)).isEmpty();
 	}
 
 	@Test
-	public void testGetTemplatesEmpty() {
+	void testGetTemplatesEmpty() {
 		//expect
 		assertWithMessage("Should be no scopes")
 				.that(QrdaScope.getTemplates(new HashSet<>())).isEmpty();
 	}
 
-	@Test
-	public void testValueOfString() {
-		//JaCoCo coverage test
-		QrdaScope scope = QrdaScope.valueOf("CLINICAL_DOCUMENT");
-		assertWithMessage("QrdaScope of CLINICAL_DOCUMENT equals TemplateId")
-				.that(scope.name()).isSameAs("CLINICAL_DOCUMENT");
+	@Override
+	public Class<? extends Enum<?>> getEnumType() {
+		return QrdaScope.class;
 	}
 }

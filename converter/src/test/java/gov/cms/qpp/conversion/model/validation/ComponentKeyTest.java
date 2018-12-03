@@ -1,15 +1,16 @@
 package gov.cms.qpp.conversion.model.validation;
 
+import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.model.ComponentKey;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
 
-public class ComponentKeyTest {
+class ComponentKeyTest {
+
 	@Test
-	public void equalsContract() {
+	void equalsContract() {
 		EqualsVerifier.forClass(ComponentKey.class)
 				.usingGetClass()
 				.withCachedHashCode("hashCode", "calcHashCode",

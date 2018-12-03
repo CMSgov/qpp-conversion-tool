@@ -1,23 +1,26 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.jdom2.Element;
+import org.jdom2.Namespace;
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import java.util.List;
-import org.jdom2.Element;
-import org.jdom2.Namespace;
-import org.junit.Test;
 
+import java.util.List;
+
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class AciNumeratorDenominatorDecoderTest {
+class AciNumeratorDenominatorDecoderTest {
 
 	private static final String MEASURE_ID = "ACI-PEA-1";
 
 	@Test
-	public void decodeAggregateCountAsNode() throws Exception {
+	void decodeAggregateCountAsNode() throws Exception {
 		String xmlFragment = XmlUtils.buildString(
 				"<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">",
 				"  <observation classCode=\"OBS\" moodCode=\"EVN\">",
@@ -28,15 +31,14 @@ public class AciNumeratorDenominatorDecoderTest {
 				"  </observation>",
 				"</root>");
 
-		Node aggregateCountNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node aggregateCountNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
-		assertWithMessage("aggregate count value should be 600")
-				.that(aggregateCountNode.getChildNodes().get(0).getValue("aggregateCount"))
+		assertThat(aggregateCountNode.getChildNodes().get(0).getValue("aggregateCount"))
 				.isEqualTo("600");
 	}
 
 	@Test
-	public void decodeAciNumeratorDenominatorNullValueAsNode() throws Exception {
+	void decodeAciNumeratorDenominatorNullValueAsNode() throws Exception {
 		String xmlFragment = XmlUtils.buildString(
 				"<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\" >",
 				"  <observation classCode=\"OBS\" moodCode=\"EVN\">",
@@ -45,14 +47,14 @@ public class AciNumeratorDenominatorDecoderTest {
 				"  </observation>",
 				"</root>");
 
-		Node numDenomNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node numDenomNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		assertWithMessage("aci numerator/denominator value should be null")
 				.that(numDenomNode.getChildNodes().get(0).getValue("aggregateCount")).isNull();
 	}
 
 	@Test
-	public void decodeAciNumeratorDenominatorNullElementAsNode() throws Exception {
+	void decodeAciNumeratorDenominatorNullElementAsNode() throws Exception {
 		String xmlFragment = XmlUtils.buildString(
 				"<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">",
 				"  <observation classCode=\"OBS\" moodCode=\"EVN\">",
@@ -60,29 +62,26 @@ public class AciNumeratorDenominatorDecoderTest {
 				"  </observation>",
 				"</root>");
 
-		Node numDenomNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node numDenomNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		assertWithMessage("aci numerator/denominator value should be null")
 				.that(numDenomNode.getChildNodes().get(0).getValue("aggregateCount")).isNull();
 	}
 
 	@Test
-	public void decodeValidAciNumeratorDenominatorTest() throws XmlException {
-		Node aciMeasureNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(getValidXmlFragment()));
+	void decodeValidAciNumeratorDenominatorTest() throws XmlException {
+		Node aciMeasureNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(getValidXmlFragment()));
 		Node numeratorDenominatorNode = aciMeasureNode.getChildNodes().get(0);
 		int numberNodes = countNodes(aciMeasureNode);
 		List<Node> nodeList = aciMeasureNode.findNode(TemplateId.ACI_NUMERATOR);
 
-		assertWithMessage("Should contain a measure id")
-				.that(numeratorDenominatorNode.getValue("measureId"))
+		assertThat(numeratorDenominatorNode.getValue("measureId"))
 				.isEqualTo(MEASURE_ID);
 
-		assertWithMessage("Should have Numerator")
-				.that(numeratorDenominatorNode.getChildNodes().get(0).getType())
+		assertThat(numeratorDenominatorNode.getChildNodes().get(0).getType())
 				.isEqualTo(TemplateId.ACI_NUMERATOR);
 
-		assertWithMessage("Should have Denominator")
-				.that(numeratorDenominatorNode.getChildNodes().get(1).getType())
+		assertThat(numeratorDenominatorNode.getChildNodes().get(1).getType())
 				.isEqualTo(TemplateId.ACI_DENOMINATOR);
 
 		nodeList = nodeList.get(0).findNode(TemplateId.ACI_AGGREGATE_COUNT);
@@ -109,12 +108,12 @@ public class AciNumeratorDenominatorDecoderTest {
 	}
 
 	@Test
-	public void decodeAciNumeratorDenominatorExtraneousXMLTest() throws XmlException {
+	void decodeAciNumeratorDenominatorExtraneousXMLTest() throws XmlException {
 		String xmlFragment = getValidXmlFragment();
 		xmlFragment = xmlFragment.replaceAll("<statusCode ",
 				"\n<Stuff arbitrary=\"123\"><newnode>Some extra stuff</newnode></Stuff>Unexpected stuff appears here\n\n<statusCode ");
 
-		Node aciMeasureNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node aciMeasureNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 		assertWithMessage("Decoded xml fragment should contain one child node")
 				.that(aciMeasureNode.getChildNodes())
 				.hasSize(1);
@@ -142,7 +141,7 @@ public class AciNumeratorDenominatorDecoderTest {
 	}
 
 	@Test
-	public void testInternalDecode() throws Exception {
+	void testInternalDecode() {
 		//set-up
 		Namespace rootns = Namespace.getNamespace("urn:hl7-org:v3");
 		Namespace ns = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
@@ -163,14 +162,13 @@ public class AciNumeratorDenominatorDecoderTest {
 		Node thisNode = new Node();
 
 		AciNumeratorDenominatorDecoder objectUnderTest = new AciNumeratorDenominatorDecoder(new Context());
-		objectUnderTest.setNamespace(element, objectUnderTest);
+		objectUnderTest.setNamespace(element.getNamespace());
 
 		//execute
-		objectUnderTest.internalDecode(element, thisNode);
+		objectUnderTest.decode(element, thisNode);
 
 		//assert
-		assertWithMessage("measureId should be %s", MEASURE_ID)
-				.that(thisNode.getValue("measureId"))
+		assertThat(thisNode.getValue("measureId"))
 				.isEqualTo(MEASURE_ID);
 	}
 

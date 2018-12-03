@@ -1,34 +1,42 @@
 package gov.cms.qpp.conversion.encode;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import gov.cms.qpp.conversion.util.JsonHelper;
-import org.junit.Before;
-import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class JsonWrapperTest {
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-	private ObjectWriter ow = JsonWrapper.getObjectWriter(true);
+class JsonWrapperTest {
+
+	private ObjectWriter ow = JsonWrapper.getObjectWriterWithoutMeta();
 	private JsonWrapper objectObjWrapper;
 	private JsonWrapper objectStrWrapper;
 	private JsonWrapper listObjWrapper;
 	private JsonWrapper listStrWrapper;
 	private JsonWrapper unfilteredMetaWrapper;
 
-	@Before
-	public void before() {
+	@BeforeEach
+	void before() {
 		objectObjWrapper = new JsonWrapper();
 		objectStrWrapper = new JsonWrapper();
 		listObjWrapper   = new JsonWrapper();
@@ -37,23 +45,21 @@ public class JsonWrapperTest {
 	}
 
 	@Test
-	public void testCopyConstructor() {
+	void testCopyConstructor() {
 		JsonWrapper wrapper = new JsonWrapper();
 		wrapper.putString("you're an array");
 		JsonWrapper copyWrapper = new JsonWrapper(wrapper);
 
-		assertWithMessage("String representations should be equal")
-				.that(copyWrapper.toString()).isEqualTo(wrapper.toString());
+		assertThat(copyWrapper.toString()).isEqualTo(wrapper.toString());
 	}
 
 	@Test
-	public void testInitAsList() {
+	void testInitAsList() {
 		assertWithMessage("Object should be null until the first put").
 				that(listStrWrapper.getObject()).isNull();
 		listStrWrapper.putString("name");
 		Object list1 = listStrWrapper.getObject();
-		assertWithMessage("Init should be as a list").that(list1).isNotNull();
-		assertWithMessage("Init should be as a list").that(list1).isInstanceOf(List.class);
+		assertThat(list1).isInstanceOf(List.class);
 		listStrWrapper.putString("value");
 		Object list2 = listStrWrapper.getObject();
 		assertWithMessage("The internal instance should not change upon addition put")
@@ -62,13 +68,12 @@ public class JsonWrapperTest {
 	}
 
 	@Test
-	public void testInitAsObject() {
+	void testInitAsObject() {
 		assertWithMessage("Object should be null until the first put")
 				.that(objectStrWrapper.getObject()).isNull();
 		objectStrWrapper.putString("name", "value");
 		Object obj1 = objectStrWrapper.getObject();
-		assertWithMessage("Init should be as a map").that(obj1).isNotNull();
-		assertWithMessage("Init should be as a map").that(obj1).isInstanceOf(Map.class);
+		assertThat(obj1).isInstanceOf(Map.class);
 		objectStrWrapper.putString("name", "value");
 		Object obj2 = objectStrWrapper.getObject();
 		assertWithMessage("The internal instance should not change upon addition put")
@@ -77,45 +82,37 @@ public class JsonWrapperTest {
 	}
 
 	@Test
-	public void testGetObject_map() {
+	void testGetObject_map() {
 		objectStrWrapper.putString("name1", "value");
-		assertWithMessage("should be as a map")
-				.that(objectStrWrapper.getObject())
+		assertThat(objectStrWrapper.getObject())
 				.isInstanceOf(Map.class);
-		assertWithMessage("map should contain put value")
-				.that(objectStrWrapper.getString("name1"))
+		assertThat(objectStrWrapper.getString("name1"))
 				.isEqualTo("value");
 
 		Object obj = new Object();
 		objectObjWrapper.putObject("name2", obj);
-		assertWithMessage("should be as a map")
-				.that(objectObjWrapper.getObject())
+		assertThat(objectObjWrapper.getObject())
 				.isInstanceOf(Map.class);
-		assertWithMessage("map should contain put value")
-				.that(obj)
+		assertThat(obj)
 				.isEqualTo(((Map<?,?>)objectObjWrapper.getObject()).get("name2"));
 	}	
 
 	@Test
-	public void testGetObject_list() {
+	void testGetObject_list() {
 		listStrWrapper.putString("name");
-		assertWithMessage("should be as a list")
-				.that(listStrWrapper.getObject()).isInstanceOf(List.class);
-		assertWithMessage("")
-				.that((List<?>)listStrWrapper.getObject())
+		assertThat(listStrWrapper.getObject()).isInstanceOf(List.class);
+		assertThat((List<?>)listStrWrapper.getObject())
 				.contains("name");
 		Object obj = new Object();
 		listObjWrapper.putObject(obj);
-		assertWithMessage("should be as a list")
-				.that(listObjWrapper.getObject())
+		assertThat(listObjWrapper.getObject())
 				.isInstanceOf(List.class);
-		assertWithMessage("list should contain put value")
-				.that(((List<?>)listObjWrapper.getObject()))
+		assertThat(((List<?>)listObjWrapper.getObject()))
 				.contains(obj);
 	}	
 
 	@Test
-	public void testIsObject_true() {
+	void testIsObject_true() {
 		assertWithMessage("should not be an object container until first put")
 				.that(objectStrWrapper.isObject()).isFalse();
 		objectStrWrapper.putString("name", "value");
@@ -129,7 +126,7 @@ public class JsonWrapperTest {
 	}
 
 	@Test
-	public void testIsObject_false() {
+	void testIsObject_false() {
 		assertWithMessage("should not be an object container")
 				.that(listStrWrapper.isObject())
 				.isFalse();
@@ -148,22 +145,105 @@ public class JsonWrapperTest {
 	}
 
 	@Test
-	public void testValidDate() throws Exception {
-		objectObjWrapper.putDate("19690720");
+	@DisplayName("should validate and fail null passed as integer")
+	void testValidInterIsNull() {
+		Throwable exception = assertThrows(EncodeException.class, () -> {
+			objectObjWrapper.validInteger(null);
+		});
+		assertThat(exception).hasCauseThat().isInstanceOf(NumberFormatException.class);
+	}
+
+	@Test
+	@DisplayName("should validate and fail non-numeric string passed as integer")
+	void testValidInterIsNotNumber() {
+		Throwable exception = assertThrows(EncodeException.class, () -> {
+			objectObjWrapper.validInteger("meep");
+		});
+		assertThat(exception).hasCauseThat().isInstanceOf(NumberFormatException.class);
+	}
+
+	@Test
+	void testValidDateYyyyMmDd() throws Exception {
+		ensureDateIsValid("19690720");
+	}
+
+	@Test
+	void testValidDateYyyySlashMmSlashDd() throws Exception {
+		ensureDateIsValid("1969/07/20");
+	}
+
+	@Test
+	void testValidDateYyyyDashMmDashDd() throws Exception {
+		ensureDateIsValid("1969-07-20");
+	}
+
+	@Test
+	void testValidDateYyyyDashMmDashDdThhColonMmColonSsZ() {
+		ensureDateIsValid("2018-01-26T15:35:30.685Z");
+	}
+
+	@Test
+	void testValidDateFromInstant() throws Exception {
+		ensureDateIsValid(Instant.now().toString());
+	}
+
+	@Test
+	void testValidDateFromLocalDate() throws Exception {
+		ensureDateIsValid(LocalDate.now().toString());
+	}
+
+	@Test
+	void testValidDateFromLocalDateTime() throws Exception {
+		ensureDateIsValid(LocalDateTime.now().toString());
+	}
+
+	@Test
+	void testValidDateWithSeconds1() throws Exception {
+		ensureDateIsValid("20170101000000");
+	}
+
+	@Test
+	void testValidDateWithSeconds2() throws Exception {
+		ensureDateIsValid("20171231235959");
+	}
+
+	@Test
+	void testValidDateFullyQualified() {
+		ensureDateIsValid("2018-01-22T20:09:39.949Z");
+	}
+
+	private void ensureDateIsValid(String date) {
+		objectObjWrapper.putDate(date);
 		assertWithMessage("should be an object container")
 				.that(((List<?>) objectObjWrapper.getObject()))
 				.isNotEmpty();
 	}
 
 	@Test
-	public void testNullObjectPut() {
+	@DisplayName("should invalidate null value for date")
+	void testValidDateNullInvalid() throws Exception {
+		Assertions.assertThrows(EncodeException.class, () -> objectObjWrapper.putDate(null));
+	}
+
+	@Test
+	void testValidDateYyMmDdIsInvalid() throws Exception {
+		Assertions.assertThrows(EncodeException.class, () -> objectObjWrapper.putDate("690720"));
+	}
+
+	@Test
+	void testValidDateRandomStringIsInvalid() throws Exception {
+		Assertions.assertThrows(EncodeException.class, () -> objectObjWrapper.putDate(UUID.randomUUID().toString()));
+	}
+
+	@Test
+	void testNullObjectPut() {
 		listStrWrapper.putObject( null );
 		assertWithMessage("should not be an object container")
 				.that(listStrWrapper.isObject()).isFalse();
 	}
 
 	@Test
-	public void testJackson_simpleObject() throws Exception {
+	void testJackson_simpleObject() throws Exception {
 		Map<String, String> map = new LinkedHashMap<>();
 		map.put("name1", "value1");
 		map.put("name2", "value2");
@@ -177,7 +257,7 @@ public class JsonWrapperTest {
 	}
 
 	@Test
-	public void testJackson_objectWithArray() throws Exception {
+	void testJackson_objectWithArray() throws Exception {
 		Map<String, Object> map = new LinkedHashMap<>();
 		map.put("name1", "value1");
 		map.put("name2", new String[] {"A","B","C"});
@@ -194,7 +274,7 @@ public class JsonWrapperTest {
 	}
 
 	@Test
-	public void testJackson_objectWithList() throws Exception {
+	void testJackson_objectWithList() throws Exception {
 		List<String> list = new LinkedList<>();
 		list.add("A");
 		list.add("B");
@@ -216,7 +296,7 @@ public class JsonWrapperTest {
 	}
 
 	@Test
-	public void testJackson_objectWithChild() throws Exception {
+	void testJackson_objectWithChild() throws Exception {
 		Map<String, Object> obj = new LinkedHashMap<>();
 		obj.put("obj1", "A");
 		obj.put("obj2", "B");
@@ -236,7 +316,7 @@ public class JsonWrapperTest {
 	}
 
 	@Test
-	public void testJackson_objectWithChild_commaAndOrder() throws Exception {
+	void testJackson_objectWithChild_commaAndOrder() throws Exception {
 		Map<String, Object> obj = new LinkedHashMap<>();
 		obj.put("obj1", "A");
 		obj.put("obj2", "B");
@@ -256,7 +336,7 @@ public class JsonWrapperTest {
 	}
 
 	@Test
-	public void testToString_simpleObject() throws Exception {
+	void testToString_simpleObject() throws Exception {
 		objectStrWrapper.putString("name1", "value1");
 		objectStrWrapper.putString("name2", "value2");
 
@@ -269,7 +349,7 @@ public class JsonWrapperTest {
 	}
 
 	@Test
-	public void testToString_integerArray() throws Exception {
+	void testToString_integerArray() throws Exception {
 		objectStrWrapper.putString("value1");
 		objectStrWrapper.putInteger("100");
 
@@ -282,7 +362,7 @@ public class JsonWrapperTest {
 	}
 
 	@Test
-	public void testToString_floatArray() throws Exception {
+	void testToString_floatArray() throws Exception {
 		objectStrWrapper.putString("value1");
 		objectStrWrapper.putFloat("1.01");
 
@@ -294,77 +374,69 @@ public class JsonWrapperTest {
 				.isEqualTo(expect);
 	}
 
-	@Test(expected=EncodeException.class)
-	public void testBadKeyedPutDate_exception() throws Exception {
-		objectObjWrapper.putDate("A date which will live in infamy", "December 7, 1941");
-		fail("should not get here, expecting runtime encode exception");
-	}
-
-	@Test(expected=EncodeException.class)
-	public void testBadPutDate_exception() throws Exception {
-		objectObjWrapper.putDate("December 7, 1941");
-		fail("should not get here, expecting runtime encode exception");
-	}
-
-	@Test(expected=RuntimeException.class)
-	public void testToString_exception() {
-		objectObjWrapper.putObject("name", new MockBadJsonTarget());
-		objectObjWrapper.toString();
-		fail("should not get here, expecting runtime parse exception");
-	}
-
-	@Test(expected=IllegalStateException.class)
-	public void testCheckState_objectThenList() {
-		objectStrWrapper.putString("name", "value");
-		objectStrWrapper.putString("value");
-		fail("should not make it here, prior line should throw exception");
-	}
-
-	@Test(expected=IllegalStateException.class)
-	public void testCheckState_listThenLObject() {
-		listStrWrapper.putString("value");
-		listStrWrapper.putString("name", "value");
-		fail("should not make it here, prior line should throw exception");
-	}
-
-	@Test(expected=EncodeException.class)
-	public void testToString_integerParseExcpetion() throws Exception {
-		objectStrWrapper.putInteger("name2", "nope");
-		fail("Should not make it here because of integer parse exception");
-	}
-
-	@Test(expected=EncodeException.class)
-	public void testToString_integerParseExcpetion2() throws Exception {
-		objectStrWrapper.putInteger("nope");
-		fail("Should not make it here because of integer parse exception");
-	}
-
-	@Test(expected=EncodeException.class)
-	public void testToString_floatParseExcpetion() throws Exception {
-		objectStrWrapper.putFloat("nope");
-		fail("Should not make it here because of float parse exception");
-	}
-
-	@Test(expected=EncodeException.class)
-	public void testToString_floatParseExcpetion2() throws Exception {
-		objectStrWrapper.putFloat("name","nope");
-		fail("Should not make it here because of float parse exception");
-	}
-
-	@Test(expected=EncodeException.class)
-	public void testToString_booleanParseExcpetion() throws Exception {
-		objectStrWrapper.putBoolean("nope");
-		fail("Should not make it here because of float parse exception");
-	}
-
-	@Test(expected=EncodeException.class)
-	public void testToString_booleanParseExcpetion2() throws Exception {
-		objectStrWrapper.putBoolean("name","nope");
-		fail("Should not make it here because of float parse exception");
+	@Test
+	void testBadKeyedPutDate_exception() {
+		assertThrows(EncodeException.class,
+				() -> objectObjWrapper.putDate("A date which will live in infamy", "December 7, 1941"));
 	}
 
 	@Test
-	public void testValidBoolean() throws Exception {
+	void testBadPutDate_exception() {
+		assertThrows(EncodeException.class, () -> objectObjWrapper.putDate("December 7, 1941"));
+	}
+
+	@Test
+	void testToString_exception() {
+		objectObjWrapper.putObject("name", new MockBadJsonTarget());
+		assertThrows(RuntimeException.class, () -> objectObjWrapper.toString());
+	}
+
+	@Test
+	void testCheckState_objectThenList() {
+		objectStrWrapper.putString("name", "value");
+		assertThrows(IllegalStateException.class, () -> objectStrWrapper.putString("value"));
+	}
+
+	@Test
+	void testCheckState_listThenLObject() {
+		listStrWrapper.putString("value");
+		assertThrows(IllegalStateException.class,
+				() -> listStrWrapper.putString("name", "value"));
+	}
+
+	@Test
+	void testToString_integerParseExcpetion() {
+		assertThrows(EncodeException.class,
+				() -> objectStrWrapper.putInteger("name2", "nope"));
+	}
+
+	@Test
+	void testToString_integerParseExcpetion2() {
+		assertThrows(EncodeException.class, () -> objectStrWrapper.putInteger("nope"));
+	}
+
+	@Test
+	void testToString_floatParseExcpetion() {
+		assertThrows(EncodeException.class, () -> objectStrWrapper.putFloat("nope"));
+	}
+
+	@Test
+	void testToString_floatParseExcpetion2() {
+		assertThrows(EncodeException.class, () -> objectStrWrapper.putFloat("name","nope"));
+	}
+
+	@Test
+	void testToString_booleanParseExcpetion() {
+		assertThrows(EncodeException.class, () -> objectStrWrapper.putBoolean("nope"));
+	}
+
+	@Test
+	void testToString_booleanParseExcpetion2() {
+		assertThrows(EncodeException.class, () -> objectStrWrapper.putBoolean("name","nope"));
+	}
+
+	@Test
+	void testValidBoolean() throws Exception {
 		assertThat(objectStrWrapper.validBoolean("True")).isTrue();
 		assertThat(objectStrWrapper.validBoolean("Yes")).isTrue();
 		assertThat(objectStrWrapper.validBoolean("Y")).isTrue();
@@ -374,12 +446,7 @@ public class JsonWrapperTest {
 	}
 
 	@Test
-	public void testCleanString_null() throws Exception {
-		assertThat(objectStrWrapper.cleanString(null)).isNotNull();
-	}
-
-	@Test
-	public void testToString_booleanArray() throws Exception {
+	void testToString_booleanArray() throws Exception {
 		objectStrWrapper.putString("True"); // as string where case is preserved
 		objectStrWrapper.putBoolean("True");
 		objectStrWrapper.putBoolean("TRUE");
@@ -395,7 +462,7 @@ public class JsonWrapperTest {
 	}
 
 	@Test
-	public void testToString_objectWithArray() throws Exception {
+	void testToString_objectWithArray() throws Exception {
 		objectObjWrapper.putString("name1", "value1");
 		objectObjWrapper.putObject("name2", new String[] {"A","B","C"});
 		objectObjWrapper.putString("name3", "value3");
@@ -411,7 +478,7 @@ public class JsonWrapperTest {
 	}
 
 	@Test
-	public void testToString_integerObject() throws Exception {
+	void testToString_integerObject() throws Exception {
 		objectStrWrapper.putString("name1", "value1");
 		objectStrWrapper.putInteger("name2", "100");
 
@@ -424,7 +491,7 @@ public class JsonWrapperTest {
 	}
 
 	@Test
-	public void testToString_floatObject() throws Exception {
+	void testToString_floatObject() throws Exception {
 		objectStrWrapper.putString("name1", "value1");
 		objectStrWrapper.putFloat("name2", "1.01");
 
@@ -437,7 +504,7 @@ public class JsonWrapperTest {
 	}
 
 	@Test
-	public void testToString_booleanObject() throws Exception {
+	void testToString_booleanObject() throws Exception {
 		objectStrWrapper.putString("name", "True"); // as string where case is preserved
 		objectStrWrapper.putBoolean("name1", "True");
 		objectStrWrapper.putBoolean("name2", "TRUE");
@@ -447,13 +514,12 @@ public class JsonWrapperTest {
 		String json = objectStrWrapper.toString();
 
 		String expect = "{\n  \"name\" : \"True\",\n  \"name1\" : true,\n  \"name2\" : true,\n  \"name3\" : true,\n  \"name4\" : true\n}";
-		assertWithMessage("expect a boolean value object of JSON")
-				.that(json)
+		assertThat(json)
 				.isEqualTo(expect);
 	}
 
 	@Test
-	public void testStripWrapper_list() {
+	void testStripWrapper_list() {
 		listStrWrapper.putString("A");
 		listStrWrapper.putString("B");
 		listStrWrapper.putString("C");
@@ -465,7 +531,7 @@ public class JsonWrapperTest {
 	}
 
 	@Test
-	public void testStripWrapper_object() {
+	void testStripWrapper_object() {
 		objectStrWrapper.putString("obj1", "A");
 		objectStrWrapper.putString("obj2", "B");
 
@@ -475,7 +541,7 @@ public class JsonWrapperTest {
 	}
 
 	@Test
-	public void testToString_objectWithList() throws Exception {
+	void testToString_objectWithList() throws Exception {
 		listStrWrapper.putString("A");
 		listStrWrapper.putString("B");
 		listStrWrapper.putString("C");
@@ -495,7 +561,7 @@ public class JsonWrapperTest {
 	}
 
 	@Test
-	public void testToString_objectWithChild() throws Exception {
+	void testToString_objectWithChild() throws Exception {
 		objectStrWrapper.putString("obj1", "A");
 		objectStrWrapper.putString("obj2", "B");
 
@@ -514,7 +580,7 @@ public class JsonWrapperTest {
 	}
 
 	@Test
-	public void testToString_objectWithChild_commaAndOrder() throws Exception {
+	void testToString_objectWithChild_commaAndOrder() throws Exception {
 		objectStrWrapper.putString("obj1", "A");
 		objectStrWrapper.putString("obj2", "B");
 
@@ -533,28 +599,24 @@ public class JsonWrapperTest {
 	}
 
 	@Test
-	public void testValueRetrieval() throws Exception {
+	void testValueRetrieval() throws Exception {
 		objectStrWrapper.putString("obj1", "A");
 		objectStrWrapper.putInteger("obj2", "1");
 		objectStrWrapper.putFloat("obj3", "1.1");
 		objectStrWrapper.putBoolean("obj4", "false");
 
-		assertWithMessage("expect String")
-				.that(objectStrWrapper.getString("obj1"))
+		assertThat(objectStrWrapper.getString("obj1"))
 				.isEqualTo("A");
-		assertWithMessage("expect Integer")
-				.that(objectStrWrapper.getInteger("obj2"))
+		assertThat(objectStrWrapper.getInteger("obj2"))
 				.isEqualTo(1);
-		assertWithMessage("expect Float")
-				.that(objectStrWrapper.getFloat("obj3"))
+		assertThat(objectStrWrapper.getFloat("obj3"))
 				.isEqualTo(1.1F);
-		assertWithMessage("expect Boolean")
-				.that(objectStrWrapper.getBoolean("obj4"))
+		assertThat(objectStrWrapper.getBoolean("obj4"))
 				.isFalse();
 	}
 
 	@Test
-	public void metadataFiltered() throws IOException {
+	void metadataFiltered() throws IOException {
 		//setup
 		String shouldSerialize = "mawp";
 		String shouldNotSerialize = "metadata_meep";
@@ -567,16 +629,14 @@ public class JsonWrapperTest {
 		JsonNode obj = mapper.readTree(json);
 
 		//then
-		assertWithMessage("Could not find %s", shouldSerialize)
-				.that(shouldSerialize)
+		assertThat(shouldSerialize)
 				.isEqualTo(obj.findValue(shouldSerialize).asText());
-		assertWithMessage("Should not find %s", shouldNotSerialize)
-				.that(obj.findValue(shouldNotSerialize))
+		assertThat(obj.findValue(shouldNotSerialize))
 				.isNull();
 	}
 
 	@Test
-	public void metadataUnfiltered() throws IOException {
+	void metadataUnfiltered() throws IOException {
 		//setup
 		String shouldSerialize = "mawp";
 		String shouldAlsoSerialize = "metadata_meep";
@@ -589,21 +649,42 @@ public class JsonWrapperTest {
 		JsonNode obj = mapper.readTree(json);
 
 		//then
-		assertWithMessage("Could not find %s", shouldSerialize)
-				.that(shouldSerialize)
+		assertThat(shouldSerialize)
 				.isEqualTo(obj.findValue(shouldSerialize).asText());
-		assertWithMessage("Could not find %s", shouldAlsoSerialize)
-				.that(shouldAlsoSerialize)
+		assertThat(shouldAlsoSerialize)
 				.isEqualTo(obj.findValue(shouldAlsoSerialize).asText());
 	}
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void testContentStream() {
+	void testContentStream() {
 		objectObjWrapper.putString("meep", "mawp");
-		InputStream content = objectObjWrapper.contentStream();
+		InputStream content = objectObjWrapper.toSource().toInputStream();
 		Map<String, String> contentMap = JsonHelper.readJson(content, Map.class);
 		assertThat(contentMap.get("meep")).isEqualTo("mawp");
+	}
+
+	@Test
+	void testObjectStream() {
+		assertThat(objectObjWrapper.stream().count())
+				.isEqualTo(1);
+	}
+
+	@Test
+	void testListStreamNonMap() {
+		JsonWrapper listWrapper = new JsonWrapper();
+		listWrapper.putObject(new Object());
+		assertThat(listWrapper.stream().count())
+				.isEqualTo(0);
+	}
+
+	@Test
+	void testListStreamMap() {
+		JsonWrapper listWrapper = new JsonWrapper();
+		listWrapper.putObject(new HashMap());
+		listWrapper.putObject(new HashMap());
+		assertThat(listWrapper.stream().count())
+				.isEqualTo(2);
 	}
 
 }

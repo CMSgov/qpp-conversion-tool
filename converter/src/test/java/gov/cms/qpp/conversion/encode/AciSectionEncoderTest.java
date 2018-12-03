@@ -1,21 +1,27 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import java.util.Map;
-import org.junit.Before;
-import org.junit.Test;
-
 import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
-public class AciSectionEncoderTest {
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Stream;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+
+class AciSectionEncoderTest {
 
 	private static final String CATEGORY = "category";
 	private static final String ACI = "aci";
@@ -34,8 +40,8 @@ public class AciSectionEncoderTest {
 	private Node numeratorValueNode;
 	private Node denominatorValueNode;
 
-	@Before
-	public void createNode() {
+	@BeforeEach
+	void createNode() {
 		numeratorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		numeratorValueNode.putValue(AGGREGATE_COUNT_ID, "400");
 
@@ -64,7 +70,7 @@ public class AciSectionEncoderTest {
 	}
 
 	@Test
-	public void testInternalEncode() {
+	void testInternalEncode() {
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		AciSectionEncoder aciSectionEncoder = new AciSectionEncoder(new Context());
 		aciSectionEncoder.internalEncode(jsonWrapper, aciSectionNode);
@@ -79,7 +85,21 @@ public class AciSectionEncoderTest {
 	}
 
 	@Test
-	public void testInternalEncodeWithNoChildren() {
+	void aboutMetadataHolder() {
+		JsonWrapper jsonWrapper = new JsonWrapper();
+		AciSectionEncoder aciSectionEncoder = new AciSectionEncoder(new Context());
+		aciSectionEncoder.internalEncode(jsonWrapper, aciSectionNode);
+
+		Map<?, ?> testMapObject = (Map<?, ?>) jsonWrapper.getObject();
+		Stream failed = ((Set) testMapObject.get("metadata_holder")).stream()
+			.filter(entry -> ((Map) entry).get("template").equals(TemplateId.REPORTING_PARAMETERS_ACT.name()))
+			.filter(entry -> ((Map) entry).get("encodeLabel").equals(""));
+
+		assertThat(failed.count()).isEqualTo(0);
+	}
+
+	@Test
+	void testInternalEncodeWithNoChildren() {
 		JsonWrapper testWrapper = new JsonWrapper();
 
 		Node invalidAciNumeratorDenominatorNode = new Node();
@@ -92,15 +112,13 @@ public class AciSectionEncoderTest {
 		AciSectionEncoder aciSectionEncoder = new AciSectionEncoder(new Context());
 		aciSectionEncoder.internalEncode(testWrapper, aciSectionNode);
 
-		assertWithMessage("Must have validation error.")
-				.that(aciSectionEncoder.getDetails()).isNotNull();
-		assertWithMessage("Must be correct validation error")
-				.that(aciSectionEncoder.getDetails().get(0).getMessage())
-				.isEqualTo("Failed to find an encoder for child node DEFAULT");
+		assertThat(aciSectionEncoder.getDetails()).isNotNull();
+		assertThat(aciSectionEncoder.getDetails().get(0).getMessage())
+				.isEqualTo(ErrorCode.CT_LABEL + "Failed to find an encoder");
 	}
 
 	@Test
-	public void internalEncodeNegativeWithNoReportingParameters() throws EncodeException {
+	void internalEncodeNegativeWithNoReportingParameters() throws EncodeException {
 
 		aciSectionNode.getChildNodes().remove(reportingParametersNode);
 

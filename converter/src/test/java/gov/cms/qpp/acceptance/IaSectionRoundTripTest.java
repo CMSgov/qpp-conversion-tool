@@ -1,33 +1,35 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
-import gov.cms.qpp.conversion.util.JsonHelper;
-import org.junit.Before;
-import org.junit.Test;
+import static com.google.common.truth.Truth.assertWithMessage;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class IaSectionRoundTripTest {
+import com.jayway.jsonpath.TypeRef;
+
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathSource;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.util.JsonHelper;
+
+class IaSectionRoundTripTest {
+
 	Path file;
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 		file = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 	}
 
 	@Test
-	public void testIaSectionConvertsIaCategory() throws IOException {
-		Converter converter = new Converter(new PathQrdaSource(file));
+	void testIaSectionConvertsIaCategory() {
+		Converter converter = new Converter(new PathSource(file));
 		JsonWrapper qpp = converter.transform();
 		String iaCategory = JsonHelper.readJsonAtJsonPath(qpp.toString(),
-				"$.measurementSets[2].category", String.class);
+				"$.measurementSets[2].category", new TypeRef<String>() { });
 
 		assertWithMessage("Must contain a category")
 				.that(iaCategory)
@@ -35,11 +37,11 @@ public class IaSectionRoundTripTest {
 	}
 
 	@Test
-	public void testIaSectionConvertsIaMeasureId() throws IOException {
-		Converter converter = new Converter(new PathQrdaSource(file));
+	void testIaSectionConvertsIaMeasureId() {
+		Converter converter = new Converter(new PathSource(file));
 		JsonWrapper qpp = converter.transform();
 		String iaMeasureId = JsonHelper.readJsonAtJsonPath(qpp.toString(),
-				"$.measurementSets[2].measurements[0].measureId", String.class);
+				"$.measurementSets[2].measurements[0].measureId", new TypeRef<String>() { });
 
 		assertWithMessage("Must contain measure id")
 				.that(iaMeasureId)
@@ -47,12 +49,14 @@ public class IaSectionRoundTripTest {
 	}
 
 	@Test
-	public void testIaSectionConvertsMeasurePerformed() throws IOException {
-		Converter converter = new Converter(new PathQrdaSource(file));
+	void testIaSectionConvertsMeasurePerformed() {
+		Converter converter = new Converter(new PathSource(file));
 		JsonWrapper qpp = converter.transform();
 		Boolean measurePerformed = JsonHelper.readJsonAtJsonPath(qpp.toString(),
-				"$.measurementSets[2].measurements[0].value", Boolean.class);
+				"$.measurementSets[2].measurements[0].value", new TypeRef<Boolean>() { });
 
-		assertTrue("Must contain a measure performed", measurePerformed);
+		assertWithMessage("Must contain a measure performed")
+			.that(measurePerformed)
+			.isTrue();
 	}
 }

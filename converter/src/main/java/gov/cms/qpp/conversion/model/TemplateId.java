@@ -1,58 +1,64 @@
 package gov.cms.qpp.conversion.model;
 
+import com.google.common.base.Strings;
+
 import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.util.EnvironmentHelper;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * An enumeration of known templates IDs.
  */
 public enum TemplateId {
-	QRDA_CATEGORY_III_REPORT_V3("2.16.840.1.113883.10.20.27.1.1", Extension.JUNE_2017),
-	CLINICAL_DOCUMENT("2.16.840.1.113883.10.20.27.1.2", Extension.JULY_2017),
+	CLINICAL_DOCUMENT("2.16.840.1.113883.10.20.27.1.2", Extension.JULY_2017, "Clinical Document"),
 	ACI_AGGREGATE_COUNT("2.16.840.1.113883.10.20.27.3.3"),
-	IA_SECTION("2.16.840.1.113883.10.20.27.2.4", Extension.JUNE_2017),
-	ACI_SECTION("2.16.840.1.113883.10.20.27.2.5", Extension.JUNE_2017),
+	IA_SECTION("2.16.840.1.113883.10.20.27.2.4", Extension.JUNE_2017, "IA Section"),
+	ACI_SECTION("2.16.840.1.113883.10.20.27.2.5", Extension.JUNE_2017, "ACI Section"),
 	MEASURE_PERFORMED("2.16.840.1.113883.10.20.27.3.27", Extension.SEPTEMBER_2016),
-	ACI_NUMERATOR_DENOMINATOR("2.16.840.1.113883.10.20.27.3.28", Extension.JUNE_2017),
+	ACI_NUMERATOR_DENOMINATOR("2.16.840.1.113883.10.20.27.3.28", Extension.JUNE_2017, "ACI Measure"),
 	ACI_NUMERATOR("2.16.840.1.113883.10.20.27.3.31", Extension.SEPTEMBER_2016),
 	ACI_DENOMINATOR("2.16.840.1.113883.10.20.27.3.32", Extension.SEPTEMBER_2016),
-	IA_MEASURE("2.16.840.1.113883.10.20.27.3.33", Extension.SEPTEMBER_2016),
+	IA_MEASURE("2.16.840.1.113883.10.20.27.3.33", Extension.SEPTEMBER_2016, "Improvement Activity"),
 	REPORTING_PARAMETERS_ACT("2.16.840.1.113883.10.20.17.3.8"),
 	MEASURE_DATA_CMS_V2("2.16.840.1.113883.10.20.27.3.16", Extension.NOVEMBER_2016),
 	PERFORMANCE_RATE_PROPORTION_MEASURE("2.16.840.1.113883.10.20.27.3.25", Extension.NOVEMBER_2016),
-	MEASURE_SECTION_V2("2.16.840.1.113883.10.20.27.2.3", Extension.JULY_2017),
-	MEASURE_REFERENCE_RESULTS_CMS_V2("2.16.840.1.113883.10.20.27.3.17", Extension.NOVEMBER_2016),
+	MEASURE_SECTION_V2("2.16.840.1.113883.10.20.27.2.3", Extension.JULY_2017, "Measure Section"),
+	MEASURE_REFERENCE_RESULTS_CMS_V2("2.16.840.1.113883.10.20.27.3.17", Extension.NOVEMBER_2016, "Quality Measure"),
 	ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS("2.16.840.1.113883.10.20.27.3.29", Extension.SEPTEMBER_2016),
 	REPORTING_STRATUM_CMS("2.16.840.1.113883.10.20.27.3.20"),
-
-	//unimplemented
-	CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS("2.16.840.1.113883.10.20.27.3.26"),
 	ETHNICITY_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2("2.16.840.1.113883.10.20.27.3.22", Extension.NOVEMBER_2016),
 	SEX_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2("2.16.840.1.113883.10.20.27.3.21", Extension.NOVEMBER_2016),
 	RACE_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2("2.16.840.1.113883.10.20.27.3.19", Extension.NOVEMBER_2016),
 	PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2("2.16.840.1.113883.10.20.27.3.18", Extension.NOVEMBER_2016),
 
+	//unimplemented
+	CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS("2.16.840.1.113883.10.20.27.3.26"),
+
 	//miscellaneous
-	NPI_TIN_ID("MultipleTins"),
 	NULL_RETURN("null.return"),
 	QED("Q.E.D"),
 	PLACEHOLDER("placeholder"),
-	DEFAULT("default");
+	DEFAULT("default"),
+	UNIMPLEMENTED("unimplemented");
 
 	/**
 	 * Defined TemplateId Constants
 	 */
-	private enum Extension {
+	enum Extension {
 		NONE(""),
 		JUNE_2017("2017-06-01"),
 		JULY_2017("2017-07-01"),
 		SEPTEMBER_2016("2016-09-01"),
 		NOVEMBER_2016("2016-11-01");
 
+		static final String STRICT_EXTENSION = "STRICT_EXTENSION";
+
 		private final String value;
 
-		private Extension(String value) {
+		Extension(String value) {
 			this.value = value;
 		}
 
@@ -70,12 +76,16 @@ public enum TemplateId {
 					ROOT_AND_TO_TEMPLATE_ID.computeIfAbsent(templateId.root, ignore -> new HashMap<>());
 
 			extensionToTemplateId.put(templateId.extension.toString(), templateId);
-			extensionToTemplateId.putIfAbsent(null, templateId);
+			if (!templateId.alwaysStrict) {
+				extensionToTemplateId.putIfAbsent(null, templateId);
+			}
 		}
 	}
 
 	private final String root;
 	private final Extension extension;
+	private final boolean alwaysStrict;
+	private final String humanReadableTitle;
 
 	/**
 	 * Constructs a TemplateId with just a root.
@@ -93,8 +103,14 @@ public enum TemplateId {
 	 * @param extension The extension of the template ID.  Normally a date.
 	 */
 	TemplateId(String root, Extension extension) {
+		this(root, extension, null);
+	}
+
+	TemplateId(String root, Extension extension, String humanReadableTitle) {
 		this.root = root;
 		this.extension = extension;
+		this.alwaysStrict = "CLINICAL_DOCUMENT".equals(this.name());
+		this.humanReadableTitle = humanReadableTitle;
 	}
 
 	/**
@@ -112,6 +128,16 @@ public enum TemplateId {
 	}
 
 	/**
+	 * @return The human readable title, if any.
+	 */
+	public String getHumanReadableTitle() {
+		return humanReadableTitle;
+	}
+
+	/**
+	 * String representation of this template id
+	 *
+	 * @param context allows historical check
 	 * @return The complete template ID which includes a concatenation of the root followed by a colon followed by the
 	 * extension.
 	 */
@@ -124,20 +150,28 @@ public enum TemplateId {
 	 *
 	 * @param root The root part of the templateId.
 	 * @param extension The extension part of the templateId.
-	 * @return The template ID if found.  Else {@code TemplateId.DEFAULT}.
+	 * @param context allows historical check
+	 * @return The template ID if found, else a defaulted TemplateId. The TemplateId will be
+	 * {@code TemplateId.UNIMPLEMENTED}.
 	 */
-	public static TemplateId getTemplateId(String root, String extension, Context context) {
+	public static TemplateId getTemplateId(final String root, final String extension, final Context context) {
+		TemplateId defaultTemplate = TemplateId.UNIMPLEMENTED;
 		Map<String, TemplateId> extensionsToTemplateId = ROOT_AND_TO_TEMPLATE_ID.get(root);
+		Function<Boolean, TemplateId> templateIdFunction = condition -> condition
+			? extensionsToTemplateId.getOrDefault(extension, defaultTemplate) :
+			extensionsToTemplateId.getOrDefault(null, defaultTemplate);
+		TemplateId retrieved = null;
 
 		if (extensionsToTemplateId == null) {
-			return TemplateId.DEFAULT;
+			retrieved = defaultTemplate;
+		} else if (context.isHistorical()) {
+			retrieved = templateIdFunction.apply(CLINICAL_DOCUMENT.root.equals(root));
+		} else {
+			retrieved = templateIdFunction.apply(
+				CLINICAL_DOCUMENT.root.equals(root) || EnvironmentHelper.isPresent(Extension.STRICT_EXTENSION));
 		}
 
-		if (context.isHistorical()) {
-			return extensionsToTemplateId.getOrDefault(null, TemplateId.DEFAULT);
-		}
-
-		return extensionsToTemplateId.getOrDefault(extension, TemplateId.DEFAULT);
+		return retrieved;
 	}
 
 	/**
@@ -145,12 +179,13 @@ public enum TemplateId {
 	 *
 	 * @param root The root part of the templateId.
 	 * @param extension The extension part of the templateId.
+	 * @param context allows historical check
 	 * @return A string that concatenates the arguments the same way the enumeration does.
 	 */
 	static String generateTemplateIdString(String root, String extension, Context context) {
 		String templateId = root;
 
-		if (!context.isHistorical() && extension != null && !extension.isEmpty()) {
+		if (!context.isHistorical() && !Strings.isNullOrEmpty(extension)) {
 			templateId += (":" + extension);
 		}
 		return templateId;

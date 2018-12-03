@@ -7,14 +7,15 @@ import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
-import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
-import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
+import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -29,12 +30,6 @@ import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDeco
 @Validator(value = TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2, program = Program.CPC)
 public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 
-	static final String INVALID_PERFORMANCE_RATE_COUNT =
-			"Must contain correct number of performance rate(s). Correct Number is %s";
-	static final String MISSING_STRATA = "Missing strata %s for %s measure (%s)";
-	static final String STRATA_MISMATCH = "Amount of stratifications %d does not meet expectations %d "
-			+ "for %s measure (%s). Expected strata: %s";
-
 	/**
 	 * Validates node of all criteria specified for CPC Plus
 	 * <ul>
@@ -45,28 +40,26 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		super.internalValidateSingleNode(node);
-		Map<String, MeasureConfig> configurationMap = MeasureConfigs.getConfigurationMap();
-		String value = node.getValue(MEASURE_ID);
-		MeasureConfig measureConfig = configurationMap.get(value);
-		int requiredPerformanceRateCount = measureConfig.getStrata().size();
+		MeasureConfig measureConfig = MeasureConfigHelper.getMeasureConfig(node);
+		if (measureConfig != null) {
+			int requiredPerformanceRateCount = measureConfig.getStrata().size();
 
-		thoroughlyCheck(node)
-				.childMinimum(String.format(INVALID_PERFORMANCE_RATE_COUNT, requiredPerformanceRateCount),
-						requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
-				.childMaximum(String.format(INVALID_PERFORMANCE_RATE_COUNT, requiredPerformanceRateCount),
+			thoroughlyCheck(node)
+					.childExact(
+						ErrorCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
+							.format(requiredPerformanceRateCount, MeasureConfigHelper.getPrioritizedId(node)),
 						requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
-
+		}
 	}
 
 	@Override
 	List<Consumer<Node>> prepValidations(SubPopulation subPopulation) {
 		return Arrays.asList(
-				makeValidator(subPopulation, subPopulation::getDenominatorExceptionsUuid, SubPopulations.DENEXCEP),
-				makeValidator(subPopulation, subPopulation::getDenominatorExclusionsUuid, SubPopulations.DENEX),
-				makeValidator(subPopulation, subPopulation::getNumeratorUuid, SubPopulations.NUMER),
-				makeValidator(subPopulation, subPopulation::getDenominatorUuid, SubPopulations.DENOM),
-				makeValidator(subPopulation, subPopulation::getInitialPopulationUuid,
-						SubPopulations.IPOP, SubPopulations.IPP),
+				makeValidator(subPopulation, subPopulation::getDenominatorExceptionsUuid, SubPopulationLabel.DENEXCEP),
+				makeValidator(subPopulation, subPopulation::getDenominatorExclusionsUuid, SubPopulationLabel.DENEX),
+				makeValidator(subPopulation, subPopulation::getNumeratorUuid, SubPopulationLabel.NUMER),
+				makeValidator(subPopulation, subPopulation::getDenominatorUuid, SubPopulationLabel.DENOM),
+				makeValidator(subPopulation, subPopulation::getInitialPopulationUuid, SubPopulationLabel.IPOP),
 				makePerformanceRateUuidValidator(subPopulation::getNumeratorUuid, PERFORMANCE_RATE_ID));
 	}
 
@@ -78,11 +71,12 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	 * @return a callback / consumer that will perform a measure specific validation against a given
 	 * node.
 	 */
-	private Consumer<Node> makePerformanceRateUuidValidator(Supplier<Object> check, String... keys) {
+	private Consumer<Node> makePerformanceRateUuidValidator(Supplier<String> check, String... keys) {
 		return node -> {
 			if (check.get() != null) {
 				Predicate<Node> childUuidFinder =
-						makeUuidChildFinder(check, SINGLE_PERFORMANCE_RATE, PERFORMANCE_RATE_ID);
+						makeUuidChildFinder(check, ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE,
+								PERFORMANCE_RATE_ID);
 
 				Node existingUuidChild = node
 						.getChildNodes(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
@@ -109,22 +103,23 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 				.collect(Collectors.toList());
 
 		if (strataNodes.size() != sub.getStrata().size()) {
-			String message = String.format(STRATA_MISMATCH, strataNodes.size(), sub.getStrata().size(),
+			LocalizedError error = ErrorCode.CPC_QUALITY_MEASURE_ID_STRATA_MISMATCH.format(strataNodes.size(),
+					sub.getStrata().size(),
 					node.getValue(MeasureDataDecoder.MEASURE_TYPE),
 					node.getValue(MEASURE_POPULATION),
 					sub.getStrata());
-			this.getDetails().add(new Detail(message, node.getPath()));
+			addValidationError(Detail.forErrorAndNode(error, node));
 		}
 
 		sub.getStrata().forEach(stratum -> {
 			Predicate<Node> seek = child ->
-					child.getValue(StratifierDecoder.STRATIFIER_ID).equals(stratum);
+					child.getValue(StratifierDecoder.STRATIFIER_ID).equalsIgnoreCase(stratum);
 
 			if (strataNodes.stream().noneMatch(seek)) {
-				String message = String.format(MISSING_STRATA, stratum,
+				LocalizedError error = ErrorCode.CPC_QUALITY_MEASURE_ID_MISSING_STRATA.format(stratum,
 						node.getValue(MeasureDataDecoder.MEASURE_TYPE),
 						node.getValue(MEASURE_POPULATION));
-				this.getDetails().add(new Detail(message, node.getPath()));
+				addValidationError(Detail.forErrorAndNode(error, node));
 			}
 		});
 	}

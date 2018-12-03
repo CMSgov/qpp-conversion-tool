@@ -1,21 +1,21 @@
 package gov.cms.qpp.conversion.encode;
 
+import static com.google.common.truth.Truth.assertThat;
+
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.error.Detail;
-import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assert.assertEquals;
-
-public class JsonOutputEncoderTest {
+class JsonOutputEncoderTest {
 
 	private JsonOutputEncoder joe;
 
-	@Before
-	public void before() {
+	@BeforeEach
+	void before() {
 		joe = new JsonOutputEncoder() {
 			@Override
 			protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
@@ -26,10 +26,14 @@ public class JsonOutputEncoderTest {
 	}
 
 	@Test
-	public void testAddValidationAndGetValidations() {
-		assertEquals(0, joe.getDetails().size());
-		joe.addValidationError(new Detail("error"));
-		joe.addValidationError(new Detail("another"));
+	void testAddValidationAndGetValidations() {
+		assertThat(joe.getDetails()).isEmpty();
+		Detail detail1 = new Detail();
+		detail1.setMessage("error");
+		Detail detail2 = new Detail();
+		detail2.setMessage("another");
+		joe.addValidationError(detail1);
+		joe.addValidationError(detail2);
 		List<Detail> validations = joe.getDetails();
 		assertThat(validations).hasSize(2);
 		assertThat(validations.get(0).getMessage()).isEqualTo("error");
@@ -37,11 +41,13 @@ public class JsonOutputEncoderTest {
 	}
 
 	@Test
-	public void testAddValidationAndGetValidationById() {
+	void testAddValidationAndGetValidationById() {
 		List<Detail> validations = joe.getDetails();
 		assertThat(validations).hasSize(0);
 
-		joe.addValidationError(new Detail("err"));
+		Detail detail = new Detail();
+		detail.setMessage("err");
+		joe.addValidationError(detail);
 
 		validations = joe.getDetails();
 		assertThat(validations).isNotNull();
@@ -50,12 +56,11 @@ public class JsonOutputEncoderTest {
 	}
 
 	@Test
-	public void testAddValidationByEncodeException() {
+	void testAddValidationByEncodeException() {
 		joe.encode((JsonWrapper) null, (Node) null); // the values are not used in the test
 
 		List<Detail> details = joe.getDetails();
-		assertWithMessage("Should have one error message")
-				.that(details)
+		assertThat(details)
 				.hasSize(1);
 	}
 }

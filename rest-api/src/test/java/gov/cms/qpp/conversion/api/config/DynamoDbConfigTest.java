@@ -1,34 +1,33 @@
 package gov.cms.qpp.conversion.api.config;
 
-
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.AttributeTransformer;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
-import gov.cms.qpp.conversion.api.model.Constants;
+import com.amazonaws.services.kms.AWSKMS;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.core.env.Environment;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import gov.cms.qpp.conversion.api.model.Constants;
+
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doReturn;
@@ -36,20 +35,20 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
-
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({AmazonDynamoDBClientBuilder.class, DynamoDbConfigFactory.class, DynamoDBMapper.class})
 public class DynamoDbConfigTest {
 
-	@Spy
-	@InjectMocks
-	private DynamoDbConfig underTest = new DynamoDbConfig();
-
-	@Mock
-	private DynamoDBMapper dbMapper;
+	private DynamoDbConfig underTest;
 
 	@Mock
 	private Environment environment;
+
+	@Mock
+	private AWSKMS awsKms;
+
+	@Mock
+	private DynamoDBMapper dbMapper;
 
 	@Mock
 	private AmazonDynamoDB amazonDynamoDB;
@@ -67,7 +66,10 @@ public class DynamoDbConfigTest {
 	private ExpectedException thrown = ExpectedException.none();
 
 	@Before
-	public void setup() throws NoSuchFieldException, IllegalAccessException {
+	public void setup() {
+
+		underTest = spy(new DynamoDbConfig(environment, awsKms));
+
 		when(underTest.encryptionTransformer(any(String.class))).thenReturn(transformer);
 		when(underTest.tableNameOverrideConfig(any(String.class))).thenReturn(mapConfigNamed);
 		when(underTest.getDynamoDbMapperConfig()).thenReturn(mapConfig);
@@ -104,11 +106,11 @@ public class DynamoDbConfigTest {
 
 		DynamoDBMapper dynamoDBMapper = underTest.dynamoDbMapper(amazonDynamoDB);
 
-		assertWithMessage("DynamoDBMapper must be null.").that(dynamoDBMapper).isNull();
+		assertThat(dynamoDBMapper).isNull();
 	}
 
 	@Test
-	public void dbMapperInitWithNothing() throws Exception {
+	public void dbMapperInitWithNothing() {
 		when(environment.getProperty(eq(Constants.NO_AUDIT_ENV_VARIABLE))).thenReturn(null);
 		when(environment.getProperty(eq(Constants.DYNAMO_TABLE_NAME_ENV_VARIABLE))).thenReturn(null);
 		when(environment.getProperty(eq(Constants.KMS_KEY_ENV_VARIABLE))).thenReturn("");
@@ -120,7 +122,7 @@ public class DynamoDbConfigTest {
 	}
 
 	@Test
-	public void dbMapperInitWithTableName() throws Exception {
+	public void dbMapperInitWithTableName() {
 		when(environment.getProperty(eq(Constants.NO_AUDIT_ENV_VARIABLE))).thenReturn(null);
 		when(environment.getProperty(eq(Constants.DYNAMO_TABLE_NAME_ENV_VARIABLE))).thenReturn("meep");
 		when(environment.getProperty(eq(Constants.KMS_KEY_ENV_VARIABLE))).thenReturn(null);

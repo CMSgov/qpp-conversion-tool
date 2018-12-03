@@ -1,75 +1,195 @@
 package gov.cms.qpp.conversion.model;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+
 import gov.cms.qpp.conversion.Context;
-import org.junit.Test;
+import gov.cms.qpp.conversion.model.TemplateId.Extension;
+import gov.cms.qpp.test.enums.EnumContract;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.params.provider.EnumSource.Mode.EXCLUDE;
 
-public class TemplateIdTest {
+class TemplateIdTest implements EnumContract {
 
-	@Test
-	public void testRoot() {
-		assertWithMessage("TemplateId#getRoot() is not working")
-				.that(TemplateId.CLINICAL_DOCUMENT.getRoot()).isSameAs("2.16.840.1.113883.10.20.27.1.2");
+	static Context defaultsContext;
+
+	@BeforeAll
+	static void setup() {
+		defaultsContext = new Context();
+	}
+
+	@AfterEach
+	void cleanUp() {
+		System.clearProperty(Extension.STRICT_EXTENSION);
 	}
 
 	@Test
-	public void testExtension() {
-		assertWithMessage("TemplateId#getExtension() is not working")
-				.that(TemplateId.CLINICAL_DOCUMENT.getExtension()).isSameAs("2017-07-01");
+	void testRoot() {
+		assertThat(TemplateId.CLINICAL_DOCUMENT.getRoot()).isSameAs("2.16.840.1.113883.10.20.27.1.2");
 	}
 
 	@Test
-	public void testGetTemplateId() {
-		assertWithMessage("TemplateId#getTemplateId() is not working")
-				.that(TemplateId.CLINICAL_DOCUMENT.getTemplateId(new Context()))
+	void testExtension() {
+		assertThat(TemplateId.CLINICAL_DOCUMENT.getExtension()).isSameAs("2017-07-01");
+	}
+
+	@Test
+	void testHumanReadableTitle() {
+		assertThat(TemplateId.CLINICAL_DOCUMENT.getHumanReadableTitle()).isSameAs("Clinical Document");
+	}
+
+	@Test
+	void testHumanReadableTitleDoesntExist() {
+		assertThat(TemplateId.ETHNICITY_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2.getHumanReadableTitle()).isNull();
+	}
+
+	@Test
+	void testGetTemplateId() {
+		assertThat(TemplateId.CLINICAL_DOCUMENT.getTemplateId(new Context()))
 				.isEqualTo(TemplateId.CLINICAL_DOCUMENT.getRoot() + ":" +
 						TemplateId.CLINICAL_DOCUMENT.getExtension());
 	}
 
 	@Test
-	public void testFindByTypeId2() {
+	void testGetTemplateIdHistoricalWithExtension() {
+		Context context = new Context();
+		context.setHistorical(true);
+		assertThat(TemplateId.CLINICAL_DOCUMENT.getTemplateId(context))
+				.isEqualTo(TemplateId.CLINICAL_DOCUMENT.getRoot());
+	}
+
+	@Test
+	void testGetTemplateIdHistoricalNoExtension() {
+		Context context = new Context();
+		context.setHistorical(true);
+		assertThat(TemplateId.PLACEHOLDER.getTemplateId(context))
+				.isEqualTo(TemplateId.PLACEHOLDER.getRoot());
+	}
+
+	@Test
+	void testGetTemplateIdNotHistoricalNoExtension() {
+		Context context = new Context();
+		context.setHistorical(false);
+		assertThat(TemplateId.PLACEHOLDER.getTemplateId(context))
+				.isEqualTo(TemplateId.PLACEHOLDER.getRoot());
+	}
+
+	@Test
+	void testFindByTypeId2() {
 		TemplateId clinicalDocument = TemplateId.CLINICAL_DOCUMENT;
 		TemplateId actual = TemplateId.getTemplateId(clinicalDocument.getRoot(),
 				clinicalDocument.getExtension(), new Context());
 
-		assertWithMessage("TemplateId#getTypeById(String, String) is not working")
-				.that(actual).isSameAs(clinicalDocument);
+		assertThat(actual).isSameAs(clinicalDocument);
 	}
 
-	@Test
-	public void testFindByTypeId2NotExist() {
-		TemplateId actual = TemplateId.getTemplateId(TemplateId.CLINICAL_DOCUMENT.getRoot(),
+	@ParameterizedTest
+	@EnumSource(value = TemplateId.class, mode = EXCLUDE, names = { "CLINICAL_DOCUMENT" })
+	void testInvalidExtensionFindWithNoExtensionEnforcement(TemplateId templateId) {
+		TemplateId actual = TemplateId.getTemplateId(templateId.getRoot(),
 				"nonExistingExtension", new Context());
 
-		assertWithMessage("TemplateId#getTypeById(String, String) is not working")
-				.that(actual).isSameAs(TemplateId.DEFAULT);
+		assertThat(actual).isSameAs(templateId);
+	}
+
+	@ParameterizedTest
+	@EnumSource(value = TemplateId.class)
+	void testInvalidExtensionFindWithExtensionEnforcement(TemplateId templateId) {
+		System.setProperty(Extension.STRICT_EXTENSION, "yep");
+		TemplateId actual = TemplateId.getTemplateId(templateId.getRoot(),
+			"nonExistingExtension", defaultsContext);
+
+		assertThat(actual).isSameAs(TemplateId.UNIMPLEMENTED);
+	}
+
+	@ParameterizedTest
+	@EnumSource(value = TemplateId.class)
+	void testInvalidExtensionFindWithExtensionEnforcementHappy(TemplateId templateId) {
+		System.setProperty(Extension.STRICT_EXTENSION, "yep");
+		TemplateId actual = TemplateId.getTemplateId(templateId.getRoot(),
+			templateId.getExtension(), new Context());
+
+		assertThat(actual).isSameAs(templateId);
+	}
+
+	@ParameterizedTest
+	@EnumSource(value = TemplateId.class, mode = EXCLUDE, names = { "CLINICAL_DOCUMENT" })
+	void testMissingExtensionFindWithNoExtensionEnforcement(TemplateId templateId) {
+		TemplateId actual = TemplateId.getTemplateId(templateId.getRoot(),
+			null, defaultsContext);
+
+		assertThat(actual).isSameAs(templateId);
 	}
 
 	@Test
-	public void testFindByTypeId2NotExistAgain() {
+	void testClinicalDocumentInvalidExtensionFindWithNoExtensionEnforcement() {
+		TemplateId actual = TemplateId.getTemplateId(TemplateId.CLINICAL_DOCUMENT.getRoot(),
+			"nonExistingExtension", defaultsContext);
+
+		assertThat(actual).isSameAs(TemplateId.UNIMPLEMENTED);
+	}
+
+	@Test
+	void testClinicalDocumentMissingExtensionFindWithExtensionEnforcement() {
+		System.setProperty(Extension.STRICT_EXTENSION, "yep");
+		TemplateId actual = TemplateId.getTemplateId(TemplateId.CLINICAL_DOCUMENT.getRoot(),
+			null, defaultsContext);
+
+		assertThat(actual).isSameAs(TemplateId.UNIMPLEMENTED);
+	}
+
+	@Test
+	void testClinicalDocumentMissingExtensionFindWithNoExtensionEnforcement() {
+		TemplateId actual = TemplateId.getTemplateId(TemplateId.CLINICAL_DOCUMENT.getRoot(),
+			null, defaultsContext);
+
+		assertThat(actual).isSameAs(TemplateId.UNIMPLEMENTED);
+	}
+
+	@ParameterizedTest
+	@EnumSource(value = TemplateId.class, mode = EXCLUDE, names = { "CLINICAL_DOCUMENT" })
+	void testMissingExtensionFindWithExtensionEnforcement(TemplateId templateId) {
+		System.setProperty(Extension.STRICT_EXTENSION, "yep");
+		TemplateId actual = TemplateId.getTemplateId(templateId.getRoot(),
+			null, defaultsContext);
+
+		assertThat(actual).isSameAs(templateId);
+	}
+
+	@Test
+	void testFindByTypeId2NotExistAgain() {
 		TemplateId actual = TemplateId.getTemplateId("nonExistingRoot",
-				TemplateId.CLINICAL_DOCUMENT.getExtension(), new Context());
+				TemplateId.CLINICAL_DOCUMENT.getExtension(), defaultsContext);
 
-		assertWithMessage("TemplateId#getTypeById(String, String) is not working")
-				.that(actual).isSameAs(TemplateId.DEFAULT);
+		assertThat(actual).isSameAs(TemplateId.UNIMPLEMENTED);
 	}
 
 	@Test
-	public void testGenerateTemplateIdString() {
+	void testGenerateTemplateIdString() {
 		final String root = "asdf";
 		final String extension = "jkl;";
 		String actual = TemplateId.generateTemplateIdString(root, extension, new Context());
 
-		assertWithMessage("TemplateId#generateTemplateIdString() is not working")
-				.that(actual).isEqualTo(root + ":" + extension);
+		assertThat(actual).isEqualTo(root + ":" + extension);
 	}
 
-	@Test
-	public void valueOfTest() {
-		String actual = TemplateId.valueOf("DEFAULT").getTemplateId(new Context());
+	@Override
+	public Class<? extends Enum<?>> getEnumType() {
+		return TemplateId.class;
+	}
 
-		assertWithMessage("Expect value of to return a TemplateId")
-				.that(actual).isSameAs("default");
+	@Nested
+	static class ExtensionTest implements EnumContract {
+
+		@Override
+		public Class<? extends Enum<?>> getEnumType() {
+			return Extension.class;
+		}
+
 	}
 }

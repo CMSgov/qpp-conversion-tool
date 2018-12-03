@@ -1,15 +1,15 @@
 package gov.cms.qpp.conversion.segmentation;
 
+import gov.cms.qpp.conversion.model.TemplateId;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import gov.cms.qpp.conversion.model.TemplateId;
+import java.util.stream.Stream;
 
 public enum QrdaScope {
 
@@ -43,25 +43,18 @@ public enum QrdaScope {
 	}
 
 	private Set<TemplateId> assemble(Object... tiers) {
-		Set<TemplateId> templates = new HashSet<>();
-
-		Arrays.stream(tiers).forEach(tier -> {
-			if (tier instanceof TemplateId) {
-				templates.add((TemplateId) tier);
-			} else {
-				templates.addAll(((QrdaScope) tier).getValue());
-			}
-		});
-
-		return templates;
+		return Arrays.stream(tiers).flatMap(tier ->
+			tier instanceof TemplateId ? Stream.of((TemplateId) tier) : ((QrdaScope) tier).getValue().stream())
+			.collect(Collectors.toSet());
 	}
 
 	public static QrdaScope getInstanceByName(String name) {
-		Optional<QrdaScope> found = Arrays.stream(QrdaScope.values())
-				.filter(inst -> inst.name().equals(name))
-				.findFirst();
-
-		return found.orElse(null);
+		Objects.requireNonNull(name, "name");
+		String match = name.trim().replace(' ', '_');
+		return Arrays.stream(QrdaScope.values())
+				.filter(value -> value.name().equalsIgnoreCase(match))
+				.findFirst()
+				.orElse(null);
 	}
 
 	public static Set<TemplateId> getTemplates(Collection<QrdaScope> scopes) {
@@ -74,8 +67,8 @@ public enum QrdaScope {
 				.collect(Collectors.toCollection(() -> EnumSet.noneOf(TemplateId.class)));
 	}
 
-	public static String[] getNames() {
-		return Arrays.stream(QrdaScope.class.getEnumConstants()).map(Enum::name).toArray(String[]::new);
+	public static Set<String> getNames() {
+		return Arrays.stream(values()).map(QrdaScope::name).collect(Collectors.toSet());
 	}
 
 	public Set<TemplateId> getValue() {

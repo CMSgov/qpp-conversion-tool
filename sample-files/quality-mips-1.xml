@@ -119,9 +119,9 @@
                <high value="20171231"/>
             </time>
             <assignedEntity>
-               <id root="2.16.840.1.113883.4.6" extension="2567891421"/>
+               <id root="2.16.840.1.113883.4.6" extension="0567891421"/>
                <representedOrganization>
-                  <id root="2.16.840.1.113883.4.2" extension="990000099"/>
+                  <id root="2.16.840.1.113883.4.2" extension="000000099"/>
                   <name>Good Health Clinic</name>
                </representedOrganization>
             </assignedEntity>

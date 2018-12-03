@@ -1,19 +1,23 @@
 package gov.cms.qpp.conversion.model;
 
-import com.google.common.collect.Lists;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
-import org.junit.Test;
-
-import java.util.List;
-
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class NodeTest {
+import java.util.Arrays;
+import java.util.List;
+
+import org.jdom2.Element;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.collect.Lists;
+
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
+
+class NodeTest {
 
 	@Test
-	public void testPut() {
+	void testPut() {
 		Node node = new Node(TemplateId.PLACEHOLDER);
 		node.putValue("DEF", "GHI");
 
@@ -22,7 +26,25 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testChild() {
+	void testNonNullGetValueOrDefault() {
+		Node node = new Node(TemplateId.PLACEHOLDER);
+		node.putValue("DEF", "GHI");
+
+		assertWithMessage("get value should equal put value")
+			.that(node.getValueOrDefault("DEF", "")).isSameAs("GHI");
+	}
+
+	@Test
+	void testNullGetValueOrDefault() {
+		Node node = new Node(TemplateId.PLACEHOLDER);
+		node.putValue("DEF", null);
+
+		assertWithMessage("get value should equal put value")
+			.that(node.getValueOrDefault("DEF", "")).isSameAs("");
+	}
+
+	@Test
+	void testChild() {
 		Node node = new Node(TemplateId.PLACEHOLDER);
 		Node childNode = new Node();
 		childNode.setType(TemplateId.ACI_SECTION);
@@ -33,7 +55,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testToString() {
+	void testToString() {
 		Node node = new Node(TemplateId.PLACEHOLDER);
 		node.putValue("DEF", "GHI");
 
@@ -44,7 +66,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testToStringDepth() {
+	void testToStringDepth() {
 		Node node = new Node();
 
 		Node childNode = new Node();
@@ -64,7 +86,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testValidatedMember() {
+	void testValidatedMember() {
 		Node node = new Node();
 		node.setValidated(true);
 
@@ -72,13 +94,13 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testNotValidatedMember() {
+	void testNotValidatedMember() {
 		Node node = new Node();
 		assertThat(node.isNotValidated()).isTrue();
 	}
 
 	@Test
-	public void testParentMember() {
+	void testParentMember() {
 		Node child = new Node();
 		Node parent = new Node();
 		child.setParent(parent);
@@ -87,7 +109,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testAddNullChild() {
+	void testAddNullChild() {
 		Node node = new Node();
 		node.addChildNode(null);
 
@@ -95,7 +117,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testAddThisChild() {
+	void testAddThisChild() {
 		Node node = new Node();
 		node.addChildNode(node);
 
@@ -103,7 +125,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testFindNode() {
+	void testFindNode() {
 		Node parent = new Node();
 		Node childOne = new Node();
 		Node childTwo = new Node();
@@ -117,7 +139,38 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testFindNoNode() {
+	void testFindNodeLoveThySelf() {
+		Node parent = new Node(TemplateId.PLACEHOLDER);
+		Node onlyChild = new Node(TemplateId.PLACEHOLDER);
+		parent.addChildNodes(onlyChild);
+
+		List<Node> results = parent.findNode(TemplateId.PLACEHOLDER);
+
+		assertWithMessage("should find first node that has the searched id")
+			.that(results).hasSize(2);
+		assertWithMessage("should search self first")
+			.that(results.get(0)).isSameAs(parent);
+	}
+
+	@Test
+	void testFindNodeOrder() {
+		Node carter = new Node(TemplateId.PLACEHOLDER);
+		Node lois = new Node(TemplateId.PLACEHOLDER);
+		Node chris = new Node(TemplateId.PLACEHOLDER);
+		Node meg = new Node(TemplateId.PLACEHOLDER);
+		Node stewie = new Node(TemplateId.PLACEHOLDER);
+		carter.addChildNodes(lois);
+		lois.addChildNodes(chris, meg, stewie);
+		List<Node> order = Arrays.asList(carter, lois, chris, meg, stewie);
+
+		List<Node> results = carter.findNode(TemplateId.PLACEHOLDER);
+
+		assertWithMessage("should prioritize by generation and birth / add order")
+			.that(results).containsExactlyElementsIn(order).inOrder();
+	}
+
+	@Test
+	void testFindNoNode() {
 		Node parent = new Node();
 		Node childOne = new Node();
 		Node childTwo = new Node();
@@ -130,7 +183,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testFindNodeSelfIncluded() {
+	void testFindNodeSelfIncluded() {
 		Node parent = new Node(TemplateId.PLACEHOLDER);
 		Node childOne = new Node(TemplateId.PLACEHOLDER);
 		parent.addChildNode(childOne);
@@ -142,7 +195,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testFindFirstNodeSelf() {
+	void testFindFirstNodeSelf() {
 		Node parent = new Node(TemplateId.PLACEHOLDER);
 		Node childOne = new Node(TemplateId.PLACEHOLDER);
 		parent.addChildNode(childOne);
@@ -153,7 +206,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testFindFirstNodeChildNode() {
+	void testFindFirstNodeChildNode() {
 		Node parent = new Node();
 		Node childOne = new Node();
 		Node childTwo = new Node(TemplateId.PLACEHOLDER);
@@ -166,7 +219,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testFindFirstNoNode() {
+	void testFindFirstNoNode() {
 		Node parent = new Node();
 		Node childOne = new Node();
 		Node childTwo = new Node();
@@ -179,7 +232,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testRemoveValue() {
+	void testRemoveValue() {
 		Node node = new Node();
 		node.putValue("test", "hello");
 		node.removeValue("test");
@@ -188,7 +241,49 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testEquals() {
+	void testRemoveChildNodeNull() {
+		Node node = new Node();
+		assertThat(node.removeChildNode(null)).isFalse();
+	}
+
+	@Test
+	void testRemoveChildNodeSelf() {
+		Node node = new Node();
+		assertThat(node.removeChildNode(node)).isFalse();
+	}
+
+	@Test
+	void testFindParentNodeWithHumanReadableTemplateIdTraverse() {
+		Node topLevelNode = new Node(TemplateId.IA_MEASURE);
+		Node middleLevelNode = new Node(TemplateId.ACI_SECTION, topLevelNode);
+		Node bottomLevelNode = new Node(TemplateId.ACI_AGGREGATE_COUNT, middleLevelNode);
+
+		Node humanReadableNode = bottomLevelNode.findParentNodeWithHumanReadableTemplateId();
+
+		assertThat(humanReadableNode).isSameAs(middleLevelNode);
+		assertThat(humanReadableNode).isNotSameAs(topLevelNode);
+	}
+
+	@Test
+	void testFindParentNodeWithHumanReadableTemplateIdSame() {
+		Node node = new Node(TemplateId.IA_MEASURE);
+
+		Node humanReadableNode = node.findParentNodeWithHumanReadableTemplateId();
+
+		assertThat(humanReadableNode).isSameAs(node);
+	}
+
+	@Test
+	void testFindParentNodeWithHumanReadableTemplateIdNull() {
+		Node node = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+
+		Node humanReadableNode = node.findParentNodeWithHumanReadableTemplateId();
+
+		assertThat(humanReadableNode).isNull();
+	}
+
+	@Test
+	void testEquals() {
 		Node parent = new Node(TemplateId.CLINICAL_DOCUMENT);
 		Node child1 = new Node(TemplateId.IA_SECTION);
 		child1.setParent(parent);
@@ -199,6 +294,7 @@ public class NodeTest {
 		EqualsVerifier.forClass(Node.class)
 			.withPrefabValues(List.class, Lists.newArrayList(new Node()), Lists.newArrayList(new Node(TemplateId.CLINICAL_DOCUMENT), new Node(TemplateId.ACI_NUMERATOR)))
 			.withPrefabValues(Node.class, new Node(TemplateId.ACI_DENOMINATOR), parent)
+			.withPrefabValues(Element.class, new Element("mock-one"), new Element("mock-two"))
 			.withIgnoredFields("parent")
 			.suppress(Warning.NONFINAL_FIELDS)
 			.verify();

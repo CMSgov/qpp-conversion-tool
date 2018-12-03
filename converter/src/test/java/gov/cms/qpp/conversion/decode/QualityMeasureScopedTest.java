@@ -3,63 +3,61 @@ package gov.cms.qpp.conversion.decode;
 
 import com.google.common.collect.Sets;
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
-import gov.cms.qpp.conversion.xml.XmlException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-import static org.junit.Assert.assertEquals;
+import static com.google.common.truth.Truth.assertThat;
 
-public class QualityMeasureScopedTest {
+class QualityMeasureScopedTest {
 	private static String location = "src/test/resources/fixtures/qppct298/cms137v5.xml";
 
 
 	@Test
-	public void internalDecodeValidMeasure137V5Ipop() throws IOException, XmlException {
+	void internalDecodeValidMeasure137V5Ipop() {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, location);
 		long ipops = pluckDescendants(result, TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2, TemplateId.MEASURE_DATA_CMS_V2)
-				.filter(node -> node.getValue(MeasureDataDecoder.MEASURE_TYPE).equals(SubPopulations.IPOP))
+				.filter(node -> SubPopulationLabel.IPOP.hasAlias(node.getValue(MeasureDataDecoder.MEASURE_TYPE)))
 				.count();
 
-		assertEquals("Valid CMS137v5 measure should have 2 IPOP values", ipops, 2);
+		assertThat(ipops).isEqualTo(2);
 	}
 
 	@Test
-	public void internalDecodeValidMeasure137V5Denom() throws IOException, XmlException {
+	void internalDecodeValidMeasure137V5Denom() {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, location);
 		long denom = pluckDescendants(result, TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2, TemplateId.MEASURE_DATA_CMS_V2)
-				.filter(node -> node.getValue(MeasureDataDecoder.MEASURE_TYPE).equals(SubPopulations.DENOM))
+				.filter(node -> node.getValue(MeasureDataDecoder.MEASURE_TYPE).equals(SubPopulationLabel.DENOM.name()))
 				.count();
 
-		assertEquals("Valid CMS137v5 measure should have 2 DENOM values", denom, 2);
+		assertThat(denom).isEqualTo(2);
 	}
 
 	@Test
-	public void internalDecodeValidMeasure137V5Denex() throws IOException, XmlException {
+	void internalDecodeValidMeasure137V5Denex() {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, location);
 		long denex = pluckDescendants(result, TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2, TemplateId.MEASURE_DATA_CMS_V2)
-				.filter(node -> node.getValue(MeasureDataDecoder.MEASURE_TYPE).equals(SubPopulations.DENEX))
+				.filter(node -> node.getValue(MeasureDataDecoder.MEASURE_TYPE).equals(SubPopulationLabel.DENEX.name()))
 				.count();
 
-		assertEquals("Valid CMS137v5 measure should have 2 DENEX values", denex, 2);
+		assertThat(denex).isEqualTo(2);
 	}
 
 	@Test
-	public void internalDecodeValidMeasure137V5Numer() throws IOException, XmlException {
+	void internalDecodeValidMeasure137V5Numer() {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, location);
 		long numer = pluckDescendants(result, TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2, TemplateId.MEASURE_DATA_CMS_V2)
-				.filter(node -> node.getValue(MeasureDataDecoder.MEASURE_TYPE).equals(SubPopulations.NUMER))
+				.filter(node -> node.getValue(MeasureDataDecoder.MEASURE_TYPE).equals(SubPopulationLabel.NUMER.name()))
 				.count();
 
-		assertEquals("Valid CMS137v5 measure should have 2 NUMER values", numer, 2);
+		assertThat(numer).isEqualTo(2);
 	}
 
 	private Stream<Node> pluckDescendants(Node parent, TemplateId... path) {
@@ -71,7 +69,7 @@ public class QualityMeasureScopedTest {
 	}
 
 	private Node scopedConversion(QrdaScope testSection, String path) {
-		Converter converter = new Converter(new PathQrdaSource(Paths.get(path)));
+		Converter converter = new Converter(new PathSource(Paths.get(path)));
 		converter.getContext().setScope(Sets.newHashSet(testSection));
 		converter.transform();
 		return converter.getReport().getDecoded();

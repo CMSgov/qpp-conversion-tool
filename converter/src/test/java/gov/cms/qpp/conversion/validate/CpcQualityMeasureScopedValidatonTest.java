@@ -1,20 +1,17 @@
 package gov.cms.qpp.conversion.validate;
 
-
-import com.google.common.collect.Sets;
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
-import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
-import gov.cms.qpp.conversion.xml.XmlException;
-import org.junit.Test;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -24,17 +21,16 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import com.google.common.collect.Sets;
+import org.junit.jupiter.api.Test;
+
 import static com.google.common.truth.Truth.assertWithMessage;
-import static gov.cms.qpp.conversion.validate.CpcQualityMeasureIdValidator.MISSING_STRATA;
-import static gov.cms.qpp.conversion.validate.CpcQualityMeasureIdValidator.STRATA_MISMATCH;
-import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.INCORRECT_UUID;
 
-
-public class CpcQualityMeasureScopedValidatonTest {
+class CpcQualityMeasureScopedValidatonTest {
 	private static Path baseDir = Paths.get("src/test/resources/fixtures/qppct298/");
 
 	@Test
-	public void validateCms137V5() throws IOException, XmlException {
+	void validateCms137V5() {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5.xml");
 		Set<Detail> details = validateNode(result);
 
@@ -43,65 +39,65 @@ public class CpcQualityMeasureScopedValidatonTest {
 	}
 
 	@Test
-	public void validateCms137V5FailMissingDenomStrata() throws IOException, XmlException {
+	void validateCms137V5FailMissingDenomStrata() {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5.xml");
-		removeMeasureStrata(result, SubPopulations.DENOM);
+		removeMeasureStrata(result, SubPopulationLabel.DENOM.name());
 		Set<Detail> details = validateNode(result);
 
 		assertWithMessage("Missing CMS137v5 DENOM strata should result in errors")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(getMessages(SubPopulations.DENOM,
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(getMessages(SubPopulationLabel.DENOM.name(),
 						"BC948E65-B908-493B-B48B-04AC342D3E6C",
 						"EFB5B088-CE10-43DE-ACCD-9913B7AC12A2", "94B9555F-8700-45EF-B69F-433EBEDE8051"));
 	}
 
 	@Test
-	public void validateCms137V5FailMissingDenexStrata() throws IOException, XmlException {
+	void validateCms137V5FailMissingDenexStrata() {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5.xml");
-		removeMeasureStrata(result, SubPopulations.DENEX);
+		removeMeasureStrata(result, SubPopulationLabel.DENEX.name());
 		Set<Detail> details = validateNode(result);
 
 		assertWithMessage("Missing CMS137v5 DENEX strata should result in errors")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(getMessages(SubPopulations.DENEX,
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(getMessages(SubPopulationLabel.DENEX.name(),
 						"56BC7FA2-C22A-4440-8652-2D3568852C60",
 						"EFB5B088-CE10-43DE-ACCD-9913B7AC12A2", "94B9555F-8700-45EF-B69F-433EBEDE8051"));
 	}
 
 	@Test
-	public void validateCms137V5FailMissingNumerStrata() throws IOException, XmlException {
+	void validateCms137V5FailMissingNumerStrata() {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5.xml");
-		removeMeasureStrata(result, SubPopulations.NUMER);
+		removeMeasureStrata(result, SubPopulationLabel.NUMER.name());
 		Set<Detail> details = validateNode(result);
 
 		assertWithMessage("Missing CMS137v5 NUMER strata should result in errors")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(getMessages(SubPopulations.NUMER,
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(getMessages(SubPopulationLabel.NUMER.name(),
 						"0BBF8596-4CFE-47F4-A0D7-9BEAB94BA4CD",
 						"EFB5B088-CE10-43DE-ACCD-9913B7AC12A2", "94B9555F-8700-45EF-B69F-433EBEDE8051"));
 	}
 
 	@Test
-	public void validateCms137V5FailMissingIpopStrata() throws IOException, XmlException {
+	void validateCms137V5FailMissingIpopStrata() {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5.xml");
 		removeMeasureStrata(result, "IPOP");
 		Set<Detail> details = validateNode(result);
 
 		assertWithMessage("Missing CMS137v5 IPOP strata should result in errors")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(getMessages("IPOP",
 						"EC2C5F63-AF76-4D3C-85F0-5423F8C28541",
 						"EFB5B088-CE10-43DE-ACCD-9913B7AC12A2", "94B9555F-8700-45EF-B69F-433EBEDE8051"));
 	}
 
 	@Test
-	public void validateCms137V5FailMissingMeasure() throws IOException, XmlException {
+	void validateCms137V5FailMissingMeasure() {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5_MissingMeasure.xml");
 		Set<Detail> details = validateNode(result);
-		String message = String.format(INCORRECT_UUID, "CMS137v5", "IPOP,IPP", "EC2C5F63-AF76-4D3C-85F0-5423F8C28541");
+		LocalizedError message = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS137v5", "IPP,IPOP", "EC2C5F63-AF76-4D3C-85F0-5423F8C28541");
 
 		assertWithMessage("Missing CMS137v5 IPOP strata should result in errors")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(message);
 	}
 
@@ -118,7 +114,7 @@ public class CpcQualityMeasureScopedValidatonTest {
 	}
 
 	private Node scopedConversion(QrdaScope testSection, String path) {
-		Converter converter = new Converter(new PathQrdaSource(baseDir.resolve(path)));
+		Converter converter = new Converter(new PathSource(baseDir.resolve(path)));
 		converter.getContext().setScope(Sets.newHashSet(testSection));
 		converter.transform();
 		return converter.getReport().getDecoded().findFirstNode(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
@@ -130,11 +126,11 @@ public class CpcQualityMeasureScopedValidatonTest {
 		return validator.getDetails();
 	}
 
-	private String[] getMessages(String type, String measure, String... subs) {
-		Set<String> messages = new HashSet<>();
-		messages.add(String.format(STRATA_MISMATCH, 0, subs.length, type, measure, Arrays.asList(subs)));
+	private LocalizedError[] getMessages(String type, String measure, String... subs) {
+		Set<LocalizedError> messages = new HashSet<>();
+		messages.add(ErrorCode.CPC_QUALITY_MEASURE_ID_STRATA_MISMATCH.format(0, subs.length, type, measure, Arrays.asList(subs)));
 		Arrays.stream(subs).forEach(sub ->
-				messages.add(String.format(MISSING_STRATA, sub, type, measure)));
-		return messages.toArray(new String[messages.size()]);
+				messages.add(ErrorCode.CPC_QUALITY_MEASURE_ID_MISSING_STRATA.format(sub, type, measure)));
+		return messages.toArray(new LocalizedError[messages.size()]);
 	}
 }

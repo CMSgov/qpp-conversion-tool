@@ -1,24 +1,16 @@
 package gov.cms.qpp.conversion.xml;
 
-import org.junit.Test;
-
 import static com.google.common.truth.Truth.assertWithMessage;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Test class to provide JaCoCo code coverage
  */
-public class XmlExceptionTest {
+class XmlExceptionTest {
 
 	@Test
-	public void xmlExceptionTest() {
-		String reason = "because I said so";
-		XmlException e = new XmlException(reason);
-		assertWithMessage("Expect the message to be the same")
-				.that(e.getMessage()).isSameAs(reason);
-	}
-
-	@Test
-	public void xmlExceptionFromExceptionTest() {
+	void xmlExceptionFromExceptionTest() {
 		String reason = "a reason";
 		XmlException xmlException = new XmlException("meep", new Exception(reason));
 		assertWithMessage("Expected a different reason")

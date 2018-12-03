@@ -1,31 +1,32 @@
 package gov.cms.qpp.acceptance;
 
+import static com.google.common.truth.Truth.assertWithMessage;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.Strata;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-
-public class MeasureDataTest {
+class MeasureDataTest {
 
 	private static Map<String, MeasureConfig> glossaryMap;
 	private static Map<String, MeasureConfig> configMap;
 
-	@BeforeClass
-	public static void setup() throws IOException {
+	@BeforeAll
+	static void setup() {
 		glossaryMap = MeasureConfigs.grabConfiguration("measureGlossary.json");
 		configMap = MeasureConfigs.getConfigurationMap();
 	}
 
 	@Test
-	public void inspectMeasureData() {
+	void inspectMeasureData() {
 		glossaryMap.forEach((key, value) -> {
 			MeasureConfig config = configMap.get(key);
 			assertWithMessage("Missing measure configuration for: %s", key)

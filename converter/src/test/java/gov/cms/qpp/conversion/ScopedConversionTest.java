@@ -5,20 +5,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.collect.Sets;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import gov.cms.qpp.conversion.validate.AciDenominatorValidator;
-import gov.cms.qpp.conversion.validate.AciNumeratorDenominatorValidator;
 import gov.cms.qpp.conversion.validate.AciNumeratorValidator;
-import gov.cms.qpp.conversion.validate.AciSectionValidator;
-import gov.cms.qpp.conversion.validate.AggregateCountValidator;
-import gov.cms.qpp.conversion.validate.IaMeasureValidator;
-import gov.cms.qpp.conversion.validate.IaSectionValidator;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -34,7 +31,7 @@ import static gov.cms.qpp.conversion.util.JsonHelper.readJson;
 /**
  * Verify scoped conversions
  */
-public class ScopedConversionTest {
+class ScopedConversionTest {
 
 	private static final String SUCCESS_MAKER = "../qrda-files/valid-QRDA-III-latest.xml";
 	private static final String ERROR_MAKER = "src/test/resources/negative/angerTheConverter.xml";
@@ -43,10 +40,11 @@ public class ScopedConversionTest {
 
 	/**
 	 * Load fixture json for use as a baseline for expected scoped conversion outcomes.
+	 * @throws IOException 
 	 */
-	@BeforeClass
+	@BeforeAll
 	@SuppressWarnings("unchecked")
-	public static void loadFixtures() throws IOException {
+	static void loadFixtures() throws IOException {
 		fixtures = readJson(Paths.get("src/test/resources/converter/scopedConversionFixture.json"), HashMap.class);
 	}
 
@@ -54,7 +52,7 @@ public class ScopedConversionTest {
 	 * Verify CMS V2 Measure Section conversion
 	 */
 	@Test
-	public void testScopedV2MeasureSectionConversion() throws IOException {
+	void testScopedV2MeasureSectionConversion() {
 		//when
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.MEASURE_SECTION_V2.name());
 		Map<String, Object> content = scopedConversion(testSection);
@@ -69,7 +67,7 @@ public class ScopedConversionTest {
 	 * Verify CMS V2 Measure Reference Results conversion
 	 */
 	@Test
-	public void testScopedCmsV2MeasureReferenceResultsConversion() throws IOException {
+	void testScopedCmsV2MeasureReferenceResultsConversion() {
 		//when
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.name());
 		Map<String, Object> content = scopedConversion(testSection);
@@ -84,7 +82,7 @@ public class ScopedConversionTest {
 	 * Verify CMS V2 Measure Data conversion
 	 */
 	@Test
-	public void testScopedV2MeasureDataConversion() throws IOException {
+	void testScopedV2MeasureDataConversion() {
 		//when
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.MEASURE_DATA_CMS_V2.name());
 		Map<String, Object> content = scopedConversion(testSection);
@@ -99,7 +97,7 @@ public class ScopedConversionTest {
 	 * Verify ACI Section conversion
 	 */
 	@Test
-	public void testScopedAciSectionConversion() throws IOException {
+	void testScopedAciSectionConversion() {
 		//setup
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_SECTION.name());
 		Map<String, Object> content = scopedConversion(testSection);
@@ -115,7 +113,7 @@ public class ScopedConversionTest {
 	 * Verify IA Section conversion
 	 */
 	@Test
-	public void testScopedIaSectionConversion() throws IOException {
+	void testScopedIaSectionConversion() {
 		//when
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.IA_SECTION.name());
 		Map<String, Object> content = scopedConversion(testSection);
@@ -130,7 +128,7 @@ public class ScopedConversionTest {
 	 * Verify ACI Aggregate Count conversion
 	 */
 	@Test
-	public void testScopedAciAggregateCountConversion() throws IOException {
+	void testScopedAciAggregateCountConversion() {
 		//when
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_AGGREGATE_COUNT.name());
 		Map<String, Object> content = scopedConversion(testSection);
@@ -145,7 +143,7 @@ public class ScopedConversionTest {
 	 * Verify ACI Numerator conversion
 	 */
 	@Test
-	public void testScopedAciNumeratorConversion() throws IOException {
+	void testScopedAciNumeratorConversion() {
 		//when
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_NUMERATOR.name());
 		Map<String, Object> content = scopedConversion(testSection);
@@ -160,7 +158,7 @@ public class ScopedConversionTest {
 	 * Verify ACI Denominator conversion
 	 */
 	@Test
-	public void testScopedAciDenominatorConversion() throws IOException {
+	void testScopedAciDenominatorConversion() {
 		//when
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_DENOMINATOR.name());
 		Map<String, Object> content = scopedConversion(testSection);
@@ -175,7 +173,7 @@ public class ScopedConversionTest {
 	 * Verify ACI Numerator Denominator conversion
 	 */
 	@Test
-	public void testScopedAciNumeratorDenominatorConversion() throws IOException {
+	void testScopedAciNumeratorDenominatorConversion() {
 		//when
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_NUMERATOR_DENOMINATOR.name());
 		Map<String, Object> content = scopedConversion(testSection);
@@ -190,7 +188,7 @@ public class ScopedConversionTest {
 	 * Verify Clinical Document conversion
 	 */
 	@Test
-	public void testFullScopeConversion() throws IOException {
+	void testFullScopeConversion() {
 		//when
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.CLINICAL_DOCUMENT.name());
 		Map<String, Object> content = scopedConversion(testSection);
@@ -205,9 +203,10 @@ public class ScopedConversionTest {
 
 	/**
 	 * Verify failure for attempted invalid Clinical Document conversion
+	 * @throws JsonProcessingException 
 	 */
 	@Test
-	public void testNegativeFullScopeConversion() throws IOException {
+	void testNegativeFullScopeConversion() throws JsonProcessingException {
 		//when
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.CLINICAL_DOCUMENT.name());
 		List<Map<String, String>> content = getErrors(errantScopedConversion(testSection));
@@ -220,19 +219,21 @@ public class ScopedConversionTest {
 		assertWithMessage("Errant %s fails as expected", TemplateId.CLINICAL_DOCUMENT)
 				.that(getErrorMessages(content))
 				.containsExactly(
-						AciSectionValidator.MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR,
-						AciNumeratorDenominatorValidator.TOO_MANY_NUMERATORS,
-						String.format(AciNumeratorValidator.NOT_AN_INTEGER_VALUE, AciNumeratorValidator.NUMERATOR_NAME),
-						String.format(AciDenominatorValidator.INVALID_VALUE, AciDenominatorValidator.DENOMINATOR_NAME),
-						IaSectionValidator.REPORTING_PARAM_REQUIREMENT_ERROR,
-						IaMeasureValidator.TYPE_ERROR);
+						ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT.getMessage(),
+						ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
+							.format(AciNumeratorValidator.NUMERATOR_NAME).getMessage(),
+						ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER.format(AciNumeratorValidator.NUMERATOR_NAME, "Bob").getMessage(),
+						ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(AciDenominatorValidator.DENOMINATOR_NAME, "empty").getMessage(),
+						ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM.getMessage(),
+						ErrorCode.IA_MEASURE_INVALID_TYPE.getMessage());
 	}
 
 	/**
 	 * Verify failure for attempted invalid ACI Numerator Denominator conversion
+	 * @throws JsonProcessingException 
 	 */
 	@Test
-	public void testNegativeAciNumeratorDenominatorConversion() throws IOException {
+	void testNegativeAciNumeratorDenominatorConversion() throws JsonProcessingException {
 		//when
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_NUMERATOR_DENOMINATOR.name());
 		List<Map<String, String>> content = getErrors(errantScopedConversion(testSection));
@@ -245,17 +246,19 @@ public class ScopedConversionTest {
 		assertWithMessage("Errant %s fails as expected", TemplateId.ACI_NUMERATOR_DENOMINATOR)
 				.that(getErrorMessages(content))
 				.containsExactly(
-						AciSectionValidator.MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR,
-						AciNumeratorDenominatorValidator.TOO_MANY_NUMERATORS,
-						String.format(AciNumeratorValidator.NOT_AN_INTEGER_VALUE, AciNumeratorValidator.NUMERATOR_NAME),
-						String.format(AciDenominatorValidator.INVALID_VALUE, AciDenominatorValidator.DENOMINATOR_NAME));
+						ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT.getMessage(),
+						ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
+							.format(AciNumeratorValidator.NUMERATOR_NAME).getMessage(),
+						ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER.format(AciNumeratorValidator.NUMERATOR_NAME, "Bob").getMessage(),
+						ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(AciDenominatorValidator.DENOMINATOR_NAME, "empty").getMessage());
 	}
 
 	/**
 	 * Verify failure for attempted invalid IA Section conversion
+	 * @throws JsonProcessingException 
 	 */
 	@Test
-	public void testNegativeIaSectionConversion() throws IOException {
+	void testNegativeIaSectionConversion() throws JsonProcessingException {
 		//when
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.IA_SECTION.name());
 		List<Map<String, String>> content = getErrors(errantScopedConversion(testSection));
@@ -268,15 +271,16 @@ public class ScopedConversionTest {
 		assertWithMessage("Errant %s fails as expected", TemplateId.IA_SECTION)
 				.that(getErrorMessages(content))
 				.containsExactly(
-						IaSectionValidator.REPORTING_PARAM_REQUIREMENT_ERROR,
-						IaMeasureValidator.TYPE_ERROR);
+						ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM.getMessage(),
+					ErrorCode.IA_MEASURE_INVALID_TYPE.getMessage());
 	}
 
 	/**
 	 * Verify failure for attempted invalid ACI Aggregate Count conversion
+	 * @throws JsonProcessingException 
 	 */
 	@Test
-	public void testNegativeAciAggregateCountConversion() throws IOException {
+	void testNegativeAciAggregateCountConversion() throws JsonProcessingException {
 		//when
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_AGGREGATE_COUNT.name());
 		List<Map<String, String>> content = getErrors(errantScopedConversion(testSection));
@@ -289,21 +293,21 @@ public class ScopedConversionTest {
 		assertWithMessage("Errant %s fails as expected", TemplateId.ACI_AGGREGATE_COUNT)
 				.that(getErrorMessages(content))
 				.containsExactly(
-						AggregateCountValidator.TYPE_ERROR,
-						AggregateCountValidator.VALUE_ERROR);
+					ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER.getMessage(),
+					ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(TemplateId.PLACEHOLDER.name(), 0).getMessage());
 	}
 
 	@SuppressWarnings("unchecked")
 	private Map<String, Object> scopedConversion(QrdaScope testSection) {
-		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
+		Converter converter = new Converter(new PathSource(Paths.get(SUCCESS_MAKER)));
 		converter.getContext().setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
-		return (Map<String, Object>) JsonHelper.readJson(qpp.toString(), HashMap.class);
+		return JsonHelper.readJson(qpp.toString(), HashMap.class);
 	}
 
 	@SuppressWarnings("unchecked")
 	private Map<String, Object> errantScopedConversion(QrdaScope testSection) throws JsonProcessingException {
-		Converter converter = new Converter(new PathQrdaSource(Paths.get(ERROR_MAKER)));
+		Converter converter = new Converter(new PathSource(Paths.get(ERROR_MAKER)));
 		converter.getContext().setScope(Sets.newHashSet(testSection));
 		Map<String, Object> content = null;
 		try {

@@ -1,34 +1,40 @@
 package gov.cms.qpp.conversion.api.services;
 
-
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.core.env.Environment;
-import org.springframework.core.task.TaskExecutor;
+import gov.cms.qpp.test.MockitoExtension;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.QueryResultPage;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.springframework.core.env.Environment;
+import org.springframework.core.task.TaskExecutor;
 
-@RunWith(MockitoJUnitRunner.class)
-public class DbServiceImplTest {
+@ExtendWith(MockitoExtension.class)
+class DbServiceImplTest {
 
-	@InjectMocks
 	private DbServiceImpl underTest;
 
 	@Mock
@@ -40,8 +46,10 @@ public class DbServiceImplTest {
 	@Mock
 	private Environment environment;
 
-	@Before
-	public void before() {
+	@BeforeEach
+	void before() {
+		Optional<DynamoDBMapper> dbMapperWrapper = Optional.of(dbMapper);
+		underTest = new DbServiceImpl(taskExecutor, dbMapperWrapper, environment);
 		doAnswer(invocationOnMock -> {
 			Runnable method = invocationOnMock.getArgument(0);
 			CompletableFuture.runAsync(method);
@@ -50,7 +58,7 @@ public class DbServiceImplTest {
 	}
 
 	@Test
-	public void testWriteByNull() {
+	void testWriteByNull() {
 		when(environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE)).thenReturn(null);
 
 		Metadata meta = writeMeta();
@@ -60,7 +68,7 @@ public class DbServiceImplTest {
 	}
 
 	@Test
-	public void testWriteByEmpty() {
+	void testWriteByEmpty() {
 		when(environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE)).thenReturn("");
 
 		Metadata meta = writeMeta();
@@ -70,7 +78,7 @@ public class DbServiceImplTest {
 	}
 
 	@Test
-	public void testNoWriteBecauseNoAudit() {
+	void testNoWriteBecauseNoAudit() {
 		when(environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE)).thenReturn("trueOrSomething");
 
 		Metadata metadataIn = new Metadata();
@@ -80,7 +88,35 @@ public class DbServiceImplTest {
 
 		verifyZeroInteractions(dbMapper);
 		assertWithMessage("The returned metadata must be an empty metadata.")
-				.that(metadataOut).isEqualTo(new Metadata());
+				.that(metadataOut.getUuid()).isNull();
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	void testGetUnprocessedCpcPlusMetaData() {
+		int itemsPerPartition = 2;
+
+		QueryResultPage<Metadata> mockMetadataPage = mock(QueryResultPage.class);
+		when(mockMetadataPage.getResults()).thenReturn(Stream.generate(Metadata::new).limit(itemsPerPartition).collect(Collectors.toList()));
+		when(dbMapper.queryPage(eq(Metadata.class), any(DynamoDBQueryExpression.class))).thenReturn(mockMetadataPage);
+
+		List<Metadata> metaDataList = underTest.getUnprocessedCpcPlusMetaData();
+
+		verify(dbMapper, times(Constants.CPC_DYNAMO_PARTITIONS)).queryPage(eq(Metadata.class), any(DynamoDBQueryExpression.class));
+		assertThat(metaDataList).hasSize(itemsPerPartition * Constants.CPC_DYNAMO_PARTITIONS);
+	}
+
+	@Test
+	void testGetMetadataById() {
+		String fakeUuid = "1337-f4ke-uuid";
+
+		when(dbMapper.load(eq(Metadata.class), anyString())).thenReturn(new Metadata());
+
+		Metadata fakeMetadata = underTest.getMetadataById(fakeUuid);
+
+		verify(dbMapper, times(1)).load(eq(Metadata.class), anyString());
+
+		assertThat(fakeMetadata).isNotNull();
 	}
 
 	private Metadata writeMeta() {
@@ -92,4 +128,3 @@ public class DbServiceImplTest {
 		return writeResult.join();
 	}
 }
-

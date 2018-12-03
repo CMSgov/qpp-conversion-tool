@@ -1,17 +1,16 @@
 package gov.cms.qpp.conversion.api.exceptions;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
-public class UncheckedInterruptedExceptionTest {
+class UncheckedInterruptedExceptionTest {
 
 	@Test
-	public void testConstructor() {
+	void testConstructor() {
 		InterruptedException interruptedException = new InterruptedException();
 		UncheckedInterruptedException uncheckedInterruptedException = new UncheckedInterruptedException(interruptedException);
 
-		assertWithMessage("The cause throwable was incorrect.")
-				.that(uncheckedInterruptedException).hasCauseThat().isEqualTo(interruptedException);
+		assertThat(uncheckedInterruptedException).hasCauseThat().isEqualTo(interruptedException);
 	}
 }

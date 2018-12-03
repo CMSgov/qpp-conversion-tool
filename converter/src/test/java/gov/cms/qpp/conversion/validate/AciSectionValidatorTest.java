@@ -1,30 +1,28 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.util.Set;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class AciSectionValidatorTest {
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+
+class AciSectionValidatorTest {
+
 	private static final String VALID_ACI_MEASURE = "ACI_EP_1";
 	private Node reportingParamNode;
 	private Node aciNumeratorDenominatorNode;
 	private Node measureNode;
 	private Node aciSectionNode;
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
-	@Before
-	public void setUpAciSectionNode() {
+	@BeforeEach
+	void setUpAciSectionNode() {
 		reportingParamNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR);
 		measureNode = new Node(TemplateId.MEASURE_PERFORMED);
@@ -35,7 +33,7 @@ public class AciSectionValidatorTest {
 	}
 
 	@Test
-	public void testNoReportingParamPresent() {
+	void testNoReportingParamPresent() {
 		aciSectionNode.addChildNodes(aciNumeratorDenominatorNode, measureNode);
 
 		AciSectionValidator aciSectionValidator = new AciSectionValidator();
@@ -43,12 +41,12 @@ public class AciSectionValidatorTest {
 		Set<Detail> errors = aciSectionValidator.validateSingleNode(aciSectionNode);
 
 		assertWithMessage("error should be about missing proportion node")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(AciSectionValidator.MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT);
 	}
 
 	@Test
-	public void testTooManyReportingParams() {
+	void testTooManyReportingParams() {
 		Node invalidReportingParamNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		aciSectionNode.addChildNodes(reportingParamNode, invalidReportingParamNode, aciNumeratorDenominatorNode, measureNode);
 
@@ -57,7 +55,7 @@ public class AciSectionValidatorTest {
 		Set<Detail> errors = aciSectionValidator.validateSingleNode(aciSectionNode);
 
 		assertWithMessage("error should be about missing required Measure")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(AciSectionValidator.MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT);
 	}
 }

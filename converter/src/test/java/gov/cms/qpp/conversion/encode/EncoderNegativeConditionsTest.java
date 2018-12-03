@@ -1,21 +1,23 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
+import static com.google.common.truth.Truth.assertThat;
+
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-public class EncoderNegativeConditionsTest {
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+
+class EncoderNegativeConditionsTest {
 
 	@Test
-	public void testNullEncoder() {
+	void testNullEncoder() {
 		QppOutputEncoder encoder = new QppOutputEncoder(new Context());
 
 		Node aNode = new Node();
@@ -31,19 +33,18 @@ public class EncoderNegativeConditionsTest {
 		try {
 			encoder.encode(new BufferedWriter(sw));
 		} catch (EncodeException e) {
-			fail("Failure to encode: " + e.getMessage());
+			Assertions.fail("Failure to encode: " + e.getMessage());
 		}
 
 		// NOTE: This test is only relevant in that it finds the deep value but
 		// it is not actually a result
 		String expected = "null";
-		assertWithMessage("expected encoder to return an empty string")
-				.that(sw.toString())
+		assertThat(sw.toString())
 				.isEqualTo(expected);
 	}
 
 	@Test
-	public void testExceptionAddsValidation() throws EncodeException {
+	void testExceptionAddsValidation() throws EncodeException {
 		Node numeratorDenominatorNode;
 		List<Node> nodes;
 
@@ -61,9 +62,8 @@ public class EncoderNegativeConditionsTest {
 
 		encoder.encode(new BufferedWriter(failWrite));
 
-		assertWithMessage("Should contain one error").that(encoder.getDetails()).hasSize(1);
-		assertWithMessage("Should have same correct message")
-				.that(encoder.getDetails().get(0).getMessage())
-				.isEqualTo("Failure to encode");
+		assertThat(encoder.getDetails()).hasSize(1);
+		assertThat(encoder.getDetails().get(0).getMessage())
+				.isEqualTo("Fake IOException");
 	}
 }

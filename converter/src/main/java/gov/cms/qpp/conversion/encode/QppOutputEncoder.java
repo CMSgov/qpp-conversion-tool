@@ -4,9 +4,10 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
-import gov.cms.qpp.conversion.model.TemplateId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 /**
  * Top level Encoder for serializing into QPP format.
@@ -17,18 +18,15 @@ public class QppOutputEncoder extends JsonOutputEncoder {
 	protected final Registry<JsonOutputEncoder> encoders;
 
 	protected final Context context;
-	private final TemplateId template;
 
 	public QppOutputEncoder(Context context) {
 		this.context = context;
 		this.encoders = context.getRegistry(Encoder.class);
-		Encoder enc = this.getClass().getAnnotation(Encoder.class);
-		template = (enc != null) ? enc.value() : TemplateId.DEFAULT;
 	}
 
 	@Override
 	public final void encode(JsonWrapper wrapper, Node node) {
-		DEV_LOG.debug("Using " + template + " encoder to encode " + node);
+		DEV_LOG.debug("Using {} to encode {}", this.getClass().getName(), node);
 		super.encode(wrapper, node);
 	}
 
@@ -58,20 +56,7 @@ public class QppOutputEncoder extends JsonOutputEncoder {
 	 * @param leafLabel encoded json attribute name
 	 */
 	void maintainContinuity(JsonWrapper wrapper, Node node, String leafLabel) {
-		JsonWrapper throwAway = new JsonWrapper();
-		JsonOutputEncoder used = encoders.get(node.getType());
-		used.encode(throwAway, node);
-		maintainContinuity(wrapper, throwAway, leafLabel);
-	}
-
-	/**
-	 * Convenience override for {@link QppOutputEncoder#maintainContinuity(JsonWrapper, Node, String)}
-	 *
-	 * @param wrapper parent wrapper
-	 * @param other wrapper whose metadata is to be merged with parent
-	 * @param leafLabel json attribute name
-	 */
-	void maintainContinuity(JsonWrapper wrapper, JsonWrapper other, String leafLabel) {
-		wrapper.mergeMetadata(other, leafLabel);
+		Map<String, String> otherMeta = wrapper.createMetaMap(node, leafLabel);
+		wrapper.mergeMetadata(otherMeta);
 	}
 }

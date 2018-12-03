@@ -1,9 +1,16 @@
 package gov.cms.qpp.conversion.model.error;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.io.Serializable;
+import java.util.Objects;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.google.common.base.MoreObjects;
+
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 
 /**
  * Holds the error information from Validators.
@@ -11,17 +18,18 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Detail implements Serializable {
 	private static final long serialVersionUID = 8818544157552590676L;
-	@JsonProperty("message")
+
+	private Integer errorCode;
 	private String message;
-	@JsonProperty("path")
 	private String path = "";
-	@JsonProperty("value")
+	private Integer line;
+	private Integer column;
 	private String value;
-	@JsonProperty("type")
 	private String type;
+	private String location;
 
 	/**
-	 * Dummy constructor for Jackson mapping
+	 * Dummy constructor for ORM
 	 */
 	public Detail() {
 		//Dummy constructor for jackson mapping
@@ -29,44 +37,99 @@ public class Detail implements Serializable {
 
 	/**
 	 * Copy constructor
+	 *
+	 * @param detail object from which to copy
 	 */
 	public Detail(Detail detail) {
-		this(detail.getMessage(), detail.getPath(), detail.getValue(), detail.getType());
+		errorCode = detail.errorCode;
+		message = detail.message;
+		path = detail.path;
+		value = detail.value;
+		type = detail.type;
+		line = detail.line;
+		column = detail.column;
+		location = detail.location;
 	}
 
 	/**
-	 * Constructs a {@code Detail} with just a description.
+	 * Creates a mutable Detail based on the given error and node
 	 *
-	 * @param text A description of the error.
+	 * @param error error to be added
+	 * @param node node that gives the error context
+	 * @return detail for given error
 	 */
-	public Detail(String text) {
-		this.message = text;
+	public static Detail forErrorAndNode(LocalizedError error, Node node) {
+		Detail detail = forErrorCode(error);
+
+		if (node != null) {
+			if (node.getLine() != Node.DEFAULT_LOCATION_NUMBER) {
+				detail.setLine(node.getLine());
+			}
+
+			if (node.getColumn() != Node.DEFAULT_LOCATION_NUMBER) {
+				detail.setColumn(node.getColumn());
+			}
+
+			detail.setPath(node.getOrComputePath());
+			detail.setLocation(computeLocation(node));
+		}
+
+		return detail;
 	}
 
 	/**
-	 * Constructs a {@code Detail} with a description and an path to point where the error is in the original document.
+	 * Creates a mutable Detail based on the given error
 	 *
-	 * @param text A description of the error.
-	 * @param path A path to where the error is.
+	 * @param error error to be added
+	 * @return detail for given error
 	 */
-	public Detail(String text, String path) {
-		this.message = text;
-		this.path = path;
+	public static Detail forErrorCode(LocalizedError error) {
+		Objects.requireNonNull(error, "error");
+
+		Detail detail = new Detail();
+		detail.setErrorCode(error.getErrorCode().getCode());
+		detail.setMessage(error.getMessage());
+		return detail;
+	}
+
+	private static String computeLocation(Node node) {
+
+		StringBuilder location = new StringBuilder();
+
+		Node importantParentNode = node.findParentNodeWithHumanReadableTemplateId();
+
+		if (importantParentNode != null) {
+			String importantParentTitle = importantParentNode.getType().getHumanReadableTitle();
+			String possibleMeasureId = importantParentNode.getValue("measureId");
+
+			location.append(importantParentTitle);
+
+			if (!StringUtils.isEmpty(possibleMeasureId)) {
+				location.append(" ");
+				location.append(possibleMeasureId);
+				String possibleElectronicMeasureId = MeasureConfigHelper.getMeasureConfigIdByUuidOrDefault(possibleMeasureId);
+				if (!StringUtils.isEmpty(possibleElectronicMeasureId)) {
+					location.append(" (");
+					location.append(possibleElectronicMeasureId);
+					location.append(")");
+				}
+			}
+		}
+
+		return location.toString();
 	}
 
 	/**
-	 * Constructs a {@code Detail} with a description and an path to point where the error is in the original document
-	 * as well as stating the offending value and a classification {@link Detail#type}.
+	 * The code for the error
 	 *
-	 * @param text A description of the error.
-	 * @param path A path to where the error is.
-	 * @param value The offending value.
-	 * @param type A classification of the error.
+	 * @return An {@link ErrorCode}
 	 */
-	public Detail(String text, String path, String value, String type) {
-		this(text, path);
-		this.value = value;
-		this.type = type;
+	public Integer getErrorCode() {
+		return errorCode;
+	}
+
+	public void setErrorCode(Integer errorCode) {
+		this.errorCode = errorCode;
 	}
 
 	/**
@@ -74,14 +137,12 @@ public class Detail implements Serializable {
 	 *
 	 * @return An error description.
 	 */
-	@JsonProperty("message")
 	public String getMessage() {
 		return message;
 	}
 
-	@JsonProperty("message")
-	public void setMessage(String newMessage) {
-		message = newMessage;
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 	/**
@@ -96,10 +157,46 @@ public class Detail implements Serializable {
 	/**
 	 * Sets the path that this error references.
 	 *
-	 * @param newPath The path that this error references.
+	 * @param path The path that this error references.
 	 */
-	public void setPath(String newPath) {
-		path = newPath;
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	/**
+	 * Gets the line of the submitted document that caused this error
+	 *
+	 * @return The line of the submitted document that caused this error
+	 */
+	public Integer getLine() {
+		return line;
+	}
+
+	/**
+	 * Sets the line of the submitted document that caused this error
+	 *
+	 * @param path The line of the submitted document that caused this error
+	 */
+	public void setLine(Integer line) {
+		this.line = line;
+	}
+
+	/**
+	 * Gets the line of the submitted document that caused this error
+	 *
+	 * @return The line of the submitted document that caused this error
+	 */
+	public Integer getColumn() {
+		return column;
+	}
+
+	/**
+	 * Sets the column of the submitted document that caused this error
+	 *
+	 * @param path The column of the submitted document that caused this error
+	 */
+	public void setColumn(Integer column) {
+		this.column = column;
 	}
 
 	/**
@@ -107,13 +204,12 @@ public class Detail implements Serializable {
 	 *
 	 * @return The value that this error references.
 	 */
-	@JsonProperty("value")
 	public String getValue() {
 		return value;
 	}
 
-	public void setValue(String newValue) {
-		value = newValue;
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 	/**
@@ -121,13 +217,30 @@ public class Detail implements Serializable {
 	 *
 	 * @return The type that this error references.
 	 */
-	@JsonProperty("type")
 	public String getType() {
 		return type;
 	}
 
-	public void setType(String newType) {
-		type = newType;
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	/**
+	 * The human readable location where this error occurred.
+	 *
+	 * @return The location.
+	 */
+	public String getLocation() {
+		return location;
+	}
+
+	/**
+	 * Sets the human readable location where this error occurred.
+	 *
+	 * @param location The location.
+	 */
+	public void setLocation(final String location) {
+		this.location = location;
 	}
 
 	/**
@@ -135,13 +248,15 @@ public class Detail implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder sb = new StringBuilder("Detail{");
-		sb.append("message='").append(message).append('\'');
-		sb.append(", path='").append(path).append('\'');
-		sb.append(", value='").append(value).append('\'');
-		sb.append(", type='").append(type).append('\'');
-		sb.append('}');
-		return sb.toString();
+		return MoreObjects.toStringHelper(this)
+				.add("errorCode", errorCode)
+				.add("message", message)
+				.add("path", path)
+				.add("value", value)
+				.add("type", type)
+				.add("line", line)
+				.add("column", column)
+				.toString();
 	}
 
 	/**
@@ -160,21 +275,17 @@ public class Detail implements Serializable {
 			return false;
 		}
 
-		Detail detail = (Detail) o;
-
-		if (message != null ? !message.equals(detail.message) : detail.message != null) {
-			return false;
-		}
-
-		if (path != null ? !path.equals(detail.path) : detail.path != null) {
-			return false;
-		}
-
-		if (value != null ? !value.equals(detail.value) : detail.value != null) {
-			return false;
-		}
-
-		return type != null ? type.equals(detail.type) : detail.type == null;
+		Detail that = (Detail) o;
+		return new EqualsBuilder()
+				.append(errorCode, that.errorCode)
+				.append(message, that.message)
+				.append(path, that.path)
+				.append(value, that.value)
+				.append(type, that.type)
+				.append(line, that.line)
+				.append(column, that.column)
+				.append(location, that.location)
+				.isEquals();
 	}
 
 	/**
@@ -184,10 +295,6 @@ public class Detail implements Serializable {
 	 */
 	@Override
 	public int hashCode() {
-		int result = message != null ? message.hashCode() : 0;
-		result = 31 * result + (path != null ? path.hashCode() : 0);
-		result = 31 * result + (value != null ? value.hashCode() : 0);
-		result = 31 * result + (type != null ? type.hashCode() : 0);
-		return result;
+		return Objects.hash(errorCode, message, path, value, type, line, column, location);
 	}
 }

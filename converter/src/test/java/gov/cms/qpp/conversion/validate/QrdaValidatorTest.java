@@ -1,12 +1,10 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.TestHelper;
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.model.ComponentKey;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Program;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.Detail;
+import static com.google.common.truth.Truth.assertWithMessage;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,10 +12,13 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.google.common.truth.Truth.assertWithMessage;
+import gov.cms.qpp.TestHelper;
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.model.ComponentKey;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Program;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.Detail;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(QrdaValidator.class)
@@ -31,8 +32,12 @@ public class QrdaValidatorTest {
 	private static final TemplateId TEST_REQUIRED_TEMPLATE_ID = TemplateId.ACI_NUMERATOR_DENOMINATOR;
 	private static final TemplateId TEST_OPTIONAL_TEMPLATE_ID = TemplateId.PLACEHOLDER;
 
-	private static final Detail TEST_VALIDATION_ERROR_FOR_SINGLE_NODE =
-		new Detail("single node validation error");
+	private static final Detail TEST_VALIDATION_ERROR_FOR_SINGLE_NODE;
+
+	static {
+		TEST_VALIDATION_ERROR_FOR_SINGLE_NODE = new Detail();
+		TEST_VALIDATION_ERROR_FOR_SINGLE_NODE.setMessage("single node validation error");
+	}
 
 	@Before
 	public void beforeEachTest() throws Exception {
@@ -63,7 +68,6 @@ public class QrdaValidatorTest {
 
 	@Test
 	public void testValidateMultipleNodes() {
-
 		//set-up
 		Node testChildNode1 = new Node(TEST_REQUIRED_TEMPLATE_ID);
 		final String testKey = "testKey";

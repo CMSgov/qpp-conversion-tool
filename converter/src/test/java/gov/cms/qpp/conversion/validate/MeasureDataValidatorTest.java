@@ -1,36 +1,38 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.TestHelper;
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
-import gov.cms.qpp.conversion.decode.QppXmlDecoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.TransformException;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
-import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.junit.Test;
+import static com.google.common.truth.Truth.assertWithMessage;
+import static gov.cms.qpp.conversion.validate.MeasureDataValidator.EMPTY_POPULATION_ID;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-import static gov.cms.qpp.conversion.validate.MeasureDataValidator.MISSING_AGGREGATE_COUNT;
+import gov.cms.qpp.conversion.decode.QrdaDecoderEngine;
+import org.junit.jupiter.api.Test;
+
+import gov.cms.qpp.TestHelper;
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathSource;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+import gov.cms.qpp.conversion.xml.XmlUtils;
 
 /**
  * Test the MeasureData Validator
  */
-public class MeasureDataValidatorTest {
+class MeasureDataValidatorTest {
 
 	@Test
-	public void internalValidateSingleNode() throws Exception {
+	void internalValidateSingleNode() throws Exception {
 		String happy = TestHelper.getFixture("measureDataHappy.xml");
-		Node placeholder = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(happy));
+		Node placeholder = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(happy));
 		MeasureDataValidator validator = new MeasureDataValidator();
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
@@ -41,19 +43,19 @@ public class MeasureDataValidatorTest {
 	}
 
 	@Test
-	public void missingAggregateCount() throws Exception {
+	void missingAggregateCount() {
 		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		MeasureDataValidator validator = new MeasureDataValidator();
 		validator.internalValidateSingleNode(testNode);
 
 		Set<Detail> errors = validator.getDetails();
 		assertWithMessage("missing error")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(MISSING_AGGREGATE_COUNT);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(EMPTY_POPULATION_ID));
 	}
 
 	@Test
-	public void invalidAggregateCount() throws Exception {
+	void invalidAggregateCount() throws Exception {
 		Node aggregateCount = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		testNode.addChildNode(aggregateCount);
@@ -63,12 +65,12 @@ public class MeasureDataValidatorTest {
 
 		Set<Detail> errors = validator.getDetails();
 		assertWithMessage("Should result in a type error")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(AggregateCountValidator.TYPE_ERROR);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER);
 	}
 
 	@Test
-	public void duplicateAggregateCountsFails() throws Exception {
+	void duplicateAggregateCountsFails() throws Exception {
 		Node aggregateCount = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		aggregateCount.putValue("aggregateCount", "100");
 		aggregateCount.putValue("aggregateCount", "200", false);
@@ -79,12 +81,12 @@ public class MeasureDataValidatorTest {
 
 		Set<Detail> errors = validator.getDetails();
 		assertWithMessage("missing error")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(AggregateCountValidator.VALUE_ERROR);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(TemplateId.MEASURE_DATA_CMS_V2.name(), 2));
 	}
 
 	@Test
-	public void negativeAggregateCountsFails() throws Exception {
+	void negativeAggregateCountsFails() throws Exception {
 		Node aggregateCount = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		aggregateCount.putValue("aggregateCount", "-1");
 		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
@@ -94,17 +96,17 @@ public class MeasureDataValidatorTest {
 
 		Set<Detail> errors = validator.getDetails();
 		assertWithMessage("missing error")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(MeasureDataValidator.INVALID_VALUE);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.MEASURE_DATA_VALUE_NOT_INTEGER.format(EMPTY_POPULATION_ID));
 	}
 
 	@Test
-	public void multipleNegativeMeasureDataTest() throws Exception {
+	void multipleNegativeMeasureDataTest() {
 		//setup
 		Path path = Paths.get("src/test/resources/negative/angerMeasureDataValidations.xml");
 
 		//execute
-		Converter converter = new Converter(new PathQrdaSource(path));
+		Converter converter = new Converter(new PathSource(path));
 		AllErrors allErrors = new AllErrors();
 		try {
 			converter.transform();
@@ -115,10 +117,10 @@ public class MeasureDataValidatorTest {
 		List<Detail> errors = getErrors(allErrors);
 
 		assertWithMessage("Must contain the error")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsAllOf(AggregateCountValidator.TYPE_ERROR,
-						AggregateCountValidator.VALUE_ERROR,
-						MeasureDataValidator.INVALID_VALUE);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsAllOf(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
+						ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(TemplateId.MEASURE_DATA_CMS_V2.name(), 2),
+						ErrorCode.MEASURE_DATA_VALUE_NOT_INTEGER.format("58347456-D1F3-4BBB-9B35-5D42825A0AB3"));
 	}
 
 	private List<Detail> getErrors(AllErrors content) {

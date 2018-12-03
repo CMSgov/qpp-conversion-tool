@@ -1,8 +1,6 @@
 package gov.cms.qpp.conversion.util;
 
-import gov.cms.qpp.conversion.model.validation.MeasureConfig;
-import org.junit.Test;
-import org.reflections.util.ClasspathHelper;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -10,16 +8,19 @@ import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.Map;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.reflections.util.ClasspathHelper;
 
-/**
- * Test class to increase JaCoCo code coverage
- */
-public class JsonHelperTest {
+import com.jayway.jsonpath.TypeRef;
+
+import gov.cms.qpp.conversion.model.validation.MeasureConfig;
+import gov.cms.qpp.test.helper.HelperContract;
+
+class JsonHelperTest implements HelperContract {
 
 	@Test
-	public void privateConstructorTest() throws Exception {
+	void privateConstructorTest() throws Exception {
 		// reflection concept to get constructor of a Singleton class.
 		Constructor<JsonHelper> constructor = JsonHelper.class.getDeclaredConstructor();
 		// change the accessibility of constructor for outside a class object creation.
@@ -34,43 +35,48 @@ public class JsonHelperTest {
 	}
 
 	@Test
-	public void readJsonAtJsonPath() throws Exception {
+	void readJsonAtJsonPath() throws Exception {
 		String measureDataFileName = "measures-data.json";
 		List<MeasureConfig> configurations;
 		InputStream measuresInput = ClasspathHelper.contextClassLoader().getResourceAsStream(measureDataFileName);
-		configurations = JsonHelper.readJsonAtJsonPath(measuresInput, "$", List.class);
+		configurations = JsonHelper.readJsonAtJsonPath(measuresInput, "$", new TypeRef<List<MeasureConfig>>() { });
 
 		assertWithMessage("Expect to get a List of measureConfigs")
 				.that(configurations).isNotEmpty();
 	}
 
 	@Test
-	public void exceptionForReadJsonInputStream() {
+	void exceptionForReadJsonInputStream() {
 		String testJson = "{ \"DogCow\": [ }";
 
 		try {
 			JsonHelper.readJson(new ByteArrayInputStream(testJson.getBytes()), Map.class);
-			fail("An exception should have been thrown.");
+			Assertions.fail("An exception should have been thrown.");
 		} catch(JsonReadException exception) {
 			assertWithMessage("Wrong exception reason.")
 					.that(exception).hasMessageThat().isSameAs("Problem parsing json string");
 		} catch(Exception exception) {
-			fail("Incorrect exception was thrown.");
+			Assertions.fail("Incorrect exception was thrown.");
 		}
 	}
 
 	@Test
-	public void exceptionForReadJsonString() {
+	void exceptionForReadJsonString() {
 		String testJson = "{ \"DogCow\": [ }";
 
 		try {
 			JsonHelper.readJson(testJson, Map.class);
-			fail("An exception should have been thrown.");
+			Assertions.fail("An exception should have been thrown.");
 		} catch(JsonReadException exception) {
 			assertWithMessage("Wrong exception reason.")
 					.that(exception).hasMessageThat().isSameAs("Problem parsing json string");
 		} catch(Exception exception) {
-			fail("Incorrect exception was thrown.");
+			Assertions.fail("Incorrect exception was thrown.");
 		}
+	}
+
+	@Override
+	public Class<?> getHelperClass() {
+		return JsonHelper.class;
 	}
 }

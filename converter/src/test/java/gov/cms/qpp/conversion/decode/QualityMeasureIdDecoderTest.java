@@ -1,23 +1,24 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.jdom2.Element;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.jdom2.Element;
-import org.junit.Before;
-import org.junit.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 /**
  * Test for the QualityMeasureIdDecoder
  */
-public class QualityMeasureIdDecoderTest {
+class QualityMeasureIdDecoderTest {
 	private QualityMeasureIdDecoder objectUnderTest;
 
-	@Before
-	public void setup() {
+	@BeforeEach
+	void setup() {
 		objectUnderTest = new QualityMeasureIdDecoder(new Context());
 	}
 
@@ -27,16 +28,14 @@ public class QualityMeasureIdDecoderTest {
 	 * @throws XmlException when parsing xml fragment fails.
 	 */
 	@Test
-	public void internalDecodeValid() throws XmlException {
+	void internalDecodeValid() throws XmlException {
 		Node qualityMeasureIdNode = new Node();
 		Element qualityMeasureIdElement = XmlUtils.stringToDom(getXmlFragmentWithMeasureGuid("Measurement Id Value"));
-		objectUnderTest.setNamespace(qualityMeasureIdElement, objectUnderTest);
-		objectUnderTest.internalDecode(qualityMeasureIdElement, qualityMeasureIdNode);
+		objectUnderTest.setNamespace(qualityMeasureIdElement.getNamespace());
+		objectUnderTest.decode(qualityMeasureIdElement, qualityMeasureIdNode);
 
 		String value = qualityMeasureIdNode.getValue("measureId");
-		assertWithMessage("Expect to have a value")
-				.that(value)
-				.isEqualTo("Measurement Id Value");
+		assertThat(value).isEqualTo("measurement id value");
 	}
 
 	/**
@@ -45,61 +44,53 @@ public class QualityMeasureIdDecoderTest {
 	 * @throws XmlException when the xml fragment is not well formed
 	 */
 	@Test
-	public void internalDecodeMissingId() throws XmlException {
+	void internalDecodeMissingId() throws XmlException {
 		String xmlFragment = getXmlFragmentWithMeasureGuid("Measurement Id Value").replace("<id ", "<noid ");
 
 		Node qualityMeasureIdNode = new Node();
 		Element qualityMeasureIdElement = XmlUtils.stringToDom(xmlFragment);
-		objectUnderTest.setNamespace(qualityMeasureIdElement, objectUnderTest);
-		DecodeResult decodeResult = objectUnderTest.internalDecode(qualityMeasureIdElement, qualityMeasureIdNode);
+		objectUnderTest.setNamespace(qualityMeasureIdElement.getNamespace());
+		DecodeResult decodeResult = objectUnderTest.decode(qualityMeasureIdElement, qualityMeasureIdNode);
 
-		assertWithMessage("The incorrect DecodeResult was returned.")
-				.that(decodeResult).isEquivalentAccordingToCompareTo(DecodeResult.TREE_CONTINUE);
+		assertThat(decodeResult).isEquivalentAccordingToCompareTo(DecodeResult.TREE_CONTINUE);
 		String value = qualityMeasureIdNode.getValue("measureId");
-		assertWithMessage("Expect to not have a value")
-				.that(value)
-				.isNull();
+		assertThat(value).isNull();
 	}
 
 	@Test
-	public void incorrectRoot() throws XmlException {
+	void incorrectRoot() throws XmlException {
 		//set-up
 		Element qualityMeasureIdElement = XmlUtils.stringToDom(getBadXmlFragmentWithIncorrectRoot());
 		Node qualityMeasureIdNode = new Node();
 
-		objectUnderTest.setNamespace(qualityMeasureIdElement, objectUnderTest);
+		objectUnderTest.setNamespace(qualityMeasureIdElement.getNamespace());
 
 		//execute
-		DecodeResult decodeResult = objectUnderTest.internalDecode(qualityMeasureIdElement, qualityMeasureIdNode);
+		DecodeResult decodeResult = objectUnderTest.decode(qualityMeasureIdElement, qualityMeasureIdNode);
 
 		//assert
-		assertWithMessage("The incorrect DecodeResult was returned.")
-				.that(decodeResult).isEquivalentAccordingToCompareTo(DecodeResult.TREE_CONTINUE);
-		assertWithMessage("The node should not have a value.")
-				.that(qualityMeasureIdNode.getValue("measureId"))
-				.isNull();
+		assertThat(decodeResult).isEqualTo(DecodeResult.TREE_CONTINUE);
+		assertThat(qualityMeasureIdNode.getValue("measureId")).isNull();
 	}
 
 	@Test
-	public void dontIgnoreStratumMeasure() throws XmlException {
+	void dontIgnoreStratumMeasure() throws XmlException {
 		//set-up
 		String nonIgnorableGuid = "40280381-528a-60ff-0152-8e089ed20376";
 		Element qualityMeasureIdElement = XmlUtils.stringToDom(getXmlFragmentWithMeasureGuid(nonIgnorableGuid));
 
 		Node qualityMeasureIdNode = new Node();
 
-		objectUnderTest.setNamespace(qualityMeasureIdElement, objectUnderTest);
+		objectUnderTest.setNamespace(qualityMeasureIdElement.getNamespace());
 
 		//execute
-		DecodeResult decodeResult = objectUnderTest.internalDecode(qualityMeasureIdElement, qualityMeasureIdNode);
+		DecodeResult decodeResult = objectUnderTest.decode(qualityMeasureIdElement, qualityMeasureIdNode);
 
 		//assert
-		assertWithMessage("The incorrect DecodeResult was returned.")
-				.that(decodeResult)
-				.isEquivalentAccordingToCompareTo(DecodeResult.TREE_CONTINUE);
+		assertThat(decodeResult)
+				.isEqualTo(DecodeResult.TREE_CONTINUE);
 		String value = qualityMeasureIdNode.getValue("measureId");
-		assertWithMessage("Expect to have a value.")
-				.that(value)
+		assertThat(value)
 				.isEqualTo(nonIgnorableGuid);
 	}
 

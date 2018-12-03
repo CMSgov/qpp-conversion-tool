@@ -1,24 +1,16 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.LocalizedError;
 
 /**
  * Super class for AciNumeratorValidator and AciDenominatorValidator classes
  * Factored out common functionality
  */
 public class CommonNumeratorDenominatorValidator extends NodeValidator {
-	protected static final String INCORRECT_CHILD =
-			"This %s Node does not have an Aggregate Count Node";
-	public static final String NOT_AN_INTEGER_VALUE =
-			"This %s Node Aggregate Value is not an integer";
-	public static final String INVALID_VALUE =
-			"This %s Node Aggregate Value has an invalid value";
-	protected static final String NO_CHILDREN =
-			"This %s Node does not have any child Nodes";
-	protected static final String TOO_MANY_CHILDREN =
-			"This %s Node has too many child Nodes";
-	protected static final String AGGREGATE_COUNT_FIELD = "aggregateCount";
 
 	protected String nodeName;
 
@@ -30,9 +22,7 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
-		check(node).hasChildren(String.format(NO_CHILDREN, nodeName))
-				.childMinimum(String.format(INCORRECT_CHILD, nodeName), 1, TemplateId.ACI_AGGREGATE_COUNT)
-				.childMaximum(String.format(TOO_MANY_CHILDREN, nodeName), 1, TemplateId.ACI_AGGREGATE_COUNT);
+		check(node).childExact(format(ErrorCode.NUMERATOR_DENOMINATOR_CHILD_EXACT), 1, TemplateId.ACI_AGGREGATE_COUNT);
 		if (getDetails().isEmpty()) {
 			validateAggregateCount(
 					node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT));
@@ -47,10 +37,23 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 	 * @param aggregateCountNode aggregate count node
 	 */
 	private void validateAggregateCount(Node aggregateCountNode) {
-		String invalidMessage = String.format(INVALID_VALUE, nodeName);
+		String aggregateCountValue = aggregateCountNode.getValue(AggregateCountDecoder.AGGREGATE_COUNT);
+		if (aggregateCountValue == null) {
+			aggregateCountValue = "empty";
+		}
 		check(aggregateCountNode)
-				.singleValue(invalidMessage, AGGREGATE_COUNT_FIELD)
-				.intValue(String.format(NOT_AN_INTEGER_VALUE, nodeName), AGGREGATE_COUNT_FIELD)
-				.greaterThan(invalidMessage, -1);
+				.singleValue(format(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE, aggregateCountValue),
+					AggregateCountDecoder.AGGREGATE_COUNT)
+				.intValue(format(ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER, aggregateCountValue),
+					AggregateCountDecoder.AGGREGATE_COUNT)
+				.greaterThan(format(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE, aggregateCountValue), -1);
+	}
+
+	private LocalizedError format(ErrorCode error) {
+		return error.format(nodeName, nodeName);
+	}
+
+	private LocalizedError format(ErrorCode error, String value) {
+		return error.format(nodeName, value);
 	}
 }
