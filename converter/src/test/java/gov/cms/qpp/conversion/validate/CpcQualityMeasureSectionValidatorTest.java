@@ -69,7 +69,7 @@ class CpcQualityMeasureSectionValidatorTest {
 		LocalizedError message = CpcGroupMinimum.OUTCOME_MEASURE.makeError(groupAmeasures);
 		validator.internalValidateSingleNode(node);
 		assertThat(validator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(message);
+				.contains(message);
 	}
 
 	@Test
@@ -78,7 +78,7 @@ class CpcQualityMeasureSectionValidatorTest {
 		LocalizedError message = CpcGroupMinimum.OTHER_MEASURE.makeError(groupBmeasures);
 		validator.internalValidateSingleNode(node);
 		assertThat(validator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(message);
+				.contains(message);
 	}
 
 	@Test
@@ -87,7 +87,7 @@ class CpcQualityMeasureSectionValidatorTest {
 		LocalizedError message = CpcGroupMinimum.OTHER_MEASURE.makeError(groupBmeasures);
 		validator.internalValidateSingleNode(node);
 		assertThat(validator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(message);
+				.contains(message);
 	}
 
 	@Test

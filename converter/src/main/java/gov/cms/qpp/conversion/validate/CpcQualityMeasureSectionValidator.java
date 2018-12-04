@@ -26,7 +26,7 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
-		Checker checker = check(node);
+		Checker checker = thoroughlyCheck(node);
 
 		Arrays.stream(CpcGroupMinimum.values())
 				.forEach(group -> checkGroupMinimum(checker, group));
@@ -77,7 +77,7 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 	 */
 	enum CpcGroupMinimum {
 		OUTCOME_MEASURE("Outcome_Measure", "outcome", 2),
-		OTHER_MEASURE("Other_Measure", "complex process", 2);
+		OTHER_MEASURE("Other_Measure", "other", 7);
 
 		private static final int NUMBER_OF_MEASURES_REQUIRED = 9;
 		private String mapName;
