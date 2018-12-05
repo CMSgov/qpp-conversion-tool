@@ -535,6 +535,11 @@
 				"errorCode": 65,
 				"subs": [9, ".*"],
 				"occurrences": 1
+			},
+			{
+				"errorCode": 64,
+				"subs": [7, "other", ".*"],
+				"occurrences": 1
 			}
 		]
 	},
