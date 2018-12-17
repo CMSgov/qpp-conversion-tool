@@ -41,7 +41,7 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	protected void internalValidateSingleNode(Node node) {
 		super.internalValidateSingleNode(node);
 		MeasureConfig measureConfig = MeasureConfigHelper.getMeasureConfig(node);
-		if (measureConfig != null) {
+		if (measureConfig != null && measureConfig.getStrata() != null) {
 			int requiredPerformanceRateCount = measureConfig.getStrata().size();
 
 			thoroughlyCheck(node)
