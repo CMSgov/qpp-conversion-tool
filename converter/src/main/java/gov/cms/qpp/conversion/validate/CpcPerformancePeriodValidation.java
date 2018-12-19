@@ -9,7 +9,7 @@ import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 
 /**
- * Validates the QRDA Category III Report Node's national provide identifier/taxpayer identification number combinations
+ * Validates the QRDA Category III Report Node's national provider identifier/taxpayer identification number combinations
  * for the CPC+ program.
  */
 @Validator(value = TemplateId.REPORTING_PARAMETERS_ACT, program = Program.CPC)
