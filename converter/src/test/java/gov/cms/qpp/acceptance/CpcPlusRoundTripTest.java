@@ -6,6 +6,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+
+import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -38,10 +41,23 @@ class CpcPlusRoundTripTest {
 	}
 
 	@Test
-	void hasSingleNpiAndTin() {
-		String tin = ctx.read("$.taxpayerIdentificationNumber");
-		String npi = ctx.read("$.nationalProviderIdentifier");
-		assertThat(tin).isEqualTo("990000099");
-		assertThat(npi).isEqualTo("2567891421");
+	void hasTopLevelElements() {
+		List<Object> toplevelAttributes = ctx.read("$.*");
+		assertThat(toplevelAttributes.size()).isEqualTo(4);
+
+//		assertThat(entityId).isEqualTo(ClinicalDocumentDecoder.ENTITY_APM);
 	}
+
+	@Test
+	void hasEntityId() {
+		String entityId = ctx.read("$.entityId");
+		assertThat(entityId).isEqualTo("TestApmEntityId");
+	}
+
+	@Test
+	void hasEntityType() {
+		String entityId = ctx.read("$.entityType");
+		assertThat(entityId).isEqualTo(ClinicalDocumentDecoder.ENTITY_APM);
+	}
+
 }

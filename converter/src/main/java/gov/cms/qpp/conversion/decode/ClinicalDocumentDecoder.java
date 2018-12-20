@@ -35,6 +35,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	private static final String MIPS_GROUP = "MIPS_GROUP";
 	private static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
 	public static final String MIPS_VIRTUAL_GROUP = "MIPS_VIRTUALGROUP";
+	public static final String ENTITY_APM = "apm";
 	static final String ENTITY_GROUP = "group";
 	static final String ENTITY_INDIVIDUAL = "individual";
 	public static final String ENTITY_VIRTUAL_GROUP = "virtualGroup";
@@ -62,7 +63,11 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 		} else if (ENTITY_VIRTUAL_GROUP.equals(thisNode.getValue(ENTITY_TYPE))) {
 			setVirtualGroupOnNode(element, thisNode);
 		}
-		setTaxProviderTaxIdOnNode(element, thisNode);
+
+		if (!ENTITY_APM.equals(thisNode.getValue(ENTITY_TYPE))) {
+			setTaxProviderTaxIdOnNode(element, thisNode);
+		}
+
 		return DecodeResult.TREE_CONTINUE;
 	}
 
@@ -165,7 +170,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 				break;
 
 			case CPCPLUS:
-				pair = new ImmutablePair<>(CPCPLUS_PROGRAM_NAME, ENTITY_INDIVIDUAL);
+				pair = new ImmutablePair<>(CPCPLUS_PROGRAM_NAME, ENTITY_APM);
 				break;
 
 			case MIPS_VIRTUAL_GROUP:
