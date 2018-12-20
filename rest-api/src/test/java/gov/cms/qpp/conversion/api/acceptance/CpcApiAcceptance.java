@@ -268,7 +268,7 @@ class CpcApiAcceptance {
 	}
 
 	private Metadata createDatedCpcMetadata(String parsableDate) {
-		Metadata metadata = new Metadata();
+		Metadata metadata = Metadata.create();
 		metadata.setApm("T3STV47U3");
 		metadata.setTin("0001233212");
 		metadata.setNpi("012123123");

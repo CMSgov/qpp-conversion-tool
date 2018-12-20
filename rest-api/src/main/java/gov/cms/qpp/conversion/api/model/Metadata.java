@@ -22,9 +22,18 @@ import gov.cms.qpp.conversion.model.error.Detail;
  */
 @DynamoDBTable(tableName = "ConversionMetadata")
 public final class Metadata {
+
+	public static Metadata create() {
+		Metadata metadata = new Metadata();
+		metadata.setMetadataVersion(Metadata.CURRENT_VERSION);
+		return metadata;
+	}
+
 	private static final int CPC_PROCESSED_CREATE_DATE_NUM_FIELDS = 2;
 	private static final int CPC_PROCESSED_INDEX = 0;
 	private static final int CPC_CREATE_DATE_INDEX = 1;
+	public static final int CURRENT_VERSION = 3;
+	public static final int UNKNOWN_VERSION = -1;
 
 	private String uuid;
 	private String tin;  //this field is encrypted
@@ -54,9 +63,8 @@ public final class Metadata {
 	 */
 	public Metadata() {
 		createdDate = Instant.now();
-		metadataVersion = 2;
+		metadataVersion = UNKNOWN_VERSION;
 	}
-
 
 	/**
 	 * The UUID that uniquely identifies this item.

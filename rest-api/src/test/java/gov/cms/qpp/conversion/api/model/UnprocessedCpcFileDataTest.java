@@ -41,7 +41,7 @@ class UnprocessedCpcFileDataTest {
 					.flatMap(apmId -> createdDateProvider()
 						.flatMap(createdDate -> overallSuccessProvider()
 							.map(overallSuccess -> {
-			Metadata metadata = new Metadata();
+			Metadata metadata = Metadata.create();
 			metadata.setUuid(uuidLocator);
 			metadata.setFileName(fileName);
 			metadata.setApm(apmId);
@@ -67,7 +67,7 @@ class UnprocessedCpcFileDataTest {
 	@Test
 	@DisplayName("should give a string representation of its state")
 	void testToString() {
-		UnprocessedCpcFileData data = new UnprocessedCpcFileData(new Metadata());
+		UnprocessedCpcFileData data = new UnprocessedCpcFileData(Metadata.create());
 		String strung = data.toString();
 		assertThat(strung).matches(".*fileId.*filename.*apm.*conversionDate.*validationSuccess.*purpose.*");
 	}
