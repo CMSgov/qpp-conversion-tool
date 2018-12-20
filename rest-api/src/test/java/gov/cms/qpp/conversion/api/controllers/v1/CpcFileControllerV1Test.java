@@ -191,7 +191,7 @@ class CpcFileControllerV1Test {
 
 	@Test
 	void testReportWithEarlierMetadataVersion() {
-		Metadata testMetadata = new Metadata();
+		Metadata testMetadata = Metadata.create();
 		testMetadata.setConversionStatus(true);
 		testMetadata.setProgramName(UUID.randomUUID().toString());
 		testMetadata.setMetadataVersion(-1);
@@ -205,7 +205,7 @@ class CpcFileControllerV1Test {
 
 	@Test
 	void testReport() {
-		Metadata testMetadata = new Metadata();
+		Metadata testMetadata = Metadata.create();
 		testMetadata.setConversionStatus(true);
 		testMetadata.setProgramName(UUID.randomUUID().toString());
 		when(cpcFileService.getMetadataById("test")).thenReturn(testMetadata);
@@ -218,7 +218,7 @@ class CpcFileControllerV1Test {
 
 	@Test
 	void testReportWithWarnings() {
-		Metadata testMetadata = new Metadata();
+		Metadata testMetadata = Metadata.create();
 		testMetadata.setConversionStatus(true);
 		List<Detail> testDetails = new ArrayList<>();
 		testDetails.add(new Detail());
@@ -232,7 +232,7 @@ class CpcFileControllerV1Test {
 
 	@Test
 	void testReportWithEmptyWarnings() {
-		Metadata testMetadata = new Metadata();
+		Metadata testMetadata = Metadata.create();
 		testMetadata.setConversionStatus(true);
 		List<Detail> testDetails = new ArrayList<>();
 		testMetadata.setWarnings(testDetails);
@@ -245,7 +245,7 @@ class CpcFileControllerV1Test {
 
 	@Test
 	void testReportWithErrors() {
-		Metadata testMetadata = new Metadata();
+		Metadata testMetadata = Metadata.create();
 		testMetadata.setConversionStatus(false);
 		List<Detail> testDetails = new ArrayList<>();
 		testMetadata.setErrors(testDetails);
@@ -273,7 +273,7 @@ class CpcFileControllerV1Test {
 	}
 
 	List<UnprocessedCpcFileData> createMockedUnprocessedDataList() {
-		Metadata metadata = new Metadata();
+		Metadata metadata = Metadata.create();
 		metadata.setSubmissionLocator("Test");
 		metadata.setFileName("TestFile.xml");
 		metadata.setApm("TestApmEntity");

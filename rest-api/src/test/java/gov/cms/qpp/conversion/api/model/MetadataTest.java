@@ -27,19 +27,19 @@ class MetadataTest {
 
 	@Test
 	void testDateCreatedOnConstruction() {
-		Metadata metadata = new Metadata();
+		Metadata metadata = Metadata.create();
 		assertThat(metadata.getCreatedDate()).isNotNull();
 	}
 
 	@Test
 	void testGetCpcProcessedCreateDateWithNullProcessed() {
-		Metadata metadata = new Metadata();
+		Metadata metadata = Metadata.create();
 		assertThat(metadata.getCpcProcessedCreateDate()).isNull();
 	}
 
 	@Test
 	void testGetCpcProcessedCreateDateWithNonNullProcessed() {
-		Metadata metadata = new Metadata();
+		Metadata metadata = Metadata.create();
 		Boolean processed = false;
 		metadata.setCpcProcessed(processed);
 		assertThat(metadata.getCpcProcessedCreateDate()).startsWith(processed + "#");
@@ -47,7 +47,7 @@ class MetadataTest {
 
 	@Test
 	void testSetCpcProcessedCreateDateWithoutHash() {
-		Metadata metadata = new Metadata();
+		Metadata metadata = Metadata.create();
 		Boolean processedBefore = metadata.getCpcProcessed();
 		Instant createDateBefore = metadata.getCreatedDate();
 
@@ -59,7 +59,7 @@ class MetadataTest {
 
 	@Test
 	void testSetCpcProcessedCreateDateWithHash() {
-		Metadata metadata = new Metadata();
+		Metadata metadata = Metadata.create();
 		metadata.setCpcProcessed(false);
 		Instant createDateBefore = metadata.getCreatedDate();
 
@@ -71,7 +71,7 @@ class MetadataTest {
 
 	@Test
 	void plumbing() {
-		Consumer<Method> consumer = harness(new Metadata());
+		Consumer<Method> consumer = harness(Metadata.create());
 
 		Arrays.stream(Metadata.class.getDeclaredMethods())
 				.filter(this::junk)
