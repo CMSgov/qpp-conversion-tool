@@ -1,7 +1,6 @@
 package gov.cms.qpp.acceptance;
 
-import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.ReadContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.qpp.acceptance.helper.JsonPathToXpathHelper;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
@@ -12,26 +11,29 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 
 import static com.google.common.truth.Truth.assertThat;
 
 class CpcPlusRoundTripTest {
 
 	private static JsonWrapper wrapper = new JsonWrapper();
-	private static ReadContext ctx;
+	private static HashMap<String, Object> json;
 
+	@SuppressWarnings("unchecked")
 	@BeforeAll
-	static void setup() throws URISyntaxException {
+	static void setup() throws URISyntaxException, IOException {
 		ApmEntityIds.setApmDataFile("test_apm_entity_ids.json");
 		URL sample = CpcPlusRoundTripTest.class.getClassLoader()
 				.getResource("cpc_plus/success/CPCPlus_CMSPrgrm_LowerCase_SampleQRDA-III.xml");
 		Path path = Paths.get(sample.toURI());
 		new JsonPathToXpathHelper(path, wrapper, false);
-		ctx = JsonPath.parse(wrapper.toString());
+		json = new ObjectMapper().readValue(wrapper.toString(), HashMap.class);
 	}
 
 	@AfterAll
@@ -43,18 +45,24 @@ class CpcPlusRoundTripTest {
 	@ParameterizedTest
 	@ValueSource(strings = { "entityId", "entityType", "measurementSets", "performanceYear" })
 	void hasAppropriateTopLevelAttributes(String value) {
-		assertThat(ctx.<Object>read("$." + value)).isNotNull();
+
+		assertThat(json.get(value)).isNotNull();
+	}
+
+	@Test
+	void hasNoInAppropriateTopLevelAttributes() {
+		assertThat(json.keySet()).containsExactly("entityId", "entityType", "measurementSets", "performanceYear");
 	}
 
 	@Test
 	void hasEntityId() {
-		String entityId = ctx.read("$.entityId");
+		String entityId = (String) json.get("entityId");
 		assertThat(entityId).isEqualTo("TestApmEntityId");
 	}
 
 	@Test
 	void hasEntityType() {
-		String entityId = ctx.read("$.entityType");
+		String entityId = (String) json.get("entityType");
 		assertThat(entityId).isEqualTo(ClinicalDocumentDecoder.ENTITY_APM);
 	}
 
