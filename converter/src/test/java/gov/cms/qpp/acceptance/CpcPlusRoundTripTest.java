@@ -19,6 +19,9 @@ import com.jayway.jsonpath.ReadContext;
 
 import gov.cms.qpp.acceptance.helper.JsonPathToXpathHelper;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class CpcPlusRoundTripTest {
 
@@ -40,12 +43,11 @@ class CpcPlusRoundTripTest {
 		ApmEntityIds.setApmDataFile(ApmEntityIds.DEFAULT_APM_ENTITY_FILE_NAME);
 	}
 
-	@Test
-	void hasTopLevelElements() {
-		List<Object> toplevelAttributes = ctx.read("$.*");
-		assertThat(toplevelAttributes.size()).isEqualTo(4);
 
-//		assertThat(entityId).isEqualTo(ClinicalDocumentDecoder.ENTITY_APM);
+	@ParameterizedTest
+	@ValueSource(strings = { "entityId", "entityType", "measurementSets", "performanceYear" })
+	void hasAppropriateTopLevelAttributes(String value) {
+		assertThat(ctx.<Object>read("$." + value)).isNotNull();
 	}
 
 	@Test
