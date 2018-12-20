@@ -37,7 +37,7 @@ public class MetadataHelper {
 	public static Metadata generateMetadata(Node node, Outcome outcome) {
 		Objects.requireNonNull(outcome, "outcome");
 
-		Metadata metadata = new Metadata();
+		Metadata metadata = Metadata.create();
 
 		if (node != null) {
 			metadata.setApm(findApm(node));

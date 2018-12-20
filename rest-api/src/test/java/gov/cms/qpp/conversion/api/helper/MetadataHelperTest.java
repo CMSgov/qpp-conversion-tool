@@ -22,7 +22,7 @@ class MetadataHelperTest implements HelperContract {
 	@Test
 	void testGenerateMetadataForNullNodeReturnsSkinnyMetadata() {
 		MetadataHelper.Outcome outcome = MetadataHelper.Outcome.VALIDATION_ERROR;
-		Metadata comparison = new Metadata();
+		Metadata comparison = Metadata.create();
 		comparison.setOverallStatus(false);
 		comparison.setConversionStatus(true);
 		comparison.setValidationStatus(false);

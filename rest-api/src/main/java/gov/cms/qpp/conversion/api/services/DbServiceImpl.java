@@ -58,7 +58,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 
 		if (!StringUtils.isEmpty(noAudit)) {
 			API_LOG.warn("Not writing metadata information");
-			return CompletableFuture.completedFuture(new Metadata());
+			return CompletableFuture.completedFuture(Metadata.create());
 		}
 
 		API_LOG.info("Writing item to DynamoDB");
