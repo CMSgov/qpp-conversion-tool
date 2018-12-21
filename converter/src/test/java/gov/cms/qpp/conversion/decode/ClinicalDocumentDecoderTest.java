@@ -212,13 +212,7 @@ class ClinicalDocumentDecoderTest {
 				.isEqualTo(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		assertWithMessage("Clinical Document doesn't contain entity type")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE))
-				.isEqualTo(ClinicalDocumentDecoder.ENTITY_INDIVIDUAL);
-		assertWithMessage("Clinical Document doesn't contain national provider")
-				.that(testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
-				.isEqualTo("2567891421");
-		assertWithMessage("Clinical Document doesn't contain taxpayer id number")
-				.that(testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
-				.isEqualTo("123456789");
+				.isEqualTo(ClinicalDocumentDecoder.ENTITY_APM);
 	}
 
 	@Test
