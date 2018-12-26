@@ -64,9 +64,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 			setVirtualGroupOnNode(element, thisNode);
 		}
 
-		if (!ENTITY_APM.equals(thisNode.getValue(ENTITY_TYPE))) {
-			setTaxProviderTaxIdOnNode(element, thisNode);
-		}
+		setTaxProviderTaxIdOnNode(element, thisNode);
 
 		return DecodeResult.TREE_CONTINUE;
 	}

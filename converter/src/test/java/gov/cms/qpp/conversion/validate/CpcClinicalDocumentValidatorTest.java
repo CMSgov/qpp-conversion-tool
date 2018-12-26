@@ -48,6 +48,31 @@ class CpcClinicalDocumentValidatorTest {
 	}
 
 	@Test
+	void validTinExistence() {
+		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
+		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER);
+		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
+		Set<Detail> errors = cpcValidator.getDetails();
+
+		assertWithMessage("Must NPI error")
+			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ErrorCode.NPI_TIN_COMBINATION_MISSING_CLINICAL_DOCUMENT);
+	}
+
+	@Test
+	void validNPIExistence() {
+		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
+		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER);
+		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
+		Set<Detail> errors = cpcValidator.getDetails();
+
+		assertWithMessage("Must TIN error")
+			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ErrorCode.NPI_TIN_COMBINATION_MISSING_CLINICAL_DOCUMENT);
+	}
+
+
+	@Test
 	void validPracticeSiteAddress() {
 		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
@@ -180,6 +205,8 @@ class CpcClinicalDocumentValidatorTest {
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR, "test");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID, "DogCow");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, "DogCowTIN");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, "DogCowNPI");
 
 		return clinicalDocumentNode;
 	}
