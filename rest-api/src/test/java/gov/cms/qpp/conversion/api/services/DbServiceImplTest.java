@@ -58,6 +58,18 @@ class DbServiceImplTest {
 	}
 
 	@Test
+	void testGetUnprocessedCpcPlusMetaDataWithMissingDynamoDbMapper() {
+		underTest = new DbServiceImpl(taskExecutor, Optional.empty(), environment);
+		assertThat(underTest.getUnprocessedCpcPlusMetaData()).isEmpty();
+	}
+
+	@Test
+	void testGetMetadataByIdWithMissingDynamoDbMapper() {
+		underTest = new DbServiceImpl(taskExecutor, Optional.empty(), environment);
+		assertThat(underTest.getMetadataById(null)).isNull();
+	}
+
+	@Test
 	void testWriteByNull() {
 		when(environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE)).thenReturn(null);
 
@@ -81,7 +93,7 @@ class DbServiceImplTest {
 	void testNoWriteBecauseNoAudit() {
 		when(environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE)).thenReturn("trueOrSomething");
 
-		Metadata metadataIn = new Metadata();
+		Metadata metadataIn = Metadata.create();
 		metadataIn.setTin("testTin");
 
 		Metadata metadataOut = writeMeta(metadataIn);
@@ -110,7 +122,7 @@ class DbServiceImplTest {
 	void testGetMetadataById() {
 		String fakeUuid = "1337-f4ke-uuid";
 
-		when(dbMapper.load(eq(Metadata.class), anyString())).thenReturn(new Metadata());
+		when(dbMapper.load(eq(Metadata.class), anyString())).thenReturn(Metadata.create());
 
 		Metadata fakeMetadata = underTest.getMetadataById(fakeUuid);
 
@@ -120,7 +132,7 @@ class DbServiceImplTest {
 	}
 
 	private Metadata writeMeta() {
-		return writeMeta(new Metadata());
+		return writeMeta(Metadata.create());
 	}
 
 	private Metadata writeMeta(Metadata metadata) {

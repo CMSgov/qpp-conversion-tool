@@ -21,8 +21,8 @@
 							  codeSystem="2.16.840.1.113883.6.96"
 							  displayName="Observation Parameters"/>
 						<effectiveTime>
-							<low value="20170101"/>
-							<high value="20171231"/>
+							<low value="20180101"/>
+							<high value="20181231"/>
 						</effectiveTime>
 					</act>
 				</entry>
@@ -38,7 +38,7 @@
 						<reference typeCode="REFR">
 							<externalDocument classCode="DOC" moodCode="EVN">
 								<id root="2.16.840.1.113883.4.738"
-									extension="40280381-51f0-825b-0152-229afff616ee"/>
+									extension="40280382-5abd-fa46-015b-4981e40b37e6"/>
 								<code code="57024-2"
 									  codeSystem="2.16.840.1.113883.6.1"
 									  codeSystemName="LOINC"
@@ -61,7 +61,7 @@
 								<value xsi:type="REAL" nullFlavor="NA"/>
 								<reference typeCode="REFR">
 									<externalObservation classCode="OBS" moodCode="EVN">
-										<id root="6D01A564-58CC-4CF5-929F-B83583701BFE"/>
+										<id root="B2497764-9F9D-402B-8852-1FB3BAA30B2C"/>
 										<code code="NUMER"
 											  codeSystem="2.16.840.1.113883.5.4"
 											  codeSystemName="ActCode"
@@ -425,7 +425,7 @@
 								<!--IPOP Population ID from eMeasure-->
 								<reference typeCode="REFR">
 									<externalObservation classCode="OBS" moodCode="EVN">
-										<id root="0739FE2E-B8DE-4A56-B064-877CC8E0977D"/>
+										<id root="B7D491B3-358C-41A3-94F8-B986E65D99B6"/>
 									</externalObservation>
 								</reference>
 							</observation>
@@ -1018,7 +1018,7 @@
 								<!--DENOM Population ID from eMeasure-->
 								<reference typeCode="REFR">
 									<externalObservation classCode="OBS" moodCode="EVN">
-										<id root="D346DA74-F16E-4159-BEDF-331BA28837FB"/>
+										<id root="D6366A39-0B09-478B-B65A-1044CB22F68F"/>
 									</externalObservation>
 								</reference>
 							</observation>
@@ -1611,7 +1611,7 @@
 								<!--NUMER Population ID from eMeasure-->
 								<reference typeCode="REFR">
 									<externalObservation classCode="OBS" moodCode="EVN">
-										<id root="6D01A564-58CC-4CF5-929F-B83583701BFE"/>
+										<id root="B2497764-9F9D-402B-8852-1FB3BAA30B2C"/>
 									</externalObservation>
 								</reference>
 							</observation>

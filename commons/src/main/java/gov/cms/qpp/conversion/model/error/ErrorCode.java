@@ -35,33 +35,33 @@ public enum ErrorCode implements LocalizedError {
 	AGGREGATE_COUNT_VALUE_NOT_SINGULAR(8, "The `(Parent element)` has `(number of aggregate counts)` aggregate count values."
 		+ " A single aggregate count value is required.", true),
 	AGGREGATE_COUNT_VALUE_NOT_INTEGER(9, "Aggregate count value must be an integer"),
-	ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT(11, "This ACI Reference and Results is missing a required "
+	PI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT(11, "This PI Reference and Results is missing a required "
 		+ "Measure Performed child"),
-	ACI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR(12, "This ACI Measure Performed Reference and Results requires "
+	PI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR(12, "This PI Measure Performed Reference and Results requires "
 		+ "a single Measure ID"),
 	DENOMINATOR_COUNT_INVALID(13, "Denominator count must be less than or equal to Initial Population count "
 			+ "for a measure that is a proportion measure"),
 	POPULATION_CRITERIA_COUNT_INCORRECT(14,
 			"The electronic measure id: `(Current eMeasure ID)` requires `(Number of Subpopulations required)` "
 			+ "`(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`", true),
-	ACI_NUMERATOR_DENOMINATOR_PARENT_NOT_ACI_SECTION(15, "ACI Numerator Denominator element should have an ACI "
+	PI_NUMERATOR_DENOMINATOR_PARENT_NOT_PI_SECTION(15, "PI Numerator Denominator element should have a PI "
 			+ "Section element as a parent"),
-	ACI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID(16, "ACI Numerator Denominator element does not contain a "
+	PI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID(16, "PI Numerator Denominator element does not contain a "
 			+ "measure name ID"),
-	ACI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN(17, "ACI Numerator Denominator element does not have any child "
+	PI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN(17, "PI Numerator Denominator element does not have any child "
 			+ "elements"),
-	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE(18, "This ACI Numerator Denominator "
+	PI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE(18, "This PI Numerator Denominator "
 			+ "element requires exactly one `(Denominator|Numerator)` element child", true),
-	ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT(22, "The ACI Section must have one Reporting Parameter Act."
+	PI_SECTION_MISSING_REPORTING_PARAMETER_ACT(22, "The PI Section must have one Reporting Parameter Act."
 		+ " Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG)."
 		+ " Here is a link to the IG Reporting Parameter Act section: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
-	CLINICAL_DOCUMENT_MISSING_ACI_OR_IA_OR_ECQM_CHILD(23, "Clinical Document element must have at least one child "
-			+ "element of type ACI, IA, or Measure section"),
+	CLINICAL_DOCUMENT_MISSING_PI_OR_IA_OR_ECQM_CHILD(23, "Clinical Document element must have at least one child "
+			+ "element of type PI, IA, or Measure section"),
 	CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME(24, "Clinical Document must have one and only one program name."
 		+ " Valid program names are `(list of valid program names)`", true),
 	CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME(25, "The Clinical Document program name `(program name)` is not recognized. Valid "
 		+ "program names are `(list of valid program names)`.", true),
-	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ACI_SECTIONS(26, "Clinical Document contains duplicate ACI sections"),
+	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_PI_SECTIONS(26, "Clinical Document contains duplicate PI sections"),
 	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_IA_SECTIONS(27, "Clinical Document contains duplicate IA sections"),
 	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ECQM_SECTIONS(28, "Clinical Document contains duplicate Measure "
 			+ "sections"),
@@ -89,12 +89,12 @@ public enum ErrorCode implements LocalizedError {
 	CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT(37, "CPC+ submissions must contain correct number of performance rate(s). "
 			+ "Correct Number is `(Expected value)` for measure `(Given measure id)`", true),
 	NUMERATOR_DENOMINATOR_CHILD_EXACT(39,
-			"This ACI `(Numerator or Denominator)` element has an incorrect number of Aggregate Count children. An ACI "
+			"This PI `(Numerator or Denominator)` element has an incorrect number of Aggregate Count children. A PI "
 			+ "`(Numerator or Denominator)` must have exactly one Aggregate Count element", true),
 	NUMERATOR_DENOMINATOR_MUST_BE_INTEGER(41,
-			"This ACI `(Numerator or Denominator)` element Aggregate Value '`(value)`' is not an integer", true),
+			"This PI `(Numerator or Denominator)` element Aggregate Value '`(value)`' is not an integer", true),
 	NUMERATOR_DENOMINATOR_INVALID_VALUE(42,
-			"This ACI `(Numerator or Denominator)` element Aggregate Value has an invalid value of '`(value)`'", true),
+			"This PI `(Numerator or Denominator)` element Aggregate Value has an invalid value of '`(value)`'", true),
 	IA_SECTION_MISSING_IA_MEASURE(43, "The IA Section must have at least one Improvement Activity"),
 	IA_SECTION_MISSING_REPORTING_PARAM(44, "The IA Section must have one Reporting Parameter Act. "
 			+ "Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). "
@@ -117,9 +117,9 @@ public enum ErrorCode implements LocalizedError {
 			+ "Aggregate Count.", true),
 	MEASURE_DATA_VALUE_NOT_INTEGER(53, "Measure data with population id '`(population id)`' "
 			+ "must be a whole number greater than or equal to 0", true),
-	CPC_PERFORMANCE_PERIOD_START_JAN12017(55, "A CPC Plus Performance period start must be 01/01/2017. "
+	CPC_PERFORMANCE_PERIOD_START(55, "A CPC Plus Performance period start must be 01/01/2018. "
 			+ "Please refer to the IG for more information here: " + DocumentationReference.CPC_PLUS_SUBMISSIONS),
-	CPC_PERFORMANCE_PERIOD_END_DEC312017(56, "A CPC Plus Performance period end must be 12/31/2017. "
+	CPC_PERFORMANCE_PERIOD_END(56, "A CPC Plus Performance period end must be 12/31/2018. "
 			+ "Please refer to the IG for more information here: " + DocumentationReference.CPC_PLUS_SUBMISSIONS),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION(57, "The measure reference results must have a single "
 			+ "measure population"),
@@ -147,7 +147,7 @@ public enum ErrorCode implements LocalizedError {
 		+ "`(CPC+ contact email)` for assistance.", true),
 	INVALID_PERFORMANCE_PERIOD_FORMAT(69, "`(Performance period start or end date)` is an invalid date format. "
 		+ "Please use a standard ISO date format. "
-		+ "Example valid values are 2017-02-26, 2017/02/26T01:45:23, or 2017-02-26T01:45:23.123. "
+		+ "Example valid values are 2018-02-26, 2018/02/26T01:45:23, or 2018-02-26T01:45:23.123. "
 		+ "Please see the Implementation Guide for information on the performance period here: "
 		+ DocumentationReference.PERFORMANCE_PERIOD, true),
 	MISSING_OR_DUPLICATED_MEASURE_GUID(70, "The measure section measure reference and results has an incorrect number of "
@@ -155,7 +155,9 @@ public enum ErrorCode implements LocalizedError {
 	MEASURES_RNR_WITH_DUPLICATED_MEASURE_GUID(71, "Two or more different measure section measure reference and results have "
 		+ "the same measure GUID. Please ensure that each measure section measure reference and results do not have "
 		+ "the same measure GUID."),
-	PERFORMANCE_RATE_MISSING(72, "The Performance Rate is missing");
+	PERFORMANCE_RATE_MISSING(72, "The Performance Rate is missing"),
+	VIRTUAL_GROUP_ID_REQUIRED(78, "The Program 'Mips Virtual Group' was found. The required entity id for this "
+		+ "program name was missing. Please provide a virtual group identifier with the 'Mips Virtual Group' program name.");
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));
@@ -239,4 +241,5 @@ public enum ErrorCode implements LocalizedError {
 		static final String MESSAGE = "Please contact the Service Center for assistance via phone at "
 				+ "1-866-288-8292 or TTY: 1-877-715-6222, or by emailing QPP@cms.hhs.gov";
 	}
+
 }

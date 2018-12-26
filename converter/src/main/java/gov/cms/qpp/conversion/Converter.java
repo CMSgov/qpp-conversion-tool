@@ -134,7 +134,7 @@ public class Converter {
 
 		try {
 			encoder.setNodes(Collections.singletonList(decoded));
-			JsonWrapper qpp = encoder.encode();
+			JsonWrapper qpp = new JsonWrapper(encoder.encode(), true);
 			details.addAll(encoder.getDetails());
 			return qpp;
 		} catch (EncodeException e) {

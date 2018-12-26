@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.api.model;
 
-
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -16,7 +15,7 @@ import static junit.framework.TestCase.fail;
 
 class MetadataTest {
 
-	private static final String EXPECTED_DATE = "2017-12-12T08:30:30.285Z";
+	private static final String EXPECTED_DATE = "2018-12-12T08:30:30.285Z";
 
 	@Test
 	void equalsContract() {
@@ -28,19 +27,19 @@ class MetadataTest {
 
 	@Test
 	void testDateCreatedOnConstruction() {
-		Metadata metadata = new Metadata();
+		Metadata metadata = Metadata.create();
 		assertThat(metadata.getCreatedDate()).isNotNull();
 	}
 
 	@Test
 	void testGetCpcProcessedCreateDateWithNullProcessed() {
-		Metadata metadata = new Metadata();
+		Metadata metadata = Metadata.create();
 		assertThat(metadata.getCpcProcessedCreateDate()).isNull();
 	}
 
 	@Test
 	void testGetCpcProcessedCreateDateWithNonNullProcessed() {
-		Metadata metadata = new Metadata();
+		Metadata metadata = Metadata.create();
 		Boolean processed = false;
 		metadata.setCpcProcessed(processed);
 		assertThat(metadata.getCpcProcessedCreateDate()).startsWith(processed + "#");
@@ -48,7 +47,7 @@ class MetadataTest {
 
 	@Test
 	void testSetCpcProcessedCreateDateWithoutHash() {
-		Metadata metadata = new Metadata();
+		Metadata metadata = Metadata.create();
 		Boolean processedBefore = metadata.getCpcProcessed();
 		Instant createDateBefore = metadata.getCreatedDate();
 
@@ -60,7 +59,7 @@ class MetadataTest {
 
 	@Test
 	void testSetCpcProcessedCreateDateWithHash() {
-		Metadata metadata = new Metadata();
+		Metadata metadata = Metadata.create();
 		metadata.setCpcProcessed(false);
 		Instant createDateBefore = metadata.getCreatedDate();
 
@@ -72,7 +71,7 @@ class MetadataTest {
 
 	@Test
 	void plumbing() {
-		Consumer<Method> consumer = harness(new Metadata());
+		Consumer<Method> consumer = harness(Metadata.create());
 
 		Arrays.stream(Metadata.class.getDeclaredMethods())
 				.filter(this::junk)

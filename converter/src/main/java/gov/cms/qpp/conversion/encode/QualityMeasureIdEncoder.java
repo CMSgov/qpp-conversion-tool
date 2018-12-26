@@ -201,7 +201,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		Node numeratorNode = parentNode.findChildNode(n -> SubPopulationLabel.NUMER.hasAlias(n.getValue(TYPE)));
 		Optional.ofNullable(numeratorNode).ifPresent(
 			node -> {
-				Node aggCount = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
+				Node aggCount = node.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
 				maintainContinuity(wrapper, aggCount, "performanceMet");
 				wrapper.putInteger("performanceMet", aggCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT));
 			});
@@ -258,7 +258,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 
 		Optional.ofNullable(denomExclusionNode).ifPresent(
 				node -> {
-					Node aggCount = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
+					Node aggCount = node.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
 					maintainContinuity(wrapper, aggCount, "eligiblePopulationExclusion");
 					String value = aggCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT);
 					wrapper.putInteger("eligiblePopulationExclusion", value);
@@ -266,7 +266,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 
 		Optional.ofNullable(denomExceptionNode).ifPresent(
 				node -> {
-					Node aggCount = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
+					Node aggCount = node.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
 					maintainContinuity(wrapper, aggCount, "eligiblePopulationException");
 					String value = aggCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT);
 					wrapper.putInteger("eligiblePopulationException", value);
@@ -276,7 +276,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 				node -> {
 					String performanceNotMet = calculatePerformanceNotMet(numeratorNode, denominatorNode,
 							denomExclusionNode, denomExceptionNode);
-					Node aggCount = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
+					Node aggCount = node.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
 					//for eCQMs, will be equal to
 					// denominator - numerator - denominator exclusion - denominator exception
 					maintainContinuity(wrapper, aggCount, "performanceNotMet");
@@ -295,13 +295,13 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 											Node denomExclusionNode, Node denomExceptionNode) {
 
 		String denominatorValue = denominatorNode == null ? "0" :
-				denominatorNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT).getValue(AggregateCountDecoder.AGGREGATE_COUNT);
+				denominatorNode.findFirstNode(TemplateId.PI_AGGREGATE_COUNT).getValue(AggregateCountDecoder.AGGREGATE_COUNT);
 		String denomExclusionValue = denomExclusionNode == null ? "0" :
-				denomExclusionNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT).getValue(AggregateCountDecoder.AGGREGATE_COUNT);
+				denomExclusionNode.findFirstNode(TemplateId.PI_AGGREGATE_COUNT).getValue(AggregateCountDecoder.AGGREGATE_COUNT);
 		String numeratorValue = numeratorNode == null ? "0" :
-				numeratorNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT).getValue(AggregateCountDecoder.AGGREGATE_COUNT);
+				numeratorNode.findFirstNode(TemplateId.PI_AGGREGATE_COUNT).getValue(AggregateCountDecoder.AGGREGATE_COUNT);
 		String denomExceptionValue = denomExceptionNode == null ? "0" :
-				denomExceptionNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT).getValue(AggregateCountDecoder.AGGREGATE_COUNT);
+				denomExceptionNode.findFirstNode(TemplateId.PI_AGGREGATE_COUNT).getValue(AggregateCountDecoder.AGGREGATE_COUNT);
 
 		// for eCQMs, will be equal to denominator - numerator - denominator exclusion - denominator exception
 		return Integer.toString(Integer.parseInt(denominatorValue)

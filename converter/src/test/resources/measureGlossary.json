@@ -1,822 +1,910 @@
 [
 	{
-		"eMeasureUuid": "40280381-537c-f767-0153-c378bd7207a5",
 		"eMeasureId": "CMS2v6",
+		"eMeasureUuid": "40280382-5b4d-eebc-015b-5844953b00a3",
 		"strata": [
 			{
+				"description": "Patients screened for depression on the date of the encounter  using an age appropriate standardized tool AND if positive, a follow-up plan is documented on the date of the positive screen",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "55D921A2-0700-43F0-8C6F-1DB4ADDD7FAB",
-					"denominatorUuid": "CB0D06D7-9C40-45B0-AEC2-60C39262ABA0",
-					"numeratorUuid": "D94BAE8B-1EAC-4832-B040-884B4BBC5BD0",
-					"denominatorExclusionUuid": "8C56B86F-EFE9-404D-B97C-F8FC4691D50D",
-					"denominatorExceptionUuid": "E98E90BE-F3BD-42CD-A194-D6BEFA1BB714"
+					"initialPopulationUuid": "4DAED7C7-EAC9-43D2-B3FF-316DB539800C",
+					"denominatorUuid": "A8FA495E-A133-44FB-9D1E-C85EE38AE9E6",
+					"numeratorUuid": "BC60B220-5594-4D4A-A6F0-60C3E345F38E",
+					"denominatorExceptionUuid": "DF74D69A-F61F-4321-AA48-85CB4371042F",
+					"denominatorExclusionUuid": "94936F2D-C352-44CC-83A5-EE6F05813829"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-528a-60ff-0152-94967c8a0860",
-		"eMeasureId": "CMS22v5",
+		"eMeasureId": "CMS22v6",
+		"eMeasureUuid": "40280382-5971-4eed-015a-4e17610e4ba1",
 		"strata": [
 			{
+				"description": "Patients who were screened for high blood pressure AND have a recommended follow-up plan documented, as indicated if the blood pressure is pre-hypertensive or hypertensive",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "C7E7C7AF-464F-43A0-8C84-CDFF99953C97",
-					"denominatorUuid": "65AFB8BA-F5CC-4ABA-A3FB-2F95FEE2B6FA",
-					"numeratorUuid": "8964CE5A-64A4-4259-9359-39A1CDC07B8D",
-					"denominatorExclusionUuid": "8867C7A7-F8F1-4B61-A6C7-9390C5B5B4EF",
-					"denominatorExceptionUuid": "2338C9B7-B2C5-4348-BF2B-C9E636FD7A45"
+					"initialPopulationUuid": "D9EF7AF1-7F40-4702-A440-7DD0EDDB70CF",
+					"denominatorUuid": "97E280EF-3B0E-49AA-ABD8-59543C8668A7",
+					"numeratorUuid": "6A2D7BD9-1A80-4349-A608-E2AA6D4C19B1",
+					"denominatorExceptionUuid": "97834019-4151-43A0-B437-770CEFC9D3A2",
+					"denominatorExclusionUuid": "DF3FEB73-A1A1-4897-80A2-1878BFBBE7F2"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-5118-2f4e-0151-59fb81bf1055",
-		"eMeasureId": "CMS50v5",
+		"eMeasureId": "CMS50v6",
+		"eMeasureUuid": "40280382-5971-4eed-015a-5c465a344ded",
 		"strata": [
 			{
+				"description": "Number of patients with a referral, for which the referring provider received a report from the provider to whom the patient was referred",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "E7A4AE77-FC46-44F1-BF25-9E99A89CED9B",
-					"denominatorUuid": "B710DA92-D4B9-4217-8D1E-94B35163BECE",
-					"numeratorUuid": "9824B759-A263-44DE-9F5E-93DA4E8F4627"
+					"initialPopulationUuid": "3F74FDF3-7881-4874-B7F9-89E74B320C9E",
+					"denominatorUuid": "218F6923-4DF2-4640-B6EA-08FBA487B099",
+					"numeratorUuid": "B682F9C1-F175-4521-9C22-BF848156DD0A"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-51f0-825b-0152-2273af5a150b",
-		"eMeasureId": "CMS52v5",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-49b9e72038f0",
+		"eMeasureId": "CMS52v6",
 		"strata": [
 			{
+				"description": "Patients who were prescribed Pneumocystis jiroveci pneumonia (PCP) prophylaxis within 3 months of CD4 count below 200 cells/mm3",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "E681DBF8-F827-4586-B3E0-178FF19EC3A2",
-					"denominatorUuid": "04BF53CE-6993-4EA2-BFE5-66E36172B388",
-					"numeratorUuid": "631C0B49-83F4-4A54-96C4-7E0766B2407C",
-					"denominatorExceptionUuid": "58347456-D1F3-4BBB-9B35-5D42825A0AB3"
+					"initialPopulationUuid": "9961385E-AD3C-48F1-98EC-C41C194EAEEB",
+					"denominatorUuid": "880FA69B-496A-4598-A49C-DA5AE7ADAADC",
+					"numeratorUuid": "2C3BF41C-8561-48E5-81E0-39DF94F069A6",
+					"denominatorExceptionUuid": "61A8AF15-0DE6-4A77-9FC9-03646E859967",
+					"denominatorExclusionUuid": "F3CE1536-5D37-403E-A5EC-E80BBA76C512"
 				}
 			},
 			{
+				"description": "Patients who were prescribed Pneumocystis jiroveci pneumonia (PCP) prophylaxis within 3 months of CD4 count below 500 cells/mm3 or a CD4 percentage below 15%",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "AAC578DB-1900-43BD-BBBF-50014A5457E5",
-					"denominatorUuid": "1574973E-EB52-40C7-9709-25ABEDBA99A3",
-					"numeratorUuid": "5B7AC4EC-547A-47E5-AC5E-618401175511",
-					"denominatorExceptionUuid": "B7CCA1A6-F352-4A23-BC89-6FE9B60DC0C6"
+					"initialPopulationUuid": "44E0BA78-7073-4F7F-91ED-3C2E3AE51D04",
+					"denominatorUuid": "7BB627B0-41E0-453B-9CC5-4C2651F9B1F3",
+					"numeratorUuid": "8643FDEB-EE41-4C41-B3EB-8AEDAC7553B9",
+					"denominatorExceptionUuid": "D04998BF-D3F3-44EA-B5FB-112C6EA13A8B",
+					"denominatorExclusionUuid": "C7C308FA-072F-409D-BB0E-2E24F2B706C4"
 				}
 			},
 			{
+				"description": "Patients who were prescribed Pneumocystis jiroveci pneumonia (PCP) prophylaxis at the time of diagnosis of HIV",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "AF36C4A9-8BD9-4E21-838D-A47A1845EB90",
-					"denominatorUuid": "B95BC0D3-572E-462B-BAA2-46CD33A865CD",
-					"numeratorUuid": "86F74F07-D593-44F6-AA12-405966400963"
+					"initialPopulationUuid": "B6AD9019-53DD-4B46-AE53-1E0C345D93F1",
+					"denominatorUuid": "5EA7C0A5-43AE-485B-9162-48A484FED139",
+					"numeratorUuid": "E9408863-096A-4C8B-9C2E-26B88F13E018",
+					"denominatorExclusionUuid": "1B589B45-9922-41E3-AD0C-F94C6D399FFC"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-51f0-825b-0152-227617db152e",
-		"eMeasureId": "CMS56v5",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-49498b373799",
+		"eMeasureId": "CMS56v6",
 		"strata": [
 			{
+				"description": "Patients with patient-reported functional status assessment (i.e., VR-12, PROMIS-10-Global Health, HOOS) in the 90 days prior to or on the day of primary THA procedure, and 270 - 365 days after THA procedure",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "642D0090-BEAB-410B-B3B3-8D1A5EC5B919",
-					"denominatorUuid": "FFA80359-2E09-48C8-8862-DD6E1F5F5428",
-					"numeratorUuid": "7D021618-E1EE-4C2F-AD6A-F74E03D69E43",
-					"denominatorExclusionUuid": "65458ECD-6573-4203-8C56-515063BAFE19"
+					"initialPopulationUuid": "96A28848-59E1-4260-972C-8D7A778F1369",
+					"denominatorUuid": "79CE2ACA-B55F-444F-9717-5A62AFDE4506",
+					"numeratorUuid": "A372B0DB-A50F-475A-99BC-25F1D92E8047",
+					"denominatorExclusionUuid": "2B68371A-2D92-465E-8D28-826893056E9C"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-51f0-825b-0152-227c2f851589",
-		"eMeasureId": "CMS65v6",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-44ab0b8a3591",
+		"eMeasureId": "CMS65v7",
 		"strata": [
 			{
+				"description": "Patients whose follow-up blood pressure is at least 10 mmHg less than their baseline blood pressure or is adequately controlled.\r\n\r\nIf a follow-up blood pressure reading is not recorded during the measurement year, the patient's blood pressure is assumed \"not improved.\"",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "78CD5ACE-054C-43DF-A743-5F1E5BA4C099",
-					"denominatorUuid": "CE973C7A-B867-422B-8408-83538E236039",
-					"numeratorUuid": "F67DCC8F-4F0F-491B-957F-B21E721B040B",
-					"denominatorExclusionUuid": "74F900B9-65DA-4E6C-BB2D-592189ABDDE5"
+					"initialPopulationUuid": "08266507-3245-44DC-B0F4-FAC725577050",
+					"denominatorUuid": "302E8035-90AB-4811-813B-CA19E90DBB73",
+					"numeratorUuid": "BF4DFC81-C43C-4B94-88DA-A5AC5F92E0B2",
+					"denominatorExclusionUuid": "0C718EB6-B06C-434F-A4E3-813C7560D23A"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-51f0-825b-0152-227ce2c81597",
-		"eMeasureId": "CMS66v5",
+		"eMeasureId": "CMS66v6",
+		"eMeasureUuid": "40280382-5b4d-eebc-015b-5e9d6d0c0294",
 		"strata": [
 			{
+				"description": "Patients with patient-reported functional status assessment results (i.e., VR-12, PROMIS-10 Global Health, KOOS) in the 90 days prior to or on the day of primary TKA procedure, and 270 - 365 days after TKA procedure",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "F0D80FC4-5E5E-46F3-A519-1B99013E2761",
-					"denominatorUuid": "D795B824-0575-47B3-93DB-D48CD5643677",
-					"numeratorUuid": "0DD7EF36-2B1D-4447-8E52-BF9C4A3E7ED3",
-					"denominatorExclusionUuid": "0E8BFC37-A4BA-4DE6-A6F3-DF4C188AB129"
+					"initialPopulationUuid": "8C809576-E8BD-49F5-9135-ACDDE4D33EC9",
+					"denominatorUuid": "02F99A06-E0DB-4CB5-A682-41E071EE6018",
+					"numeratorUuid": "CB2669D7-DD4C-4EAF-AD97-E4034EC69FD9",
+					"denominatorExclusionUuid": "FF02E58F-CD23-40BD-BD15-B6C29FA4840E"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-52fc-3a32-0153-3d64af97147b",
-		"eMeasureId": "CMS68v6",
+		"eMeasureId": "CMS68v7",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-1afe205e2890",
 		"strata": [
 			{
+				"description": "Eligible professional or eligible clinician attests to documenting, updating or reviewing the patient's current medications using all immediate resources available on the date of the encounter. This list must include ALL known prescriptions, over-the-counters, herbals and vitamin/mineral/dietary (nutritional) supplements AND must contain the medications' name, dosages, frequency and route of administration",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "D412322D-11F1-4573-893E-E6A05855DE10",
-					"denominatorUuid": "375D0559-C749-4BB9-9267-81EDF447650B",
-					"numeratorUuid": "EFFE261C-0D57-423E-992C-7141B132768C",
-					"denominatorExceptionUuid": "3C100EC4-2990-4D79-AE14-E816F5E78AC8"
+					"initialPopulationUuid": "90D784F1-D627-4ECB-8E51-96B915801B6E",
+					"denominatorUuid": "2EE93A8D-BBC0-4D5F-B9AB-8471AB1C0206",
+					"numeratorUuid": "16258F72-CA04-4FB6-AF26-DBB372D4E265",
+					"denominatorExceptionUuid": "A4683F21-3E47-4E66-94E4-571A74B86894"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-5118-2f4e-0151-20a31a780368",
-		"eMeasureId": "CMS69v5",
+		"eMeasureId": "CMS69v6",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-1abd1d0427de",
 		"strata": [
 			{
+				"description": "Patients with a documented BMI during the encounter or during the previous twelve months, AND when the BMI is outside of normal parameters, a follow-up plan is documented during the encounter or during the previous twelve months of the current encounter",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "4D10500F-6738-4541-BF24-4C95C74B45AB",
-					"denominatorUuid": "36CCB819-C150-466D-A55A-0A175B19E751",
-					"numeratorUuid": "51D06394-AF97-41DD-BF41-68D58786A9D2",
-					"denominatorExceptionUuid": "0E162220-C93B-48B0-AAB1-E2F8E7FE7EA1",
-					"denominatorExclusionUuid": "EE5FFA67-A42D-4472-8159-ED4B87BE6CDA"
+					"initialPopulationUuid": "732688B2-D597-4AD3-B21B-951530621182",
+					"denominatorUuid": "0089D649-985E-44D9-9B01-A0745DC61F03",
+					"numeratorUuid": "4E23A4B8-0313-4F48-910D-EF406560CC20",
+					"denominatorExceptionUuid": "93A7A4A1-E6F7-42EF-9DEC-875EA2373E18",
+					"denominatorExclusionUuid": "03D59443-FB64-4216-8DC5-67B950A02070"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-52fc-3a32-0153-1f39c24d0eef",
-		"eMeasureId": "CMS75v5",
+		"eMeasureId": "CMS75v6",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-44cef87e35c3",
 		"strata": [
 			{
+				"description": "Children who had cavities or decayed teeth",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "72D79C93-6D03-4BA2-B250-5316E370B766",
-					"denominatorUuid": "E87F18F1-F70C-4BB3-A95C-7C1D4561E73D",
-					"numeratorUuid": "3D9AD35A-7456-4AA2-8FDB-D4B06DF72CC9"
+					"initialPopulationUuid": "528EB246-D329-4123-BF93-1C4C5797AA83",
+					"denominatorUuid": "DD411FE5-324C-4715-A898-2126EA30740C",
+					"numeratorUuid": "826C8438-3D6B-494C-89AA-35F3FBE0F73A",
+					"denominatorExclusionUuid": "CF1EE2F3-5133-4AB9-982A-99FFF69BF1E0"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-51f0-825b-0152-2295c55c16aa",
-		"eMeasureId": "CMS82v4",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-49b2128438cb",
+		"eMeasureId": "CMS82v5",
 		"strata": [
 			{
+				"description": "Children with documentation of maternal screening or treatment for postpartum depression for the mother",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "D3ADB281-2F53-4BE6-89A9-124480DE787D",
-					"denominatorUuid": "6B845134-C1B7-4383-AFB3-1FFB7EAD359B",
-					"numeratorUuid": "D2A5FF72-DE5E-413A-829E-C763FC07DF4A"
+					"initialPopulationUuid": "88D3358E-49E3-40A0-8872-CABEBCFE8815",
+					"denominatorUuid": "E3912B01-76E9-4D2E-804C-DF86665716C1",
+					"numeratorUuid": "E37DACD1-5536-402D-B1CA-A81C2B3295AA"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-52fc-3a32-0153-1f3f70ca0eff",
-		"eMeasureId": "CMS90v6",
+		"eMeasureId": "CMS90v7",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-4434ffa43547",
 		"strata": [
 			{
+				"description": "Patients with patient-reported functional status assessment results (eg, VR-12; VR-36; MLHF-Q; KCCQ; PROMIS-10 Global Health, PROMIS-29) present in the EHR two weeks before or during the initial FSA encounter and results for the follow-up FSA at least 30 days but no more than 180 days after the initial functional status assessment",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "AD37C6FE-2537-4A9B-8AD9-A372E3215F76",
-					"denominatorUuid": "19ECF222-71EF-4D75-9CC2-19ED201107EA",
-					"numeratorUuid": "F9B4C929-8F37-48D1-953C-489C028AE725",
-					"denominatorExclusionUuid": "32DBECF3-11EC-40FB-B35D-FA1BF7366492"
+					"initialPopulationUuid": "B4510F26-AA43-4CA6-BEE6-71B33D1A70E6",
+					"denominatorUuid": "51B0D520-BADF-4238-BE65-2C02B69141EB",
+					"numeratorUuid": "45784D8D-B471-401B-A5CE-13F429F20C57",
+					"denominatorExclusionUuid": "6C64B69F-C8EF-4E16-88FB-B03502937883"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-52fc-3a32-0153-1a4ba57f0b8a",
-		"eMeasureId": "CMS117v5",
+		"eMeasureId": "CMS117v6",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-497dd1e937da",
 		"strata": [
 			{
+				"description": "Children who have evidence showing they received recommended vaccines, had documented history of the illness, had a seropositive test result, or had an allergic reaction to the vaccine by their second birthday",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "DA379EC2-EE2E-4548-AEF0-DD4F14F80279",
-					"denominatorUuid": "CC8AFFF0-A436-42CD-8322-5EBCEF9CBF06",
-					"numeratorUuid": "AE7A33AF-0DA7-4772-A23C-2D2CA732D53A"
+					"initialPopulationUuid": "57FF1726-F435-4AE7-978D-6A704649B7F8",
+					"denominatorUuid": "942F69E0-9D10-4A11-912B-634720AC529C",
+					"numeratorUuid": "2974FF0D-E454-41F9-B2B3-5622414ACBE3",
+					"denominatorExclusionUuid": "903591FD-25A7-4F55-A1B5-C17634698354"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-51f0-825b-0152-229afff616ee",
-		"eMeasureId": "CMS122v5",
+		"eMeasureId": "CMS122v6",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-4981e40b37e6",
 		"strata": [
 			{
+				"description": "Patients whose most recent HbA1c level (performed during the measurement period) is >9.0%",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "0739FE2E-B8DE-4A56-B064-877CC8E0977D",
-					"denominatorUuid": "D346DA74-F16E-4159-BEDF-331BA28837FB",
-					"numeratorUuid": "6D01A564-58CC-4CF5-929F-B83583701BFE"
+					"initialPopulationUuid": "B7D491B3-358C-41A3-94F8-B986E65D99B6",
+					"denominatorUuid": "D6366A39-0B09-478B-B65A-1044CB22F68F",
+					"numeratorUuid": "B2497764-9F9D-402B-8852-1FB3BAA30B2C",
+					"denominatorExclusionUuid": "2E60E186-DB12-4810-A6B6-BAEBFF71A78E"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-51f0-825b-0152-229b7b2f16f9",
-		"eMeasureId": "CMS123v5",
+		"eMeasureId": "CMS123v6",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-49851c1237f2",
 		"strata": [
 			{
+				"description": "Patients who received visual, pulse and sensory foot examinations during the measurement period",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "9AB84D25-5883-4D85-A868-0D702403F250",
-					"denominatorUuid": "61B09878-32B3-4ECB-8E78-D1093E1FDDF9",
-					"numeratorUuid": "60EC6098-950A-40E5-994F-E9A62CFF6FC2",
-					"denominatorExclusionUuid": "02D13BF4-EF77-4DF4-A436-834AEDBE043C"
+					"initialPopulationUuid": "2FEADCB4-6B5B-4568-A4F6-D46AE7362D5A",
+					"denominatorUuid": "C33501A9-F9A1-4DF5-B71D-4B16F6ECA73B",
+					"numeratorUuid": "9A243C9D-54BC-4846-9781-C4BC3328E3B3",
+					"denominatorExclusionUuid": "1CBE992C-D1D0-4086-BD3E-70FE2C1BF0A9"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-51f0-825b-0152-229bdcab1702",
-		"eMeasureId": "CMS124v5",
+		"eMeasureId": "CMS124v6",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-4989b55937fe",
 		"strata": [
 			{
+				"description": "Women with one or more screenings for cervical cancer. Appropriate screenings are defined by any one of the following criteria:\n\n- Cervical cytology performed during the measurement period or the two years prior to the measurement period for women who are at least 21 years old at the time of the test\n \n- Cervical cytology/human papillomavirus (HPV) co-testing performed during the measurement period or the four years prior to the measurement period for women who are at least 30 years old at the time of the test",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "3A29C38D-E468-47CC-995B-B281B1B066CF",
-					"denominatorUuid": "7CDA5C1B-CD31-4D16-80C4-22AE2F549D88",
-					"numeratorUuid": "3854BDE6-9614-475D-8E3B-5A041C04C291",
-					"denominatorExclusionUuid": "45A2163C-25C2-4245-A3C6-0BEE64E18B64"
+					"initialPopulationUuid": "DA8343BF-CC74-432C-8791-25A24371E272",
+					"denominatorUuid": "07FEF163-AD9D-49DF-8888-D61059B5A336",
+					"numeratorUuid": "5FB7CF82-66B2-4193-A149-BBC147C3C806",
+					"denominatorExclusionUuid": "6BB7C510-DA0F-4EA6-A1FB-4609DA8C1229"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-51f0-825b-0152-229c4ea3170c",
-		"eMeasureId": "CMS125v5",
+		"eMeasureId": "CMS125v6",
+		"eMeasureUuid": "40280382-5b4d-eebc-015b-5ea9efcc02ac",
 		"strata": [
 			{
+				"description": "Women with one or more mammograms during the measurement period or the 15 months prior to the measurement period",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "66FD640C-70BB-400F-9926-98EA1ACEBEBA",
-					"denominatorUuid": "40FB2D5F-7DEF-4D41-80C4-F3FBA0ED5851",
-					"numeratorUuid": "0AB40D2B-08CE-4185-8A54-336C3140644D",
-					"denominatorExclusionUuid": "EC5CC49E-42A7-4DD8-BD40-A6258E71DCB9"
+					"initialPopulationUuid": "C4BF72E5-8BF7-46A7-BD7B-6350F901FF54",
+					"denominatorUuid": "2A320D3E-1A77-4944-AE56-B812673AAF8A",
+					"numeratorUuid": "475ABF74-7880-45F6-AE2A-FC6333EACCDA",
+					"denominatorExclusionUuid": "2D3173C1-39F8-433C-B78E-CF72172CEA7A"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-52fc-3a32-0153-1a646a2a0bfa",
-		"eMeasureId": "CMS127v5",
+		"eMeasureId": "CMS127v6",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-498df1243816",
 		"strata": [
 			{
+				"description": "Patients who have ever received a pneumococcal vaccination",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "E1A2F7D4-0B24-47FC-9369-0700771B2D40",
-					"denominatorUuid": "B57EA797-15A1-4C60-B34C-BAE292FE3B76",
-					"numeratorUuid": "CBD0926D-6088-44EE-883C-0A0F9E77E2A1"
+					"initialPopulationUuid": "023E42E9-AEA8-4135-A64A-5EA1C46D4510",
+					"denominatorUuid": "8CE9F814-6315-421C-9D92-0108CE506B3D",
+					"numeratorUuid": "D60E94B6-8CD2-44ED-AC6C-EF41BC4B4F72",
+					"denominatorExclusionUuid": "8C9FD60A-EA5F-4925-B525-9F1AB8A2FCDA"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-51f0-825b-0152-22a112d2172a",
-		"eMeasureId": "CMS128v5",
+		"eMeasureId": "CMS128v6",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-49909a0e3822",
 		"strata": [
 			{
+				"description": "Patients who have received antidepressant medication for at least 84 days (12 weeks) of continuous treatment during the 114-day period following the Index Prescription Start Date.",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "220EBFDC-C2DF-431B-B14A-8982026B10F1",
-					"denominatorUuid": "50E80E87-0A09-4914-8632-BD0797460B34",
-					"numeratorUuid": "02A8409A-7B63-4FE9-B865-87C650DD7459",
-					"denominatorExclusionUuid": "BA926F92-CA87-43B3-A5C4-FD9FF8B59BB5"
+					"initialPopulationUuid": "C3C46850-F581-4F89-9F2D-4F93D73402CA",
+					"denominatorUuid": "6FFF86C1-040A-4B84-A113-63362E0C1891",
+					"numeratorUuid": "C26BB0E0-244A-4B66-A6E0-7731CF7665E7",
+					"denominatorExclusionUuid": "126B533C-1705-49A6-9B00-BBD7391EB80C"
 				}
 			},
 			{
+				"description": "Patients who have received antidepressant medications for at least 180 days (6 months) of continuous treatment during the 231-day period following the Index Prescription Start Date.",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "1E041190-8EE7-46B0-A735-B416C5FA76FC",
-					"denominatorUuid": "B1C6949E-6854-4182-8BC9-C0EE75B705A2",
-					"numeratorUuid": "3A4FA8BB-D8BC-4F66-9367-A71DF03A868D",
-					"denominatorExclusionUuid": "8C51C326-AE19-462B-9745-6C8ABE92AE27"
+					"initialPopulationUuid": "3C3C9859-7E43-4A0C-8C7F-BDFD8963AB23",
+					"denominatorUuid": "3FCF7F76-1243-462E-9AA9-1031D200920D",
+					"numeratorUuid": "14C13E0B-C875-4664-ABE4-4AEFDE178F1E",
+					"denominatorExclusionUuid": "74A3758B-7BCF-4B63-809E-5087820731B1"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-503f-a1fc-0151-10de35992766",
-		"eMeasureId": "CMS129v6",
+		"eMeasureId": "CMS129v7",
+		"eMeasureUuid": "40280382-5971-4eed-015a-04bc49ed2d96",
 		"strata": [
 			{
+				"description": "Patients who did not have a bone scan performed at any time since diagnosis of prostate cancer",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "73B68FA6-B437-4166-8555-F54EDD2BD797",
-					"denominatorUuid": "F457BF14-DBBF-4F25-9C27-3F1A77E6341A",
-					"numeratorUuid": "ECBF5473-BA0F-4662-90A9-BCCF981F92CD",
-					"denominatorExceptionUuid": "01197FE4-C21E-482E-8A98-05506308A206"
+					"initialPopulationUuid": "B7790E48-467E-49DB-988F-9063C8259C36",
+					"denominatorUuid": "6A944202-57CA-42BC-A47C-9B65FDCBCB80",
+					"numeratorUuid": "297B31F3-E139-496C-9A8C-20E176EBC27D",
+					"denominatorExceptionUuid": "2DA94C2C-437D-4D98-A485-A062ECCAA199"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-51f0-825b-0152-22a1e7e81737",
-		"eMeasureId": "CMS130v5",
+		"eMeasureId": "CMS130v6",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-4993577e382e",
 		"strata": [
 			{
+				"description": "Patients with one or more screenings for colorectal cancer. Appropriate screenings are defined by any one of the following criteria: \n- Fecal occult blood test (FOBT) during the measurement period \n- Flexible sigmoidoscopy during the measurement period or the four years prior to the measurement period \n- Colonoscopy during the measurement period or the nine years prior to the measurement period\n- FIT-DNA during the measurement period or the two years prior to the measurement period \n- CT Colonography during the measurement period or the four years prior to the measurement period",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "4D1C7452-B908-4616-B9E9-36C9AA71005B",
-					"denominatorUuid": "589C2FD6-6AA9-4AF8-9E1C-973170361917",
-					"numeratorUuid": "52ADE511-39D4-4CBC-84B6-A82059741359",
-					"denominatorExclusionUuid": "93AA9C96-E1FE-435B-BA0B-FAF0C5592275"
+					"initialPopulationUuid": "FA04C05D-FABF-4ED8-BC56-5E1C9E7F4170",
+					"denominatorUuid": "65F9718A-2BE8-4FE7-801C-2FEB861C55D2",
+					"numeratorUuid": "4CB09E04-EB4E-4902-9775-F4F36EFF57C2",
+					"denominatorExclusionUuid": "DC79FC52-DE56-4B39-A9A4-BC82F32564BE"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-51f0-825b-0152-22a24cdd1740",
-		"eMeasureId": "CMS131v5",
+		"eMeasureId": "CMS131v6",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-49956e7c383a",
 		"strata": [
 			{
+				"description": "Patients with an eye screening for diabetic retinal disease. This includes diabetics who had one of the following:\nA retinal or dilated eye exam by an eye care professional in the measurement period or a negative retinal exam (no evidence of retinopathy) by an eye care professional in the year prior to the measurement period",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "321FB2D3-477E-41B7-8BB1-02EE94D08417",
-					"denominatorUuid": "98CE7ECC-1F09-4F52-906C-E53EAB545F00",
-					"numeratorUuid": "3F48A9B6-7B99-4BF4-AB1E-50DC1FFB9D1A"
+					"initialPopulationUuid": "A14D91B3-CD7F-432D-8148-B9563BAA960D",
+					"denominatorUuid": "FCA38355-BD5D-445A-895C-5B6E09C41B77",
+					"numeratorUuid": "C7D4A675-E578-45F2-B637-5C1FC90FCCFA",
+					"denominatorExclusionUuid": "53F076FE-F9B6-45C0-963E-BF5E38716C11"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-52fc-3a32-0153-1a2308830b04",
-		"eMeasureId": "CMS132v5",
+		"eMeasureId": "CMS132v6",
+		"eMeasureUuid": "40280382-5a66-eab9-015a-866c5add0c0b",
 		"strata": [
 			{
+				"description": "Patients who had one or more specified operative procedures for any of the following major complications within 30 days following cataract surgery: retained nuclear fragments, endophthalmitis, dislocated or wrong power IOL, retinal detachment, or wound dehiscence",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "1B6E9DCF-15DC-4D57-97DB-F8A8619DDB1B",
-					"denominatorUuid": "44BB8D98-F611-48FD-BD3F-05BB998F3754",
-					"numeratorUuid": "A4AE5A30-F400-4849-B054-FB19138AC580",
-					"denominatorExclusionUuid": "AE555E04-C8C0-4ABE-AE9B-C5FC2B46F263"
+					"initialPopulationUuid": "8A44DF19-F6AA-4FCA-AD98-53DF73C00902",
+					"denominatorUuid": "AC68F187-68E3-499C-B6C4-0F65E4829ECB",
+					"numeratorUuid": "5E1A5995-EE9D-4413-B757-725D579B5B26",
+					"denominatorExclusionUuid": "C1205D08-24DB-412E-87A9-16B75CCD3ED0"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-52fc-3a32-0153-1f44d4980f0f",
-		"eMeasureId": "CMS133v5",
+		"eMeasureId": "CMS133v6",
+		"eMeasureUuid": "40280382-5971-4eed-015a-4e28d6184bc4",
 		"strata": [
 			{
+				"description": "Patients who had best-corrected visual acuity of 20/40 or better (distance or near) achieved within 90 days following cataract surgery",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "D790598C-DC4A-4DF8-8E50-9878AF4E886F",
-					"denominatorUuid": "16000621-529F-4F4E-A0A8-ACA703D3B40A",
-					"numeratorUuid": "2F166EEC-4528-474A-966F-D9C8AD49C7AD",
-					"denominatorExclusionUuid": "9D7B933B-8A97-4BA3-A546-220E1BF789CC"
+					"initialPopulationUuid": "787FCA10-623D-4FD1-9766-8930A94E8290",
+					"denominatorUuid": "BC06BE53-65A1-4FEC-A35B-655B33A786BD",
+					"numeratorUuid": "3C27E444-88D1-4F58-9286-65008D21644E",
+					"denominatorExclusionUuid": "785D8CD4-5ECC-43C6-9071-D33D35502CA0"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-528a-60ff-0152-d7504e61249a",
-		"eMeasureId": "CMS134v5",
+		"eMeasureId": "CMS134v6",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-49973dc03846",
 		"strata": [
 			{
+				"description": "Patients with a screening for nephropathy or evidence of nephropathy during the measurement period",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "A27FD818-3C97-4516-A796-319B89E306AC",
-					"denominatorUuid": "0CC16DE4-474A-4F6E-BFB8-0104709B1E05",
-					"numeratorUuid": "5647E3D0-6550-4B0B-AE76-53CD9E99D20B"
+					"initialPopulationUuid": "5F282645-41F1-4C69-BA5C-D59AA8C41FA2",
+					"denominatorUuid": "93A039DE-AE5D-4A61-A500-3D400AA8B273",
+					"numeratorUuid": "0D0139E2-FBDE-4A71-9340-3FB2FF9702F2",
+					"denominatorExclusionUuid": "BFAD5371-9B11-4520-9220-6A253A668FF8"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-52fc-3a32-0153-62239c5d1ef6",
-		"eMeasureId": "CMS135v5",
+		"eMeasureId": "CMS135v6",
+		"eMeasureUuid": "40280382-5971-4eed-015a-05848ec12ebb",
 		"strata": [
 			{
+				"description": "Patients who were prescribed ACE inhibitor or ARB therapy either within a 12 month period when seen in the outpatient setting OR at each hospital discharge",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "F3000871-B8FD-4F74-8892-281C250C11EA",
-					"denominatorUuid": "C1E20830-ADFE-4D88-B979-166FA0820D5C",
-					"numeratorUuid": "49E476F4-E8A1-48A6-B800-A8172073DBFB",
-					"denominatorExceptionUuid": "41E08783-4358-4E0D-81BE-9616A8F58319"
+					"initialPopulationUuid": "98DF60A2-1382-4E09-A186-8328E7D7265A",
+					"denominatorUuid": "1629A28C-BD6E-4DDA-B46C-C541D04BF740",
+					"numeratorUuid": "1994B300-F0AE-40B2-A397-A375B5EE60B4",
+					"denominatorExceptionUuid": "F7544DFE-1919-47E6-B698-FCC3116167E0"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-51f0-825b-0152-22a639d81762",
-		"eMeasureId": "CMS136v6",
+		"eMeasureId": "CMS136v7",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-499a7b553852",
 		"strata": [
 			{
+				"description": "Patients who had at least one face-to-face visit with a practitioner with prescribing authority within 30 days after the IPSD.",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "4DF80BC3-980B-465E-8591-616C7DB74FBD",
-					"denominatorUuid": "815F709E-9703-4A6E-860F-CB0096A98B71",
-					"denominatorExclusionUuid": "FE028D3B-7AB5-418B-A90C-CCFE76F25078",
-					"numeratorUuid": "341DBA96-D1CC-409F-99D9-8AB80D03B4A8"
+					"initialPopulationUuid": "FED976AC-8C91-473B-8E93-61809F442F23",
+					"denominatorUuid": "7872B69D-A1EB-42B3-8ED8-3BF847CC1B0C",
+					"numeratorUuid": "40ADC4A8-3EF2-4672-B287-A5C70C125709",
+					"denominatorExclusionUuid": "0A5E78D7-074C-46C6-9529-56E06681EABA"
 				}
 			},
 			{
+				"description": "Patients who had at least one face-to-face visit with a practitioner with prescribing authority during the Initiation Phase, and at least two follow-up visits during the Continuation and Maintenance Phase. One of the two visits during the Continuation and Maintenance Phase may be a telephone visit with a practitioner.",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "9FC61BF5-1EBD-44DE-ADCB-64E70FD3C0A5",
-					"denominatorUuid": "62FDAE01-000B-40A0-9C74-4A803BA37A96",
-					"denominatorExclusionUuid": "425772D2-6437-4F33-9B1E-349E1C6587D9",
-					"numeratorUuid": "5097B983-9C47-4F28-9194-C795F42053AF"
+					"initialPopulationUuid": "CFB7C953-715D-46BF-9F0D-FE8A25B2A247",
+					"denominatorUuid": "787F0CCC-18DA-4F36-B8DA-F24FB75B0E1C",
+					"numeratorUuid": "B8E236A4-1AE9-44F9-8664-28A6BED54CF8",
+					"denominatorExclusionUuid": "37CC8B9D-0299-4221-8AD6-5B4EC842959B"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-528a-60ff-0152-8e089ed20376",
-		"eMeasureId": "CMS137v5",
+		"eMeasureId": "CMS137v6",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-499c87c0385e",
 		"strata": [
 			{
+				"description": "Patients who initiated treatment within 14 days of the diagnosis",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "EC2C5F63-AF76-4D3C-85F0-5423F8C28541",
-					"denominatorUuid": "BC948E65-B908-493B-B48B-04AC342D3E6C",
-					"denominatorExclusionUuid": "56BC7FA2-C22A-4440-8652-2D3568852C60",
-					"numeratorUuid": "0BBF8596-4CFE-47F4-A0D7-9BEAB94BA4CD",
+					"initialPopulationUuid": "E6569B35-D2C5-464B-A608-BDB2F082FE57",
+					"denominatorUuid": "3F6350CA-654C-4B00-8B62-EC810D1CA790",
+					"numeratorUuid": "6F8814A6-A26A-4FCB-8A41-902971713FCB",
+					"denominatorExclusionUuid": "9242AAE1-D2C4-44A4-AF6B-7DF4C5C9BE31",
 					"strata": [
-						"EFB5B088-CE10-43DE-ACCD-9913B7AC12A2",
-						"94B9555F-8700-45EF-B69F-433EBEDE8051"]
+						"F2765AD3-E5E4-40BE-ADCF-E1CCA92B0D42",
+						"C17E38FE-4BC4-46A6-B35D-6F172C4D5F41"
+					]
+				}
+			},
+			{
+				"description": "Patients who initiated treatment and who had two or more additional services with an AOD diagnosis within 30 days of the initiation visit",
+				"eMeasureUuids": {
+					"initialPopulationUuid": "68E401E4-8CB6-4A5D-A83D-58F8E902E012",
+					"denominatorUuid": "417055BD-AECD-49D5-8FA7-764FF1544611",
+					"numeratorUuid": "431A7185-548C-4F05-B0D3-90108E4AAD57",
+					"denominatorExclusionUuid": "F1AA2B4F-003E-4770-9394-8D465715CC4D",
+					"strata": [
+						"2D73F57C-3C9A-49CF-B0C0-D0C512C8A10B",
+						"C18A8AFF-E1DC-49E8-B84D-74DDD399A4E2"
+					]
+				}
+			}
+		]
+	},
+	{
+		"eMeasureId": "CMS138v6",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-1b7c6bb929d0",
+		"strata": [
+			{
+				"name": "screenedForUse",
+				"description": "Percentage of patients aged 18 years and older who were screened for tobacco use one or more times within 24 months",
+				"eMeasureUuids": {
+					"initialPopulationUuid": "95BF2369-1AA2-4A8B-9AF8-B1BD08A4DCA6",
+					"denominatorUuid": "3B551ED0-E6BE-4D1B-B657-7C5CBF0F9E5E",
+					"numeratorUuid": "03EB885E-F7CF-491D-B589-76C35404A6E8",
+					"denominatorExceptionUuid": "824B8FC1-D790-4CAF-8A68-F0607D24D14B"
+				}
+			},
+			{
+				"name": "intervention",
+				"description": "Percentage of patients aged 18 years and older who were screened for tobacco use and identified as a tobacco user who received tobacco cessation intervention",
+				"eMeasureUuids": {
+					"initialPopulationUuid": "7C4B36B2-BC2F-42E2-AE60-2A3E461A441E",
+					"denominatorUuid": "AD464F50-958E-4557-8DCE-555614AEE6B8",
+					"numeratorUuid": "70DBF8C1-7DD3-4413-A501-021212C44181",
+					"denominatorExceptionUuid": "6ACFDD9F-4D31-45F8-9516-6D4BCB5BEF20"
+				}
+			},
+			{
+				"name": "overall",
+				"description": "Percentage of patients aged 18 years and older who were screened for tobacco use one or more times within 24 months AND who received tobacco cessation intervention if identified as a tobacco user",
+				"eMeasureUuids": {
+					"initialPopulationUuid": "C1A04121-5A7B-4279-A87C-396A80308933",
+					"denominatorUuid": "D851152D-D00B-4A21-9E6A-A29E2E772E97",
+					"numeratorUuid": "C0CCE0E5-CD1A-4F94-8A75-F750EA4D4251",
+					"denominatorExceptionUuid": "FE9E6C69-EB6B-4423-96FD-4C718E983522"
+				}
+			}
+		]
+	},
+	{
+		"eMeasureId": "CMS139v6",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-49b36bf238d7",
+		"strata": [
+			{
+				"description": "Patients who were screened for future fall risk at least once within the measurement period",
+				"eMeasureUuids": {
+					"initialPopulationUuid": "5D0D869E-9A8B-4707-9C97-03C17F156DD6",
+					"denominatorUuid": "DEEEB2CC-75E7-487B-895C-1102042B7C97",
+					"numeratorUuid": "714CCB1D-9F3F-403E-B636-2F2A38258D31",
+					"denominatorExclusionUuid": "D97B59F6-89D4-4635-8F38-4C8369D1776E"
+				}
+			}
+		]
+	},
+	{
+		"eMeasureId": "CMS142v6",
+		"eMeasureUuid": "40280382-5971-4eed-015a-04d538502dae",
+		"strata": [
+			{
+				"description": "Patients with documentation, at least once within 12 months, of the findings of the dilated macular or fundus exam via communication to the physician who manages the patient's diabetic care",
+				"eMeasureUuids": {
+					"initialPopulationUuid": "71DEDD9A-65CD-436B-BD07-1FF38CC3EC42",
+					"denominatorUuid": "F6E6941D-EC07-4F87-9AD7-E9A4DE1C9D83",
+					"numeratorUuid": "61861F0F-2A1B-43F6-974A-507FA24163DB",
+					"denominatorExceptionUuid": "18692AEE-C96C-454C-80C5-25A4986113B7"
+				}
+			}
+		]
+	},
+	{
+		"eMeasureId": "CMS143v6",
+		"eMeasureUuid": "40280382-5971-4eed-015a-04e1eae72dc3",
+		"strata": [
+			{
+				"description": "Patients who have an optic nerve head evaluation during one or more office visits within 12 months",
+				"eMeasureUuids": {
+					"initialPopulationUuid": "9C63D9DF-F1E0-49A8-94F5-DE8A237C6E52",
+					"denominatorUuid": "C9F4C6C2-D567-4118-BDD6-52B8422729F4",
+					"numeratorUuid": "57FD3EA0-553F-439E-AD81-AA3B5CF523D4",
+					"denominatorExceptionUuid": "B4E0ABDD-DF7A-48DC-86E1-5EACB0461207"
+				}
+			}
+		]
+	},
+	{
+		"eMeasureId": "CMS144v6",
+		"eMeasureUuid": "40280382-5971-4eed-015a-05b564b82eda",
+		"strata": [
+			{
+				"description": "Patients who were prescribed beta-blocker therapy either within a 12 month period when seen in the outpatient setting OR at each hospital discharge",
+				"eMeasureUuids": {
+					"initialPopulationUuid": "1E7F92C1-58C7-494D-A370-8003D0CE2EFD",
+					"denominatorUuid": "45F25D09-BA59-45F6-AFDB-1480DDABF7FB",
+					"numeratorUuid": "990F0F54-21E6-4A02-B19D-3F54A48B858F",
+					"denominatorExceptionUuid": "FA93E3F5-C457-427F-B80E-0F8F4F27D5FD"
+				}
+			}
+		]
+	},
+	{
+		"eMeasureId": "CMS145v6",
+		"eMeasureUuid": "40280382-5971-4eed-015a-4df98a314b40",
+		"strata": [
+			{
+				"eMeasureUuids": {
+					"initialPopulationUuid": "AF9E3B00-9A22-46BB-9354-EC4AC32D2EA4",
+					"denominatorUuid": "8B0F028C-2196-4984-A034-B969BD75D013",
+					"numeratorUuid": "F883CF79-13E1-40BD-BBB4-5E26AFAF2E24",
+					"denominatorExceptionUuid": "88EF4FC4-B428-4FFA-8C42-552AC66765BB"
 				}
 			},
 			{
 				"eMeasureUuids": {
-					"initialPopulationUuid": "1511AD34-240C-4F3E-A87B-73511AABFC5C",
-					"denominatorUuid": "4A09AB89-D9B8-4DD1-BC4E-78BCFD1C5873",
-					"denominatorExclusionUuid": "206A891D-C3E1-4660-BF2C-6CDBDF9282FB",
-					"numeratorUuid": "7FFA49C4-D708-491E-85FE-6855F0A725DF",
+					"initialPopulationUuid": "B9E2115F-5BA9-4884-9EBE-3E07254C7DFE",
+					"denominatorUuid": "DB77B19D-6CAF-43B6-B3CF-2E34000B1970",
+					"numeratorUuid": "0F2F49CB-BA85-4F5B-B4EE-F8A725174120",
+					"denominatorExceptionUuid": "7C4A3988-5F29-46BF-9C51-41EF60611C39"
+				}
+			}
+		]
+	},
+	{
+		"eMeasureId": "CMS146v6",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-499f4310386a",
+		"strata": [
+			{
+				"description": "Children with a group A streptococcus test in the 7-day period from 3 days prior through 3 days after the diagnosis of pharyngitis",
+				"eMeasureUuids": {
+					"initialPopulationUuid": "0D306F3A-DCD9-4F64-94CA-8B6F7DD4B3E7",
+					"denominatorUuid": "0746E342-2E26-486C-A515-63D3F9173DAF",
+					"numeratorUuid": "F06A9DF9-9758-4081-ABC8-F4A3FB9EE3A1",
+					"denominatorExclusionUuid": "E33F3B54-0491-4DCD-9693-A9E59E828A30"
+				}
+			}
+		]
+	},
+	{
+		"eMeasureId": "CMS147v7",
+		"eMeasureUuid": "40280382-5b4d-eebc-015b-5d99505001ea",
+		"strata": [
+			{
+				"description": "Patients who received an influenza immunization OR who reported previous receipt of an influenza immunization",
+				"eMeasureUuids": {
+					"initialPopulationUuid": "6011EBDD-A997-41C6-A58C-A8CD568AAE63",
+					"denominatorUuid": "60FF8D6C-0D6D-4BEA-9FFF-B6FF06CFC017",
+					"numeratorUuid": "FB31BD28-2229-410D-ADCB-4D191F79C465",
+					"denominatorExceptionUuid": "6435891F-92AB-4AD4-A175-6F4C98E1BD17"
+				}
+			}
+		]
+	},
+	{
+		"eMeasureId": "CMS149v6",
+		"eMeasureUuid": "40280382-5971-4eed-015a-4e002d4b4b66",
+		"strata": [
+			{
+				"description": "Patients for whom an assessment of cognition is performed and the results reviewed at least once within a 12 month period",
+				"eMeasureUuids": {
+					"initialPopulationUuid": "E86E2FC5-8F1F-44ED-B30D-FA66D200B1C7",
+					"denominatorUuid": "E7337FE2-42EF-467C-9981-BF1D1F489357",
+					"numeratorUuid": "9B6325F1-07B8-4B1C-AF92-4F4F1269C234",
+					"denominatorExceptionUuid": "EE1F4525-BB1F-4299-A802-E74A297D58A7"
+				}
+			}
+		]
+	},
+	{
+		"eMeasureId": "CMS153v6",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-49a10e7c3878",
+		"strata": [
+			{
+				"description": "Women with at least one chlamydia test during the measurement period",
+				"eMeasureUuids": {
+					"initialPopulationUuid": "7D3EDBFF-A7B9-453B-9EB4-279FC4AF6493",
+					"denominatorUuid": "77442762-E66F-4E65-96B8-BA8CD34DCC34",
+					"numeratorUuid": "B4D784DA-F274-464D-B10D-B12B468AE5EC",
+					"denominatorExclusionUuid": "08DF11C3-6C40-4B31-AACC-B4B1458AA832",
 					"strata": [
-						"ABC5631A-81C0-45C9-9306-716EAE39CDDB",
-						"2654804B-E6DA-4401-AA8B-1FEEACC0C259"]
+						"DC0F4E18-DAEA-4DD7-8D43-44598B364B1C",
+						"20F1049C-E3FC-4A59-AD24-AB1F36B84198"
+					]
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-503f-a1fc-0150-d33f5b0a1b8c",
-		"eMeasureId": "CMS138v5",
+		"eMeasureId": "CMS154v6",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-49a3e3193888",
 		"strata": [
 			{
+				"description": "Children without a prescription for antibiotic medication on or 3 days after the outpatient or ED visit for an upper respiratory infection",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "CA679308-8AF3-4374-91DC-907951440D72",
-					"denominatorUuid": "FFC4DDE0-C91C-4235-BF69-E3EF79457FBB",
-					"numeratorUuid": "44BEAC3C-8402-46F0-9494-81B33C502F0A",
-					"denominatorExceptionUuid": "655C9F36-02F7-498B-AE18-D322EA2B3726"
+					"initialPopulationUuid": "4C2A54B6-7869-4DD7-884E-2DD0C105BC94",
+					"denominatorUuid": "4B2634A3-CCDC-4A77-8CCD-152478AAB3A4",
+					"numeratorUuid": "CDB02C44-39CD-412B-A3A0-6C321921F800",
+					"denominatorExclusionUuid": "A028CDC4-DC9A-412D-BB96-D0AD5BC02FE0"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-51f0-825b-0152-22aae8a21778",
-		"eMeasureId": "CMS139v5",
+		"eMeasureId": "CMS155v6",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-49a568c83894",
 		"strata": [
 			{
+				"description": "Patients who had a height, weight and body mass index (BMI) percentile recorded during the measurement period",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "0175F89E-9CD7-4CD8-8D7F-38CB825D2BDD",
-					"denominatorUuid": "A3F77B7C-2398-470D-A359-E2A31539DF91",
-					"numeratorUuid": "F0F4094E-CE53-44EE-8CEF-0555479E37B2",
-					"denominatorExceptionUuid": "CF7E1913-CB4E-42F7-BAEC-0EFFF01ECB17"
-				}
-			}
-		]
-	},
-	{
-		"eMeasureUuid": "40280381-52fc-3a32-0153-1a31050d0b24",
-		"eMeasureId": "CMS142v5",
-		"strata": [
-			{
-				"eMeasureUuids": {
-					"initialPopulationUuid": "2072A4E8-4486-4A10-AF97-F84ADE0EB62E",
-					"denominatorUuid": "2BB9F18C-8E26-44D6-904E-849495A6AF90",
-					"numeratorUuid": "BCB8AEEC-EABC-477E-AA6D-6DB34220CD85",
-					"denominatorExceptionUuid": "608279BD-7620-4FC4-8752-08E3040BA160"
-				}
-			}
-		]
-	},
-	{
-		"eMeasureUuid": "40280381-52fc-3a32-0153-1a3471e70b34",
-		"eMeasureId": "CMS143v5",
-		"strata": [
-			{
-				"eMeasureUuids": {
-					"initialPopulationUuid": "56091E02-5F5C-4073-9602-D0B5BB93A26E",
-					"denominatorUuid": "262ADC93-EE8C-4B95-9EFF-A6223C66ECA8",
-					"numeratorUuid": "2902F791-D7AB-49B2-B024-45B1077E0374",
-					"denominatorExceptionUuid": "1FA6B8AF-0583-418D-852B-9B1D9708DDFF"
-				}
-			}
-		]
-	},
-	{
-		"eMeasureUuid": "40280381-52fc-3a32-0153-1a3981870b45",
-		"eMeasureId": "CMS144v5",
-		"strata": [
-			{
-				"eMeasureUuids": {
-					"initialPopulationUuid": "5ED1A428-A266-47E5-AE4F-DB97A65BB1D4",
-					"denominatorUuid": "1E6C181E-91F6-4A61-82E0-7360C81CE3B0",
-					"numeratorUuid": "ABBFFB54-E629-4520-875E-F6D18BC651B1",
-					"denominatorExceptionUuid": "E9280685-6046-438D-AE45-0F7EDBA29C33"
-				}
-			}
-		]
-	},
-	{
-		"eMeasureUuid": "40280381-52fc-3a32-0153-2e772ecc10c0",
-		"eMeasureId": "CMS145v5",
-		"strata": [
-			{
-				"eMeasureUuids": {
-					"initialPopulationUuid": "27982FD6-7C42-44E7-A871-0BB7F858A6D5",
-					"denominatorUuid": "2294F966-EECD-4C61-8D94-D5E4B09BD9BB",
-					"numeratorUuid": "02A4DDAC-D615-457A-9304-F1E382D3811C",
-					"denominatorExceptionUuid": "487E15AB-CDE2-4955-9B93-1A2CDAE6B1F2"
+					"initialPopulationUuid": "036F2DF1-FEC1-4F32-BA14-7D9187D46218",
+					"denominatorUuid": "4731E9F1-E895-4238-B63D-CB1252E3BADE",
+					"numeratorUuid": "5307F884-29AC-47B8-AF08-E928B1DF7BBF",
+					"denominatorExclusionUuid": "D1DE917A-41C8-48C9-B8FA-56422DA204DD",
+					"strata": [
+						"4DCD5517-2884-43AC-8E6F-2D3D60B568A7",
+						"963178F4-E8B4-4DE9-97A1-D174223277DA"
+					]
 				}
 			},
 			{
+				"description": "Patients who had counseling for nutrition during a visit that occurs during the measurement period",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "2EE8137A-4627-471C-8837-85BDBF665017",
-					"denominatorUuid": "CC31BC83-F06C-4381-8A4F-1EEBE9ECF7BC",
-					"numeratorUuid": "5C03C433-8F8A-4204-B536-D7381835CE8C",
-					"denominatorExceptionUuid": "F79E2A13-6F9E-4B84-99E0-4603E99C83C3"
-				}
-			}
-		]
-	},
-	{
-		"eMeasureUuid": "40280381-52fc-3a32-0153-424a166015d1",
-		"eMeasureId": "CMS146v5",
-		"strata": [
-			{
-				"eMeasureUuids": {
-					"initialPopulationUuid": "6BE37D85-960E-4C32-AD2D-FE036A058EB4",
-					"denominatorUuid": "AE00EE88-B26B-449D-94DE-EA3887BB66E0",
-					"denominatorExclusionUuid": "A0B43F8B-E6EE-4229-A05D-ECF1B601CEAF",
-					"numeratorUuid": "86A8B7E8-EEA2-4C19-8A1B-74B905939505"
-				}
-			}
-		]
-	},
-	{
-		"eMeasureUuid": "40280381-52fc-3a32-0153-395ce63513af",
-		"eMeasureId": "CMS147v6",
-		"strata": [
-			{
-				"eMeasureUuids": {
-					"initialPopulationUuid": "FF48C33E-49B3-45D1-AB44-D283F39AE73D",
-					"denominatorUuid": "56E05D20-4529-4EB7-8E30-17C95BBC5223",
-					"numeratorUuid": "A6516D8B-0A7D-426D-A0EC-F3F4999A2588",
-					"denominatorExceptionUuid": "9411528A-67EF-439B-9C00-37372B2096E3"
-				}
-			}
-		]
-	},
-	{
-		"eMeasureUuid": "40280381-52fc-3a32-0153-1a401cc10b57",
-		"eMeasureId": "CMS149v5",
-		"strata": [
-			{
-				"eMeasureUuids": {
-					"initialPopulationUuid": "1D86EE69-7DA7-4A73-8611-2E71176568B6",
-					"denominatorUuid": "2DA1439F-7941-411C-8885-91306F0CD9DD",
-					"numeratorUuid": "2C2431A3-7DE3-4C97-80C0-4BF96D4880F0",
-					"denominatorExceptionUuid": "2EE99933-7653-4C53-8506-2A76D0657064"
-				}
-			}
-		]
-	},
-	{
-		"eMeasureUuid": "40280381-51f0-825b-0152-22b52da917ba",
-		"eMeasureId": "CMS153v5",
-		"strata": [
-			{
-				"eMeasureUuids": {
-					"initialPopulationUuid": "A417988B-395B-4108-9988-1AE443A1E254",
-					"denominatorUuid": "F25492A9-8164-4833-9A91-EA160ECC9190",
-					"denominatorExclusionUuid": "341797C7-3664-41E2-9771-6D85B2085BFA",
-					"numeratorUuid": "D387E1DC-F06A-4054-87B1-40B863FCF8EC",
+					"initialPopulationUuid": "869D125B-E916-4EEA-A962-94AFC4BE6C3C",
+					"denominatorUuid": "EC3E7159-9941-4AB8-9452-C7261977E8DA",
+					"numeratorUuid": "88E91D47-9EF9-4B6F-B22B-AAEA81FCD265",
+					"denominatorExclusionUuid": "A5AE9992-E943-4583-A1CE-3437BB8293B2",
 					"strata": [
-						"FAA4002D-24D4-4BB8-964C-20BCFEDE528E",
-						"91E24063-2360-4A7C-9AAC-549971972FAC"]
-				}
-			}
-		]
-	},
-	{
-		"eMeasureUuid": "40280381-52fc-3a32-0153-42810251160f",
-		"eMeasureId": "CMS154v5",
-		"strata": [
-			{
-				"eMeasureUuids": {
-					"initialPopulationUuid": "A5BF87B0-15CF-4012-9E29-DC85010676BC",
-					"denominatorUuid": "FDE4FCC5-826B-42C6-82BE-1694DD18A48D",
-					"denominatorExclusionUuid": "8E32E552-A70A-4BBC-A92A-F8D3D48113CF",
-					"numeratorUuid": "27037F9E-5C8E-41FE-A973-E2E020C97DA7"
-				}
-			}
-		]
-	},
-	{
-		"eMeasureUuid": "40280381-51f0-825b-0152-22b695b217dc",
-		"eMeasureId": "CMS155v5",
-		"strata": [
-			{
-				"eMeasureUuids": {
-					"initialPopulationUuid": "0ADE9325-3FB7-402F-AD89-34C9F2753D03",
-					"denominatorUuid": "933D86C8-2C2B-4AFF-AE81-DF2F9882A3A4",
-					"denominatorExclusionUuid": "6938F4DD-D5AB-4C40-BA03-EB0F0959615C",
-					"numeratorUuid": "61887626-5457-484C-A02D-75EF8547F559",
-					"strata": [
-						"BF2244B9-306A-407C-AB89-1AFF8C559A35",
-						"37B55C43-F2BF-4CC2-94A8-73389186206D"]
+						"37549AFE-5FBA-4C52-80B4-06E51B8F71C2",
+						"0DE4ECAB-1628-46DC-94B9-3A48A7389BBB"
+					]
 				}
 			},
 			{
+				"description": "Patients who had counseling for physical activity during a visit that occurs during the measurement period",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "25286925-4221-4396-9DE0-60EA606924DF",
-					"denominatorUuid": "CFB8E3E2-FF4F-4D25-B613-7EC142BAE8A9",
-					"denominatorExclusionUuid": "A399FA9C-48CF-41E5-812A-3445188B8301",
-					"numeratorUuid": "EEAD441F-B3B2-4DC9-A890-B35E14B38EA7",
+					"initialPopulationUuid": "06FDE385-172D-411B-807C-CCCF17FF8B8F",
+					"denominatorUuid": "66A4A6FE-FBCB-414C-98A6-C5570E7A26A7",
+					"numeratorUuid": "01BBCAE4-16E8-4F82-9106-282C7AF4C370",
+					"denominatorExclusionUuid": "C7D28A7F-EE82-43F4-A094-31E1488278D9",
 					"strata": [
-						"5BC68B5A-E944-46B9-9DC0-0A60FF869D92",
-						"E76F6606-1DC9-40DE-8A34-5B4B4E859152"]
-				}
-			},
-			{
-				"eMeasureUuids": {
-					"initialPopulationUuid": "48747E9D-674C-4013-9585-268114190119",
-					"denominatorUuid": "208B74F2-6592-4381-BEC1-EB136004C3B2",
-					"denominatorExclusionUuid": "507F7EC3-D380-48BE-B920-ABB1EB258256",
-					"numeratorUuid": "21409D88-B5E3-4745-8DE2-D99DBB9F4DF0",
-					"strata": [
-						"E0CD71AE-5041-45A3-9AAA-9C8506765238",
-						"C19E3A3C-0CF3-4FC2-B084-DEAB9B9F9CB9"]
+						"8DB6C8B4-6613-4D50-BA69-8A771F07D6CA",
+						"89421757-79CD-4E7B-8228-A6F8ADA807DD"
+					]
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-52fc-3a32-0153-56d2b4f01ae5",
-		"eMeasureId": "CMS156v5",
+		"eMeasureId": "CMS156v6",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-49b5b1e638e3",
 		"strata": [
 			{
+				"description": "Patients with an order for at least one high-risk medication during the measurement period",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "C7BCE5A3-AC0D-440E-AA29-C98239F37A8B",
-					"denominatorUuid": "07F04D61-0383-487E-942C-690BBBC6437D",
-					"numeratorUuid": "7A0001AC-4BE0-4FAA-94AE-4843C9FFFCA8"
+					"initialPopulationUuid": "82984537-92A9-4546-BDBD-5FF8ED1A0F53",
+					"denominatorUuid": "1786D67F-A917-4948-994A-7238EBFB513E",
+					"numeratorUuid": "C23BC68E-9FB9-4799-9B10-A7DC31339A03",
+					"denominatorExclusionUuid": "A798F397-E73F-48FF-A214-01130FE31B1A"
 				}
 			},
 			{
+				"description": "Patients with at least two orders for the same high-risk medication during the measurement period",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "BC02D7CE-7133-46C6-8592-658668B09948",
-					"denominatorUuid": "00401314-1B01-4896-A9FC-E991CDF29B6B",
-					"numeratorUuid": "FA7BF805-C21E-4077-B43E-C63F8D17B5CF"
+					"initialPopulationUuid": "0B6CB87A-9FC7-4909-85F6-83505F827BCE",
+					"denominatorUuid": "E26E912E-C43F-4412-9495-209C6F83616F",
+					"numeratorUuid": "8B77586E-A421-42C4-A8E2-741FDBCF60B6",
+					"denominatorExclusionUuid": "E349E935-6A6C-40E3-A422-FD1759F9AAF3"
 				}
 			}
 		]
 	},
 	{
 		"eMeasureUuid": "40280381-52fc-3a32-0153-1a4425a90b6c",
-		"eMeasureId": "CMS157v5",
+		"eMeasureId": "CMS157v6",
+		"eMeasureUuid": "40280382-5971-4eed-015a-4e0dbd5d4b8a",
 		"strata": [
 			{
+				"description": "Patient visits in which pain intensity is quantified",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "8494E3CD-7119-4471-9F2F-42540A797498",
-					"denominatorUuid": "D1358E7F-9C53-414C-9D4D-DEF7AE9B6E68",
-					"numeratorUuid": "95484C04-C98A-4A77-B2A7-9FE583060582"
+					"initialPopulationUuid": "B7A16429-208D-4479-B12B-024D84BEE839",
+					"denominatorUuid": "2CF12B3B-BB87-4E6A-8157-27624AD95153",
+					"numeratorUuid": "3A9C513B-AF6B-4E51-A60B-1CCF0932083F"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-5223-eb6b-0152-6a1558f51bdc",
-		"eMeasureId": "CMS158v5",
+		"eMeasureId": "CMS158v6",
+		"eMeasureUuid": "40280382-5971-4eed-015a-05e11c482faf",
 		"strata": [
 			{
+				"description": "Patients who were tested for hepatitis B surface antigen (HBsAg) during pregnancy within 280 days prior to delivery",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "328FF8FF-8A53-42CF-A33E-789BC7E0D8ED",
-					"denominatorUuid": "9826C75F-8106-44DE-AFB5-47669443C153",
-					"numeratorUuid": "4ADA7675-6263-4018-997E-D27CE43A11D6",
-					"denominatorExceptionUuid": "F77E40ED-F649-4250-B99A-3C35414D88B0"
+					"initialPopulationUuid": "E11AF7FD-A05B-453A-84C3-9D048BFD8911",
+					"denominatorUuid": "854F621E-DAAE-4631-B6B6-C6A7859A9008",
+					"numeratorUuid": "957945A8-CC61-4D05-BEB2-7C2D38838562",
+					"denominatorExceptionUuid": "D8ABBC9F-142E-410F-8D93-BDFFCC072519"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-5118-2f4e-0151-3a9382cd09ba",
-		"eMeasureId": "CMS159v5",
+		"eMeasureId": "CMS159v6",
+		"eMeasureUuid": "40280382-5b4d-eebc-015b-5e984c6a027e",
 		"strata": [
 			{
+				"description": "Patients who achieved remission at twelve months as demonstrated by a twelve month (+/- 30 days) PHQ-9 score of less than five",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "8AAC0F5B-DC7F-4FA3-8DE9-439C663E6B41",
-					"denominatorUuid": "1C6771A4-4C26-4E2C-9E10-FF6F1A5D0907",
-					"denominatorExclusionUuid": "72259A21-874C-4E51-9465-9989019193D0",
-					"numeratorUuid": "52837728-F488-4BA5-9921-FFDEEC0F0803"
+					"initialPopulationUuid": "2CEFA814-C866-4750-B664-131ACA1DF554",
+					"denominatorUuid": "904292C3-B7FE-4CB6-808D-F718C50B7B78",
+					"numeratorUuid": "6D7953F6-DBDA-420C-A866-39A2A0E8EFF4",
+					"denominatorExclusionUuid": "318B44C0-E350-4657-87CC-467DC1D371A8"
 				}
 			}
 		]
 	},
 	{
+		"eMeasureId": "CMS160v6",
 		"eMeasureUuid": "40280381-503f-a1fc-0150-afe320c01761",
-		"eMeasureId": "CMS160v5",
 		"strata": [
 			{
+				"name": "4MonthsOfEnd",
+				"description": "Office visit, Psych visit, or Face to Face Interaction (No ED) within 4 months of the end of the measurement period that leads to a diagnosis of major depression including remission or dysthymia",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "92656CE7-C9B1-44A8-8778-A8EF1ED90A18",
-					"denominatorUuid": "C7DFE664-71AE-4EAD-AB65-CDFCF825A44E",
-					"denominatorExclusionUuid": "76B54A59-41A9-4664-B85C-F61238AE1DC4",
-					"numeratorUuid": "B5FA6E85-0F2E-4674-A3F8-E14D834E73AB"
+					"initialPopulationUuid": "725F4792-0A9A-49CB-8063-9BA1A57270EC",
+					"denominatorUuid": "AFCACA89-68B1-4415-8D48-341237EDEC02",
+					"numeratorUuid": "6E41C227-F801-45AC-8271-0E9325CE1481",
+					"denominatorExclusionUuid": "D71F6E54-6FC7-482A-AFFB-C09C66506EB7"
 				}
 			},
 			{
+				"name": "4&8MonthsAfterStart",
+				"description": "Office visit, Psych visit, or Face to Face Interaction (No ED) between 4 and 8 months after the start of the measurement period that leads to a diagnosis of major depression including remission or dysthymia",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "757F3066-31E7-45D1-BA50-3EFB27ABB8E5",
-					"denominatorUuid": "32635FEA-918B-438F-8421-8A6A14E238E8",
-					"denominatorExclusionUuid": "29931862-020D-401E-B9E9-953791263D87",
-					"numeratorUuid": "33538979-8425-45A4-B724-D74CC0A84EF3"
+					"initialPopulationUuid": "A221C073-3EE6-46DE-AD68-98FB62B4590D",
+					"denominatorUuid": "CCF8EF1D-ACEB-4160-BECE-EBC6DE6AC295",
+					"numeratorUuid": "7B13A87F-621F-4682-BE2C-B0900AEF6AE5",
+					"denominatorExclusionUuid": "0271A3BE-3CF8-4E43-8C52-F14CF020E856"
 				}
 			},
 			{
+				"name": "4MonthsOfStart",
+				"description": "Office visit, Psych visit, or Face to Face Interaction (No ED) within 4 months of the start of the measurement period that leads to a diagnosis of major depression including remission or dysthymia",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "5631A7DF-CA44-4AD4-A691-DC0CED303F6A",
-					"denominatorUuid": "9665A8D2-F896-47A9-AA7E-271E9815D3CE",
-					"denominatorExclusionUuid": "910A0EE9-ECDA-494C-83E9-30DD9E224FFB",
-					"numeratorUuid": "2D4D6446-C9CD-4661-868B-C8B9B13A8E08"
+					"initialPopulationUuid": "293D5F5C-912E-40AC-9C0D-4840E5F6E2B8",
+					"denominatorUuid": "E31974D3-5AB2-42F5-ACE3-77415D503785",
+					"numeratorUuid": "3948D321-8D57-4F5B-B3E1-3140D4E6CBBB",
+					"denominatorExclusionUuid": "366C029C-D36B-4585-88D8-824C10AEED5E"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-503f-a1fc-0150-de8350a220c3",
-		"eMeasureId": "CMS161v5",
+		"eMeasureId": "CMS161v6",
+		"eMeasureUuid": "40280382-5a66-eab9-015a-703cc4fe0234",
 		"strata": [
 			{
+				"description": "Patients with a suicide risk assessment completed during the visit in which a new diagnosis or recurrent episode was identified",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "9CDC88D7-31DA-44F1-9348-CFDD29F4B20B",
-					"denominatorUuid": "1EC810C4-E6D2-4ED6-AE02-A0BF4D675F05",
-					"numeratorUuid": "693493EC-2E8E-447C-88A3-FC93AD771AB9"
+					"initialPopulationUuid": "6BD465CA-6EBF-4BB6-9CDA-470D67CEA112",
+					"denominatorUuid": "8B65FEB7-F62F-4D89-95C9-4D468F545B1A",
+					"numeratorUuid": "046CF9E5-DC7D-4753-B864-A6B6686D24A2"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-52fc-3a32-0153-5736a9401b9f",
-		"eMeasureId": "CMS164v5",
+		"eMeasureId": "CMS164v6",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-49a7a51f38a0",
 		"strata": [
 			{
+				"description": "Patients who had an active medication of aspirin or another antiplatelet during the measurement year",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "C3E458D8-8ED4-4F09-A661-6221A2B9355D",
-					"denominatorUuid": "FE6E1AA0-EE26-4F9E-A2FD-8E36058DCB47",
-					"denominatorExclusionUuid": "D564DEEE-17E7-4442-921D-436E5113788A",
-					"numeratorUuid": "0A3C80F4-A9FF-4BDF-B018-D647E7D777EB"
+					"initialPopulationUuid": "0A17D1E0-AE25-4073-8D19-144F54C9774D",
+					"denominatorUuid": "B7789CEA-C4E5-49AD-8BD6-45194AC471E9",
+					"numeratorUuid": "EBB5F1F3-7146-4101-B19C-1FED61ADFD2F",
+					"denominatorExclusionUuid": "50701AD6-6554-4D7F-8F83-40441EAE4813"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-51f0-825b-0152-22b98cff181a",
-		"eMeasureId": "CMS165v5",
+		"eMeasureId": "CMS165v6",
+		"eMeasureUuid": "40280382-5abd-fa46-015b-49abb28d38b2",
 		"strata": [
 			{
+				"description": "Patients whose blood pressure at the most recent visit is adequately controlled (systolic blood pressure < 140 mmHg and diastolic blood pressure < 90 mmHg) during the measurement period",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "3AD33404-E734-4F67-9144-E4B63CB3F4BE",
-					"denominatorUuid": "E62FEBA3-0F98-460D-93CD-44314D7203A8",
-					"denominatorExclusionUuid": "55A6D5F3-2029-4896-B850-4C7894161D7D",
-					"numeratorUuid": "F9FEBF42-4B21-47A9-B03E-D2DA5CF8492B"
+					"initialPopulationUuid": "5C206C23-4CF9-4390-9E76-0F243FE59DCF",
+					"denominatorUuid": "1D456B20-71F7-4477-BD23-D39600D5A095",
+					"numeratorUuid": "709D84FA-637D-42CD-8934-43C3FBAD0979",
+					"denominatorExclusionUuid": "9805BC7D-274C-4CCF-916A-B5BA34D62A31"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-51f0-825b-0152-22ba7621182e",
-		"eMeasureId": "CMS166v6",
+		"eMeasureId": "CMS167v6",
+		"eMeasureUuid": "40280382-5971-4eed-015a-04eef5fe2dd3",
 		"strata": [
 			{
+				"description": "Patients who had a dilated macular or fundus exam performed which included documentation of the level of severity of retinopathy AND the presence or absence of macular edema during one or more office visits within 12 months",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "45D3A3ED-A7D6-45B9-AC95-647BFFE7018E",
-					"denominatorUuid": "0E27156C-B8EB-48E7-A588-4AB97A0914E1",
-					"denominatorExclusionUuid": "0E9E3C94-6AA0-4C3C-A311-72CB0F2698B6",
-					"numeratorUuid": "13C60632-9CF4-491B-82E9-A06118111C44"
+					"initialPopulationUuid": "DD63C311-8349-4843-A7FC-14A7FBBC50A9",
+					"denominatorUuid": "6FD337B1-7A8E-407B-A356-331BA1C55608",
+					"numeratorUuid": "B18CD2A0-6AFC-40E7-8C70-27243C5BAA6F",
+					"denominatorExceptionUuid": "88CDFB9B-0391-4910-A078-ABCD863EF922"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-52fc-3a32-0153-1a4838b80b79",
-		"eMeasureId": "CMS167v5",
+		"eMeasureId": "CMS169v6",
+		"eMeasureUuid": "40280382-5971-4eed-015a-05ec53bb2fc6",
 		"strata": [
 			{
+				"description": "Patients in the denominator with evidence of an assessment for alcohol or other substance use following or concurrent with the new diagnosis, and prior to or concurrent with the initiation of treatment for that diagnosis",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "3EB89216-BC0B-4DF7-8B8D-06B9AB68DB49",
-					"denominatorUuid": "04507C05-46D4-4D96-9D9D-853CA557F4B2",
-					"numeratorUuid": "3186154C-6A01-4FAF-A77F-B5233A3F078C",
-					"denominatorExceptionUuid": "170B3877-D83D-424C-BD7E-29F644B0A6DC"
+					"initialPopulationUuid": "16DB7A4E-44E1-4D12-8C0E-6FAAF0D31658",
+					"denominatorUuid": "761F55A1-69CD-433A-BB44-ADB78D7EEF95",
+					"numeratorUuid": "6DA14A79-B592-4709-8712-1E25D60FFFFC"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureUuid": "40280381-503f-a1fc-0150-67942bbc07d7",
-		"eMeasureId": "CMS169v5",
+		"eMeasureId": "CMS177v6",
+		"eMeasureUuid": "40280382-5a66-eab9-015a-704d816c0247",
 		"strata": [
 			{
+				"description": "Patient visits with an assessment for suicide risk",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "AB5E9E84-65FB-4566-8254-D3488CA9A169",
-					"denominatorUuid": "9656501E-1FAB-4B81-AB59-6646F1114394",
-					"numeratorUuid": "3C942ABF-C287-4FBB-AFEE-67BC5FC93BD0"
-				}
-			}
-		]
-	},
-	{
-		"eMeasureUuid": "40280381-503f-a1fc-0151-11602d4d2909",
-		"eMeasureId": "CMS177v5",
-		"strata": [
-			{
-				"eMeasureUuids": {
-					"initialPopulationUuid": "008509CF-85E8-40C0-9434-65FE19EFC090",
-					"denominatorUuid": "92E101F9-795A-46DD-BEDE-EA94743AC232",
-					"numeratorUuid": "78D2FEEA-45D3-4D08-9227-773E70E3AAD5"
+					"initialPopulationUuid": "18350E79-D0CE-4D87-9D70-1D9C74538CA8",
+					"denominatorUuid": "FC8CAC59-A713-4954-AFB0-34A1D786C0C1",
+					"numeratorUuid": "B3FC82CC-C295-4EDB-9C90-3E6A164488E6"
 				}
 			}
 		]

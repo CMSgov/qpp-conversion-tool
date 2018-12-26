@@ -9,6 +9,7 @@ import org.springframework.retry.support.RetryTemplate;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -36,6 +37,8 @@ public abstract class AnyOrderActionService<T, S> {
 	protected final TaskExecutor taskExecutor;
 
 	public AnyOrderActionService(TaskExecutor taskExecutor) {
+		Objects.requireNonNull(taskExecutor, "taskExecutor");
+
 		this.taskExecutor = taskExecutor;
 	}
 

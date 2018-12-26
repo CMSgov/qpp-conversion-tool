@@ -26,7 +26,7 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
-		Checker checker = check(node);
+		Checker checker = thoroughlyCheck(node);
 
 		Arrays.stream(CpcGroupMinimum.values())
 				.forEach(group -> checkGroupMinimum(checker, group));
@@ -52,7 +52,7 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 	String[] grabGroupMeasures(CpcGroupMinimum groupMinimum) {
 		Map<String, List<MeasureConfig>> cpcPlusGroups = MeasureConfigs.getCpcPlusGroups();
 
-		return cpcPlusGroups.get(groupMinimum.name()).stream()
+		return cpcPlusGroups.get(groupMinimum.getMapName()).stream()
 				.map(MeasureConfig::getElectronicMeasureVerUuid)
 				.toArray(String[]::new);
 	}
@@ -76,16 +76,22 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 	 * A holder of CPC+ group specific configuration information.
 	 */
 	enum CpcGroupMinimum {
-		A("outcome", 2),
-		B("complex process", 2);
+		OUTCOME_MEASURE("Outcome_Measure", "outcome", 2),
+		OTHER_MEASURE("Other_Measure", "other", 7);
 
 		private static final int NUMBER_OF_MEASURES_REQUIRED = 9;
+		private String mapName;
 		private String label;
 		private int minimum;
 
-		CpcGroupMinimum(String label, int minimum) {
+		CpcGroupMinimum(String mapName, String label, int minimum) {
 			this.label = label;
 			this.minimum = minimum;
+			this.mapName = mapName;
+		}
+
+		public String getMapName() {
+			return mapName;
 		}
 
 		static LocalizedError makeOverallError(String... measureIds) {

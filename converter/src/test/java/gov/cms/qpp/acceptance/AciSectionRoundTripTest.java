@@ -53,7 +53,7 @@ class AciSectionRoundTripTest {
 		Node parentNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		//assert
-		Node aciSectionNode = parentNode.findFirstNode(TemplateId.ACI_SECTION);
+		Node aciSectionNode = parentNode.findFirstNode(TemplateId.PI_SECTION);
 		assertAciSectionHasSingleQedNode(aciSectionNode);
 	}
 
@@ -94,7 +94,7 @@ class AciSectionRoundTripTest {
 		Node parentNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		//assert
-		Node aciSectionNode = parentNode.findFirstNode(TemplateId.ACI_SECTION);
+		Node aciSectionNode = parentNode.findFirstNode(TemplateId.PI_SECTION);
 		assertAciSectionHasSingleQedNode(aciSectionNode);
 	}
 
@@ -127,7 +127,7 @@ class AciSectionRoundTripTest {
 				+ "	</section>\n"
 				+ "</component>";
 
-		String expected = "{\n  \"category\" : \"aci\",\n  \"submissionMethod\" : \"electronicHealthRecord\",\n  \"measurements\" : [ {\n    \"measure\" : \"measure1\"\n  } ],\n  \"performanceStart\" : \"2017-01-01\",\n  \"performanceEnd\" : \"2017-04-30\"\n}";
+		String expected = "{\n  \"category\" : \"pi\",\n  \"submissionMethod\" : \"electronicHealthRecord\",\n  \"measurements\" : [ {\n    \"measure\" : \"measure1\"\n  } ],\n  \"performanceStart\" : \"2017-01-01\",\n  \"performanceEnd\" : \"2017-04-30\"\n}";
 
 		Context context = new Context();
 		//Decode

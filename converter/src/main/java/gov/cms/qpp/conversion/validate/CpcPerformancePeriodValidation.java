@@ -9,7 +9,7 @@ import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 
 /**
- * Validates the QRDA Category III Report Node's national provide identifier/taxpayer identification number combinations
+ * Validates the QRDA Category III Report Node's national provider identifier/taxpayer identification number combinations
  * for the CPC+ program.
  */
 @Validator(value = TemplateId.REPORTING_PARAMETERS_ACT, program = Program.CPC)
@@ -25,9 +25,9 @@ public class CpcPerformancePeriodValidation extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		check(node)
-			.valueIs(ErrorCode.CPC_PERFORMANCE_PERIOD_START_JAN12017, 
+			.valueIs(ErrorCode.CPC_PERFORMANCE_PERIOD_START, 
 					ReportingParametersActDecoder.PERFORMANCE_START, REPORTING_PERIOD_START)
-			.valueIs(ErrorCode.CPC_PERFORMANCE_PERIOD_END_DEC312017, 
+			.valueIs(ErrorCode.CPC_PERFORMANCE_PERIOD_END, 
 					ReportingParametersActDecoder.PERFORMANCE_END, REPORTING_PERIOD_END);
 	}
 }

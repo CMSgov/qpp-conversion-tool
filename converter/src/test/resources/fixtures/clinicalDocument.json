@@ -1,10 +1,10 @@
 {
-  "performanceYear" : 2017,
+  "performanceYear" : 2018,
   "entityType" : "individual",
   "taxpayerIdentificationNumber" : "123456789",
   "nationalProviderIdentifier" : "2567891421",
   "measurementSets" : [ {
-    "category" : "aci",
+    "category" : "pi",
     "submissionMethod" : "electronicHealthRecord",
     "measurements" : [ {
       "measureId" : "ACI-PEA-1",
@@ -26,8 +26,8 @@
       }
     } ],
     "programName" : "mips",
-    "performanceStart" : "2017-01-01",
-    "performanceEnd" : "2017-12-31"
+    "performanceStart" : "2018-01-01",
+    "performanceEnd" : "2018-12-31"
   }, {
     "category" : "ia",
     "submissionMethod" : "electronicHealthRecord",
@@ -36,7 +36,7 @@
       "value" : true
     } ],
     "programName" : "mips",
-    "performanceStart" : "2017-01-01",
-    "performanceEnd" : "2017-12-31"
+    "performanceStart" : "2018-01-01",
+    "performanceEnd" : "2018-12-31"
   } ]
 }

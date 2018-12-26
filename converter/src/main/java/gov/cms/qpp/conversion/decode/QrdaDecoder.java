@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import com.google.common.base.Strings;
+import org.apache.commons.lang3.StringUtils;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
 import org.jdom2.filter.Filter;
@@ -38,7 +38,7 @@ public abstract class QrdaDecoder {
 	public void setNamespace(Namespace defaultNs) {
 		this.defaultNs = defaultNs;
 		String defaultNsUri = defaultNs.getURI();
-		xpathNs = Strings.isNullOrEmpty(defaultNsUri) ? Namespace.NO_NAMESPACE : Namespace.getNamespace("ns", defaultNsUri);
+		xpathNs = StringUtils.isEmpty(defaultNsUri) ? Namespace.NO_NAMESPACE : Namespace.getNamespace("ns", defaultNsUri);
 	}
 
 	/**

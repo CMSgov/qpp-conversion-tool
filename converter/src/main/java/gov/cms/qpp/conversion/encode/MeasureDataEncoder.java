@@ -34,7 +34,7 @@ public class MeasureDataEncoder extends QppOutputEncoder {
 		if (!SubPopulationLabel.IPOP.hasAlias(node.getValue(MEASURE_TYPE))) {
 			Map<SubPopulationLabel, String> measureTypeMapper = initializeMeasureTypeMap();
 			String measureType = node.getValue(MEASURE_TYPE);
-			Node aggCount = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
+			Node aggCount = node.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
 
 			String encodeLabel = measureTypeMapper.get(SubPopulationLabel.findPopulation(measureType));
 			wrapper.putInteger(encodeLabel, aggCount.getValue(AGGREGATE_COUNT));

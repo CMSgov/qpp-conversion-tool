@@ -459,7 +459,7 @@ class QualityMeasureIdValidatorTest {
 			measureNode.putValue(MEASURE_TYPE, type);
 			measureNode.putValue(MEASURE_POPULATION, populationId);
 
-			Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+			Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 			aggregateCountNode.putValue(AggregateCountDecoder.AGGREGATE_COUNT, count);
 
 			measureNode.addChildNode(aggregateCountNode);
@@ -474,7 +474,7 @@ class QualityMeasureIdValidatorTest {
 			measureNode.putValue(MEASURE_TYPE, type);
 			measureNode.putValue(MEASURE_POPULATION, populationId);
 
-			Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+			Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 			aggregateCountNode.putValue(AggregateCountDecoder.AGGREGATE_COUNT, ONE_HUNDRED);
 
 			measureNode.addChildNode(aggregateCountNode);

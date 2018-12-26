@@ -159,8 +159,8 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		Node ipopNode = getIpopNodeFromCurrentSubPopulation(node, subPopulation);
 
 		if (denomNode != null && ipopNode != null) {
-			Node denomCount = denomNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
-			Node ipopCount = ipopNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
+			Node denomCount = denomNode.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
+			Node ipopCount = ipopNode.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
 
 			validateDenominatorCount(denomCount, ipopCount);
 		}

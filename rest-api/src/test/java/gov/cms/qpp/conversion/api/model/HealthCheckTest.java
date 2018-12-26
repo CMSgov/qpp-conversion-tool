@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.api.model;
 
-
 import org.junit.jupiter.api.Test;
 
 import nl.jqno.equalsverifier.EqualsVerifier;

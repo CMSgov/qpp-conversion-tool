@@ -681,8 +681,8 @@ class JsonWrapperTest {
 	@Test
 	void testListStreamMap() {
 		JsonWrapper listWrapper = new JsonWrapper();
-		listWrapper.putObject(new HashMap());
-		listWrapper.putObject(new HashMap());
+		listWrapper.putObject(new HashMap<>());
+		listWrapper.putObject(new HashMap<>());
 		assertThat(listWrapper.stream().count())
 				.isEqualTo(2);
 	}

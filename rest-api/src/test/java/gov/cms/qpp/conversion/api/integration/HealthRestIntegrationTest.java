@@ -1,12 +1,10 @@
 package gov.cms.qpp.conversion.api.integration;
 
-import gov.cms.qpp.conversion.api.SpringTest;
-
-import javax.inject.Inject;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import javax.inject.Inject;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +15,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-@SpringTest
+import gov.cms.qpp.conversion.api.SpringIntegrationTest;
+
+@SpringIntegrationTest
 public class HealthRestIntegrationTest {
 
 	@Inject

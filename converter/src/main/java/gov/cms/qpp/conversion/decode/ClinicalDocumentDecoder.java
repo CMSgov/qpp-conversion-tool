@@ -29,13 +29,17 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	public static final String ENTITY_TYPE = "entityType";
 	public static final String MIPS_PROGRAM_NAME = "mips";
 	public static final String CPCPLUS_PROGRAM_NAME = "cpcPlus";
-	public static final String ENTITY_ID = "practiceId";
+	public static final String PRACTICE_ID = "practiceId";
 	public static final String PRACTICE_SITE_ADDR = "practiceSiteAddr";
 	public static final String MIPS = "MIPS";
 	private static final String MIPS_GROUP = "MIPS_GROUP";
 	private static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
+	public static final String MIPS_VIRTUAL_GROUP = "MIPS_VIRTUALGROUP";
+	public static final String ENTITY_APM = "apm";
 	static final String ENTITY_GROUP = "group";
 	static final String ENTITY_INDIVIDUAL = "individual";
+	public static final String ENTITY_VIRTUAL_GROUP = "virtualGroup";
+	public static final String ENTITY_ID = "entityId";
 	public static final String CPCPLUS = "CPCPLUS";
 
 	public ClinicalDocumentDecoder(Context context) {
@@ -56,8 +60,14 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 		setPracticeSiteAddress(element, thisNode);
 		if (ENTITY_INDIVIDUAL.equals(thisNode.getValue(ENTITY_TYPE))) {
 			setNationalProviderIdOnNode(element, thisNode);
+		} else if (ENTITY_VIRTUAL_GROUP.equals(thisNode.getValue(ENTITY_TYPE))) {
+			setVirtualGroupOnNode(element, thisNode);
 		}
-		setTaxProviderTaxIdOnNode(element, thisNode);
+
+		if (!ENTITY_APM.equals(thisNode.getValue(ENTITY_TYPE))) {
+			setTaxProviderTaxIdOnNode(element, thisNode);
+		}
+
 		return DecodeResult.TREE_CONTINUE;
 	}
 
@@ -71,8 +81,8 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	private void setEntityIdOnNode(Element element, Node thisNode) {
 		if (Program.isCpc(thisNode)) {
 			Consumer<Attribute> consumer = id ->
-				thisNode.putValue(ENTITY_ID, id.getValue(), false);
-			setOnNode(element, getXpath(ENTITY_ID), consumer, Filters.attribute(), false);
+				thisNode.putValue(PRACTICE_ID, id.getValue(), false);
+			setOnNode(element, getXpath(PRACTICE_ID), consumer, Filters.attribute(), false);
 		}
 	}
 
@@ -134,6 +144,14 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 				consumer, Filters.attribute(), true);
 	}
 
+	private void setVirtualGroupOnNode(Element element, Node thisNode) {
+		Consumer<? super Attribute> consumer = p ->
+			thisNode.putValue(ENTITY_ID,
+				p.getValue());
+		setOnNode(element, getXpath(ENTITY_ID),
+			consumer, Filters.attribute(), true);
+	}
+
 	/**
 	 * decodes the program name and entity type from the name
 	 *
@@ -152,7 +170,11 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 				break;
 
 			case CPCPLUS:
-				pair = new ImmutablePair<>(CPCPLUS_PROGRAM_NAME, ENTITY_INDIVIDUAL);
+				pair = new ImmutablePair<>(CPCPLUS_PROGRAM_NAME, ENTITY_APM);
+				break;
+
+			case MIPS_VIRTUAL_GROUP:
+				pair = new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_VIRTUAL_GROUP);
 				break;
 
 			default:

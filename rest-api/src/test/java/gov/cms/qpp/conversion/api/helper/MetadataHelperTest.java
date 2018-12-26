@@ -22,7 +22,7 @@ class MetadataHelperTest implements HelperContract {
 	@Test
 	void testGenerateMetadataForNullNodeReturnsSkinnyMetadata() {
 		MetadataHelper.Outcome outcome = MetadataHelper.Outcome.VALIDATION_ERROR;
-		Metadata comparison = new Metadata();
+		Metadata comparison = Metadata.create();
 		comparison.setOverallStatus(false);
 		comparison.setConversionStatus(true);
 		comparison.setValidationStatus(false);
@@ -74,7 +74,7 @@ class MetadataHelperTest implements HelperContract {
 	@Test
 	void testExtractsApm() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.ENTITY_ID, MOCK_STRING);
+		node.putValue(ClinicalDocumentDecoder.PRACTICE_ID, MOCK_STRING);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
 		assertThat(metadata.getApm()).isEqualTo(MOCK_STRING);
@@ -85,7 +85,7 @@ class MetadataHelperTest implements HelperContract {
 		Node node = new Node();
 		Node child = new Node();
 		child.setType(TemplateId.CLINICAL_DOCUMENT);
-		child.putValue(ClinicalDocumentDecoder.ENTITY_ID, MOCK_STRING);
+		child.putValue(ClinicalDocumentDecoder.PRACTICE_ID, MOCK_STRING);
 		node.addChildNode(child);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);

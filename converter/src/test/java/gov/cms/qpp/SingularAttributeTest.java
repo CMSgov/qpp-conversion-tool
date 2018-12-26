@@ -47,8 +47,9 @@ class SingularAttributeTest{
 						//MultipleTinsDecoder maps multiple tin/npi combination
 						ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
 						ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER,
-						//There are no validations currently for entity type
 						ClinicalDocumentDecoder.ENTITY_ID,
+						//There are no validations currently for entity type
+						ClinicalDocumentDecoder.PRACTICE_ID,
 						ClinicalDocumentDecoder.PRACTICE_SITE_ADDR,
 						PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE,
 						PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE,

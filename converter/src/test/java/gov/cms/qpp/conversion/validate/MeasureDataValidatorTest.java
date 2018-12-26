@@ -56,7 +56,7 @@ class MeasureDataValidatorTest {
 
 	@Test
 	void invalidAggregateCount() throws Exception {
-		Node aggregateCount = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node aggregateCount = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		testNode.addChildNode(aggregateCount);
 		aggregateCount.putValue("aggregateCount", "error");
@@ -71,7 +71,7 @@ class MeasureDataValidatorTest {
 
 	@Test
 	void duplicateAggregateCountsFails() throws Exception {
-		Node aggregateCount = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node aggregateCount = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		aggregateCount.putValue("aggregateCount", "100");
 		aggregateCount.putValue("aggregateCount", "200", false);
 		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
@@ -87,7 +87,7 @@ class MeasureDataValidatorTest {
 
 	@Test
 	void negativeAggregateCountsFails() throws Exception {
-		Node aggregateCount = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node aggregateCount = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		aggregateCount.putValue("aggregateCount", "-1");
 		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		testNode.addChildNodes(aggregateCount);

@@ -91,12 +91,12 @@ class CpcFileServiceImplTest {
 		when(dbService.getMetadataById(key)).thenReturn(buildFakeMetadata(false, false));
 		when(storageService.getFileByLocationId(key)).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
-		NoFileInDatabaseException expectedException = assertThrows(NoFileInDatabaseException.class, ()
+		InvalidFileTypeException expectedException = assertThrows(InvalidFileTypeException.class, ()
 			-> objectUnderTest.getQppById(key));
 
 		verify(dbService, times(1)).getMetadataById(key);
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.INVALID_FILE);
 	}
 
 	@Test
@@ -131,12 +131,12 @@ class CpcFileServiceImplTest {
 		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(false, false));
 		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
-		NoFileInDatabaseException expectedException = assertThrows(NoFileInDatabaseException.class, ()
+		InvalidFileTypeException expectedException = assertThrows(InvalidFileTypeException.class, ()
 				-> objectUnderTest.getFileById("test"));
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.INVALID_FILE);
 	}
 
 	@Test
@@ -264,7 +264,7 @@ class CpcFileServiceImplTest {
 	}
 
 	Metadata buildFakeMetadata(boolean isCpc, boolean isCpcProcessed) {
-		Metadata metadata = new Metadata();
+		Metadata metadata = Metadata.create();
 		metadata.setCpc(isCpc ? "CPC_26" : null);
 		metadata.setCpcProcessed(isCpcProcessed);
 		metadata.setSubmissionLocator("test");
