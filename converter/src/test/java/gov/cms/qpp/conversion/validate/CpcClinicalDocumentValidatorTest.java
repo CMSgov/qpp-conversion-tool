@@ -56,7 +56,7 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertWithMessage("Must NPI error")
 			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ErrorCode.NPI_TIN_COMBINATION_MISSING_CLINICAL_DOCUMENT);
+			.containsExactly(ErrorCode.TIN_MISSING_CLINICAL_DOCUMENT);
 	}
 
 	@Test
@@ -68,7 +68,7 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertWithMessage("Must TIN error")
 			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ErrorCode.NPI_TIN_COMBINATION_MISSING_CLINICAL_DOCUMENT);
+			.containsExactly(ErrorCode.NPI_MISSING_CLINICAL_DOCUMENT);
 	}
 
 

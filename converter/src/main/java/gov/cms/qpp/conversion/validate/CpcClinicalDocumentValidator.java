@@ -46,9 +46,9 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 				.format(Context.REPORTING_YEAR);
 
 			check(node)
-					.valueIsNotEmpty(ErrorCode.NPI_TIN_COMBINATION_MISSING_CLINICAL_DOCUMENT,
+					.valueIsNotEmpty(ErrorCode.TIN_MISSING_CLINICAL_DOCUMENT,
 						ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER)
-					.valueIsNotEmpty(ErrorCode.NPI_TIN_COMBINATION_MISSING_CLINICAL_DOCUMENT,
+					.valueIsNotEmpty(ErrorCode.NPI_MISSING_CLINICAL_DOCUMENT,
 						ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER)
 					.valueIsNotEmpty(addressError, ClinicalDocumentDecoder.PRACTICE_SITE_ADDR)
 					.singleValue(ErrorCode.CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED,
