@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -80,6 +81,11 @@ public class MeasureConfigs {
 	 * @return An identifier
 	 */
 	private static String getMeasureId(MeasureConfig measureConfig) {
+		String measureId = getMeasureIdFromMeasureConfig(measureConfig);
+		return measureId == null ? null : measureId.toLowerCase(Locale.US);
+	}
+
+	private static String getMeasureIdFromMeasureConfig(MeasureConfig measureConfig) {
 		String guid = measureConfig.getElectronicMeasureVerUuid();
 		String electronicMeasureId = measureConfig.getElectronicMeasureId();
 		String measureId = measureConfig.getMeasureId();
