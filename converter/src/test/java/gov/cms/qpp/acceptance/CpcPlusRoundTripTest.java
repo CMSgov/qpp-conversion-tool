@@ -51,7 +51,8 @@ class CpcPlusRoundTripTest {
 
 	@Test
 	void hasNoInAppropriateTopLevelAttributes() {
-		assertThat(json.keySet()).containsExactly("entityId", "entityType", "measurementSets", "performanceYear");
+		assertThat(json.keySet()).containsExactly("entityId", "entityType", "measurementSets",
+			"performanceYear", "nationalProviderIdentifier", "taxpayerIdentificationNumber");
 	}
 
 	@Test
