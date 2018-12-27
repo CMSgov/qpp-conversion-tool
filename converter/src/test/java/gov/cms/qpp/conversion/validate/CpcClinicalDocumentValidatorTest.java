@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -46,6 +47,57 @@ class CpcClinicalDocumentValidatorTest {
 		System.clearProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE);
 		System.clearProperty(CpcClinicalDocumentValidator.CPC_PLUS_CONTACT_EMAIL);
 	}
+
+	@Test
+	void validTinExistence() {
+		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
+		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER);
+		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
+		Set<Detail> errors = cpcValidator.getDetails();
+
+		assertWithMessage("Must NPI error")
+			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ErrorCode.TIN_INVALID_CLINICAL_DOCUMENT);
+	}
+
+	@Test
+	void validNPIExistence() {
+		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
+		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER);
+		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
+		Set<Detail> errors = cpcValidator.getDetails();
+
+		assertWithMessage("Must TIN error")
+			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ErrorCode.NPI_INVALID_CLINICAL_DOCUMENT);
+	}
+
+	@ParameterizedTest
+	@ValueSource(strings = {"9900000999", "99000009"})
+	void failInvalidTINs(String value) {
+		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, value);
+		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
+		Set<Detail> errors = cpcValidator.getDetails();
+
+		assertWithMessage("Invalid TIN error")
+			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ErrorCode.TIN_INVALID_CLINICAL_DOCUMENT);
+	}
+
+	@ParameterizedTest
+	@ValueSource(strings = {"25678914210", "256789142"})
+	void failInvalidNPIs(String value) {
+		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, value);
+		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
+		Set<Detail> errors = cpcValidator.getDetails();
+
+		assertWithMessage("Invalid NPI error")
+			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ErrorCode.NPI_INVALID_CLINICAL_DOCUMENT);
+	}
+
 
 	@Test
 	void validPracticeSiteAddress() {
@@ -180,6 +232,8 @@ class CpcClinicalDocumentValidatorTest {
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR, "test");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID, "DogCow");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, "123456789");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, "9900000099");
 
 		return clinicalDocumentNode;
 	}
