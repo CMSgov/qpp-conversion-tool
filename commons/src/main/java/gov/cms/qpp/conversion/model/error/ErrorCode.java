@@ -100,8 +100,8 @@ public enum ErrorCode implements LocalizedError {
 			+ "Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). "
 			+ "Here is a link to the IG Reporting Parameter Act section: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
 	IA_SECTION_WRONG_CHILD(45, "The IA Section must contain only Improvement Activities and a Reporting Parameter Act"),
-	TIN_MISSING_CLINICAL_DOCUMENT(46, "Clinical Document Node is missing a required Tax Identification Number"),
-	NPI_MISSING_CLINICAL_DOCUMENT(47, "Clinical Document Node is missing a required National Provider Identifier"),
+	TIN_INVALID_CLINICAL_DOCUMENT(46, "Clinical Document Node must have a valid Tax Identification Number"),
+	NPI_INVALID_CLINICAL_DOCUMENT(47, "Clinical Document Node must have a valid National Provider Identifier"),
 	CPC_QUALITY_MEASURE_ID_MISSING_STRATA(48, "Missing strata `(Reporting Stratum UUID)` for "
 			+ "`(Current subpopulation type)` measure `(Current subpopulation UUID)`. "
 			+ "Here is a link to the IG valid Measure Ids section: " + DocumentationReference.MEASURE_IDS, true),

@@ -29,6 +29,8 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	static final DateTimeFormatter END_DATE_FORMAT = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
 	static final String DEFAULT_CPC_PLUS_CONTACT_EMAIL = "cpcplus@telligen.com";
 	static final String CPC_PLUS_CONTACT_EMAIL = "CPC_PLUS_CONTACT_EMAIL";
+	static final String NPI_REGEX = "^[0-9]{10}$";
+	static final String TIN_REGEX = "^[0-9]{9}$";
 	// LocalDate.now() creates extra unneeded clock objects before Java 9.
 	// It also uses the system clock, rather than Eastern Time.
 	private static final Clock CLOCK = Clock.system(ZoneId.of("US/Eastern"));
@@ -46,10 +48,10 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 				.format(Context.REPORTING_YEAR);
 
 			check(node)
-					.valueIsNotEmpty(ErrorCode.TIN_MISSING_CLINICAL_DOCUMENT,
-						ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER)
-					.valueIsNotEmpty(ErrorCode.NPI_MISSING_CLINICAL_DOCUMENT,
-						ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER)
+					.valueRegex(ErrorCode.TIN_INVALID_CLINICAL_DOCUMENT,
+						ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, TIN_REGEX)
+					.valueRegex(ErrorCode.NPI_INVALID_CLINICAL_DOCUMENT,
+						ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, NPI_REGEX)
 					.valueIsNotEmpty(addressError, ClinicalDocumentDecoder.PRACTICE_SITE_ADDR)
 					.singleValue(ErrorCode.CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED,
 							ClinicalDocumentDecoder.PRACTICE_ID)
