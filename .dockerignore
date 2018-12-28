@@ -1,0 +1,13 @@
+*
+!Procfile
+!checkstyle.xml
+!commandline
+!commons
+!converter
+!frontend
+!generate
+!pom.xml
+!rest-api
+!test-commons
+!tools
+
