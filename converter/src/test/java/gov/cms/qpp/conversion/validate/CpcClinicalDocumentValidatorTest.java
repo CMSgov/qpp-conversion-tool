@@ -49,18 +49,6 @@ class CpcClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	void validTinExistence() {
-		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
-		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER);
-		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
-		Set<Detail> errors = cpcValidator.getDetails();
-
-		assertWithMessage("Must NPI error")
-			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ErrorCode.TIN_INVALID_CLINICAL_DOCUMENT);
-	}
-
-	@Test
 	void validNPIExistence() {
 		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
 		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER);
@@ -70,19 +58,6 @@ class CpcClinicalDocumentValidatorTest {
 		assertWithMessage("Must TIN error")
 			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 			.containsExactly(ErrorCode.NPI_INVALID_CLINICAL_DOCUMENT);
-	}
-
-	@ParameterizedTest
-	@ValueSource(strings = {"9900000999", "99000009"})
-	void failInvalidTINs(String value) {
-		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, value);
-		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
-		Set<Detail> errors = cpcValidator.getDetails();
-
-		assertWithMessage("Invalid TIN error")
-			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ErrorCode.TIN_INVALID_CLINICAL_DOCUMENT);
 	}
 
 	@ParameterizedTest

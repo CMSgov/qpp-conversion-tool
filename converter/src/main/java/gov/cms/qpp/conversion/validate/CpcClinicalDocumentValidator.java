@@ -48,8 +48,6 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 				.format(Context.REPORTING_YEAR);
 
 			check(node)
-					.valueRegex(ErrorCode.TIN_INVALID_CLINICAL_DOCUMENT,
-						ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, TIN_REGEX)
 					.valueRegex(ErrorCode.NPI_INVALID_CLINICAL_DOCUMENT,
 						ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, NPI_REGEX)
 					.valueIsNotEmpty(addressError, ClinicalDocumentDecoder.PRACTICE_SITE_ADDR)

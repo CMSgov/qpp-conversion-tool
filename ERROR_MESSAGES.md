@@ -42,7 +42,6 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 43 : CT - The IA Section must have at least one Improvement Activity
 * 44 : CT - The IA Section must have one Reporting Parameter Act. Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). Here is a link to the IG Reporting Parameter Act section: https://ecqi.healthit.gov/system/files/2018_CMS_QRDA_III_Eligible_Clinicians_and_EP_IG_v2_508.pdf#page=82
 * 45 : CT - The IA Section must contain only Improvement Activities and a Reporting Parameter Act
-* 46 : CT - Clinical Document Node must have a valid Tax Identification Number
 * 47 : CT - Clinical Document Node must have a valid National Provider Identifier
 * 48 : CT - Missing strata `(Reporting Stratum UUID)` for `(Current subpopulation type)` measure `(Current subpopulation UUID)`. Here is a link to the IG valid Measure Ids section: https://ecqi.healthit.gov/system/files/2018_CMS_QRDA_III_Eligible_Clinicians_and_EP_IG_v2_508.pdf#page=94
 * 49 : CT - Amount of stratifications `(Current number of Reporting Stratifiers)` does not meet expectations `(Number of stratifiers required)` for `(Current subpopulation type)` measure `(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`. Please refer to the Implementation Guide for correct stratification UUID's here: https://ecqi.healthit.gov/system/files/2018_CMS_QRDA_III_Eligible_Clinicians_and_EP_IG_v2_508.pdf#page=94
