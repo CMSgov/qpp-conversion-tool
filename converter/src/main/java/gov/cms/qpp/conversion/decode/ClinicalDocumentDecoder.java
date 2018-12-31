@@ -59,8 +59,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 		setEntityIdOnNode(element, thisNode);
 		setPracticeSiteAddress(element, thisNode);
 		String entityType = thisNode.getValue(ENTITY_TYPE);
-		if (ENTITY_INDIVIDUAL.equals(entityType)
-			|| ENTITY_APM.equals(entityType)) {
+		if (ENTITY_INDIVIDUAL.equals(entityType)) {
 			setNationalProviderIdOnNode(element, thisNode);
 		} else if (ENTITY_VIRTUAL_GROUP.equals(entityType)) {
 			setVirtualGroupOnNode(element, thisNode);

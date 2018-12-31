@@ -49,32 +49,6 @@ class CpcClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	void validNPIExistence() {
-		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
-		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER);
-		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
-		Set<Detail> errors = cpcValidator.getDetails();
-
-		assertWithMessage("Must TIN error")
-			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ErrorCode.NPI_INVALID_CLINICAL_DOCUMENT);
-	}
-
-	@ParameterizedTest
-	@ValueSource(strings = {"25678914210", "256789142"})
-	void failInvalidNPIs(String value) {
-		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, value);
-		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
-		Set<Detail> errors = cpcValidator.getDetails();
-
-		assertWithMessage("Invalid NPI error")
-			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ErrorCode.NPI_INVALID_CLINICAL_DOCUMENT);
-	}
-
-
-	@Test
 	void validPracticeSiteAddress() {
 		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
