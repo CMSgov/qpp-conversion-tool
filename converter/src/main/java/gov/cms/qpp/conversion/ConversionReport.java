@@ -1,7 +1,12 @@
 package gov.cms.qpp.conversion;
 
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.Node;
@@ -9,11 +14,6 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.util.CloneHelper;
-
-import java.io.ByteArrayInputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-
 
 /**
  * Report on the stat of a conversion.
@@ -24,16 +24,19 @@ public class ConversionReport {
 	private Node decoded;
 	private JsonWrapper encoded;
 	private AllErrors reportDetails;
+	private List<Detail> warnings;
+
 	private String qppValidationDetails;
 
 	/**
 	 * Construct a con version report
 	 */
-	ConversionReport(Source source, List<Detail> details, Node decoded, JsonWrapper encoded) {
+	ConversionReport(Source source, List<Detail> errors, List<Detail> warnings, Node decoded, JsonWrapper encoded) {
 		this.source = source;
 		this.decoded = decoded;
 		this.encoded = encoded;
-		reportDetails = constructErrorHierarchy(source.getName(), details);
+		this.warnings = warnings;
+		reportDetails = constructErrorHierarchy(source.getName(), errors);
 	}
 
 	/**
@@ -41,8 +44,10 @@ public class ConversionReport {
 	 *
 	 * Currently consists of only a single {@link Error}.
 	 *
-	 * @param inputIdentifier An identifier for a source of QRDA3 XML.
-	 * @param details A list of validation errors.
+	 * @param inputIdentifier
+	 *            An identifier for a source of QRDA3 XML.
+	 * @param details
+	 *            A list of validation errors.
 	 * @return All the errors.
 	 */
 	private AllErrors constructErrorHierarchy(final String inputIdentifier, final List<Detail> details) {
@@ -52,10 +57,13 @@ public class ConversionReport {
 	}
 
 	/**
-	 * Constructs an {@link Error} for the given {@code inputIdentifier} from the passed in validation errors.
+	 * Constructs an {@link Error} for the given {@code inputIdentifier} from the
+	 * passed in validation errors.
 	 *
-	 * @param inputIdentifier An identifier for a source of QRDA3 XML.
-	 * @param details A list of validation errors.
+	 * @param inputIdentifier
+	 *            An identifier for a source of QRDA3 XML.
+	 * @param details
+	 *            A list of validation errors.
 	 * @return A single source of validation errors.
 	 */
 	private Error constructErrorSource(final String inputIdentifier, final List<Detail> details) {
@@ -92,7 +100,8 @@ public class ConversionReport {
 	/**
 	 * Mutator for reportDetails
 	 *
-	 * @param details updated errors
+	 * @param details
+	 *            updated errors
 	 */
 	public void setReportDetails(AllErrors details) {
 		reportDetails = details;
@@ -101,7 +110,8 @@ public class ConversionReport {
 	/**
 	 * Mutator for QPP validation details
 	 *
-	 * @param details QPP validation details
+	 * @param details
+	 *            QPP validation details
 	 */
 	public void setRawValidationDetails(String details) {
 		qppValidationDetails = details;
@@ -139,6 +149,14 @@ public class ConversionReport {
 		}
 	}
 
+	public List<Detail> getWarnings() {
+		return warnings;
+	}
+
+	public void setWarnings(List<Detail> warnings) {
+		this.warnings = warnings;
+	}
+
 	/**
 	 * Get the {@link Source} for the raw QPP validation errors (if any).
 	 *
@@ -153,7 +171,8 @@ public class ConversionReport {
 	/**
 	 * Gets the purpose of the conversion
 	 *
-	 * @return The purpose of the conversion, for example \"Test\". Treat null as a standard production call
+	 * @return The purpose of the conversion, for example \"Test\". Treat null as a
+	 *         standard production call
 	 */
 	public String getPurpose() {
 		return source.getPurpose();

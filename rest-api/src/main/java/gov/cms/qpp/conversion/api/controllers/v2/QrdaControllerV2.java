@@ -26,6 +26,7 @@ public class QrdaControllerV2 extends SkeletalQrdaController<ConvertResponse> {
 	protected ConvertResponse respond(ConversionReport report) {
 		ConvertResponse response = new ConvertResponse();
 		response.setQpp(report.getEncoded().toObject());
+		response.setWarnings(report.getWarnings());
 		return response;
 	}
 

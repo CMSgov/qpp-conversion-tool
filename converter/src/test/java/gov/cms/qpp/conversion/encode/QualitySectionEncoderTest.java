@@ -39,7 +39,7 @@ class QualitySectionEncoderTest {
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		encoder.internalEncode(jsonWrapper, qualitySectionNode);
 
-		assertThat(encoder.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+		assertThat(encoder.getErrors()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ErrorCode.ENCODER_MISSING);
 	}
 

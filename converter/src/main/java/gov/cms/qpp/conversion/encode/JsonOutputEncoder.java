@@ -18,7 +18,8 @@ import java.util.List;
 public abstract class JsonOutputEncoder implements OutputEncoder {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(JsonOutputEncoder.class);
 	private List<Node> nodes;
-	private List<Detail> details = new ArrayList<>();
+	private List<Detail> errors = new ArrayList<>();
+	private List<Detail> warnings = new ArrayList<>();
 
 	@Override
 	public void encode(Writer writer) {
@@ -33,7 +34,7 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 			DEV_LOG.error("Couldn't write out JSON file.", exception);
 			Detail detail = Detail.forErrorCode(ErrorCode.UNEXPECTED_ENCODE_ERROR);
 			detail.setMessage(exception.getMessage());
-			details.add(detail);
+			errors.add(detail);
 		}
 	}
 
@@ -64,7 +65,7 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 			DEV_LOG.warn("Encode error when doing internalEncode, adding a new Detail", exception);
 			Detail detail = Detail.forErrorAndNode(ErrorCode.UNEXPECTED_ENCODE_ERROR, node);
 			detail.setMessage(exception.getMessage());
-			details.add(detail);
+			addValidationError(detail);
 		}
 	}
 
@@ -78,11 +79,19 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 	}
 
 	public void addValidationError(Detail detail) {
-		details.add(detail);
+		errors.add(detail);
 	}
 
-	public List<Detail> getDetails() {
-		return this.details;
+	public void addValidationWarning(Detail detail) {
+		warnings.add(detail);
+	}
+
+	public List<Detail> getErrors() {
+		return this.errors;
+	}
+
+	public List<Detail> getWarnings() {
+		return this.warnings;
 	}
 
 	public void setNodes(List<Node> someNodes) {

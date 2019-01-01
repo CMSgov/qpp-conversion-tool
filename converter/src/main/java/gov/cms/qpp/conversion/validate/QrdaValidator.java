@@ -39,13 +39,13 @@ public class QrdaValidator {
 	 * @param rootNode The root node that all other nodes descend from.
 	 * @return The list of validation errors for the entire tree of nodes.
 	 */
-	public List<Detail> validate(Node rootNode) {
+	public ValidationResult validate(Node rootNode) {
 		DEV_LOG.info("Validating all nodes in the tree");
 
 		//validate each node while traversing the tree
 		validateTree(rootNode);
 
-		return errors;
+		return new ValidationResult(errors, warnings);
 	}
 
 	/**
