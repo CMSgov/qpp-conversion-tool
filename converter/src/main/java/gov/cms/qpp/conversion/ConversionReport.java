@@ -29,7 +29,7 @@ public class ConversionReport {
 	private String qppValidationDetails;
 
 	/**
-	 * Construct a con version report
+	 * Construct a conversion report
 	 */
 	ConversionReport(Source source, List<Detail> errors, List<Detail> warnings, Node decoded, JsonWrapper encoded) {
 		this.source = source;
