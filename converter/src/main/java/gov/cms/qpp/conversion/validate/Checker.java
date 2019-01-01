@@ -31,15 +31,15 @@ import java.util.stream.Collectors;
 class Checker {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(Checker.class);
 	private Node node;
-	private Set<Detail> details;
-	private boolean anded;
+	private List<Detail> details;
+	private boolean force;
 	private Map<TemplateId, AtomicInteger> nodeCount;
 	private Comparable<?> lastAppraised;
 
-	private Checker(Node node, Set<Detail> details, boolean anded) {
+	private Checker(Node node, List<Detail> details, boolean force) {
 		this.node = node;
 		this.details = details;
-		this.anded = anded;
+		this.force = force;
 		this.nodeCount = new EnumMap<>(TemplateId.class);
 		node.getChildNodes()
 			.stream()
@@ -55,8 +55,8 @@ class Checker {
 	 * @param details holder for validation errors
 	 * @return The checker, for chaining method calls.
 	 */
-	static Checker check(Node node, Set<Detail> details) {
-		return new Checker(node, details, true);
+	static Checker check(Node node, List<Detail> details) {
+		return new Checker(node, details, false);
 	}
 
 	/**
@@ -66,8 +66,8 @@ class Checker {
 	 * @param details holder for validation errors
 	 * @return The checker, for chaining method calls.
 	 */
-	static Checker thoroughlyCheck(Node node, Set<Detail> details) {
-		return new Checker(node, details, false);
+	static Checker forceCheck(Node node, List<Detail> details) {
+		return new Checker(node, details, true);
 	}
 
 	/**
@@ -75,8 +75,8 @@ class Checker {
 	 *
 	 * @return determination as to whether or not a check should be performed
 	 */
-	private boolean shouldShortcut() {
-		return anded && !isEmpty(details);
+	public boolean shouldShortcut() {
+		return !force && !isEmpty(details);
 	}
 
 	/**

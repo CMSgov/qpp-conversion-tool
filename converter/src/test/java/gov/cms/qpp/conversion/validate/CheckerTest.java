@@ -3,8 +3,8 @@ package gov.cms.qpp.conversion.validate;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,11 +27,11 @@ class CheckerTest {
 	private static final LocalizedError ERROR_MESSAGE = new FormattedErrorCode(ErrorCode.UNEXPECTED_ERROR, "the checker failed");
 	private static final LocalizedError OTHER_ERROR_MESSAGE = new FormattedErrorCode(ErrorCode.UNEXPECTED_ERROR, "some other error message");
 
-	private Set<Detail> details;
+	private List<Detail> details;
 
 	@BeforeEach
 	void beforeEach() {
-		details = new LinkedHashSet<>();
+		details = new ArrayList<>();
 	}
 
 	@Test
@@ -511,7 +511,7 @@ class CheckerTest {
 				new Node(TemplateId.PLACEHOLDER),
 				new Node(TemplateId.PLACEHOLDER));
 
-		Checker checker = Checker.thoroughlyCheck(meepNode, details);
+		Checker checker = Checker.forceCheck(meepNode, details);
 		checker.intValue(error("int failure"), VALUE)
 				.hasChildren(ERROR_MESSAGE)
 				.childMinimum(ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER)
@@ -530,7 +530,7 @@ class CheckerTest {
 				new Node(TemplateId.PLACEHOLDER),
 				new Node(TemplateId.PLACEHOLDER));
 
-		Checker checker = Checker.thoroughlyCheck(meepNode, details);
+		Checker checker = Checker.forceCheck(meepNode, details);
 		checker.intValue(error("int failure"), VALUE)
 				.hasChildren(ERROR_MESSAGE)
 				.childMinimum(ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER)
@@ -594,7 +594,7 @@ class CheckerTest {
 
 	@Test
 	void testCheckerHasMeasuresShortCut() {
-		Set<Detail> errors = new LinkedHashSet<>();
+		List<Detail> errors = new ArrayList<>();
 		Detail err = new Detail();
 		err.setMessage("test");
 		errors.add(err);
@@ -610,7 +610,7 @@ class CheckerTest {
 
 	@Test
 	void testCheckerHasInvalidMeasure() {
-		Set<Detail> errors = new LinkedHashSet<>();
+		List<Detail> errors = new ArrayList<>();
 
 		Node root = new Node();
 		Node measure = new Node(TemplateId.CLINICAL_DOCUMENT, root);

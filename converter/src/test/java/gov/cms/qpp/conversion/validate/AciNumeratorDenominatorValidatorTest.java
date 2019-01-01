@@ -1,5 +1,9 @@
 package gov.cms.qpp.conversion.validate;
 
+import static com.google.common.truth.Truth.assertWithMessage;
+
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.model.Node;
@@ -7,10 +11,6 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
-
-import java.util.Set;
-
-import static com.google.common.truth.Truth.assertWithMessage;
 
 class AciNumeratorDenominatorValidatorTest {
 
@@ -40,7 +40,7 @@ class AciNumeratorDenominatorValidatorTest {
 		aciNumeratorDenominatorNode.addChildNode(aciDenominatorNode);
 
 		AciNumeratorDenominatorValidator measureVal = new AciNumeratorDenominatorValidator();
-		Set<Detail> errors = measureVal.validateSingleNode(aciNumeratorDenominatorNode);
+		List<Detail> errors = measureVal.validateSingleNode(aciNumeratorDenominatorNode).getErrors();
 
 		assertWithMessage("no errors should be present")
 				.that(errors).isEmpty();
@@ -61,7 +61,7 @@ class AciNumeratorDenominatorValidatorTest {
 
 		AciNumeratorDenominatorValidator measureVal = new AciNumeratorDenominatorValidator();
 
-		Set<Detail> errors = measureVal.validateSingleNode(aciNumeratorDenominatorNode);
+		List<Detail> errors = measureVal.validateSingleNode(aciNumeratorDenominatorNode).getErrors();
 
 		assertWithMessage("error should be about missing numerator denominator measure name")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -89,7 +89,7 @@ class AciNumeratorDenominatorValidatorTest {
 		aciNumeratorDenominatorNode.addChildNode(aciDenominatorNode);
 
 		AciNumeratorDenominatorValidator measureVal = new AciNumeratorDenominatorValidator();
-		Set<Detail> errors = measureVal.validateSingleNode(aciNumeratorDenominatorNode);
+		List<Detail> errors = measureVal.validateSingleNode(aciNumeratorDenominatorNode).getErrors();
 
 		assertWithMessage("error should be about invalid parent node")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -108,7 +108,7 @@ class AciNumeratorDenominatorValidatorTest {
 		aciSectionNode.addChildNode(aciNumeratorDenominatorNode);
 
 		AciNumeratorDenominatorValidator measureval = new AciNumeratorDenominatorValidator();
-		Set<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode);
+		List<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode).getErrors();
 
 		assertWithMessage("error should be about no child nodes")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -133,7 +133,7 @@ class AciNumeratorDenominatorValidatorTest {
 		aciNumeratorDenominatorNode.addChildNode(aciNumeratorPlaceholder);
 
 		AciNumeratorDenominatorValidator measureval = new AciNumeratorDenominatorValidator();
-		Set<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode);
+		List<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode).getErrors();
 
 		assertWithMessage("error should be about missing Numerator element")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -159,7 +159,7 @@ class AciNumeratorDenominatorValidatorTest {
 		aciNumeratorDenominatorNode.addChildNode(aciNumeratorNode);
 
 		AciNumeratorDenominatorValidator measureval = new AciNumeratorDenominatorValidator();
-		Set<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode);
+		List<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode).getErrors();
 
 		assertWithMessage("error should be about missing Denominator element")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -187,7 +187,7 @@ class AciNumeratorDenominatorValidatorTest {
 		aciNumeratorDenominatorNode.addChildNode(aciNumeratorNode2);
 
 		AciNumeratorDenominatorValidator measureval = new AciNumeratorDenominatorValidator();
-		Set<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode);
+		List<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode).getErrors();
 
 		assertWithMessage("error should be about too many Numerator nodes")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -215,7 +215,7 @@ class AciNumeratorDenominatorValidatorTest {
 		aciNumeratorDenominatorNode.addChildNode(aciNumeratorNode);
 
 		AciNumeratorDenominatorValidator measureval = new AciNumeratorDenominatorValidator();
-		Set<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode);
+		List<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode).getErrors();
 
 		assertWithMessage("error should be about too many Denominator nodes")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)

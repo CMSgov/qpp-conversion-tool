@@ -1,5 +1,19 @@
 package gov.cms.qpp.conversion.validate;
 
+import static com.google.common.truth.Truth.assertWithMessage;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
+
+import org.junit.jupiter.api.Test;
+
+import com.google.common.collect.Sets;
+
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
@@ -9,22 +23,7 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
-import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import com.google.common.collect.Sets;
-import org.junit.jupiter.api.Test;
-
-import static com.google.common.truth.Truth.assertWithMessage;
 
 class CpcQualityMeasureScopedValidatonTest {
 	private static Path baseDir = Paths.get("src/test/resources/fixtures/qppct298/");
@@ -32,7 +31,7 @@ class CpcQualityMeasureScopedValidatonTest {
 	@Test
 	void validateCms137V5() {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v6.xml");
-		Set<Detail> details = validateNode(result);
+		List<Detail> details = validateNode(result);
 
 		assertWithMessage("Valid CMS137v5 markup should not result in errors")
 				.that(details).isEmpty();
@@ -41,7 +40,7 @@ class CpcQualityMeasureScopedValidatonTest {
 	@Test
 	void validateCms137V6FailMissingMeasure() {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v6_MissingMeasure.xml");
-		Set<Detail> details = validateNode(result);
+		List<Detail> details = validateNode(result);
 		LocalizedError message = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS137v6", "IPP,IPOP", "E6569B35-D2C5-464B-A608-BDB2F082FE57");
 
 		assertWithMessage("Missing CMS137v6 IPOP strata should result in errors")
@@ -60,10 +59,9 @@ class CpcQualityMeasureScopedValidatonTest {
 		return converter.getReport().getDecoded().findFirstNode(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
 	}
 
-	private Set<Detail> validateNode(Node node) {
+	private List<Detail> validateNode(Node node) {
 		CpcQualityMeasureIdValidator validator = new CpcQualityMeasureIdValidator();
-		validator.internalValidateSingleNode(node);
-		return validator.getDetails();
+		return validator.validateSingleNode(node).getErrors();
 	}
 
 	private LocalizedError[] getMessages(String type, String measure, String... subs) {

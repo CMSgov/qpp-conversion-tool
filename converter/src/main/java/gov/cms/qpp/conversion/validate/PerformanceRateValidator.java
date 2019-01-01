@@ -20,16 +20,16 @@ public class PerformanceRateValidator extends NodeValidator {
 	 * @param node The node to validate.
 	 */
 	@Override
-	protected void internalValidateSingleNode(Node node) {
+	protected void performValidation(Node node) {
 		if (!NULL_ATTRIBUTE.equals(node.getValue(PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE))) {
 
-			check(node)
+			Checker checker = checkErrors(node)
 				.valueIsNotEmpty(ErrorCode.PERFORMANCE_RATE_MISSING, PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE);
 
-			if (getDetails().isEmpty()) {
+			if (!checker.shouldShortcut()) {
 				String performanceRate = node.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE);
 
-				check(node)
+				checkErrors(node)
 					.inDecimalRangeOf(ErrorCode.PERFORMANCE_RATE_INVALID_VALUE.format(performanceRate),
 						PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE, 0F, 1F);
 			}

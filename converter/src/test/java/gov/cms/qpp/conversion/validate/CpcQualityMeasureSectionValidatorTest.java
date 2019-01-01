@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.validate;
 import static com.google.common.truth.Truth.assertThat;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
@@ -58,8 +60,8 @@ class CpcQualityMeasureSectionValidatorTest {
 	void missingGroupAmeasures() {
 		Node node = new Node();
 		LocalizedError message = CpcGroupMinimum.OUTCOME_MEASURE.makeError(groupAmeasures);
-		validator.internalValidateSingleNode(node);
-		assertThat(validator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+		List<Detail> details = validator.validateSingleNode(node).getErrors();
+		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(message);
 	}
 
@@ -67,8 +69,8 @@ class CpcQualityMeasureSectionValidatorTest {
 	void tooFewGroupAmeasures() {
 		Node node = setupMeasures(new String[] {groupAmeasures[0]});
 		LocalizedError message = CpcGroupMinimum.OUTCOME_MEASURE.makeError(groupAmeasures);
-		validator.internalValidateSingleNode(node);
-		assertThat(validator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+		List<Detail> details = validator.validateSingleNode(node).getErrors();
+		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(message);
 	}
 
@@ -76,8 +78,8 @@ class CpcQualityMeasureSectionValidatorTest {
 	void missingGroupBmeasures() {
 		Node node = setupMeasures(groupAmeasures);
 		LocalizedError message = CpcGroupMinimum.OTHER_MEASURE.makeError(groupBmeasures);
-		validator.internalValidateSingleNode(node);
-		assertThat(validator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+		List<Detail> details = validator.validateSingleNode(node).getErrors();
+		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(message);
 	}
 
@@ -85,8 +87,8 @@ class CpcQualityMeasureSectionValidatorTest {
 	void tooFewBmeasures() {
 		Node node = setupMeasures(groupAmeasures, new String[] {groupBmeasures[0]});
 		LocalizedError message = CpcGroupMinimum.OTHER_MEASURE.makeError(groupBmeasures);
-		validator.internalValidateSingleNode(node);
-		assertThat(validator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+		List<Detail> details = validator.validateSingleNode(node).getErrors();
+		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(message);
 	}
 
@@ -94,16 +96,16 @@ class CpcQualityMeasureSectionValidatorTest {
 	void tooFewOverallmeasures() {
 		Node node = setupMeasures(groupAmeasures, new String[] {groupBmeasures[0], groupBmeasures[1]});
 		LocalizedError message = CpcGroupMinimum.makeOverallError(overallMeasures);
-		validator.internalValidateSingleNode(node);
-		assertThat(validator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+		List<Detail> details = validator.validateSingleNode(node).getErrors();
+		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(message);
 	}
 
 	@Test
 	void justRight() {
 		Node node = setupMeasures(groupAmeasures, groupBmeasures);
-		validator.internalValidateSingleNode(node);
-		assertThat(validator.getDetails()).hasSize(0);
+		List<Detail> details = validator.validateSingleNode(node).getErrors();
+		assertThat(details).hasSize(0);
 	}
 
 	private Node setupMeasures(String[]... measureGroups) {

@@ -53,11 +53,11 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param node The node to validate.
 	 */
 	@Override
-	protected void internalValidateSingleNode(final Node node) {
+	protected void performValidation(final Node node) {
 		//It is possible that we have a Measure in the input that we have not defined in
 		//the meta data measures-data.json
 		//This should not be an error
-		thoroughlyCheck(node)
+		forceCheckErrors(node)
 				.singleValue(ErrorCode.MISSING_OR_DUPLICATED_MEASURE_GUID, MeasureConfigHelper.MEASURE_ID)
 				.childMinimum(ErrorCode.CHILD_MEASURE_MISSING, 1, TemplateId.MEASURE_DATA_CMS_V2);
 		validateMeasureConfigs(node);
@@ -78,7 +78,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 			if (value != null) { // This check has already been made and a detail will exist if value is null.
 				DEV_LOG.error(ErrorCode.MEASURE_GUID_MISSING.name() + " " + value);
 				LocalizedError error = ErrorCode.MEASURE_GUID_MISSING.format(value, Context.REPORTING_YEAR);
-				addValidationError(Detail.forErrorAndNode(error, node));
+				addError(Detail.forErrorAndNode(error, node));
 			}
 		}
 	}
@@ -127,7 +127,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 					expectedChildTypeCount, StringHelper.join(key.getAliases(), ",", "or"),
 					actualChildTypeCount);
 			Detail detail = Detail.forErrorAndNode(error, node);
-			addValidationError(detail);
+			addError(detail);
 		}
 	}
 
@@ -201,7 +201,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param ipopCount Aggregate Count node of initial population
 	 */
 	private void validateDenominatorCount(Node denomCount, Node ipopCount) {
-		thoroughlyCheck(denomCount)
+		forceCheckErrors(denomCount)
 				.incompleteValidation()
 				.intValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
 						AggregateCountDecoder.AGGREGATE_COUNT)
@@ -264,7 +264,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		LocalizedError error = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(
 				MeasureConfigHelper.getMeasureConfig(node).getElectronicMeasureId(),
 				String.join(",", keys), check.get());
-		addValidationError(Detail.forErrorAndNode(error, node));
+		addError(Detail.forErrorAndNode(error, node));
 	}
 
 	/**
@@ -276,7 +276,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 */
 	private Predicate<Node> makeTypeChildFinder(String... populationCriteriaTypes) {
 		return thisNode -> {
-			thoroughlyCheck(thisNode)
+			forceCheckErrors(thisNode)
 					.incompleteValidation()
 					.singleValue(ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_TYPE, MEASURE_TYPE);
 			return Arrays.asList(populationCriteriaTypes).contains(thisNode.getValue(MEASURE_TYPE));
@@ -293,7 +293,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 */
 	protected Predicate<Node> makeUuidChildFinder(Supplier<String> uuid, LocalizedError error, String name) {
 		return thisNode -> {
-			thoroughlyCheck(thisNode)
+			forceCheckErrors(thisNode)
 					.incompleteValidation()
 					.singleValue(error, name);
 			return uuid.get().equalsIgnoreCase(thisNode.getValue(name));

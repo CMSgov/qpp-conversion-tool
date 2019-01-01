@@ -10,12 +10,12 @@ import gov.cms.qpp.conversion.model.error.ErrorCode;
 public class ReportingParametersActValidator extends NodeValidator {
 
 	@Override
-	protected void internalValidateSingleNode(Node node) {
+	protected void performValidation(Node node) {
 		String performanceStart = node.getValueOrDefault(ReportingParametersActDecoder.PERFORMANCE_START, "");
 
 		String performanceEnd = node.getValueOrDefault(ReportingParametersActDecoder.PERFORMANCE_END,"");
 
-		check(node)
+		checkErrors(node)
 				.singleValue(ErrorCode.REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START,
 						ReportingParametersActDecoder.PERFORMANCE_START)
 				.singleValue(ErrorCode.REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_END,

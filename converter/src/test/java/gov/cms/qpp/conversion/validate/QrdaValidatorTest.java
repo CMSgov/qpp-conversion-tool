@@ -151,18 +151,18 @@ public class QrdaValidatorTest {
 	public static class RequiredTestValidator extends NodeValidator {
 
 		@Override
-		public void internalValidateSingleNode(final Node node) {
+		public void performValidation(final Node node) {
 			nodesPassedIntoValidateSingleNode.add(node);
-			addValidationError(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE);
+			addError(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE);
 		}
 	}
 
 	public static class OptionalTestValidator extends NodeValidator {
 
 		@Override
-		public void internalValidateSingleNode(final Node node) {
+		public void performValidation(final Node node) {
 			nodesPassedIntoValidateSingleNode.add(node);
-			addValidationError(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE);
+			addError(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE);
 		}
 	}
 }

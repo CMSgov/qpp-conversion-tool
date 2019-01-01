@@ -1,12 +1,17 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.error.Detail;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ValidationResult;
 
 /**
  * The parent class that all validators must inherit from.
@@ -14,7 +19,9 @@ import java.util.Set;
 public abstract class NodeValidator {
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(NodeValidator.class);
-	private Set<Detail> details = new LinkedHashSet<>();
+	private final List<Detail> errors = new ArrayList<>();
+	private final List<Detail> warnings = new ArrayList<>();
+	private final Set<ErrorCode> problemCodes = EnumSet.noneOf(ErrorCode.class);
 
 	/**
 	 * Validates a single {@link gov.cms.qpp.conversion.model.Node} and returns the list
@@ -22,30 +29,12 @@ public abstract class NodeValidator {
 	 *
 	 * @param node The node to validate.
 	 * @return List of errors determined for the node paramter.
-	 * @see #internalValidateSingleNode(Node)
+	 * @see #performValidation(Node)
 	 */
-	public Set<Detail> validateSingleNode(final Node node) {
+	public final ValidationResult validateSingleNode(Node node) {
 		DEV_LOG.debug("Using {} to validate {}", this.getClass().getName(), node);
-		internalValidateSingleNode(node);
-		return getDetails();
-	}
-
-	/**
-	 * Used by child classes to get the current list of validation errors they have added.
-	 *
-	 * @return The current list of validation errors.
-	 */
-	protected Set<Detail> getDetails() {
-		return details;
-	}
-
-	/**
-	 * Used by child classes to add a {@link Detail}.
-	 *
-	 * @param newError The error to add to the list.
-	 */
-	protected void addValidationError(final Detail newError) {
-		getDetails().add(newError);
+		performValidation(node);
+		return new ValidationResult(errors, warnings);
 	}
 
 	/**
@@ -53,20 +42,39 @@ public abstract class NodeValidator {
 	 *
 	 * <p>
 	 * The implementation should validate the {@link gov.cms.qpp.conversion.model.Node} passed in.  If an error is
-	 * found, the child class must call {@link #addValidationError(Detail)} for it to be reported.  The
+	 * found, the child class must call {@link #addError(Detail)} for it to be reported.  The
 	 * Node argument will have the same ID as the templateId of the
 	 * {@link gov.cms.qpp.conversion.model.Validator}.
 	 * </p>
 	 *
 	 * @param node The node to validate.
 	 */
-	protected abstract void internalValidateSingleNode(final Node node);
+	protected abstract void performValidation(Node node);
 
-	protected Checker check(Node node) {
-		return Checker.check(node, this.getDetails());
+	/**
+	 * Used by child classes to add a {@link Detail}.
+	 *
+	 * @param newError The error to add to the list.
+	 */
+	protected final void addError(Detail error) {
+		errors.add(error);
+		if (error.getErrorCode() != null) {
+			ErrorCode code = ErrorCode.getByCode(error.getErrorCode());
+			if (code != null) {
+				problemCodes.add(code);
+			}
+		}
 	}
 
-	Checker thoroughlyCheck(Node node) {
-		return Checker.thoroughlyCheck(node, this.getDetails());
+	public boolean containsProblem(ErrorCode code) {
+		return problemCodes.contains(code);
+	}
+
+	protected final Checker checkErrors(Node node) {
+		return Checker.check(node, errors);
+	}
+
+	protected final Checker forceCheckErrors(Node node) {
+		return Checker.forceCheck(node, errors);
 	}
 }
