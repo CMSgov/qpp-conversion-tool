@@ -1,16 +1,13 @@
 package gov.cms.qpp.conversion.validate;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.ValidationResult;
 
 /**
@@ -21,7 +18,6 @@ public abstract class NodeValidator {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(NodeValidator.class);
 	private final List<Detail> errors = new ArrayList<>();
 	private final List<Detail> warnings = new ArrayList<>();
-	private final Set<ErrorCode> problemCodes = EnumSet.noneOf(ErrorCode.class);
 
 	/**
 	 * Validates a single {@link gov.cms.qpp.conversion.model.Node} and returns the list
@@ -58,16 +54,10 @@ public abstract class NodeValidator {
 	 */
 	protected final void addError(Detail error) {
 		errors.add(error);
-		if (error.getErrorCode() != null) {
-			ErrorCode code = ErrorCode.getByCode(error.getErrorCode());
-			if (code != null) {
-				problemCodes.add(code);
-			}
-		}
 	}
 
-	public boolean containsProblem(ErrorCode code) {
-		return problemCodes.contains(code);
+	public boolean containsError(Detail detail) {
+		return errors.contains(detail);
 	}
 
 	protected final Checker checkErrors(Node node) {

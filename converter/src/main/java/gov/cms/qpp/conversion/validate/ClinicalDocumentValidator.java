@@ -7,6 +7,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
+import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.util.StringHelper;
 
@@ -46,7 +47,7 @@ public class ClinicalDocumentValidator extends NodeValidator {
 			.singleValue(ErrorCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME.format(VALID_PROGRAM_NAMES),
 					ClinicalDocumentDecoder.PROGRAM_NAME);
 
-		if (!containsProblem(ErrorCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME)) {
+		if (!containsError(Detail.forErrorAndNode(ErrorCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME.format(VALID_PROGRAM_NAMES), node))) {
 			String programName = Optional.ofNullable(node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME)).orElse("<missing>");
 			String entityType = Optional.ofNullable(node.getValue(ClinicalDocumentDecoder.ENTITY_TYPE)).orElse("<missing>");
 
