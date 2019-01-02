@@ -109,7 +109,7 @@ class ValidationApiFailureAcceptance {
 	private Consumer<Detail> verifyDetail(String comparison, String xml) {
 		return detail -> {
 			String xPath = detail.getLocation().getPath();
-			Filter filter = xPath.contains("@") ? Filters.attribute() : Filters.element();
+			Filter<?> filter = xPath.contains("@") ? Filters.attribute() : Filters.element();
 			try {
 				Object found = evaluateXpath(xPath, filter, xml);
 				if (filter.equals(Filters.attribute())) {

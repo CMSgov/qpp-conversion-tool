@@ -25,6 +25,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.Instant;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -78,7 +79,7 @@ class CpcApiAcceptance {
 	@AcceptanceTest
 	void testUnprocessedFiles() {
 
-		List<Map> responseBody = getUnprocessedFiles();
+		List<Map<String, Object>> responseBody = getUnprocessedFiles();
 
 		assertThat(responseBody).isNotEmpty();
 		assertThat(responseBody.get(0)).containsKey("fileId");
@@ -97,7 +98,7 @@ class CpcApiAcceptance {
 
 		mapper.batchSave(afterJanuarySecondMetadata, beforeJanuarySecondMetadata, anotherAllowedMetadata, anotherUnallowedMetadata);
 
-		List<Map> responseBody = getUnprocessedFiles();
+		List<Map<String, Object>> responseBody = getUnprocessedFiles();
 
 		responseBody.stream().forEach(map ->
 			assertThat(Instant.parse((String)map.get("conversionDate")))
@@ -173,7 +174,7 @@ class CpcApiAcceptance {
 	@AcceptanceTest
 	void testMarkFileProcessed() {
 
-		List<Map> unprocessedFiles = getUnprocessedFiles();
+		List<Map<String, Object>> unprocessedFiles = getUnprocessedFiles();
 		String firstFileId = (String)unprocessedFiles.get(0).get("fileId");
 
 		String responseBody = markFileAsProcessed(firstFileId, 200);
@@ -202,7 +203,7 @@ class CpcApiAcceptance {
 	@AcceptanceTest
 	void testMarkFileUnProcessed() {
 
-		List<Map> unprocessedFiles = getUnprocessedFiles();
+		List<Map<String, Object>> unprocessedFiles = getUnprocessedFiles();
 		String firstFileId = (String)unprocessedFiles.get(0).get("fileId");
 
 		String responseBody = markFileAsUnProcessed(firstFileId, 200);
@@ -249,14 +250,26 @@ class CpcApiAcceptance {
 			.body().asString();
 	}
 
-	private List<Map> getUnprocessedFiles() {
-		return given()
-			.auth().oauth2(createCpcJwtToken())
+	@SuppressWarnings("unchecked")
+	private List<Map<String, Object>> getUnprocessedFiles() {
+		@SuppressWarnings("rawtypes")
+		List<Map> listProxy = given()
+			.auth()
+			.oauth2(createCpcJwtToken())
 			.get(CPC_UNPROCESSED_FILES_API_PATH)
 			.then()
 			.statusCode(200)
 			.extract()
-			.body().jsonPath().getList("$", Map.class);
+			.body()
+			.jsonPath()
+			.getList("$", Map.class);
+		
+		List<Map<String, Object>> listMap = new LinkedList<Map<String, Object>>();
+		listProxy.stream().forEach( map -> {
+			listMap.add((Map<String, Object>) map);
+		});
+		
+		return listMap;
 	}
 
 	private String createCpcJwtToken() {

@@ -23,9 +23,9 @@ class ValueOriginMapper {
 	@SuppressWarnings("unchecked")
 	void mapIt(String base, Object holder) {
 		if (holder instanceof Map) {
-			map(base, (Map) holder);
+			map(base, (Map<String,Object>) holder);
 		} else {
-			map(base, (List) holder);
+			map(base, (List<Object>) holder);
 		}
 	}
 

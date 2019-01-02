@@ -84,6 +84,7 @@ class PiSectionEncoderTest {
 				.that(testMapObject.get(SUBMISSION_METHOD)).isEqualTo(ELECTRONIC_HEALTH_RECORD);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	void aboutMetadataHolder() {
 		JsonWrapper jsonWrapper = new JsonWrapper();

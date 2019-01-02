@@ -45,7 +45,7 @@ class ValidationApiAcceptance {
 
 	private void verifyDetail(Detail detail) {
 		String xPath = detail.getLocation().getPath();
-		Filter filter = xPath.contains("@") ? Filters.attribute() : Filters.element();
+		Filter<?> filter = xPath.contains("@") ? Filters.attribute() : Filters.element();
 		try {
 			Object found = evaluateXpath(xPath, filter);
 			if (filter.equals(Filters.attribute())) {

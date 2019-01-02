@@ -205,8 +205,9 @@ class ClinicalDocumentEncoderTest {
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 
-		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
-		List<LinkedHashMap<String, Object>> measurementSets = getMeasurementSets(clinicalDocMap);
+		@SuppressWarnings("unchecked")
+		Map<String, Object> clinicalDocMap = ((Map<String, Object>) testJsonWrapper.getObject());
+		List<Map<String, Object>> measurementSets = getMeasurementSets(clinicalDocMap);
 		String value = (String)measurementSets.get(0).get("category");
 
 		assertThat(measurementSets).hasSize(1);
@@ -230,7 +231,7 @@ class ClinicalDocumentEncoderTest {
 
 
 	@SuppressWarnings("unchecked")
-	private List<LinkedHashMap<String, Object>> getMeasurementSets(Map clinicalDocumentMap) {
-		return ((List<LinkedHashMap<String, Object>>) clinicalDocumentMap.get("measurementSets"));
+	private List<Map<String, Object>> getMeasurementSets(Map<String, Object> clinicalDocumentMap) {
+		return ((List<Map<String, Object>>) clinicalDocumentMap.get("measurementSets"));
 	}
 }
