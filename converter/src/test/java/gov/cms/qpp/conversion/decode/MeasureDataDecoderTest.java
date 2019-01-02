@@ -45,6 +45,6 @@ class MeasureDataDecoderTest {
 		Node measure =  placeholder.findChildNode(node -> node.getValue(MEASURE_TYPE).equals(type));
 
 		assertThat(measure).isNotNull();
-		assertThat(measure.getChildNodes().get(0).getType()).isEqualTo(TemplateId.ACI_AGGREGATE_COUNT);
+		assertThat(measure.getChildNodes().get(0).getType()).isEqualTo(TemplateId.PI_AGGREGATE_COUNT);
 	}
 }

@@ -144,7 +144,7 @@ class CpcApiAcceptance {
 			.asString();
 
 		verifyJson(payload, jsonObject()
-			.where("performanceYear", jsonInt(2017))
+			.where("performanceYear", jsonInt(2018))
 			.where("taxpayerIdentificationNumber", jsonText("000000099"))
 			.where("nationalProviderIdentifier", jsonText("0007891421"))
 			.where("measurementSets", jsonArray()));
@@ -268,7 +268,7 @@ class CpcApiAcceptance {
 	}
 
 	private Metadata createDatedCpcMetadata(String parsableDate) {
-		Metadata metadata = new Metadata();
+		Metadata metadata = Metadata.create();
 		metadata.setApm("T3STV47U3");
 		metadata.setTin("0001233212");
 		metadata.setNpi("012123123");

@@ -1,5 +1,9 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
+import java.io.IOException;
+import java.util.List;
+
+import org.apache.commons.lang3.BooleanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.InputStreamResource;
@@ -16,12 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.CpcFileStatusUpdateRequest;
+import gov.cms.qpp.conversion.api.model.Metadata;
+import gov.cms.qpp.conversion.api.model.Report;
+import gov.cms.qpp.conversion.api.model.Status;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
 import gov.cms.qpp.conversion.api.services.CpcFileService;
 import gov.cms.qpp.conversion.util.EnvironmentHelper;
-
-import java.io.IOException;
-import java.util.List;
 
 /**
  * Controller to handle cpc file data
@@ -42,7 +46,7 @@ public class CpcFileControllerV1 {
 	 *
 	 * @param cpcFileService service for processing cpc+ files
 	 */
-	public CpcFileControllerV1(final CpcFileService cpcFileService) {
+	public CpcFileControllerV1(CpcFileService cpcFileService) {
 		this.cpcFileService = cpcFileService;
 	}
 
@@ -146,6 +150,38 @@ public class CpcFileControllerV1 {
 		API_LOG.info("CPC+ update file request succeeded for fileId {} with message: {}", fileId, message);
 
 		return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(message);
+	}
+
+	@GetMapping(value = "/report/{fileId}",
+			headers = {"Accept=" + Constants.V1_API_ACCEPT})
+	public ResponseEntity<Report> getReportByFileId(@PathVariable("fileId") String fileId) {
+		API_LOG.info("CPC+ report request received for fileId {}", fileId);
+
+		if (blockCpcPlusApi()) {
+			API_LOG.info("CPC+ report request blocked by feature flag");
+			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
+		}
+
+		Metadata metadata = cpcFileService.getMetadataById(fileId);
+
+		// If the Metadata object was created before a certain version, it will
+		// not contain error information, so a report would be inaccurate
+		if (metadata.getMetadataVersion() == null || metadata.getMetadataVersion() < 2) {
+			return new ResponseEntity<>(null, null, HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+
+		Report report = new Report();
+		report.setErrors(metadata.getErrors() == null ? null : metadata.getErrors().getDetails());
+		report.setPracticeSiteId(metadata.getApm());
+		report.setProgramName(metadata.getProgramName());
+		report.setTimestamp(metadata.getCreatedDate().toEpochMilli());
+		report.setWarnings(metadata.getWarnings() == null ? null : metadata.getWarnings().getDetails());
+		boolean hasWarnings = report.getWarnings() != null && !report.getWarnings().isEmpty();
+		report.setStatus(BooleanUtils.isTrue(metadata.getConversionStatus())
+				? (hasWarnings ? Status.ACCEPTED_WITH_WARNINGS : Status.ACCEPTED) : Status.REJECTED);
+		API_LOG.info("CPC+ report request succeeded");
+
+		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(report);
 	}
 
 	/**

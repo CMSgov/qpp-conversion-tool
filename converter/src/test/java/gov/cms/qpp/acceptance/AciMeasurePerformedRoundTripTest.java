@@ -25,12 +25,12 @@ class AciMeasurePerformedRoundTripTest {
 		Converter converter = new Converter(new PathSource(JUNK_QRDA3_FILE));
 		JsonWrapper qpp = converter.transform();
 
-		List<Map<String, String>> aciMeasures = JsonHelper.readJsonAtJsonPath(qpp.toString(),
-			"$.measurementSets[?(@.category=='aci')].measurements[?(@.measureId=='TEST_MEASURE_ID')]", new TypeRef<List<Map<String, String>>>() { });
+		List<Map<String, String>> piMeasures = JsonHelper.readJsonAtJsonPath(qpp.toString(),
+			"$.measurementSets[?(@.category=='pi')].measurements[?(@.measureId=='TEST_MEASURE_ID')]", new TypeRef<List<Map<String, String>>>() { });
 
-		assertThat(aciMeasures)
+		assertThat(piMeasures)
 				.hasSize(1);
-		assertThat((aciMeasures.get(0).get("measureId")))
+		assertThat((piMeasures.get(0).get("measureId")))
 				.isEqualTo("TEST_MEASURE_ID");
 	}
 }

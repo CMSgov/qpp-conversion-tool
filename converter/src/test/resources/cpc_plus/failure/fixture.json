@@ -1,6 +1,6 @@
 {
 	"CPCPlus_CMS122v5IncUUID_SampleQRDA-III.xml": {
-		"strict": true,
+		"strict": false,
 		"errorData": [
 			{
 				"errorCode": 6,
@@ -110,7 +110,7 @@
 		]
 	},
 	"CPCPlus_CMS165v5IncUUID_SampleQRDA-III.xml": {
-		"strict": true,
+		"strict": false,
 		"errorData": [
 			{
 				"errorCode": 6,
@@ -180,17 +180,12 @@
 					"CMS\\d{2,3}v\\d{1}",
 					".*",
 					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
-				"occurrences": 2
+				"occurrences": 1
 			},
 			{
 				"errorCode": 37,
 				"subs": [1, "CMS\\d{2,3}v\\d{1}"],
 				"occurrences": 2
-			},
-			{
-				"errorCode": 37,
-				"subs": [2, "CMS\\d{2,3}v\\d{1}"],
-				"occurrences": 1
 			}
 		]
 	},
@@ -518,17 +513,17 @@
 		"errorData": [
 			{
 				"errorCode": 64,
-				"subs": [2, "outcome", "40280381-51f0-825b-0152-22b98cff181a,40280381-51f0-825b-0152-229afff616ee,40280381-5118-2f4e-0151-3a9382cd09ba"],
+				"subs": [2, "outcome", "40280382-5abd-fa46-015b-49abb28d38b2,40280382-5abd-fa46-015b-4981e40b37e6"],
 				"occurrences": 1
 			}
 		]
 	},
 	"CPCPlus_IncNumofGroup2Measures_SampleQRDA-III.xml": {
-		"strict": true,
+		"strict": false,
 		"errorData": [
 			{
 				"errorCode": 64,
-				"subs": [2, "complex process", "40280381-51f0-825b-0152-22aae8a21778,40280381-52fc-3a32-0153-1a401cc10b57,40280381-528a-60ff-0152-8e089ed20376,40280381-52fc-3a32-0153-56d2b4f01ae5"],
+				"subs": [2, "outcome", "40280382-5abd-fa46-015b-49abb28d38b2,40280382-5abd-fa46-015b-4981e40b37e6"],
 				"occurrences": 1
 			}
 		]
@@ -538,7 +533,12 @@
 		"errorData": [
 			{
 				"errorCode": 65,
-				"subs": [9, "40280381-51f0-825b-0152-22b98cff181a,40280381-51f0-825b-0152-229afff616ee,40280381-5118-2f4e-0151-3a9382cd09ba,40280381-51f0-825b-0152-22aae8a21778,40280381-52fc-3a32-0153-1a401cc10b57,40280381-528a-60ff-0152-8e089ed20376,40280381-52fc-3a32-0153-56d2b4f01ae5,40280381-51f0-825b-0152-22ba7621182e,40280381-5118-2f4e-0151-59fb81bf1055,40280381-51f0-825b-0152-22a1e7e81737,40280381-51f0-825b-0152-229c4ea3170c,40280381-51f0-825b-0152-22a24cdd1740,40280381-51f0-825b-0152-229bdcab1702,40280381-503f-a1fc-0150-d33f5b0a1b8c"],
+				"subs": [9, ".*"],
+				"occurrences": 1
+			},
+			{
+				"errorCode": 64,
+				"subs": [7, "other", ".*"],
 				"occurrences": 1
 			}
 		]
@@ -559,9 +559,9 @@
 			{
 				"errorCode": 59,
 				"subs": [
-					"CMS139v5",
-					"DENEXCEP",
-					"CF7E1913-CB4E-42F7-BAEC-0EFFF01ECB17"
+					"CMS139v6",
+					"DENEX",
+					"D97B59F6-89D4-4635-8F38-4C8369D1776E"
 				],
 				"occurrences": 1
 			}
@@ -573,9 +573,9 @@
 			{
 				"errorCode": 59,
 				"subs": [
-					"CMS149v5",
+					"CMS149v6",
 					"NUMER",
-					"2C2431A3-7DE3-4C97-80C0-4BF96D4880F0"
+					"9B6325F1-07B8-4B1C-AF92-4F4F1269C234"
 				],
 				"occurrences": 1
 			}]
@@ -590,7 +590,7 @@
 			{
 				"errorCode": 66,
 				"subs": [".*", ".*", ".*", "CMS\\d{2,3}v\\d{1}", "[A-Z]{3,10}"],
-				"occurrences": 119
+				"occurrences": 16
 			}
 		]
 	}

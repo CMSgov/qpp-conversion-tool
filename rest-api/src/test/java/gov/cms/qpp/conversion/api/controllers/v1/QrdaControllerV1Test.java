@@ -73,12 +73,12 @@ class QrdaControllerV1Test {
 
 	@Test
 	void uploadQrdaFile() {
-		Metadata metadata = new Metadata();
+		Metadata metadata = Metadata.create();
 		when(qrdaService.convertQrda3ToQpp(any(Source.class))).thenReturn(report);
 		when(auditService.success(any(ConversionReport.class)))
 				.then(invocation -> CompletableFuture.completedFuture(metadata));
 
-		ResponseEntity qppResponse = objectUnderTest.uploadQrdaFile(multipartFile, null);
+		ResponseEntity<String> qppResponse = objectUnderTest.uploadQrdaFile(multipartFile, null);
 
 		verify(qrdaService, atLeastOnce()).convertQrda3ToQpp(any(Source.class));
 
@@ -95,20 +95,20 @@ class QrdaControllerV1Test {
 				.then(invocation -> null);
 
 		when(report.getPurpose()).thenReturn("Test");
-		ResponseEntity qppResponse = objectUnderTest.uploadQrdaFile(multipartFile, "Test");
+		ResponseEntity<String> qppResponse = objectUnderTest.uploadQrdaFile(multipartFile, "Test");
 
 		assertThat(peopleCaptor.getValue().getPurpose()).isEqualTo("Test");
 	}
 
 	@Test
 	void testHeadersContainsLocation() {
-		Metadata metadata = new Metadata();
+		Metadata metadata = Metadata.create();
 		metadata.setUuid(UUID.randomUUID().toString());
 		when(qrdaService.convertQrda3ToQpp(any(Source.class))).thenReturn(report);
 		when(auditService.success(any(ConversionReport.class)))
 				.then(invocation -> CompletableFuture.completedFuture(metadata));
 
-		ResponseEntity qppResponse = objectUnderTest.uploadQrdaFile(multipartFile, null);
+		ResponseEntity<String> qppResponse = objectUnderTest.uploadQrdaFile(multipartFile, null);
 		assertThat(qppResponse.getHeaders().get("Location")).containsExactly(metadata.getUuid());
 	}
 
@@ -122,7 +122,7 @@ class QrdaControllerV1Test {
 			.when(validationService).validateQpp(isNull());
 
 		try {
-			ResponseEntity qppResponse = objectUnderTest.uploadQrdaFile(multipartFile, null);
+			ResponseEntity<String> qppResponse = objectUnderTest.uploadQrdaFile(multipartFile, null);
 			Assertions.fail("An exception should have occurred. Instead was " + qppResponse);
 		} catch(TransformException exception) {
 			assertThat(exception.getMessage())

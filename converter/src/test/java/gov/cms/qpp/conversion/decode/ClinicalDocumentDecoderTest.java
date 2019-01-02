@@ -69,7 +69,7 @@ class ClinicalDocumentDecoderTest {
 	void testAciCategory() {
 		Node aciSectionNode = clinicalDocument.getChildNodes().get(0);
 		assertThat(aciSectionNode.getValue("category"))
-				.isEqualTo("aci");
+				.isEqualTo("pi");
 	}
 
 	@Test
@@ -212,13 +212,7 @@ class ClinicalDocumentDecoderTest {
 				.isEqualTo(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		assertWithMessage("Clinical Document doesn't contain entity type")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE))
-				.isEqualTo(ClinicalDocumentDecoder.ENTITY_INDIVIDUAL);
-		assertWithMessage("Clinical Document doesn't contain national provider")
-				.that(testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
-				.isEqualTo("2567891421");
-		assertWithMessage("Clinical Document doesn't contain taxpayer id number")
-				.that(testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
-				.isEqualTo("123456789");
+				.isEqualTo(ClinicalDocumentDecoder.ENTITY_APM);
 	}
 
 	@Test
@@ -252,7 +246,7 @@ class ClinicalDocumentDecoderTest {
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
 		objectUnderTest.decode(clinicalDocument, testParentNode);
 		assertWithMessage("Clinical Document contains the Entity Id")
-				.that(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_ID))
+				.that(testParentNode.getValue(ClinicalDocumentDecoder.PRACTICE_ID))
 				.isEqualTo(ENTITY_ID_VALUE);
 	}
 
@@ -267,6 +261,21 @@ class ClinicalDocumentDecoderTest {
 		assertWithMessage("Clinical Document contains the Entity Id")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR))
 				.isEqualTo("testing123");
+	}
+
+	@Test
+	void decodeMipsVirtualGroup() {
+		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.MIPS_VIRTUAL_GROUP);
+		Node testParentNode = new Node();
+
+		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
+		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
+		objectUnderTest.decode(clinicalDocument, testParentNode);
+
+		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE))
+			.isEqualTo(ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP);
+		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_ID))
+			.isEqualTo("x12345");
 	}
 
 	private Element makeClinicalDocument(String programName) {
@@ -321,8 +330,12 @@ class ClinicalDocumentDecoderTest {
 		Element nationalProviderIdentifier = new Element("id", rootns)
 				.setAttribute("root", "2.16.840.1.113883.4.6")
 				.setAttribute("extension", "2567891421");
+		Element virtualGroup = new Element("id", rootns)
+			.setAttribute("root", "2.16.840.1.113883.3.249.5.2")
+			.setAttribute("extension", "x12345");
 
 		Element representedOrganization = prepareRepOrgWithTaxPayerId(rootns);
+		representedOrganization.addContent(virtualGroup);
 		assignedEntity.addContent(representedOrganization);
 		assignedEntity.addContent(nationalProviderIdentifier);
 		performer.addContent(assignedEntity);
@@ -346,8 +359,8 @@ class ClinicalDocumentDecoderTest {
 		Element structuredBody = new Element("structuredBody", rootns);
 		Element componentTwo = new Element("component", rootns);
 		Element aciSectionElement = new Element("templateId", rootns);
-		aciSectionElement.setAttribute("root", TemplateId.ACI_SECTION.getRoot());
-		aciSectionElement.setAttribute("extension", TemplateId.ACI_SECTION.getExtension());
+		aciSectionElement.setAttribute("root", TemplateId.PI_SECTION.getRoot());
+		aciSectionElement.setAttribute("extension", TemplateId.PI_SECTION.getExtension());
 
 		componentTwo.addContent(aciSectionElement);
 		structuredBody.addContent(componentTwo);

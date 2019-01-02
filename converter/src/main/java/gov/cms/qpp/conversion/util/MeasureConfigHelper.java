@@ -4,6 +4,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 
+import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -24,7 +25,7 @@ public class MeasureConfigHelper {
 	 */
 	public static MeasureConfig getMeasureConfig(Node node) {
 		String measureId =  node.getValue(MEASURE_ID);
-		return MeasureConfigs.getConfigurationMap().get(measureId);
+		return findMeasureConfigByUuid(measureId);
 	}
 
 	/**
@@ -34,13 +35,20 @@ public class MeasureConfigHelper {
 	 * @return electronic measure id
 	 */
 	public static String getMeasureConfigIdByUuidOrDefault(String uuid) {
-		MeasureConfig config = MeasureConfigs.getConfigurationMap().get(uuid);
+		MeasureConfig config = findMeasureConfigByUuid(uuid);
 		if (config != null) {
 			return config.getElectronicMeasureId();
 		}
 		return null;
 	}
 
+	private static MeasureConfig findMeasureConfigByUuid(String uuid) {
+		if (uuid == null) {
+			return null;
+		}
+
+		return MeasureConfigs.getConfigurationMap().get(uuid.toLowerCase(Locale.US));
+	}
 
 	/**
 	 * Determine which measure id-ish value should be used for a given node.

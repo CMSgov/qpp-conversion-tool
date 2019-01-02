@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -89,7 +90,7 @@ class CpcClinicalDocumentValidatorTest {
 		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
 
 		// extra APM
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, "1234567", false);
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID, "1234567", false);
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
 
 		assertWithMessage("Must validate with the correct error")
@@ -100,7 +101,7 @@ class CpcClinicalDocumentValidatorTest {
 	@Test
 	void testCpcPlusNoApm() {
 		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
-		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.ENTITY_ID);
+		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.PRACTICE_ID);
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
 
 		assertWithMessage("Must validate with the correct error")
@@ -111,7 +112,7 @@ class CpcClinicalDocumentValidatorTest {
 	@Test
 	void testCpcPlusEmptyApm() {
 		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, "");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID, "");
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
 
 		assertWithMessage("Must validate with the correct error")
@@ -122,7 +123,7 @@ class CpcClinicalDocumentValidatorTest {
 	@Test
 	void testCpcPlusInvalidApm() {
 		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, "PropertyTaxes");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID, "PropertyTaxes");
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
 
 		assertWithMessage("Must validate with the correct error")
@@ -179,7 +180,9 @@ class CpcClinicalDocumentValidatorTest {
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR, "test");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, "DogCow");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID, "DogCow");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, "123456789");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, "9900000099");
 
 		return clinicalDocumentNode;
 	}

@@ -28,9 +28,9 @@ class QualityMeasureIdEncoderTest {
 	@BeforeEach
 	void setUp() {
 		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
-		qualityMeasureId.putValue("measureId", "40280381-51f0-825b-0152-22b98cff181a");
+		qualityMeasureId.putValue("measureId", "40280382-5abd-fa46-015b-49abb28d38b2");
 
-		aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		aggregateCountNode.putValue("aggregateCount", "600");
 
 		Node paymentNode = new Node(TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2);

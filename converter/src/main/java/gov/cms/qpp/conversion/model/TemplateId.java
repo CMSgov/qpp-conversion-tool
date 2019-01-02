@@ -1,7 +1,5 @@
 package gov.cms.qpp.conversion.model;
 
-import com.google.common.base.Strings;
-
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.util.EnvironmentHelper;
 
@@ -9,25 +7,27 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * An enumeration of known templates IDs.
  */
 public enum TemplateId {
 	CLINICAL_DOCUMENT("2.16.840.1.113883.10.20.27.1.2", Extension.JULY_2017, "Clinical Document"),
-	ACI_AGGREGATE_COUNT("2.16.840.1.113883.10.20.27.3.3"),
+	PI_AGGREGATE_COUNT("2.16.840.1.113883.10.20.27.3.3"),
 	IA_SECTION("2.16.840.1.113883.10.20.27.2.4", Extension.JUNE_2017, "IA Section"),
-	ACI_SECTION("2.16.840.1.113883.10.20.27.2.5", Extension.JUNE_2017, "ACI Section"),
+	PI_SECTION("2.16.840.1.113883.10.20.27.2.5", Extension.JUNE_2017, "PI Section"),
 	MEASURE_PERFORMED("2.16.840.1.113883.10.20.27.3.27", Extension.SEPTEMBER_2016),
-	ACI_NUMERATOR_DENOMINATOR("2.16.840.1.113883.10.20.27.3.28", Extension.JUNE_2017, "ACI Measure"),
-	ACI_NUMERATOR("2.16.840.1.113883.10.20.27.3.31", Extension.SEPTEMBER_2016),
-	ACI_DENOMINATOR("2.16.840.1.113883.10.20.27.3.32", Extension.SEPTEMBER_2016),
+	PI_NUMERATOR_DENOMINATOR("2.16.840.1.113883.10.20.27.3.28", Extension.JUNE_2017, "PI Measure"),
+	PI_NUMERATOR("2.16.840.1.113883.10.20.27.3.31", Extension.SEPTEMBER_2016),
+	PI_DENOMINATOR("2.16.840.1.113883.10.20.27.3.32", Extension.SEPTEMBER_2016),
 	IA_MEASURE("2.16.840.1.113883.10.20.27.3.33", Extension.SEPTEMBER_2016, "Improvement Activity"),
 	REPORTING_PARAMETERS_ACT("2.16.840.1.113883.10.20.17.3.8"),
 	MEASURE_DATA_CMS_V2("2.16.840.1.113883.10.20.27.3.16", Extension.NOVEMBER_2016),
 	PERFORMANCE_RATE_PROPORTION_MEASURE("2.16.840.1.113883.10.20.27.3.25", Extension.NOVEMBER_2016),
 	MEASURE_SECTION_V2("2.16.840.1.113883.10.20.27.2.3", Extension.JULY_2017, "Measure Section"),
 	MEASURE_REFERENCE_RESULTS_CMS_V2("2.16.840.1.113883.10.20.27.3.17", Extension.NOVEMBER_2016, "Quality Measure"),
-	ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS("2.16.840.1.113883.10.20.27.3.29", Extension.SEPTEMBER_2016),
+	PI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS("2.16.840.1.113883.10.20.27.3.29", Extension.SEPTEMBER_2016),
 	REPORTING_STRATUM_CMS("2.16.840.1.113883.10.20.27.3.20"),
 	ETHNICITY_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2("2.16.840.1.113883.10.20.27.3.22", Extension.NOVEMBER_2016),
 	SEX_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2("2.16.840.1.113883.10.20.27.3.21", Extension.NOVEMBER_2016),
@@ -185,7 +185,7 @@ public enum TemplateId {
 	static String generateTemplateIdString(String root, String extension, Context context) {
 		String templateId = root;
 
-		if (!context.isHistorical() && !Strings.isNullOrEmpty(extension)) {
+		if (!context.isHistorical() && !StringUtils.isEmpty(extension)) {
 			templateId += (":" + extension);
 		}
 		return templateId;

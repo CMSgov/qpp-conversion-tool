@@ -62,10 +62,4 @@ class QualityMeasureMultiXpathJsonPathTest {
 		String jsonPath = "measurementSets[0].measurements[0].value.strata[1].eligiblePopulationException";
 		helper.executeAttributeTest(jsonPath, "value", "40");
 	}
-
-	@Test
-	void compareThirdSubPopNumerator() throws XmlException {
-		String jsonPath = "measurementSets[0].measurements[0].value.strata[2].performanceMet";
-		helper.executeAttributeTest(jsonPath, "value", "520");
-	}
 }

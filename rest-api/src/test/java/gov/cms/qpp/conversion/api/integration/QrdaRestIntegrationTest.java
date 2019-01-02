@@ -18,11 +18,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import gov.cms.qpp.conversion.api.SpringTest;
+import gov.cms.qpp.conversion.api.SpringIntegrationTest;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.test.net.InternetTest;
 
-@SpringTest
+@SpringIntegrationTest
 public class QrdaRestIntegrationTest {
 
 	@Inject
@@ -55,7 +55,6 @@ public class QrdaRestIntegrationTest {
 				.andExpect(jsonPath("$.taxpayerIdentificationNumber").exists());
 	}
 
-
 	@Test
 	void testInvalidQpp() throws Exception {
 		MockMultipartFile qrda3File = new MockMultipartFile("file", Files.newInputStream(Paths.get("../qrda-files/not-a-QDRA-III-file.xml")));
@@ -71,7 +70,7 @@ public class QrdaRestIntegrationTest {
 		MockMultipartFile qrda3File = new MockMultipartFile("file", Files.newInputStream(Paths.get("../qrda-files/not-a-QDRA-III-file.xml")));
 		mockMvc.perform(MockMvcRequestBuilders
 				.multipart("/").file(qrda3File)
-				.accept("application/vnd.qpp.cms.gov.v2+json"))
+				.accept("application/vnd.qpp.cms.gov.INVALID+json"))
 				.andExpect(status().is(406));
 	}
 

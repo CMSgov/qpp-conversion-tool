@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
-import com.google.common.base.Strings;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -103,7 +103,25 @@ class Checker {
 	 */
 	Checker valueIsNotEmpty(LocalizedError code, String name) {
 		lastAppraised = node.getValue(name);
-		if (!shouldShortcut() && Strings.isNullOrEmpty((String) lastAppraised)) {
+		if (!shouldShortcut() && StringUtils.isEmpty((String) lastAppraised)) {
+			details.add(detail(code));
+		}
+		return this;
+	}
+
+	/**
+	 * Tests if given value matches specified regex
+	 *
+	 * @param code that identifies the error
+	 * @param name key of expected value
+	 * @param regex regular expression that must be satisfied
+	 * @return The checker, for chaining method calls.
+	 */
+	Checker valueRegex(LocalizedError code, String name, String regex) {
+		lastAppraised = node.getValue(name);
+
+		String last = (String) lastAppraised;
+		if (!shouldShortcut() && (StringUtils.isEmpty(last) || !last.matches(regex))) {
 			details.add(detail(code));
 		}
 		return this;

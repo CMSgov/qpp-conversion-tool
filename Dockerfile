@@ -7,9 +7,9 @@ COPY ./ /usr/src/app/
 
 WORKDIR /usr/src/app/
 
+RUN cp -r ./tools/docker/docker-artifacts/* /usr/src/run/
 RUN mvn install -Dmaven.test.skip -Djacoco.skip=true > /dev/null
 RUN cp ./rest-api/target/rest-api.jar /usr/src/run/
-RUN cp -r ./tools/docker/docker-artifacts/* /usr/src/run/
 
 WORKDIR /usr/src/run/
 

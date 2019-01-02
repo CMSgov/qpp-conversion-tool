@@ -99,7 +99,7 @@ class ScopedConversionTest {
 	@Test
 	void testScopedAciSectionConversion() {
 		//setup
-		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_SECTION.name());
+		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.PI_SECTION.name());
 		Map<String, Object> content = scopedConversion(testSection);
 
 		//then
@@ -128,9 +128,9 @@ class ScopedConversionTest {
 	 * Verify ACI Aggregate Count conversion
 	 */
 	@Test
-	void testScopedAciAggregateCountConversion() {
+	void testScopedPiAggregateCountConversion() {
 		//when
-		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_AGGREGATE_COUNT.name());
+		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.PI_AGGREGATE_COUNT.name());
 		Map<String, Object> content = scopedConversion(testSection);
 
 		//then
@@ -143,9 +143,9 @@ class ScopedConversionTest {
 	 * Verify ACI Numerator conversion
 	 */
 	@Test
-	void testScopedAciNumeratorConversion() {
+	void testScopedPiNumeratorConversion() {
 		//when
-		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_NUMERATOR.name());
+		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.PI_NUMERATOR.name());
 		Map<String, Object> content = scopedConversion(testSection);
 
 		//then
@@ -155,12 +155,12 @@ class ScopedConversionTest {
 	}
 
 	/**
-	 * Verify ACI Denominator conversion
+	 * Verify PI Denominator conversion
 	 */
 	@Test
-	void testScopedAciDenominatorConversion() {
+	void testScopedPiDenominatorConversion() {
 		//when
-		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_DENOMINATOR.name());
+		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.PI_DENOMINATOR.name());
 		Map<String, Object> content = scopedConversion(testSection);
 
 		//then
@@ -170,12 +170,12 @@ class ScopedConversionTest {
 	}
 
 	/**
-	 * Verify ACI Numerator Denominator conversion
+	 * Verify PI Numerator Denominator conversion
 	 */
 	@Test
-	void testScopedAciNumeratorDenominatorConversion() {
+	void testScopedPiNumeratorDenominatorConversion() {
 		//when
-		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_NUMERATOR_DENOMINATOR.name());
+		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.PI_NUMERATOR_DENOMINATOR.name());
 		Map<String, Object> content = scopedConversion(testSection);
 
 		//then
@@ -219,8 +219,8 @@ class ScopedConversionTest {
 		assertWithMessage("Errant %s fails as expected", TemplateId.CLINICAL_DOCUMENT)
 				.that(getErrorMessages(content))
 				.containsExactly(
-						ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT.getMessage(),
-						ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
+						ErrorCode.PI_SECTION_MISSING_REPORTING_PARAMETER_ACT.getMessage(),
+						ErrorCode.PI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
 							.format(AciNumeratorValidator.NUMERATOR_NAME).getMessage(),
 						ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER.format(AciNumeratorValidator.NUMERATOR_NAME, "Bob").getMessage(),
 						ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(AciDenominatorValidator.DENOMINATOR_NAME, "empty").getMessage(),
@@ -233,9 +233,9 @@ class ScopedConversionTest {
 	 * @throws JsonProcessingException 
 	 */
 	@Test
-	void testNegativeAciNumeratorDenominatorConversion() throws JsonProcessingException {
+	void testNegativePiNumeratorDenominatorConversion() throws JsonProcessingException {
 		//when
-		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_NUMERATOR_DENOMINATOR.name());
+		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.PI_NUMERATOR_DENOMINATOR.name());
 		List<Map<String, String>> content = getErrors(errantScopedConversion(testSection));
 
 		//then
@@ -243,11 +243,11 @@ class ScopedConversionTest {
 				.that(content.size())
 				.isEqualTo(5);
 
-		assertWithMessage("Errant %s fails as expected", TemplateId.ACI_NUMERATOR_DENOMINATOR)
+		assertWithMessage("Errant %s fails as expected", TemplateId.PI_NUMERATOR_DENOMINATOR)
 				.that(getErrorMessages(content))
 				.containsExactly(
-						ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT.getMessage(),
-						ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
+						ErrorCode.PI_SECTION_MISSING_REPORTING_PARAMETER_ACT.getMessage(),
+						ErrorCode.PI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
 							.format(AciNumeratorValidator.NUMERATOR_NAME).getMessage(),
 						ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER.format(AciNumeratorValidator.NUMERATOR_NAME, "Bob").getMessage(),
 						ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(AciDenominatorValidator.DENOMINATOR_NAME, "empty").getMessage());
@@ -280,9 +280,9 @@ class ScopedConversionTest {
 	 * @throws JsonProcessingException 
 	 */
 	@Test
-	void testNegativeAciAggregateCountConversion() throws JsonProcessingException {
+	void testNegativePiAggregateCountConversion() throws JsonProcessingException {
 		//when
-		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_AGGREGATE_COUNT.name());
+		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.PI_AGGREGATE_COUNT.name());
 		List<Map<String, String>> content = getErrors(errantScopedConversion(testSection));
 
 		//then
@@ -290,7 +290,7 @@ class ScopedConversionTest {
 				.that(content.size())
 				.isEqualTo(3);
 
-		assertWithMessage("Errant %s fails as expected", TemplateId.ACI_AGGREGATE_COUNT)
+		assertWithMessage("Errant %s fails as expected", TemplateId.PI_AGGREGATE_COUNT)
 				.that(getErrorMessages(content))
 				.containsExactly(
 					ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER.getMessage(),

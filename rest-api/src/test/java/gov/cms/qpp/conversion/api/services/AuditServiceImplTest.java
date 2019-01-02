@@ -59,7 +59,7 @@ public class AuditServiceImplTest {
 
 	@Before
 	public void before() {
-		metadata = new Metadata();
+		metadata = Metadata.create();
 
 		mockStatic(MetadataHelper.class);
 		when(MetadataHelper.generateMetadata(any(Node.class), any(MetadataHelper.Outcome.class)))
