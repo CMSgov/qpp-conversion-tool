@@ -1,8 +1,8 @@
 package gov.cms.qpp.acceptance.helper;
 
-import com.sun.org.apache.xerces.internal.dom.AttrImpl;
-import com.sun.org.apache.xerces.internal.dom.ElementImpl;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -56,9 +56,9 @@ public class MarkupManipulator {
 			for (int i = 0; i < searchedNodes.getLength(); i++) {
 				Node searched = searchedNodes.item(i);
 
-				Node owningElement = (searched instanceof ElementImpl)
+				Node owningElement = (searched instanceof Element)
 						? searched
-						: ((AttrImpl) searched).getOwnerElement();
+						: ((Attr) searched).getOwnerElement();
 
 				Node containingParent = owningElement.getParentNode();
 
