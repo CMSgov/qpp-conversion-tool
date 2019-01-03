@@ -34,7 +34,7 @@ class UnprocessedCpcFileDataTest {
 		return Stream.of(Boolean.TRUE, Boolean.FALSE);
 	}
 
-	private static Stream<Metadata> metadataProvider() {
+	static Stream<Metadata> metadataProvider() {
 		return uuidProvider()
 			.flatMap(uuidLocator -> fileNameProvider()
 				.flatMap(fileName -> apmIdProvider()

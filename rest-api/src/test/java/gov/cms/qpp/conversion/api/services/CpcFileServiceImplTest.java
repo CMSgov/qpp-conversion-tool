@@ -42,7 +42,7 @@ class CpcFileServiceImplTest {
 	@Mock
 	private StorageService storageService;
 
-	private static Stream<Integer> numberOfMetadata() {
+	static Stream<Integer> numberOfMetadata() {
 		return Stream.of(1, 4, 26);
 	}
 
