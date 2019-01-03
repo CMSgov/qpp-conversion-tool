@@ -159,6 +159,7 @@ public class QrdaGenerator {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private class Context {
 		List<MeasureConfig> quality;
 		List<MeasureConfig> aci;

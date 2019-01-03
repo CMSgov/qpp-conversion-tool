@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
-import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
@@ -13,10 +12,7 @@ import gov.cms.qpp.conversion.segmentation.QrdaScope;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Predicate;
 
 import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Test;
@@ -46,10 +42,6 @@ class CpcQualityMeasureScopedValidatonTest {
 				.contains(message);
 	}
 
-	private Predicate<Node> prepFilter(final String type) {
-		return (node) -> node.getValue(MeasureDataDecoder.MEASURE_TYPE).equals(type);
-	}
-
 	private Node scopedConversion(QrdaScope testSection, String path) {
 		Converter converter = new Converter(new PathSource(baseDir.resolve(path)));
 		converter.getContext().setScope(Sets.newHashSet(testSection));
@@ -63,11 +55,4 @@ class CpcQualityMeasureScopedValidatonTest {
 		return validator.getDetails();
 	}
 
-	private LocalizedError[] getMessages(String type, String measure, String... subs) {
-		Set<LocalizedError> messages = new HashSet<>();
-		messages.add(ErrorCode.CPC_QUALITY_MEASURE_ID_STRATA_MISMATCH.format(0, subs.length, type, measure, Arrays.asList(subs)));
-		Arrays.stream(subs).forEach(sub ->
-				messages.add(ErrorCode.CPC_QUALITY_MEASURE_ID_MISSING_STRATA.format(sub, type, measure)));
-		return messages.toArray(new LocalizedError[messages.size()]);
-	}
 }

@@ -95,7 +95,7 @@ class QrdaControllerV1Test {
 				.then(invocation -> null);
 
 		when(report.getPurpose()).thenReturn("Test");
-		ResponseEntity<String> qppResponse = objectUnderTest.uploadQrdaFile(multipartFile, "Test");
+		objectUnderTest.uploadQrdaFile(multipartFile, "Test");
 
 		assertThat(peopleCaptor.getValue().getPurpose()).isEqualTo("Test");
 	}

@@ -33,6 +33,7 @@ class ClinicalDocumentExtensionTest {
 	private static final Path BASE = Paths.get("src/test/resources/cpc_plus/");
 	private static final Path FAILURE = BASE.resolve("failure");
 	private static final Path FAILURE_FIXTURE = FAILURE.resolve("fixture.json");
+	@SuppressWarnings("unused")
 	private static Map<String, CPCAcceptanceFixture> fixtureValues;
 
 	@BeforeAll

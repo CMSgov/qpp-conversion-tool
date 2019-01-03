@@ -66,7 +66,6 @@ public class SupplementalDataPayerDecoderTest {
 
 	private void decodeNodeFromFile(String filename) throws XmlException {
 		context = new Context();
-		SupplementalDataPayerDecoder decoder = new SupplementalDataPayerDecoder(context);
 		QrdaDecoderEngine engine = new QrdaDecoderEngine(context);
 		root = engine.decode(XmlUtils.stringToDom(filename));
 	}

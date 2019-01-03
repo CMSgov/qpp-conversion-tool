@@ -67,7 +67,7 @@ public class ConverterTest {
 		Converter converter = new Converter(
 				new InputStreamSupplierSource(path.toString(), NioHelper.fileToStream(path)));
 
-		JsonWrapper wrapper = converter.transform();
+		converter.transform();
 		//no exception should be thrown, hence explicitly stating the expected exception is None
 	}
 

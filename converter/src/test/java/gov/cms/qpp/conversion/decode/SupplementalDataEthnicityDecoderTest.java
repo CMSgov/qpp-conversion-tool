@@ -53,7 +53,6 @@ public class SupplementalDataEthnicityDecoderTest {
 
 	private void decodeNodeFromFile(String filename) throws XmlException {
 		context = new Context();
-		SupplementalDataEthnicityDecoder decoder = new SupplementalDataEthnicityDecoder(context);
 		QrdaDecoderEngine engine = new QrdaDecoderEngine(context);
 		root = engine.decode(XmlUtils.stringToDom(filename));
 	}
