@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion;
 import com.google.common.truth.Truth;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.common.TextParsingException;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
@@ -163,9 +164,21 @@ public class ConverterTest {
 	@Test
 	public void testUnexpectedError() {
 		Source source = mock(Source.class);
-		when(source.toInputStream()).thenThrow(Exception.class);
+		when(source.toInputStream()).thenThrow(RuntimeException.class);
 
 		Converter converter = new Converter(source);
+
+		try {
+			converter.transform();
+			fail();
+		} catch (TransformException exception) {
+			checkup(exception, ErrorCode.UNEXPECTED_ERROR);
+		}
+		
+		source = mock(Source.class);
+		when(source.toInputStream()).thenThrow(TextParsingException.class);
+
+		converter = new Converter(source);
 
 		try {
 			converter.transform();
