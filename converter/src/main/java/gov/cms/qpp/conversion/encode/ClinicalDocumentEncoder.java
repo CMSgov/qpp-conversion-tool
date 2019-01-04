@@ -101,28 +101,20 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		JsonOutputEncoder sectionEncoder;
 
 		for (Node child : childMapByTemplateId.values()) {
-			if (null == child) {
-				String message = "An child was missing ";
-				throw new EncodeException(message);
-			}
-			TemplateId childType = child.getType();
-			if (null == childType) {
-				String message = "An child type was missing ";
-				throw new EncodeException(message);
+			if (child == null) {
+				continue;
 			}
 
 			try {
+				TemplateId childType = child.getType();
+				
 				childWrapper = new JsonWrapper();
 				sectionEncoder = encoders.get(childType);
 
-				if (null == sectionEncoder) {
-					String message = "An encoder was not found for type " + child.getType();
-					throw new EncodeException(message);
-				}
 				sectionEncoder.encode(childWrapper, child);
 
 				measurementSetsWrapper.putObject(childWrapper);
-			} catch (RuntimeException exc) {
+			} catch (NullPointerException exc) { //NOSONAR NPE can be deep in method calls
 				String message = "An unexpected error occured for " + child.getType();
 				throw new EncodeException(message, exc);
 			}
