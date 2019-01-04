@@ -188,10 +188,10 @@ public class Registry<R> {
 		return passedContext -> {
 			try {
 				return handle.invokeExact(passedContext);
-			} catch (Exception codeProblem) {
+			} catch (Exception codeProblem) { //NOSONAR the method throws throwable
 				DEV_LOG.warn("Unable to invoke constructor handle", codeProblem);
 				return null;
-			} catch (Throwable severeRuntimeError) {
+			} catch (Throwable severeRuntimeError) { //NOSONAR the method throws throwable
 				throw new SevereRuntimeException(severeRuntimeError);
 			}
 		};
@@ -201,10 +201,10 @@ public class Registry<R> {
 		return ignore -> {
 			try {
 				return handle.invokeExact();
-			} catch (Exception codeProblem) {
+			} catch (Exception codeProblem) { //NOSONAR the method throws throwable
 				DEV_LOG.warn("Unable to invoke no-args constructor handle", codeProblem);
 				return null;
-			} catch (Throwable severeRuntimeError) {
+			} catch (Throwable severeRuntimeError) { //NOSONAR the method throws throwable
 				throw new SevereRuntimeException(severeRuntimeError);
 			}
 		};
