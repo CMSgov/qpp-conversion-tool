@@ -73,7 +73,7 @@ class QrdaControllerV1Test {
 
 	@Test
 	void uploadQrdaFile() {
-		Metadata metadata = new Metadata();
+		Metadata metadata = Metadata.create();
 		when(qrdaService.convertQrda3ToQpp(any(Source.class))).thenReturn(report);
 		when(auditService.success(any(ConversionReport.class)))
 				.then(invocation -> CompletableFuture.completedFuture(metadata));
@@ -102,7 +102,7 @@ class QrdaControllerV1Test {
 
 	@Test
 	void testHeadersContainsLocation() {
-		Metadata metadata = new Metadata();
+		Metadata metadata = Metadata.create();
 		metadata.setUuid(UUID.randomUUID().toString());
 		when(qrdaService.convertQrda3ToQpp(any(Source.class))).thenReturn(report);
 		when(auditService.success(any(ConversionReport.class)))

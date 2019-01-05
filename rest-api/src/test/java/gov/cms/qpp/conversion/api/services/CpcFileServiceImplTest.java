@@ -264,7 +264,7 @@ class CpcFileServiceImplTest {
 	}
 
 	Metadata buildFakeMetadata(boolean isCpc, boolean isCpcProcessed) {
-		Metadata metadata = new Metadata();
+		Metadata metadata = Metadata.create();
 		metadata.setCpc(isCpc ? "CPC_26" : null);
 		metadata.setCpcProcessed(isCpcProcessed);
 		metadata.setSubmissionLocator("test");
