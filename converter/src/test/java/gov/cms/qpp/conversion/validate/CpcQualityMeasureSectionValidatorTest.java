@@ -30,7 +30,6 @@ class CpcQualityMeasureSectionValidatorTest {
 		"40280382-5abd-fa46-015b-49b36bf238d7",
 		"40280382-5abd-fa46-015b-499c87c0385e",
 		"40280382-5971-4eed-015a-5c465a344ded",
-		"40280381-503f-a1fc-0150-afe320c01761",
 		"40280382-5b4d-eebc-015b-5d99505001ea",
 		"40280382-5abd-fa46-015b-1b7c6bb929d0",
 		"40280382-5abd-fa46-015b-49b5b1e638e3",
@@ -39,6 +38,7 @@ class CpcQualityMeasureSectionValidatorTest {
 		"40280382-5b4d-eebc-015b-8245e0fa06b7",
 		"40280382-5b4d-eebc-015b-5ea9efcc02ac",
 		"40280382-5abd-fa46-015b-4989b55937fe",
+		"40280382-5b4d-eebc-015b-5e87add90267",
 		"40280382-5abd-fa46-015b-49a7a51f38a0",
 		"40280382-5971-4eed-015a-4e002d4b4b66"};
 
