@@ -69,6 +69,10 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 		}
 	}
 
+	/**
+	 * Encodes the nodes as JSON.
+	 * @return a custom JSON wrapper class that knows how to process QPP Nodes.
+	 */
 	@Override
 	public JsonWrapper encode() {
 		JsonWrapper wrapper = new JsonWrapper();
@@ -78,25 +82,54 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 		return wrapper;
 	}
 
+	/**
+	 * Add a new validation error
+	 * @param detail the error information
+	 */
 	public void addValidationError(Detail detail) {
 		errors.add(detail);
 	}
 
+	/**
+	 * Add a new validation warning
+	 * @param detail the warning information
+	 */
 	public void addValidationWarning(Detail detail) {
 		warnings.add(detail);
 	}
 
+	/**
+	 * get the list of all validation errors.
+	 * 
+	 * @return list of error details
+	 */
 	public List<Detail> getErrors() {
 		return this.errors;
 	}
 
+	/**
+	 * get the list of all validation earnings.
+	 * 
+	 * @return list of warning details
+	 */
 	public List<Detail> getWarnings() {
 		return this.warnings;
 	}
 
+	/**
+	 * Assign a new list of QPP element nodes.
+	 * @param someNodes the new list of nodes
+	 */
 	public void setNodes(List<Node> someNodes) {
 		this.nodes = someNodes;
 	}
 
+	/**
+	 * Subclasses must implement this method with the
+	 * specific encoding method for its node type handling.
+	 * 
+	 * @param wrapper the entire JSON node collection.
+	 * @param node the current node
+	 */
 	protected abstract void internalEncode(JsonWrapper wrapper, Node node);
 }

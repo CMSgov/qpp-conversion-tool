@@ -64,6 +64,10 @@ public class Converter {
 		this.context = context;
 	}
 
+	/**
+	 * Get the conversion context environment for the converter instance.
+	 * @return context information
+	 */
 	public Context getContext() {
 		return context;
 	}

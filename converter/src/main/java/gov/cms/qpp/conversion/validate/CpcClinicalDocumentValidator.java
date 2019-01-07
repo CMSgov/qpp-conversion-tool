@@ -25,12 +25,27 @@ import org.apache.commons.lang3.StringUtils;
 @Validator(value = TemplateId.CLINICAL_DOCUMENT, program = Program.CPC)
 public class CpcClinicalDocumentValidator extends NodeValidator {
 
+	/**
+	 * Constant end date name
+	 */
 	static final String END_DATE_VARIABLE = "CPC_END_DATE";
+	/**
+	 * Constant end date format
+	 */
 	static final DateTimeFormatter END_DATE_FORMAT = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+	/**
+	 * Constant default email contact
+	 */
 	static final String DEFAULT_CPC_PLUS_CONTACT_EMAIL = "cpcplus@telligen.com";
+	/**
+	 * Constant contact email name
+	 */
 	static final String CPC_PLUS_CONTACT_EMAIL = "CPC_PLUS_CONTACT_EMAIL";
-	// LocalDate.now() creates extra unneeded clock objects before Java 9.
-	// It also uses the system clock, rather than Eastern Time.
+	
+	/**
+	 * LocalDate.now() creates extra unneeded clock objects before Java 9.
+	 * It also uses the system clock, rather than Eastern Time.
+	 */
 	private static final Clock CLOCK = Clock.system(ZoneId.of("US/Eastern"));
 
 	/**

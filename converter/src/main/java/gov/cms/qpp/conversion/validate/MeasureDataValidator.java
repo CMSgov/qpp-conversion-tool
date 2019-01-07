@@ -23,7 +23,7 @@ public class MeasureDataValidator extends NodeValidator {
 	 * <ul>
 	 *    <li>An integer value with a name in the list from MeasureDataDecoder.MEASURES</li>
 	 *    <li>The string value is an integer</li>
-	 *</ul>
+	 * </ul>
 	 *
 	 * @param node Node that represents a IA Measure Performed.
 	 */

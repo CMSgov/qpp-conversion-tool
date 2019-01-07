@@ -21,13 +21,33 @@ import java.util.stream.Stream;
  * The engine that executes the VALIDATORS on the entire hierarchy of {@link gov.cms.qpp.conversion.model.Node}s.
  */
 public class QrdaValidator {
+	/**
+	 * static class logger
+	 */
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QrdaValidator.class);
 
+	/**
+	 * Collection of errors discovered during validation.
+	 */
 	private final List<Detail> errors = new ArrayList<>();
+	/**
+	 * Collection of warnings discovered during validation.
+	 */
 	private final List<Detail> warnings = new ArrayList<>();
+	/**
+	 * Collection of templates applicable to the validation.
+	 */
 	private final Set<TemplateId> scope;
+	/**
+	 * The collection of node validators registered via annotations.
+	 */
 	private final Registry<NodeValidator> validators;
 
+	/**
+	 * Constructs and instance from the Context which contains all
+	 * necessary properties for validation.
+	 * @param context
+	 */
 	public QrdaValidator(Context context) {
 		this.validators = context.getRegistry(Validator.class);
 		this.scope = context.hasScope() ? QrdaScope.getTemplates(context.getScope()) : null;

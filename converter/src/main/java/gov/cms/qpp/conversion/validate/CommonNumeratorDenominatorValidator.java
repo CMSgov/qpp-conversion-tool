@@ -12,6 +12,9 @@ import gov.cms.qpp.conversion.model.error.LocalizedError;
  */
 public class CommonNumeratorDenominatorValidator extends NodeValidator {
 
+	/**
+	 * The node type name as in "Numerator" or "Denominator"
+	 */
 	protected String nodeName;
 
 	/**
@@ -49,10 +52,24 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 				.greaterThan(format(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE, aggregateCountValue), -1);
 	}
 
+	/**
+	 * Helper method to create a localized error from the given error.
+	 * @param error error instance to localize
+	 * @return localized error from given error
+	 */
 	private LocalizedError format(ErrorCode error) {
 		return error.format(nodeName, nodeName);
 	}
 
+	/**
+	 * Helper method to create a localized error from the given error.
+	 * Use if the node name in and of itself is insufficient.
+	 * A secondary string description may be provided.
+	 * 
+	 * @param error error instance to localize
+	 * @param value
+	 * @return localized error from given error
+	 */
 	private LocalizedError format(ErrorCode error, String value) {
 		return error.format(nodeName, value);
 	}

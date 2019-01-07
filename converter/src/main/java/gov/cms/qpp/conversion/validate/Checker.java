@@ -378,6 +378,15 @@ class Checker {
 		return hasMeasures(code, measureIds.length, measureIds);
 	}
 
+	/**
+	 * Verifies that the measures specified are contained within the current node's children
+	 *
+	 * @param code that identifies the error
+	 * @param numberOfMeasuresRequired the required number of measures 
+	 * 		if different than the count of measure identifiers
+	 * @param measureIds measures specified for given node
+	 * @return The checker, for chaining method calls
+	 */
 	Checker hasMeasures(LocalizedError code, int numberOfMeasuresRequired, String... measureIds) {
 		if (!shouldShortcut()) {
 

@@ -52,6 +52,9 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 		}
 	}
 
+	/**
+	 * Initializes the vaidators for various sub-populations.
+	 */
 	@Override
 	List<Consumer<Node>> prepValidations(SubPopulation subPopulation) {
 		return Arrays.asList(

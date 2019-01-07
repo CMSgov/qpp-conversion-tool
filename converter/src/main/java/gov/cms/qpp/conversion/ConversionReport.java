@@ -149,10 +149,19 @@ public class ConversionReport {
 		}
 	}
 
+	/**
+	 * Get the warnings collection
+	 * @return List of warnings details
+	 */
 	public List<Detail> getWarnings() {
 		return warnings;
 	}
 
+	/**
+	 * Assign a new list of warnings.
+	 * 
+	 * @param warnings new list of warnings details
+	 */
 	public void setWarnings(List<Detail> warnings) {
 		this.warnings = warnings;
 	}
