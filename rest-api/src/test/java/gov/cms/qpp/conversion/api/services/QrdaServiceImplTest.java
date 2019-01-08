@@ -1,11 +1,13 @@
 package gov.cms.qpp.conversion.api.services;
 
-import gov.cms.qpp.conversion.ConversionReport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Spy;
 
+import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
 import gov.cms.qpp.conversion.Source;
@@ -16,6 +18,11 @@ import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.test.MockitoExtension;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -32,15 +39,25 @@ class QrdaServiceImplTest {
 	private static final String KEY = "key";
 	private static final String MOCK_SUCCESS_QPP_STRING = "Good Qpp";
 	private static final String MOCK_ERROR_SOURCE_IDENTIFIER = "Error Identifier";
+	private static final Path VALIDATION_JSON_FILE_PATH = Paths.get("src/test/resources/testCpcPlusValidationFile.json");
+	private InputStream MOCK_INPUT_STREAM;
 
 	@Spy
+	@InjectMocks
 	private QrdaServiceImpl objectUnderTest;
 
+	@Mock
+	private StorageService storageService;
+
 	@BeforeEach
-	void mockConverter() {
+	void mockConverter() throws IOException {
+		MOCK_INPUT_STREAM = Files.newInputStream(VALIDATION_JSON_FILE_PATH);
 		Converter success = successConverter();
 		when(objectUnderTest.initConverter(MOCK_SUCCESS_QRDA_SOURCE))
 				.thenReturn(success);
+
+		when(objectUnderTest.getCpcPlusValidationFile())
+				.thenReturn(MOCK_INPUT_STREAM);
 
 		Converter error = errorConverter();
 		when(objectUnderTest.initConverter(MOCK_ERROR_QRDA_SOURCE))
