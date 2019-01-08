@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.InputStream;
 
 /**
  * Implementation of the QRDA-III to QPP conversion service
@@ -16,6 +17,11 @@ import javax.annotation.PostConstruct;
 @Service
 public class QrdaServiceImpl implements QrdaService {
 	private static final Logger API_LOG = LoggerFactory.getLogger(QrdaServiceImpl.class);
+	private StorageService storageService;
+
+	QrdaServiceImpl(StorageService storageService) {
+		this.storageService = storageService;
+	}
 
 	/**
 	 * Preloads the measure configs data
@@ -37,6 +43,15 @@ public class QrdaServiceImpl implements QrdaService {
 		API_LOG.info("Performing QRDA3 to QPP conversion");
 		converter.transform();
 		return converter.getReport();
+	}
+
+	/**
+	 * Retrieve the CPC+ validation file for the QPP service
+	 *
+	 * @return cpc+ validation file.
+	 */
+	public InputStream getCpcPlusValidationFile() {
+		return storageService.getCpcPlusValidationFile();
 	}
 
 	/**

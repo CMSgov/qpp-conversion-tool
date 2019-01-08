@@ -3,6 +3,8 @@ package gov.cms.qpp.conversion.api.services;
 import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.Source;
 
+import java.io.InputStream;
+
 /**
  * Interface of the QRDA-III to QPP Conversion Service
  */
@@ -15,4 +17,6 @@ public interface QrdaService {
 	 * @return Results of the conversion
 	 */
 	ConversionReport convertQrda3ToQpp(Source source);
+
+	InputStream getCpcPlusValidationFile();
 }

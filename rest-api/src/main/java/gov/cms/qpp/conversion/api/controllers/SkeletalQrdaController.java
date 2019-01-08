@@ -24,9 +24,13 @@ import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
 import gov.cms.qpp.conversion.api.exceptions.AuditException;
 import gov.cms.qpp.conversion.api.exceptions.InvalidPurposeException;
+import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.model.CpcValidationInfo;
+import gov.cms.qpp.conversion.api.model.CpcValidationInfoMap;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.api.services.QrdaService;
+import gov.cms.qpp.conversion.api.services.StorageService;
 import gov.cms.qpp.conversion.api.services.ValidationService;
 
 /**
@@ -78,6 +82,15 @@ public abstract class SkeletalQrdaController<T> {
 		} else {
 			purpose = null; // if it's an empty string, make it null
 			API_LOG.info("Conversion request received");
+		}
+
+		if (!(StringUtils.isEmpty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE)
+			&& StringUtils.isEmpty(Constants.CPC_PLUS_FILENAME_VARIABLE))) {
+			API_LOG.info("Including APM to NPI validation");
+			// To be wired into the conversion tool below:
+			CpcValidationInfoMap apmToNpiValidationMap = new CpcValidationInfoMap(qrdaService.getCpcPlusValidationFile());
+		} else {
+			API_LOG.info("Excluding APM to NPI validation");
 		}
 
 		ConversionReport conversionReport = qrdaService.convertQrda3ToQpp(

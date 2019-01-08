@@ -103,6 +103,26 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 	}
 
 	/**
+	 * Retrieve the CPC+ API to NPI Validation file from S3
+	 *
+	 * @return file used for cpc+ validation.
+	 */
+	public InputStream getCpcPlusValidationFile() {
+		String bucketName = environment.getProperty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE);
+		String key = environment.getProperty(Constants.CPC_PLUS_FILENAME_VARIABLE);
+		if (StringUtils.isEmpty(bucketName) || StringUtils.isEmpty(key)) {
+			API_LOG.warn("No CPC+ bucket name and/or CPC+ key specified");
+			return null;
+		}
+		API_LOG.info("Retrieving CPC+ validation file from bucket {}", bucketName);
+
+		GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, key);
+		S3Object s3Object = amazonS3.getObject(getObjectRequest);
+
+		return s3Object.getObjectContent();
+	}
+
+	/**
 	 * Uses the {@link TransferManager} to upload a file.
 	 *
 	 * @param objectToActOn The put request.
