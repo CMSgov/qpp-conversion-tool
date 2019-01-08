@@ -85,7 +85,7 @@ public abstract class SkeletalQrdaController<T> {
 		}
 		// To be wired into the conversion tool below
 		CpcValidationInfoMap apmToNpiValidationMap = new CpcValidationInfoMap(qrdaService.getCpcPlusValidationFile());
-		if (apmToNpiValidationMap != null) {
+		if (apmToNpiValidationMap.getNpiToApmMap() != null) {
 			API_LOG.info("Including APM to NPI validation");
 		} else {
 			API_LOG.info("Excluding APM to NPI validation");
