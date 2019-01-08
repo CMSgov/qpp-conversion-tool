@@ -83,12 +83,10 @@ public abstract class SkeletalQrdaController<T> {
 			purpose = null; // if it's an empty string, make it null
 			API_LOG.info("Conversion request received");
 		}
-
-		if (!(StringUtils.isEmpty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE)
-			&& StringUtils.isEmpty(Constants.CPC_PLUS_FILENAME_VARIABLE))) {
+		// To be wired into the conversion tool below
+		CpcValidationInfoMap apmToNpiValidationMap = new CpcValidationInfoMap(qrdaService.getCpcPlusValidationFile());
+		if (apmToNpiValidationMap != null) {
 			API_LOG.info("Including APM to NPI validation");
-			// To be wired into the conversion tool below:
-			CpcValidationInfoMap apmToNpiValidationMap = new CpcValidationInfoMap(qrdaService.getCpcPlusValidationFile());
 		} else {
 			API_LOG.info("Excluding APM to NPI validation");
 		}

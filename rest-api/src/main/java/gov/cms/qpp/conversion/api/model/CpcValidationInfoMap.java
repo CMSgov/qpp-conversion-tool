@@ -22,6 +22,8 @@ public class CpcValidationInfoMap {
 	}
 
 	private Map convertJsonToMap(InputStream cpcNpiToApmJson) {
+		if (cpcNpiToApmJson == null)
+			return null;
 		List<CpcValidationInfo> cpcValidationInfoList = new ArrayList<>();
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
