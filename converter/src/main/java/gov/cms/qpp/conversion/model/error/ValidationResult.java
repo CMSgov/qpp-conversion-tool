@@ -17,13 +17,7 @@ import java.util.List;
  */
 public class ValidationResult {
 
-	/**
-	 * The collection of all error details for the Nodes visited.
-	 */
 	private final List<Detail> errors;
-	/**
-	 * The collection of all warnings details for the Nodes visited.
-	 */
 	private final List<Detail> warnings;
 
 	/**

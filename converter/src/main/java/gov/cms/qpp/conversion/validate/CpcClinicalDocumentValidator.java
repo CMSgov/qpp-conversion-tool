@@ -42,10 +42,8 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	 */
 	static final String CPC_PLUS_CONTACT_EMAIL = "CPC_PLUS_CONTACT_EMAIL";
 	
-	/**
-	 * LocalDate.now() creates extra unneeded clock objects before Java 9.
-	 * It also uses the system clock, rather than Eastern Time.
-	 */
+	 //LocalDate.now() creates extra unneeded clock objects before Java 9.
+	 //It also uses the system clock, rather than Eastern Time.
 	private static final Clock CLOCK = Clock.system(ZoneId.of("US/Eastern"));
 
 	/**
