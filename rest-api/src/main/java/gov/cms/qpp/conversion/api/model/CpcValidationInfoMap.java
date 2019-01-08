@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +29,8 @@ public class CpcValidationInfoMap {
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
 			cpcValidationInfoList =
-				Arrays.asList(objectMapper.readValue(new InputStreamReader(cpcNpiToApmJson), CpcValidationInfo[].class));
+				Arrays.asList(objectMapper.readValue(new InputStreamReader(cpcNpiToApmJson, StandardCharsets.UTF_8),
+					CpcValidationInfo[].class));
 		} catch (IOException exc) {
 			DEV_LOG.info("Failed to parse the cpc+ validation npi to apm list...");
 		}
