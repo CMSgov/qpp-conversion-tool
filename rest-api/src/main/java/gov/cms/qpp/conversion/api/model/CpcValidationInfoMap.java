@@ -18,7 +18,7 @@ public class CpcValidationInfoMap {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(CpcValidationInfoMap.class);
 	private Map npiToApmMap;
 
-	public CpcValidationInfoMap(InputStream cpcNpiToApmJson){
+	public CpcValidationInfoMap(InputStream cpcNpiToApmJson) {
 		npiToApmMap = convertJsonToMap(cpcNpiToApmJson);
 	}
 
@@ -26,7 +26,6 @@ public class CpcValidationInfoMap {
 		List<CpcValidationInfo> cpcValidationInfoList = new ArrayList<>();
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
-			objectMapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);
 			cpcValidationInfoList =
 				Arrays.asList(objectMapper.readValue(new InputStreamReader(cpcNpiToApmJson), CpcValidationInfo[].class));
 		} catch (IOException exc) {
