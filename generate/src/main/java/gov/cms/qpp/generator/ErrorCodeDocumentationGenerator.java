@@ -24,7 +24,8 @@ public class ErrorCodeDocumentationGenerator extends AbstractMojo {
 		MustacheFactory mf = new DefaultMustacheFactory();
 		Mustache mdTemplate = mf.compile("error-code/error-code-tempate.md");
 
-		try (FileWriter fw = new FileWriter(args[0] + "ERROR_MESSAGES.md")) {
+		String offsetPath = args[0];
+		try (FileWriter fw = new FileWriter(offsetPath + "ERROR_MESSAGES.md")) {
 			List<ErrorCode> errorCodes = Arrays.asList(ErrorCode.values());
 			mdTemplate.execute(fw, errorCodes).flush();
 			fw.flush();
@@ -33,35 +34,41 @@ public class ErrorCodeDocumentationGenerator extends AbstractMojo {
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
-		String parentDir = "";
+		String offsetPath = determinOffsetPath();
 		
 		try {
 			getLog().info("Running Error Code documentation plugin");
+			getLog().info("Parent project work directory offset " + offsetPath);
 			
-			@SuppressWarnings("rawtypes")
-			Map context = getPluginContext();
-			MavenProject project = (MavenProject) context.get("project");
-			MavenProject parent = project.getParent();
-			
-			if (parent != null) {
-				String parentPath = parent.getBasedir().getAbsolutePath();
-				String workingDir = new File(".").getAbsolutePath();
-				workingDir = workingDir.substring(0, workingDir.length() - 2);
-				
-				if (parentPath.equals(workingDir)) {
-					// when the working dir is the parent project dir, use the working dir
-					parentDir = "./";
-				} else {
-					// when the working dir is the subproject dir, use the parent dir
-					// this ensure the error messages file is written to the parent project dir
-					parentDir = "../"; 
-				}
-			}
-			getLog().info("Parent project work directory offset " + parentDir);
-			
-			ErrorCodeDocumentationGenerator.main(parentDir.toString());
+			ErrorCodeDocumentationGenerator.main(offsetPath.toString());
 		} catch (IOException e) {
 			throw new MojoExecutionException("Error code documentation problems", e);
 		}
+	}
+
+	private String determinOffsetPath() {
+		// raw types used in legacy maven plugin API
+		@SuppressWarnings("rawtypes")
+		Map context = getPluginContext();
+		
+		MavenProject project = (MavenProject) context.get("project");
+		MavenProject parent = project.getParent();
+		String offsetPath = "";
+		
+		if (parent != null) {
+			String parentPath = parent.getBasedir().getAbsolutePath();
+			String workingDir = new File(".").getAbsolutePath();
+			workingDir = workingDir.substring(0, workingDir.length() - 2);
+			
+			if (parentPath.equals(workingDir)) {
+				// when the working dir is the parent project dir, use the working dir
+				offsetPath = "./";
+			} else {
+				// when the working dir is the subproject dir, use the parent dir
+				// this ensure the error messages file is written to the parent project dir
+				offsetPath = "../"; 
+			}
+		}
+		return offsetPath;
 	}
 }
