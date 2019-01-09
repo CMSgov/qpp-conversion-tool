@@ -8,7 +8,6 @@ import gov.cms.qpp.conversion.api.controllers.SkeletalQrdaController;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.api.services.QrdaService;
-import gov.cms.qpp.conversion.api.services.StorageService;
 import gov.cms.qpp.conversion.api.services.ValidationService;
 
 /**
@@ -18,7 +17,7 @@ import gov.cms.qpp.conversion.api.services.ValidationService;
 @RequestMapping(path = "/", headers = {"Accept=" + Constants.V1_API_ACCEPT})
 public class QrdaControllerV1 extends SkeletalQrdaController<String> {
 
-	public QrdaControllerV1(QrdaService qrdaService, ValidationService validationService, AuditService auditService, StorageService storageService) {
+	public QrdaControllerV1(QrdaService qrdaService, ValidationService validationService, AuditService auditService) {
 		super(qrdaService, validationService, auditService);
 	}
 
