@@ -58,7 +58,7 @@ public class QrdaValidatorTest {
 		testRootNode.putValue(testKey, testValue);
 
 		//execute
-		List<Detail> details = objectUnderTest.validate(testRootNode);
+		List<Detail> details = objectUnderTest.validate(testRootNode).getErrors();
 
 		//assert
 		assertNodeList(nodesPassedIntoValidateSingleNode, 1, TEST_REQUIRED_TEMPLATE_ID, testKey, testValue);
@@ -82,7 +82,7 @@ public class QrdaValidatorTest {
 		testRootNode.addChildNode(testChildNode2);
 
 		//execute
-		List<Detail> details = objectUnderTest.validate(testRootNode);
+		List<Detail> details = objectUnderTest.validate(testRootNode).getErrors();
 
 		//assert
 		assertNodeList(nodesPassedIntoValidateSingleNode, 2, TEST_REQUIRED_TEMPLATE_ID, testKey, testValue);
@@ -97,7 +97,7 @@ public class QrdaValidatorTest {
 		Node testRootNode = new Node();
 
 		//execute
-		List<Detail> details = objectUnderTest.validate(testRootNode);
+		List<Detail> details = objectUnderTest.validate(testRootNode).getErrors();
 
 		//assert
 		assertNodeList(nodesPassedIntoValidateSingleNode, 0, null, null, null);
@@ -116,7 +116,7 @@ public class QrdaValidatorTest {
 		testRootNode.putValue(testKey, testValue);
 
 		//execute
-		List<Detail> details = objectUnderTest.validate(testRootNode);
+		List<Detail> details = objectUnderTest.validate(testRootNode).getErrors();
 
 		//assert
 		assertNodeList(nodesPassedIntoValidateSingleNode, 0, null, null, null);
@@ -151,18 +151,18 @@ public class QrdaValidatorTest {
 	public static class RequiredTestValidator extends NodeValidator {
 
 		@Override
-		public void internalValidateSingleNode(final Node node) {
+		public void performValidation(final Node node) {
 			nodesPassedIntoValidateSingleNode.add(node);
-			addValidationError(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE);
+			addError(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE);
 		}
 	}
 
 	public static class OptionalTestValidator extends NodeValidator {
 
 		@Override
-		public void internalValidateSingleNode(final Node node) {
+		public void performValidation(final Node node) {
 			nodesPassedIntoValidateSingleNode.add(node);
-			addValidationError(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE);
+			addError(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE);
 		}
 	}
 }

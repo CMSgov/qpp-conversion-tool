@@ -6,6 +6,7 @@ import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ValidationResult;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +23,16 @@ import java.util.stream.Stream;
 public class QrdaValidator {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QrdaValidator.class);
 
-	private final List<Detail> details = new ArrayList<>();
+	private final List<Detail> errors = new ArrayList<>();
+	private final List<Detail> warnings = new ArrayList<>();
 	private final Set<TemplateId> scope;
 	private final Registry<NodeValidator> validators;
 
+	/**
+	 * Constructs and instance from the Context which contains all
+	 * necessary properties for validation.
+	 * @param context
+	 */
 	public QrdaValidator(Context context) {
 		this.validators = context.getRegistry(Validator.class);
 		this.scope = context.hasScope() ? QrdaScope.getTemplates(context.getScope()) : null;
@@ -37,13 +44,13 @@ public class QrdaValidator {
 	 * @param rootNode The root node that all other nodes descend from.
 	 * @return The list of validation errors for the entire tree of nodes.
 	 */
-	public List<Detail> validate(Node rootNode) {
+	public ValidationResult validate(Node rootNode) {
 		DEV_LOG.info("Validating all nodes in the tree");
 
 		//validate each node while traversing the tree
 		validateTree(rootNode);
 
-		return details;
+		return new ValidationResult(errors, warnings);
 	}
 
 	/**
@@ -66,8 +73,9 @@ public class QrdaValidator {
 		getValidators(node.getType())
 			.filter(this::isValidationRequired)
 			.forEach(validatorForNode -> {
-				Set<Detail> nodeErrors = validatorForNode.validateSingleNode(node);
-				details.addAll(nodeErrors);
+				ValidationResult problems = validatorForNode.validateSingleNode(node);
+				errors.addAll(problems.getErrors());
+				warnings.addAll(problems.getWarnings());
 			});
 	}
 

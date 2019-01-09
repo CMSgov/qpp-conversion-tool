@@ -6,16 +6,31 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 
+/**
+ * Validates REPORTING_PARAMETERS_ACT nodes.
+ * (Annotation registered)
+ */
 @Validator(TemplateId.REPORTING_PARAMETERS_ACT)
 public class ReportingParametersActValidator extends NodeValidator {
 
+	/**
+	 * Validates a single Reporting Parameters Template {@link Node}.
+	 *
+	 * Validates the following.
+	 * <ul>
+	 *    <li>both start and end exist as dates</li>
+	 *    <li>and that performance year is present</li>
+	 * </ul>
+	 *
+	 * @param node Node that represents Reporting Parameters.
+	 */
 	@Override
-	protected void internalValidateSingleNode(Node node) {
+	protected void performValidation(Node node) {
 		String performanceStart = node.getValueOrDefault(ReportingParametersActDecoder.PERFORMANCE_START, "");
 
 		String performanceEnd = node.getValueOrDefault(ReportingParametersActDecoder.PERFORMANCE_END,"");
 
-		check(node)
+		checkErrors(node)
 				.singleValue(ErrorCode.REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START,
 						ReportingParametersActDecoder.PERFORMANCE_START)
 				.singleValue(ErrorCode.REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_END,

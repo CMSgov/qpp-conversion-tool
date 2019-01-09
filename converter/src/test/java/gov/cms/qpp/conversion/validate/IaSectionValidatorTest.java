@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.validate;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-import java.util.Set;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ class IaSectionValidatorTest {
 	void testCorrectIaSectionPassesValidation() {
 		iaSectionNode.addChildNodes(iaMeasureNode, reportingParamActNode);
 
-		Set<Detail> errors = validatorIaSection();
+		List<Detail> errors = validatorIaSection();
 
 		assertWithMessage("Must contain no errors")
 				.that(errors).isEmpty();
@@ -40,7 +40,7 @@ class IaSectionValidatorTest {
 	void testValidatesMissingIAMeasure() {
 		iaSectionNode.addChildNodes(reportingParamActNode);
 		
-		Set<Detail> errors = validatorIaSection();
+		List<Detail> errors = validatorIaSection();
 
 		assertWithMessage("Must be missing the correct child")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -52,7 +52,7 @@ class IaSectionValidatorTest {
 		Node incorrectAggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		iaSectionNode.addChildNodes(iaMeasureNode, reportingParamActNode, incorrectAggregateCountNode);
 
-		Set<Detail> errors = validatorIaSection();
+		List<Detail> errors = validatorIaSection();
 
 		assertWithMessage("Must contain correct children")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -63,7 +63,7 @@ class IaSectionValidatorTest {
 	void testMissingReportingParameter() {
 		iaSectionNode.addChildNodes(iaMeasureNode);
 
-		Set<Detail> errors = validatorIaSection();
+		List<Detail> errors = validatorIaSection();
 
 		assertWithMessage("Must contain correct children")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -75,17 +75,16 @@ class IaSectionValidatorTest {
 		Node invalidParamActNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		iaSectionNode.addChildNodes(iaMeasureNode, reportingParamActNode, invalidParamActNode);
 
-		Set<Detail> errors = validatorIaSection();
+		List<Detail> errors = validatorIaSection();
 
 		assertWithMessage("Must contain correct children")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM);
 	}
 
-	private Set<Detail> validatorIaSection() {
+	private List<Detail> validatorIaSection() {
 		IaSectionValidator iaValidator = new IaSectionValidator();
 
-		iaValidator.internalValidateSingleNode(iaSectionNode);
-		return iaValidator.getDetails();
+		return iaValidator.validateSingleNode(iaSectionNode).getErrors();
 	}
 }

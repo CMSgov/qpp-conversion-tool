@@ -1,5 +1,15 @@
 package gov.cms.qpp.conversion.validate;
 
+import static com.google.common.truth.Truth.assertThat;
+
+import java.util.List;
+import java.util.function.Consumer;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.QrdaDecoderEngine;
@@ -12,15 +22,6 @@ import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.model.validation.SupplementalData;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
-
-import java.util.Set;
-import java.util.function.Consumer;
-
-import static com.google.common.truth.Truth.assertThat;
 
 class CpcMeasureDataValidatorTest {
 
@@ -33,9 +34,7 @@ class CpcMeasureDataValidatorTest {
 		Node placeholder = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(successfulFile));
 		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
-		validator.internalValidateSingleNode(underTest);
-
-		Set<Detail> errors = validator.getDetails();
+		List<Detail> errors = validator.validateSingleNode(underTest).getErrors();
 		assertThat(errors).isEmpty();
 	}
 
@@ -45,12 +44,10 @@ class CpcMeasureDataValidatorTest {
 		Node placeholder = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(failurePayerFile));
 		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
-		validator.internalValidateSingleNode(underTest);
+		List<Detail> errors = validator.validateSingleNode(underTest).getErrors();
 
 		LocalizedError expectedError = ErrorCode.CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT.format(
 			SupplementalData.MALE.getCode(), SubPopulationLabel.IPOP.name(), MEASURE_ID);
-
-		Set<Detail> errors = validator.getDetails();
 
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 			.contains(expectedError);
@@ -104,13 +101,11 @@ class CpcMeasureDataValidatorTest {
 				Node placeholder = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(failureFile));
 				CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
 				Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
-				validator.internalValidateSingleNode(underTest);
+				List<Detail> errors = validator.validateSingleNode(underTest).getErrors();
 
 				LocalizedError expectedError = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE
 					.format(supplementalData.getType(), supplementalData, supplementalData.getCode(),
 						MEASURE_ID, SubPopulationLabel.IPOP.name());
-
-				Set<Detail> errors = validator.getDetails();
 
 				assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 					.contains(expectedError);

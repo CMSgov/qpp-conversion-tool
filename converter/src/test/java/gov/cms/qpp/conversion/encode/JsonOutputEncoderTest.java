@@ -27,14 +27,14 @@ class JsonOutputEncoderTest {
 
 	@Test
 	void testAddValidationAndGetValidations() {
-		assertThat(joe.getDetails()).isEmpty();
+		assertThat(joe.getErrors()).isEmpty();
 		Detail detail1 = new Detail();
 		detail1.setMessage("error");
 		Detail detail2 = new Detail();
 		detail2.setMessage("another");
 		joe.addValidationError(detail1);
 		joe.addValidationError(detail2);
-		List<Detail> validations = joe.getDetails();
+		List<Detail> validations = joe.getErrors();
 		assertThat(validations).hasSize(2);
 		assertThat(validations.get(0).getMessage()).isEqualTo("error");
 		assertThat(validations.get(1).getMessage()).isEqualTo("another");
@@ -42,14 +42,14 @@ class JsonOutputEncoderTest {
 
 	@Test
 	void testAddValidationAndGetValidationById() {
-		List<Detail> validations = joe.getDetails();
+		List<Detail> validations = joe.getErrors();
 		assertThat(validations).hasSize(0);
 
 		Detail detail = new Detail();
 		detail.setMessage("err");
 		joe.addValidationError(detail);
 
-		validations = joe.getDetails();
+		validations = joe.getErrors();
 		assertThat(validations).isNotNull();
 		assertThat(validations).hasSize(1);
 		assertThat(validations.get(0).getMessage()).isEqualTo("err");
@@ -59,7 +59,7 @@ class JsonOutputEncoderTest {
 	void testAddValidationByEncodeException() {
 		joe.encode((JsonWrapper) null, (Node) null); // the values are not used in the test
 
-		List<Detail> details = joe.getDetails();
+		List<Detail> details = joe.getErrors();
 		assertThat(details)
 				.hasSize(1);
 	}

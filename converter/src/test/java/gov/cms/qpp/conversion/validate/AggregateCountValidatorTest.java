@@ -1,5 +1,11 @@
 package gov.cms.qpp.conversion.validate;
 
+import static com.google.common.truth.Truth.assertWithMessage;
+
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -7,11 +13,6 @@ import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
-import org.junit.jupiter.api.Test;
-
-import java.util.Set;
-
-import static com.google.common.truth.Truth.assertWithMessage;
 
 
 class AggregateCountValidatorTest {
@@ -32,8 +33,7 @@ class AggregateCountValidatorTest {
 		aggregateCountNode.setParent(new Node(TemplateId.PI_NUMERATOR));
 
 		AggregateCountValidator validator = new AggregateCountValidator();
-		validator.internalValidateSingleNode( aggregateCountNode );
-		Set<Detail> errors = validator.getDetails();
+		List<Detail> errors = validator.validateSingleNode(aggregateCountNode).getErrors();
 
 		assertWithMessage("Should result in a value error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -47,8 +47,7 @@ class AggregateCountValidatorTest {
 		aggregateCountNode.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "meep");
 
 		AggregateCountValidator validator = new AggregateCountValidator();
-		validator.internalValidateSingleNode(aggregateCountNode);
-		Set<Detail> errors = validator.getDetails();
+		List<Detail> errors = validator.validateSingleNode(aggregateCountNode).getErrors();
 
 		assertWithMessage("Should result in a type error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -62,8 +61,7 @@ class AggregateCountValidatorTest {
 		aggregateCountNode.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "7");
 
 		AggregateCountValidator validator = new AggregateCountValidator();
-		validator.internalValidateSingleNode(aggregateCountNode);
-		Set<Detail> errors = validator.getDetails();
+		List<Detail> errors = validator.validateSingleNode(aggregateCountNode).getErrors();
 
 		assertWithMessage("there are no errors")
 				.that(errors).isEmpty();

@@ -18,8 +18,8 @@ public class QualityMeasureSectionValidator extends NodeValidator {
 	 * @param node The node to validate.
 	 */
 	@Override
-	protected void internalValidateSingleNode(Node node) {
-		check(node)
+	protected void performValidation(Node node) {
+		checkErrors(node)
 			.childExact(ErrorCode.QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT, 1,
 				TemplateId.REPORTING_PARAMETERS_ACT)
 		    .oneChildPolicy(ErrorCode.MEASURES_RNR_WITH_DUPLICATED_MEASURE_GUID, TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2,

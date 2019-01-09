@@ -24,8 +24,8 @@ public class AggregateCountValidator extends NodeValidator {
 	 * @param node Node that represents a Aggregate Count.
 	 */
 	@Override
-	protected void internalValidateSingleNode(Node node) {
-		check(node)
+	protected void performValidation(Node node) {
+		checkErrors(node)
 			.singleValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR
 				.format(node.getParent().getType().name(),
 					DuplicationCheckHelper.calculateDuplications(node, AggregateCountDecoder.AGGREGATE_COUNT)),

@@ -1,21 +1,21 @@
 package gov.cms.qpp.conversion.validate;
 
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
+import static gov.cms.qpp.conversion.model.TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2;
+
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.MarkupManipulationHandler;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.util.List;
-import java.util.Set;
-
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
-import static gov.cms.qpp.conversion.model.TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2;
 
 class QualityMeasureSectionValidatorTest {
 
@@ -39,7 +39,7 @@ class QualityMeasureSectionValidatorTest {
 	void validQualityMeasureSectionValidation() {
 		qualityMeasureSectionNode.addChildNode(reportingParameterNode);
 
-		Set<Detail> errors = validateQualityMeasureSection();
+		List<Detail> errors = validateQualityMeasureSection();
 
 		assertWithMessage("Must not contain errors")
 				.that(errors).isEmpty();
@@ -47,7 +47,7 @@ class QualityMeasureSectionValidatorTest {
 
 	@Test
 	void testMissingReportingParams() {
-		Set<Detail> errors = validateQualityMeasureSection();
+		List<Detail> errors = validateQualityMeasureSection();
 
 		assertWithMessage("Must contain correct error")
 				.that(errors)
@@ -60,7 +60,7 @@ class QualityMeasureSectionValidatorTest {
 		Node secondReportingParameterNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		qualityMeasureSectionNode.addChildNodes(reportingParameterNode, secondReportingParameterNode);
 
-		Set<Detail> errors = validateQualityMeasureSection();
+		List<Detail> errors = validateQualityMeasureSection();
 
 		assertWithMessage("Must contain correct error")
 				.that(errors)
@@ -86,9 +86,8 @@ class QualityMeasureSectionValidatorTest {
 				.contains(ErrorCode.MEASURES_RNR_WITH_DUPLICATED_MEASURE_GUID);
 	}
 
-	private Set<Detail> validateQualityMeasureSection() {
+	private List<Detail> validateQualityMeasureSection() {
 		QualityMeasureSectionValidator validator = new QualityMeasureSectionValidator();
-		validator.internalValidateSingleNode(qualityMeasureSectionNode);
-		return validator.getDetails();
+		return validator.validateSingleNode(qualityMeasureSectionNode).getErrors();
 	}
 }
