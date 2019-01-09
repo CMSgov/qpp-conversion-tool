@@ -6,15 +6,14 @@ import static gov.cms.qpp.conversion.validate.MeasureDataValidator.EMPTY_POPULAT
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Set;
 
-import gov.cms.qpp.conversion.decode.QrdaDecoderEngine;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
+import gov.cms.qpp.conversion.decode.QrdaDecoderEngine;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.AllErrors;
@@ -35,9 +34,7 @@ class MeasureDataValidatorTest {
 		Node placeholder = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(happy));
 		MeasureDataValidator validator = new MeasureDataValidator();
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
-		validator.internalValidateSingleNode(underTest);
-
-		Set<Detail> errors = validator.getDetails();
+		List<Detail> errors = validator.validateSingleNode(underTest).getErrors();
 		assertWithMessage("Expect no errors on the happy path")
 				.that(errors).isEmpty();
 	}
@@ -46,9 +43,7 @@ class MeasureDataValidatorTest {
 	void missingAggregateCount() {
 		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		MeasureDataValidator validator = new MeasureDataValidator();
-		validator.internalValidateSingleNode(testNode);
-
-		Set<Detail> errors = validator.getDetails();
+		List<Detail> errors = validator.validateSingleNode(testNode).getErrors();
 		assertWithMessage("missing error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ErrorCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(EMPTY_POPULATION_ID));
@@ -61,9 +56,7 @@ class MeasureDataValidatorTest {
 		testNode.addChildNode(aggregateCount);
 		aggregateCount.putValue("aggregateCount", "error");
 		MeasureDataValidator validator = new MeasureDataValidator();
-		validator.internalValidateSingleNode(testNode);
-
-		Set<Detail> errors = validator.getDetails();
+		List<Detail> errors = validator.validateSingleNode(testNode).getErrors();
 		assertWithMessage("Should result in a type error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER);
@@ -77,9 +70,7 @@ class MeasureDataValidatorTest {
 		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		testNode.addChildNodes(aggregateCount);
 		MeasureDataValidator validator = new MeasureDataValidator();
-		validator.internalValidateSingleNode(testNode);
-
-		Set<Detail> errors = validator.getDetails();
+		List<Detail> errors = validator.validateSingleNode(testNode).getErrors();
 		assertWithMessage("missing error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(TemplateId.MEASURE_DATA_CMS_V2.name(), 2));
@@ -92,9 +83,7 @@ class MeasureDataValidatorTest {
 		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		testNode.addChildNodes(aggregateCount);
 		MeasureDataValidator validator = new MeasureDataValidator();
-		validator.internalValidateSingleNode(testNode);
-
-		Set<Detail> errors = validator.getDetails();
+		List<Detail> errors = validator.validateSingleNode(testNode).getErrors();
 		assertWithMessage("missing error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ErrorCode.MEASURE_DATA_VALUE_NOT_INTEGER.format(EMPTY_POPULATION_ID));
