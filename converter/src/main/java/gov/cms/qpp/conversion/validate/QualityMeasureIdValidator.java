@@ -145,6 +145,15 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	}
 
 
+	/**
+	 * Each concrete implementations have the flexibility to  define the preparations
+	 * they need for the specific validations they perform.
+	 * 
+	 * Called by validateSubPopulations
+	 *  
+	 * @param subPopulation
+	 * @return
+	 */
 	abstract List<Consumer<Node>> prepValidations(SubPopulation subPopulation);
 
 	/**

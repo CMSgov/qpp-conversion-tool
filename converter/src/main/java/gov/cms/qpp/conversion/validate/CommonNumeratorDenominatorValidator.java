@@ -12,6 +12,9 @@ import gov.cms.qpp.conversion.model.error.LocalizedError;
  */
 public class CommonNumeratorDenominatorValidator extends NodeValidator {
 
+	/**
+	 * The node type name as in "Numerator" or "Denominator"
+	 */
 	protected String nodeName;
 
 	/**

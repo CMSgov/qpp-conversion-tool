@@ -56,14 +56,29 @@ public abstract class NodeValidator {
 		errors.add(error);
 	}
 
+	/**
+	 * Used to determine if a error detail has been added.
+	 * @param detail the error to check exists
+	 * @return True if detail is contained in the errors collection
+	 */
 	public boolean containsError(Detail detail) {
 		return errors.contains(detail);
 	}
 
+	/**
+	 * Returns a checker for implementations of performValidation(Node)
+	 * @param node the node for the checker to visit
+	 * @return an instance of Checker for the node and the continuing collection of errors.
+	 */
 	protected final Checker checkErrors(Node node) {
 		return Checker.check(node, errors);
 	}
 
+	/**
+	 * Identical use as checkErrors except that the Checker instance is in force mode.
+	 * @param node the node for the checker to visit
+	 * @return an instance of Checker for the node and the continuing collection of errors.
+	 */
 	protected final Checker forceCheckErrors(Node node) {
 		return Checker.forceCheck(node, errors);
 	}
