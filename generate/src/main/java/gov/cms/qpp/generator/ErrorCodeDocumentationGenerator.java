@@ -46,7 +46,7 @@ public class ErrorCodeDocumentationGenerator extends AbstractMojo {
 		}
 	}
 
-	private String determinOffsetPath() {
+	protected String determinOffsetPath() {
 		// raw types used in legacy maven plugin API
 		@SuppressWarnings("rawtypes")
 		Map context = getPluginContext();
@@ -57,8 +57,7 @@ public class ErrorCodeDocumentationGenerator extends AbstractMojo {
 		
 		if (parent != null) {
 			String parentPath = parent.getBasedir().getAbsolutePath();
-			String workingDir = new File(".").getAbsolutePath();
-			workingDir = workingDir.substring(0, workingDir.length() - 2);
+			String workingDir = System.getProperty("user.dir");
 			
 			if (parentPath.equals(workingDir)) {
 				// when the working dir is the parent project dir, use the working dir
