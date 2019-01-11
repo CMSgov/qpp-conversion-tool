@@ -27,4 +27,11 @@ public interface StorageService {
 	 * @return file to be returned
 	 */
 	InputStream getFileByLocationId(String fileId);
+
+	/**
+	 * Retrieve the CPC+ API to NPI Validation file from S3
+	 *
+	 * @return file used for cpc+ validation.
+	 */
+	InputStream getCpcPlusValidationFile();
 }

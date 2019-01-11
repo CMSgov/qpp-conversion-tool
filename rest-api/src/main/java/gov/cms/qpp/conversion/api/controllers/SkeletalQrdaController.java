@@ -1,11 +1,5 @@
 package gov.cms.qpp.conversion.api.controllers;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -24,10 +18,17 @@ import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
 import gov.cms.qpp.conversion.api.exceptions.AuditException;
 import gov.cms.qpp.conversion.api.exceptions.InvalidPurposeException;
+import gov.cms.qpp.conversion.api.model.CpcValidationInfoMap;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.api.services.ValidationService;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Controller to handle uploading files for QRDA-III Conversion
@@ -78,6 +79,13 @@ public abstract class SkeletalQrdaController<T> {
 		} else {
 			purpose = null; // if it's an empty string, make it null
 			API_LOG.info("Conversion request received");
+		}
+		// To be wired into the conversion tool below
+		CpcValidationInfoMap apmToNpiValidationMap = new CpcValidationInfoMap(qrdaService.retrieveS3CpcPlusValidationFile());
+		if (apmToNpiValidationMap.getNpiToApmMap() != null) {
+			API_LOG.info("Including APM to NPI validation");
+		} else {
+			API_LOG.info("Excluding APM to NPI validation");
 		}
 
 		ConversionReport conversionReport = qrdaService.convertQrda3ToQpp(
