@@ -38,13 +38,13 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	 * @param node The node to validate.
 	 */
 	@Override
-	protected void internalValidateSingleNode(Node node) {
-		super.internalValidateSingleNode(node);
+	protected void performValidation(Node node) {
+		super.performValidation(node);
 		MeasureConfig measureConfig = MeasureConfigHelper.getMeasureConfig(node);
 		if (measureConfig != null && measureConfig.getStrata() != null) {
 			int requiredPerformanceRateCount = measureConfig.getStrata().size();
 
-			thoroughlyCheck(node)
+			forceCheckErrors(node)
 					.childExact(
 						ErrorCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
 							.format(requiredPerformanceRateCount, MeasureConfigHelper.getPrioritizedId(node)),
@@ -52,6 +52,9 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 		}
 	}
 
+	/**
+	 * Initializes the vaidators for various sub-populations.
+	 */
 	@Override
 	List<Consumer<Node>> prepValidations(SubPopulation subPopulation) {
 		return Arrays.asList(
@@ -108,7 +111,7 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 					node.getValue(MeasureDataDecoder.MEASURE_TYPE),
 					node.getValue(MEASURE_POPULATION),
 					sub.getStrata());
-			addValidationError(Detail.forErrorAndNode(error, node));
+			addError(Detail.forErrorAndNode(error, node));
 		}
 
 		sub.getStrata().forEach(stratum -> {
@@ -119,7 +122,7 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 				LocalizedError error = ErrorCode.CPC_QUALITY_MEASURE_ID_MISSING_STRATA.format(stratum,
 						node.getValue(MeasureDataDecoder.MEASURE_TYPE),
 						node.getValue(MEASURE_POPULATION));
-				addValidationError(Detail.forErrorAndNode(error, node));
+				addError(Detail.forErrorAndNode(error, node));
 			}
 		});
 	}

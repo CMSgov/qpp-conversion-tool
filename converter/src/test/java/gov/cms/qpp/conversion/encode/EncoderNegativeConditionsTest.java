@@ -62,8 +62,8 @@ class EncoderNegativeConditionsTest {
 
 		encoder.encode(new BufferedWriter(failWrite));
 
-		assertThat(encoder.getDetails()).hasSize(1);
-		assertThat(encoder.getDetails().get(0).getMessage())
+		assertThat(encoder.getErrors()).hasSize(1);
+		assertThat(encoder.getErrors().get(0).getMessage())
 				.isEqualTo("Fake IOException");
 	}
 }

@@ -113,8 +113,8 @@ class PiSectionEncoderTest {
 		PiSectionEncoder piSectionEncoder = new PiSectionEncoder(new Context());
 		piSectionEncoder.internalEncode(testWrapper, piSectionNode);
 
-		assertThat(piSectionEncoder.getDetails()).isNotNull();
-		assertThat(piSectionEncoder.getDetails().get(0).getMessage())
+		assertThat(piSectionEncoder.getErrors()).isNotNull();
+		assertThat(piSectionEncoder.getErrors().get(0).getMessage())
 				.isEqualTo(ErrorCode.CT_LABEL + "Failed to find an encoder");
 	}
 

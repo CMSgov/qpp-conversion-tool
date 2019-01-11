@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.validate;
 import static com.google.common.truth.Truth.assertThat;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
@@ -28,7 +30,6 @@ class CpcQualityMeasureSectionValidatorTest {
 		"40280382-5abd-fa46-015b-49b36bf238d7",
 		"40280382-5abd-fa46-015b-499c87c0385e",
 		"40280382-5971-4eed-015a-5c465a344ded",
-		"40280381-503f-a1fc-0150-afe320c01761",
 		"40280382-5b4d-eebc-015b-5d99505001ea",
 		"40280382-5abd-fa46-015b-1b7c6bb929d0",
 		"40280382-5abd-fa46-015b-49b5b1e638e3",
@@ -37,6 +38,7 @@ class CpcQualityMeasureSectionValidatorTest {
 		"40280382-5b4d-eebc-015b-8245e0fa06b7",
 		"40280382-5b4d-eebc-015b-5ea9efcc02ac",
 		"40280382-5abd-fa46-015b-4989b55937fe",
+		"40280382-5b4d-eebc-015b-5e87add90267",
 		"40280382-5abd-fa46-015b-49a7a51f38a0",
 		"40280382-5971-4eed-015a-4e002d4b4b66"};
 
@@ -58,8 +60,8 @@ class CpcQualityMeasureSectionValidatorTest {
 	void missingGroupAmeasures() {
 		Node node = new Node();
 		LocalizedError message = CpcGroupMinimum.OUTCOME_MEASURE.makeError(groupAmeasures);
-		validator.internalValidateSingleNode(node);
-		assertThat(validator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+		List<Detail> details = validator.validateSingleNode(node).getErrors();
+		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(message);
 	}
 
@@ -67,8 +69,8 @@ class CpcQualityMeasureSectionValidatorTest {
 	void tooFewGroupAmeasures() {
 		Node node = setupMeasures(new String[] {groupAmeasures[0]});
 		LocalizedError message = CpcGroupMinimum.OUTCOME_MEASURE.makeError(groupAmeasures);
-		validator.internalValidateSingleNode(node);
-		assertThat(validator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+		List<Detail> details = validator.validateSingleNode(node).getErrors();
+		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(message);
 	}
 
@@ -76,8 +78,8 @@ class CpcQualityMeasureSectionValidatorTest {
 	void missingGroupBmeasures() {
 		Node node = setupMeasures(groupAmeasures);
 		LocalizedError message = CpcGroupMinimum.OTHER_MEASURE.makeError(groupBmeasures);
-		validator.internalValidateSingleNode(node);
-		assertThat(validator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+		List<Detail> details = validator.validateSingleNode(node).getErrors();
+		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(message);
 	}
 
@@ -85,8 +87,8 @@ class CpcQualityMeasureSectionValidatorTest {
 	void tooFewBmeasures() {
 		Node node = setupMeasures(groupAmeasures, new String[] {groupBmeasures[0]});
 		LocalizedError message = CpcGroupMinimum.OTHER_MEASURE.makeError(groupBmeasures);
-		validator.internalValidateSingleNode(node);
-		assertThat(validator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+		List<Detail> details = validator.validateSingleNode(node).getErrors();
+		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(message);
 	}
 
@@ -94,16 +96,16 @@ class CpcQualityMeasureSectionValidatorTest {
 	void tooFewOverallmeasures() {
 		Node node = setupMeasures(groupAmeasures, new String[] {groupBmeasures[0], groupBmeasures[1]});
 		LocalizedError message = CpcGroupMinimum.makeOverallError(overallMeasures);
-		validator.internalValidateSingleNode(node);
-		assertThat(validator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+		List<Detail> details = validator.validateSingleNode(node).getErrors();
+		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(message);
 	}
 
 	@Test
 	void justRight() {
 		Node node = setupMeasures(groupAmeasures, groupBmeasures);
-		validator.internalValidateSingleNode(node);
-		assertThat(validator.getDetails()).hasSize(0);
+		List<Detail> details = validator.validateSingleNode(node).getErrors();
+		assertThat(details).hasSize(0);
 	}
 
 	private Node setupMeasures(String[]... measureGroups) {

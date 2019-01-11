@@ -23,25 +23,25 @@ public class MeasureDataValidator extends NodeValidator {
 	 * <ul>
 	 *    <li>An integer value with a name in the list from MeasureDataDecoder.MEASURES</li>
 	 *    <li>The string value is an integer</li>
-	 *</ul>
+	 * </ul>
 	 *
 	 * @param node Node that represents a IA Measure Performed.
 	 */
 	@Override
-	protected void internalValidateSingleNode(Node node) {
+	protected void performValidation(Node node) {
 		String populationId = node.getValue(MeasureDataDecoder.MEASURE_POPULATION);
 		if (populationId == null) {
 			populationId = EMPTY_POPULATION_ID;
 		}
 
-		check(node)
+		Checker checker = checkErrors(node)
 				.hasChildren(ErrorCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(populationId))
 				.childExact(ErrorCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(populationId),
 					1, TemplateId.PI_AGGREGATE_COUNT);
 
-		if (getDetails().isEmpty()) {
+		if (!checker.shouldShortcut()) {
 			Node child = node.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
-			check(child)
+			checkErrors(child)
 					.singleValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(node.getType().name(),
 						DuplicationCheckHelper.calculateDuplications(child, AggregateCountDecoder.AGGREGATE_COUNT)),
 						AggregateCountDecoder.AGGREGATE_COUNT)

@@ -86,7 +86,7 @@ class QualityMeasureIdMultiRoundTripTest {
 		List<Detail> details = executeScenario(path, false);
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_TYPE);
+				.contains(ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_TYPE);
 	}
 
 	@Test
@@ -96,9 +96,8 @@ class QualityMeasureIdMultiRoundTripTest {
 
 		List<Detail> details = executeScenario(path, false);
 
-		assertThat(details).hasSize(1);
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_TYPE);
+				.contains(ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_TYPE);
 	}
 
 	@Test
@@ -122,10 +121,9 @@ class QualityMeasureIdMultiRoundTripTest {
 
 		List<Detail> details = executeScenario(path, false);
 
-		assertThat(details).hasSize(1);
 		assertThat(details)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION);
+				.contains(ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION);
 	}
 
 	@Test
@@ -135,7 +133,6 @@ class QualityMeasureIdMultiRoundTripTest {
 
 		List<Detail> details = executeScenario(path, true);
 
-		assertThat(details).hasSize(2);
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION);
 	}
@@ -152,7 +149,6 @@ class QualityMeasureIdMultiRoundTripTest {
 			details.addAll(errors.getErrors().get(0).getDetails());
 		}
 
-		assertThat(details).hasSize(3);
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(ErrorCode.DENOMINATOR_COUNT_INVALID);
 	}

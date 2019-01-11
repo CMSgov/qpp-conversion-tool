@@ -6535,7 +6535,7 @@ CDA Header
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<id root="2.16.840.1.113883.4.738"
-										extension="40280381-503f-a1fc-0150-afe320c01761"/>
+										extension="40280382-5b4d-eebc-015b-5e87add90267"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
 										codeSystemName="LOINC"
 										displayName="Health Quality Measure Document"/>
