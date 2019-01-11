@@ -47,11 +47,11 @@ public class QrdaServiceImpl implements QrdaService {
 	}
 
 	/**
-	 * Retrieve the CPC+ validation file for the QPP service
+	 * Opens a stream to s3 to retrieve the Cpc Plus Validation file for the QPP Service
 	 *
 	 * @return cpc+ validation file.
 	 */
-	public InputStream getCpcPlusValidationFile() {
+	public InputStream retrieveS3CpcPlusValidationFile() {
 		return storageService.getCpcPlusValidationFile();
 	}
 

@@ -18,5 +18,10 @@ public interface QrdaService {
 	 */
 	ConversionReport convertQrda3ToQpp(Source source);
 
-	InputStream getCpcPlusValidationFile();
+	/**
+	 * Opens a stream to s3 to retrieve the Cpc Plus Validation file for the QPP Service
+	 *
+	 * @return cpc+ validation file.
+	 */
+	InputStream retrieveS3CpcPlusValidationFile();
 }
