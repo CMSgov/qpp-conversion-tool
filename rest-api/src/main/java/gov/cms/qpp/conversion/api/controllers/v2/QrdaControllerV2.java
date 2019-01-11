@@ -9,7 +9,6 @@ import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.ConvertResponse;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.api.services.QrdaService;
-import gov.cms.qpp.conversion.api.services.StorageService;
 import gov.cms.qpp.conversion.api.services.ValidationService;
 
 /**
@@ -38,7 +37,7 @@ public class QrdaControllerV2 extends SkeletalQrdaController<ConvertResponse> {
 	@Override
 	protected ConvertResponse respond(ConversionReport report) {
 		ConvertResponse response = new ConvertResponse();
-		response.setQpp(report.getEncoded().toObject());
+		response.setQpp(report.getEncoded().toString());
 		response.setWarnings(report.getWarnings());
 		return response;
 	}
