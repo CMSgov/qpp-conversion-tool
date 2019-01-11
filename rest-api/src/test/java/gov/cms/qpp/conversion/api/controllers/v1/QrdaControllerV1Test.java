@@ -127,7 +127,7 @@ class QrdaControllerV1Test {
 		ArgumentCaptor<Source> peopleCaptor = ArgumentCaptor.forClass(Source.class);
 
 		when(qrdaService.convertQrda3ToQpp(peopleCaptor.capture())).thenReturn(report);
-		when(qrdaService.getCpcPlusValidationFile()).thenReturn(validationInputStream);
+		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationInputStream);
 		when(auditService.success(any(ConversionReport.class))).thenReturn(mockMetadata);
 		when(mockMetadata.get()).thenThrow(new InterruptedException("Testing Audit Exception Handling"));
 		
@@ -141,7 +141,7 @@ class QrdaControllerV1Test {
 		ArgumentCaptor<Source> peopleCaptor = ArgumentCaptor.forClass(Source.class);
 
 		when(qrdaService.convertQrda3ToQpp(peopleCaptor.capture())).thenReturn(report);
-		when(qrdaService.getCpcPlusValidationFile()).thenReturn(validationInputStream);
+		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationInputStream);
 		when(auditService.success(any(ConversionReport.class))).thenReturn(mockMetadata);
 		when(mockMetadata.get()).thenThrow(new ExecutionException(new RuntimeException("Testing Audit Exception Handling")));
 		
@@ -155,7 +155,7 @@ class QrdaControllerV1Test {
 		ArgumentCaptor<Source> peopleCaptor = ArgumentCaptor.forClass(Source.class);
 
 		when(qrdaService.convertQrda3ToQpp(peopleCaptor.capture())).thenReturn(report);
-		when(qrdaService.getCpcPlusValidationFile()).thenReturn(validationInputStream);
+		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationInputStream);
 		when(auditService.success(any(ConversionReport.class)))
 				.then(invocation -> null);
 
@@ -170,7 +170,7 @@ class QrdaControllerV1Test {
 		ArgumentCaptor<Source> peopleCaptor = ArgumentCaptor.forClass(Source.class);
 
 		when(qrdaService.convertQrda3ToQpp(peopleCaptor.capture())).thenReturn(report);
-		when(qrdaService.getCpcPlusValidationFile()).thenReturn(null);
+		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(null);
 		when(auditService.success(any(ConversionReport.class))).then(invocation -> null);
 
 		String purpose = "Test";
