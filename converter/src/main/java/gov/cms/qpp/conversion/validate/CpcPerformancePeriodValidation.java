@@ -23,8 +23,8 @@ public class CpcPerformancePeriodValidation extends NodeValidator {
 	 * @param node The node to validate.
 	 */
 	@Override
-	protected void internalValidateSingleNode(Node node) {
-		check(node)
+	protected void performValidation(Node node) {
+		checkErrors(node)
 			.valueIs(ErrorCode.CPC_PERFORMANCE_PERIOD_START, 
 					ReportingParametersActDecoder.PERFORMANCE_START, REPORTING_PERIOD_START)
 			.valueIs(ErrorCode.CPC_PERFORMANCE_PERIOD_END, 

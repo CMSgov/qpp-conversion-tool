@@ -33,7 +33,7 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	 * @param node The node to validate.
 	 */
 	@Override
-	protected void internalValidateSingleNode(Node node) {
+	protected void performValidation(Node node) {
 		validateSupplementalDataByType(node);
 	}
 
@@ -75,7 +75,7 @@ public class CpcMeasureDataValidator extends NodeValidator {
 				} else {
 					LocalizedError error = makeIncorrectCountSizeLocalizedError(node, supplementalData.getCode(),
 						electronicMeasureId);
-					check(validatedSupplementalNode)
+					checkErrors(validatedSupplementalNode)
 						.childExact(error, 1, TemplateId.PI_AGGREGATE_COUNT);
 				}
 			}
@@ -118,7 +118,7 @@ public class CpcMeasureDataValidator extends NodeValidator {
 				ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(
 					supplementalData.getType(), supplementalData, supplementalData.getCode(),
 						measureId, node.getValue(MeasureDataDecoder.MEASURE_TYPE));
-		addValidationError(Detail.forErrorAndNode(error, node));
+		addError(Detail.forErrorAndNode(error, node));
 	}
 
 	/**

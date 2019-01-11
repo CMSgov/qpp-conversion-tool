@@ -23,8 +23,8 @@ public class IaMeasureValidator extends NodeValidator {
 	 * @param node Node that represents a IA Measure Performed.
 	 */
 	@Override
-	protected void internalValidateSingleNode(Node node) {
-		Checker.check(node, getDetails())
+	protected void performValidation(Node node) {
+		checkErrors(node)
 				.childExact(ErrorCode.IA_MEASURE_INCORRECT_CHILDREN_COUNT, 1, TemplateId.MEASURE_PERFORMED);
 	}
 }

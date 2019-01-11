@@ -24,10 +24,10 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 	 * @param node The node that represents an ACI Numerator Denominator Type Measure.
 	 */
 	@Override
-	protected void internalValidateSingleNode(Node node) {
+	protected void performValidation(Node node) {
 
 		//the aci numerator denominator measure node must have an aci section node as parent
-		Checker nodeChecker = check(node).hasParent(
+		Checker nodeChecker = checkErrors(node).hasParent(
 				ErrorCode.PI_NUMERATOR_DENOMINATOR_PARENT_NOT_PI_SECTION, TemplateId.PI_SECTION);
 		//the aci numerator denominator measure node must have a numerator node and a denominator node as children
 		validateChildren(nodeChecker);

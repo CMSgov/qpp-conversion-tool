@@ -25,8 +25,8 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 	 * @param node The node to validate.
 	 */
 	@Override
-	protected void internalValidateSingleNode(Node node) {
-		Checker checker = thoroughlyCheck(node);
+	protected void performValidation(Node node) {
+		Checker checker = forceCheckErrors(node);
 
 		Arrays.stream(CpcGroupMinimum.values())
 				.forEach(group -> checkGroupMinimum(checker, group));

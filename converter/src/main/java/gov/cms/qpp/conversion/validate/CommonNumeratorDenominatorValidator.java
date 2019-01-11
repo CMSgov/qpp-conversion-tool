@@ -12,6 +12,9 @@ import gov.cms.qpp.conversion.model.error.LocalizedError;
  */
 public class CommonNumeratorDenominatorValidator extends NodeValidator {
 
+	/**
+	 * The node type name as in "Numerator" or "Denominator"
+	 */
 	protected String nodeName;
 
 	/**
@@ -21,9 +24,9 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 	 * @param node Node parsed xml fragment under consideration
 	 */
 	@Override
-	protected void internalValidateSingleNode(Node node) {
-		check(node).childExact(format(ErrorCode.NUMERATOR_DENOMINATOR_CHILD_EXACT), 1, TemplateId.PI_AGGREGATE_COUNT);
-		if (getDetails().isEmpty()) {
+	protected void performValidation(Node node) {
+		Checker checker = checkErrors(node).childExact(format(ErrorCode.NUMERATOR_DENOMINATOR_CHILD_EXACT), 1, TemplateId.PI_AGGREGATE_COUNT);
+		if (!checker.shouldShortcut()) {
 			validateAggregateCount(
 					node.findFirstNode(TemplateId.PI_AGGREGATE_COUNT));
 		}
@@ -41,7 +44,7 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 		if (aggregateCountValue == null) {
 			aggregateCountValue = "empty";
 		}
-		check(aggregateCountNode)
+		checkErrors(aggregateCountNode)
 				.singleValue(format(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE, aggregateCountValue),
 					AggregateCountDecoder.AGGREGATE_COUNT)
 				.intValue(format(ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER, aggregateCountValue),
