@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 
 class JsonWrapperTest {
 
-	private ObjectWriter ow = JsonWrapper.getObjectWriterWithoutMeta();
+	private ObjectWriter ow = JsonWrapper.getObjectWriter();
 	private JsonWrapper objectObjWrapper;
 	private JsonWrapper objectStrWrapper;
 	private JsonWrapper listObjWrapper;

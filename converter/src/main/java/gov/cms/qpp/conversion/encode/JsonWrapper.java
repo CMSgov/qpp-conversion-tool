@@ -81,7 +81,7 @@ public class JsonWrapper {
 	 * @return utility that will allow client to serialize wrapper contents as json
 	 */
 	static ObjectWriter getObjectWriterWithoutMeta() {
-		return new ObjectMapper().writer().with(getPrinter());
+		return new ObjectMapper().writer();
 	}
 
 	/**
