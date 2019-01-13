@@ -39,7 +39,7 @@ class CpcClinicalDocumentValidatorTest {
 
 	@BeforeEach
 	void createNewValidator() {
-		cpcValidator = new CpcClinicalDocumentValidator();
+		cpcValidator = new CpcClinicalDocumentValidator(new Context());
 	}
 
 	@AfterEach

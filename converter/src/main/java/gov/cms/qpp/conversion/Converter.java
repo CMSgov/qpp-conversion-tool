@@ -41,11 +41,6 @@ public class Converter {
 	private Node decoded;
 	private JsonWrapper encoded;
 
-	/**
-	 * Constructor for the CLI Converter application
-	 *
-	 * @param source Source to use for the conversion
-	 */
 	public Converter(Source source) {
 		this(source, new Context());
 	}

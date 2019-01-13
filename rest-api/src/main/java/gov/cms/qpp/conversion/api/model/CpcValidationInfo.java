@@ -38,6 +38,7 @@ public class CpcValidationInfo {
 		return apm;
 	}
 
+	@JsonProperty("apm_entity_id")
 	public void setApm(final String apm) {
 		this.apm = apm;
 	}
