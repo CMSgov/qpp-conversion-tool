@@ -1,11 +1,13 @@
 package gov.cms.qpp.conversion.validate;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ValidationResult;
@@ -18,6 +20,23 @@ public abstract class NodeValidator {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(NodeValidator.class);
 	private final List<Detail> errors = new ArrayList<>();
 	private final List<Detail> warnings = new ArrayList<>();
+	protected final Context context;
+
+	public NodeValidator() {
+		this(null);
+	}
+
+	public NodeValidator(Context context) {
+		this.context = context;
+	}
+
+	public List<Detail> viewErrors() {
+		return Collections.unmodifiableList(errors);
+	}
+
+	public List<Detail> viewWarnings() {
+		return Collections.unmodifiableList(warnings);
+	}
 
 	/**
 	 * Validates a single {@link gov.cms.qpp.conversion.model.Node} and returns the list
@@ -50,10 +69,19 @@ public abstract class NodeValidator {
 	/**
 	 * Used by child classes to add a {@link Detail}.
 	 *
-	 * @param newError The error to add to the list.
+	 * @param error The error to add to the list.
 	 */
-	protected final void addError(Detail error) {
+	public final void addError(Detail error) {
 		errors.add(error);
+	}
+
+	/**
+	 * Used by child classes to add a {@link Detail}.
+	 *
+	 * @param warning The warning to add to the list.
+	 */
+	public final void addWarning(Detail warning) {
+		warnings.add(warning);
 	}
 
 	/**

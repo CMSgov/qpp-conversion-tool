@@ -80,13 +80,6 @@ public abstract class SkeletalQrdaController<T> {
 			purpose = null; // if it's an empty string, make it null
 			API_LOG.info("Conversion request received");
 		}
-		// To be wired into the conversion tool below
-		CpcValidationInfoMap apmToNpiValidationMap = new CpcValidationInfoMap(qrdaService.retrieveS3CpcPlusValidationFile());
-		if (apmToNpiValidationMap.getNpiToApmMap() != null) {
-			API_LOG.info("Including APM to NPI validation");
-		} else {
-			API_LOG.info("Excluding APM to NPI validation");
-		}
 
 		ConversionReport conversionReport = qrdaService.convertQrda3ToQpp(
 				new InputStreamSupplierSource(originalFilename, inputStream(file), purpose));

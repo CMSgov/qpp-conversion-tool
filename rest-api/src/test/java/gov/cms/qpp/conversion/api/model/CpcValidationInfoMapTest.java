@@ -21,7 +21,6 @@ class CpcValidationInfoMapTest {
 	@Mock
 	private InputStream mockIns;
 
-
 	@Test
 	void test_loadJsonStream() throws Exception {
 		String json = "[" +
@@ -39,30 +38,28 @@ class CpcValidationInfoMapTest {
 		InputStream jsonStream = new StringInputStream(json);
 		
 		CpcValidationInfoMap cpc = new CpcValidationInfoMap(jsonStream);
-		Map<?,?> map = cpc.getNpiToApmMap();
+		Map<String, CpcValidationInfo> map = cpc.getApmToSpec();
 		
 		assertThat(map).isNotNull();
 		assertThat(map.size()).isEqualTo(2);
-		assertThat(map.get("T1AR0503")).isEqualTo("0333333333");
-		assertThat(map.get("T1AR0518")).isEqualTo("0444444444");
+		assertThat(map.get("T1AR0503").getNpi()).isEqualTo("0333333333");
+		assertThat(map.get("T1AR0518").getNpi()).isEqualTo("0444444444");
 	}
 
 	@Test
 	void test_loadNullStream() throws Exception {
-		
 		CpcValidationInfoMap cpc = new CpcValidationInfoMap(null);
-		Map<?,?> map = cpc.getNpiToApmMap();
-		
+		Map<String, CpcValidationInfo> map = cpc.getApmToSpec();
+
 		assertThat(map).isNull();
 	}
-
 
 	@Test
 	void test_loadNullStream_throwsIOE() throws Exception {
 		Mockito.when(mockIns.read()).thenThrow(new IOException());
 		
 		CpcValidationInfoMap cpc = new CpcValidationInfoMap(mockIns);
-		Map<?,?> map = cpc.getNpiToApmMap();
+		Map<String, CpcValidationInfo> map = cpc.getApmToSpec();
 		
 		assertThat(map).isNotNull();
 		assertThat(map.size()).isEqualTo(0);

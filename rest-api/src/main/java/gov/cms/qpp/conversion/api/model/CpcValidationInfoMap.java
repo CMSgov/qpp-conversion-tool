@@ -12,17 +12,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class CpcValidationInfoMap {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(CpcValidationInfoMap.class);
-	private Map npiToApmMap;
+	private Map<String, CpcValidationInfo> apmToSpec;
 
 	public CpcValidationInfoMap(InputStream cpcNpiToApmJson) {
-		npiToApmMap = convertJsonToMap(cpcNpiToApmJson);
+		apmToSpec = convertJsonToMap(cpcNpiToApmJson);
 	}
 
-	private Map convertJsonToMap(InputStream cpcNpiToApmJson) {
+	private Map<String, CpcValidationInfo> convertJsonToMap(InputStream cpcNpiToApmJson) {
 		if (cpcNpiToApmJson == null) {
 			return null;
 		}
@@ -37,10 +38,10 @@ public class CpcValidationInfoMap {
 		}
 
 		return cpcValidationInfoList.stream()
-			.collect(Collectors.toMap(CpcValidationInfo::getApm, CpcValidationInfo::getNpi));
+			.collect(Collectors.toMap(CpcValidationInfo::getApm, Function.identity()));
 	}
 
-	public Map getNpiToApmMap() {
-		return npiToApmMap;
+	public Map<String, CpcValidationInfo> getApmToSpec() {
+		return apmToSpec;
 	}
 }
