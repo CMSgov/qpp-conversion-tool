@@ -43,7 +43,7 @@ public class SpecPiiValidatorTest {
 	}
 
 	@Test
-	void testNullSpec() throws  Exception{
+	void testNullSpec() throws  Exception {
 		SpecPiiValidator validator = validator("Valid_DogCow_APM", "Valid_DogCow_NPI");
 		Node node = node("invalid", "Invalid_Entered_DogCow_NPI");
 		NodeValidator nodeValidator = new NodeValidator() {
