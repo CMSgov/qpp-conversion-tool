@@ -118,7 +118,6 @@ class QrdaControllerV1Test {
 		when(report.getPurpose()).thenReturn("Test");
 		objectUnderTest.uploadQrdaFile(multipartFile, "Test");
 
-		assertThat(qppResponse).isNotNull();
 		assertThat(peopleCaptor.getValue().getPurpose()).isEqualTo("Test");
 	}
 
