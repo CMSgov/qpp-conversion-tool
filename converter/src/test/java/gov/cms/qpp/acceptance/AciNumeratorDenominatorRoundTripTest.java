@@ -101,7 +101,7 @@ class AciNumeratorDenominatorRoundTripTest {
 		encoder.setNodes(nodes);
 
 		StringWriter sw = new StringWriter();
-		encoder.encode(new BufferedWriter(sw));
+		encoder.encode(new BufferedWriter(sw), true);
 
 		String jsonExpected = "{\n  \"measureId\" : \"ACI-PEA-1\",\n  \"value\" : {\n    \"numerator\" : 600,\n    \"denominator\" : 800\n  }\n}";
 

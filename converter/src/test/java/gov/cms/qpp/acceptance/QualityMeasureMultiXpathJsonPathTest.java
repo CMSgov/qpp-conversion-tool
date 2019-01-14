@@ -12,7 +12,7 @@ import gov.cms.qpp.conversion.xml.XmlException;
 
 class QualityMeasureMultiXpathJsonPathTest {
 
-	private static JsonWrapper wrapper = new JsonWrapper(false);
+	private static JsonWrapper wrapper = new JsonWrapper();
 	private static Path path = Paths.get("src/test/resources/fixtures/multiPerformanceRatePropMeasure.xml");
 	private static JsonPathToXpathHelper helper;
 

@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 
 class JsonWrapperTest {
 
-	private ObjectWriter ow = JsonWrapper.getObjectWriter();
+	private ObjectWriter ow = JsonWrapper.standardWriter();
 	private JsonWrapper objectObjWrapper;
 	private JsonWrapper objectStrWrapper;
 	private JsonWrapper listObjWrapper;
@@ -41,7 +41,7 @@ class JsonWrapperTest {
 		objectStrWrapper = new JsonWrapper();
 		listObjWrapper   = new JsonWrapper();
 		listStrWrapper   = new JsonWrapper();
-		unfilteredMetaWrapper = new JsonWrapper(false);
+		unfilteredMetaWrapper = new JsonWrapper();
 	}
 
 	@Test
@@ -619,12 +619,12 @@ class JsonWrapperTest {
 	void metadataFiltered() throws IOException {
 		//setup
 		String shouldSerialize = "mawp";
-		String shouldNotSerialize = "metadata_meep";
+		String shouldNotSerialize = "metadata_holder";
 		objectObjWrapper.putString(shouldSerialize, shouldSerialize);
 		objectObjWrapper.putString(shouldNotSerialize, shouldNotSerialize);
 
 		//when
-		String json = objectObjWrapper.toString();
+		String json = objectObjWrapper.copyWithoutMetadata().toString();
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode obj = mapper.readTree(json);
 

@@ -44,7 +44,7 @@ class AciProportionDenominatorRoundTripTest {
 		encoder.setNodes(nodes);
 
 		StringWriter sw = new StringWriter();
-		encoder.encode(new BufferedWriter(sw));
+		encoder.encode(new BufferedWriter(sw), true);
 
 		String EXPECTED = "{\n  \"denominator\" : 600\n}";
 		assertThat(sw.toString())

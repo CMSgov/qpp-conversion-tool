@@ -47,7 +47,7 @@ class ClinicalDocumentRoundTripTest {
 		encoder.setNodes(Collections.singletonList(clinicalDocumentNode));
 
 		StringWriter sw = new StringWriter();
-		encoder.encode(new BufferedWriter(sw));
+		encoder.encode(new BufferedWriter(sw), true);
 		JsonNode actual = reader.readTree(sw.toString());
 
 		assertThat(actual).isEqualTo(expected);

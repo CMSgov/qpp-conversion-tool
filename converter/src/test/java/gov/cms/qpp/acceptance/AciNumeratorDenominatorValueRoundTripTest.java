@@ -44,7 +44,7 @@ class AciNumeratorDenominatorValueRoundTripTest {
 		encoder.setNodes(nodes);
 
 		StringWriter sw = new StringWriter();
-		encoder.encode(new BufferedWriter(sw));
+		encoder.encode(new BufferedWriter(sw), true);
 
 		String expected = "{\n  \"value\" : 600\n}";
 		assertThat(sw.toString()).isEqualTo(expected);
