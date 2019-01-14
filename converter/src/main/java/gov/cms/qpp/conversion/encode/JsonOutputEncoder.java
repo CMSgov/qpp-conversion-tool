@@ -22,10 +22,13 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 	private List<Detail> warnings = new ArrayList<>();
 
 	@Override
-	public void encode(Writer writer) {
+	public void encode(Writer writer, boolean filter) {
 		JsonWrapper wrapper = new JsonWrapper();
 		for (Node curNode : nodes) {
 			encode(wrapper, curNode);
+		}
+		if (filter) {
+			wrapper = wrapper.copyWithoutMetadata();
 		}
 		try {
 			writer.write(wrapper.toString());

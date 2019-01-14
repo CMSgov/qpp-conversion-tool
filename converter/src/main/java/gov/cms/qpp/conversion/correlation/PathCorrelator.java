@@ -127,7 +127,6 @@ public class PathCorrelator {
 		String base = "$";
 		String leaf = jsonPath;
 		int lastIndex = jsonPath.lastIndexOf('.');
-		JsonWrapper metaWrapper = new JsonWrapper(wrapper, false);
 
 		if (lastIndex > 0) {
 			base = jsonPath.substring(0, lastIndex);
@@ -135,7 +134,7 @@ public class PathCorrelator {
 		}
 
 		JsonPath compiledPath = JsonPath.compile(base);
-		Map<String, Object> jsonMap = compiledPath.read(metaWrapper.toString());
+		Map<String, Object> jsonMap = compiledPath.read(wrapper.toString());
 
 		Map<String, String> metaMap = getMetaMap(jsonMap, leaf);
 		String preparedPath = "";
@@ -154,7 +153,7 @@ public class PathCorrelator {
 	 */
 	@SuppressWarnings("unchecked")
 	private static Map<String, String> getMetaMap(Map<String, Object> jsonMap, final String leaf) {
-		List<Map<String, String>> metaHolder = (List<Map<String, String>>) jsonMap.get("metadata_holder");
+		List<Map<String, String>> metaHolder = (List<Map<String, String>>) jsonMap.get(JsonWrapper.METADATA_HOLDER);
 		return metaHolder.stream()
 				.sorted(labeledFirst())
 				.filter(entry -> {

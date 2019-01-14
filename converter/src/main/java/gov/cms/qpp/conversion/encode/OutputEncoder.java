@@ -12,7 +12,7 @@ public interface OutputEncoder {
 	 * 
 	 * @param writer
 	 */
-	void encode(Writer writer);
+	void encode(Writer writer, boolean filter);
 
 	/**
 	 * Encode data to JsonWrapper

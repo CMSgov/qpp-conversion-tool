@@ -46,6 +46,10 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	 //It also uses the system clock, rather than Eastern Time.
 	private static final Clock CLOCK = Clock.system(ZoneId.of("US/Eastern"));
 
+	public CpcClinicalDocumentValidator(Context context) {
+		super(context);
+	}
+
 	/**
 	 * Validates a single clinical document node
 	 *
@@ -67,6 +71,7 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 							1, TemplateId.MEASURE_SECTION_V2);
 
 			validateApmEntityId(node);
+			validateApmNpiCombination(node);
 	}
 
 	/**
@@ -86,6 +91,10 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 		if (!ApmEntityIds.idExists(apmEntityId)) {
 			addError(Detail.forErrorAndNode(ErrorCode.CPC_CLINICAL_DOCUMENT_INVALID_APM, node));
 		}
+	}
+
+	private void validateApmNpiCombination(Node node) {
+		context.getPiiValidator().validateApmNpiCombination(node, this);
 	}
 
 	/**

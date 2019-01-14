@@ -1,14 +1,16 @@
 package gov.cms.qpp.conversion;
 
-import gov.cms.qpp.conversion.model.Program;
-import gov.cms.qpp.conversion.model.Registry;
-import gov.cms.qpp.conversion.segmentation.QrdaScope;
-
 import java.lang.annotation.Annotation;
 import java.util.EnumSet;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Set;
+
+import gov.cms.qpp.conversion.model.Program;
+import gov.cms.qpp.conversion.model.Registry;
+import gov.cms.qpp.conversion.segmentation.QrdaScope;
+import gov.cms.qpp.conversion.validate.pii.MissingPiiValidator;
+import gov.cms.qpp.conversion.validate.pii.PiiValidator;
 
 /**
  * Stateful converter context. The values in this data structure will change
@@ -21,6 +23,8 @@ public class Context {
 	private Set<QrdaScope> scope = EnumSet.noneOf(QrdaScope.class);
 	private boolean historical;
 	private boolean doValidation = true;
+	private PiiValidator piiValidator = MissingPiiValidator.INSTANCE;
+	private boolean metadataAutoStrip = true;
 
 	/**
 	 * Gets the current contextual {@link Program}
@@ -101,6 +105,22 @@ public class Context {
 	 */
 	public void setDoValidation(boolean doValidation) {
 		this.doValidation = doValidation;
+	}
+
+	public PiiValidator getPiiValidator() {
+		return piiValidator;
+	}
+
+	public void setPiiValidator(PiiValidator piiValidator) {
+		this.piiValidator = piiValidator;
+	}
+
+	public boolean isMetadataAutoStrip() {
+		return metadataAutoStrip;
+	}
+
+	public void setMetadataAutoStrip(boolean metadataAutoStrip) {
+		this.metadataAutoStrip = metadataAutoStrip;
 	}
 
 	/**

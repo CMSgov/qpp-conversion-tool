@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+
 class ValueOriginMapper {
 	private List<Association> associations = new ArrayList<>();
 
@@ -32,7 +34,7 @@ class ValueOriginMapper {
 	@SuppressWarnings("unchecked")
 	private void map(String base, Map<String, Object> toAssociate) {
 		for (Map.Entry<String, Object> entry : toAssociate.entrySet()) {
-			if (entry.getKey().equals("metadata_holder")) {
+			if (entry.getKey().equals(JsonWrapper.METADATA_HOLDER)) {
 				continue;
 			}
 			String newBase = base + "." + entry.getKey();
@@ -40,7 +42,7 @@ class ValueOriginMapper {
 			if (entry.getValue() instanceof Map || entry.getValue() instanceof List) {
 				mapIt(newBase, entry.getValue());
 			} else {
-				Set<Map<String, String>> metadataSet = ((Set<Map<String, String>>)toAssociate.get("metadata_holder"));
+				Set<Map<String, String>> metadataSet = ((Set<Map<String, String>>)toAssociate.get(JsonWrapper.METADATA_HOLDER));
 				String xPath = getXpath(metadataSet, entry.getKey());
 				if (xPath != null) {
 					associations.add(

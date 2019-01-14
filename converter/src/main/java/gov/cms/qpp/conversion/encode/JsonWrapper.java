@@ -1,14 +1,10 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.InputStreamSupplierSource;
-import gov.cms.qpp.conversion.Source;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.util.FormatHelper;
-
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -23,12 +19,11 @@ import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.introspect.Annotated;
-import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
-import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
-import com.fasterxml.jackson.databind.ser.PropertyWriter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+
+import gov.cms.qpp.conversion.InputStreamSupplierSource;
+import gov.cms.qpp.conversion.Source;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.util.FormatHelper;
 
 /**
  * Manages building a "simple" object of JSON conversion.
@@ -36,22 +31,45 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
  * This class is a wrapper around a list/map impl.
  */
 public class JsonWrapper {
-	private static final String METADATA_HOLDER = "metadata_holder";
-	private static final String METADATA_FILTER_LABEL = "exclude-metadata";
-	private ObjectWriter ow;
+
+	public static final String METADATA_HOLDER = "metadata_holder";
+
+	private static void stripMetadata(Object object) {
+		if (object == null) {
+			return;
+		}
+
+		if (object instanceof JsonWrapper) {
+			stripMetadata(((JsonWrapper) object).object);
+			stripMetadata(((JsonWrapper) object).list);
+		} else if (object instanceof Map) {
+			Map<?, ?> map = (Map<?, ?>) object;
+			map.remove(METADATA_HOLDER);
+			map.values().forEach(JsonWrapper::stripMetadata);
+		} else if (object instanceof Collection) {
+			((Collection<?>) object).forEach(JsonWrapper::stripMetadata);
+		}
+	}
+
+	public static ObjectWriter standardWriter() {
+		return new ObjectMapper().writer().with(standardPrinter());
+	}
+
+	private static DefaultPrettyPrinter standardPrinter() {
+		DefaultIndenter withLinefeed = new DefaultIndenter("  ", "\n");
+		DefaultPrettyPrinter printer = new DefaultPrettyPrinter();
+		printer.indentObjectsWith(withLinefeed);
+		return printer;
+	}
+
+	private final ObjectWriter jsonWriter = standardWriter();
 	private Map<String, Object> object;
 	private List<Object> list;
 
 	public JsonWrapper() {
-		this(true);
 	}
 
-	public JsonWrapper(boolean filterMeta) {
-		ow = filterMeta ? getObjectWriter() : getObjectWriterWithoutMeta();
-	}
-
-	public JsonWrapper(JsonWrapper wrapper, boolean filterMeta) {
-		this(filterMeta);
+	public JsonWrapper(JsonWrapper wrapper) {
 		if (wrapper.isObject()) {
 			this.object = new LinkedHashMap<>(wrapper.object);
 		} else {
@@ -59,48 +77,10 @@ public class JsonWrapper {
 		}
 	}
 
-	protected JsonWrapper(JsonWrapper jsonWrapper) {
-		this(jsonWrapper, true);
-	}
-
-	/**
-	 * Static factory that creates {@link com.fasterxml.jackson.databind.ObjectWriter}s.
-	 *
-	 * @return utility that will allow client to serialize wrapper contents as json
-	 */
-	static ObjectWriter getObjectWriter() {
-		ObjectMapper om = new ObjectMapper();
-		outfitMetadataFilter(om);
-
-		return om.writer().with(getPrinter());
-	}
-
-	/**
-	 * Static factory that creates {@link com.fasterxml.jackson.databind.ObjectWriter}s removing metadata.
-	 *
-	 * @return utility that will allow client to serialize wrapper contents as json
-	 */
-	static ObjectWriter getObjectWriterWithoutMeta() {
-		return new ObjectMapper().writer().with(getPrinter());
-	}
-
-	/**
-	 * Outfit the given {@link ObjectMapper} with a filter that will treat all metadata map entries as transient.
-	 *
-	 * @param om object mapper to modify
-	 */
-	private static void outfitMetadataFilter(ObjectMapper om) {
-		SimpleFilterProvider filters = new SimpleFilterProvider();
-		filters.addFilter(METADATA_FILTER_LABEL, new MetadataPropertyFilter());
-		om.setAnnotationIntrospector(new JsonWrapperIntrospector(METADATA_FILTER_LABEL));
-		om.setFilterProvider(filters);
-	}
-
-	private static DefaultPrettyPrinter getPrinter() {
-		DefaultIndenter withLinefeed = new DefaultIndenter("  ", "\n");
-		DefaultPrettyPrinter printer = new DefaultPrettyPrinter();
-		printer.indentObjectsWith(withLinefeed);
-		return printer;
+	public JsonWrapper copyWithoutMetadata() {
+		JsonWrapper copy = new JsonWrapper(this);
+		stripMetadata(copy);
+		return copy;
 	}
 
 	/**
@@ -517,7 +497,7 @@ public class JsonWrapper {
 	@Override
 	public String toString() {
 		try {
-			return ow.writeValueAsString(toObject());
+			return jsonWriter.writeValueAsString(toObject());
 		} catch (JsonProcessingException e) {
 			throw new EncodeException("Issue rendering JSON from JsonWrapper Map", e);
 		}
@@ -535,64 +515,6 @@ public class JsonWrapper {
 	public Source toSource() {
 		byte[] qppBytes = toString().getBytes(StandardCharsets.UTF_8);
 		return new InputStreamSupplierSource("QPP", new ByteArrayInputStream(qppBytes));
-	}
-
-	/**
-	 * JsonWrapper specific annotation introspector. This gives us a way to programmatically associate
-	 * filtering for metadata properties prior to serialization. This is an advantage over annotated filtering
-	 * in that it's less rigid than compile time modification.
-	 */
-	private static class JsonWrapperIntrospector extends JacksonAnnotationIntrospector {
-		private String filterName;
-
-		/**
-		 * @param filterName name of filter to be aassociated during introspection
-		 */
-		private JsonWrapperIntrospector(String filterName) {
-			this.filterName = filterName;
-		}
-
-		/**
-		 * Apply the {@link JsonWrapperIntrospector#filterName} filter to all instances of Map.
-		 *
-		 * @param a objects to be serialized
-		 * @return either the specified filter or a the default supplied by the parent.
-		 * @see JacksonAnnotationIntrospector
-		 */
-		@Override
-		public Object findFilterId(Annotated a) {
-			if (Map.class.isAssignableFrom(a.getRawType())) {
-				return filterName;
-			}
-			return super.findFilterId(a);
-		}
-	}
-
-	/**
-	 * Filters out all map entries during serialization that have keys prefixed with "metadata_".
-	 */
-	private static class MetadataPropertyFilter extends SimpleBeanPropertyFilter {
-		/**
-		 * Pass through inclusion for beans.
-		 *
-		 * @param writer that performs serialization
-		 * @return determination of whether or not it should be serialized
-		 */
-		@Override
-		protected boolean include(BeanPropertyWriter writer) {
-			return true;
-		}
-
-		/**
-		 * Denies inclusion for "metadata_" prefixed properties.
-		 *
-		 * @param writer that performs serialization
-		 * @return determination of whether or not it should be serialized
-		 */
-		@Override
-		protected boolean include(PropertyWriter writer) {
-			return !writer.getName().startsWith("metadata_");
-		}
 	}
 
 	void attachMetadata(Node node) {

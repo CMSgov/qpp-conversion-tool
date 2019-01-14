@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 class XpathJsonPathComparisonTest {
 
-	private static JsonWrapper wrapper = new JsonWrapper(false);
+	private static JsonWrapper wrapper = new JsonWrapper();
 	private static Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 	private static JsonPathToXpathHelper helper;
 	private static final String EXTENSION = "extension";
