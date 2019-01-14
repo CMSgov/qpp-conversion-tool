@@ -33,7 +33,7 @@ class CpcPlusRoundTripTest {
 				.getResource("cpc_plus/success/CPCPlus_CMSPrgrm_LowerCase_SampleQRDA-III.xml");
 		Path path = Paths.get(sample.toURI());
 		new JsonPathToXpathHelper(path, wrapper, false);
-		json = new ObjectMapper().readValue(wrapper.toString(), HashMap.class);
+		json = new ObjectMapper().readValue(wrapper.copyWithoutMetadata().toString(), HashMap.class);
 	}
 
 	@AfterAll

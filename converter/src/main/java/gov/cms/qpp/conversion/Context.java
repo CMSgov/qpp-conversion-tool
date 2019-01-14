@@ -24,6 +24,7 @@ public class Context {
 	private boolean historical;
 	private boolean doValidation = true;
 	private PiiValidator piiValidator = MissingPiiValidator.INSTANCE;
+	private boolean metadataAutoStrip = true;
 
 	/**
 	 * Gets the current contextual {@link Program}
@@ -112,6 +113,14 @@ public class Context {
 
 	public void setPiiValidator(PiiValidator piiValidator) {
 		this.piiValidator = piiValidator;
+	}
+
+	public boolean isMetadataAutoStrip() {
+		return metadataAutoStrip;
+	}
+
+	public void setMetadataAutoStrip(boolean metadataAutoStrip) {
+		this.metadataAutoStrip = metadataAutoStrip;
 	}
 
 	/**
