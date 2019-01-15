@@ -37,7 +37,7 @@ public class QrdaControllerV2 extends SkeletalQrdaController<ConvertResponse> {
 	@Override
 	protected ConvertResponse respond(ConversionReport report) {
 		ConvertResponse response = new ConvertResponse();
-		response.setQpp(report.getEncoded().toObject());
+		response.setQpp(report.getEncodedWithMetadata().copyWithoutMetadata().toObject());
 		response.setWarnings(report.getWarnings());
 		return response;
 	}

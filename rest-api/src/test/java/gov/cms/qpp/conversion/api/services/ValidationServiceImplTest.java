@@ -77,7 +77,6 @@ class ValidationServiceImplTest {
 		pathToSubmissionDuplicateEntryError = Paths.get("src/test/resources/submissionDuplicateEntryErrorFixture.json");
 		Path toConvert = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 		Context context = new Context();
-		context.setMetadataAutoStrip(false);
 		qppWrapper = new Converter(new PathSource(toConvert), context).transform();
 		prepAllErrors();
 	}
@@ -100,7 +99,7 @@ class ValidationServiceImplTest {
 		objectUnderTest = spy(meep);
 
 		ConversionReport report = mock(ConversionReport.class);
-		when(report.getEncoded()).thenReturn(qppWrapper);
+		when(report.getEncodedWithMetadata()).thenReturn(qppWrapper);
 		when(converter.getReport()).thenReturn(report);
 	}
 

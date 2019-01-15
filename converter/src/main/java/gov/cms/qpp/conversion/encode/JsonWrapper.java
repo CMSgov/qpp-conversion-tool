@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
 import gov.cms.qpp.conversion.Source;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.util.CloneHelper;
 import gov.cms.qpp.conversion.util.FormatHelper;
 
 /**
@@ -71,9 +72,9 @@ public class JsonWrapper {
 
 	public JsonWrapper(JsonWrapper wrapper) {
 		if (wrapper.isObject()) {
-			this.object = new LinkedHashMap<>(wrapper.object);
+			this.object = CloneHelper.deepClone(wrapper.object);
 		} else {
-			this.list = new LinkedList<>(wrapper.list);
+			this.list = CloneHelper.deepClone(wrapper.list);
 		}
 	}
 

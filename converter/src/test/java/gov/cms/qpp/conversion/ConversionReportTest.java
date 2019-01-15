@@ -59,7 +59,7 @@ class ConversionReportTest {
 
 	@Test
 	void testGetEncoded() {
-		assertThat(report.getEncoded().toString())
+		assertThat(report.getEncodedWithMetadata().toString())
 				.isEqualTo(wrapper.toString());
 	}
 

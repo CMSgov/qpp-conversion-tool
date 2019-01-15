@@ -66,7 +66,7 @@ class QrdaServiceImplTest {
 
 	@Test
 	void testConvertQrda3ToQppSuccess() {
-		JsonWrapper qpp = objectUnderTest.convertQrda3ToQpp(MOCK_SUCCESS_QRDA_SOURCE).getEncoded();
+		JsonWrapper qpp = objectUnderTest.convertQrda3ToQpp(MOCK_SUCCESS_QRDA_SOURCE).getEncodedWithMetadata();
 		assertThat(qpp.getString(KEY)).isSameAs(MOCK_SUCCESS_QPP_STRING);
 	}
 
@@ -91,7 +91,7 @@ class QrdaServiceImplTest {
 
 		ConversionReport report = mock(ConversionReport.class);
 
-		when(report.getEncoded()).thenReturn(qpp);
+		when(report.getEncodedWithMetadata()).thenReturn(qpp);
 		when(mockConverter.getReport()).thenReturn(report);
 
 		return mockConverter;
