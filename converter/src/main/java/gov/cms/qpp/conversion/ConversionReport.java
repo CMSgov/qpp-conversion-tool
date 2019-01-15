@@ -22,7 +22,7 @@ public class ConversionReport {
 	private final ObjectMapper mapper = new ObjectMapper();
 	private Source source;
 	private Node decoded;
-	private JsonWrapper encoded;
+	private JsonWrapper encodedWithMetadata;
 	private AllErrors reportDetails;
 	private List<Detail> warnings;
 
@@ -31,10 +31,10 @@ public class ConversionReport {
 	/**
 	 * Construct a conversion report
 	 */
-	ConversionReport(Source source, List<Detail> errors, List<Detail> warnings, Node decoded, JsonWrapper encoded) {
+	ConversionReport(Source source, List<Detail> errors, List<Detail> warnings, Node decoded, JsonWrapper encodedWithMetadata) {
 		this.source = source;
 		this.decoded = decoded;
-		this.encoded = encoded;
+		this.encodedWithMetadata = encodedWithMetadata;
 		this.warnings = warnings;
 		reportDetails = constructErrorHierarchy(source.getName(), errors);
 	}
@@ -84,8 +84,8 @@ public class ConversionReport {
 	 *
 	 * @return encoded {@link JsonWrapper}
 	 */
-	public JsonWrapper getEncoded() {
-		return CloneHelper.deepClone(encoded);
+	public JsonWrapper getEncodedWithMetadata() {
+		return CloneHelper.deepClone(encodedWithMetadata);
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class ConversionReport {
 	 * @return {@link Source} for the output.
 	 */
 	public Source getQppSource() {
-		return getEncoded().toSource();
+		return getEncodedWithMetadata().toSource();
 	}
 
 	/**
