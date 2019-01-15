@@ -228,6 +228,20 @@ class ClinicalDocumentEncoderTest {
 			.isEqualTo("x12345");
 	}
 
+	@Test
+	void testApmExcludeNpiEncoding() throws EncodeException {
+		JsonWrapper testJsonWrapper = new JsonWrapper();
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "apm");
+
+		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
+		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
+
+		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
+
+		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+			.isNull();
+	}
+
 
 	@SuppressWarnings("unchecked")
 	private List<LinkedHashMap<String, Object>> getMeasurementSets(Map clinicalDocumentMap) {

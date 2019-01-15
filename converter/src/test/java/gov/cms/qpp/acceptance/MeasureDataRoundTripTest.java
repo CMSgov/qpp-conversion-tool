@@ -66,7 +66,7 @@ class MeasureDataRoundTripTest {
 		encoder.setNodes(nodes);
 
 		StringWriter sw = new StringWriter();
-		encoder.encode(new BufferedWriter(sw));
+		encoder.encode(new BufferedWriter(sw), true);
 		return sw;
 	}
 }

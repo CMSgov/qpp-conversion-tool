@@ -20,8 +20,8 @@ public class MeasurePerformedValidator extends NodeValidator {
 	 * @param node Node that represents a Measure Performed.
 	 */
 	@Override
-	protected void internalValidateSingleNode(Node node) {
-		check(node)
+	protected void performValidation(Node node) {
+		checkErrors(node)
 			.singleValue(ErrorCode.IA_MEASURE_INVALID_TYPE, FIELD)
 			.valueIn(ErrorCode.IA_MEASURE_INVALID_TYPE, FIELD, BOOLEAN_VALUES);
 	}

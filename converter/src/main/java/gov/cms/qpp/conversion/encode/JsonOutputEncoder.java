@@ -18,13 +18,17 @@ import java.util.List;
 public abstract class JsonOutputEncoder implements OutputEncoder {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(JsonOutputEncoder.class);
 	private List<Node> nodes;
-	private List<Detail> details = new ArrayList<>();
+	private List<Detail> errors = new ArrayList<>();
+	private List<Detail> warnings = new ArrayList<>();
 
 	@Override
-	public void encode(Writer writer) {
+	public void encode(Writer writer, boolean filter) {
 		JsonWrapper wrapper = new JsonWrapper();
 		for (Node curNode : nodes) {
 			encode(wrapper, curNode);
+		}
+		if (filter) {
+			wrapper = wrapper.copyWithoutMetadata();
 		}
 		try {
 			writer.write(wrapper.toString());
@@ -33,7 +37,7 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 			DEV_LOG.error("Couldn't write out JSON file.", exception);
 			Detail detail = Detail.forErrorCode(ErrorCode.UNEXPECTED_ENCODE_ERROR);
 			detail.setMessage(exception.getMessage());
-			details.add(detail);
+			errors.add(detail);
 		}
 	}
 
@@ -64,10 +68,14 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 			DEV_LOG.warn("Encode error when doing internalEncode, adding a new Detail", exception);
 			Detail detail = Detail.forErrorAndNode(ErrorCode.UNEXPECTED_ENCODE_ERROR, node);
 			detail.setMessage(exception.getMessage());
-			details.add(detail);
+			addValidationError(detail);
 		}
 	}
 
+	/**
+	 * Encodes the nodes as JSON.
+	 * @return a custom JSON wrapper class that knows how to process QPP Nodes.
+	 */
 	@Override
 	public JsonWrapper encode() {
 		JsonWrapper wrapper = new JsonWrapper();
@@ -77,17 +85,54 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 		return wrapper;
 	}
 
+	/**
+	 * Add a new validation error
+	 * @param detail the error information
+	 */
 	public void addValidationError(Detail detail) {
-		details.add(detail);
+		errors.add(detail);
 	}
 
-	public List<Detail> getDetails() {
-		return this.details;
+	/**
+	 * Add a new validation warning
+	 * @param detail the warning information
+	 */
+	public void addValidationWarning(Detail detail) {
+		warnings.add(detail);
 	}
 
+	/**
+	 * get the list of all validation errors.
+	 * 
+	 * @return list of error details
+	 */
+	public List<Detail> getErrors() {
+		return this.errors;
+	}
+
+	/**
+	 * get the list of all validation earnings.
+	 * 
+	 * @return list of warning details
+	 */
+	public List<Detail> getWarnings() {
+		return this.warnings;
+	}
+
+	/**
+	 * Assign a new list of QPP element nodes.
+	 * @param someNodes the new list of nodes
+	 */
 	public void setNodes(List<Node> someNodes) {
 		this.nodes = someNodes;
 	}
 
+	/**
+	 * Subclasses must implement this method with the
+	 * specific encoding method for its node type handling.
+	 * 
+	 * @param wrapper the entire JSON node collection.
+	 * @param node the current node
+	 */
 	protected abstract void internalEncode(JsonWrapper wrapper, Node node);
 }

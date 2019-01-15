@@ -42,8 +42,8 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	 * @param node The node to validate.
 	 */
 	@Override
-	protected void internalValidateSingleNode(Node node) {
-		super.internalValidateSingleNode(node);
+	protected void performValidation(Node node) {
+		super.performValidation(node);
 		MeasureConfig measureConfig = MeasureConfigHelper.getMeasureConfig(node);
 
 		if (measureConfig != null) {
@@ -51,6 +51,9 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 		}
 	}
 
+	/**
+	 * Initializes the vaidators for various sub-populations.
+	 */
 	@Override
 	List<Consumer<Node>> prepValidations(SubPopulation subPopulation) {
 		return Arrays.asList(
@@ -114,7 +117,7 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	 * @param performanceRateNode The current performance rate node
 	 */
 	private void validatePerformanceRateUuidExists(Node performanceRateNode) {
-		thoroughlyCheck(performanceRateNode)
+		forceCheckErrors(performanceRateNode)
 				.incompleteValidation()
 				.singleValue(ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE, PERFORMANCE_RATE_ID);
 	}
@@ -139,6 +142,6 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	private void addPerformanceRateValidationMessage(Node node, String electronicMeasureId,String performanceUuid) {
 		LocalizedError error = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(electronicMeasureId,
 				PERFORMANCE_RATE_ID, performanceUuid);
-		addValidationError(Detail.forErrorAndNode(error, node));
+		addError(Detail.forErrorAndNode(error, node));
 	}
 }

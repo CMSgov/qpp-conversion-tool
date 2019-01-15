@@ -2,8 +2,7 @@ package gov.cms.qpp.conversion.validate;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-import java.util.Collection;
-import java.util.Set;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +30,7 @@ class IaMeasureValidatorTest {
 		measurePerformedNode.putValue("measurePerformed", "Y");
 
 		IaMeasureValidator validator = new IaMeasureValidator();
-		Collection<Detail> errors = validator.validateSingleNode(measureNode);
+		List<Detail> errors = validator.validateSingleNode(measureNode).getErrors();
 		assertWithMessage("no errors should be present")
 				.that(errors).isEmpty();
 	}
@@ -44,7 +43,7 @@ class IaMeasureValidatorTest {
 		measurePerformedNode.putValue("measurePerformed", "N");
 
 		IaMeasureValidator validator = new IaMeasureValidator();
-		Collection<Detail> errors = validator.validateSingleNode(measureNode);
+		List<Detail> errors = validator.validateSingleNode(measureNode).getErrors();
 		assertWithMessage("no errors should be present")
 				.that(errors).isEmpty();
 	}
@@ -59,7 +58,7 @@ class IaMeasureValidatorTest {
 	void testMissingNode() throws Exception {
 		Node measureNode = new Node(TemplateId.IA_MEASURE);
 		IaMeasureValidator validator = new IaMeasureValidator();
-		Set<Detail> errors = validator.validateSingleNode(measureNode);
+		List<Detail> errors = validator.validateSingleNode(measureNode).getErrors();
 
 		assertWithMessage("The INCORRECT_CHILDREN_COUNT Error is expected")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -82,7 +81,7 @@ class IaMeasureValidatorTest {
 		measurePerformedNode1.putValue("measurePerformed", "N");
 
 		IaMeasureValidator validator = new IaMeasureValidator();
-		Set<Detail> errors = validator.validateSingleNode(measureNode);
+		List<Detail> errors = validator.validateSingleNode(measureNode).getErrors();
 
 		assertWithMessage("The INCORRECT_CHILDREN_COUNT Error is expected")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)

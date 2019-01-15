@@ -25,13 +25,30 @@ import org.apache.commons.lang3.StringUtils;
 @Validator(value = TemplateId.CLINICAL_DOCUMENT, program = Program.CPC)
 public class CpcClinicalDocumentValidator extends NodeValidator {
 
+	/**
+	 * Constant end date name
+	 */
 	static final String END_DATE_VARIABLE = "CPC_END_DATE";
+	/**
+	 * Constant end date format
+	 */
 	static final DateTimeFormatter END_DATE_FORMAT = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+	/**
+	 * Constant default email contact
+	 */
 	static final String DEFAULT_CPC_PLUS_CONTACT_EMAIL = "cpcplus@telligen.com";
+	/**
+	 * Constant contact email name
+	 */
 	static final String CPC_PLUS_CONTACT_EMAIL = "CPC_PLUS_CONTACT_EMAIL";
-	// LocalDate.now() creates extra unneeded clock objects before Java 9.
-	// It also uses the system clock, rather than Eastern Time.
+	
+	 //LocalDate.now() creates extra unneeded clock objects before Java 9.
+	 //It also uses the system clock, rather than Eastern Time.
 	private static final Clock CLOCK = Clock.system(ZoneId.of("US/Eastern"));
+
+	public CpcClinicalDocumentValidator(Context context) {
+		super(context);
+	}
 
 	/**
 	 * Validates a single clinical document node
@@ -39,13 +56,13 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	 * @param node The node to validate.
 	 */
 	@Override
-	protected void internalValidateSingleNode(Node node) {
+	protected void performValidation(Node node) {
 			validateSubmissionDate(node);
 
 			LocalizedError addressError = ErrorCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
 				.format(Context.REPORTING_YEAR);
 
-			check(node)
+			checkErrors(node)
 					.valueIsNotEmpty(addressError, ClinicalDocumentDecoder.PRACTICE_SITE_ADDR)
 					.singleValue(ErrorCode.CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED,
 							ClinicalDocumentDecoder.PRACTICE_ID)
@@ -54,6 +71,7 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 							1, TemplateId.MEASURE_SECTION_V2);
 
 			validateApmEntityId(node);
+			validateApmNpiCombination(node);
 	}
 
 	/**
@@ -71,8 +89,12 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 		}
 
 		if (!ApmEntityIds.idExists(apmEntityId)) {
-			addValidationError(Detail.forErrorAndNode(ErrorCode.CPC_CLINICAL_DOCUMENT_INVALID_APM, node));
+			addError(Detail.forErrorAndNode(ErrorCode.CPC_CLINICAL_DOCUMENT_INVALID_APM, node));
 		}
+	}
+
+	private void validateApmNpiCombination(Node node) {
+		context.getPiiValidator().validateApmNpiCombination(node, this);
 	}
 
 	/**
@@ -84,7 +106,7 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 		LocalDate endDate = endDate();
 		if (now().isAfter(endDate)) {
 			String formatted = endDate.format(END_DATE_FORMAT);
-			addValidationError(Detail.forErrorAndNode(
+			addError(Detail.forErrorAndNode(
 				ErrorCode.CPC_PLUS_SUBMISSION_ENDED.format(formatted,
 					EnvironmentHelper.getOrDefault(CPC_PLUS_CONTACT_EMAIL, DEFAULT_CPC_PLUS_CONTACT_EMAIL)),
 				node));

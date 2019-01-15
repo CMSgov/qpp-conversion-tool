@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.validate;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-import java.util.Set;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,7 +38,7 @@ class AciSectionValidatorTest {
 
 		AciSectionValidator aciSectionValidator = new AciSectionValidator();
 
-		Set<Detail> errors = aciSectionValidator.validateSingleNode(aciSectionNode);
+		List<Detail> errors = aciSectionValidator.validateSingleNode(aciSectionNode).getErrors();
 
 		assertWithMessage("error should be about missing proportion node")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -52,7 +52,7 @@ class AciSectionValidatorTest {
 
 		AciSectionValidator aciSectionValidator = new AciSectionValidator();
 
-		Set<Detail> errors = aciSectionValidator.validateSingleNode(aciSectionNode);
+		List<Detail> errors = aciSectionValidator.validateSingleNode(aciSectionNode).getErrors();
 
 		assertWithMessage("error should be about missing required Measure")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)

@@ -22,8 +22,8 @@ public class AciSectionValidator extends NodeValidator {
 	 * @param node An ACI section node.
 	 */
 	@Override
-	protected void internalValidateSingleNode(final Node node) {
-		thoroughlyCheck(node)
+	protected void performValidation(final Node node) {
+		forceCheckErrors(node)
 				.childExact(ErrorCode.PI_SECTION_MISSING_REPORTING_PARAMETER_ACT,
 					1, TemplateId.REPORTING_PARAMETERS_ACT);
 	}
