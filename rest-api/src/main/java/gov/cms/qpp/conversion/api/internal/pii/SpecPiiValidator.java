@@ -22,11 +22,11 @@ public class SpecPiiValidator implements PiiValidator {
 		String apm = node.getValue(ClinicalDocumentDecoder.PRACTICE_ID);
 		String npi = node.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER);
 
-		CpcValidationInfo spec = file.getApmToSpec().get(apm);
+		CpcValidationInfo spec = file.getApmToSpec().get(npi);
 		if (spec == null) {
 			validator.addWarning(Detail.forErrorAndNode(ErrorCode.INCORRECT_API_NPI_COMBINATION, node));
 		} else {
-			if (spec.getNpi() != null && !spec.getNpi().equalsIgnoreCase(npi)) {
+			if (spec.getApm() != null && !spec.getApm().equalsIgnoreCase(apm)) {
 				validator.addWarning(Detail.forErrorAndNode(ErrorCode.INCORRECT_API_NPI_COMBINATION, node));
 			}
 		}
