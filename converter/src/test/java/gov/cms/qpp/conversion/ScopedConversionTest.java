@@ -301,7 +301,7 @@ class ScopedConversionTest {
 	private Map<String, Object> scopedConversion(QrdaScope testSection) {
 		Converter converter = new Converter(new PathSource(Paths.get(SUCCESS_MAKER)));
 		converter.getContext().setScope(Sets.newHashSet(testSection));
-		JsonWrapper qpp = converter.transform();
+		JsonWrapper qpp = converter.transform().copyWithoutMetadata();
 		return JsonHelper.readJson(qpp.toString(), HashMap.class);
 	}
 

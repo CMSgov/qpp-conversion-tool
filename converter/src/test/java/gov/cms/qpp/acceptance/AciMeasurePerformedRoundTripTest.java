@@ -23,7 +23,7 @@ class AciMeasurePerformedRoundTripTest {
 	@Test
 	void testGarbage() {
 		Converter converter = new Converter(new PathSource(JUNK_QRDA3_FILE));
-		JsonWrapper qpp = converter.transform();
+		JsonWrapper qpp = converter.transform().copyWithoutMetadata();
 
 		List<Map<String, String>> piMeasures = JsonHelper.readJsonAtJsonPath(qpp.toString(),
 			"$.measurementSets[?(@.category=='pi')].measurements[?(@.measureId=='TEST_MEASURE_ID')]", new TypeRef<List<Map<String, String>>>() { });

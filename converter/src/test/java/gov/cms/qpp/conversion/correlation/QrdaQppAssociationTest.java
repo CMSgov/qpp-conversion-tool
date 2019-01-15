@@ -22,7 +22,6 @@ class QrdaQppAssociationTest {
 	static void setup() {
 		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 		Context context = new Context();
-		context.setMetadataAutoStrip(false);
 		Converter converter = new Converter(new PathSource(path), context);
 
 		qpp = converter.transform();
