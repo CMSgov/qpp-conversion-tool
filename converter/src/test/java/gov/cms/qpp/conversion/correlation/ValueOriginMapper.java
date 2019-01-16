@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.encode.JsonWrapper.Kind;
 
 class ValueOriginMapper {
 	private List<Association> associations = new ArrayList<>();
@@ -22,17 +24,46 @@ class ValueOriginMapper {
 		return associations;
 	}
 
-	@SuppressWarnings("unchecked")
-	void mapIt(String base, Object holder) {
-		if (holder instanceof Map) {
-			map(base, (Map) holder);
+	void mapItJsW(String base, JsonWrapper holder) {
+		if (holder.isObject()) {
+			mapMapJsW(base, holder);
 		} else {
-			map(base, (List) holder);
+			mapListJsW(base, holder);
+		}
+	}
+	@SuppressWarnings("unchecked")
+	void mapItOld(String base, Object holder) {
+		if (holder instanceof Map) {
+			mapOld(base, (Map<String, Object>) holder);
+		} else {
+			mapOld(base, (List<Object>) holder);
 		}
 	}
 
+	void map(String base, JsonWrapper toAssociate) {
+		if (toAssociate.isList()) {
+			int[] index = { 0 }; // TODO not thread safe, but stream does not have an (index,item) signature
+			toAssociate.stream().forEach( child -> {
+				String newBase = base + "[" + index[0]++ + "]";
+				map(newBase, child);
+			});
+		}
+		if (toAssociate.isObject()) {
+			toAssociate.stream().forEach(entry -> {
+				String newBase = base + "." + entry.getKey();
+				JsonWrapper metadata = entry.getMetadata();
+				String xPath = getXpath(metadata, entry.getKey());
+				if (xPath != null) {
+					associations.add(new Association(xPath, newBase, entry.toObject().toString()));
+				}
+				if (entry.isKind(Kind.OBJECT)) {
+					map(newBase, entry);
+				}
+			});
+		}
+	}
 	@SuppressWarnings("unchecked")
-	private void map(String base, Map<String, Object> toAssociate) {
+	private void mapOld(String base, Map<String, Object> toAssociate) { // TODO remove when streams work
 		for (Map.Entry<String, Object> entry : toAssociate.entrySet()) {
 			if (entry.getKey().equals(JsonWrapper.METADATA_HOLDER)) {
 				continue;
@@ -40,10 +71,10 @@ class ValueOriginMapper {
 			String newBase = base + "." + entry.getKey();
 
 			if (entry.getValue() instanceof Map || entry.getValue() instanceof List) {
-				mapIt(newBase, entry.getValue());
+				mapItOld(newBase, entry.getValue());
 			} else {
 				Set<Map<String, String>> metadataSet = ((Set<Map<String, String>>)toAssociate.get(JsonWrapper.METADATA_HOLDER));
-				String xPath = getXpath(metadataSet, entry.getKey());
+				String xPath = getXpathOld(metadataSet, entry.getKey());
 				if (xPath != null) {
 					associations.add(
 							new Association(xPath, base + "." + entry.getKey(),
@@ -52,8 +83,50 @@ class ValueOriginMapper {
 			}
 		}
 	}
+	private void mapMapJsW(String base, JsonWrapper toAssociate) { // TODO remove when streams work
+		List<JsonWrapper> associates = toAssociate.stream().collect(Collectors.toList());
+		for (JsonWrapper entry : associates) {
+			String key = entry.getKey();
+			if (entry.getKey().equals(JsonWrapper.METADATA_HOLDER)) {
+				continue;
+			}
+			String newBase = base + "." + key;
 
-	private String getXpath(Set<Map<String, String>> metadataSet, String key) {
+			if (entry.isKind(Kind.OBJECT)) {
+				mapItJsW(newBase, entry);
+			} else {
+				JsonWrapper metadataSet = toAssociate.getMetadata();
+				String xPath = getXpathJsW(metadataSet, key);
+				if (xPath != null) {
+					associations.add( new Association(xPath, base + "." + key, entry.toString()));
+				}
+			}
+		}
+	}
+
+	private String getXpath(JsonWrapper metadata, String key) {
+		if (metadata == null) {
+			return null;
+		}
+		JsonWrapper xPath = metadata.stream()
+			.reduce((JsonWrapper)null, 
+			(current, meta) -> {
+				String label = meta.getString("encodeLabel");
+				if (label.equals(key)) {
+					String relative = PathCorrelator.getXpath(meta.getString("template"), label, meta.getString("nsuri"));
+					String axPath = (relative == null) ? meta.getString("path") : meta.getString("path") + "/" + relative;
+					return new JsonWrapper().put("xPath", axPath);
+				}
+				if (current == null || meta.getString("path").length() < current.getString("path").length()) {
+					current = meta;
+					String axPath = meta.getString("path");
+					return current.put("xPath", axPath); // TODO ADSF TODO this causes an NPE 
+				}
+				return current;
+			});
+		return xPath == null ?null :xPath.getString("xPath").toString();
+	}
+	private String getXpathOld(Set<Map<String, String>> metadataSet, String key) { // TODO remove when working with streams
 		String xPath = null;
 		Map<String, String> current = null;
 		if (metadataSet == null) {
@@ -73,12 +146,41 @@ class ValueOriginMapper {
 		}
 		return xPath;
 	}
+	private String getXpathJsW(JsonWrapper metadata, String key) { // TODO remove when working with streams
+		String xPath = null;
+		JsonWrapper current = null;
+		if (metadata == null) {
+			return xPath;
+		}
+		List<JsonWrapper> metadataSet = metadata.stream().collect(Collectors.toList());
+		for (JsonWrapper metaMap : metadataSet) {
+			String label = metaMap.getString("encodeLabel");
+			if (label.equals(key)) {
+				String relative = PathCorrelator.getXpath(metaMap.getString("template"), label, metaMap.getString("nsuri"));
+				xPath = (relative == null) ? metaMap.getString("path") : metaMap.getString("path") + "/" + relative;
+				break;
+			}
+			if (current == null || metaMap.getString("path").length() < current.getString("path").length()) {
+				current = metaMap;
+				xPath = metaMap.getString("path");
+			}
+		}
+		return xPath;
+	}
 
-	private void map(String base, List<Object> toAssociate) {
+	private void mapOld(String base, List<Object> toAssociate) { // TODO remove when streams works
 		int index = 0;
 		for (Object obj : toAssociate) {
 			String newBase = base + "[" + index++ + "]";
-			mapIt(newBase, obj);
+			mapItOld(newBase, obj);
+		}
+	}
+	private void mapListJsW(String base, JsonWrapper toAssociate) { // TODO remove when streams works
+		List<JsonWrapper> associates = toAssociate.stream().collect(Collectors.toList());
+		int index = 0;
+		for (JsonWrapper jsw : associates) {
+			String newBase = base + "[" + index++ + "]";
+			mapItJsW(newBase, jsw);
 		}
 	}
 

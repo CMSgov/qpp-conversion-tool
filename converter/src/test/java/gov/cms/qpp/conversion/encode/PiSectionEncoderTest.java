@@ -75,13 +75,11 @@ class PiSectionEncoderTest {
 		PiSectionEncoder piSectionEncoder = new PiSectionEncoder(new Context());
 		piSectionEncoder.internalEncode(jsonWrapper, piSectionNode);
 
-		Map<?, ?> testMapObject = (Map<?, ?>) jsonWrapper.getObject();
-
-		assertWithMessage("Must have a child node").that(testMapObject).isNotNull();
-		assertWithMessage("Must be category ACI").that(testMapObject.get(CATEGORY)).isEqualTo(PI);
-		assertWithMessage("Must have measurements").that(testMapObject.get(MEASUREMENTS)).isNotNull();
+		assertWithMessage("Must have a child node").that(jsonWrapper).isNotNull();
+		assertWithMessage("Must be category ACI").that(jsonWrapper.getString(CATEGORY)).isEqualTo(PI);
+		assertWithMessage("Must have measurements").that(jsonWrapper.get(MEASUREMENTS)).isNotNull();
 		assertWithMessage("Must have submissionMethod")
-				.that(testMapObject.get(SUBMISSION_METHOD)).isEqualTo(ELECTRONIC_HEALTH_RECORD);
+				.that(jsonWrapper.getString(SUBMISSION_METHOD)).isEqualTo(ELECTRONIC_HEALTH_RECORD);
 	}
 
 	@Test
@@ -90,10 +88,9 @@ class PiSectionEncoderTest {
 		PiSectionEncoder piSectionEncoder = new PiSectionEncoder(new Context());
 		piSectionEncoder.internalEncode(jsonWrapper, piSectionNode);
 
-		Map<?, ?> testMapObject = (Map<?, ?>) jsonWrapper.getObject();
-		Stream failed = ((Set) testMapObject.get("metadata_holder")).stream()
-			.filter(entry -> ((Map) entry).get("template").equals(TemplateId.REPORTING_PARAMETERS_ACT.name()))
-			.filter(entry -> ((Map) entry).get("encodeLabel").equals(""));
+		Stream<JsonWrapper> failed = jsonWrapper.getMetadata().stream() // TODO asdf
+			.filter(entry -> entry.getString("template").equals(TemplateId.REPORTING_PARAMETERS_ACT.name()))
+			.filter(entry -> entry.getString("encodeLabel").equals(""));
 
 		assertThat(failed.count()).isEqualTo(0);
 	}

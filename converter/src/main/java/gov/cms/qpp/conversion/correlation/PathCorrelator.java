@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -112,8 +113,9 @@ public class PathCorrelator {
 	public static String getXpath(String base, String attribute, String uri) {
 		String key = PathCorrelator.getKey(base, attribute);
 		Goods goods = pathCorrelationMap.get(key);
-		return (goods == null) ? null :
-				goods.getRelativeXPath().replace(uriSubstitution, uri);
+		return (goods == null) 
+				? null
+				: goods.getRelativeXPath().replace(uriSubstitution, uri);
 	}
 
 	/**
@@ -134,7 +136,8 @@ public class PathCorrelator {
 		}
 
 		JsonPath compiledPath = JsonPath.compile(base);
-		Map<String, Object> jsonMap = compiledPath.read(wrapper.toString());
+		String json = wrapper.toStringWithMetadata();
+		Map<String, Object> jsonMap = compiledPath.read(json); // TODO asdf refactor because this is json text to map not a path
 		Map<String, String> metaMap = getMetaMap(jsonMap, leaf);
 
 		String preparedPath = "";
@@ -158,9 +161,13 @@ public class PathCorrelator {
 				.sorted(labeledFirst())
 				.filter(entry -> {
 					String encodeLabel = entry.get(ENCODE_LABEL);
-					if (encodeLabel.equals(leaf)) {
-						return leaf.isEmpty()
-								|| PathCorrelator.getXpath(entry.get("template"), leaf, entry.get("nsuri")) != null;
+					if ( encodeLabel.equals(leaf) ) {
+						if ( ! leaf.isEmpty() ) {
+							String template = entry.get("template");
+							String nsuri = entry.get("nsuri");
+							return PathCorrelator.getXpath(template, leaf, nsuri) != null;
+						}
+						return true;
 					}
 					return encodeLabel.isEmpty();
 				})
@@ -183,6 +190,36 @@ public class PathCorrelator {
 		};
 	}
 
+/*	// TODO asdf del
+	private static JsonWrapper getMetaMap(JsonWrapper wrapper, final String leaf) {
+		JsonWrapper metaHolder = wrapper.getMetadata();
+		return metaHolder.stream()
+				.sorted(labeledFirstWrapper())
+				.filter(wrapperEntry -> {
+					String encodeLabel = wrapperEntry.getString(ENCODE_LABEL);
+					if (encodeLabel.equals(leaf)) {
+						return leaf.isEmpty()
+								|| PathCorrelator.getXpath(
+										wrapperEntry.getString("template"), leaf, wrapperEntry.getString("nsuri")) != null;
+					}
+					return encodeLabel.isEmpty();
+				})
+				.findFirst()
+				.orElse(null);
+	}
+	private static Comparator<JsonWrapper> labeledFirstWrapper() {
+		return (JsonWrapper jw1, JsonWrapper jw2) -> {
+			String label1 = jw1.getString(ENCODE_LABEL);
+			String label2 = jw1.getString(ENCODE_LABEL);
+			
+			return Boolean.compare(label1.isEmpty(), label2.isEmpty());
+		};
+	}
+
+ */
+	
+	
+	
 	/**
 	 * Assemble base xpath with a relative xpath that identifies a leaf json attribute.
 	 *

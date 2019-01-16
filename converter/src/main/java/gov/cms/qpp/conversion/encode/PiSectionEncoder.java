@@ -44,15 +44,15 @@ public class PiSectionEncoder extends QppOutputEncoder {
 
 		encodeChildren(children, measurementsWrapper);
 
-		wrapper.putObject("measurements", measurementsWrapper);
+		wrapper.put("measurements", measurementsWrapper);
 
 		Optional.ofNullable(node.getParent()).ifPresent(parent -> pilferParent(wrapper, parent));
 		encodeReportingParameter(wrapper, node);
 	}
 
 	private void encodeTopLevelValues(JsonWrapper wrapper, Node node) {
-		wrapper.putString("category", node.getValue("category"));
-		wrapper.putString(SUBMISSION_METHOD, "electronicHealthRecord");
+		wrapper.put("category", node.getValue("category"));
+		wrapper.put(SUBMISSION_METHOD, "electronicHealthRecord");
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class PiSectionEncoder extends QppOutputEncoder {
 
 				if (childEncoder != null) {
 					childEncoder.encode(childWrapper, currentChild);
-					measurementsWrapper.putObject(childWrapper);
+					measurementsWrapper.put(childWrapper);
 				} else {
 					addValidationError(Detail.forErrorAndNode(ErrorCode.ENCODER_MISSING, currentChild));
 				}
@@ -86,7 +86,7 @@ public class PiSectionEncoder extends QppOutputEncoder {
 	 * @param parent the clinical document node
 	 */
 	private void pilferParent(JsonWrapper wrapper, Node parent) {
-		wrapper.putString(ClinicalDocumentDecoder.PROGRAM_NAME,
+		wrapper.put(ClinicalDocumentDecoder.PROGRAM_NAME,
 				parent.getValue(ClinicalDocumentDecoder.PROGRAM_NAME));
 		maintainContinuity(wrapper, parent, ClinicalDocumentDecoder.PROGRAM_NAME);
 		encodeEntityId(wrapper, parent);
@@ -101,7 +101,7 @@ public class PiSectionEncoder extends QppOutputEncoder {
 	private void encodeEntityId(JsonWrapper wrapper, Node parent) {
 		String entityId = parent.getValue(ClinicalDocumentDecoder.PRACTICE_ID);
 		if (!StringUtils.isEmpty(entityId)) {
-			wrapper.putString(ClinicalDocumentDecoder.PRACTICE_ID, entityId);
+			wrapper.put(ClinicalDocumentDecoder.PRACTICE_ID, entityId);
 		}
 	}
 

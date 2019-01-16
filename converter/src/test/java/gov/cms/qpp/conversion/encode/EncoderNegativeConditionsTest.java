@@ -36,11 +36,11 @@ class EncoderNegativeConditionsTest {
 			Assertions.fail("Failure to encode: " + e.getMessage());
 		}
 
-		// NOTE: This test is only relevant in that it finds the deep value but
-		// it is not actually a result
-		String expected = "null";
-		assertThat(sw.toString())
-				.isEqualTo(expected);
+		// NOTE: This test is only relevant in that it finds 
+		// the deep value but it is not actually a result.
+		// QPPCT-1008: New null protection does not allow nulls in the wrapper 
+		String expected = "{ }";
+		assertThat(sw.toString()).isEqualTo(expected);
 	}
 
 	@Test

@@ -33,7 +33,7 @@ public class PiProportionNumeratorEncoder extends QppOutputEncoder {
 			JsonWrapper numerator = encodeChild(piNumeratorNode);
 
 			if (null != numerator.getInteger(VALUE)) {
-				wrapper.putObject(ENCODE_LABEL, numerator.getInteger(VALUE));
+				wrapper.putInteger(ENCODE_LABEL, numerator.getInteger(VALUE));
 				wrapper.mergeMetadata(numerator, ENCODE_LABEL);
 			}
 		}

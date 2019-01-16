@@ -33,7 +33,7 @@ public class PiProportionDenominatorEncoder extends QppOutputEncoder {
 			denominatorValueEncoder.encode(value, denominatorValueNode);
 
 			if (null != value.getInteger(VALUE)) {
-				wrapper.putObject(ENCODE_LABEL, value.getInteger(VALUE));
+				wrapper.putInteger(ENCODE_LABEL, value.getInteger(VALUE));
 				wrapper.mergeMetadata(value, ENCODE_LABEL);
 			}
 		}

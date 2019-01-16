@@ -29,7 +29,7 @@ public class QedEncoder extends QppOutputEncoder {
 		Set<String> keys = node.getKeys();
 
 		for (String key : keys) {
-			wrapper.putString(key, node.getValue(key));
+			wrapper.put(key, node.getValue(key));
 		}
 	}
 }

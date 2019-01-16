@@ -87,7 +87,7 @@ class QrdaServiceImplTest {
 		Converter mockConverter = mock(Converter.class);
 
 		JsonWrapper qpp = new JsonWrapper();
-		qpp.putString(KEY, MOCK_SUCCESS_QPP_STRING);
+		qpp.put(KEY, MOCK_SUCCESS_QPP_STRING);
 
 		ConversionReport report = mock(ConversionReport.class);
 

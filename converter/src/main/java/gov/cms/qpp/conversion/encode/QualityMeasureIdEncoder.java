@@ -47,7 +47,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	public void internalEncode(JsonWrapper wrapper, Node node) {
 		MeasureConfig measureConfig = MeasureConfigHelper.getMeasureConfig(node);
 		String measureId = measureConfig.getMeasureId();
-		wrapper.putString(MEASURE_ID, measureId);
+		wrapper.put(MEASURE_ID, measureId);
 
 		if (isASinglePerformanceRate(measureConfig)) {
 			encodeChildren(wrapper, node, measureConfig);
@@ -77,7 +77,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		JsonWrapper childWrapper = new JsonWrapper();
 		childWrapper.putBoolean(IS_END_TO_END_REPORTED, TRUE);
 		encodeSubPopulation(parentNode, childWrapper, false, measureConfig);
-		wrapper.putObject(VALUE, childWrapper);
+		wrapper.put(VALUE, childWrapper);
 	}
 
 	/**
@@ -162,10 +162,10 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		for (Node subPopNode : subPopNodes) {
 			JsonWrapper strataWrapper = new JsonWrapper();
 			encodeSubPopulation(subPopNode, strataWrapper, true, measureConfig);
-			strataListWrapper.putObject(strataWrapper);
+			strataListWrapper.put(strataWrapper);
 		}
-		childWrapper.putObject("strata", strataListWrapper);
-		wrapper.putObject(VALUE, childWrapper);
+		childWrapper.put("strata", strataListWrapper);
+		wrapper.put(VALUE, childWrapper);
 	}
 
 	/**
@@ -223,7 +223,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 					String numeratorPopulationId =
 							node.getValue(MeasureDataDecoder.MEASURE_POPULATION).toUpperCase(Locale.ENGLISH);
 					String stratum = stratumForNumeratorUuid(numeratorPopulationId, measureConfig);
-					wrapper.putString("stratum", stratum);
+					wrapper.put("stratum", stratum);
 				});
 	}
 

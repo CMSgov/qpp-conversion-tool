@@ -1,24 +1,25 @@
 package gov.cms.qpp.conversion.encode;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Stream;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
 import gov.cms.qpp.conversion.Source;
@@ -33,27 +34,25 @@ import gov.cms.qpp.conversion.util.FormatHelper;
  */
 public class JsonWrapper {
 
+	public static enum Kind {
+		VALUE, OBJECT, METADATA;
+	}
+	public static enum Type {
+		BOOLEAN, DATE, INTEGER, FLOAT, STRING, MAP, LIST; // TODO asdf NONE type, others ?
+	}
+	
 	public static final String METADATA_HOLDER = "metadata_holder";
+	public static final String ENCODING_KEY = "encodeLabel";
+	private static ObjectMapper jsonMapper;
+	private static ObjectMapper metaMapper;
 
-	private static void stripMetadata(Object object) {
-		if (object == null) {
+	private static void stripMetadata(JsonWrapper wrapper) {
+		if (wrapper == null) {
 			return;
 		}
-
-		if (object instanceof JsonWrapper) {
-			stripMetadata(((JsonWrapper) object).object);
-			stripMetadata(((JsonWrapper) object).list);
-		} else if (object instanceof Map) {
-			Map<?, ?> map = (Map<?, ?>) object;
-			map.remove(METADATA_HOLDER);
-			map.values().forEach(JsonWrapper::stripMetadata);
-		} else if (object instanceof Collection) {
-			((Collection<?>) object).forEach(JsonWrapper::stripMetadata);
-		}
-	}
-
-	public static ObjectWriter standardWriter() {
-		return new ObjectMapper().writer().with(standardPrinter());
+		wrapper.metadata.clear();
+		wrapper.childrenMap.values().stream().forEach(JsonWrapper::stripMetadata);
+		wrapper.childrenList.stream().forEach(JsonWrapper::stripMetadata);
 	}
 
 	private static DefaultPrettyPrinter standardPrinter() {
@@ -63,42 +62,198 @@ public class JsonWrapper {
 		return printer;
 	}
 
-	private final ObjectWriter jsonWriter = standardWriter();
-	private Map<String, Object> object;
-	private List<Object> list;
+	
+	private static class JsonWrapperSerilizer extends StdSerializer<JsonWrapper> {
+
+		protected JsonWrapperSerilizer() {
+			super(JsonWrapper.class);
+		}
+		
+		protected void objectHandling(JsonWrapper value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+			Object wrappedEntity = value.toObject();
+			gen.writeObject(wrappedEntity);
+		}
+
+		@Override
+		public void serialize(JsonWrapper value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+//			System.out.print("value.type = " + value.type); // TODO asdf delete
+			Object wrappedEntity = value.toObject();
+//			System.out.println(", value.value = " + value.value);
+			if (value.type == null) {
+				objectHandling(value, gen, provider);
+				return;
+			}
+			switch (value.type) {
+				case BOOLEAN: gen.writeBoolean( Boolean.parseBoolean(wrappedEntity.toString()));
+					break;
+				case INTEGER: gen.writeNumber( Integer.parseInt(wrappedEntity.toString()));
+					break;
+				case FLOAT:   gen.writeNumber( Float.parseFloat(wrappedEntity.toString()));
+					break;
+				case DATE:
+				case STRING:  gen.writeString( wrappedEntity.toString() );
+					break;
+				default: 	  objectHandling(value, gen, provider);
+					break;
+			}
+		}
+	}
+	private static class JsonWrapperMetadataSerilizer extends JsonWrapperSerilizer {
+		
+		protected void objectHandling(JsonWrapper value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+			if (value.isType(Type.MAP)) {
+				if (value.hasMetadata()) {
+					gen.writeStartObject();
+					if (value.hasMetadata()) {
+						gen.writeObjectField(METADATA_HOLDER, value.getMetadata());
+					}
+					value.stream().forEach( entry -> {
+						try {
+//							System.out.println(entry.getKey()); // TODO asdf del
+//							if ("performanceEnd".equals(entry.getKey())) {
+//								System.out.println(entry.value);
+//							}
+							gen.writeObjectField(entry.getKey(), entry);
+						} catch (IOException e) {
+							throw new RuntimeException(e);
+						}
+					});
+					gen.writeEndObject();
+				} else {
+					super.objectHandling(value, gen, provider);
+				}
+			} else if (value.isType(Type.LIST)) {
+				
+				//super.objectHandling(value, gen, provider);
+//				gen.writeStartArray(); // TODO asdf del if no metadata in lists
+//				gen.writeObject(pojo);
+//				gen.writeEndArray();
+				gen.writeStartArray();
+				if (value.hasMetadata()) {
+					gen.writeObject(value.getMetadata());
+				}
+	            value.stream().forEach( entry ->{
+	                try {
+						gen.writeObject(entry);
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
+	            });
+	            gen.writeEndArray();
+	        } else if (value.hasMetadata()) {
+				super.objectHandling(value.getMetadata(), gen, provider);
+	        }
+		} 
+	}
+	
+	static {
+		jsonMapper = new ObjectMapper();
+		SimpleModule module = new SimpleModule();
+		module.addSerializer(JsonWrapper.class, new JsonWrapperSerilizer());
+		jsonMapper.registerModule(module);
+		
+		metaMapper = new ObjectMapper();
+		module = new SimpleModule();
+		module.addSerializer(JsonWrapper.class, new JsonWrapperMetadataSerilizer());
+		metaMapper.registerModule(module);		
+	}
+	
+	public static ObjectWriter standardWriter() {
+		return jsonMapper.writer().with(standardPrinter());
+	}
+	public static ObjectWriter metadataWriter() {
+		return metaMapper.writer().with(standardPrinter());
+	}
+	
+	private static final ObjectWriter jsonWriter = standardWriter();
+	private static final ObjectWriter withMetadataWriter = metadataWriter();
+	
+	private final String value;
+	private final Map<String, JsonWrapper> childrenMap;
+	private final List<JsonWrapper> childrenList;
+	private final JsonWrapper metadata;
+	private final Kind kind;
+	private Type type;
+	private String keyForMapStream;
+	
 
 	public JsonWrapper() {
+		this(Kind.OBJECT);
+	}
+	public JsonWrapper(Kind kind) {
+		this.kind = kind;
+		
+		if (isValue()) {
+			throw new UnsupportedOperationException("To use kind.VALUE, use the constructor JsonWrapper(String)");
+		}
+		
+		value = null;
+		childrenMap = new LinkedHashMap<>();
+		childrenList = new LinkedList<>();
+		
+		// no metadata on metadata
+		metadata = isMetadata() ?null :new JsonWrapper(Kind.METADATA);
+	}
+	public JsonWrapper(String value) {
+		kind = Kind.VALUE;
+		this.value = value;
+		childrenMap = null;
+		childrenList = null;
+		metadata = null;
 	}
 
+	
 	public JsonWrapper(JsonWrapper wrapper) {
-		if (wrapper.isObject()) {
-			this.object = CloneHelper.deepClone(wrapper.object);
+		this(wrapper, true);
+	}
+	private JsonWrapper(JsonWrapper wrapper, boolean withMetadata) {
+		kind = wrapper.kind;
+		value = wrapper.value;
+		
+		childrenMap = CloneHelper.deepClone(wrapper.childrenMap);
+		childrenList = CloneHelper.deepClone(wrapper.childrenList);
+		
+		if (withMetadata) {
+			metadata = CloneHelper.deepClone(wrapper.metadata);
 		} else {
-			this.list = CloneHelper.deepClone(wrapper.list);
-		}
+			// instance allows for new metadata to be added
+			metadata = new JsonWrapper(Kind.METADATA);
+		}	
+	}
+	
+	public Type getType() {
+		return type;
+	}
+	public boolean isType(Type type) {
+		return this.type == type;
+	}
+	public Kind getKind() {
+		return kind;
+	}
+	public boolean isKind(Kind kind) {
+		return this.kind == kind;
+	}
+	public String getKey() {
+		return keyForMapStream;
+	}
+	public JsonWrapper setKeyForMapStream(String key) {
+		this.keyForMapStream = key;
+		return this;
 	}
 
 	public JsonWrapper copyWithoutMetadata() {
-		JsonWrapper copy = new JsonWrapper(this);
-		stripMetadata(copy);
-		return copy;
+		return new JsonWrapper(this, false);
 	}
 
-	/**
-	 * Extract wrapped content from a {@link gov.cms.qpp.conversion.encode.JsonWrapper}.
-	 *
-	 * @param value {@link Object} which may be wrapped
-	 * @return wrapped content
-	 */
-	public Object stripWrapper(Object value) {
-		Object internalValue = value;
-		if (value instanceof JsonWrapper) {
-			JsonWrapper wrapper = (JsonWrapper) value;
-			internalValue = wrapper.getObject();
+	public JsonWrapper clear() {
+		if ( ! isValue() ) {
+			childrenMap.clear();
+			childrenList.clear();
+			metadata.clear();
 		}
-		return internalValue;
+		return this;
 	}
-
+	
 	/**
 	 * Places a named String within the wrapper. See {@link #putObject(String, Object)}
 	 *
@@ -106,8 +261,9 @@ public class JsonWrapper {
 	 * @param value keyed value
 	 * @return <i><b>this</b></i> reference for chaining
 	 */
-	public JsonWrapper putString(String name, String value) {
-		return putObject(name, value);
+	public JsonWrapper put(String name, String value) {
+		put(name, value, Type.STRING);
+		return this;
 	}
 
 	/**
@@ -117,8 +273,9 @@ public class JsonWrapper {
 	 * @param value to place in wrapper
 	 * @return <i><b>this</b></i> reference for chaining
 	 */
-	public JsonWrapper putString(String value) {
-		return putObject(value);
+	public JsonWrapper put(String value) {
+		put(value, Type.STRING);
+		return this;
 	}
 
 	/**
@@ -130,11 +287,12 @@ public class JsonWrapper {
 	 */
 	public JsonWrapper putDate(String name, String value) {
 		try {
-			return putObject(name, validDate(value));
+			put(name, validDate(value), Type.DATE);
 		} catch (EncodeException e) {
-			putObject(name, value);
+			put(name, value, Type.DATE);
 			throw e;
 		}
+		return this;
 	}
 
 	/**
@@ -146,11 +304,12 @@ public class JsonWrapper {
 	 */
 	public JsonWrapper putDate(String value) {
 		try {
-			return putObject(validDate(value));
+			put(validDate(value), Type.DATE);
 		} catch (EncodeException e) {
-			putObject(value);
+			put(value, Type.DATE);
 			throw e;
 		}
+		return this;
 	}
 
 	/**
@@ -163,11 +322,16 @@ public class JsonWrapper {
 	 */
 	public JsonWrapper putInteger(String name, String value) {
 		try {
-			return putObject(name, validInteger(value));
+			put(name, validInteger(value), Type.INTEGER);
 		} catch (EncodeException e) {
-			putObject(name, value);
+			put(name, value, Type.INTEGER);
 			throw e;
 		}
+		return this;
+	}
+	public JsonWrapper putInteger(String name, Integer value) {
+		put(name, Integer.toString(value), Type.INTEGER);
+		return this;
 	}
 
 	/**
@@ -179,11 +343,12 @@ public class JsonWrapper {
 	 */
 	public JsonWrapper putInteger(String value) {
 		try {
-			return putObject(validInteger(value));
+			put(validInteger(value), Type.INTEGER);
 		} catch (EncodeException e) {
-			putObject(value);
+			put(value, Type.INTEGER);
 			throw e;
 		}
+		return this;
 	}
 
 	/**
@@ -196,11 +361,12 @@ public class JsonWrapper {
 	 */
 	public JsonWrapper putFloat(String name, String value) {
 		try {
-			return putObject(name, validFloat(value));
+			put(name, validFloat(value), Type.FLOAT);
 		} catch (EncodeException e) {
-			putObject(name, value);
+			put(name, value, Type.FLOAT);
 			throw e;
 		}
+		return this;
 	}
 
 	/**
@@ -212,11 +378,12 @@ public class JsonWrapper {
 	 */
 	public JsonWrapper putFloat(String value) {
 		try {
-			return putObject(validFloat(value));
+			put(validFloat(value), Type.FLOAT);
 		} catch (EncodeException e) {
-			putObject(value);
+			put(value, Type.FLOAT);
 			throw e;
 		}
+		return this;
 	}
 
 	/**
@@ -229,11 +396,16 @@ public class JsonWrapper {
 	 */
 	public JsonWrapper putBoolean(String name, String value) {
 		try {
-			return putObject(name, validBoolean(value));
+			put(name, Boolean.toString(validBoolean(value)), Type.BOOLEAN);
 		} catch (EncodeException e) {
-			putObject(name, value);
+			put(name, value, Type.BOOLEAN);
 			throw e;
 		}
+		return this;
+	}
+	public JsonWrapper put(String name, boolean value) {
+		put(name, Boolean.toString(value), Type.BOOLEAN);
+		return this;
 	}
 
 	/**
@@ -245,13 +417,28 @@ public class JsonWrapper {
 	 */
 	public JsonWrapper putBoolean(String value) {
 		try {
-			return putObject(validBoolean(value));
+			put( Boolean.toString(validBoolean(value)), Type.BOOLEAN);
 		} catch (EncodeException e) {
-			putObject(value);
+			put(value, Type.BOOLEAN);
 			throw e;
 		}
+		return this;
 	}
 
+	
+	private void put(String name, String value, Type type) {
+		JsonWrapper wrapper = new JsonWrapper(value);
+		wrapper.type = type;
+		put(name, wrapper);
+	}
+	
+	private void put(String value, Type type) {
+		JsonWrapper wrapper = new JsonWrapper(value);
+		wrapper.type = type;
+		put(wrapper);
+	}
+	
+	
 	/**
 	 * Places a named object within the wrapper. In the event the named object is
 	 * also a {@link gov.cms.qpp.conversion.encode.JsonWrapper} its wrapped
@@ -263,14 +450,12 @@ public class JsonWrapper {
 	 * @param value keyed value
 	 * @return <i><b>this</b></i> reference for chaining
 	 */
-	public JsonWrapper putObject(String name, Object value) {
-		checkState(list);
-		initAsObject();
-		Object internalValue = stripWrapper(value);
-		if (internalValue == null) {
-			return this;
+	public JsonWrapper put(String name, JsonWrapper value) {
+		checkState(childrenList);
+		if (checkState(value)) {
+			childrenMap.put(name, value);
+			type = Type.MAP;
 		}
-		this.object.put(name, internalValue);
 		return this;
 	}
 
@@ -283,59 +468,76 @@ public class JsonWrapper {
 	 * @param value object to place in wrapper
 	 * @return <i><b>this</b></i> reference for chaining
 	 */
-	public JsonWrapper putObject(Object value) {
-		checkState(object);
-		initAsList();
-		Object internalValue = stripWrapper(value);
-		if (internalValue == null) {
-			return this;
+	public JsonWrapper put(JsonWrapper value) {
+		checkState(childrenMap);
+		if (checkState(value)) {
+			childrenList.add(value);
+			type = Type.LIST;
 		}
-		this.list.add(internalValue);
 		return this;
 	}
 
 	/**
 	 * Retrieve a named {@link String} from the {@link JsonWrapper}.
 	 *
-	 * @see #getValue(String)
+	 * @see #get(String)
 	 * @param name key for value
 	 * @return retrieved keyed value
 	 */
 	public String getString(String name) {
-		return getValue(name);
+		JsonWrapper wrapper = get(name);
+		if (wrapper == null) {
+			return null;
+		}
+		return wrapper.value;
 	}
 
 	/**
 	 * Retrieve a named {@link Integer} from the {@link JsonWrapper}.
 	 *
-	 * @see #getValue(String)
+	 * @see #get(String)
 	 * @param name key for value
 	 * @return retrieved keyed value
 	 */
 	public Integer getInteger(String name) {
-		return getValue(name);
+		JsonWrapper wrapper = get(name);
+		if (wrapper == null) {
+			return null;
+		}
+		String value = wrapper.value;
+		return Integer.valueOf(value);
 	}
 
 	/**
 	 * Retrieve a named {@link Float} from the {@link JsonWrapper}.
 	 *
-	 * @see #getValue(String)
+	 * @see #get(String)
 	 * @param name key for value
 	 * @return retrieved keyed value
 	 */
 	public Float getFloat(String name) {
-		return getValue(name);
+		JsonWrapper wrapper = get(name);
+		if (wrapper == null) {
+			return null;
+		}
+		String value = wrapper.value;
+		return Float.valueOf(value);
 	}
 
 	/**
 	 * Retrieve a named {@link Boolean} from the {@link JsonWrapper}.
 	 *
-	 * @see #getValue(String)
+	 * @see #get(String)
 	 * @param name key for value
 	 * @return retrieved keyed value
 	 */
 	public Boolean getBoolean(String name) {
-		return getValue(name);
+		JsonWrapper wrapper = get(name);
+		if (wrapper == null) {
+			return null;
+		}
+		String value = wrapper.value;
+		return Boolean.valueOf(value);
 	}
 
 	/**
@@ -347,10 +549,12 @@ public class JsonWrapper {
 	 * @param <T>
 	 * @return T retrieved keyed value
 	 */
-	@SuppressWarnings("unchecked")
-	<T> T getValue(String name) {
-		if (isObject()) {
-			return (T) object.get(name);
+	public JsonWrapper get(String name) {
+		return childrenMap.get(name);
+	}
+	public JsonWrapper get(int index) {
+		if (index < childrenList.size()) {
+			return childrenList.get(index);
 		}
 		return null;
 	}
@@ -362,9 +566,11 @@ public class JsonWrapper {
 	 * @return valid Integer
 	 * @throws EncodeException
 	 */
-	protected int validInteger(String value) {
+	protected String validInteger(String value) {
 		try {
-			return Integer.parseInt(FormatHelper.cleanString(value));
+			String clean = FormatHelper.cleanString(value);
+			Integer.parseInt(clean);
+			return clean;
 		} catch (RuntimeException e) {
 			throw new EncodeException(value + " is not an integer.", e);
 		}
@@ -394,9 +600,11 @@ public class JsonWrapper {
 	 * @return valid Float value
 	 * @throws EncodeException
 	 */
-	protected float validFloat(String value) {
+	protected String validFloat(String value) {
 		try {
-			return Float.parseFloat(FormatHelper.cleanString(value));
+			String clean = FormatHelper.cleanString(value);
+			Float.parseFloat(clean);
+			return clean;
 		} catch (RuntimeException e) {
 			throw new EncodeException(value + " is not a number.", e);
 		}
@@ -424,32 +632,47 @@ public class JsonWrapper {
 	}
 
 	/**
-	 * Determines {@link JsonWrapper}'s intended use as a representation of a JSON hash
-	 */
-	protected void initAsObject() {
-		if (object == null) {
-			object = new LinkedHashMap<>();
-		}
-	}
-
-	/**
-	 * Determines {@link JsonWrapper}'s intended use as a representation of a JSON array
-	 */
-	protected void initAsList() {
-		if (list == null) {
-			list = new LinkedList<>();
-		}
-	}
-
-	/**
 	 * Helps enforce the initialized representation of the {@link JsonWrapper} as a hash or an array.
 	 *
 	 * @param check should be null
 	 */
-	protected void checkState(Object check) {
-		if (check != null) {
-			throw new IllegalStateException("Current state may not change (from list to object or reverse).");
+	protected void checkState(Map<String, JsonWrapper> map) {
+		if ( ! map.isEmpty()) {
+			throw new IllegalStateException("Current state may not change (from object to list).");
 		}
+	}
+	protected void checkState(List<JsonWrapper> list) {
+		if ( ! list.isEmpty() ) {
+			throw new IllegalStateException("Current state may not change (from list to object).");
+		}
+	}
+	protected boolean checkState(JsonWrapper wrapper) { // TODO asdf exhaustive unit test coverage
+		if (wrapper == null) { // no null entries
+			return false;
+		}
+		if ( ! isUniqueEntry(wrapper) ) { // no self references
+			return false;
+		}
+		if (wrapper.isKind(Kind.METADATA) && this.isKind(Kind.METADATA)) { // allow metadata mergers
+			return true;
+		}
+		if (wrapper.value == null && wrapper.isKind(Kind.VALUE)) { // no null values
+			return false;
+		}
+		if (wrapper.isType(null)) { // no empty objects
+			return false;
+		}
+		return true; // must be good if we made it through the gauntlet
+//		return wrapper!=null && isUniqueEntry(wrapper) && (wrapper.value != null && !wrapper.isType(null) || wrapper.isKind(Kind.METADATA));
+	}
+	public boolean isUniqueEntry(JsonWrapper wrapper) {
+		// TODO asdf this does not check higher level parents and deeper children but it could if we need it.
+		boolean unique = wrapper != this && !childrenList.contains(wrapper) && !childrenMap.values().contains(wrapper);
+		if (!unique) {
+			throw new UnsupportedOperationException("May not add parent to itself nor a child more than once.");
+		}
+		
+		return unique;
 	}
 
 	/**
@@ -458,16 +681,25 @@ public class JsonWrapper {
 	 * @return boolean is this a JSON object
 	 */
 	public boolean isObject() {
-		return object != null;
+		if (type != null) {
+			return isType(Type.MAP);
+		}
+		return isKind(Kind.OBJECT) && childrenList.isEmpty() && ! childrenMap.isEmpty();
 	}
-
-	/**
-	 * Accessor for the content wrapped by the {@link JsonWrapper}.
-	 *
-	 * @return wrapped content
-	 */
-	public Object getObject() {
-		return isObject() ? object : list;
+	public boolean isList() {
+		if (type != null) {
+			return isType(Type.LIST);
+		}
+		return isKind(Kind.OBJECT) && ! childrenList.isEmpty() && childrenMap.isEmpty();
+	}
+	public boolean isValue() {
+		return isKind(Kind.VALUE) && value != null;
+	}
+	public boolean isMetadata() {
+		return isKind(Kind.METADATA);
+	}
+	public boolean hasMetadata() {
+		return metadata!=null && (metadata.isObject() || metadata.isList());
 	}
 
 	/**
@@ -475,19 +707,22 @@ public class JsonWrapper {
 	 *
 	 * @return Stream of wrapped object or list.
 	 */
-	@SuppressWarnings("unchecked")
 	public Stream<JsonWrapper> stream() {
-		Stream<JsonWrapper> returnValue = Stream.of(this);
-		if (list != null) {
-			returnValue = list.stream()
-				.filter(entry -> entry instanceof Map)
-				.map(entry -> {
-					JsonWrapper wrapper = new JsonWrapper();
-					wrapper.object = (Map<String, Object>) entry;
-					return wrapper;
-				});
+		Stream<JsonWrapper> stream = Stream.of(this);
+		if (isValue()) {
+			LinkedList<JsonWrapper> valueList = new LinkedList<JsonWrapper>();
+			valueList.add(this);
+			stream = valueList.stream();
+		} else if (isList()) {
+			stream = childrenList.stream();
+		} else {
+			stream = childrenMap.entrySet()
+					.stream()
+					.map(entry -> {
+						return entry.getValue().setKeyForMapStream(entry.getKey());
+					});
 		}
-		return returnValue;
+		return stream;
 	}
 
 	/**
@@ -503,9 +738,36 @@ public class JsonWrapper {
 			throw new EncodeException("Issue rendering JSON from JsonWrapper Map", e);
 		}
 	}
+	public String toStringWithMetadata() {
+		try {
+			return withMetadataWriter.writeValueAsString(this);
+		} catch (JsonProcessingException e) {
+			throw new EncodeException("Issue rendering JSON from JsonWrapper Map", e);
+		}
+	}
 
 	public Object toObject() {
-		return isObject() ? object : list;
+		if (isValue()) {
+			return value;
+		} else if (isList()) {
+			return childrenList;
+		}
+		return childrenMap;
+	}
+	
+	/**
+	 * Extract wrapped content from a {@link gov.cms.qpp.conversion.encode.JsonWrapper}.
+	 *
+	 * @param value {@link Object} which may be wrapped
+	 * @return wrapped content
+	 */
+	public Object stripWrapper(Object value) { // TODO asdf only used in unit tests
+		Object internalValue = value;
+		if (value instanceof JsonWrapper) {
+			JsonWrapper wrapper = (JsonWrapper) value;
+			internalValue = wrapper.toObject();
+		}
+		return internalValue;
 	}
 
 	/**
@@ -518,50 +780,68 @@ public class JsonWrapper {
 		return new InputStreamSupplierSource("QPP", new ByteArrayInputStream(qppBytes));
 	}
 
-	void attachMetadata(Node node) {
-		addMetaMap(createMetaMap(node, ""));
+	void attachMetadata(Node node) { // TODO asdf refactor name
+		attachMetadata(node, "");
 	}
 
-	Map<String,String> createMetaMap(Node node, String encodeLabel) {
-		Map<String, String> metaMap = new HashMap<>();
-		metaMap.put("encodeLabel", encodeLabel);
-		metaMap.put("nsuri", node.getDefaultNsUri());
-		metaMap.put("template", node.getType().name());
-		metaMap.put("path", node.getOrComputePath());
+	void attachMetadata(Node node, String encodeLabel) { // TODO refactor name
+		JsonWrapper metadata = new JsonWrapper(Kind.METADATA);
+		
+		metadata.put(ENCODING_KEY, encodeLabel)
+			.put("nsuri", node.getDefaultNsUri())
+			.put("template", node.getType().name())
+			.put("path", node.getOrComputePath());
+		
 		if (node.getLine() != Node.DEFAULT_LOCATION_NUMBER) {
-			metaMap.put("line", String.valueOf(node.getLine()));
+			metadata.put("line", String.valueOf(node.getLine()));
 		}
 		if (node.getColumn() != Node.DEFAULT_LOCATION_NUMBER) {
-			metaMap.put("column", String.valueOf(node.getColumn()));
+			metadata.put("column", String.valueOf(node.getColumn()));
 		}
-		return metaMap;
+		addMetaMap(metadata);
 	}
 
-	private void addMetaMap(Map<String, String> metaMap) {
-		Set<Map<String, String>> metaHolder = this.getMetadataHolder();
-		metaHolder.add(metaMap);
-	}
-
-	private Set<Map<String, String>> getMetadataHolder() {
-		Set<Map<String, String>> returnValue = this.getValue(METADATA_HOLDER);
-		if (returnValue == null) {
-			returnValue = new LinkedHashSet<>();
-			this.putObject(METADATA_HOLDER, returnValue);
-		}
-		return returnValue;
+	public JsonWrapper getMetadata() {
+		return metadata; // TODO asdf if this is metdata return this otherwise return metadata?
 	}
 
 	void mergeMetadata(JsonWrapper otherWrapper, String encodeLabel) {
-		Set<Map<String, String>> meta = this.getMetadataHolder();
-		Set<Map<String, String>> otherMeta = otherWrapper.getMetadataHolder();
-		otherMeta.forEach(other -> {
-			other.put("encodeLabel", encodeLabel);
-			meta.add(other);
+		JsonWrapper metadata = otherWrapper.isMetadata() ?otherWrapper : otherWrapper.getMetadata();
+		metadata.stream().forEach(other -> {
+			other.put(ENCODING_KEY, encodeLabel);
+			
+			if (isMetadata()) {
+				put(other);
+			} else {
+				addMetaMap(other);
+			}
 		});
 	}
 
-	void mergeMetadata(Map<String, String> otherMeta) {
-		this.getMetadataHolder().add(otherMeta);
+	void mergeMetadata(Map<String, String> otherMeta) { // TODO asdf refactor remove?
+		JsonWrapper metadata = new JsonWrapper();
+		otherMeta.entrySet().stream().forEach(entry ->{
+			String key = entry.getKey();
+			String value = entry.getValue();
+			metadata.put(key, value);
+		});
+		addMetaMap(metadata);
+	}
+	
+	public void addMetaMap(JsonWrapper metadata) { // TODO asdf refator name
+		this.metadata.put(metadata.isKind(Kind.METADATA) ?metadata :metadata.metadata);
 	}
 
+	public void putMetadata(String name, String value) {
+		metadata.put(name, value);
+	}
+	
+	public int size() {
+		if (isValue()) {
+			return 1; // TODO asdf is this the write size for a value instance?
+		} else if (isList()) {
+			return childrenList.size();
+		}
+		return childrenMap.size();
+	}
 }

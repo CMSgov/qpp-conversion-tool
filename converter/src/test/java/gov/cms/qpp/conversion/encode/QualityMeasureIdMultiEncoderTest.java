@@ -129,10 +129,8 @@ class QualityMeasureIdMultiEncoderTest {
 
 		encoder.internalEncode(wrapper, qualityMeasureId);
 
-		LinkedHashMap<String, Object> childValues = getChildValues();
-		@SuppressWarnings("unchecked")
-		List<LinkedHashMap<String, ?>> subPopulations =
-				(List<LinkedHashMap<String, ?>>)childValues.get("strata");
+		JsonWrapper childValues = getChildValues();
+		JsonWrapper subPopulations = childValues.get("strata");
 		assertFirstSubPopulation(subPopulations);
 		assertSecondSubPopulation(subPopulations);
 	}
@@ -146,36 +144,52 @@ class QualityMeasureIdMultiEncoderTest {
 
 		encoder.internalEncode(wrapper, qualityMeasureId);
 
-		LinkedHashMap<String, Object> childValues = getChildValues();
-		@SuppressWarnings("unchecked")
-		List<LinkedHashMap<String, ?>> subPopulations =
-				(List<LinkedHashMap<String, ?>>)childValues.get("strata");
+		JsonWrapper subPopulations = getChildValues().get("strata");
 
-		assertThat(subPopulations).isEmpty();
+		assertThat(subPopulations).isNull();
 	}
 
-	@SuppressWarnings("unchecked")
-	private LinkedHashMap<String, Object> getChildValues() {
-		return (LinkedHashMap<String, Object>)((LinkedHashMap<String, Object>) wrapper.getObject()).get("value");
+	private JsonWrapper getChildValues() {
+		return wrapper.get("value");
 	}
 
-	private void assertFirstSubPopulation(List<LinkedHashMap<String, ?>> strata) {
-		LinkedHashMap<String, ?> firstSubPopulation = strata.get(0);
+	private void assertFirstSubPopulation(JsonWrapper strata) {
+		JsonWrapper firstSubPopulation = strata.get(0);
 
-		assertWithMessage(REQUIRE_POPULATION_TOTAL).that(firstSubPopulation.get(ELIGIBLE_POPULATION)).isEqualTo(600);
-		assertWithMessage(REQUIRE_PERFORMANCE_MET).that(firstSubPopulation.get(PERFORMANCE_MET)).isEqualTo(600);
-		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_EXCEP).that(firstSubPopulation.get(ELIGIBLE_POPULATION_EXCEPTION)).isEqualTo(600);
-		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_EXCLUS).that(firstSubPopulation.get(ELIGIBLE_POPULATION_EXCLUSION)).isEqualTo(600);
-		assertWithMessage(REQUIRE_STRATUM).that(firstSubPopulation.get(STRATUM)).isEqualTo("test1strata1");
+		assertWithMessage(REQUIRE_POPULATION_TOTAL)
+			.that(firstSubPopulation.getInteger(ELIGIBLE_POPULATION))
+			.isEqualTo(600);
+		assertWithMessage(REQUIRE_PERFORMANCE_MET)
+			.that(firstSubPopulation.getInteger(PERFORMANCE_MET))
+			.isEqualTo(600);
+		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_EXCEP)
+			.that(firstSubPopulation.getInteger(ELIGIBLE_POPULATION_EXCEPTION))
+			.isEqualTo(600);
+		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_EXCLUS)
+			.that(firstSubPopulation.getInteger(ELIGIBLE_POPULATION_EXCLUSION))
+			.isEqualTo(600);
+		assertWithMessage(REQUIRE_STRATUM)
+			.that(firstSubPopulation.getString(STRATUM))
+			.isEqualTo("test1strata1");
 	}
 
-	private void assertSecondSubPopulation(List<LinkedHashMap<String, ?>> strata) {
-		LinkedHashMap<String, ?> secondSubPopulation = strata.get(1);
+	private void assertSecondSubPopulation(JsonWrapper strata) {
+		JsonWrapper secondSubPopulation = strata.get(1);
 
-		assertWithMessage(REQUIRE_POPULATION_TOTAL).that(secondSubPopulation.get(ELIGIBLE_POPULATION)).isEqualTo(600);
-		assertWithMessage(REQUIRE_PERFORMANCE_MET).that(secondSubPopulation.get(PERFORMANCE_MET)).isEqualTo(600);
-		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_EXCEP).that(secondSubPopulation.get(ELIGIBLE_POPULATION_EXCEPTION)).isEqualTo(600);
-		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_EXCLUS).that(secondSubPopulation.get(ELIGIBLE_POPULATION_EXCLUSION)).isEqualTo(600);
-		assertWithMessage(REQUIRE_STRATUM).that(secondSubPopulation.get(STRATUM)).isEqualTo("test1strata2");
+		assertWithMessage(REQUIRE_POPULATION_TOTAL)
+			.that(secondSubPopulation.getInteger(ELIGIBLE_POPULATION))
+			.isEqualTo(600);
+		assertWithMessage(REQUIRE_PERFORMANCE_MET)
+			.that(secondSubPopulation.getInteger(PERFORMANCE_MET))
+			.isEqualTo(600);
+		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_EXCEP)
+			.that(secondSubPopulation.getInteger(ELIGIBLE_POPULATION_EXCEPTION))
+			.isEqualTo(600);
+		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_EXCLUS)
+			.that(secondSubPopulation.getInteger(ELIGIBLE_POPULATION_EXCLUSION))
+			.isEqualTo(600);
+		assertWithMessage(REQUIRE_STRATUM)
+			.that(secondSubPopulation.getString(STRATUM))
+			.isEqualTo("test1strata2");
 	}
 }
