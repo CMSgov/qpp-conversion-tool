@@ -35,18 +35,18 @@ import gov.cms.qpp.conversion.util.FormatHelper;
 public class JsonWrapper {
 
 	public static enum Kind {
-		VALUE, OBJECT, METADATA;
+		VALUE, OBJECT, METADATA; // TODO asdf clear up object and map refs
 	}
 	public static enum Type {
 		BOOLEAN, DATE, INTEGER, FLOAT, STRING, MAP, LIST; // TODO asdf NONE type, others ?
 	}
 	
 	public static final String METADATA_HOLDER = "metadata_holder";
-	public static final String ENCODING_KEY = "encodeLabel";
+	public static final String ENCODING_KEY = "encodeLabel"; // TODO asdf check for other uses
 	private static ObjectMapper jsonMapper;
 	private static ObjectMapper metaMapper;
 
-	private static void stripMetadata(JsonWrapper wrapper) {
+	private static void stripMetadata(JsonWrapper wrapper) { // TODO asdf check that this is needed (unused?)
 		if (wrapper == null) {
 			return;
 		}
@@ -76,9 +76,7 @@ public class JsonWrapper {
 
 		@Override
 		public void serialize(JsonWrapper value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-//			System.out.print("value.type = " + value.type); // TODO asdf delete
 			Object wrappedEntity = value.toObject();
-//			System.out.println(", value.value = " + value.value);
 			if (value.type == null) {
 				objectHandling(value, gen, provider);
 				return;
@@ -109,10 +107,6 @@ public class JsonWrapper {
 					}
 					value.stream().forEach( entry -> {
 						try {
-//							System.out.println(entry.getKey()); // TODO asdf del
-//							if ("performanceEnd".equals(entry.getKey())) {
-//								System.out.println(entry.value);
-//							}
 							gen.writeObjectField(entry.getKey(), entry);
 						} catch (IOException e) {
 							throw new RuntimeException(e);
@@ -124,10 +118,6 @@ public class JsonWrapper {
 				}
 			} else if (value.isType(Type.LIST)) {
 				
-				//super.objectHandling(value, gen, provider);
-//				gen.writeStartArray(); // TODO asdf del if no metadata in lists
-//				gen.writeObject(pojo);
-//				gen.writeEndArray();
 				gen.writeStartArray();
 				if (value.hasMetadata()) {
 					gen.writeObject(value.getMetadata());
@@ -169,14 +159,14 @@ public class JsonWrapper {
 	private static final ObjectWriter withMetadataWriter = metadataWriter();
 	
 	private final String value;
-	private final Map<String, JsonWrapper> childrenMap;
-	private final List<JsonWrapper> childrenList;
+	private final Map<String, JsonWrapper> childrenMap; // TODO asdf was object
+	private final List<JsonWrapper> childrenList; // TODO asdf was list
 	private final JsonWrapper metadata;
 	private final Kind kind;
-	private Type type;
-	private String keyForMapStream;
+	private Type type; // TODO asdf cannot be final for dynamic typing but maybe never null? UNKNOWN type?
+	private String keyForMapStream; // TODO asdf when streaming this holds the key from map uses. maybe refactor?
 	
-
+	// TODO asdf JAVADOC the constructor use cases
 	public JsonWrapper() {
 		this(Kind.OBJECT);
 	}
@@ -202,7 +192,6 @@ public class JsonWrapper {
 		metadata = null;
 	}
 
-	
 	public JsonWrapper(JsonWrapper wrapper) {
 		this(wrapper, true);
 	}
@@ -245,6 +234,22 @@ public class JsonWrapper {
 		return new JsonWrapper(this, false);
 	}
 
+	
+	/**
+	 * Extract wrapped content from a {@link gov.cms.qpp.conversion.encode.JsonWrapper}.
+	 *
+	 * @param value {@link Object} which may be wrapped
+	 * @return wrapped content
+	 */
+	public Object stripWrapper(Object value) { // TODO asdf only used in unit tests
+		Object internalValue = value;
+		if (value instanceof JsonWrapper) {
+			JsonWrapper wrapper = (JsonWrapper) value;
+			internalValue = wrapper.toObject();
+		}
+		return internalValue;
+	}
+	
 	public JsonWrapper clear() {
 		if ( ! isValue() ) {
 			childrenMap.clear();
@@ -329,6 +334,7 @@ public class JsonWrapper {
 		}
 		return this;
 	}
+	// TODO asdf refactor to put(String, Integer)
 	public JsonWrapper putInteger(String name, Integer value) {
 		put(name, Integer.toString(value), Type.INTEGER);
 		return this;
@@ -350,6 +356,7 @@ public class JsonWrapper {
 		}
 		return this;
 	}
+	// TODO asdf add put(Integer) or add(Integer)
 
 	/**
 	 * Places an named String that represents a {@link java.lang.Float} within the wrapper.
@@ -368,6 +375,7 @@ public class JsonWrapper {
 		}
 		return this;
 	}
+	// TODO asdf refactor to put(String, Float)
 
 	/**
 	 * Places an unnamed String that represents a {@link java.lang.Float} within the wrapper.
@@ -385,6 +393,7 @@ public class JsonWrapper {
 		}
 		return this;
 	}
+	// TODO asdf add put(Float) or add(Float)
 
 	/**
 	 * Places a named String that represents a {@link java.lang.Boolean} within the wrapper.
@@ -424,6 +433,7 @@ public class JsonWrapper {
 		}
 		return this;
 	}
+	// TODO asdf add put(Boolean) or add(Boolean)
 
 	
 	private void put(String name, String value, Type type) {
@@ -468,7 +478,7 @@ public class JsonWrapper {
 	 * @param value object to place in wrapper
 	 * @return <i><b>this</b></i> reference for chaining
 	 */
-	public JsonWrapper put(JsonWrapper value) {
+	public JsonWrapper put(JsonWrapper value) { // TODO asdf maybe refactor to add(JsW)?
 		checkState(childrenMap);
 		if (checkState(value)) {
 			childrenList.add(value);
@@ -553,7 +563,7 @@ public class JsonWrapper {
 		return childrenMap.get(name);
 	}
 	public JsonWrapper get(int index) {
-		if (index < childrenList.size()) {
+		if (index >= 0 && index < childrenList.size()) {
 			return childrenList.get(index);
 		}
 		return null;
@@ -663,7 +673,6 @@ public class JsonWrapper {
 			return false;
 		}
 		return true; // must be good if we made it through the gauntlet
-//		return wrapper!=null && isUniqueEntry(wrapper) && (wrapper.value != null && !wrapper.isType(null) || wrapper.isKind(Kind.METADATA));
 	}
 	public boolean isUniqueEntry(JsonWrapper wrapper) {
 		// TODO asdf this does not check higher level parents and deeper children but it could if we need it.
@@ -680,17 +689,17 @@ public class JsonWrapper {
 	 *
 	 * @return boolean is this a JSON object
 	 */
-	public boolean isObject() {
-		if (type != null) {
-			return isType(Type.MAP);
+	public boolean isObject() { // TODO asdf this is confusing becaues of Java Object vs JS Object is a Java Map
+		if (type == null) {
+			return isKind(Kind.OBJECT) && childrenList.isEmpty() && ! childrenMap.isEmpty();
 		}
-		return isKind(Kind.OBJECT) && childrenList.isEmpty() && ! childrenMap.isEmpty();
+		return isType(Type.MAP);
 	}
 	public boolean isList() {
-		if (type != null) {
-			return isType(Type.LIST);
+		if (type == null) {
+			return isKind(Kind.OBJECT) && ! childrenList.isEmpty() && childrenMap.isEmpty();
 		}
-		return isKind(Kind.OBJECT) && ! childrenList.isEmpty() && childrenMap.isEmpty();
+		return isType(Type.LIST);
 	}
 	public boolean isValue() {
 		return isKind(Kind.VALUE) && value != null;
@@ -746,28 +755,13 @@ public class JsonWrapper {
 		}
 	}
 
-	public Object toObject() {
+	public Object toObject() { // TODO asdf refactor name
 		if (isValue()) {
 			return value;
 		} else if (isList()) {
 			return childrenList;
 		}
 		return childrenMap;
-	}
-	
-	/**
-	 * Extract wrapped content from a {@link gov.cms.qpp.conversion.encode.JsonWrapper}.
-	 *
-	 * @param value {@link Object} which may be wrapped
-	 * @return wrapped content
-	 */
-	public Object stripWrapper(Object value) { // TODO asdf only used in unit tests
-		Object internalValue = value;
-		if (value instanceof JsonWrapper) {
-			JsonWrapper wrapper = (JsonWrapper) value;
-			internalValue = wrapper.toObject();
-		}
-		return internalValue;
 	}
 
 	/**
@@ -784,7 +778,7 @@ public class JsonWrapper {
 		attachMetadata(node, "");
 	}
 
-	void attachMetadata(Node node, String encodeLabel) { // TODO refactor name
+	void attachMetadata(Node node, String encodeLabel) { // TODO asdf refactor name
 		JsonWrapper metadata = new JsonWrapper(Kind.METADATA);
 		
 		metadata.put(ENCODING_KEY, encodeLabel)
@@ -832,13 +826,14 @@ public class JsonWrapper {
 		this.metadata.put(metadata.isKind(Kind.METADATA) ?metadata :metadata.metadata);
 	}
 
-	public void putMetadata(String name, String value) {
+	public void putMetadata(String name, String value) { // TODO asdf check consistent with other metadata actions
 		metadata.put(name, value);
 	}
 	
 	public int size() {
+		// TODO asdf return zero for type == null ?
 		if (isValue()) {
-			return 1; // TODO asdf is this the write size for a value instance?
+			return 1; // TODO asdf is this the correct size for a value instance?
 		} else if (isList()) {
 			return childrenList.size();
 		}

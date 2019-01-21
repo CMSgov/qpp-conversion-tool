@@ -113,9 +113,8 @@ public class PathCorrelator {
 	public static String getXpath(String base, String attribute, String uri) {
 		String key = PathCorrelator.getKey(base, attribute);
 		Goods goods = pathCorrelationMap.get(key);
-		return (goods == null) 
-				? null
-				: goods.getRelativeXPath().replace(uriSubstitution, uri);
+		return (goods == null) ? null :
+				goods.getRelativeXPath().replace(uriSubstitution, uri);
 	}
 
 	/**
@@ -161,13 +160,9 @@ public class PathCorrelator {
 				.sorted(labeledFirst())
 				.filter(entry -> {
 					String encodeLabel = entry.get(ENCODE_LABEL);
-					if ( encodeLabel.equals(leaf) ) {
-						if ( ! leaf.isEmpty() ) {
-							String template = entry.get("template");
-							String nsuri = entry.get("nsuri");
-							return PathCorrelator.getXpath(template, leaf, nsuri) != null;
-						}
-						return true;
+					if (encodeLabel.equals(leaf)) {
+						return leaf.isEmpty()
+								|| PathCorrelator.getXpath(entry.get("template"), leaf, entry.get("nsuri")) != null;
 					}
 					return encodeLabel.isEmpty();
 				})
@@ -190,36 +185,6 @@ public class PathCorrelator {
 		};
 	}
 
-/*	// TODO asdf del
-	private static JsonWrapper getMetaMap(JsonWrapper wrapper, final String leaf) {
-		JsonWrapper metaHolder = wrapper.getMetadata();
-		return metaHolder.stream()
-				.sorted(labeledFirstWrapper())
-				.filter(wrapperEntry -> {
-					String encodeLabel = wrapperEntry.getString(ENCODE_LABEL);
-					if (encodeLabel.equals(leaf)) {
-						return leaf.isEmpty()
-								|| PathCorrelator.getXpath(
-										wrapperEntry.getString("template"), leaf, wrapperEntry.getString("nsuri")) != null;
-					}
-					return encodeLabel.isEmpty();
-				})
-				.findFirst()
-				.orElse(null);
-	}
-	private static Comparator<JsonWrapper> labeledFirstWrapper() {
-		return (JsonWrapper jw1, JsonWrapper jw2) -> {
-			String label1 = jw1.getString(ENCODE_LABEL);
-			String label2 = jw1.getString(ENCODE_LABEL);
-			
-			return Boolean.compare(label1.isEmpty(), label2.isEmpty());
-		};
-	}
-
- */
-	
-	
-	
 	/**
 	 * Assemble base xpath with a relative xpath that identifies a leaf json attribute.
 	 *

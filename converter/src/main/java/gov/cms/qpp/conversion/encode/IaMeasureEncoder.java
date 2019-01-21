@@ -35,7 +35,7 @@ public class IaMeasureEncoder extends QppOutputEncoder {
 			measurePerformedEncoder.encode(value, measurePerformedNode);
 			maintainContinuity(wrapper, measurePerformedNode, VALUE);
 
-			if (null != value.getBoolean(VALUE)) {
+			if (null != value.getBoolean(VALUE)) { // TODO asdf have the wrapper check for nulls?
 				wrapper.put(VALUE, value.getBoolean(VALUE));
 			}
 		}
