@@ -38,11 +38,11 @@ public class JsonWrapper {
 		VALUE, OBJECT, METADATA; // TODO asdf clear up object and map refs
 	}
 	public static enum Type {
-		BOOLEAN, DATE, INTEGER, FLOAT, STRING, MAP, LIST, UNKNOWN; // TODO asdf NONE type, others ?
+		BOOLEAN, DATE, INTEGER, FLOAT, STRING, MAP, LIST, UNKNOWN;
 	}
 	
 	public static final String METADATA_HOLDER = "metadata_holder";
-	public static final String ENCODING_KEY = "encodeLabel"; // TODO asdf check for other uses
+	public static final String ENCODING_KEY = "encodeLabel";
 	private static ObjectMapper jsonMapper;
 	private static ObjectMapper metaMapper;
 
@@ -159,7 +159,7 @@ public class JsonWrapper {
 	private final List<JsonWrapper> childrenList; // TODO asdf was list
 	private final JsonWrapper metadata;
 	private final Kind kind;
-	private Type type = Type.UNKNOWN; // TODO asdf cannot be final for dynamic typing but maybe never null?
+	private Type type = Type.UNKNOWN;
 	
 	/**
 	 * This is the key on the JsonWrapper that was used to store it in the parent wrapper.

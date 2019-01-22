@@ -111,7 +111,7 @@ class ValueOriginMapper {
 		JsonWrapper xPath = metadata.stream()
 			.reduce((JsonWrapper)null, 
 			(current, meta) -> {
-				String label = meta.getString("encodeLabel");
+				String label = meta.getString(JsonWrapper.ENCODING_KEY);
 				if (label.equals(key)) {
 					String relative = PathCorrelator.getXpath(meta.getString("template"), label, meta.getString("nsuri"));
 					String axPath = (relative == null) ? meta.getString("path") : meta.getString("path") + "/" + relative;
@@ -133,7 +133,7 @@ class ValueOriginMapper {
 			return xPath;
 		}
 		for (Map<String, String> metaMap : metadataSet) {
-			String label = metaMap.get("encodeLabel");
+			String label = metaMap.get(JsonWrapper.ENCODING_KEY);
 			if (label.equals(key)) {
 				String relative = PathCorrelator.getXpath(metaMap.get("template"), label, metaMap.get("nsuri"));
 				xPath = (relative == null) ? metaMap.get("path") : metaMap.get("path") + "/" + relative;
@@ -154,7 +154,7 @@ class ValueOriginMapper {
 		}
 		List<JsonWrapper> metadataSet = metadata.stream().collect(Collectors.toList());
 		for (JsonWrapper metaMap : metadataSet) {
-			String label = metaMap.getString("encodeLabel");
+			String label = metaMap.getString(JsonWrapper.ENCODING_KEY);
 			if (label.equals(key)) {
 				String relative = PathCorrelator.getXpath(metaMap.getString("template"), label, metaMap.getString("nsuri"));
 				xPath = (relative == null) ? metaMap.getString("path") : metaMap.getString("path") + "/" + relative;

@@ -90,7 +90,7 @@ class PiSectionEncoderTest {
 
 		Stream<JsonWrapper> failed = jsonWrapper.getMetadata().stream() // TODO asdf
 			.filter(entry -> entry.getString("template").equals(TemplateId.REPORTING_PARAMETERS_ACT.name()))
-			.filter(entry -> entry.getString("encodeLabel").equals(""));
+			.filter(entry -> entry.getString(JsonWrapper.ENCODING_KEY).equals(""));
 
 		assertThat(failed.count()).isEqualTo(0);
 	}

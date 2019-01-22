@@ -63,7 +63,7 @@ class PathCorrelatorTest {
 	void unacknowledgedEncodedLabel() {
 		JsonWrapper metadata = new JsonWrapper();
 		metadata.putMetadata("meep", "meep");
-		metadata.putMetadata("encodeLabel", "mawp");
+		metadata.putMetadata(JsonWrapper.ENCODING_KEY, "mawp");
 
 		JsonWrapper wrapper = new JsonWrapper();
 		wrapper.addMetaMap(metadata);
@@ -77,11 +77,11 @@ class PathCorrelatorTest {
 	void unacknowledgedEncodedLabel_multipleMetadata() {
 		JsonWrapper metadata = new JsonWrapper();
 		metadata.putMetadata("meep", "meep");
-		metadata.putMetadata("encodeLabel", "mawp");
+		metadata.putMetadata(JsonWrapper.ENCODING_KEY, "mawp");
 		JsonWrapper metadata2 = new JsonWrapper();
 		metadata2.putMetadata("template", "mip");
 		metadata2.putMetadata("nsuri", "mip");
-		metadata2.putMetadata("encodeLabel", "mip");
+		metadata2.putMetadata(JsonWrapper.ENCODING_KEY, "mip");
 		// TODO asdf what about encodedLabel empty string?
 		// TODO asdf what about prepPath returning something other than empty?
 
