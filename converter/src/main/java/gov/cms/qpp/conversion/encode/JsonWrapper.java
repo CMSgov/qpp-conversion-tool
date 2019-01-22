@@ -62,7 +62,10 @@ public class JsonWrapper {
 		return printer;
 	}
 
-	
+	/**
+	 * Custom JsonWrapper serialization logic to handle the metadata and type handling. 
+	 * This default impl ignores metadata.
+	 */
 	private static class JsonWrapperSerilizer extends StdSerializer<JsonWrapper> {
 
 		protected JsonWrapperSerilizer() {
@@ -92,6 +95,10 @@ public class JsonWrapper {
 			}
 		}
 	}
+	/**
+	 * Custom JsonWrapper serialization logic to handle the metadata and type handling. 
+	 * This subclass also processes the metadata.
+	 */
 	private static class JsonWrapperMetadataSerilizer extends JsonWrapperSerilizer {
 		
 		protected void objectHandling(JsonWrapper value, JsonGenerator gen, SerializerProvider provider) throws IOException {
@@ -132,6 +139,9 @@ public class JsonWrapper {
 		} 
 	}
 	
+	/**
+	 * Initialize the serializes
+	 */
 	static {
 		jsonMapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
@@ -144,10 +154,10 @@ public class JsonWrapper {
 		metaMapper.registerModule(module);		
 	}
 	
-	public static ObjectWriter standardWriter() {
+	static ObjectWriter standardWriter() {
 		return jsonMapper.writer().with(standardPrinter());
 	}
-	public static ObjectWriter metadataWriter() {
+	static ObjectWriter metadataWriter() {
 		return metaMapper.writer().with(standardPrinter());
 	}
 	
@@ -169,10 +179,17 @@ public class JsonWrapper {
 	 */
 	private String keyForMapStream; // TODO maybe refactor name or concept.
 	
-	// TODO asdf JAVADOC the constructor use cases
+
+	/**
+	 * Constructor for Json Object and List use. 
+	 */
 	public JsonWrapper() {
 		this(Kind.OBJECT);
 	}
+	/**
+	 * Cunstruct a JSON container for a given kind.
+	 * @param kind
+	 */
 	public JsonWrapper(Kind kind) {
 		this.kind = kind;
 		
@@ -187,6 +204,12 @@ public class JsonWrapper {
 		// no metadata on metadata
 		metadata = isMetadata() ?null :new JsonWrapper(Kind.METADATA);
 	}
+	/**
+	 * Construct a JSON container for a string value.
+	 * A string value is a leaf node.
+	 * 
+	 * @param value
+	 */
 	public JsonWrapper(String value) {
 		kind = Kind.VALUE;
 		this.value = value;
@@ -194,10 +217,19 @@ public class JsonWrapper {
 		childrenList = null;
 		metadata = null;
 	}
-
+	/**
+	 * Construct a clone of the given JSON container.
+	 * @param wrapper
+	 */
 	public JsonWrapper(JsonWrapper wrapper) {
 		this(wrapper, true);
 	}
+	/**
+	 * Construct a clone of the given JSON container 
+	 * with the option to omit the metadata. TODO might not be necessary.
+	 * @param wrapper
+	 * @param withMetadata
+	 */
 	private JsonWrapper(JsonWrapper wrapper, boolean withMetadata) {
 		kind = wrapper.kind;
 		value = wrapper.value;
@@ -261,6 +293,10 @@ public class JsonWrapper {
 		return internalValue;
 	}
 	
+	/**
+	 * removes all data from the map, list, and metadata collections.
+	 * @return chaining self ref
+	 */
 	public JsonWrapper clear() {
 		if ( ! isValue() ) {
 			childrenMap.clear();
@@ -458,12 +494,33 @@ public class JsonWrapper {
 	}
 
 	
+	/**
+	 * The master putter of MAP elements. They must specify the type.
+	 * The JSON values are all represented as strings because JSON is a string.
+	 * The type parameter is a sort of metadata about the entry for the
+	 * wrapper to know what data was stored for toString processing, 
+	 * format validation, and value fetching.
+	 * 
+	 * @param name
+	 * @param value
+	 * @param type
+	 */
 	private void put(String name, String value, Type type) {
 		JsonWrapper wrapper = new JsonWrapper(value);
 		wrapper.type = type;
 		put(name, wrapper);
 	}
 	
+	/**
+	 * The master putter of LIST elements. They must specify the type.
+	 * The JSON values are all represented as strings because JSON is a string.
+	 * The type parameter is a sort of metadata about the entry for the
+	 * wrapper to know what data was stored for toString processing, 
+	 * format validation, and value fetching.
+	 * 
+	 * @param value
+	 * @param type
+	 */
 	private void put(String value, Type type) {
 		JsonWrapper wrapper = new JsonWrapper(value);
 		wrapper.type = type;
