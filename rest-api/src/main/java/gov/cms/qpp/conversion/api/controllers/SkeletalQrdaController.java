@@ -93,14 +93,16 @@ public abstract class SkeletalQrdaController<T> {
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
 
+		String location = null;
 		if (metadata != null) {
+			location = metadata.getUuid();
 			httpHeaders.add("Location", metadata.getUuid());
 		}
 
-		return new ResponseEntity<>(respond(conversionReport), httpHeaders, HttpStatus.CREATED);
+		return new ResponseEntity<>(respond(conversionReport, location), httpHeaders, HttpStatus.CREATED);
 	}
 
-	protected abstract T respond(ConversionReport report);
+	protected abstract T respond(ConversionReport report, String location);
 
 	public Metadata audit(ConversionReport conversionReport) {
 		try {

@@ -35,8 +35,9 @@ public class QrdaControllerV2 extends SkeletalQrdaController<ConvertResponse> {
 	 * The version 2 API responds with validation warnings as well as the encoded QPP JsonWrapper.
 	 */
 	@Override
-	protected ConvertResponse respond(ConversionReport report) {
+	protected ConvertResponse respond(ConversionReport report, String location) {
 		ConvertResponse response = new ConvertResponse();
+		response.setLocation(location);
 		response.setQpp(report.getEncoded().toObject());
 		response.setWarnings(report.getWarnings());
 		return response;
