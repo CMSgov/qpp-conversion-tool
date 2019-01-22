@@ -540,7 +540,7 @@ public class JsonWrapper {
 	 * @return <i><b>this</b></i> reference for chaining
 	 */
 	public JsonWrapper put(String name, JsonWrapper value) {
-		checkState(childrenList);
+		checkListState();
 		if (checkState(value)) {
 			value.keyForMapStream = name;
 			childrenMap.put(name, value);
@@ -559,7 +559,7 @@ public class JsonWrapper {
 	 * @return <i><b>this</b></i> reference for chaining
 	 */
 	public JsonWrapper put(JsonWrapper value) { // TODO asdf maybe refactor to add(JsW)?
-		checkState(childrenMap);
+		checkMapState();
 		if (checkState(value)) {
 			childrenList.add(value);
 			type = Type.LIST;
@@ -725,13 +725,13 @@ public class JsonWrapper {
 	 *
 	 * @param check should be null
 	 */
-	protected void checkState(Map<String, JsonWrapper> map) {
-		if ( ! map.isEmpty()) { // TODO asdf use of type state might work too
+	protected void checkMapState() {
+		if (isType(Type.MAP)) {
 			throw new IllegalStateException("Current state may not change (from object to list).");
 		}
 	}
-	protected void checkState(List<JsonWrapper> list) {
-		if ( ! list.isEmpty() ) { // TODO asdf use of type state might work too
+	protected void checkListState() {
+		if (isType(Type.LIST)) {
 			throw new IllegalStateException("Current state may not change (from list to object).");
 		}
 	}
