@@ -75,7 +75,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 */
 	private void encodeChildren(JsonWrapper wrapper, Node parentNode, final MeasureConfig measureConfig) {
 		JsonWrapper childWrapper = new JsonWrapper();
-		childWrapper.putBoolean(IS_END_TO_END_REPORTED, TRUE);
+		childWrapper.put(IS_END_TO_END_REPORTED, Boolean.TRUE);
 		encodeSubPopulation(parentNode, childWrapper, false, measureConfig);
 		wrapper.put(VALUE, childWrapper);
 	}
@@ -157,7 +157,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 */
 	private void encodeMultiPerformanceChildren(JsonWrapper wrapper, List<Node> subPopNodes, final MeasureConfig measureConfig) {
 		JsonWrapper childWrapper = new JsonWrapper();
-		childWrapper.putBoolean(IS_END_TO_END_REPORTED, TRUE);
+		childWrapper.put(IS_END_TO_END_REPORTED, Boolean.TRUE);
 		JsonWrapper strataListWrapper = new JsonWrapper();
 		for (Node subPopNode : subPopNodes) {
 			JsonWrapper strataWrapper = new JsonWrapper();

@@ -38,7 +38,7 @@ public class JsonWrapper {
 		VALUE, OBJECT, METADATA; // TODO asdf clear up object and map refs
 	}
 	public static enum Type {
-		BOOLEAN, DATE, INTEGER, FLOAT, STRING, MAP, LIST; // TODO asdf NONE type, others ?
+		BOOLEAN, DATE, INTEGER, FLOAT, STRING, MAP, LIST, UNKNOWN; // TODO asdf NONE type, others ?
 	}
 	
 	public static final String METADATA_HOLDER = "metadata_holder";
@@ -77,10 +77,6 @@ public class JsonWrapper {
 		@Override
 		public void serialize(JsonWrapper value, JsonGenerator gen, SerializerProvider provider) throws IOException {
 			Object wrappedEntity = value.toObject();
-			if (value.type == null) {
-				objectHandling(value, gen, provider);
-				return;
-			}
 			switch (value.type) {
 				case BOOLEAN: gen.writeBoolean( Boolean.parseBoolean(wrappedEntity.toString()));
 					break;
@@ -91,7 +87,7 @@ public class JsonWrapper {
 				case DATE:
 				case STRING:  gen.writeString( wrappedEntity.toString() );
 					break;
-				default: 	  objectHandling(value, gen, provider);
+				default: 	  objectHandling(value, gen, provider); // Type.UNKNOWN, MAP, LIST
 					break;
 			}
 		}
@@ -163,8 +159,15 @@ public class JsonWrapper {
 	private final List<JsonWrapper> childrenList; // TODO asdf was list
 	private final JsonWrapper metadata;
 	private final Kind kind;
-	private Type type; // TODO asdf cannot be final for dynamic typing but maybe never null? UNKNOWN type?
-	private String keyForMapStream; // TODO asdf when streaming this holds the key from map uses. maybe refactor?
+	private Type type = Type.UNKNOWN; // TODO asdf cannot be final for dynamic typing but maybe never null?
+	
+	/**
+	 * This is the key on the JsonWrapper that was used to store it in the parent wrapper.
+	 * This allows for a single streaming implementation and avoids reference to Map.Entity<K,V>
+	 * 
+	 * It is set upon put(String name, JsonWrapper value) calls to emulate an entity.
+	 */
+	private String keyForMapStream; // TODO maybe refactor name or concept.
 	
 	// TODO asdf JAVADOC the constructor use cases
 	public JsonWrapper() {
@@ -209,25 +212,33 @@ public class JsonWrapper {
 			metadata = new JsonWrapper(Kind.METADATA);
 		}	
 	}
-	
+
+	/**
+	 * Used for casting to a type on value get actions.
+	 * @return The specific type stored in this instance,
+	 */
 	public Type getType() {
 		return type;
 	}
 	public boolean isType(Type type) {
 		return this.type == type;
 	}
+	
+	/**
+	 * Used for collection determinations during stream (and other) actions.
+	 * @return the general type of use for this instance
+	 */
 	public Kind getKind() {
 		return kind;
 	}
 	public boolean isKind(Kind kind) {
 		return this.kind == kind;
 	}
+	/**
+	 * @return The name used to store this entry in the parent.
+	 */
 	public String getKey() {
 		return keyForMapStream;
-	}
-	public JsonWrapper setKeyForMapStream(String key) {
-		this.keyForMapStream = key;
-		return this;
 	}
 
 	public JsonWrapper copyWithoutMetadata() {
@@ -241,7 +252,7 @@ public class JsonWrapper {
 	 * @param value {@link Object} which may be wrapped
 	 * @return wrapped content
 	 */
-	public Object stripWrapper(Object value) { // TODO asdf only used in unit tests
+	public Object stripWrapper(Object value) { // TODO only used in unit tests
 		Object internalValue = value;
 		if (value instanceof JsonWrapper) {
 			JsonWrapper wrapper = (JsonWrapper) value;
@@ -307,7 +318,7 @@ public class JsonWrapper {
 	 * @param value that must conform with {@link #validDate(String)} validation
 	 * @return <i><b>this</b></i> reference for chaining
 	 */
-	public JsonWrapper putDate(String value) {
+	public JsonWrapper putDate(String value) { // TODO only used in unit tests
 		try {
 			put(validDate(value), Type.DATE);
 		} catch (EncodeException e) {
@@ -334,8 +345,7 @@ public class JsonWrapper {
 		}
 		return this;
 	}
-	// TODO asdf refactor to put(String, Integer)
-	public JsonWrapper putInteger(String name, Integer value) {
+	public JsonWrapper put(String name, Integer value) {
 		put(name, Integer.toString(value), Type.INTEGER);
 		return this;
 	}
@@ -347,7 +357,7 @@ public class JsonWrapper {
 	 * @param value {@link String} must conform with {@link #validInteger(String)} validation
 	 * @return {@link JsonWrapper}
 	 */
-	public JsonWrapper putInteger(String value) {
+	public JsonWrapper putInteger(String value) { // TODO only used in unit tests
 		try {
 			put(validInteger(value), Type.INTEGER);
 		} catch (EncodeException e) {
@@ -356,7 +366,10 @@ public class JsonWrapper {
 		}
 		return this;
 	}
-	// TODO asdf add put(Integer) or add(Integer)
+	public JsonWrapper put(Integer value) {
+		put(value.toString(), Type.INTEGER);
+		return this;
+	}
 
 	/**
 	 * Places an named String that represents a {@link java.lang.Float} within the wrapper.
@@ -366,7 +379,7 @@ public class JsonWrapper {
 	 * @param value keyed value that must conform with {@link #validFloat(String)} validation
 	 * @return <i><b>this</b></i> reference for chaining
 	 */
-	public JsonWrapper putFloat(String name, String value) {
+	public JsonWrapper putFloat(String name, String value) { // TODO only used in unit tests
 		try {
 			put(name, validFloat(value), Type.FLOAT);
 		} catch (EncodeException e) {
@@ -375,7 +388,10 @@ public class JsonWrapper {
 		}
 		return this;
 	}
-	// TODO asdf refactor to put(String, Float)
+	public JsonWrapper put(String name, Float value) {
+		put(name, Float.toString(value), Type.FLOAT);
+		return this;
+	}
 
 	/**
 	 * Places an unnamed String that represents a {@link java.lang.Float} within the wrapper.
@@ -384,7 +400,7 @@ public class JsonWrapper {
 	 * @param value that must conform with {@link #validFloat(String)} validation
 	 * @return <i><b>this</b></i> reference for chaining
 	 */
-	public JsonWrapper putFloat(String value) {
+	public JsonWrapper putFloat(String value) { // TODO only used in unit tests
 		try {
 			put(validFloat(value), Type.FLOAT);
 		} catch (EncodeException e) {
@@ -393,7 +409,10 @@ public class JsonWrapper {
 		}
 		return this;
 	}
-	// TODO asdf add put(Float) or add(Float)
+	public JsonWrapper putFloat(Float value) {
+		put(value.toString(), Type.FLOAT);
+		return this;
+	}
 
 	/**
 	 * Places a named String that represents a {@link java.lang.Boolean} within the wrapper.
@@ -424,7 +443,7 @@ public class JsonWrapper {
 	 * @param value that must conform with {@link #validBoolean(String)} validation
 	 * @return <i><b>this</b></i> reference for chaining
 	 */
-	public JsonWrapper putBoolean(String value) {
+	public JsonWrapper putBoolean(String value) { // TODO only used in unit tests
 		try {
 			put( Boolean.toString(validBoolean(value)), Type.BOOLEAN);
 		} catch (EncodeException e) {
@@ -433,7 +452,10 @@ public class JsonWrapper {
 		}
 		return this;
 	}
-	// TODO asdf add put(Boolean) or add(Boolean)
+	public JsonWrapper put(Boolean value) {
+		put(value.toString(), Type.BOOLEAN);
+		return this;
+	}
 
 	
 	private void put(String name, String value, Type type) {
@@ -463,6 +485,7 @@ public class JsonWrapper {
 	public JsonWrapper put(String name, JsonWrapper value) {
 		checkState(childrenList);
 		if (checkState(value)) {
+			value.keyForMapStream = name;
 			childrenMap.put(name, value);
 			type = Type.MAP;
 		}
@@ -578,9 +601,9 @@ public class JsonWrapper {
 	 */
 	protected String validInteger(String value) {
 		try {
-			String clean = FormatHelper.cleanString(value);
-			Integer.parseInt(clean);
-			return clean;
+			String cleanValue = FormatHelper.cleanString(value);
+			Integer.parseInt(cleanValue);
+			return cleanValue;
 		} catch (RuntimeException e) {
 			throw new EncodeException(value + " is not an integer.", e);
 		}
@@ -612,9 +635,9 @@ public class JsonWrapper {
 	 */
 	protected String validFloat(String value) {
 		try {
-			String clean = FormatHelper.cleanString(value);
-			Float.parseFloat(clean);
-			return clean;
+			String cleanValue = FormatHelper.cleanString(value);
+			Float.parseFloat(cleanValue);
+			return cleanValue;
 		} catch (RuntimeException e) {
 			throw new EncodeException(value + " is not a number.", e);
 		}
@@ -628,17 +651,16 @@ public class JsonWrapper {
 	 * @throws EncodeException
 	 */
 	protected boolean validBoolean(String value) {
-		String cleanedValueString = FormatHelper.cleanString(value);
+		String cleanValue = FormatHelper.cleanString(value);
 		
-		if ("true".equals(cleanedValueString) || "yes".equals(cleanedValueString) || "y".equals(cleanedValueString)) {
+		if ("true".equals(cleanValue) || "yes".equals(cleanValue) || "y".equals(cleanValue)) {
 			return true;
 		}
-		
-		if ("false".equals(cleanedValueString) || "no".equals(cleanedValueString) || "n".equals(cleanedValueString)) {
+		if ("false".equals(cleanValue) || "no".equals(cleanValue) || "n".equals(cleanValue)) {
 			return false;
 		}
 
-		throw new EncodeException(cleanedValueString + " is not a boolean.");
+		throw new EncodeException(cleanValue + " is not a boolean.");
 	}
 
 	/**
@@ -647,12 +669,12 @@ public class JsonWrapper {
 	 * @param check should be null
 	 */
 	protected void checkState(Map<String, JsonWrapper> map) {
-		if ( ! map.isEmpty()) {
+		if ( ! map.isEmpty()) { // TODO asdf use of type state might work too
 			throw new IllegalStateException("Current state may not change (from object to list).");
 		}
 	}
 	protected void checkState(List<JsonWrapper> list) {
-		if ( ! list.isEmpty() ) {
+		if ( ! list.isEmpty() ) { // TODO asdf use of type state might work too
 			throw new IllegalStateException("Current state may not change (from list to object).");
 		}
 	}
@@ -660,7 +682,7 @@ public class JsonWrapper {
 		if (wrapper == null) { // no null entries
 			return false;
 		}
-		if ( ! isUniqueEntry(wrapper) ) { // no self references
+		if (isDuplicateEntry(wrapper)) { // no self references
 			return false;
 		}
 		if (wrapper.isKind(Kind.METADATA) && this.isKind(Kind.METADATA)) { // allow metadata mergers
@@ -669,19 +691,19 @@ public class JsonWrapper {
 		if (wrapper.value == null && wrapper.isKind(Kind.VALUE)) { // no null values
 			return false;
 		}
-		if (wrapper.isType(null)) { // no empty objects
+		if (wrapper.isType(Type.UNKNOWN)) { // no empty objects
 			return false;
 		}
 		return true; // must be good if we made it through the gauntlet
 	}
-	public boolean isUniqueEntry(JsonWrapper wrapper) {
+	public boolean isDuplicateEntry(JsonWrapper wrapper) {
 		// TODO asdf this does not check higher level parents and deeper children but it could if we need it.
-		boolean unique = wrapper != this && !childrenList.contains(wrapper) && !childrenMap.values().contains(wrapper);
-		if (!unique) {
+		boolean duplicate = wrapper == this || childrenList.contains(wrapper) && childrenMap.values().contains(wrapper);
+		if ( duplicate ) {
 			throw new UnsupportedOperationException("May not add parent to itself nor a child more than once.");
 		}
 		
-		return unique;
+		return duplicate;
 	}
 
 	/**
@@ -689,14 +711,14 @@ public class JsonWrapper {
 	 *
 	 * @return boolean is this a JSON object
 	 */
-	public boolean isObject() { // TODO asdf this is confusing becaues of Java Object vs JS Object is a Java Map
-		if (type == null) {
+	public boolean isObject() { // TODO asdf this is confusing because of Java Object vs JS Object is a Java Map
+		if (type == Type.UNKNOWN) { // TODO asdf if type is unknown or map might be good 
 			return isKind(Kind.OBJECT) && childrenList.isEmpty() && ! childrenMap.isEmpty();
 		}
 		return isType(Type.MAP);
 	}
 	public boolean isList() {
-		if (type == null) {
+		if (type == Type.UNKNOWN) { // TODO asdf if type is unknown or list might be good 
 			return isKind(Kind.OBJECT) && ! childrenList.isEmpty() && childrenMap.isEmpty();
 		}
 		return isType(Type.LIST);
@@ -728,7 +750,7 @@ public class JsonWrapper {
 			stream = childrenMap.entrySet()
 					.stream()
 					.map(entry -> {
-						return entry.getValue().setKeyForMapStream(entry.getKey());
+						return entry.getValue();
 					});
 		}
 		return stream;
@@ -830,11 +852,17 @@ public class JsonWrapper {
 		metadata.put(name, value);
 	}
 	
+	/**
+	 * @return the count of entries in the wrapper
+	 */
 	public int size() {
-		// TODO asdf return zero for type == null ?
+		if (isType(Type.UNKNOWN)) {
+			return 0;
+		}
 		if (isValue()) {
-			return 1; // TODO asdf is this the correct size for a value instance?
-		} else if (isList()) {
+			return 1; // TODO asdf is this the desired size for a value instance?
+		} 
+		if (isList()) {
 			return childrenList.size();
 		}
 		return childrenMap.size();
