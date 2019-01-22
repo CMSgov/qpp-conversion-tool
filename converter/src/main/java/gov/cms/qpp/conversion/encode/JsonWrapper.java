@@ -730,11 +730,21 @@ public class JsonWrapper {
 			throw new IllegalStateException("Current state may not change (from object to list).");
 		}
 	}
+	/**
+	 * Helps enforce the initialized representation of the {@link JsonWrapper} as a hash or an array.
+	 *
+	 * @param check should be null
+	 */
 	protected void checkListState() {
 		if (isType(Type.LIST)) {
 			throw new IllegalStateException("Current state may not change (from list to object).");
 		}
 	}
+	/**
+	 * Helps enforce no null or empty values added to a {@link JsonWrapper}.
+	 *
+	 * @param check should be null
+	 */
 	protected boolean checkState(JsonWrapper wrapper) { // TODO asdf exhaustive unit test coverage
 		if (wrapper == null) { // no null entries
 			return false;
@@ -753,8 +763,16 @@ public class JsonWrapper {
 		}
 		return true; // must be good if we made it through the gauntlet
 	}
+	/**
+	 * Helps prevent duplicate entries. It is not sure why duplicates are added. 
+	 * The decoders seem to try and this prevents it without without changing decoder code.
+	 * This does not check higher level parents and deeper children. 
+	 * TODO it could recursively check children.
+	 * 
+	 * @param wrapper
+	 * @return
+	 */
 	public boolean isDuplicateEntry(JsonWrapper wrapper) {
-		// TODO asdf this does not check higher level parents and deeper children but it could if we need it.
 		boolean duplicate = wrapper == this || childrenList.contains(wrapper) && childrenMap.values().contains(wrapper);
 		if ( duplicate ) {
 			throw new UnsupportedOperationException("May not add parent to itself nor a child more than once.");
@@ -764,7 +782,7 @@ public class JsonWrapper {
 	}
 
 	/**
-	 * Identifies whether or not the {@link JsonWrapper}'s content is a hash or array.
+	 * Identifies whether or not the {@link JsonWrapper}'s content is a JSON hash.
 	 *
 	 * @return boolean is this a JSON object
 	 */
@@ -774,18 +792,38 @@ public class JsonWrapper {
 		}
 		return isType(Type.MAP);
 	}
+	/**
+	 * Identifies whether or not the {@link JsonWrapper}'s content is a JSON array.
+	 *
+	 * @return boolean is this a JSON array
+	 */
 	public boolean isList() {
 		if (type == Type.UNKNOWN) { // TODO asdf if type is unknown or list might be good 
 			return isKind(Kind.OBJECT) && ! childrenList.isEmpty() && childrenMap.isEmpty();
 		}
 		return isType(Type.LIST);
 	}
+	/**
+	 * Identifies whether or not the {@link JsonWrapper}'s content is a JSON value (leaf).
+	 *
+	 * @return boolean is this a JSON value
+	 */
 	public boolean isValue() {
 		return isKind(Kind.VALUE) && value != null;
 	}
+	/**
+	 * Identifies whether or not the {@link JsonWrapper}'s content IS metadata.
+	 *
+	 * @return boolean is this metadata
+	 */
 	public boolean isMetadata() {
 		return isKind(Kind.METADATA);
 	}
+	/**
+	 * Identifies whether or not the {@link JsonWrapper}'s content HAS metadata.
+	 *
+	 * @return boolean true if this has metadata.
+	 */
 	public boolean hasMetadata() {
 		return metadata!=null && (metadata.isObject() || metadata.isList());
 	}
@@ -814,9 +852,9 @@ public class JsonWrapper {
 	}
 
 	/**
-	 * String representation of the {@link JsonWrapper}.
+	 * Valid JSON String representation of the {@link JsonWrapper}.
 	 *
-	 * @return
+	 * @return JSON
 	 */
 	@Override
 	public String toString() {
@@ -826,6 +864,12 @@ public class JsonWrapper {
 			throw new EncodeException("Issue rendering JSON from JsonWrapper Map", e);
 		}
 	}
+	/**
+	 * Valid JSON String representation of the {@link JsonWrapper} 
+	 * with its metadata in metadata_holder hash key.
+	 *
+	 * @return JSON with metadata
+	 */
 	public String toStringWithMetadata() {
 		try {
 			return withMetadataWriter.writeValueAsString(this);
