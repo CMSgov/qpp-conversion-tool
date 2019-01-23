@@ -48,19 +48,6 @@ class QualityMeasureIdRoundTripTest {
 	}
 
 	@Test
-	void testMeasureCMS165DoesNotContainUnexpectedValue() {
-		Converter converter = new Converter(new PathSource(JUNK_QRDA3_FILE));
-		JsonWrapper qpp = converter.transform();
-		List<String> containsUnwantedValueList = JsonHelper.readJsonAtJsonPath(qpp.toString(),
-			"$.measurementSets[?(@.category=='quality')].measurements[0].value.value", new TypeRef<List<String>>() { });
-		List<String> measureId = JsonHelper.readJsonAtJsonPath(qpp.toString(),
-			"$.measurementSets[?(@.category=='quality')].measurements[*].measureId", new TypeRef<List<String>>() { });
-
-		assertThat(measureId.get(0)).isEqualTo("236");
-		assertThat(containsUnwantedValueList).isEmpty();
-	}
-
-	@Test
 	void testMeasureCMS68v7PerformanceRateUuid() {
 		Converter converter = new Converter(new PathSource(INVALID_PERFORMANCE_UUID_FILE));
 		List<Detail> details = new ArrayList<>();
