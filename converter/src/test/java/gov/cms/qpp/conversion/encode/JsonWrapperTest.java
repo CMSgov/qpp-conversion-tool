@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
+import gov.cms.qpp.conversion.encode.JsonWrapper.Kind;
 import gov.cms.qpp.conversion.encode.JsonWrapper.Type;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.util.JsonHelper;
@@ -385,12 +386,6 @@ class JsonWrapperTest {
 		assertThrows(EncodeException.class, () -> objectObjWrapper.putDate("December 7, 1941"));
 	}
 
-//	@Test TODO asdf
-//	void testToString_exception() {
-//		objectObjWrapper.put("name", new MockBadJsonTarget());
-//		assertThrows(RuntimeException.class, () -> objectObjWrapper.toString());
-//	}
-
 	@Test
 	void testCheckState_objectThenList() {
 		objectStrWrapper.put("name", "value");
@@ -721,13 +716,16 @@ class JsonWrapperTest {
 		assertThat(listStrWrapper.stream().count()).isEqualTo(1);
 	}
 
-//	@Test TODO asdf
-//	void testListStreamNonMap() { 
-//		JsonWrapper listWrapper = new JsonWrapper();
-//		listWrapper.put(new Object());
-//		assertThat(listWrapper.stream().count())
-//				.isEqualTo(0);
-//	}
+	@Test
+	void testListStreamNonMap() { 
+		JsonWrapper listWrapper = new JsonWrapper();
+		listWrapper.put(new JsonWrapper());
+		assertThat(listWrapper.size())
+				.isEqualTo(0);
+		listWrapper.put(new JsonWrapper("value"));
+		assertThat(listWrapper.size())
+				.isEqualTo(1);
+	}
 
 	@Test
 	void testListStreamMap() {
@@ -744,11 +742,97 @@ class JsonWrapperTest {
 		wrapper.put(TemplateId.PLACEHOLDER.toString(), new JsonWrapper());
 		assertThat(wrapper.toString()).hasLength(3);
 	}
-}
-
-class MockBadJsonTarget {
-	@SuppressWarnings("unused")
-	private String getVar() {
-		return "";
+	
+	@Test
+	void checkState_value() {
+		JsonWrapper wrapper = new JsonWrapper();
+		JsonWrapper child = new JsonWrapper("value");
+		
+		boolean actual = wrapper.checkState(child);
+		
+		assertWithMessage("checkState should accept the child that has value")
+			.that(actual).isTrue();
 	}
+	@Test
+	void checkState_nullValue() {
+		JsonWrapper wrapper = new JsonWrapper();
+		JsonWrapper child = new JsonWrapper();
+		
+		boolean actual = wrapper.checkState(child);
+		
+		assertWithMessage("checkState should not accept the child that has no value")
+			.that(actual).isFalse();
+	}
+	@Test
+	void checkState_nullInstance() {
+		JsonWrapper wrapper = new JsonWrapper();
+		
+		boolean actual = wrapper.checkState(null);
+		
+		assertWithMessage("checkState should not accept the child that has null wrapper")
+			.that(actual).isFalse();
+	}
+	@Test
+	void checkState_addSelf() {
+		JsonWrapper wrapper = new JsonWrapper();
+
+		boolean actual = wrapper.checkState(wrapper);
+
+		assertWithMessage("Expected warning when checking state of adding self instance to a wrapper.")
+			.that(actual).isFalse();
+	}
+	@Test
+	void checkState_addChildTwice_toMap() {
+		JsonWrapper wrapper = new JsonWrapper();
+		JsonWrapper child = new JsonWrapper("child");
+		wrapper.put("name", child);
+
+		boolean actual = wrapper.checkState(wrapper);
+
+		assertWithMessage("Expected warning when checking state adding child instance more than once.")
+			.that(actual).isFalse();
+	}
+	@Test
+	void checkState_addChildTwice_toList() {
+		JsonWrapper wrapper = new JsonWrapper();
+		JsonWrapper child = new JsonWrapper("child");
+		wrapper.put(child);
+		
+		boolean actual = wrapper.checkState(wrapper);
+		
+		assertWithMessage("Expected warning when checking state adding child instance more than once.")
+			.that(actual).isFalse();
+	}
+	@Test
+	void checkState_addMetadata_empty() {
+		JsonWrapper wrapper = new JsonWrapper();
+		JsonWrapper metadata = new JsonWrapper(Kind.METADATA);
+		
+		boolean actual = wrapper.checkState(metadata);
+		
+		assertWithMessage("checkState should not accept empty metadata")
+			.that(actual).isFalse();
+	}
+	@Test
+	void checkState_addMetadata() {
+		JsonWrapper wrapper = new JsonWrapper();
+		JsonWrapper metadata = new JsonWrapper(Kind.METADATA);
+		metadata.put("name","value");
+		
+		boolean actual = wrapper.checkState(metadata);
+		
+		assertWithMessage("checkState should accept empty metadata")
+			.that(actual).isTrue();
+	}
+	@Test
+	void checkState_addUnknown() {
+		JsonWrapper wrapper = new JsonWrapper();
+		JsonWrapper unknown = new JsonWrapper(Kind.OBJECT);
+		
+		boolean actual = wrapper.checkState(unknown);
+		
+		assertWithMessage("checkState should not accept unknown wrappers")
+			.that(actual).isFalse();
+	}
+	
 }

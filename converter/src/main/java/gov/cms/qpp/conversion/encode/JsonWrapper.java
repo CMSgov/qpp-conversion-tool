@@ -240,6 +240,7 @@ public class JsonWrapper {
 	 */
 	public JsonWrapper(String value) {
 		kind = Kind.VALUE;
+		type = Type.STRING;
 		this.value = value;
 		childrenMap = null;
 		childrenList = null;
@@ -777,17 +778,19 @@ public class JsonWrapper {
 		if (wrapper == null) { // no null entries
 			return false;
 		}
-		if (isDuplicateEntry(wrapper)) { // no self references
+		try{
+			isDuplicateEntry(wrapper);  // no self references
+		} catch (Exception e) {
 			return false;
-		}
-		if (wrapper.isKind(Kind.METADATA) && this.isKind(Kind.METADATA)) { // allow metadata mergers
-			return true;
 		}
 		if (wrapper.value == null && wrapper.isKind(Kind.VALUE)) { // no null values
 			return false;
 		}
 		if (wrapper.isType(Type.UNKNOWN)) { // no empty objects
 			return false;
+		}
+		if (wrapper.isKind(Kind.METADATA) && this.isKind(Kind.METADATA)) { // allow metadata mergers
+			return wrapper.size() > 0;
 		}
 		return true; // must be good if we made it through the gauntlet
 	}
@@ -801,7 +804,7 @@ public class JsonWrapper {
 	 * @return
 	 */
 	public boolean isDuplicateEntry(JsonWrapper wrapper) {
-		boolean duplicate = wrapper == this || childrenList.contains(wrapper) && childrenMap.values().contains(wrapper);
+		boolean duplicate = wrapper == this || childrenList.contains(wrapper) || childrenMap.values().contains(wrapper);
 		if ( duplicate ) {
 			throw new UnsupportedOperationException("May not add parent to itself nor a child more than once.");
 		}
@@ -956,8 +959,17 @@ public class JsonWrapper {
 		addMetadata(metadata);
 	}
 
+	/**
+	 * Returns the metadata for te wrapper instance unless it is metadata itself.
+	 * If it is metadata itself then it returns self.
+	 * Currently, there is no metadata on metadata.
+	 * @return the metadata on the object or self if self is metadata.
+	 */
 	public JsonWrapper getMetadata() {
-		return metadata; // TODO asdf if this is metdata return this otherwise return metadata?
+		if (isMetadata()) {
+			return this;
+		}
+		return metadata;
 	}
 
 	void mergeMetadata(JsonWrapper otherWrapper, String encodeLabel) {
@@ -994,7 +1006,7 @@ public class JsonWrapper {
 			return 0;
 		}
 		if (isValue()) {
-			return 1; // TODO asdf is this the desired size for a value instance?
+			return 1;
 		} 
 		if (isList()) {
 			return childrenList.size();
