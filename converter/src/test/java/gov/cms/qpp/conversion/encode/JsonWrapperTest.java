@@ -685,8 +685,8 @@ class JsonWrapperTest {
 		objectObjWrapper.putMetadata(meta1, meta1);
 		objectStrWrapper.putMetadata(meta2, meta2);
 		
-		listObjWrapper.addMetaMap(objectObjWrapper);
-		listObjWrapper.addMetaMap(objectStrWrapper);
+		listObjWrapper.addMetadata(objectObjWrapper);
+		listObjWrapper.addMetadata(objectStrWrapper);
 		
 		// test
 		String json = listObjWrapper.getMetadata().toString().replaceAll("\\s", "");

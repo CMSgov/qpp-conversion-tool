@@ -66,7 +66,7 @@ class PathCorrelatorTest {
 		metadata.putMetadata(JsonWrapper.ENCODING_KEY, "mawp");
 
 		JsonWrapper wrapper = new JsonWrapper();
-		wrapper.addMetaMap(metadata);
+		wrapper.addMetadata(metadata);
 		wrapper.put("mop","mop"); // TODO asdf test list object. note that JSON require top level to be object not list
 		
 		String actual = PathCorrelator.prepPath("$.mawp", wrapper);
@@ -86,8 +86,8 @@ class PathCorrelatorTest {
 		// TODO asdf what about prepPath returning something other than empty?
 
 		JsonWrapper wrapper = new JsonWrapper();
-		wrapper.addMetaMap(metadata);
-		wrapper.addMetaMap(metadata2);
+		wrapper.addMetadata(metadata);
+		wrapper.addMetadata(metadata2);
 		wrapper.put("mop","mop");
 		
 		String actual = PathCorrelator.prepPath("$.mawp", wrapper);

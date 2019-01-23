@@ -953,7 +953,7 @@ public class JsonWrapper {
 		if (node.getColumn() != Node.DEFAULT_LOCATION_NUMBER) {
 			metadata.put("column", String.valueOf(node.getColumn()));
 		}
-		addMetaMap(metadata);
+		addMetadata(metadata);
 	}
 
 	public JsonWrapper getMetadata() {
@@ -968,16 +968,21 @@ public class JsonWrapper {
 			if (isMetadata()) {
 				put(other);
 			} else {
-				addMetaMap(other);
+				addMetadata(other);
 			}
 		});
 	}
 
-	public void addMetaMap(JsonWrapper metadata) { // TODO asdf refator name
+	public void addMetadata(JsonWrapper metadata) {
 		this.metadata.put(metadata.isKind(Kind.METADATA) ?metadata :metadata.metadata);
 	}
 
-	public void putMetadata(String name, String value) { // TODO asdf check consistent with other metadata actions
+	/**
+	 * add a metadata key pair to the current JsonWrapper
+	 * @param name the metadata name
+	 * @param value the metadata value
+	 */
+	public void putMetadata(String name, String value) {
 		metadata.put(name, value);
 	}
 	
