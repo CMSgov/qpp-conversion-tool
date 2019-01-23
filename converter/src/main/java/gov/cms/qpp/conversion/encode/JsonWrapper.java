@@ -38,22 +38,89 @@ public class JsonWrapper {
 		VALUE, OBJECT, METADATA; // TODO asdf clear up object and map refs
 	}
 	public static enum Type {
-		BOOLEAN, DATE, INTEGER, FLOAT, STRING, MAP, LIST, UNKNOWN;
+		BOOLEAN {
+			public void json(JsonWrapper value, JsonGenerator gen) throws IOException {
+				if (hasValue(value)) {
+					gen.writeBoolean( Boolean.parseBoolean(value.toObject().toString()));
+				}
+			}
+		}, DATE {
+			public void json(JsonWrapper value, JsonGenerator gen) throws IOException {
+				Type.STRING.json(value, gen);
+			}
+		}, INTEGER {
+			public void json(JsonWrapper value, JsonGenerator gen) throws IOException {
+				if (hasValue(value)) {
+					gen.writeNumber( Integer.parseInt(value.toObject().toString()));
+				}
+			}
+		}, FLOAT {
+			public void json(JsonWrapper value, JsonGenerator gen) throws IOException {
+				if (hasValue(value)) {
+					gen.writeNumber( Float.parseFloat(value.toObject().toString()));
+				}
+			}
+		}, STRING {
+			public void json(JsonWrapper value, JsonGenerator gen) throws IOException {
+				if (hasValue(value)) {
+					gen.writeString( value.toObject().toString() );
+				}
+			}
+		}, MAP {
+			public void json(JsonWrapper value, JsonGenerator gen) throws IOException {
+				gen.writeObject(value.toObject());
+			}
+			public void metadata(JsonWrapper value, JsonGenerator gen) throws IOException {
+				gen.writeStartObject();
+				if (value.hasMetadata()) {
+					gen.writeObjectField(METADATA_HOLDER, value.getMetadata());
+				}
+				value.stream().forEach( entry -> {
+					try {
+						gen.writeObjectField(entry.getKey(), entry);
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
+				});
+				gen.writeEndObject();
+			}
+		}, LIST {
+			public void json(JsonWrapper value, JsonGenerator gen) throws IOException {
+				gen.writeObject(value.toObject());
+			}
+			public void metadata(JsonWrapper value, JsonGenerator gen) throws IOException {
+				gen.writeStartArray();
+				if (value.hasMetadata()) {
+					gen.writeObject(value.getMetadata());
+				}
+	            value.stream().forEach( entry ->{
+	                try {
+						gen.writeObject(entry);
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
+	            });
+	            gen.writeEndArray();
+			}
+		}, UNKNOWN {
+		};
+		
+		public boolean hasValue(JsonWrapper value) throws IOException {
+			if (null == value || null == value.toObject() || value.isType(UNKNOWN)) {
+				return false;
+			}
+			return true;
+		}
+		
+		public void json(JsonWrapper value, JsonGenerator gen) throws IOException {}
+		public void metadata(JsonWrapper value, JsonGenerator gen) throws IOException{}
+		
 	}
 	
 	public static final String METADATA_HOLDER = "metadata_holder";
 	public static final String ENCODING_KEY = "encodeLabel";
 	private static ObjectMapper jsonMapper;
 	private static ObjectMapper metaMapper;
-
-	private static void stripMetadata(JsonWrapper wrapper) { // TODO asdf check that this is needed (unused?)
-		if (wrapper == null) {
-			return;
-		}
-		wrapper.metadata.clear();
-		wrapper.childrenMap.values().stream().forEach(JsonWrapper::stripMetadata);
-		wrapper.childrenList.stream().forEach(JsonWrapper::stripMetadata);
-	}
 
 	private static DefaultPrettyPrinter standardPrinter() {
 		DefaultIndenter withLinefeed = new DefaultIndenter("  ", "\n");
@@ -73,26 +140,16 @@ public class JsonWrapper {
 		}
 		
 		protected void objectHandling(JsonWrapper value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-			Object wrappedEntity = value.toObject();
-			gen.writeObject(wrappedEntity);
+			value.getType().json(value, gen);
 		}
 
 		@Override
 		public void serialize(JsonWrapper value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-			Object wrappedEntity = value.toObject();
-			switch (value.type) {
-				case BOOLEAN: gen.writeBoolean( Boolean.parseBoolean(wrappedEntity.toString()));
-					break;
-				case INTEGER: gen.writeNumber( Integer.parseInt(wrappedEntity.toString()));
-					break;
-				case FLOAT:   gen.writeNumber( Float.parseFloat(wrappedEntity.toString()));
-					break;
-				case DATE:
-				case STRING:  gen.writeString( wrappedEntity.toString() );
-					break;
-				default: 	  objectHandling(value, gen, provider); // Type.UNKNOWN, MAP, LIST
-					break;
-			}
+			if (value.isKind(Kind.OBJECT)) {
+				objectHandling(value, gen, provider);
+			} else {
+				value.getType().json(value, gen);
+			}				
 		}
 	}
 	/**
@@ -102,40 +159,11 @@ public class JsonWrapper {
 	private static class JsonWrapperMetadataSerilizer extends JsonWrapperSerilizer {
 		
 		protected void objectHandling(JsonWrapper value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-			if (value.isType(Type.MAP)) {
-				if (value.hasMetadata()) {
-					gen.writeStartObject();
-					if (value.hasMetadata()) {
-						gen.writeObjectField(METADATA_HOLDER, value.getMetadata());
-					}
-					value.stream().forEach( entry -> {
-						try {
-							gen.writeObjectField(entry.getKey(), entry);
-						} catch (IOException e) {
-							throw new RuntimeException(e);
-						}
-					});
-					gen.writeEndObject();
-				} else {
-					super.objectHandling(value, gen, provider);
-				}
-			} else if (value.isType(Type.LIST)) {
-				
-				gen.writeStartArray();
-				if (value.hasMetadata()) {
-					gen.writeObject(value.getMetadata());
-				}
-	            value.stream().forEach( entry ->{
-	                try {
-						gen.writeObject(entry);
-					} catch (IOException e) {
-						throw new RuntimeException(e);
-					}
-	            });
-	            gen.writeEndArray();
-	        } else if (value.hasMetadata()) {
-				super.objectHandling(value.getMetadata(), gen, provider);
-	        }
+			if ( value.hasMetadata() ) {
+				value.getType().metadata(value, gen);
+			} else {
+				super.objectHandling(value, gen, provider);
+			}
 		} 
 	}
 	
