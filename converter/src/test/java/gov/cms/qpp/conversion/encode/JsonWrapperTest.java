@@ -827,7 +827,7 @@ class JsonWrapperTest {
 	@Test
 	void checkState_addUnknown() {
 		JsonWrapper wrapper = new JsonWrapper();
-		JsonWrapper unknown = new JsonWrapper(Kind.OBJECT);
+		JsonWrapper unknown = new JsonWrapper(Kind.CONTAINER);
 		
 		boolean actual = wrapper.checkState(unknown);
 		

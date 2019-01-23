@@ -28,14 +28,15 @@ import gov.cms.qpp.conversion.util.CloneHelper;
 import gov.cms.qpp.conversion.util.FormatHelper;
 
 /**
- * Manages building a "simple" object of JSON conversion.
+ * Manages building an object container for JSON conversion.
  * JSON renderers can convert maps and list into JSON Strings.
- * This class is a wrapper around a list/map impl.
+ * This class is a wrapper around a container, value, and 
+ * metadata Kind with container types, list and map.
  */
 public class JsonWrapper {
 
 	public static enum Kind {
-		VALUE, OBJECT, METADATA; // TODO asdf clear up object and map refs
+		CONTAINER, VALUE, METADATA;
 	}
 	public static enum Type {
 		BOOLEAN {
@@ -106,10 +107,7 @@ public class JsonWrapper {
 		};
 		
 		public boolean hasValue(JsonWrapper value) throws IOException {
-			if (null == value || null == value.toObject() || value.isType(UNKNOWN)) {
-				return false;
-			}
-			return true;
+			return null != value && null != value.toObject() && !value.isType(UNKNOWN);
 		}
 		
 		public void json(JsonWrapper value, JsonGenerator gen) throws IOException {}
@@ -139,14 +137,14 @@ public class JsonWrapper {
 			super(JsonWrapper.class);
 		}
 		
-		protected void objectHandling(JsonWrapper value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+		protected void jsonContainer(JsonWrapper value, JsonGenerator gen, SerializerProvider provider) throws IOException {
 			value.getType().json(value, gen);
 		}
 
 		@Override
 		public void serialize(JsonWrapper value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-			if (value.isKind(Kind.OBJECT)) {
-				objectHandling(value, gen, provider);
+			if (value.isKind(Kind.CONTAINER)) {
+				jsonContainer(value, gen, provider);
 			} else {
 				value.getType().json(value, gen);
 			}				
@@ -158,11 +156,11 @@ public class JsonWrapper {
 	 */
 	private static class JsonWrapperMetadataSerilizer extends JsonWrapperSerilizer {
 		
-		protected void objectHandling(JsonWrapper value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+		protected void jsonContainer(JsonWrapper value, JsonGenerator gen, SerializerProvider provider) throws IOException {
 			if ( value.hasMetadata() ) {
 				value.getType().metadata(value, gen);
 			} else {
-				super.objectHandling(value, gen, provider);
+				super.jsonContainer(value, gen, provider);
 			}
 		} 
 	}
@@ -193,8 +191,8 @@ public class JsonWrapper {
 	private static final ObjectWriter withMetadataWriter = metadataWriter();
 	
 	private final String value;
-	private final Map<String, JsonWrapper> childrenMap; // TODO asdf was object
-	private final List<JsonWrapper> childrenList; // TODO asdf was list
+	private final Map<String, JsonWrapper> childrenMap;
+	private final List<JsonWrapper> childrenList;
 	private final JsonWrapper metadata;
 	private final Kind kind;
 	private Type type = Type.UNKNOWN;
@@ -205,14 +203,14 @@ public class JsonWrapper {
 	 * 
 	 * It is set upon put(String name, JsonWrapper value) calls to emulate an entity.
 	 */
-	private String keyForMapStream; // TODO maybe refactor name or concept.
+	private String keyForMapStream;
 	
 
 	/**
-	 * Constructor for Json Object and List use. 
+	 * Constructor for Json Container use. 
 	 */
 	public JsonWrapper() {
-		this(Kind.OBJECT);
+		this(Kind.CONTAINER);
 	}
 	/**
 	 * Cunstruct a JSON container for a given kind.
@@ -271,7 +269,7 @@ public class JsonWrapper {
 		} else {
 			// instance allows for new metadata to be added
 			metadata = new JsonWrapper(Kind.METADATA);
-		}	
+		}
 	}
 
 	/**
@@ -306,22 +304,6 @@ public class JsonWrapper {
 		return new JsonWrapper(this, false);
 	}
 
-	
-	/**
-	 * Extract wrapped content from a {@link gov.cms.qpp.conversion.encode.JsonWrapper}.
-	 *
-	 * @param value {@link Object} which may be wrapped
-	 * @return wrapped content
-	 */
-	public Object stripWrapper(Object value) { // TODO only used in unit tests
-		Object internalValue = value;
-		if (value instanceof JsonWrapper) {
-			JsonWrapper wrapper = (JsonWrapper) value;
-			internalValue = wrapper.toObject();
-		}
-		return internalValue;
-	}
-	
 	/**
 	 * removes all data from the map, list, and metadata collections.
 	 * @return chaining self ref
@@ -336,7 +318,7 @@ public class JsonWrapper {
 	}
 	
 	/**
-	 * Places a named String within the wrapper. See {@link #putObject(String, Object)}
+	 * Places a named String within a map container wrapper.
 	 *
 	 * @param name key for value
 	 * @param value keyed value
@@ -348,9 +330,8 @@ public class JsonWrapper {
 	}
 
 	/**
-	 * Places an unnamed String within the wrapper.
+	 * Places an unnamed String within the list container wrapper.
 	 *
-	 * @see #putObject(Object)
 	 * @param value to place in wrapper
 	 * @return <i><b>this</b></i> reference for chaining
 	 */
@@ -360,7 +341,7 @@ public class JsonWrapper {
 	}
 
 	/**
-	 * Places a named String that represents a date within the wrapper. See {@link #putObject(String, Object)}
+	 * Places a named String that represents a date within the wrapper.
 	 *
 	 * @param name key for value
 	 * @param value keyed value which must conform with {@link #validDate(String)} validation
@@ -379,7 +360,6 @@ public class JsonWrapper {
 	/**
 	 * Places an unnamed String that represents a date within the wrapper.
 	 *
-	 * @see #putObject(Object)
 	 * @param value that must conform with {@link #validDate(String)} validation
 	 * @return <i><b>this</b></i> reference for chaining
 	 */
@@ -396,7 +376,6 @@ public class JsonWrapper {
 	/**
 	 * Places a named String that represents an {@link java.lang.Integer} within the wrapper.
 	 *
-	 * @see #putObject(String, Object)
 	 * @param name key for value
 	 * @param value keyed value which must conform with {@link #validInteger(String)} validation
 	 * @return <i><b>this</b></i> reference for chaining
@@ -418,7 +397,6 @@ public class JsonWrapper {
 	/**
 	 * Places an unnamed String that represents a {@link java.lang.Integer} within the wrapper.
 	 *
-	 * @see #putObject(Object)
 	 * @param value {@link String} must conform with {@link #validInteger(String)} validation
 	 * @return {@link JsonWrapper}
 	 */
@@ -439,7 +417,6 @@ public class JsonWrapper {
 	/**
 	 * Places an named String that represents a {@link java.lang.Float} within the wrapper.
 	 *
-	 * @see #putObject(String, Object)
 	 * @param name key for value
 	 * @param value keyed value that must conform with {@link #validFloat(String)} validation
 	 * @return <i><b>this</b></i> reference for chaining
@@ -461,7 +438,6 @@ public class JsonWrapper {
 	/**
 	 * Places an unnamed String that represents a {@link java.lang.Float} within the wrapper.
 	 *
-	 * @see #putObject(Object)
 	 * @param value that must conform with {@link #validFloat(String)} validation
 	 * @return <i><b>this</b></i> reference for chaining
 	 */
@@ -482,7 +458,6 @@ public class JsonWrapper {
 	/**
 	 * Places a named String that represents a {@link java.lang.Boolean} within the wrapper.
 	 *
-	 * @see #putObject(String, Object)
 	 * @param name key for value
 	 * @param value keyed value that must conform with {@link #validBoolean(String)} validation
 	 * @return <i><b>this</b></i> reference for chaining
@@ -504,7 +479,6 @@ public class JsonWrapper {
 	/**
 	 * Places an unnamed String that represents a {@link java.lang.Boolean} within the wrapper.
 	 *
-	 * @see #putObject(Object)
 	 * @param value that must conform with {@link #validBoolean(String)} validation
 	 * @return <i><b>this</b></i> reference for chaining
 	 */
@@ -558,9 +532,7 @@ public class JsonWrapper {
 	
 	
 	/**
-	 * Places a named object within the wrapper. In the event the named object is
-	 * also a {@link gov.cms.qpp.conversion.encode.JsonWrapper} its wrapped
-	 * content will be extracted.
+	 * Places a named child wrapper within the wrapper.
 	 *
 	 * Think of this as adding an attribute to a JSON hash.
 	 *
@@ -579,15 +551,13 @@ public class JsonWrapper {
 	}
 
 	/**
-	 * Places an unnamed {@link java.lang.Object} within the wrapper. In the event the named object is
-	 * also a {@link gov.cms.qpp.conversion.encode.JsonWrapper} its wrapped content will be extracted.
-	 *
+	 * Places an unnamed child wrapper within the wrapper.
 	 * Think of this as adding a JSON array entry.
 	 *
-	 * @param value object to place in wrapper
+	 * @param value item to place in wrapper
 	 * @return <i><b>this</b></i> reference for chaining
 	 */
-	public JsonWrapper put(JsonWrapper value) { // TODO asdf maybe refactor to add(JsW)?
+	public JsonWrapper put(JsonWrapper value) {
 		checkMapState();
 		if (checkState(value)) {
 			childrenList.add(value);
@@ -756,7 +726,7 @@ public class JsonWrapper {
 	 */
 	protected void checkMapState() {
 		if (isType(Type.MAP)) {
-			throw new IllegalStateException("Current state may not change (from object to list).");
+			throw new IllegalStateException("Current state may not change (from map to list).");
 		}
 	}
 	/**
@@ -766,7 +736,7 @@ public class JsonWrapper {
 	 */
 	protected void checkListState() {
 		if (isType(Type.LIST)) {
-			throw new IllegalStateException("Current state may not change (from list to object).");
+			throw new IllegalStateException("Current state may not change (from list to map).");
 		}
 	}
 	/**
@@ -774,7 +744,7 @@ public class JsonWrapper {
 	 *
 	 * @param check should be null
 	 */
-	protected boolean checkState(JsonWrapper wrapper) { // TODO asdf exhaustive unit test coverage
+	protected boolean checkState(JsonWrapper wrapper) {
 		if (wrapper == null) { // no null entries
 			return false;
 		}
@@ -786,7 +756,7 @@ public class JsonWrapper {
 		if (wrapper.value == null && wrapper.isKind(Kind.VALUE)) { // no null values
 			return false;
 		}
-		if (wrapper.isType(Type.UNKNOWN)) { // no empty objects
+		if (wrapper.isType(Type.UNKNOWN)) { // no empty containers
 			return false;
 		}
 		if (wrapper.isKind(Kind.METADATA) && this.isKind(Kind.METADATA)) { // allow metadata mergers
@@ -815,11 +785,11 @@ public class JsonWrapper {
 	/**
 	 * Identifies whether or not the {@link JsonWrapper}'s content is a JSON hash.
 	 *
-	 * @return boolean is this a JSON object
+	 * @return boolean is this a JSON object or hash
 	 */
 	public boolean isMap() {
 		if (isType(Type.UNKNOWN)) {
-			return isKind(Kind.OBJECT) && childrenList.isEmpty() && ! childrenMap.isEmpty();
+			return isKind(Kind.CONTAINER) && childrenList.isEmpty() && ! childrenMap.isEmpty();
 		}
 		return isType(Type.MAP);
 	}
@@ -830,7 +800,7 @@ public class JsonWrapper {
 	 */
 	public boolean isList() {
 		if (isType(Type.UNKNOWN)) {
-			return isKind(Kind.OBJECT) && ! childrenList.isEmpty() && childrenMap.isEmpty();
+			return isKind(Kind.CONTAINER) && ! childrenList.isEmpty() && childrenMap.isEmpty();
 		}
 		return isType(Type.LIST);
 	}
@@ -860,9 +830,9 @@ public class JsonWrapper {
 	}
 
 	/**
-	 * Stream of wrapped object or list.
+	 * Stream of wrapped container or single value.
 	 *
-	 * @return Stream of wrapped object or list.
+	 * @return Stream of wrapped data.
 	 */
 	public Stream<JsonWrapper> stream() {
 		Stream<JsonWrapper> stream = Stream.of(this);
@@ -915,9 +885,9 @@ public class JsonWrapper {
 	 * else if the list has entries then a List implementation will be returned,
 	 * finally, the Map instance is returned even if empty.
 	 * 
-	 * It is used in the JSON generation process to obtaine the underlying impl.
+	 * It is used in the JSON generation process to obtain the underlying impl.
 	 * 
-	 * @return the underlying wrapped object: String, Map, or List
+	 * @return the underlying wrapped instance: String, Map, or List
 	 */
 	public Object toObject() {
 		if (isValue()) {
@@ -929,6 +899,22 @@ public class JsonWrapper {
 	}
 
 	/**
+	 * Extract wrapped content from a {@link gov.cms.qpp.conversion.encode.JsonWrapper}.
+	 *
+	 * @param value instance which may be wrapped
+	 * @return wrapped content
+	 */
+	public Object stripWrapper(Object value) { // TODO only used in unit tests
+		Object internalValue = value;
+		if (value instanceof JsonWrapper) {
+			JsonWrapper wrapper = (JsonWrapper) value;
+			internalValue = wrapper.toObject();
+		}
+		return internalValue;
+	}
+	
+	
+	/**
 	 * Convenience method to get the JsonWrapper's JSON content as an input stream.
 	 *
 	 * @return input stream containing serialized JSON
@@ -938,11 +924,11 @@ public class JsonWrapper {
 		return new InputStreamSupplierSource("QPP", new ByteArrayInputStream(qppBytes));
 	}
 
-	void attachMetadata(Node node) { // TODO asdf refactor name
+	// TODO it feels like attachMetadata methods should be outside this class
+	void attachMetadata(Node node) {
 		attachMetadata(node, "");
 	}
-
-	void attachMetadata(Node node, String encodeLabel) { // TODO asdf refactor name
+	void attachMetadata(Node node, String encodeLabel) {
 		JsonWrapper metadata = new JsonWrapper(Kind.METADATA);
 		
 		metadata.put(ENCODING_KEY, encodeLabel)
@@ -963,7 +949,7 @@ public class JsonWrapper {
 	 * Returns the metadata for te wrapper instance unless it is metadata itself.
 	 * If it is metadata itself then it returns self.
 	 * Currently, there is no metadata on metadata.
-	 * @return the metadata on the object or self if self is metadata.
+	 * @return the metadata on the instance or self if self is metadata.
 	 */
 	public JsonWrapper getMetadata() {
 		if (isMetadata()) {

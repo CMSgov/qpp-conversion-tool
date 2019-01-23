@@ -56,7 +56,7 @@ class ValueOriginMapper {
 				if (xPath != null) {
 					associations.add(new Association(xPath, newBase, entry.toObject().toString()));
 				}
-				if (entry.isKind(Kind.OBJECT)) {
+				if (entry.isKind(Kind.CONTAINER)) {
 					map(newBase, entry);
 				}
 			});
@@ -92,7 +92,7 @@ class ValueOriginMapper {
 			}
 			String newBase = base + "." + key;
 
-			if (entry.isKind(Kind.OBJECT)) {
+			if (entry.isKind(Kind.CONTAINER)) {
 				mapItJsW(newBase, entry);
 			} else {
 				JsonWrapper metadataSet = toAssociate.getMetadata();
