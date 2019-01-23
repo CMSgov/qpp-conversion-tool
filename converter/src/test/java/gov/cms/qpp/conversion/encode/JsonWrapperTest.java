@@ -72,7 +72,7 @@ class JsonWrapperTest {
 	@Test
 	void testInitAsObject() {
 		assertWithMessage("Object should be null until the first put")
-				.that(objectStrWrapper.isObject()).isFalse();
+				.that(objectStrWrapper.isMap()).isFalse();
 		objectStrWrapper.put("name", "value");
 		Object obj1 = objectStrWrapper.toObject();
 		assertThat(obj1).isInstanceOf(Map.class);
@@ -117,7 +117,7 @@ class JsonWrapperTest {
 				.that(objectStrWrapper.isType(Type.MAP)).isFalse();
 		objectStrWrapper.put("name", "value");
 		assertWithMessage("should be an object container after first put")
-				.that(objectStrWrapper.isObject()).isTrue();
+				.that(objectStrWrapper.isMap()).isTrue();
 //		objectObjWrapper.put("name", new Object()); TODO asdf
 //		assertWithMessage("should be an object container after first map put")
 //				.that(objectObjWrapper.isObject()).isTrue();
@@ -126,15 +126,15 @@ class JsonWrapperTest {
 	@Test
 	void testIsObject_false() {
 		assertWithMessage("should not be an object container")
-				.that(listStrWrapper.isObject())
+				.that(listStrWrapper.isMap())
 				.isFalse();
 		listStrWrapper.put("name");
 		assertWithMessage("should not be an object container after first list put")
-				.that(listStrWrapper.isObject())
+				.that(listStrWrapper.isMap())
 				.isFalse();
 
 		assertWithMessage("should not be an object container")
-				.that(listStrWrapper.isObject())
+				.that(listStrWrapper.isMap())
 				.isFalse();
 //		listObjWrapper.put(new Object()); TODO asdf
 //		assertWithMessage("should not be an object container after first list put")

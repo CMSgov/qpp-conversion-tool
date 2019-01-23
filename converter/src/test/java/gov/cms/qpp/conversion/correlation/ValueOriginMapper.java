@@ -25,7 +25,7 @@ class ValueOriginMapper {
 	}
 
 	void mapItJsW(String base, JsonWrapper holder) {
-		if (holder.isObject()) {
+		if (holder.isMap()) {
 			mapMapJsW(base, holder);
 		} else {
 			mapListJsW(base, holder);
@@ -48,7 +48,7 @@ class ValueOriginMapper {
 				map(newBase, child);
 			});
 		}
-		if (toAssociate.isObject()) {
+		if (toAssociate.isMap()) {
 			toAssociate.stream().forEach(entry -> {
 				String newBase = base + "." + entry.getKey();
 				JsonWrapper metadata = entry.getMetadata();

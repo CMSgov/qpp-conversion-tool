@@ -814,8 +814,8 @@ public class JsonWrapper {
 	 *
 	 * @return boolean is this a JSON object
 	 */
-	public boolean isObject() { // TODO asdf this is confusing because of Java Object vs JS Object is a Java Map
-		if (type == Type.UNKNOWN) { // TODO asdf if type is unknown or map might be good 
+	public boolean isMap() {
+		if (isType(Type.UNKNOWN)) {
 			return isKind(Kind.OBJECT) && childrenList.isEmpty() && ! childrenMap.isEmpty();
 		}
 		return isType(Type.MAP);
@@ -826,7 +826,7 @@ public class JsonWrapper {
 	 * @return boolean is this a JSON array
 	 */
 	public boolean isList() {
-		if (type == Type.UNKNOWN) { // TODO asdf if type is unknown or list might be good 
+		if (isType(Type.UNKNOWN)) {
 			return isKind(Kind.OBJECT) && ! childrenList.isEmpty() && childrenMap.isEmpty();
 		}
 		return isType(Type.LIST);
@@ -853,7 +853,7 @@ public class JsonWrapper {
 	 * @return boolean true if this has metadata.
 	 */
 	public boolean hasMetadata() {
-		return metadata!=null && (metadata.isObject() || metadata.isList());
+		return metadata!=null && (metadata.isMap() || metadata.isList());
 	}
 
 	/**
@@ -906,7 +906,17 @@ public class JsonWrapper {
 		}
 	}
 
-	public Object toObject() { // TODO asdf refactor name
+	/**
+	 * It returns a Java Object class of the wrapped implementation.
+	 * If the instance is a leaf entity then the String value will be returned,
+	 * else if the list has entries then a List implementation will be returned,
+	 * finally, the Map instance is returned even if empty.
+	 * 
+	 * It is used in the JSON generation process to obtaine the underlying impl.
+	 * 
+	 * @return the underlying wrapped object: String, Map, or List
+	 */
+	public Object toObject() {
 		if (isValue()) {
 			return value;
 		} else if (isList()) {
@@ -916,9 +926,9 @@ public class JsonWrapper {
 	}
 
 	/**
-	 * Convenience method to get the JsonWrapper's content as an input stream.
+	 * Convenience method to get the JsonWrapper's JSON content as an input stream.
 	 *
-	 * @return input stream containing serialized json
+	 * @return input stream containing serialized JSON
 	 */
 	public Source toSource() {
 		byte[] qppBytes = toString().getBytes(StandardCharsets.UTF_8);
@@ -963,16 +973,6 @@ public class JsonWrapper {
 		});
 	}
 
-	void mergeMetadata(Map<String, String> otherMeta) { // TODO asdf refactor remove?
-		JsonWrapper metadata = new JsonWrapper();
-		otherMeta.entrySet().stream().forEach(entry ->{
-			String key = entry.getKey();
-			String value = entry.getValue();
-			metadata.put(key, value);
-		});
-		addMetaMap(metadata);
-	}
-	
 	public void addMetaMap(JsonWrapper metadata) { // TODO asdf refator name
 		this.metadata.put(metadata.isKind(Kind.METADATA) ?metadata :metadata.metadata);
 	}
