@@ -70,24 +70,6 @@ public abstract class SkeletalQrdaController<T> {
 		@RequestParam(name = "file") MultipartFile file,
 		@RequestHeader(required = false, name = "Purpose") String purpose) {
 
-		String checkedPurpose = checkPurpose(purpose);
-
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
-		
-		T response = respond(file, checkedPurpose, httpHeaders);
-
-		API_LOG.info("Conversion request succeeded");
-
-		return new ResponseEntity<>(response, httpHeaders, HttpStatus.CREATED);
-	}
-
-	/**
-	 * Check purpose is not over MAX_PURPOSE_LENGTH and not empty
-	 * @param purpose
-	 * @return Original value or null if empty
-	 */
-	protected String checkPurpose(String purpose) {
 		if (!StringUtils.isEmpty(purpose)) {
 			if (purpose.length() > MAX_PURPOSE_LENGTH) {
 				throw new InvalidPurposeException("Given Purpose (header) is too large. Max length is "
@@ -98,9 +80,17 @@ public abstract class SkeletalQrdaController<T> {
 			purpose = null; // if it's an empty string, make it null
 			API_LOG.info("Conversion request received");
 		}
-		return purpose;
+
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+		
+		T response = respond(file, purpose, httpHeaders);
+
+		API_LOG.info("Conversion request succeeded");
+
+		return new ResponseEntity<>(response, httpHeaders, HttpStatus.CREATED);
 	}
-	
+
 	protected ConversionReport buildReport(String filename, InputStream inputStream, String purpose) {
 		ConversionReport conversionReport = qrdaService.convertQrda3ToQpp(
 				new InputStreamSupplierSource(filename, inputStream, purpose));

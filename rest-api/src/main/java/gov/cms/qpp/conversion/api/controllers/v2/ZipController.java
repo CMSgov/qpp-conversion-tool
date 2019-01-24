@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
@@ -40,7 +39,7 @@ public class ZipController extends SkeletalQrdaController<List<ConvertResponse>>
 	@Override
 	protected List<ConvertResponse> respond(MultipartFile file, String checkedPurpose, HttpHeaders httpHeaders) {
 		File tempFile;
-		List<ConvertResponse> responses = new ArrayList<>();
+		List<ConvertResponse> responses;
 		try {
 			tempFile = File.createTempFile("zipUpload", null);
 			file.transferTo(tempFile);
