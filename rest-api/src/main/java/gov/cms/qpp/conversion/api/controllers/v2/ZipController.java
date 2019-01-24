@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +28,8 @@ import gov.cms.qpp.conversion.api.services.ValidationService;
 @RequestMapping(path = "/", headers = {"Accept=application/zip"})
 public class ZipController extends SkeletalQrdaController<List<ConvertResponse>>{
 
+	private static final Logger API_LOG = LoggerFactory.getLogger(ZipController.class);
+
 	/**
 	 * Constructor to super class to initialize fields
 	 * @param qrdaService {@link QrdaService} to perform QRDA to QPP conversion
@@ -39,19 +43,21 @@ public class ZipController extends SkeletalQrdaController<List<ConvertResponse>>
 	@Override
 	protected List<ConvertResponse> respond(MultipartFile file, String checkedPurpose, HttpHeaders httpHeaders) {
 		File tempFile;
-		List<ConvertResponse> responses;
 		try {
 			tempFile = File.createTempFile("zipUpload", null);
 			file.transferTo(tempFile);
 			ZipFile zipFile = new ZipFile(tempFile);
-			responses = zipFile.stream()
+			List<ConvertResponse> responses = zipFile.stream()
 			.map(entry -> buildResponseForEntry(zipFile, entry, checkedPurpose))
 			.collect(Collectors.toList());
-			tempFile.delete();
+			if (!tempFile.delete()) {
+				API_LOG.warn("Uploaded zip temp file not deleted.");
+			}
+			zipFile.close();
+			return responses;
 		} catch (IOException ex) {
 			throw new UncheckedIOException(ex);
 		}
-		return responses;
 	}
 
 	private ConvertResponse buildResponseForEntry(ZipFile zipFile, ZipEntry entry, String purpose) {
