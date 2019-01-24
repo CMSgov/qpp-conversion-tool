@@ -42,9 +42,8 @@ public class ZipController extends SkeletalQrdaController<List<ConvertResponse>>
 
 	@Override
 	protected List<ConvertResponse> respond(MultipartFile file, String checkedPurpose, HttpHeaders httpHeaders) {
-		File tempFile;
 		try {
-			tempFile = File.createTempFile("zipUpload", null);
+			File tempFile = File.createTempFile("zipUpload", null);
 			file.transferTo(tempFile);
 			ZipFile zipFile = new ZipFile(tempFile);
 			List<ConvertResponse> responses = zipFile.stream()
@@ -55,8 +54,8 @@ public class ZipController extends SkeletalQrdaController<List<ConvertResponse>>
 			}
 			zipFile.close();
 			return responses;
-		} catch (IOException ex) {
-			throw new UncheckedIOException(ex);
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
 		}
 	}
 
