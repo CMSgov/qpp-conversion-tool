@@ -69,7 +69,9 @@ public class JsonWrapper {
 			}
 		}, MAP {
 			public void json(JsonWrapper value, JsonGenerator gen) throws IOException {
-				gen.writeObject(value.toObject());
+				if (hasValue(value)) {
+					gen.writeObject(value.toObject());
+				}
 			}
 			public void metadata(JsonWrapper value, JsonGenerator gen) throws IOException {
 				gen.writeStartObject();
@@ -87,7 +89,9 @@ public class JsonWrapper {
 			}
 		}, LIST {
 			public void json(JsonWrapper value, JsonGenerator gen) throws IOException {
-				gen.writeObject(value.toObject());
+				if (hasValue(value)) {
+					gen.writeObject(value.toObject());
+				}
 			}
 			public void metadata(JsonWrapper value, JsonGenerator gen) throws IOException {
 				gen.writeStartArray();
@@ -131,7 +135,7 @@ public class JsonWrapper {
 	 * Custom JsonWrapper serialization logic to handle the metadata and type handling. 
 	 * This default impl ignores metadata.
 	 */
-	private static class JsonWrapperSerilizer extends StdSerializer<JsonWrapper> {
+	static class JsonWrapperSerilizer extends StdSerializer<JsonWrapper> {
 
 		protected JsonWrapperSerilizer() {
 			super(JsonWrapper.class);
@@ -154,7 +158,7 @@ public class JsonWrapper {
 	 * Custom JsonWrapper serialization logic to handle the metadata and type handling. 
 	 * This subclass also processes the metadata.
 	 */
-	private static class JsonWrapperMetadataSerilizer extends JsonWrapperSerilizer {
+	static class JsonWrapperMetadataSerilizer extends JsonWrapperSerilizer {
 		
 		protected void jsonContainer(JsonWrapper value, JsonGenerator gen, SerializerProvider provider) throws IOException {
 			if ( value.hasMetadata() ) {
@@ -244,6 +248,18 @@ public class JsonWrapper {
 		childrenList = null;
 		metadata = null;
 	}
+	public JsonWrapper(Boolean value) {
+		this(value.toString());
+		type = Type.BOOLEAN;
+	}
+	public JsonWrapper(Integer value) {
+		this(value.toString());
+		type = Type.INTEGER;
+	}
+	public JsonWrapper(Float value) {
+		this(value.toString());
+		type = Type.FLOAT;
+	}
 	/**
 	 * Construct a clone of the given JSON container.
 	 * @param wrapper
@@ -259,12 +275,15 @@ public class JsonWrapper {
 	 */
 	private JsonWrapper(JsonWrapper wrapper, boolean withMetadata) {
 		kind = wrapper.kind;
+		type = wrapper.type;
 		value = wrapper.value;
 		
 		childrenMap = CloneHelper.deepClone(wrapper.childrenMap);
 		childrenList = CloneHelper.deepClone(wrapper.childrenList);
 		
-		if (withMetadata) {
+		if (isMetadata()) {
+			metadata = null;
+		} else if (withMetadata) {
 			metadata = CloneHelper.deepClone(wrapper.metadata);
 		} else {
 			// instance allows for new metadata to be added
@@ -281,6 +300,10 @@ public class JsonWrapper {
 	}
 	public boolean isType(Type type) {
 		return this.type == type;
+	}
+	JsonWrapper setType(Type type) {
+		this.type = type;
+		return this;
 	}
 	
 	/**
@@ -312,7 +335,11 @@ public class JsonWrapper {
 		if ( ! isValue() ) {
 			childrenMap.clear();
 			childrenList.clear();
-			metadata.clear();
+			// metadata do not have metadata but are clearable wrappers.
+			if (metadata != null) {
+				metadata.clear();
+			}
+			setType(Type.UNKNOWN);
 		}
 		return this;
 	}
@@ -450,7 +477,7 @@ public class JsonWrapper {
 		}
 		return this;
 	}
-	public JsonWrapper putFloat(Float value) {
+	public JsonWrapper put(Float value) {
 		put(value.toString(), Type.FLOAT);
 		return this;
 	}
@@ -471,7 +498,7 @@ public class JsonWrapper {
 		}
 		return this;
 	}
-	public JsonWrapper put(String name, boolean value) {
+	public JsonWrapper put(String name, Boolean value) {
 		put(name, Boolean.toString(value), Type.BOOLEAN);
 		return this;
 	}
@@ -774,7 +801,9 @@ public class JsonWrapper {
 	 * @return
 	 */
 	public boolean isDuplicateEntry(JsonWrapper wrapper) {
-		boolean duplicate = wrapper == this || childrenList.contains(wrapper) || childrenMap.values().contains(wrapper);
+		boolean duplicate = wrapper == this 
+				|| childrenList.contains(wrapper) 
+				|| childrenMap.values().contains(wrapper);
 		if ( duplicate ) {
 			throw new UnsupportedOperationException("May not add parent to itself nor a child more than once.");
 		}
@@ -810,7 +839,7 @@ public class JsonWrapper {
 	 * @return boolean is this a JSON value
 	 */
 	public boolean isValue() {
-		return isKind(Kind.VALUE) && value != null;
+		return isKind(Kind.VALUE);
 	}
 	/**
 	 * Identifies whether or not the {@link JsonWrapper}'s content IS metadata.
@@ -835,19 +864,18 @@ public class JsonWrapper {
 	 * @return Stream of wrapped data.
 	 */
 	public Stream<JsonWrapper> stream() {
-		Stream<JsonWrapper> stream = Stream.of(this);
-		if (isValue()) {
-			LinkedList<JsonWrapper> valueList = new LinkedList<JsonWrapper>();
-			valueList.add(this);
-			stream = valueList.stream();
+		Stream<JsonWrapper> stream;
+		
+		if (isValue() && value!=null) {
+			stream = Stream.of(this);
 		} else if (isList()) {
 			stream = childrenList.stream();
 		} else {
 			stream = childrenMap.entrySet()
-					.stream()
-					.map(entry -> {
-						return entry.getValue();
-					});
+				.stream()
+				.map(entry -> {
+					return entry.getValue();
+				});
 		}
 		return stream;
 	}
@@ -959,20 +987,29 @@ public class JsonWrapper {
 	}
 
 	void mergeMetadata(JsonWrapper otherWrapper, String encodeLabel) {
-		JsonWrapper metadata = otherWrapper.isMetadata() ?otherWrapper : otherWrapper.getMetadata();
-		metadata.stream().forEach(other -> {
-			other.put(ENCODING_KEY, encodeLabel);
-			
-			if (isMetadata()) {
-				put(other);
-			} else {
+		JsonWrapper metadata = otherWrapper.getMetadata();
+		if (metadata.isList()) {
+			metadata.stream().forEach(other -> {
+				other.put(ENCODING_KEY, encodeLabel);
 				addMetadata(other);
-			}
-		});
+			});
+		} else {
+			metadata.put(ENCODING_KEY, encodeLabel);
+			addMetadata(metadata);
+		}
 	}
 
-	public void addMetadata(JsonWrapper metadata) {
-		this.metadata.put(metadata.isKind(Kind.METADATA) ?metadata :metadata.metadata);
+	public JsonWrapper addMetadata(JsonWrapper newMetadata) {
+		if (newMetadata != null) {
+			JsonWrapper localMetadata = getMetadata();
+			if (localMetadata.isMap()) {
+				JsonWrapper  wrappedMetadata = new JsonWrapper(localMetadata);
+				localMetadata.clear();
+				localMetadata.put(wrappedMetadata);
+			}
+			localMetadata.put(newMetadata.getMetadata());
+		}
+		return this;
 	}
 
 	/**
@@ -980,8 +1017,9 @@ public class JsonWrapper {
 	 * @param name the metadata name
 	 * @param value the metadata value
 	 */
-	public void putMetadata(String name, String value) {
+	public JsonWrapper putMetadata(String name, String value) {
 		metadata.put(name, value);
+		return this;
 	}
 	
 	/**
@@ -992,7 +1030,7 @@ public class JsonWrapper {
 			return 0;
 		}
 		if (isValue()) {
-			return 1;
+			return (value==null) ?0 :1;
 		} 
 		if (isList()) {
 			return childrenList.size();

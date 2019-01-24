@@ -19,10 +19,20 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
+import org.mockito.Mockito;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.google.common.truth.Truth;
 
 import gov.cms.qpp.conversion.encode.JsonWrapper.Kind;
 import gov.cms.qpp.conversion.encode.JsonWrapper.Type;
@@ -834,5 +844,656 @@ class JsonWrapperTest {
 		assertWithMessage("checkState should not accept unknown wrappers")
 			.that(actual).isFalse();
 	}
+
+//	when(gen.writeBoolean(any(Boolean.class)))
 	
+	@Test
+	void hasValue_true() throws Exception {
+		JsonWrapper value = new JsonWrapper(Boolean.TRUE);
+		boolean actual = Type.BOOLEAN.hasValue(value);
+		assertWithMessage("Instance should have value")
+			.that(actual).isTrue();
+		
+		value = new JsonWrapper("01/01/2020");
+		actual = Type.DATE.hasValue(value);
+		assertWithMessage("Instance should have value")
+			.that(actual).isTrue();
+		
+		value = new JsonWrapper(1);
+		actual = Type.INTEGER.hasValue(value);
+		assertWithMessage("Instance should have value")
+			.that(actual).isTrue();
+		
+		value = new JsonWrapper(1.1f);
+		actual = Type.FLOAT.hasValue(value);
+		assertWithMessage("Instance should have value")
+			.that(actual).isTrue();
+				
+		value = new JsonWrapper("value");
+		actual = Type.STRING.hasValue(value);
+		assertWithMessage("Instance should have value")
+			.that(actual).isTrue();
+		
+		value = new JsonWrapper().put("name", "value");
+		actual = Type.MAP.hasValue(value);
+		assertWithMessage("Instance should have value")
+			.that(actual).isTrue();
+				
+		value = new JsonWrapper().put("value");
+		actual = Type.LIST.hasValue(value);
+		assertWithMessage("Instance should have value")
+			.that(actual).isTrue();
+	}
+	
+	@Test
+	void hasValue_false() throws Exception {
+		JsonWrapper value = new JsonWrapper((String)null);
+		boolean actual = Type.STRING.hasValue(value);
+		assertWithMessage("Instance should NOT have value because of null")
+			.that(actual).isFalse();
+		
+		value = new JsonWrapper();
+		actual = Type.MAP.hasValue(value);
+		assertWithMessage("Instance should NOT have value because of UNKNOWN")
+			.that(actual).isFalse();
+	}		
+	
+	@Test
+	void enumTypeBoolean() throws Exception {
+		JsonGenerator gen = mock(JsonGenerator.class);
+		JsonWrapper value = new JsonWrapper(Boolean.TRUE);
+		
+		Type.BOOLEAN.json(value, gen);
+		
+		verify(gen, times(1)).writeBoolean(any(Boolean.class));
+	}
+	@Test
+	void enumTypeBoolean_empty() throws Exception {
+		JsonGenerator gen = mock(JsonGenerator.class);
+		JsonWrapper value = new JsonWrapper((String)null);
+		
+		Type.BOOLEAN.json(value, gen);
+		verify(gen, times(0)).writeBoolean(any(Boolean.class));
+		
+		Type.BOOLEAN.json(null, gen);
+		verify(gen, times(0)).writeBoolean(any(Boolean.class));
+	}
+	@Test
+	void enumTypeDate() throws Exception {
+		JsonGenerator gen = mock(JsonGenerator.class);
+		JsonWrapper value = new JsonWrapper("01/01/2020");
+		
+		Type.DATE.json(value, gen);
+		
+		verify(gen, times(1)).writeString(any(String.class));
+	}
+	@Test
+	void enumTypeDate_empty() throws Exception {
+		JsonGenerator gen = mock(JsonGenerator.class);
+		JsonWrapper value = new JsonWrapper((String)null);
+		
+		Type.DATE.json(value, gen);
+		verify(gen, times(0)).writeBoolean(any(Boolean.class));
+		
+		Type.DATE.json(null, gen);
+		verify(gen, times(0)).writeBoolean(any(Boolean.class));
+	}
+	@Test
+	void enumTypeInteger() throws Exception {
+		JsonGenerator gen = mock(JsonGenerator.class);
+		JsonWrapper value = new JsonWrapper(1);
+		
+		Type.INTEGER.json(value, gen);
+		
+		verify(gen, times(1)).writeNumber(any(Integer.class));
+	}
+	@Test
+	void enumTypeInteger_empty() throws Exception {
+		JsonGenerator gen = mock(JsonGenerator.class);
+		JsonWrapper value = new JsonWrapper((String)null);
+		
+		Type.INTEGER.json(value, gen);
+		verify(gen, times(0)).writeNumber(any(Integer.class));
+
+		Type.INTEGER.json(null, gen);
+		verify(gen, times(0)).writeNumber(any(Integer.class));
+	}
+	@Test
+	void enumTypeFloat() throws Exception {
+		JsonGenerator gen = mock(JsonGenerator.class);
+		JsonWrapper value = new JsonWrapper(1.1f);
+		
+		Type.FLOAT.json(value, gen);
+		
+		verify(gen, times(1)).writeNumber(any(Float.class));
+	}
+	@Test
+	void enumTypeFloat_empty() throws Exception {
+		JsonGenerator gen = mock(JsonGenerator.class);
+		JsonWrapper value = new JsonWrapper((String)null);
+		
+		Type.FLOAT.json(value, gen);
+		verify(gen, times(0)).writeNumber(any(Float.class));
+
+		Type.FLOAT.json(null, gen);
+		verify(gen, times(0)).writeNumber(any(Float.class));
+	}
+	@Test
+	void enumTypeMap() throws Exception {
+		JsonGenerator gen = mock(JsonGenerator.class);
+		JsonWrapper value = new JsonWrapper().put("name","value");
+		
+		Type.MAP.json(value, gen);
+		
+		verify(gen, times(1)).writeObject(any(Map.class));
+	}
+	@Test
+	void enumTypeMap_empty() throws Exception {
+		JsonGenerator gen = mock(JsonGenerator.class);
+		JsonWrapper value = new JsonWrapper((String)null);
+		
+		Type.MAP.json(value, gen);
+		verify(gen, times(0)).writeObject(any(Map.class));
+
+		Type.MAP.json(null, gen);
+		verify(gen, times(0)).writeObject(any(Map.class));
+		
+		value = new JsonWrapper();
+		Type.MAP.json(null, gen);
+		verify(gen, times(0)).writeObject(any(Map.class));
+	}
+	@Test
+	void enumTypeList() throws Exception {
+		JsonGenerator gen = mock(JsonGenerator.class);
+		JsonWrapper value = new JsonWrapper().put("value");
+		
+		Type.LIST.json(value, gen);
+		
+		verify(gen, times(1)).writeObject(any(List.class));
+	}
+	@Test
+	void enumTypeList_empty() throws Exception {
+		JsonGenerator gen = mock(JsonGenerator.class);
+		JsonWrapper value = new JsonWrapper((String)null);
+		
+		Type.LIST.json(value, gen);
+		verify(gen, times(0)).writeObject(any(List.class));
+
+		Type.LIST.json(null, gen);
+		verify(gen, times(0)).writeObject(any(List.class));
+		
+		value = new JsonWrapper();
+		Type.LIST.json(null, gen);
+		verify(gen, times(0)).writeObject(any(List.class));
+	}
+	
+	@Test
+	void enumTypeUnknow() throws Exception {
+		JsonGenerator gen = mock(JsonGenerator.class);
+		JsonWrapper value = new JsonWrapper("mock");
+		// this is odd coverage because only UNKNOWN calls the empty noop impls
+		Type.UNKNOWN.json(value, gen);
+		Type.UNKNOWN.metadata(value, gen);
+	}
+	
+	@Test
+	void metadataMap_noMetadata() throws Exception {
+		JsonGenerator gen = mock(JsonGenerator.class);
+		InOrder order = Mockito.inOrder(gen);
+
+		// wrapper uses a LinkedHashMap to preserve order
+		JsonWrapper value = new JsonWrapper().put("name","value").put("other","data");
+		
+		Type.MAP.metadata(value, gen);
+
+		// cool, I tested taking these our of order - works like a charm
+		order.verify(gen, times(1)).writeStartObject();
+		order.verify(gen, times(1)).writeObjectField("name","value");
+		order.verify(gen, times(1)).writeObjectField("other","data");
+		order.verify(gen, times(1)).writeEndObject();
+	}
+	@Test
+	void metadataMap_withMetadata() throws Exception {
+		JsonGenerator gen = mock(JsonGenerator.class);
+		InOrder order = Mockito.inOrder(gen);
+		
+		JsonWrapper value = new JsonWrapper().put("name","value").putMetadata("meta", "data");;
+		
+		Type.MAP.metadata(value, gen);
+
+		// cool, I tested taking these our of order - works like a charm
+		order.verify(gen, times(1)).writeStartObject();
+		order.verify(gen, times(1)).writeObjectField(JsonWrapper.METADATA_HOLDER, value.getMetadata());
+		// mock instance does not call inner actions - how could it if it is only a MOCK!
+//		order.verify(gen, times(1)).writeStartObject();
+//		order.verify(gen, times(1)).writeObjectField("meta","data");
+//		order.verify(gen, times(1)).writeEndObject();
+		order.verify(gen, times(1)).writeObjectField("name","value");
+		order.verify(gen, times(1)).writeEndObject();
+	}
+	@Test
+	void metadataMap_throwsIOE() throws Exception {
+		JsonGenerator gen = mock(JsonGenerator.class);
+		Mockito.doThrow(IOException.class).when(gen).writeObjectField("name", "value");
+
+		// wrapper uses a LinkedHashMap to preserve order
+		JsonWrapper value = new JsonWrapper().put("name","value");
+		
+		assertThrows(RuntimeException.class, () -> {Type.MAP.metadata(value, gen);});
+	}
+
+	@Test
+	void metadataList_noMetadata() throws Exception {
+		JsonGenerator gen = mock(JsonGenerator.class);
+		InOrder order = Mockito.inOrder(gen);
+
+		// wrapper uses a LinkedList to preserve order
+		JsonWrapper value = new JsonWrapper().put("value").put("data");
+		JsonWrapper item1 = value.get(0);
+		JsonWrapper item2 = value.get(1);
+		
+		Type.LIST.metadata(value, gen);
+
+		// cool, I tested taking these our of order - works like a charm
+		order.verify(gen, times(1)).writeStartArray();
+		order.verify(gen, times(1)).writeObject(item1);
+		order.verify(gen, times(1)).writeObject(item2);
+		order.verify(gen, times(1)).writeEndArray();
+	}
+	@Test
+	void metadataList_withMetadata() throws Exception {
+		JsonGenerator gen = mock(JsonGenerator.class);
+		InOrder order = Mockito.inOrder(gen);
+		
+		JsonWrapper value = new JsonWrapper().put("value").putMetadata("meta", "data");;
+		
+		JsonWrapper item1 = value.get(0);
+		
+		Type.LIST.metadata(value, gen);
+
+		// cool, I tested taking these our of order - works like a charm
+		order.verify(gen, times(1)).writeStartArray();
+		order.verify(gen, times(1)).writeObject(value.getMetadata());
+		// mock instance does not call inner actions - how could it if it is only a MOCK!
+//		order.verify(gen, times(1)).writeStartObject();
+//		order.verify(gen, times(1)).writeObjectField("meta","data");
+//		order.verify(gen, times(1)).writeEndObject();
+		order.verify(gen, times(1)).writeObject(item1);
+		order.verify(gen, times(1)).writeEndArray();
+	}
+	@Test
+	void metadataList_throwsIOE() throws Exception {
+		JsonGenerator gen = mock(JsonGenerator.class);
+
+		// wrapper uses a LinkedList to preserve order
+		JsonWrapper value = new JsonWrapper().put("value");
+		JsonWrapper item1 = value.get(0);
+		
+		Mockito.doThrow(IOException.class).when(gen).writeObject(item1);
+		
+		assertThrows(RuntimeException.class, () -> {Type.LIST.metadata(value, gen);});
+	}
+
+	@Test
+	void test_JsonWrapperMetadataSerilizer_jsonContainer_noMetadata() throws Exception {
+		JsonGenerator gen = mock(JsonGenerator.class);
+		JsonWrapper.Type map = mock(JsonWrapper.Type.class);
+		JsonWrapper value = new JsonWrapper().put("value").setType(map);
+		
+		JsonWrapper.JsonWrapperMetadataSerilizer metaSer = new JsonWrapper.JsonWrapperMetadataSerilizer();
+		metaSer.jsonContainer(value, gen, null);
+		
+		// should call the super class handling if metadata is absent from the wrapper
+		verify(map, times(0)).metadata(value, gen);
+		verify(map, times(1)).json(value, gen);
+	}
+	@Test
+	void test_JsonWrapperMetadataSerilizer_jsonContainer_withMetadata() throws Exception {
+		JsonGenerator gen = mock(JsonGenerator.class);
+		JsonWrapper.Type map = mock(JsonWrapper.Type.class);
+		JsonWrapper value = new JsonWrapper().put("value").putMetadata("meta", "data");
+		value.setType(map);
+		
+		JsonWrapper.JsonWrapperMetadataSerilizer metaSer = new JsonWrapper.JsonWrapperMetadataSerilizer();
+		metaSer.jsonContainer(value, gen, null);
+
+		// should call the metadata method on the type instance if metadata is added to the wrapper
+		verify(map, times(1)).metadata(value, gen);
+		verify(map, times(0)).json(value, gen);
+	}
+	
+	@Test
+	void Constructor_throwsUnsupported() throws Exception {
+		assertThrows(UnsupportedOperationException.class, () -> {new JsonWrapper(Kind.VALUE);});
+	}
+	
+	@Test
+	void getKind() throws Exception {
+		assertWithMessage("getKind should return the wrapper Kind")
+			.that(new JsonWrapper().getKind())
+			.isEqualTo(Kind.CONTAINER);
+	}
+	
+	@Test
+	void clear_list() {
+		JsonWrapper list = new JsonWrapper().put("value").putMetadata("meta", "data");
+		assertWithMessage("Should have size 1 with a value added")
+			.that(list.size())
+			.isEqualTo(1);
+		assertWithMessage("Should have metadata")
+			.that(list.hasMetadata())
+			.isTrue();
+		list.clear();
+		assertWithMessage("Should have zero size after clear")
+			.that(list.size())
+			.isEqualTo(0);
+		assertWithMessage("Metadata should be cleared")
+			.that(list.hasMetadata())
+			.isFalse();
+	}
+	@Test
+	void clear_map() {
+		JsonWrapper map = new JsonWrapper().put("name","value").putMetadata("meta", "data");
+		assertWithMessage("Should have size 1 with a entry added")
+			.that(map.size())
+			.isEqualTo(1);
+		assertWithMessage("Should have metadata")
+			.that(map.hasMetadata())
+			.isTrue();
+		map.clear();
+		assertWithMessage("Should have zero size after clear")
+			.that(map.size())
+			.isEqualTo(0);
+		assertWithMessage("Metadata should be cleared")
+			.that(map.hasMetadata())
+			.isFalse();
+	}
+	@Test
+	void clear_value() {
+		JsonWrapper value = new JsonWrapper("value");
+		value.clear();
+		assertWithMessage("Clear should not clear immmutable values.")
+			.that(value.toObject()).isEqualTo("value");
+		assertWithMessage("Clear should not clear immmutable values.")
+			.that(value.getType()).isEqualTo(Type.STRING);
+	}
+	
+	@Test
+	void putDate_valid() {
+		String date = "2010/10/20";
+		JsonWrapper wrap = new JsonWrapper().putDate("date",date);
+		assertWithMessage("Should return entered date")
+			.that(wrap.getString("date"))
+			.isEqualTo(date.replaceAll("/","-"));
+		wrap = new JsonWrapper().putDate(date);
+		assertWithMessage("Should return entered date")
+			.that(wrap.get(0).toObject())
+			.isEqualTo(date.replaceAll("/","-"));
+	}
+	@Test
+	void putDate_invalid() {
+		assertThrows(EncodeException.class, () -> {
+			new JsonWrapper().putDate("date","not a date");
+		});
+	}
+	
+	@Test
+	void putInteger() {
+		JsonWrapper wrap = new JsonWrapper().put("int",1);
+		assertWithMessage("Should return entered integer")
+			.that(wrap.getInteger("int"))
+			.isEqualTo(1);
+		wrap = new JsonWrapper().put(1);
+		assertWithMessage("Should return entered integer")
+			.that(wrap.get(0).toObject())
+			.isEqualTo("1");
+	}
+
+	@Test
+	void putFloat() {
+		JsonWrapper wrap = new JsonWrapper().put("float",1.1f);
+		assertWithMessage("Should return entered float")
+			.that(wrap.getFloat("float"))
+			.isEqualTo(1.1f);
+		wrap = new JsonWrapper().put(1.1f);
+		assertWithMessage("Should return entered float")
+			.that(wrap.get(0).toObject())
+			.isEqualTo("1.1");
+	}
+	
+	@Test
+	void putBoolean() {
+		JsonWrapper wrap = new JsonWrapper().put("bool", true);
+		assertWithMessage("Should return entered boolean")
+			.that(wrap.getBoolean("bool"))
+			.isEqualTo(true);
+		wrap = new JsonWrapper().put(true);
+		assertWithMessage("Should return entered boolean")
+			.that(wrap.get(0).toObject())
+			.isEqualTo("true");
+	}
+	
+	@Test
+	void getString_valueNotFound() {
+		JsonWrapper wrap = new JsonWrapper().put("name", "value");
+		assertWithMessage("Should return null for unfound entry rather than NPE")
+			.that(wrap.getString("notEntered"))
+			.isNull();
+	}
+	
+	@Test
+	void getInteger_valueNotFound() {
+		JsonWrapper wrap = new JsonWrapper().put("int", 1);
+		assertWithMessage("Should return null for unfound entry rather than NPE")
+			.that(wrap.getInteger("notEntered"))
+			.isNull();
+	}
+	
+	@Test
+	void getFloat_valueNotFound() {
+		JsonWrapper wrap = new JsonWrapper().put("float", 1.1f);
+		assertWithMessage("Should return null for unfound entry rather than NPE")
+			.that(wrap.getFloat("notEntered"))
+			.isNull();
+	}
+	
+	@Test
+	void getBoolean_valueNotFound() {
+		JsonWrapper wrap = new JsonWrapper().put("bool", true);
+		assertWithMessage("Should return null for unfound entry rather than NPE")
+			.that(wrap.getBoolean("notEntered"))
+			.isNull();
+	}
+	
+	@Test
+	void getIndex_valueNotFound() {
+		JsonWrapper wrap = new JsonWrapper().put("value");
+		assertWithMessage("Should return null for unfound entry rather than NPE")
+			.that(wrap.get(10))
+			.isNull();
+		assertWithMessage("Should return null for unfound entry rather than NPE")
+			.that(wrap.get(-10))
+			.isNull();
+	}
+
+	@Test
+	void isDuplicateEntry_false() {
+		String value = "value";
+		JsonWrapper wrap = new JsonWrapper().put(value);
+		
+		boolean actual = wrap.isDuplicateEntry(new JsonWrapper(value));
+		assertWithMessage("Expect equal instance of unwrapped to be unique")
+			.that(actual).isFalse();
+	}
+
+	@Test
+	void isDuplicateEntry_self() {
+		JsonWrapper wrap = new JsonWrapper().put("value");
+		
+		assertThrows(UnsupportedOperationException.class,
+				()->{wrap.isDuplicateEntry(wrap);},
+				"Expect self to be considered duplicate");
+	}
+
+	@Test
+	void isDuplicateEntry_child() {
+		JsonWrapper child = new JsonWrapper().put("value");
+		JsonWrapper parentList = new JsonWrapper().put(child);
+		
+		assertThrows(UnsupportedOperationException.class,
+				()->{parentList.isDuplicateEntry(child);},
+				"Expect child to be detected duplicate");
+		
+		JsonWrapper parentMap = new JsonWrapper().put("name",child);
+		
+		assertThrows(UnsupportedOperationException.class,
+				()->{parentMap.isDuplicateEntry(child);},
+				"Expect child to be detected duplicate");
+	}
+	
+	@Test
+	void toStringWithMetadata() throws Exception {
+		JsonWrapper map = new JsonWrapper().put("name", "value");
+		map.putMetadata("meta", "data");
+
+		String json = map.toStringWithMetadata();
+
+		String expect = "{\n  \"metadata_holder\" : {\n    \"meta\" : \"data\"\n  },\n  \"name\" : \"value\"\n}";
+		assertWithMessage("expect a simple object of JSON")
+				.that(json)
+				.isEqualTo(expect);
+	}
+	
+	@Test
+	void stripWrapper_nonWrapper() {
+		String internal = "value";
+		Object actual = new JsonWrapper().stripWrapper(internal);
+		assertWithMessage("Internal Value of a nonWrapper is self")
+			.that(actual)
+			.isEqualTo(internal);
+	}
+	
+	@Test
+	void getMetadata_notNull() {
+		JsonWrapper map = new JsonWrapper().put("name", "value");
+		map.putMetadata("meta", "data");
+		
+		JsonWrapper metadata = map.getMetadata();
+		assertWithMessage("must return metadata instance")
+			.that(metadata)
+			.isInstanceOf(JsonWrapper.class);
+	}
+	
+	
+	@Test
+	void getMetadata_noMetadataOnMetadata() {
+		JsonWrapper map = new JsonWrapper().put("name", "value");
+		map.putMetadata("meta", "data");
+		
+		JsonWrapper metadata = map.getMetadata();
+		JsonWrapper metametadata = map.getMetadata().getMetadata();
+		assertWithMessage("must return self metadata instance")
+			.that(metametadata)
+			.isEqualTo(metadata);
+	}
+	
+	@Test
+	void addMetadata_notNull() {
+		JsonWrapper data = new JsonWrapper().put("name", "value").putMetadata("meta1", "data1");
+
+		assertWithMessage("expect metadata size to be 1")
+			.that(data.getMetadata().size()).isEqualTo(1);
+		
+		data.addMetadata(null);
+		
+		assertWithMessage("expect metadata size to be 1")
+			.that(data.getMetadata().size()).isEqualTo(1);
+	}
+	
+	@Test
+	void addMetadata() {
+		JsonWrapper data = new JsonWrapper().put("name", "value").putMetadata("meta1", "data1");
+		JsonWrapper metadata = new JsonWrapper().putMetadata("meta2", "data2");
+
+		assertWithMessage("expect metadata size to be 1")
+			.that(data.getMetadata().size()).isEqualTo(1);
+		
+		data.addMetadata(metadata);
+		
+		assertWithMessage("expect metadata size to be 2")
+			.that(data.getMetadata().size()).isEqualTo(2);
+	}
+	
+	@Test
+	void addMetadata_toMetadata() {
+		JsonWrapper data = new JsonWrapper().put("name", "value").putMetadata("meta1", "data1");
+		JsonWrapper metadata = new JsonWrapper().putMetadata("meta2", "data2");
+
+		assertWithMessage("expect metadata size to be 1")
+			.that(data.getMetadata().size()).isEqualTo(1);
+		
+		data.getMetadata().addMetadata(metadata);
+		
+		assertWithMessage("expect metadata size to be 2")
+			.that(data.getMetadata().size()).isEqualTo(2);
+	}
+	
+	@Test
+	void mergeMetadata() {
+		JsonWrapper data = new JsonWrapper().put("name", "value").putMetadata("meta1", "data1");
+		JsonWrapper metadata = new JsonWrapper().putMetadata("meta2", "data2");
+
+		assertWithMessage("expect metadata size to be 1")
+			.that(data.getMetadata().size()).isEqualTo(1);
+		
+		data.mergeMetadata(metadata, "merge label");
+ 		
+		int mergeSize = data.getMetadata().size();
+		assertWithMessage("expect metadata size to be 2")
+			.that(mergeSize).isEqualTo(2);
+		
+		String mergeLabel = data.getMetadata().get(1).getString(JsonWrapper.ENCODING_KEY);
+		assertWithMessage("expect encodeLabel to be set")
+			.that(mergeLabel).isEqualTo("merge label");
+	}
+	
+	@Test
+	void addMetadata_list() {
+		JsonWrapper otherWrapper = new JsonWrapper().putMetadata("meta1", "data1");
+		JsonWrapper metadata = new JsonWrapper().putMetadata("meta2", "data2");
+		otherWrapper.addMetadata(metadata); // this makes a metadata list on the wrapper
+
+		JsonWrapper dataWithMetadata = new JsonWrapper().put("name", "value").putMetadata("meta2", "data2");
+
+		dataWithMetadata.mergeMetadata(otherWrapper, "merge label");
+		
+		int mergeSize = dataWithMetadata.getMetadata().size();
+		assertWithMessage("expect metadata size to be 3")
+			.that(mergeSize).isEqualTo(3);
+		
+		String mergeLabel = dataWithMetadata.getMetadata().get(1).getString(JsonWrapper.ENCODING_KEY);
+		assertWithMessage("expect encodeLabel to be set")
+			.that(mergeLabel).isEqualTo("merge label");
+		
+		mergeLabel = dataWithMetadata.getMetadata().get(2).getString(JsonWrapper.ENCODING_KEY);
+		assertWithMessage("expect encodeLabel to be set")
+			.that(mergeLabel).isEqualTo("merge label");
+	}
+	
+	@Test
+	void size() {
+		JsonWrapper nullValue = new JsonWrapper((String)null);
+		JsonWrapper value = new JsonWrapper("value");
+		JsonWrapper map = new JsonWrapper().put("name", "value").put("name1", "value1");
+		JsonWrapper list = new JsonWrapper().put("value1").put("value2").put("value3");
+
+		assertWithMessage("expect metadata size to be 0")
+			.that(nullValue.size()).isEqualTo(0);
+		assertWithMessage("expect metadata size to be 1")
+			.that(value.size()).isEqualTo(1);
+		assertWithMessage("expect metadata size to be 2")
+			.that(map.size()).isEqualTo(2);
+		assertWithMessage("expect metadata size to be 3")
+			.that(list.size()).isEqualTo(3);
+	}
 }
