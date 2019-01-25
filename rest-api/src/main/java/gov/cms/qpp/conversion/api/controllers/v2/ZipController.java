@@ -26,7 +26,7 @@ import gov.cms.qpp.conversion.api.services.ValidationService;
 
 @RestController
 @RequestMapping(path = "/", headers = {"Accept=application/zip"})
-public class ZipController extends SkeletalQrdaController<List<ConvertResponse>>{
+public class ZipController extends SkeletalQrdaController<List<ConvertResponse>> {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(ZipController.class);
 
@@ -42,18 +42,26 @@ public class ZipController extends SkeletalQrdaController<List<ConvertResponse>>
 
 	@Override
 	protected List<ConvertResponse> respond(MultipartFile file, String checkedPurpose, HttpHeaders httpHeaders) {
-		try {
-			File tempFile = File.createTempFile("zipUpload", null);
-			file.transferTo(tempFile);
-			ZipFile zipFile = new ZipFile(tempFile);
+		File tempFile = createTempFile(file);
+
+		try (ZipFile zipFile = new ZipFile(tempFile)) {
 			List<ConvertResponse> responses = zipFile.stream()
-			.map(entry -> buildResponseForEntry(zipFile, entry, checkedPurpose))
-			.collect(Collectors.toList());
+					.map(entry -> buildResponseForEntry(zipFile, entry, checkedPurpose))
+					.collect(Collectors.toList());
 			if (!tempFile.delete()) {
 				API_LOG.warn("Uploaded zip temp file not deleted.");
 			}
-			zipFile.close();
 			return responses;
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
+	}
+
+	private File createTempFile(MultipartFile file) {
+		try {
+			File tempFile = File.createTempFile("zipUpload", null);
+			file.transferTo(tempFile);
+			return tempFile;
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}

@@ -96,7 +96,7 @@ public abstract class SkeletalQrdaController<T> {
 				new InputStreamSupplierSource(filename, inputStream, purpose));
 		validationService.validateQpp(conversionReport);
 		return conversionReport;
-	};
+	}
 
 	/**
 	 * Input stream from a file
