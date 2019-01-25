@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.jayway.jsonpath.JsonPath;
 
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
 import gov.cms.qpp.conversion.Source;
@@ -1036,5 +1037,76 @@ public class JsonWrapper {
 			return childrenList.size();
 		}
 		return childrenMap.size();
+	}
+
+	JsonWrapper getByJsonPath(List<String> jsonPath) {
+		JsonWrapper pathWrapper = this;
+		for (String path : jsonPath) {
+			if (path.startsWith("[")) {
+				path = path.substring(1);
+				int index = Integer.parseInt(path);
+				pathWrapper = pathWrapper.get(index);				
+			} else {
+				pathWrapper = pathWrapper.get(path);
+			}
+			if (pathWrapper == null) {
+				break;
+			}
+		}
+		return pathWrapper;
+	}
+	/**
+	 * Accepts a bracket or dot path notation to locate a wrapper child.
+	 * It does not directly locate the node.
+	 * It tokenizes the path into a list of strings.
+	 * Currently it only works on direct path and not wildcard/function paths.
+	 * 
+	 * @param jsonPath JSON path notation
+	 * @return wrapper containing the data of the given path or null if not found
+	 */
+	public JsonWrapper getByJsonPath(String jsonPath) {
+ 		if (jsonPath == null) {
+			return null; // could return new empty instance of JsonWrapper for null protection
+		}
+		
+		String jPath = jsonPath.replace("$", "");
+		if (jPath.length() == 0) {
+			return this;
+		} else if (jPath.contains(".")) {
+			jPath = jPath
+				.replaceAll("\\]", "")
+				.replaceAll("\\[", ".[")
+				.substring(1);
+		} else {
+			jPath = jPath
+				.replaceAll("'\\]", ".")
+				.replaceAll("\\['", "")
+				.replaceAll("\\]", ".");
+			jPath = jPath.substring(0, jPath.length()-1);
+		}
+		// note that array entries keep the leading '[' for detection in the list method signature
+		
+		List<String> paths = new LinkedList<>();
+		for (String entry : jPath.split("\\.")) {
+			paths.add(entry);
+		}
+		return getByJsonPath(paths);
+	}
+	/**
+	 * Accepts the compiled JsonPath to locate a wrapper child.
+	 * This checks for null and definite status before calling the string parser instance.
+	 * It is called get to be in line with the get for map and list that return wrappers.
+	 * 
+	 * @param jsonPath
+	 * @return wrapper 
+	 */
+	public JsonWrapper get(JsonPath jsonPath) {
+		if (jsonPath == null) {
+			return null;
+		}
+		if (!jsonPath.isDefinite()) {
+			throw new UnsupportedOperationException("Only definite paths are supported at this time.");
+		}
+		return getByJsonPath(jsonPath.getPath());
 	}
 }

@@ -33,6 +33,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.truth.Truth;
+import com.jayway.jsonpath.JsonPath;
 
 import gov.cms.qpp.conversion.encode.JsonWrapper.Kind;
 import gov.cms.qpp.conversion.encode.JsonWrapper.Type;
@@ -1496,4 +1497,128 @@ class JsonWrapperTest {
 		assertWithMessage("expect metadata size to be 3")
 			.that(list.size()).isEqualTo(3);
 	}
+	
+	@Test
+	void jsonPathTesting_parsingAndBackToString() {
+		String path = "$['a']['b'][1]['c']";
+		
+		JsonPath jp1 = JsonPath.compile(path);
+		assertWithMessage("Path compiles bracket notation and returns the same.")
+			.that(jp1.getPath()).isEqualTo(path);
+		
+		JsonPath jp2 = JsonPath.compile("$.a.b[1].c");
+		assertWithMessage("Path.toString() generates the bracket notation while accepting dot notation.")
+			.that(jp2.getPath()).isEqualTo(path);
+	}
+	
+	@Test
+	@SuppressWarnings("unchecked")
+	void getByJsonPath_JsonPath() {
+		String testPath = "$.a.b[0].c";
+		JsonPath jsonPath = JsonPath.compile(testPath);
+		List<String>[] paths = new List[1];
+		
+		JsonWrapper mockWrapper = new JsonWrapper() {
+			@Override
+			public JsonWrapper getByJsonPath(List<String> jsonPath) {
+				paths[0] = jsonPath;
+				return null;
+			}
+		};
+		
+		mockWrapper.get(jsonPath);
+		
+		// expect the same order as the path notation
+		Truth.assertThat(paths[0].get(0)).isEqualTo("a");
+		Truth.assertThat(paths[0].get(1)).isEqualTo("b");
+		Truth.assertThat(paths[0].get(2)).isEqualTo("[0");
+		Truth.assertThat(paths[0].get(3)).isEqualTo("c");
+	}
+	
+	@Test
+	@SuppressWarnings("unchecked")
+	void getByJsonPath_stringDotPath() {
+		String dotPath = "$.a.b[0].c";
+		List<String>[] paths = new List[1];
+		
+		JsonWrapper mockWrapper = new JsonWrapper() {
+			@Override
+			public JsonWrapper getByJsonPath(List<String> jsonPath) {
+				paths[0] = jsonPath;
+				return null;
+			}
+		};
+		
+		mockWrapper.getByJsonPath(dotPath);
+		
+		// expect the same order as the path notation
+		Truth.assertThat(paths[0].get(0)).isEqualTo("a");
+		Truth.assertThat(paths[0].get(1)).isEqualTo("b");
+		Truth.assertThat(paths[0].get(2)).isEqualTo("[0");
+		Truth.assertThat(paths[0].get(3)).isEqualTo("c");
+	}
+	
+	@Test
+	void getByJsonPath_List() {
+		String value = "value";
+		JsonWrapper hasC = new JsonWrapper().put("c", value);
+		JsonWrapper list = new JsonWrapper().put(hasC);
+		JsonWrapper hasB = new JsonWrapper().put("b", list);
+		JsonWrapper hasA = new JsonWrapper().put("a", hasB);
+		
+		String testPath = "$.a.b[0].c";
+		JsonPath jsonPath = JsonPath.compile(testPath);
+		
+		JsonWrapper actual =  hasA.get(jsonPath);
+
+		assertWithMessage("Should follow the sole path in the wrapper.")
+			.that(actual.toObject()).isEqualTo(value);
+	}
+	
+	@Test
+	void getByJsonPath_List2() {
+		String value = "value";
+		JsonWrapper hasC = new JsonWrapper().put("c", value).put("other","data").put("number",7);
+		JsonWrapper list = new JsonWrapper().put("zeroth").put(hasC).put("last");
+		JsonWrapper hasB = new JsonWrapper().put("b", list).put("more","map").put("float",6.6f);
+		JsonWrapper hasA = new JsonWrapper().put("a", hasB).put("meep","mawp").put("bool",true);
+		
+		String testPath = "$.a.b[1].c";
+		JsonPath jsonPath = JsonPath.compile(testPath);
+		
+		JsonWrapper actual =  hasA.get(jsonPath);
+
+		assertWithMessage("Should return the 'c' entry from the second list entry of 'b'")
+			.that(actual.toObject()).isEqualTo(value);
+	}
+	
+	@Test
+	void getByJsonPath_wildcard() {
+		JsonWrapper actual = listStrWrapper.get((JsonPath)null);
+		Truth.assertThat(actual).isNull();
+		
+		Truth.assertThat(
+			assertThrows(UnsupportedOperationException.class, ()->{
+				listStrWrapper.get(JsonPath.compile("$.a.b[*]"));
+			}).getMessage() )
+		.contains("Only definite");
+	}
+	
+	@Test
+	void getByJsonPath_returnNull() {
+		String value = "value";
+		JsonWrapper hasC = new JsonWrapper().put("c", value).put("other","data").put("number",7);
+		JsonWrapper list = new JsonWrapper().put("zeroth").put(hasC).put("last");
+		JsonWrapper hasB = new JsonWrapper().put("b", list).put("more","map").put("float",6.6f);
+		JsonWrapper hasA = new JsonWrapper().put("a", hasB).put("meep","mawp").put("bool",true);
+		
+		String testPath = "$.a.b[12].c";
+		JsonPath jsonPath = JsonPath.compile(testPath);
+		
+		JsonWrapper actual =  hasA.get(jsonPath);
+
+		assertWithMessage("Expect null rather than an exception when path is not found.")
+			.that(actual).isNull();
+	}
+	
 }
