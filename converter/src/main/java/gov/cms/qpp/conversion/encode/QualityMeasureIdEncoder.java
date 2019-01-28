@@ -181,7 +181,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		this.encodePerformanceNotMet(childWrapper, parentNode);
 
 		for (Node childNode : parentNode.getChildNodes()) {
-			if (TemplateId.MEASURE_DATA_CMS_V2.equals(childNode.getType())) {
+			if (TemplateId.MEASURE_DATA_CMS_V2 == childNode.getType()) {
 				JsonOutputEncoder measureDataEncoder = encoders.get(childNode.getType());
 				measureDataEncoder.encode(childWrapper, childNode);
 			}
