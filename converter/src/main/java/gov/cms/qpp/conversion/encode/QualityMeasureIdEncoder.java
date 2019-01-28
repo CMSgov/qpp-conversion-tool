@@ -20,6 +20,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static gov.cms.qpp.conversion.decode.AggregateCountDecoder.AGGREGATE_COUNT;
+
 /**
  * Encoder to serialize Quality Measure Identifier and Measure Sections
  */
@@ -31,6 +33,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	private static final String SINGLE_PERFORMANCE_RATE = "singlePerformanceRate";
 	public static final String IS_END_TO_END_REPORTED = "isEndToEndReported";
 	private static final String TRUE = "true";
+	private static final String MEASURE_438= "438";
 
 	public QualityMeasureIdEncoder(Context context) {
 		super(context);
@@ -48,13 +51,64 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		MeasureConfig measureConfig = MeasureConfigHelper.getMeasureConfig(node);
 		String measureId = measureConfig.getMeasureId();
 		wrapper.putString(MEASURE_ID, measureId);
-
-		if (isASinglePerformanceRate(measureConfig)) {
+		if (isASinglePerformanceRate(measureConfig) && !MEASURE_438.equals(measureId)) {
 			encodeChildren(wrapper, node, measureConfig);
-		} else {
+		} else if (MEASURE_438.equals(measureId)) {
+			encodeSubPopulationSum(wrapper, node, measureConfig);
+		}
+ 		else {
 			encodeMultiPerformanceRate(wrapper, node, measureConfig);
 		}
 	}
+
+	/**
+	 * Encodes the sum of the all Sub-populations into one set of Sub-populations
+	 *
+	 * @param wrapper
+	 * @param separateSubpopulationNode
+	 * @param measureConfig
+	 */
+	private void encodeSubPopulationSum(JsonWrapper wrapper, Node separateSubpopulationNode, MeasureConfig measureConfig) {
+		Node combinedSubPopulationNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
+		combinedSubPopulationNode.setDefaultNsUri(separateSubpopulationNode.getDefaultNsUri());
+
+		int denominatorSum = calculateSubPopulationSum(separateSubpopulationNode, SubPopulationLabel.DENOM);
+		Node denomNode = createSubpopulationNode(SubPopulationLabel.DENOM, denominatorSum);
+		combinedSubPopulationNode.addChildNode(denomNode);
+
+		int numeratorSum = calculateSubPopulationSum(separateSubpopulationNode, SubPopulationLabel.NUMER);
+		Node numeratorNode = createSubpopulationNode(SubPopulationLabel.NUMER, numeratorSum);
+		combinedSubPopulationNode.addChildNode(numeratorNode);
+
+		int denexSum = calculateSubPopulationSum(separateSubpopulationNode, SubPopulationLabel.DENEX);
+		Node denexNode = createSubpopulationNode(SubPopulationLabel.DENEX, denexSum);
+		combinedSubPopulationNode.addChildNode(denexNode);
+
+		int denexcepSum = calculateSubPopulationSum(separateSubpopulationNode, SubPopulationLabel.DENEXCEP);
+		Node denexcepNode = createSubpopulationNode(SubPopulationLabel.DENEXCEP, denexcepSum);
+		combinedSubPopulationNode.addChildNode(denexcepNode);
+
+		encodeChildren(wrapper, combinedSubPopulationNode, measureConfig);
+	}
+
+	private int calculateSubPopulationSum(Node separateSubpopulationNode, SubPopulationLabel label) {
+		return separateSubpopulationNode.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2)
+			.filter(childNode ->
+				label.hasAlias(childNode.getValue(MeasureDataDecoder.MEASURE_TYPE)))
+			.mapToInt(ipopNode ->
+				Integer.parseInt(ipopNode.findFirstNode(TemplateId.PI_AGGREGATE_COUNT).getValue(AGGREGATE_COUNT))).sum();
+	}
+
+	private Node createSubpopulationNode(SubPopulationLabel label, int sum) {
+		Node subPopulationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		subPopulationNode.putValue(MeasureDataDecoder.MEASURE_TYPE, label.name());
+
+		Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT, subPopulationNode);
+		aggregateCountNode.putValue(AggregateCountDecoder.AGGREGATE_COUNT, String.valueOf(sum));
+		return subPopulationNode;
+	}
+
+
 
 	/**
 	 * Checks if is a single performance rate.
