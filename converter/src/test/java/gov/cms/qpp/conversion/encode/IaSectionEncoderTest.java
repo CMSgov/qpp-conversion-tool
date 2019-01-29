@@ -64,7 +64,7 @@ class IaSectionEncoderTest {
 		StringWriter sw = new StringWriter();
 
 		try {
-			encoder.encode(new BufferedWriter(sw));
+			encoder.encode(new BufferedWriter(sw), true);
 		} catch (EncodeException e) {
 			Assertions.fail("Failure to encode: " + e.getMessage());
 		}
@@ -83,7 +83,7 @@ class IaSectionEncoderTest {
 		StringWriter sw = new StringWriter();
 
 		try {
-			encoder.encode(new BufferedWriter(sw));
+			encoder.encode(new BufferedWriter(sw), true);
 		} catch (EncodeException e) {
 			Assertions.fail("Failure to encode: " + e.getMessage());
 		}
@@ -102,7 +102,7 @@ class IaSectionEncoderTest {
 		StringWriter sw = new StringWriter();
 
 		try {
-			encoder.encode(new BufferedWriter(sw));
+			encoder.encode(new BufferedWriter(sw), true);
 		} catch (EncodeException e) {
 			Assertions.fail("Failure to encode: " + e.getMessage());
 		}
@@ -121,7 +121,7 @@ class IaSectionEncoderTest {
 		StringWriter sw = new StringWriter();
 
 		try {
-			encoder.encode(new BufferedWriter(sw));
+			encoder.encode(new BufferedWriter(sw), true);
 		} catch (EncodeException e) {
 			Assertions.fail("Failure to encode: " + e.getMessage());
 		}

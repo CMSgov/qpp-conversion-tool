@@ -17,8 +17,8 @@ public class AciMeasurePerformedRnRValidator extends NodeValidator {
 	 * @param node Node parsed xml fragment under consideration
 	 */
 	@Override
-	protected void internalValidateSingleNode(Node node) {
-		thoroughlyCheck(node)
+	protected void performValidation(Node node) {
+		forceCheckErrors(node)
 			.childExact(ErrorCode.PI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT, 1, TemplateId.MEASURE_PERFORMED)
 			.singleValue(ErrorCode.PI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR, "measureId");
 	}

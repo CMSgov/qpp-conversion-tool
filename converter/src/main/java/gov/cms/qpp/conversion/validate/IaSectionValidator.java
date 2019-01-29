@@ -17,8 +17,8 @@ public class IaSectionValidator extends NodeValidator {
 	 * @param node The node to validate.
 	 */
 	@Override
-	protected void internalValidateSingleNode(Node node) {
-		check(node)
+	protected void performValidation(Node node) {
+		checkErrors(node)
 				.childMinimum(ErrorCode.IA_SECTION_MISSING_IA_MEASURE, 1, TemplateId.IA_MEASURE)
 				.childExact(ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM, 1, TemplateId.REPORTING_PARAMETERS_ACT)
 				.onlyHasChildren(ErrorCode.IA_SECTION_WRONG_CHILD, TemplateId.IA_MEASURE, TemplateId.REPORTING_PARAMETERS_ACT);

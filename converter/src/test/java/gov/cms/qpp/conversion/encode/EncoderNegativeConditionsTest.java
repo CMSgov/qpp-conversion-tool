@@ -31,7 +31,7 @@ class EncoderNegativeConditionsTest {
 		StringWriter sw = new StringWriter();
 
 		try {
-			encoder.encode(new BufferedWriter(sw));
+			encoder.encode(new BufferedWriter(sw), false);
 		} catch (EncodeException e) {
 			Assertions.fail("Failure to encode: " + e.getMessage());
 		}
@@ -60,10 +60,10 @@ class EncoderNegativeConditionsTest {
 
 		FailingWriter failWrite = new FailingWriter();
 
-		encoder.encode(new BufferedWriter(failWrite));
+		encoder.encode(new BufferedWriter(failWrite), true);
 
-		assertThat(encoder.getDetails()).hasSize(1);
-		assertThat(encoder.getDetails().get(0).getMessage())
+		assertThat(encoder.getErrors()).hasSize(1);
+		assertThat(encoder.getErrors().get(0).getMessage())
 				.isEqualTo("Fake IOException");
 	}
 }

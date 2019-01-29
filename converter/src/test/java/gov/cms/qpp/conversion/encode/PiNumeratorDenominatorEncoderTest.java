@@ -61,7 +61,7 @@ class PiNumeratorDenominatorEncoderTest {
 		StringWriter sw = new StringWriter();
 
 		try {
-			encoder.encode(new BufferedWriter(sw));
+			encoder.encode(new BufferedWriter(sw), true);
 		} catch (EncodeException e) {
 			Assertions.fail("Failure to encode: " + e.getMessage());
 		}
@@ -103,10 +103,10 @@ class PiNumeratorDenominatorEncoderTest {
 		objectUnderTest.internalEncode(jsonWrapper, piProportionMeasureNode);
 
 		//assert
-		assertThat(objectUnderTest.getDetails())
+		assertThat(objectUnderTest.getErrors())
 				.hasSize(1);
 		assertWithMessage("The validation error must be the inability to find an encoder")
-				.that(objectUnderTest.getDetails().get(0).getMessage())
+				.that(objectUnderTest.getErrors().get(0).getMessage())
 				.isEqualTo(ErrorCode.CT_LABEL + "Failed to find an encoder");
 	}
 }

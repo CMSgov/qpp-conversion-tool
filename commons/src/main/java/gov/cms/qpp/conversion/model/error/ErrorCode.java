@@ -100,7 +100,6 @@ public enum ErrorCode implements LocalizedError {
 			+ "Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). "
 			+ "Here is a link to the IG Reporting Parameter Act section: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
 	IA_SECTION_WRONG_CHILD(45, "The IA Section must contain only Improvement Activities and a Reporting Parameter Act"),
-	NPI_INVALID_CLINICAL_DOCUMENT(47, "Clinical Document Node must have a valid National Provider Identifier"),
 	CPC_QUALITY_MEASURE_ID_MISSING_STRATA(48, "Missing strata `(Reporting Stratum UUID)` for "
 			+ "`(Current subpopulation type)` measure `(Current subpopulation UUID)`. "
 			+ "Here is a link to the IG valid Measure Ids section: " + DocumentationReference.MEASURE_IDS, true),
@@ -157,7 +156,11 @@ public enum ErrorCode implements LocalizedError {
 		+ "the same measure GUID."),
 	PERFORMANCE_RATE_MISSING(72, "The Performance Rate is missing"),
 	VIRTUAL_GROUP_ID_REQUIRED(78, "The Program 'Mips Virtual Group' was found. The required entity id for this "
-		+ "program name was missing. Please provide a virtual group identifier with the 'Mips Virtual Group' program name.");
+		+ "program name was missing. Please provide a virtual group identifier with the 'Mips Virtual Group' program name."),
+	MISSING_PII_VALIDATOR(79, "There is no TIN validator present, so NPI/Alternative Payment Model (APM) "
+			+ "combinations cannot be verified"),
+	INCORRECT_API_NPI_COMBINATION(80, "The given National Provider (NPI) Identifier and Alternative Payment Model (APM) "
+			+ "are not a valid combination");
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));

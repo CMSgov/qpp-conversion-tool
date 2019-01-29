@@ -35,6 +35,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
@@ -75,7 +76,8 @@ class ValidationServiceImplTest {
 		pathToSubmissionError = Paths.get("src/test/resources/submissionErrorFixture.json");
 		pathToSubmissionDuplicateEntryError = Paths.get("src/test/resources/submissionDuplicateEntryErrorFixture.json");
 		Path toConvert = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
-		qppWrapper = new JsonWrapper(new Converter(new PathSource(toConvert)).transform(), false);
+		Context context = new Context();
+		qppWrapper = new Converter(new PathSource(toConvert), context).transform();
 		prepAllErrors();
 	}
 
@@ -97,7 +99,7 @@ class ValidationServiceImplTest {
 		objectUnderTest = spy(meep);
 
 		ConversionReport report = mock(ConversionReport.class);
-		when(report.getEncoded()).thenReturn(qppWrapper);
+		when(report.getEncodedWithMetadata()).thenReturn(qppWrapper);
 		when(converter.getReport()).thenReturn(report);
 	}
 

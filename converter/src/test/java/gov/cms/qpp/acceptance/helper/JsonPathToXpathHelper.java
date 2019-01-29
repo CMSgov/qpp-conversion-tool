@@ -1,5 +1,14 @@
 package gov.cms.qpp.acceptance.helper;
 
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
+import static junit.framework.TestCase.fail;
+
+import java.nio.file.Path;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filter;
@@ -7,6 +16,7 @@ import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
@@ -15,15 +25,6 @@ import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import gov.cms.qpp.test.helper.NioHelper;
-
-import java.nio.file.Path;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
-import static junit.framework.TestCase.fail;
 
 public class JsonPathToXpathHelper {
 
@@ -39,11 +40,15 @@ public class JsonPathToXpathHelper {
 	}
 
 	public JsonPathToXpathHelper(Path inPath, JsonWrapper inWrapper, boolean doDefaults) {
+		this(inPath, inWrapper, doDefaults, new Context());
+	}
+
+	public JsonPathToXpathHelper(Path inPath, JsonWrapper inWrapper, boolean doDefaults, Context context) {
 		path = inPath;
 		wrapper = inWrapper;
-		Converter converter = new Converter(new PathSource(inPath));
+		Converter converter = new Converter(new PathSource(inPath), context);
 		converter.transform();
-		QppOutputEncoder encoder = new QppOutputEncoder(converter.getContext());
+		QppOutputEncoder encoder = new QppOutputEncoder(context);
 		encoder.encode(wrapper, converter.getReport().getDecoded());
 	}
 

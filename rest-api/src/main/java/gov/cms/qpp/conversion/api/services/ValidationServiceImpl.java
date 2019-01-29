@@ -81,15 +81,15 @@ public class ValidationServiceImpl implements ValidationService {
 	 * @param conversionReport A report on the status of the conversion.
 	 */
 	@Override
-	public void validateQpp(final ConversionReport conversionReport) {
+	public void validateQpp(ConversionReport conversionReport) {
 		String validationUrl = environment.getProperty(Constants.VALIDATION_URL_ENV_VARIABLE);
 
 		if (StringUtils.isEmpty(validationUrl)) {
 			return;
 		}
 
-		conversionReport.getEncoded().stream().forEach(wrapper -> {
-			ResponseEntity<String> validationResponse = callValidationEndpoint(validationUrl, wrapper);
+		conversionReport.getEncodedWithMetadata().stream().forEach(wrapper -> {
+			ResponseEntity<String> validationResponse = callValidationEndpoint(validationUrl, wrapper.copyWithoutMetadata());
 
 			if (HttpStatus.UNPROCESSABLE_ENTITY == validationResponse.getStatusCode()) {
 

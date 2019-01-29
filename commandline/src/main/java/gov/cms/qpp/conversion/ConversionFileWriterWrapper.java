@@ -46,7 +46,10 @@ public class ConversionFileWriterWrapper {
 	 * Execute the conversion.
 	 */
 	public void transform() {
-		Converter converter = context == null ? new Converter(source) : new Converter(source, context);
+		if (context == null) {
+			context = new Context();
+		}
+		Converter converter = new Converter(source, context);
 
 		executeConverter(converter);
 	}

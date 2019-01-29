@@ -42,7 +42,6 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 43 : CT - The IA Section must have at least one Improvement Activity
 * 44 : CT - The IA Section must have one Reporting Parameter Act. Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). Here is a link to the IG Reporting Parameter Act section: https://ecqi.healthit.gov/system/files/2018_CMS_QRDA_III_Eligible_Clinicians_and_EP_IG_v2_508.pdf#page=82
 * 45 : CT - The IA Section must contain only Improvement Activities and a Reporting Parameter Act
-* 47 : CT - Clinical Document Node must have a valid National Provider Identifier
 * 48 : CT - Missing strata `(Reporting Stratum UUID)` for `(Current subpopulation type)` measure `(Current subpopulation UUID)`. Here is a link to the IG valid Measure Ids section: https://ecqi.healthit.gov/system/files/2018_CMS_QRDA_III_Eligible_Clinicians_and_EP_IG_v2_508.pdf#page=94
 * 49 : CT - Amount of stratifications `(Current number of Reporting Stratifiers)` does not meet expectations `(Number of stratifiers required)` for `(Current subpopulation type)` measure `(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`. Please refer to the Implementation Guide for correct stratification UUID's here: https://ecqi.healthit.gov/system/files/2018_CMS_QRDA_III_Eligible_Clinicians_and_EP_IG_v2_508.pdf#page=94
 * 50 : CT - An IA performed measure reference and results must have exactly one measure performed child
@@ -67,3 +66,5 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 71 : CT - Two or more different measure section measure reference and results have the same measure GUID. Please ensure that each measure section measure reference and results do not have the same measure GUID.
 * 72 : CT - The Performance Rate is missing
 * 78 : CT - The Program 'Mips Virtual Group' was found. The required entity id for this program name was missing. Please provide a virtual group identifier with the 'Mips Virtual Group' program name.
+* 79 : CT - There is no PII validator present, so NPI/Alternative Payment Model (APM) combinations cannot be verified
+* 80 : CT - The given National Provider (NPI) Identifier and Alternative Payment Model (APM) are not a valid combination

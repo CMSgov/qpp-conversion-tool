@@ -11,6 +11,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.conversion.model.error.ValidationResult;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
@@ -35,15 +36,11 @@ public class Converter {
 
 	private final Source source;
 	private final Context context;
-	private List<Detail> details = new ArrayList<>();
+	private List<Detail> errors = new ArrayList<>();
+	private List<Detail> warnings = new ArrayList<>();
 	private Node decoded;
 	private JsonWrapper encoded;
 
-	/**
-	 * Constructor for the CLI Converter application
-	 *
-	 * @param source Source to use for the conversion
-	 */
 	public Converter(Source source) {
 		this(source, new Context());
 	}
@@ -62,6 +59,10 @@ public class Converter {
 		this.context = context;
 	}
 
+	/**
+	 * Get the conversion context environment for the converter instance.
+	 * @return context information
+	 */
 	public Context getContext() {
 		return context;
 	}
@@ -78,14 +79,14 @@ public class Converter {
 		} catch (XmlInputFileException | XmlException xe) {
 			DEV_LOG.error(ErrorCode.NOT_VALID_XML_DOCUMENT.getMessage(), xe);
 			Detail detail = Detail.forErrorCode(ErrorCode.NOT_VALID_XML_DOCUMENT);
-			details.add(detail);
+			errors.add(detail);
 		} catch (RuntimeException exception) {
 			DEV_LOG.error(ErrorCode.UNEXPECTED_ERROR.getMessage(), exception);
 			Detail detail = Detail.forErrorCode(ErrorCode.UNEXPECTED_ERROR);
-			details.add(detail);
+			errors.add(detail);
 		}
 
-		if (!details.isEmpty()) {
+		if (!errors.isEmpty()) {
 			throw new TransformException("Validation errors exist", null, getReport());
 		}
 
@@ -108,16 +109,18 @@ public class Converter {
 
 			if (context.isDoValidation()) {
 				QrdaValidator validator = new QrdaValidator(context);
-				details.addAll(validator.validate(decoded));
+				ValidationResult result = validator.validate(decoded);
+				errors.addAll(result.getErrors());
+				warnings.addAll(result.getWarnings());
 			}
 
-			if (details.isEmpty()) {
+			if (errors.isEmpty()) {
 				qpp = encode();
 			}
 		} else {
 			Detail detail = Detail.forErrorCode(ErrorCode.NOT_VALID_QRDA_DOCUMENT.format(
 				Context.REPORTING_YEAR, DocumentationReference.CLINICAL_DOCUMENT));
-			details.add(detail);
+			errors.add(detail);
 		}
 
 		return qpp;
@@ -134,8 +137,9 @@ public class Converter {
 
 		try {
 			encoder.setNodes(Collections.singletonList(decoded));
-			JsonWrapper qpp = new JsonWrapper(encoder.encode(), true);
-			details.addAll(encoder.getDetails());
+			JsonWrapper qpp = encoder.encode();
+			errors.addAll(encoder.getErrors());
+			warnings.addAll(encoder.getWarnings());
 			return qpp;
 		} catch (EncodeException e) {
 			throw new XmlInputFileException("Issues decoding/encoding.", e);
@@ -158,7 +162,7 @@ public class Converter {
 	 * @return the conversion report
 	 */
 	public ConversionReport getReport() {
-		return new ConversionReport(source, details, decoded, encoded);
+		return new ConversionReport(source, errors, warnings, decoded, encoded);
 	}
 
 }

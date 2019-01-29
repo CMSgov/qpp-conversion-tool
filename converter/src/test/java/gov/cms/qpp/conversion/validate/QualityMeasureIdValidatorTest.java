@@ -5,7 +5,8 @@ import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATIO
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID;
 
-import java.util.Set;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -73,7 +74,7 @@ class QualityMeasureIdValidatorTest {
 	void validateHappyPath() {
 		Node measureReferenceResultsNode = createMeasureReferenceResultsNode();
 
-		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 
 		assertWithMessage("There must not be any validation errors.")
 				.that(details).isEmpty();
@@ -84,7 +85,7 @@ class QualityMeasureIdValidatorTest {
 		LocalizedError localizedError = ErrorCode.MISSING_OR_DUPLICATED_MEASURE_GUID;
 		Node measureReferenceResultsNode = createMeasureReferenceResultsNode(false, true);
 
-		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 
 		assertWithMessage("Incorrect validation error.")
 			.that(details)
@@ -96,7 +97,7 @@ class QualityMeasureIdValidatorTest {
 	void validateMissingMeasure() {
 		Node measureReferenceResultsNode = createMeasureReferenceResultsNode(true, false);
 
-		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 
 		assertWithMessage("Incorrect validation error.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -108,7 +109,7 @@ class QualityMeasureIdValidatorTest {
 		LocalizedError localizedError = ErrorCode.MISSING_OR_DUPLICATED_MEASURE_GUID;
 		Node measureReferenceResultsNode = createMeasureReferenceResultsNode(false, false);
 
-		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 
 		assertWithMessage("Incorrect validation error.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -119,7 +120,7 @@ class QualityMeasureIdValidatorTest {
 	@Test
 	void testDenominatorExclusionExists() {
 		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_DENOM_EXCLUSION_GUID).build();
-		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 		assertWithMessage("There must be zero validation errors.")
 				.that(details).isEmpty();
 	}
@@ -135,7 +136,7 @@ class QualityMeasureIdValidatorTest {
 			.removeSubPopulationMeasureData(SubPopulationLabel.DENEX.name(), REQUIRES_DENOM_EXCLUSION_DENEX_GUID)
 			.build();
 
-		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 		assertWithMessage("Incorrect validation error.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(incorrectCount, incorrectUuid);
@@ -144,7 +145,7 @@ class QualityMeasureIdValidatorTest {
 	@Test
 	void testInternalExistingDenexcepMeasure() {
 		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_DENOM_EXCEPTION_GUID).build();
-		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 		assertWithMessage("There must not be any validation errors.")
 				.that(details).isEmpty();
 	}
@@ -157,7 +158,7 @@ class QualityMeasureIdValidatorTest {
 				"IPP", REQUIRES_DENOM_EXCEPTION_IPOP_GUID)
 			.build();
 
-		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 		assertWithMessage("There must not be any validation errors.")
 				.that(details).isEmpty();
 	}
@@ -173,7 +174,7 @@ class QualityMeasureIdValidatorTest {
 			.removeSubPopulationMeasureData(SubPopulationLabel.DENEXCEP.name(), REQUIRES_DENOM_EXCEPTION_DENEXCEP_GUID)
 			.build();
 
-		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 
 		assertWithMessage("Incorrect validation error.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -184,7 +185,7 @@ class QualityMeasureIdValidatorTest {
 	void testInternalDenexcepMultipleSupPopulations() {
 		Node measureReferenceResultsNode = createCorrectMeasureReference(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID).build();
 
-		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 
 		assertWithMessage("There must not be any validation errors.")
 				.that(details).isEmpty();
@@ -202,7 +203,7 @@ class QualityMeasureIdValidatorTest {
 					SubPopulationLabel.DENEXCEP.name(), MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID+"INVALID")
 			.build();
 
-		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 		assertWithMessage("Incorrect validation error.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(message);
@@ -220,7 +221,7 @@ class QualityMeasureIdValidatorTest {
 			.removeSubPopulationMeasureData(SubPopulationLabel.DENEXCEP.name(), MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID)
 			.build();
 
-		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 		assertWithMessage("Incorrect validation error.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(countMessage, uuidMessage);
@@ -233,7 +234,7 @@ class QualityMeasureIdValidatorTest {
 					MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID, ONE_HUNDRED)
 			.build();
 
-		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 
 		LocalizedError expectedErrorMessage =
 			ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS52v5", 3, SubPopulationLabel.NUMER.name(), 4);
@@ -248,7 +249,7 @@ class QualityMeasureIdValidatorTest {
 			.removeSubPopulationMeasureData(SubPopulationLabel.NUMER.name(), MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID)
 			.build();
 
-		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 
 		LocalizedError expectedErrorMessage =
 			ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS52v5", 3, SubPopulationLabel.NUMER.name(), 2);
@@ -268,7 +269,7 @@ class QualityMeasureIdValidatorTest {
 					SubPopulationLabel.NUMER.name(), "incorrectUUID")
 			.build();
 
-		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 
 		LocalizedError expectedErrorMessage = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5",
 				SubPopulationLabel.NUMER.name(), MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID);
@@ -285,7 +286,7 @@ class QualityMeasureIdValidatorTest {
 				.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.DENOM.name(), REQUIRES_DENOM_EXCEPTION_DENOM_GUID, "50")
 				.build();
 
-		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 		assertWithMessage("There must not be any validation errors.")
 				.that(details).isEmpty();
 	}
@@ -295,7 +296,7 @@ class QualityMeasureIdValidatorTest {
 		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_DENOM_EXCEPTION_GUID)
 				.build();
 
-		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 		assertWithMessage("There must not be any validation errors.")
 				.that(details).isEmpty();
 	}
@@ -307,7 +308,7 @@ class QualityMeasureIdValidatorTest {
 				.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.DENOM.name(), REQUIRES_DENOM_EXCEPTION_DENOM_GUID, "101")
 				.build();
 
-		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 		assertWithMessage("Must contain the correct error message.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ErrorCode.DENOMINATOR_COUNT_INVALID);
@@ -319,7 +320,7 @@ class QualityMeasureIdValidatorTest {
 				.replaceSubPopulationPerformanceRate(REQUIRES_DENOM_EXCEPTION_NUMER_GUID, "fail")
 				.build();
 
-		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 		LocalizedError expectedErrorMessage = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS68v6",
 				PERFORMANCE_RATE_ID, REQUIRES_DENOM_EXCEPTION_NUMER_GUID);
 		assertWithMessage("Must contain the correct error message.")
@@ -333,7 +334,7 @@ class QualityMeasureIdValidatorTest {
 			.replaceSubPopulationPerformanceRate(MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID, "fail1")
 			.build();
 
-		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 
 		String expectedUuids = StringHelper.join(
 			Lists.newArrayList(MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID,

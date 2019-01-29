@@ -43,7 +43,7 @@ class AciProportionNumeratorRoundTripTest {
 		encoder.setNodes(nodes);
 
 		StringWriter sw = new StringWriter();
-		encoder.encode(new BufferedWriter(sw));
+		encoder.encode(new BufferedWriter(sw), true);
 
 		String EXPECTED = "{\n  \"numerator\" : 600\n}";
 		assertThat(sw.toString()).isEqualTo(EXPECTED);
