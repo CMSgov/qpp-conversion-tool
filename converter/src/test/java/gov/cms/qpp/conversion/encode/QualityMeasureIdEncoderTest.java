@@ -122,6 +122,15 @@ class QualityMeasureIdEncoderTest {
 				.isEqualTo(-600);
 	}
 
+	@Test
+	void testIgnoresNonMeasureDataNodes() {
+		qualityMeasureId.addChildNode(aggregateCountNode);
+		executeInternalEncode();
+		JsonWrapper childValues = getChildValues();
+
+		assertThat(childValues.getInteger("aggregateCount")).isNull();
+	}
+
 	private void executeInternalEncode() {
 		qualityMeasureId.addChildNodes(populationNode, denomExclusionNode, numeratorNode, denominatorNode);
 		try {
