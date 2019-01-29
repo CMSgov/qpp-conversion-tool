@@ -42,8 +42,8 @@ class CpcValidationInfoMapTest {
 		
 		assertThat(map).isNotNull();
 		assertThat(map.size()).isEqualTo(2);
-		assertThat(map.get("T1AR0503").getNpi()).isEqualTo("0333333333");
-		assertThat(map.get("T1AR0518").getNpi()).isEqualTo("0444444444");
+		assertThat(map.get("0333333333").getApm()).isEqualTo("T1AR0503");
+		assertThat(map.get("0444444444").getApm()).isEqualTo("T1AR0518");
 	}
 
 	@Test

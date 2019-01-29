@@ -38,7 +38,7 @@ public class CpcValidationInfoMap {
 		}
 
 		return cpcValidationInfoList.stream()
-			.collect(Collectors.toMap(CpcValidationInfo::getApm, Function.identity()));
+			.collect(Collectors.toMap(CpcValidationInfo::getNpi, Function.identity()));
 	}
 
 	public Map<String, CpcValidationInfo> getApmToSpec() {

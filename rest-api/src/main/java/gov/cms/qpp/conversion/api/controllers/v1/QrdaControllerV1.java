@@ -23,7 +23,7 @@ public class QrdaControllerV1 extends SkeletalQrdaController<String> {
 
 	@Override
 	protected String respond(ConversionReport report) {
-		return report.getEncoded().toString(); // TODO toObject?
+		return report.getEncodedWithMetadata().copyWithoutMetadata().toString(); // TODO toObject?
 	}
 
 }
