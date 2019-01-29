@@ -162,9 +162,9 @@ public class Registry<R> {
 
 	@SuppressWarnings("unchecked") // suppress cast from wildcard <?> to type <T>
 	private static <T> Constructor<T> getNoArgsConstructor(Class<T> type) {
-		Constructor<T> constructor = getNoArgsConstructor( (Constructor<T>[]) type.getConstructors());
+		Constructor<T> constructor = getNoArgsConstructor((Constructor<T>[]) type.getConstructors());
 		if (constructor == null) {
-			constructor = getNoArgsConstructor( (Constructor<T>[]) type.getDeclaredConstructors());
+			constructor = getNoArgsConstructor((Constructor<T>[]) type.getDeclaredConstructors());
 			
 			if (constructor == null) {
 				throw new ConstructorNotFoundException(type + " does not have a no-args constructor (public OR private)");
