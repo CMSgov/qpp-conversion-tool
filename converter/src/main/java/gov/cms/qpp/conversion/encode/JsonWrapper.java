@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.jayway.jsonpath.JsonPath;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
 import gov.cms.qpp.conversion.Source;
 import gov.cms.qpp.conversion.model.Node;
@@ -39,11 +40,12 @@ public class JsonWrapper {
 	public static enum Kind {
 		CONTAINER, VALUE, METADATA;
 	}
+	
 	public static enum Type {
 		BOOLEAN {
 			public void json(JsonWrapper value, JsonGenerator gen) throws IOException {
 				if (hasValue(value)) {
-					gen.writeBoolean( Boolean.parseBoolean(value.toObject().toString()));
+					gen.writeBoolean(Boolean.parseBoolean(value.toObject().toString()));
 				}
 			}
 		}, DATE {
@@ -53,19 +55,19 @@ public class JsonWrapper {
 		}, INTEGER {
 			public void json(JsonWrapper value, JsonGenerator gen) throws IOException {
 				if (hasValue(value)) {
-					gen.writeNumber( Integer.parseInt(value.toObject().toString()));
+					gen.writeNumber(Integer.parseInt(value.toObject().toString()));
 				}
 			}
 		}, FLOAT {
 			public void json(JsonWrapper value, JsonGenerator gen) throws IOException {
 				if (hasValue(value)) {
-					gen.writeNumber( Float.parseFloat(value.toObject().toString()));
+					gen.writeNumber(Float.parseFloat(value.toObject().toString()));
 				}
 			}
 		}, STRING {
 			public void json(JsonWrapper value, JsonGenerator gen) throws IOException {
 				if (hasValue(value)) {
-					gen.writeString( value.toObject().toString() );
+					gen.writeString(value.toObject().toString());
 				}
 			}
 		}, MAP {
@@ -74,12 +76,13 @@ public class JsonWrapper {
 					gen.writeObject(value.toObject());
 				}
 			}
+			
 			public void metadata(JsonWrapper value, JsonGenerator gen) throws IOException {
 				gen.writeStartObject();
 				if (value.hasMetadata()) {
 					gen.writeObjectField(METADATA_HOLDER, value.getMetadata());
 				}
-				value.stream().forEach( entry -> {
+				value.stream().forEach(entry -> {
 					try {
 						gen.writeObjectField(entry.getKey(), entry);
 					} catch (IOException e) {
@@ -94,12 +97,13 @@ public class JsonWrapper {
 					gen.writeObject(value.toObject());
 				}
 			}
+			
 			public void metadata(JsonWrapper value, JsonGenerator gen) throws IOException {
 				gen.writeStartArray();
 				if (value.hasMetadata()) {
 					gen.writeObject(value.getMetadata());
 				}
-	            value.stream().forEach( entry ->{
+	            value.stream().forEach(entry -> {
 	                try {
 						gen.writeObject(entry);
 					} catch (IOException e) {
@@ -116,6 +120,7 @@ public class JsonWrapper {
 		}
 		
 		public void json(JsonWrapper value, JsonGenerator gen) throws IOException {}
+		
 		public void metadata(JsonWrapper value, JsonGenerator gen) throws IOException{}
 		
 	}
@@ -155,6 +160,7 @@ public class JsonWrapper {
 			}				
 		}
 	}
+	
 	/**
 	 * Custom JsonWrapper serialization logic to handle the metadata and type handling. 
 	 * This subclass also processes the metadata.
@@ -162,7 +168,7 @@ public class JsonWrapper {
 	static class JsonWrapperMetadataSerilizer extends JsonWrapperSerilizer {
 		
 		protected void jsonContainer(JsonWrapper value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-			if ( value.hasMetadata() ) {
+			if (value.hasMetadata()) {
 				value.getType().metadata(value, gen);
 			} else {
 				super.jsonContainer(value, gen, provider);
@@ -188,6 +194,7 @@ public class JsonWrapper {
 	static ObjectWriter standardWriter() {
 		return jsonMapper.writer().with(standardPrinter());
 	}
+	
 	static ObjectWriter metadataWriter() {
 		return metaMapper.writer().with(standardPrinter());
 	}
@@ -204,19 +211,19 @@ public class JsonWrapper {
 	
 	/**
 	 * This is the key on the JsonWrapper that was used to store it in the parent wrapper.
-	 * This allows for a single streaming implementation and avoids reference to Map.Entity<K,V>
+	 * This allows for a single streaming implementation and avoids reference to Map.Entity&lt;K,V&gt;
 	 * 
 	 * It is set upon put(String name, JsonWrapper value) calls to emulate an entity.
 	 */
 	private String keyForMapStream;
 	
-
 	/**
 	 * Constructor for Json Container use. 
 	 */
 	public JsonWrapper() {
 		this(Kind.CONTAINER);
 	}
+	
 	/**
 	 * Cunstruct a JSON container for a given kind.
 	 * @param kind
@@ -233,8 +240,9 @@ public class JsonWrapper {
 		childrenList = new LinkedList<>();
 		
 		// no metadata on metadata
-		metadata = isMetadata() ?null :new JsonWrapper(Kind.METADATA);
+		metadata = isMetadata() ? null : new JsonWrapper(Kind.METADATA);
 	}
+	
 	/**
 	 * Construct a JSON container for a string value.
 	 * A string value is a leaf node.
@@ -249,18 +257,22 @@ public class JsonWrapper {
 		childrenList = null;
 		metadata = null;
 	}
+	
 	public JsonWrapper(Boolean value) {
 		this(value.toString());
 		type = Type.BOOLEAN;
 	}
+	
 	public JsonWrapper(Integer value) {
 		this(value.toString());
 		type = Type.INTEGER;
 	}
+	
 	public JsonWrapper(Float value) {
 		this(value.toString());
 		type = Type.FLOAT;
 	}
+	
 	/**
 	 * Construct a clone of the given JSON container.
 	 * @param wrapper
@@ -268,6 +280,7 @@ public class JsonWrapper {
 	public JsonWrapper(JsonWrapper wrapper) {
 		this(wrapper, true);
 	}
+	
 	/**
 	 * Construct a clone of the given JSON container 
 	 * with the option to omit the metadata. TODO might not be necessary.
@@ -299,9 +312,11 @@ public class JsonWrapper {
 	public Type getType() {
 		return type;
 	}
+	
 	public boolean isType(Type type) {
 		return this.type == type;
 	}
+	
 	JsonWrapper setType(Type type) {
 		this.type = type;
 		return this;
@@ -314,9 +329,11 @@ public class JsonWrapper {
 	public Kind getKind() {
 		return kind;
 	}
+	
 	public boolean isKind(Kind kind) {
 		return this.kind == kind;
 	}
+	
 	/**
 	 * @return The name used to store this entry in the parent.
 	 */
@@ -333,7 +350,7 @@ public class JsonWrapper {
 	 * @return chaining self ref
 	 */
 	public JsonWrapper clear() {
-		if ( ! isValue() ) {
+		if (!isValue()) {
 			childrenMap.clear();
 			childrenList.clear();
 			// metadata do not have metadata but are clearable wrappers.
@@ -356,6 +373,40 @@ public class JsonWrapper {
 		put(name, value, Type.STRING);
 		return this;
 	}
+	
+	/**
+	 * Places an named Integer within the map container wrapper.
+	 *
+	 * @param value to place in wrapper
+	 * @return <i><b>this</b></i> reference for chaining
+	 */
+	public JsonWrapper put(String name, Integer value) {
+		put(name, Integer.toString(value), Type.INTEGER);
+		return this;
+	}
+
+	/**
+	 * Places an named Float within the map container wrapper.
+	 *
+	 * @param value to place in wrapper
+	 * @return <i><b>this</b></i> reference for chaining
+	 */
+	public JsonWrapper put(String name, Float value) {
+		put(name, Float.toString(value), Type.FLOAT);
+		return this;
+	}
+	
+	/**
+	 * Places an named Boolean within the map container wrapper.
+	 *
+	 * @param value to place in wrapper
+	 * @return <i><b>this</b></i> reference for chaining
+	 */
+	public JsonWrapper put(String name, Boolean value) {
+		put(name, Boolean.toString(value), Type.BOOLEAN);
+		return this;
+	}
+
 
 	/**
 	 * Places an unnamed String within the list container wrapper.
@@ -365,6 +416,107 @@ public class JsonWrapper {
 	 */
 	public JsonWrapper put(String value) {
 		put(value, Type.STRING);
+		return this;
+	}
+	
+	/**
+	 * Places an unnamed Integer within the list container wrapper.
+	 *
+	 * @param value to place in wrapper
+	 * @return <i><b>this</b></i> reference for chaining
+	 */
+	public JsonWrapper put(Integer value) {
+		put(value.toString(), Type.INTEGER);
+		return this;
+	}
+	
+	/**
+	 * Places an unnamed Float within the list container wrapper.
+	 *
+	 * @param value to place in wrapper
+	 * @return <i><b>this</b></i> reference for chaining
+	 */
+	public JsonWrapper put(Float value) {
+		put(value.toString(), Type.FLOAT);
+		return this;
+	}
+	
+	/**
+	 * Places an unnamed Boolean within the list container wrapper.
+	 *
+	 * @param value to place in wrapper
+	 * @return <i><b>this</b></i> reference for chaining
+	 */
+	public JsonWrapper put(Boolean value) {
+		put(value.toString(), Type.BOOLEAN);
+		return this;
+	}
+
+	/**
+	 * Places an unnamed child wrapper within the wrapper.
+	 * Think of this as adding a JSON array entry.
+	 *
+	 * @param value item to place in wrapper
+	 * @return <i><b>this</b></i> reference for chaining
+	 */
+	public JsonWrapper put(JsonWrapper value) {
+		checkMapState();
+		if (checkState(value)) {
+			childrenList.add(value);
+			type = Type.LIST;
+		}
+		return this;
+	}
+
+	/**
+	 * The master putter of MAP elements. They must specify the type.
+	 * The JSON values are all represented as strings because JSON is a string.
+	 * The type parameter is a sort of metadata about the entry for the
+	 * wrapper to know what data was stored for toString processing, 
+	 * format validation, and value fetching.
+	 * 
+	 * @param name
+	 * @param value
+	 * @param type
+	 */
+	private void put(String name, String value, Type type) {
+		JsonWrapper wrapper = new JsonWrapper(value);
+		wrapper.type = type;
+		put(name, wrapper);
+	}
+	
+	/**
+	 * The master putter of LIST elements. They must specify the type.
+	 * The JSON values are all represented as strings because JSON is a string.
+	 * The type parameter is a sort of metadata about the entry for the
+	 * wrapper to know what data was stored for toString processing, 
+	 * format validation, and value fetching.
+	 * 
+	 * @param value
+	 * @param type
+	 */
+	private void put(String value, Type type) {
+		JsonWrapper wrapper = new JsonWrapper(value);
+		wrapper.type = type;
+		put(wrapper);
+	}
+			
+	/**
+	 * Places a named child wrapper within the wrapper.
+	 *
+	 * Think of this as adding an attribute to a JSON hash.
+	 *
+	 * @param name key for value
+	 * @param value keyed value
+	 * @return <i><b>this</b></i> reference for chaining
+	 */
+	public JsonWrapper put(String name, JsonWrapper value) {
+		checkListState();
+		if (checkState(value)) {
+			value.keyForMapStream = name;
+			childrenMap.put(name, value);
+			type = Type.MAP;
+		}
 		return this;
 	}
 
@@ -417,10 +569,6 @@ public class JsonWrapper {
 		}
 		return this;
 	}
-	public JsonWrapper put(String name, Integer value) {
-		put(name, Integer.toString(value), Type.INTEGER);
-		return this;
-	}
 
 	/**
 	 * Places an unnamed String that represents a {@link java.lang.Integer} within the wrapper.
@@ -437,11 +585,7 @@ public class JsonWrapper {
 		}
 		return this;
 	}
-	public JsonWrapper put(Integer value) {
-		put(value.toString(), Type.INTEGER);
-		return this;
-	}
-
+	
 	/**
 	 * Places an named String that represents a {@link java.lang.Float} within the wrapper.
 	 *
@@ -456,10 +600,6 @@ public class JsonWrapper {
 			put(name, value, Type.FLOAT);
 			throw e;
 		}
-		return this;
-	}
-	public JsonWrapper put(String name, Float value) {
-		put(name, Float.toString(value), Type.FLOAT);
 		return this;
 	}
 
@@ -478,11 +618,7 @@ public class JsonWrapper {
 		}
 		return this;
 	}
-	public JsonWrapper put(Float value) {
-		put(value.toString(), Type.FLOAT);
-		return this;
-	}
-
+	
 	/**
 	 * Places a named String that represents a {@link java.lang.Boolean} within the wrapper.
 	 *
@@ -499,11 +635,7 @@ public class JsonWrapper {
 		}
 		return this;
 	}
-	public JsonWrapper put(String name, Boolean value) {
-		put(name, Boolean.toString(value), Type.BOOLEAN);
-		return this;
-	}
-
+	
 	/**
 	 * Places an unnamed String that represents a {@link java.lang.Boolean} within the wrapper.
 	 *
@@ -512,88 +644,14 @@ public class JsonWrapper {
 	 */
 	public JsonWrapper putBoolean(String value) { // TODO only used in unit tests
 		try {
-			put( Boolean.toString(validBoolean(value)), Type.BOOLEAN);
+			put(Boolean.toString(validBoolean(value)), Type.BOOLEAN);
 		} catch (EncodeException e) {
 			put(value, Type.BOOLEAN);
 			throw e;
 		}
 		return this;
 	}
-	public JsonWrapper put(Boolean value) {
-		put(value.toString(), Type.BOOLEAN);
-		return this;
-	}
-
 	
-	/**
-	 * The master putter of MAP elements. They must specify the type.
-	 * The JSON values are all represented as strings because JSON is a string.
-	 * The type parameter is a sort of metadata about the entry for the
-	 * wrapper to know what data was stored for toString processing, 
-	 * format validation, and value fetching.
-	 * 
-	 * @param name
-	 * @param value
-	 * @param type
-	 */
-	private void put(String name, String value, Type type) {
-		JsonWrapper wrapper = new JsonWrapper(value);
-		wrapper.type = type;
-		put(name, wrapper);
-	}
-	
-	/**
-	 * The master putter of LIST elements. They must specify the type.
-	 * The JSON values are all represented as strings because JSON is a string.
-	 * The type parameter is a sort of metadata about the entry for the
-	 * wrapper to know what data was stored for toString processing, 
-	 * format validation, and value fetching.
-	 * 
-	 * @param value
-	 * @param type
-	 */
-	private void put(String value, Type type) {
-		JsonWrapper wrapper = new JsonWrapper(value);
-		wrapper.type = type;
-		put(wrapper);
-	}
-	
-	
-	/**
-	 * Places a named child wrapper within the wrapper.
-	 *
-	 * Think of this as adding an attribute to a JSON hash.
-	 *
-	 * @param name key for value
-	 * @param value keyed value
-	 * @return <i><b>this</b></i> reference for chaining
-	 */
-	public JsonWrapper put(String name, JsonWrapper value) {
-		checkListState();
-		if (checkState(value)) {
-			value.keyForMapStream = name;
-			childrenMap.put(name, value);
-			type = Type.MAP;
-		}
-		return this;
-	}
-
-	/**
-	 * Places an unnamed child wrapper within the wrapper.
-	 * Think of this as adding a JSON array entry.
-	 *
-	 * @param value item to place in wrapper
-	 * @return <i><b>this</b></i> reference for chaining
-	 */
-	public JsonWrapper put(JsonWrapper value) {
-		checkMapState();
-		if (checkState(value)) {
-			childrenList.add(value);
-			type = Type.LIST;
-		}
-		return this;
-	}
-
 	/**
 	 * Retrieve a named {@link String} from the {@link JsonWrapper}.
 	 *
@@ -648,6 +706,8 @@ public class JsonWrapper {
 	 * @param name key for value
 	 * @return retrieved keyed value
 	 */
+	@SuppressFBWarnings(value = "NP_BOOLEAN_RETURN_NULL", 
+		justification = "Null is desired when not found.")
 	public Boolean getBoolean(String name) {
 		JsonWrapper wrapper = get(name);
 		if (wrapper == null) {
@@ -655,25 +715,6 @@ public class JsonWrapper {
 		}
 		String value = wrapper.value;
 		return Boolean.valueOf(value);
-	}
-
-	/**
-	 * Return the named value from the {@link JsonWrapper}.
-	 *
-	 * Think of this as retrieval of a JSON hash attribute
-	 *
-	 * @param name key for value
-	 * @param <T>
-	 * @return T retrieved keyed value
-	 */
-	public JsonWrapper get(String name) {
-		return childrenMap.get(name);
-	}
-	public JsonWrapper get(int index) {
-		if (index >= 0 && index < childrenList.size()) {
-			return childrenList.get(index);
-		}
-		return null;
 	}
 
 	/**
@@ -757,6 +798,7 @@ public class JsonWrapper {
 			throw new IllegalStateException("Current state may not change (from map to list).");
 		}
 	}
+	
 	/**
 	 * Helps enforce the initialized representation of the {@link JsonWrapper} as a hash or an array.
 	 *
@@ -767,6 +809,7 @@ public class JsonWrapper {
 			throw new IllegalStateException("Current state may not change (from list to map).");
 		}
 	}
+	
 	/**
 	 * Helps enforce no null or empty values added to a {@link JsonWrapper}.
 	 *
@@ -776,22 +819,23 @@ public class JsonWrapper {
 		if (wrapper == null) { // no null entries
 			return false;
 		}
-		try{
+		
+		try {
 			isDuplicateEntry(wrapper);  // no self references
 		} catch (Exception e) {
 			return false;
 		}
+		
 		if (wrapper.value == null && wrapper.isKind(Kind.VALUE)) { // no null values
 			return false;
-		}
-		if (wrapper.isType(Type.UNKNOWN)) { // no empty containers
+		} else if (wrapper.isType(Type.UNKNOWN)) { // no empty containers
 			return false;
-		}
-		if (wrapper.isKind(Kind.METADATA) && this.isKind(Kind.METADATA)) { // allow metadata mergers
+		} else if (wrapper.isKind(Kind.METADATA) && this.isKind(Kind.METADATA)) { // allow metadata mergers
 			return wrapper.size() > 0;
 		}
 		return true; // must be good if we made it through the gauntlet
 	}
+	
 	/**
 	 * Helps prevent duplicate entries. It is not sure why duplicates are added. 
 	 * The decoders seem to try and this prevents it without without changing decoder code.
@@ -805,7 +849,7 @@ public class JsonWrapper {
 		boolean duplicate = wrapper == this 
 				|| childrenList.contains(wrapper) 
 				|| childrenMap.values().contains(wrapper);
-		if ( duplicate ) {
+		if (duplicate) {
 			throw new UnsupportedOperationException("May not add parent to itself nor a child more than once.");
 		}
 		
@@ -823,6 +867,7 @@ public class JsonWrapper {
 		}
 		return isType(Type.MAP);
 	}
+	
 	/**
 	 * Identifies whether or not the {@link JsonWrapper}'s content is a JSON array.
 	 *
@@ -834,6 +879,7 @@ public class JsonWrapper {
 		}
 		return isType(Type.LIST);
 	}
+	
 	/**
 	 * Identifies whether or not the {@link JsonWrapper}'s content is a JSON value (leaf).
 	 *
@@ -842,6 +888,7 @@ public class JsonWrapper {
 	public boolean isValue() {
 		return isKind(Kind.VALUE);
 	}
+	
 	/**
 	 * Identifies whether or not the {@link JsonWrapper}'s content IS metadata.
 	 *
@@ -850,13 +897,14 @@ public class JsonWrapper {
 	public boolean isMetadata() {
 		return isKind(Kind.METADATA);
 	}
+	
 	/**
 	 * Identifies whether or not the {@link JsonWrapper}'s content HAS metadata.
 	 *
 	 * @return boolean true if this has metadata.
 	 */
 	public boolean hasMetadata() {
-		return metadata!=null && (metadata.isMap() || metadata.isList());
+		return metadata != null && (metadata.isMap() || metadata.isList());
 	}
 
 	/**
@@ -867,7 +915,7 @@ public class JsonWrapper {
 	public Stream<JsonWrapper> stream() {
 		Stream<JsonWrapper> stream;
 		
-		if (isValue() && value!=null) {
+		if (isValue() && value != null) {
 			stream = Stream.of(this);
 		} else if (isList()) {
 			stream = childrenList.stream();
@@ -894,6 +942,7 @@ public class JsonWrapper {
 			throw new EncodeException("Issue rendering JSON from JsonWrapper Map", e);
 		}
 	}
+	
 	/**
 	 * Valid JSON String representation of the {@link JsonWrapper} 
 	 * with its metadata in metadata_holder hash key.
@@ -957,6 +1006,7 @@ public class JsonWrapper {
 	void attachMetadata(Node node) {
 		attachMetadata(node, "");
 	}
+	
 	void attachMetadata(Node node, String encodeLabel) {
 		JsonWrapper metadata = new JsonWrapper(Kind.METADATA);
 		
@@ -1031,7 +1081,7 @@ public class JsonWrapper {
 			return 0;
 		}
 		if (isValue()) {
-			return (value==null) ?0 :1;
+			return (value == null) ? 0 : 1;
 		} 
 		if (isList()) {
 			return childrenList.size();
@@ -1055,6 +1105,7 @@ public class JsonWrapper {
 		}
 		return pathWrapper;
 	}
+	
 	/**
 	 * Accepts a bracket or dot path notation to locate a wrapper child.
 	 * It does not directly locate the node.
@@ -1069,29 +1120,32 @@ public class JsonWrapper {
 			return null; // could return new empty instance of JsonWrapper for null protection
 		}
 		
-		String jPath = jsonPath.replace("$", "");
-		if (jPath.length() == 0) {
+		String path = jsonPath.replace("$", "");
+		if (path.length() == 0) {
 			return this;
-		} else if (jPath.contains(".")) {
-			jPath = jPath
+		} else if (path.contains(".")) {
+			// conform dot containing paths to the results of bracket paths below
+			path = path
 				.replaceAll("\\]", "")
 				.replaceAll("\\[", ".[")
 				.substring(1);
 		} else {
-			jPath = jPath
+			// remove most of the brackets while retaining an index bracket for easy identification
+			path = path
 				.replaceAll("'\\]", ".")
 				.replaceAll("\\['", "")
 				.replaceAll("\\]", ".");
-			jPath = jPath.substring(0, jPath.length()-1);
+			path = path.substring(0, path.length() - 1);
 		}
 		// note that array entries keep the leading '[' for detection in the list method signature
 		
 		List<String> paths = new LinkedList<>();
-		for (String entry : jPath.split("\\.")) {
+		for (String entry : path.split("\\.")) {
 			paths.add(entry);
 		}
 		return getByJsonPath(paths);
 	}
+	
 	/**
 	 * Accepts the compiled JsonPath to locate a wrapper child.
 	 * This checks for null and definite status before calling the string parser instance.
@@ -1109,4 +1163,30 @@ public class JsonWrapper {
 		}
 		return getByJsonPath(jsonPath.getPath());
 	}
+	
+	/**
+	 * Return the named value from the {@link JsonWrapper}.
+	 *
+	 * Think of this as retrieval of a JSON hash attribute
+	 *
+	 * @param name key for value
+	 * @param <T>
+	 * @return T retrieved keyed value
+	 */
+	public JsonWrapper get(String name) {
+		return childrenMap.get(name);
+	}
+	
+	/**
+	 * Get a List element by index.
+	 * @param index integer element number starting with zero
+	 * @return the wrapper at given index or null
+	 */
+	public JsonWrapper get(int index) {
+		if (index >= 0 && index < childrenList.size()) {
+			return childrenList.get(index);
+		}
+		return null;
+	}
+
 }
