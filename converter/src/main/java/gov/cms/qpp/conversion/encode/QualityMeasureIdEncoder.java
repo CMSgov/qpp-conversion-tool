@@ -84,25 +84,45 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		wrapper.putObject(VALUE, childWrapper);
 	}
 
-	private void encodeSubPopulationSum(SubPopulationLabel label, Node parentNode, JsonWrapper childWrapper) {
-		int currentPopulationSum = calculateSubPopulationSum(parentNode, label);
-		maintainContinuity(childWrapper, parentNode, SubPopulationHelper.measureTypeMap.get(label));
+	/**
+	 *
+	 *
+	 * @param label current Sub-Population type
+	 * @param measureReferenceNode holder of measure data nodes
+	 * @param childWrapper wrapper to hold encoded measure data
+	 */
+	private void encodeSubPopulationSum(SubPopulationLabel label, Node measureReferenceNode, JsonWrapper childWrapper) {
+		int currentPopulationSum = calculateSubPopulationSum(measureReferenceNode, label);
+		maintainContinuity(childWrapper, measureReferenceNode, SubPopulationHelper.measureTypeMap.get(label));
 		childWrapper.putInteger(SubPopulationHelper.measureTypeMap.get(label), String.valueOf(currentPopulationSum));
 	}
 
-	private void encodePerformanceNotMetSubPopulationSum(JsonWrapper childWrapper, Node parentNode) {
-		int numeratorSum = calculateSubPopulationSum(parentNode, SubPopulationLabel.NUMER);
-		int denominatorSum = calculateSubPopulationSum(parentNode, SubPopulationLabel.DENOM);
-		int denexSum = calculateSubPopulationSum(parentNode, SubPopulationLabel.DENEX);
-		int denexcepSum = calculateSubPopulationSum(parentNode, SubPopulationLabel.DENEXCEP);
+	/**
+	 *
+	 *
+	 * @param childWrapper wrapper to hold encoded measure data
+	 * @param measureReferenceNode holder of measure data nodes
+	 */
+	private void encodePerformanceNotMetSubPopulationSum(JsonWrapper childWrapper, Node measureReferenceNode) {
+		int numeratorSum = calculateSubPopulationSum(measureReferenceNode, SubPopulationLabel.NUMER);
+		int denominatorSum = calculateSubPopulationSum(measureReferenceNode, SubPopulationLabel.DENOM);
+		int denexSum = calculateSubPopulationSum(measureReferenceNode, SubPopulationLabel.DENEX);
+		int denexcepSum = calculateSubPopulationSum(measureReferenceNode, SubPopulationLabel.DENEXCEP);
 		int performanceNotMet = denominatorSum - numeratorSum - denexSum - denexcepSum;
 
-		maintainContinuity(childWrapper, parentNode, PERFORMANCE_NOT_MET);
+		maintainContinuity(childWrapper, measureReferenceNode, PERFORMANCE_NOT_MET);
 		childWrapper.putInteger(PERFORMANCE_NOT_MET, String.valueOf(performanceNotMet));
 	}
 
-	private int calculateSubPopulationSum(Node separateSubpopulationNode, SubPopulationLabel label) {
-		return separateSubpopulationNode.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2)
+	/**
+	 *
+	 *
+	 * @param measureReferenceNode holder of measure data nodes
+	 * @param label current Sub-Population type
+	 * @return
+	 */
+	private int calculateSubPopulationSum(Node measureReferenceNode, SubPopulationLabel label) {
+		return measureReferenceNode.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2)
 			.filter(childNode ->
 				label.hasAlias(childNode.getValue(MeasureDataDecoder.MEASURE_TYPE)))
 			.mapToInt(ipopNode ->

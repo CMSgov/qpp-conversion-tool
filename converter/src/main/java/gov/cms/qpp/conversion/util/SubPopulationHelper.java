@@ -6,11 +6,16 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 
-
+/**
+ * Helper for Sub population mapping data
+ */
 public class SubPopulationHelper {
 
 	public static final Map<SubPopulationLabel, String> measureTypeMap;
 
+	/**
+	 * Mapper that translates the Metric type to encoding name
+	 */
 	static {
 		Map<SubPopulationLabel, String> measureTypeMapper = new EnumMap<>(SubPopulationLabel.class);
 		measureTypeMapper.put(SubPopulationLabel.NUMER, "performanceMet");

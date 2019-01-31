@@ -46,7 +46,7 @@ class QualityMeasureIdEncoderTest {
 		denomExclusionNode.addChildNode(aggregateCountNode);
 
 		denominatorExceptionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		denominatorExceptionNode.putValue(type, SubPopulationLabel.DENEX.name());
+		denominatorExceptionNode.putValue(type, SubPopulationLabel.DENEXCEP.name());
 		denominatorExceptionNode.addChildNode(aggregateCountNode);
 
 		numeratorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
@@ -125,20 +125,73 @@ class QualityMeasureIdEncoderTest {
 		LinkedHashMap<String, Object> childValues = getChildValues();
 
 		assertThat(childValues.get("performanceNotMet"))
-				.isEqualTo(-600);
+				.isEqualTo(-1200);
 	}
 
 	@Test
-	void testMeasure438Encoding()
+	void testMeasure438EncodingEndToEndEncoded()
 	{
 		qualityMeasureId.putValue("measureId", "40280382-5b4d-eebc-015b-8245e0fa06b7");
 		executeInternalEncode();
 		LinkedHashMap<String, Object> childValues = getChildValues();
-		System.out.println(childValues);
 
+		assertThat((Boolean)childValues.get("isEndToEndReported"))
+			.isTrue();
 	}
+
+	@Test
+	void testMeasure438EncodingEligiblePopulation() {
+		qualityMeasureId.putValue("measureId", "40280382-5b4d-eebc-015b-8245e0fa06b7");
+		executeInternalEncode();
+		LinkedHashMap<String, Object> childValues = getChildValues();
+
+		assertThat(childValues.get(ELIGIBLE_POPULATION))
+			.isEqualTo(600);
+	}
+
+	@Test
+	void testMeasure438EncodingPerformanceMet() {
+		qualityMeasureId.putValue("measureId", "40280382-5b4d-eebc-015b-8245e0fa06b7");
+		executeInternalEncode();
+		LinkedHashMap<String, Object> childValues = getChildValues();
+
+		assertThat(childValues.get("performanceMet"))
+			.isEqualTo(600);
+	}
+
+	@Test
+	void testMeasure438EncodingEligiblePopulationExclusion() {
+		qualityMeasureId.putValue("measureId", "40280382-5b4d-eebc-015b-8245e0fa06b7");
+		executeInternalEncode();
+		LinkedHashMap<String, Object> childValues = getChildValues();
+
+		assertThat(childValues.get("eligiblePopulationExclusion"))
+			.isEqualTo(600);
+	}
+
+	@Test
+	void testMeasure438EncodingEligiblePopulationException() {
+		qualityMeasureId.putValue("measureId", "40280382-5b4d-eebc-015b-8245e0fa06b7");
+		executeInternalEncode();
+		LinkedHashMap<String, Object> childValues = getChildValues();
+
+		assertThat(childValues.get("eligiblePopulationException"))
+			.isEqualTo(600);
+	}
+
+	@Test
+	void testMeasure438EncodingPerformanceNotMet() {
+		qualityMeasureId.putValue("measureId", "40280382-5b4d-eebc-015b-8245e0fa06b7");
+		executeInternalEncode();
+		LinkedHashMap<String, Object> childValues = getChildValues();
+
+		assertThat(childValues.get("performanceNotMet"))
+			.isEqualTo(-1200);
+	}
+
 	private void executeInternalEncode() {
-		qualityMeasureId.addChildNodes(populationNode, denomExclusionNode, numeratorNode, denominatorNode, denomExclusionNode);
+		qualityMeasureId.addChildNodes(populationNode, denomExclusionNode, numeratorNode, denominatorNode,
+			denominatorExceptionNode);
 		try {
 			encoder.internalEncode(wrapper, qualityMeasureId);
 		} catch (EncodeException e) {
