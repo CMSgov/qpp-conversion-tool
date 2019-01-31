@@ -36,7 +36,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	private static final String SINGLE_PERFORMANCE_RATE = "singlePerformanceRate";
 	public static final String IS_END_TO_END_REPORTED = "isEndToEndReported";
 	private static final String TRUE = "true";
-	private static final String MEASURE_438= "438";
+	private static final String MEASURE_438 = "438";
 	private static final String PERFORMANCE_NOT_MET = "performanceNotMet";
 
 	public QualityMeasureIdEncoder(Context context) {
@@ -57,11 +57,9 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		wrapper.putString(MEASURE_ID, measureId);
 		if (MEASURE_438.equals(measureId)) {
 			encodeAllSubPopulationSums(wrapper, node);
-		}
-		else if (isASinglePerformanceRate(measureConfig) && !MEASURE_438.equals(measureId)) {
+		} else if (isASinglePerformanceRate(measureConfig) && !MEASURE_438.equals(measureId)) {
 			encodeChildren(wrapper, node, measureConfig);
-		}
- 		else {
+		} else {
 			encodeMultiPerformanceRate(wrapper, node, measureConfig);
 		}
 	}
