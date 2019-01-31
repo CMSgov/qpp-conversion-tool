@@ -11,7 +11,10 @@ import gov.cms.qpp.conversion.model.validation.Strata;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.util.MeasureConfigHelper;
+import gov.cms.qpp.conversion.util.SubPopulationHelper;
 
+import java.util.Collections;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -34,6 +37,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	public static final String IS_END_TO_END_REPORTED = "isEndToEndReported";
 	private static final String TRUE = "true";
 	private static final String MEASURE_438= "438";
+	private static final String PERFORMANCE_NOT_MET = "performanceNotMet";
 
 	public QualityMeasureIdEncoder(Context context) {
 		super(context);
@@ -51,10 +55,11 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		MeasureConfig measureConfig = MeasureConfigHelper.getMeasureConfig(node);
 		String measureId = measureConfig.getMeasureId();
 		wrapper.putString(MEASURE_ID, measureId);
-		if (isASinglePerformanceRate(measureConfig) && !MEASURE_438.equals(measureId)) {
+		if (MEASURE_438.equals(measureId)) {
+			encodeAllSubPopulationSums(wrapper, node);
+		}
+		else if (isASinglePerformanceRate(measureConfig) && !MEASURE_438.equals(measureId)) {
 			encodeChildren(wrapper, node, measureConfig);
-		} else if (MEASURE_438.equals(measureId)) {
-			encodeSubPopulationSum(wrapper, node, measureConfig);
 		}
  		else {
 			encodeMultiPerformanceRate(wrapper, node, measureConfig);
@@ -64,31 +69,38 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	/**
 	 * Encodes the sum of the all Sub-populations into one set of Sub-populations
 	 *
-	 * @param wrapper
-	 * @param separateSubpopulationNode
-	 * @param measureConfig
+	 * @param wrapper JsonWrapper that will represent the Quality Measure Identifier
+	 * @param separateSubPopulationNode Parent node holding all SubPopulations
+	 *
 	 */
-	private void encodeSubPopulationSum(JsonWrapper wrapper, Node separateSubpopulationNode, MeasureConfig measureConfig) {
-		Node combinedSubPopulationNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
-		combinedSubPopulationNode.setDefaultNsUri(separateSubpopulationNode.getDefaultNsUri());
+	private void encodeAllSubPopulationSums(JsonWrapper wrapper, Node separateSubPopulationNode) {
+		JsonWrapper childWrapper = new JsonWrapper();
+		childWrapper.putBoolean(IS_END_TO_END_REPORTED, TRUE);
 
-		int denominatorSum = calculateSubPopulationSum(separateSubpopulationNode, SubPopulationLabel.DENOM);
-		Node denomNode = createSubpopulationNode(SubPopulationLabel.DENOM, denominatorSum);
-		combinedSubPopulationNode.addChildNode(denomNode);
+		encodeSubPopulationSum(SubPopulationLabel.NUMER, separateSubPopulationNode, childWrapper);
+		encodePerformanceNotMetSubPopulationSum(childWrapper, separateSubPopulationNode);
+		encodeSubPopulationSum(SubPopulationLabel.DENOM, separateSubPopulationNode, childWrapper);
+		encodeSubPopulationSum(SubPopulationLabel.DENEX, separateSubPopulationNode, childWrapper);
+		encodeSubPopulationSum(SubPopulationLabel.DENEXCEP, separateSubPopulationNode, childWrapper);
 
-		int numeratorSum = calculateSubPopulationSum(separateSubpopulationNode, SubPopulationLabel.NUMER);
-		Node numeratorNode = createSubpopulationNode(SubPopulationLabel.NUMER, numeratorSum);
-		combinedSubPopulationNode.addChildNode(numeratorNode);
+		wrapper.putObject(VALUE, childWrapper);
+	}
 
-		int denexSum = calculateSubPopulationSum(separateSubpopulationNode, SubPopulationLabel.DENEX);
-		Node denexNode = createSubpopulationNode(SubPopulationLabel.DENEX, denexSum);
-		combinedSubPopulationNode.addChildNode(denexNode);
+	private void encodeSubPopulationSum(SubPopulationLabel label, Node parentNode, JsonWrapper childWrapper) {
+		int currentPopulationSum = calculateSubPopulationSum(parentNode, label);
+		maintainContinuity(childWrapper, parentNode, SubPopulationHelper.measureTypeMap.get(label));
+		childWrapper.putInteger(SubPopulationHelper.measureTypeMap.get(label), String.valueOf(currentPopulationSum));
+	}
 
-		int denexcepSum = calculateSubPopulationSum(separateSubpopulationNode, SubPopulationLabel.DENEXCEP);
-		Node denexcepNode = createSubpopulationNode(SubPopulationLabel.DENEXCEP, denexcepSum);
-		combinedSubPopulationNode.addChildNode(denexcepNode);
+	private void encodePerformanceNotMetSubPopulationSum(JsonWrapper childWrapper, Node parentNode) {
+		int numeratorSum = calculateSubPopulationSum(parentNode, SubPopulationLabel.NUMER);
+		int denominatorSum = calculateSubPopulationSum(parentNode, SubPopulationLabel.DENOM);
+		int denexSum = calculateSubPopulationSum(parentNode, SubPopulationLabel.DENEX);
+		int denexcepSum = calculateSubPopulationSum(parentNode, SubPopulationLabel.DENEXCEP);
+		int performanceNotMet = denominatorSum - numeratorSum - denexSum - denexcepSum;
 
-		encodeChildren(wrapper, combinedSubPopulationNode, measureConfig);
+		maintainContinuity(childWrapper, parentNode, PERFORMANCE_NOT_MET);
+		childWrapper.putInteger(PERFORMANCE_NOT_MET, String.valueOf(performanceNotMet));
 	}
 
 	private int calculateSubPopulationSum(Node separateSubpopulationNode, SubPopulationLabel label) {
@@ -98,17 +110,6 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 			.mapToInt(ipopNode ->
 				Integer.parseInt(ipopNode.findFirstNode(TemplateId.PI_AGGREGATE_COUNT).getValue(AGGREGATE_COUNT))).sum();
 	}
-
-	private Node createSubpopulationNode(SubPopulationLabel label, int sum) {
-		Node subPopulationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		subPopulationNode.putValue(MeasureDataDecoder.MEASURE_TYPE, label.name());
-
-		Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT, subPopulationNode);
-		aggregateCountNode.putValue(AggregateCountDecoder.AGGREGATE_COUNT, String.valueOf(sum));
-		return subPopulationNode;
-	}
-
-
 
 	/**
 	 * Checks if is a single performance rate.
@@ -256,8 +257,9 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		Optional.ofNullable(numeratorNode).ifPresent(
 			node -> {
 				Node aggCount = node.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
-				maintainContinuity(wrapper, aggCount, "performanceMet");
-				wrapper.putInteger("performanceMet", aggCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT));
+				maintainContinuity(wrapper, aggCount, SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.NUMER));
+				wrapper.putInteger(SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.NUMER),
+					aggCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT));
 			});
 	}
 
@@ -313,17 +315,17 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		Optional.ofNullable(denomExclusionNode).ifPresent(
 				node -> {
 					Node aggCount = node.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
-					maintainContinuity(wrapper, aggCount, "eligiblePopulationExclusion");
+					maintainContinuity(wrapper, aggCount, SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.DENEX));
 					String value = aggCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT);
-					wrapper.putInteger("eligiblePopulationExclusion", value);
+					wrapper.putInteger(SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.DENEX), value);
 				});
 
 		Optional.ofNullable(denomExceptionNode).ifPresent(
 				node -> {
 					Node aggCount = node.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
-					maintainContinuity(wrapper, aggCount, "eligiblePopulationException");
+					maintainContinuity(wrapper, aggCount, SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.DENEXCEP));
 					String value = aggCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT);
-					wrapper.putInteger("eligiblePopulationException", value);
+					wrapper.putInteger(SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.DENEXCEP), value);
 				});
 
 		Optional.ofNullable(denominatorNode).ifPresent(
@@ -333,8 +335,8 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 					Node aggCount = node.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
 					//for eCQMs, will be equal to
 					// denominator - numerator - denominator exclusion - denominator exception
-					maintainContinuity(wrapper, aggCount, "performanceNotMet");
-					wrapper.putInteger("performanceNotMet", performanceNotMet);
+					maintainContinuity(wrapper, aggCount, PERFORMANCE_NOT_MET);
+					wrapper.putInteger(PERFORMANCE_NOT_MET, performanceNotMet);
 				});
 	}
 
