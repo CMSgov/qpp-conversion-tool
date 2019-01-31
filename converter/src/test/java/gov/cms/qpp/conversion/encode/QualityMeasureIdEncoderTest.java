@@ -17,6 +17,7 @@ class QualityMeasureIdEncoderTest {
 	private Node qualityMeasureId;
 	private Node populationNode;
 	private Node denomExclusionNode;
+	private Node denominatorExceptionNode;
 	private Node numeratorNode;
 	private Node denominatorNode;
 	private Node aggregateCountNode;
@@ -43,6 +44,10 @@ class QualityMeasureIdEncoderTest {
 		denomExclusionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		denomExclusionNode.putValue(type, SubPopulationLabel.DENEX.name());
 		denomExclusionNode.addChildNode(aggregateCountNode);
+
+		denominatorExceptionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		denominatorExceptionNode.putValue(type, SubPopulationLabel.DENEX.name());
+		denominatorExceptionNode.addChildNode(aggregateCountNode);
 
 		numeratorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		numeratorNode.putValue(type, SubPopulationLabel.NUMER.name());
@@ -123,8 +128,17 @@ class QualityMeasureIdEncoderTest {
 				.isEqualTo(-600);
 	}
 
+	@Test
+	void testMeasure438Encoding()
+	{
+		qualityMeasureId.putValue("measureId", "40280382-5b4d-eebc-015b-8245e0fa06b7");
+		executeInternalEncode();
+		LinkedHashMap<String, Object> childValues = getChildValues();
+		System.out.println(childValues);
+
+	}
 	private void executeInternalEncode() {
-		qualityMeasureId.addChildNodes(populationNode, denomExclusionNode, numeratorNode, denominatorNode);
+		qualityMeasureId.addChildNodes(populationNode, denomExclusionNode, numeratorNode, denominatorNode, denomExclusionNode);
 		try {
 			encoder.internalEncode(wrapper, qualityMeasureId);
 		} catch (EncodeException e) {
