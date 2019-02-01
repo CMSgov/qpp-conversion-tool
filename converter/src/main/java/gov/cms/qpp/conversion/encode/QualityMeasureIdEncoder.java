@@ -13,8 +13,6 @@ import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 import gov.cms.qpp.conversion.util.SubPopulationHelper;
 
-import java.util.Collections;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -36,7 +34,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	private static final String SINGLE_PERFORMANCE_RATE = "singlePerformanceRate";
 	public static final String IS_END_TO_END_REPORTED = "isEndToEndReported";
 	private static final String TRUE = "true";
-	private static final String MEASURE_438 = "438";
+	private static final String CMS347_MEASURE_ID = "438";
 	private static final String PERFORMANCE_NOT_MET = "performanceNotMet";
 
 	public QualityMeasureIdEncoder(Context context) {
@@ -55,9 +53,9 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		MeasureConfig measureConfig = MeasureConfigHelper.getMeasureConfig(node);
 		String measureId = measureConfig.getMeasureId();
 		wrapper.putString(MEASURE_ID, measureId);
-		if (MEASURE_438.equals(measureId)) {
+		if (CMS347_MEASURE_ID.equals(measureId)) {
 			encodeAllSubPopulationSums(wrapper, node);
-		} else if (isASinglePerformanceRate(measureConfig) && !MEASURE_438.equals(measureId)) {
+		} else if (isASinglePerformanceRate(measureConfig)) {
 			encodeChildren(wrapper, node, measureConfig);
 		} else {
 			encodeMultiPerformanceRate(wrapper, node, measureConfig);
