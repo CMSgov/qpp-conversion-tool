@@ -20,8 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class PathCorrelatorTest {
 
 	@Test
-	void testPrivateConstructor() throws NoSuchMethodException, IllegalAccessException,
-			InvocationTargetException, InstantiationException {
+	void testPrivateConstructor() throws Exception {
 		Constructor<PathCorrelator> constructor = PathCorrelator.class.getDeclaredConstructor();
 		constructor.setAccessible(true);
 		constructor.newInstance();
@@ -35,7 +34,7 @@ class PathCorrelatorTest {
 	}
 
 	@Test
-	void pathCorrelatorInitilizationNegative() throws Throwable {
+	void pathCorrelatorInitilizationNegative() throws Exception {
 		Field configPath = PathCorrelator.class.getDeclaredField("config");
 		configPath.setAccessible(true);
 		configPath.set(null, "meep.json");

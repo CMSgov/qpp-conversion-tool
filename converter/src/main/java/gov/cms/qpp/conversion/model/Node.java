@@ -214,7 +214,7 @@ public class Node {
 	 * @param childNode Node
 	 */
 	public void addChildNode(Node childNode) {
-		if (childNode == null || childNode == this) { // checking identity equals on purpose
+		if (childNode == null || childNode == this) { //NOSONAR checking identity equals on purpose
 			return;
 		}
 		this.childNodes.add(childNode);

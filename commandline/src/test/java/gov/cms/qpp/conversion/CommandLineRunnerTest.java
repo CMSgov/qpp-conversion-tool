@@ -12,6 +12,8 @@ import gov.cms.qpp.test.logging.LoggerContract;
 import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -148,5 +150,21 @@ class CommandLineRunnerTest implements LoggerContract {
 	@Override
 	public Class<?> getLoggerType() {
 		return CommandLineRunner.class;
+	}
+	
+	@Test
+	void testValidPath_valid() {
+		Path path = Paths.get(VALID_FILE);
+		boolean valid = CommandLineRunner.isValid(path);
+		
+		Truth.assertThat(valid).isTrue();
+	}
+	
+	@Test
+	void testValidPath_invalid() {
+		Path path = Paths.get(INVALID_FILE);
+		boolean invalid = CommandLineRunner.isValid(path);
+		
+		Truth.assertThat(invalid).isFalse();
 	}
 }
