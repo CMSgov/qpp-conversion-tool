@@ -4,14 +4,13 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
 class DynamoDbConfigFactoryTest {
 
 	@Test
-	void testConstructor() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+	void testConstructor() throws Exception {
 		Constructor<DynamoDbConfigFactory> constructor = DynamoDbConfigFactory.class.getDeclaredConstructor();
 		constructor.setAccessible(true);
 		constructor.newInstance();
