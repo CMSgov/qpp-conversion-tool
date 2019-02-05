@@ -37,7 +37,7 @@ import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 abstract class QualityMeasureIdValidator extends NodeValidator {
 	Set<SubPopulationLabel> subPopulationExclusions = Collections.emptySet();
 	protected static final String NOT_AVAILABLE = "(not provided)";
-	protected static final Set<String> IPOP = Stream.of("IPP", "IPOP")
+	public static final Set<String> IPOP = Stream.of("IPP", "IPOP")
 			.collect(Collectors.toSet());
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QualityMeasureIdValidator.class);
 

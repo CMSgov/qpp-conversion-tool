@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>2.1.0-RELEASE</version>
+		<version>2.1.2-RELEASE</version>
 		<relativePath>../</relativePath>
 	</parent>
 
@@ -307,7 +307,7 @@
 		<dependency>
 			<groupId>gov.cms.qpp.conversion</groupId>
 			<artifactId>test-commons</artifactId>
-			<version>2.1.0-RELEASE</version>
+			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 
