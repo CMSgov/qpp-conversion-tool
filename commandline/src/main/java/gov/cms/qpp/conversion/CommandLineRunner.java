@@ -231,7 +231,13 @@ public class CommandLineRunner implements Runnable {
 		return globFinderPattern;
 	}
 
-	private boolean isValid(Path path) {
-		return Files.isRegularFile(path) && Files.isReadable(path);
+	public static boolean isValid(Path path) {
+		// despite what sonar recommends this is a fine implementation
+		return Files.isRegularFile(path) && Files.isReadable(path); //NOSONAR better than toFile().isFile()
+		// Sonar recommends to change from Files to File impl
+		// The Google JimFS Path impl does not support toFile()
+		// Further more the following code is slower and the sonar warning is a performance flag
+		//		File filePath = new File(path.toString());
+		//		return filePath.exists() && filePath.isFile() && filePath.canRead();
 	}
 }
