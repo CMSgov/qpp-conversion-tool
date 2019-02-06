@@ -5,6 +5,7 @@ import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
+import gov.cms.qpp.conversion.util.SubPopulationHelper;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -32,28 +33,12 @@ public class MeasureDataEncoder extends QppOutputEncoder {
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
 		if (!SubPopulationLabel.IPOP.hasAlias(node.getValue(MEASURE_TYPE))) {
-			Map<SubPopulationLabel, String> measureTypeMapper = initializeMeasureTypeMap();
 			String measureType = node.getValue(MEASURE_TYPE);
 			Node aggCount = node.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
 
-			String encodeLabel = measureTypeMapper.get(SubPopulationLabel.findPopulation(measureType));
+			String encodeLabel = SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.findPopulation(measureType));
 			wrapper.putInteger(encodeLabel, aggCount.getValue(AGGREGATE_COUNT));
 			maintainContinuity(wrapper, aggCount, encodeLabel);
 		}
 	}
-
-	/**
-	 * Initializes the measure type map with specific values.
-	 *
-	 * @return intialized measure type map
-	 */
-	private Map<SubPopulationLabel, String> initializeMeasureTypeMap() {
-		Map<SubPopulationLabel, String> measureTypeMapper = new EnumMap<>(SubPopulationLabel.class);
-		measureTypeMapper.put(SubPopulationLabel.NUMER, "performanceMet");
-		measureTypeMapper.put(SubPopulationLabel.DENOM, "eligiblePopulation");
-		measureTypeMapper.put(SubPopulationLabel.DENEX, "eligiblePopulationExclusion");
-		measureTypeMapper.put(SubPopulationLabel.DENEXCEP, "eligiblePopulationException");
-		return measureTypeMapper;
-	}
-
 }
