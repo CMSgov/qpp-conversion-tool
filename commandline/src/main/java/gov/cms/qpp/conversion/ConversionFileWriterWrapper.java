@@ -81,7 +81,7 @@ public class ConversionFileWriterWrapper {
 	 */
 	private void writeOutQpp(JsonWrapper jsonWrapper, Path outFile) {
 		try (Writer writer = Files.newBufferedWriter(outFile)) {
-			writer.write(jsonWrapper.toString());
+			writer.write(jsonWrapper.copyWithoutMetadata().toString());
 			writer.flush();
 		} catch (IOException exception) {
 			DEV_LOG.error("Could not write out QPP JSON to file " + outFile, exception);
