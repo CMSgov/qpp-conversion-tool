@@ -17,6 +17,18 @@ public class MeasuredInputStreamSupplier implements Supplier<InputStream> {
 	private final Supplier<InputStream> delegate;
 	private final int size;
 
+	// Oracle and Sonar recommend the constructor before any methods, even static methods
+	private MeasuredInputStreamSupplier(InputStream source) {
+		byte[] byteArray;
+		try {
+			byteArray = IOUtils.toByteArray(source);
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
+		delegate = () -> new ByteArrayInputStream(byteArray);
+		this.size = byteArray.length;
+	}
+	
 	/**
 	 * Terminally uses an {@link InputStream} to create a {@link MeasuredInputStreamSupplier}
 	 *
@@ -27,17 +39,6 @@ public class MeasuredInputStreamSupplier implements Supplier<InputStream> {
 		Objects.requireNonNull(source, "source");
 
 		return new MeasuredInputStreamSupplier(source);
-	}
-
-	private MeasuredInputStreamSupplier(InputStream source) {
-		byte[] byteArray;
-		try {
-			byteArray = IOUtils.toByteArray(source);
-		} catch (IOException e) {
-			throw new UncheckedIOException(e);
-		}
-		delegate = () -> new ByteArrayInputStream(byteArray);
-		this.size = byteArray.length;
 	}
 
 	/**

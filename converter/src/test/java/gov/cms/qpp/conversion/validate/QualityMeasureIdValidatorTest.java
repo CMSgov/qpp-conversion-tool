@@ -61,12 +61,12 @@ class QualityMeasureIdValidatorTest {
 	private QualityMeasureIdValidator objectUnderTest = new MipsQualityMeasureIdValidator();
 
 	@BeforeAll
-	static void setupCustomMeasuresData() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	static void setupCustomMeasuresData() throws Exception {
 		MeasureConfigs.setMeasureDataFile("reduced-test-measures-data.json");
 	}
 
 	@AfterAll
-	static void resetMeasuresData() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	static void resetMeasuresData() throws Exception {
 		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 	}
 
