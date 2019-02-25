@@ -102,13 +102,20 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		JsonOutputEncoder sectionEncoder;
 
 		for (Node child : childMapByTemplateId.values()) {
-			TemplateId childType = child.getType();
+			if (child == null) {
+				continue;
+			}
+
 			try {
+				TemplateId childType = child.getType();
+
 				childWrapper = new JsonWrapper();
 				sectionEncoder = encoders.get(childType);
+
 				sectionEncoder.encode(childWrapper, child);
+
 				measurementSetsWrapper.put(childWrapper);
-			} catch (NullPointerException exc) {
+			} catch (NullPointerException exc) { //NOSONAR NPE can be deep in method calls
 				String message = "An unexpected error occured for " + child.getType();
 				throw new EncodeException(message, exc);
 			}

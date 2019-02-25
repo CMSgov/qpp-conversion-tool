@@ -16,6 +16,7 @@ class QualityMeasureIdEncoderTest {
 	private Node qualityMeasureId;
 	private Node populationNode;
 	private Node denomExclusionNode;
+	private Node denominatorExceptionNode;
 	private Node numeratorNode;
 	private Node denominatorNode;
 	private Node aggregateCountNode;
@@ -42,6 +43,10 @@ class QualityMeasureIdEncoderTest {
 		denomExclusionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		denomExclusionNode.putValue(type, SubPopulationLabel.DENEX.name());
 		denomExclusionNode.addChildNode(aggregateCountNode);
+
+		denominatorExceptionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		denominatorExceptionNode.putValue(type, SubPopulationLabel.DENEXCEP.name());
+		denominatorExceptionNode.addChildNode(aggregateCountNode);
 
 		numeratorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		numeratorNode.putValue(type, SubPopulationLabel.NUMER.name());
@@ -119,7 +124,67 @@ class QualityMeasureIdEncoderTest {
 		JsonWrapper childValues = getChildValues();
 
 		assertThat(childValues.getInteger("performanceNotMet"))
-				.isEqualTo(-600);
+				.isEqualTo(-1200);
+	}
+
+	@Test
+	void testMeasure438EncodingEndToEndEncoded() {
+		qualityMeasureId.putValue("measureId", "40280382-5b4d-eebc-015b-8245e0fa06b7");
+		executeInternalEncode();
+		JsonWrapper childValues = getChildValues();
+
+		assertThat(childValues.getBoolean("isEndToEndReported"))
+			.isTrue();
+	}
+
+	@Test
+	void testMeasure438EncodingEligiblePopulation() {
+		qualityMeasureId.putValue("measureId", "40280382-5b4d-eebc-015b-8245e0fa06b7");
+		executeInternalEncode();
+		JsonWrapper childValues = getChildValues();
+
+		assertThat(childValues.getInteger(ELIGIBLE_POPULATION))
+			.isEqualTo(600);
+	}
+
+	@Test
+	void testMeasure438EncodingPerformanceMet() {
+		qualityMeasureId.putValue("measureId", "40280382-5b4d-eebc-015b-8245e0fa06b7");
+		executeInternalEncode();
+		JsonWrapper childValues = getChildValues();
+
+		assertThat(childValues.getInteger("performanceMet"))
+			.isEqualTo(600);
+	}
+
+	@Test
+	void testMeasure438EncodingEligiblePopulationExclusion() {
+		qualityMeasureId.putValue("measureId", "40280382-5b4d-eebc-015b-8245e0fa06b7");
+		executeInternalEncode();
+		JsonWrapper childValues = getChildValues();
+
+		assertThat(childValues.getInteger("eligiblePopulationExclusion"))
+			.isEqualTo(600);
+	}
+
+	@Test
+	void testMeasure438EncodingEligiblePopulationException() {
+		qualityMeasureId.putValue("measureId", "40280382-5b4d-eebc-015b-8245e0fa06b7");
+		executeInternalEncode();
+		JsonWrapper childValues = getChildValues();
+
+		assertThat(childValues.getInteger("eligiblePopulationException"))
+			.isEqualTo(600);
+	}
+
+	@Test
+	void testMeasure438EncodingPerformanceNotMet() {
+		qualityMeasureId.putValue("measureId", "40280382-5b4d-eebc-015b-8245e0fa06b7");
+		executeInternalEncode();
+		JsonWrapper childValues = getChildValues();
+
+		assertThat(childValues.getInteger("performanceNotMet"))
+			.isEqualTo(-1200);
 	}
 
 	@Test
@@ -132,7 +197,8 @@ class QualityMeasureIdEncoderTest {
 	}
 
 	private void executeInternalEncode() {
-		qualityMeasureId.addChildNodes(populationNode, denomExclusionNode, numeratorNode, denominatorNode);
+		qualityMeasureId.addChildNodes(populationNode, denomExclusionNode, numeratorNode, denominatorNode,
+			denominatorExceptionNode);
 		try {
 			encoder.internalEncode(wrapper, qualityMeasureId);
 		} catch (EncodeException e) {
@@ -140,6 +206,7 @@ class QualityMeasureIdEncoderTest {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private JsonWrapper getChildValues() {
 		return wrapper.get("value");
 	}

@@ -132,46 +132,50 @@ public class Registry<R> {
 	private Function<Context, Object> createHandler(Class<?> handlerClass) {
 		try {
 			return createHandlerConstructor(handlerClass);
-		} catch (NoSuchMethodException | IllegalAccessException e) {
-			DEV_LOG.warn("Unable to create constructor handle", e);
+		} catch (ConstructorNotFoundException e) {
+			DEV_LOG.warn("Unable to create constructor handle for class " + handlerClass.getName(), e);
 			return ignore -> null;
 		}
 	}
 
-	private Function<Context, Object> createHandlerConstructor(Class<?> handlerClass)
-			throws NoSuchMethodException, IllegalAccessException {
+	private static <T> Function<Context, Object> createHandlerConstructor(Class<T> handlerClass) {
+		Constructor<T> constructor;
 		try {
-			Constructor<?> constructor = handlerClass.getConstructor(Context.class);
-			MethodHandle handle = MethodHandles.lookup().unreflectConstructor(constructor)
-					.asType(MethodType.methodType(Object.class, Context.class));
+			try {
+				constructor = handlerClass.getConstructor(Context.class);
+				MethodHandle handle = MethodHandles.lookup().unreflectConstructor(constructor)
+						.asType(MethodType.methodType(Object.class, Context.class));
 
-			return constructorContextArgument(handle);
-		} catch (NoSuchMethodException thatsOk) {
-			Constructor<?> constructor = getNoArgsConstructor(handlerClass);
-			MethodHandle handle = MethodHandles.lookup().unreflectConstructor(constructor)
-					.asType(MethodType.methodType(Object.class));
+				return constructorContextArgument(handle);
+			} catch (NoSuchMethodException thatsOk) {
+				constructor = getNoArgsConstructor(handlerClass);
+				MethodHandle handle = MethodHandles.lookup().unreflectConstructor(constructor)
+						.asType(MethodType.methodType(Object.class));
 
-			return constructorNoArgs(handle);
+				return constructorNoArgs(handle);
+			}
+		} catch (IllegalAccessException e) {
+			throw new ConstructorNotFoundException("Constructor must be accessible via reflection or " + handlerClass.getName(), e);
 		}
 	}
+	
 
-	private Constructor<?> getNoArgsConstructor(Class<?> type) throws NoSuchMethodException {
-		Constructor<?> constructor = getNoArgsConstructor(type.getConstructors());
+	@SuppressWarnings("unchecked") // suppress cast from wildcard <?> to type <T>
+	private static <T> Constructor<T> getNoArgsConstructor(Class<T> type) {
+		Constructor<T> constructor = getNoArgsConstructor((Constructor<T>[]) type.getConstructors());
 		if (constructor == null) {
-			constructor = getNoArgsConstructor(type.getDeclaredConstructors());
-
+			constructor = getNoArgsConstructor((Constructor<T>[]) type.getDeclaredConstructors());
+			
 			if (constructor == null) {
-				throw new NoSuchMethodException(type + " does not have a no-args constructor (public OR private)");
+				throw new ConstructorNotFoundException(type + " does not have a no-args constructor (public OR private)");
 			}
-
 		}
-
 		constructor.setAccessible(true);
 		return constructor;
 	}
 
-	private Constructor<?> getNoArgsConstructor(Constructor<?>[] constructors) {
-		for (Constructor<?> constructor : constructors) {
+	private static <T> Constructor<T> getNoArgsConstructor(Constructor<T>[] constructors) {
+		for (Constructor<T> constructor : constructors) {
 			if (constructor.getParameterCount() == 0) {
 				return constructor;
 			}
@@ -180,27 +184,27 @@ public class Registry<R> {
 		return null;
 	}
 
-	private Function<Context, Object> constructorContextArgument(MethodHandle handle) {
+	private static Function<Context, Object> constructorContextArgument(MethodHandle handle) {
 		return passedContext -> {
 			try {
 				return handle.invokeExact(passedContext);
-			} catch (Exception codeProblem) {
+			} catch (Exception codeProblem) { //NOSONAR the method throws throwable
 				DEV_LOG.warn("Unable to invoke constructor handle", codeProblem);
 				return null;
-			} catch (Throwable severeRuntimeError) {
+			} catch (Throwable severeRuntimeError) { //NOSONAR the method throws throwable
 				throw new SevereRuntimeException(severeRuntimeError);
 			}
 		};
 	}
 
-	private Function<Context, Object> constructorNoArgs(MethodHandle handle) {
+	private static Function<Context, Object> constructorNoArgs(MethodHandle handle) {
 		return ignore -> {
 			try {
 				return handle.invokeExact();
-			} catch (Exception codeProblem) {
+			} catch (Exception codeProblem) { //NOSONAR the method throws throwable
 				DEV_LOG.warn("Unable to invoke no-args constructor handle", codeProblem);
 				return null;
-			} catch (Throwable severeRuntimeError) {
+			} catch (Throwable severeRuntimeError) { //NOSONAR the method throws throwable
 				throw new SevereRuntimeException(severeRuntimeError);
 			}
 		};

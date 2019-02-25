@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion;
 import com.google.common.truth.Truth;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.common.TextParsingException;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
@@ -51,10 +52,16 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({ "org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*" })
 public class ConverterTest {
+	
+	public static final String VALID_FILE   = "../qrda-files/valid-QRDA-III-latest.xml";
+	public static final String ERROR_FILE   = "src/test/resources/converter/errantDefaultedNode.xml";
+	public static final String EXCEPT_FILE  = "src/test/resources/converter/defaultedNode.xml";
+	public static final String INVALID_XML  = "src/test/resources/non-xml-file.xml";
+	public static final String INVALID_QRDA = "src/test/resources/not-a-QRDA-III-file.xml";
 
 	@Test(expected = org.junit.Test.None.class)
 	public void testValidQppFile() {
-		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
+		Path path = Paths.get(VALID_FILE);
 		Converter converter = new Converter(new PathSource(path));
 
 		converter.transform();
@@ -63,11 +70,11 @@ public class ConverterTest {
 
 	@Test(expected = org.junit.Test.None.class)
 	public void testValidQppStream() {
-		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
+		Path path = Paths.get(VALID_FILE);
 		Converter converter = new Converter(
 				new InputStreamSupplierSource(path.toString(), NioHelper.fileToStream(path)));
 
-		JsonWrapper wrapper = converter.transform();
+		converter.transform();
 		//no exception should be thrown, hence explicitly stating the expected exception is None
 	}
 
@@ -81,7 +88,7 @@ public class ConverterTest {
 			.withAnyArguments()
 			.thenReturn(mockQrdaValidator);
 
-		Path path = Paths.get("src/test/resources/converter/errantDefaultedNode.xml");
+		Path path = Paths.get(ERROR_FILE);
 		Converter converter = new Converter(new PathSource(path), context);
 
 		try {
@@ -103,7 +110,7 @@ public class ConverterTest {
 
 	@Test
 	public void testInvalidXml() {
-		Path path = Paths.get("src/test/resources/non-xml-file.xml");
+		Path path = Paths.get(INVALID_XML);
 		Converter converter = new Converter(new PathSource(path));
 
 		try {
@@ -122,7 +129,7 @@ public class ConverterTest {
 		EncodeException ex = new EncodeException("mocked", new RuntimeException());
 		doThrow(ex).when(encoder).encode();
 
-		Path path = Paths.get("src/test/resources/converter/defaultedNode.xml");
+		Path path = Paths.get(EXCEPT_FILE);
 		Converter converter = new Converter(new PathSource(path));
 		converter.getContext().setDoValidation(false);
 
@@ -148,7 +155,7 @@ public class ConverterTest {
 
 	@Test
 	public void testNotAValidQrdaIIIFile() {
-		Path path = Paths.get("src/test/resources/not-a-QRDA-III-file.xml");
+		Path path = Paths.get(INVALID_QRDA);
 		Converter converter = new Converter(new PathSource(path));
 		converter.getContext().setDoValidation(false);
 
@@ -163,9 +170,21 @@ public class ConverterTest {
 	@Test
 	public void testUnexpectedError() {
 		Source source = mock(Source.class);
-		when(source.toInputStream()).thenThrow(Exception.class);
+		when(source.toInputStream()).thenThrow(RuntimeException.class);
 
 		Converter converter = new Converter(source);
+
+		try {
+			converter.transform();
+			fail();
+		} catch (TransformException exception) {
+			checkup(exception, ErrorCode.UNEXPECTED_ERROR);
+		}
+		
+		source = mock(Source.class);
+		when(source.toInputStream()).thenThrow(TextParsingException.class);
+
+		converter = new Converter(source);
 
 		try {
 			converter.transform();
