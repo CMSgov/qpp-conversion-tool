@@ -83,7 +83,7 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.5.5</version>
+			<version>4.5.7</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -109,7 +109,7 @@
 		<dependency>
 			<groupId>uk.com.robust-it</groupId>
 			<artifactId>cloning</artifactId>
-			<version>1.9.10</version>
+			<version>1.9.12</version>
 		</dependency>
 	</dependencies>
 </project>
