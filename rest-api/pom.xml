@@ -276,18 +276,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-engine</artifactId>
-			<scope>test</scope>
-		</dependency>
-	
-		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<scope>test</scope>
@@ -298,19 +286,6 @@
 			<artifactId>truth</artifactId>
 			<scope>test</scope>
 		</dependency>
-	
-		<dependency>
-			<groupId>org.junit.platform</groupId>
-			<artifactId>junit-platform-launcher</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>gov.cms.qpp.conversion</groupId>
-			<artifactId>test-commons</artifactId>
-			<version>${project.version}</version>
-			<scope>test</scope>
-		</dependency>
-
 	</dependencies>
 
 </project>
