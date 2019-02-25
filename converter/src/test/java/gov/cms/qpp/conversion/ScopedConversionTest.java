@@ -56,11 +56,14 @@ class ScopedConversionTest {
 		//when
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.MEASURE_SECTION_V2.name());
 		Map<String, Object> content = scopedConversion(testSection);
+		Object cont = getScoped(content).get(0);
 
+		Object fixt = fixtures.get(testSection.name());
+		
 		//then
 		assertWithMessage("content should match valid %s fixture", testSection)
-				.that(fixtures.get(testSection.name()))
-				.isEqualTo(getScoped(content).get(0));
+				.that(cont) // this is the content under test
+				.isEqualTo(fixt); // this is the control
 	}
 
 	/**

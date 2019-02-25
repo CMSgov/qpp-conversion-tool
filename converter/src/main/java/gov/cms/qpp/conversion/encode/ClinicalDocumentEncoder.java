@@ -40,9 +40,8 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		Map<TemplateId, Node> childMapByTemplateId = thisNode.getChildNodes().stream().collect(
 				Collectors.toMap(Node::getType, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
 
-		JsonWrapper measurementSets =
-			encodeMeasurementSets(childMapByTemplateId);
-		wrapper.putObject(MEASUREMENT_SETS, measurementSets);
+		JsonWrapper measurementSets = encodeMeasurementSets(childMapByTemplateId);
+		wrapper.put(MEASUREMENT_SETS, measurementSets);
 	}
 
 	/**
@@ -55,21 +54,21 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		String entityType = thisNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE);
 
 		encodePerformanceYear(wrapper, thisNode);
-		wrapper.putString(ClinicalDocumentDecoder.ENTITY_TYPE, entityType);
+		wrapper.put(ClinicalDocumentDecoder.ENTITY_TYPE, entityType);
 		if (!ClinicalDocumentDecoder.ENTITY_APM.equals(entityType)) {
-			wrapper.putString(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER,
+			wrapper.put(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER,
 				thisNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER));
 		}
-		wrapper.putString(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
+		wrapper.put(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
 				thisNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER));
 
 		if (ClinicalDocumentDecoder.ENTITY_APM.equals(entityType)) {
-			wrapper.putString(ClinicalDocumentDecoder.ENTITY_ID,
+			wrapper.put(ClinicalDocumentDecoder.ENTITY_ID,
 				thisNode.getValue(ClinicalDocumentDecoder.PRACTICE_ID));
 		}
 
 		if (ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP.equals(entityType)) {
-			wrapper.putString(ClinicalDocumentDecoder.ENTITY_ID,
+			wrapper.put(ClinicalDocumentDecoder.ENTITY_ID,
 				thisNode.getValue(ClinicalDocumentDecoder.ENTITY_ID));
 		}
 	}
@@ -108,7 +107,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 				childWrapper = new JsonWrapper();
 				sectionEncoder = encoders.get(childType);
 				sectionEncoder.encode(childWrapper, child);
-				measurementSetsWrapper.putObject(childWrapper);
+				measurementSetsWrapper.put(childWrapper);
 			} catch (NullPointerException exc) {
 				String message = "An unexpected error occured for " + child.getType();
 				throw new EncodeException(message, exc);

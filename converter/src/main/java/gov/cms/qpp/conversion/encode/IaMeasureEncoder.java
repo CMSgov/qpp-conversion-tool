@@ -24,7 +24,7 @@ public class IaMeasureEncoder extends QppOutputEncoder {
 	 */
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
-		wrapper.putObject("measureId", node.getValue("measureId"));
+		wrapper.put("measureId", node.getValue("measureId"));
 
 		Node measurePerformedNode = node.findFirstNode(TemplateId.MEASURE_PERFORMED);
 
@@ -35,8 +35,8 @@ public class IaMeasureEncoder extends QppOutputEncoder {
 			measurePerformedEncoder.encode(value, measurePerformedNode);
 			maintainContinuity(wrapper, measurePerformedNode, VALUE);
 
-			if (null != value.getBoolean(VALUE)) {
-				wrapper.putObject(VALUE, value.getBoolean(VALUE));
+			if (null != value.getBoolean(VALUE)) { // TODO asdf have the wrapper check for nulls?
+				wrapper.put(VALUE, value.getBoolean(VALUE));
 			}
 		}
 	}

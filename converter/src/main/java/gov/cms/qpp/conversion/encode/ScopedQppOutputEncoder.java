@@ -35,9 +35,9 @@ public class ScopedQppOutputEncoder extends QppOutputEncoder {
 				JsonWrapper childWrapper = new JsonWrapper();
 				JsonOutputEncoder encoder = encoders.get(child.getType());
 				encoder.encode(childWrapper, child);
-				scoped.putObject(childWrapper);
+				scoped.put(childWrapper);
 			});
-			wrapper.putObject("scoped", scoped);
+			wrapper.put("scoped", scoped);
 		} else {
 			super.internalEncode(wrapper, node);
 		}

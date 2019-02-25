@@ -183,7 +183,7 @@ public class AuditServiceImplTest {
 	private void successfulEncodingPrep() {
 		prepOverlap();
 		JsonWrapper wrapper = new JsonWrapper();
-		wrapper.putString("meep", "mawp");
+		wrapper.put("meep", "mawp");
 
 		when(report.getQppSource()).thenReturn(wrapper.toSource());
 	}

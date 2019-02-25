@@ -157,7 +157,7 @@ public enum ErrorCode implements LocalizedError {
 	PERFORMANCE_RATE_MISSING(72, "The Performance Rate is missing"),
 	VIRTUAL_GROUP_ID_REQUIRED(78, "The Program 'Mips Virtual Group' was found. The required entity id for this "
 		+ "program name was missing. Please provide a virtual group identifier with the 'Mips Virtual Group' program name."),
-	MISSING_PII_VALIDATOR(79, "There is no PII validator present, so NPI/Alternative Payment Model (APM) "
+	MISSING_PII_VALIDATOR(79, "There is no TIN validator present, so NPI/Alternative Payment Model (APM) "
 			+ "combinations cannot be verified"),
 	INCORRECT_API_NPI_COMBINATION(80, "The given National Provider (NPI) Identifier and Alternative Payment Model (APM) "
 			+ "are not a valid combination");

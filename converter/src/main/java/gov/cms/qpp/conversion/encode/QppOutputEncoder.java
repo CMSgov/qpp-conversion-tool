@@ -56,7 +56,6 @@ public class QppOutputEncoder extends JsonOutputEncoder {
 	 * @param leafLabel encoded json attribute name
 	 */
 	void maintainContinuity(JsonWrapper wrapper, Node node, String leafLabel) {
-		Map<String, String> otherMeta = wrapper.createMetaMap(node, leafLabel);
-		wrapper.mergeMetadata(otherMeta);
+		wrapper.attachMetadata(node, leafLabel);
 	}
 }
