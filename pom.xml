@@ -28,7 +28,7 @@
 		<junit.version>5.2.0</junit.version>
 		<powermock.version>1.7.4</powermock.version>
 		<junit.excludes>integration, acceptance</junit.excludes>
-		<junit.includes></junit.includes>
+		<junit.includes/>
 	</properties>
 
 	<modules>
@@ -38,7 +38,8 @@
 		<module>commandline</module>
 		<module>rest-api</module>
 		<module>generate</module>
-	</modules>
+    <module>acceptance-tests</module>
+  </modules>
 
 	<build>
 		<defaultGoal>clean install</defaultGoal>
@@ -378,7 +379,7 @@
 			<properties>
 				<jacoco.skip>true</jacoco.skip>
 				<junit.includes>integration, acceptance</junit.includes>
-				<junit.excludes></junit.excludes>
+				<junit.excludes/>
 			</properties>
 		</profile>
 	</profiles>
