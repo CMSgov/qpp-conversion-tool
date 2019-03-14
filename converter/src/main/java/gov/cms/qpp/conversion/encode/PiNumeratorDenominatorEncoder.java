@@ -42,8 +42,8 @@ public class PiNumeratorDenominatorEncoder extends QppOutputEncoder {
 
 		JsonWrapper childWrapper = encodeChildren(childMapByTemplateId);
 
-		wrapper.putObject("measureId", node.getValue("measureId"));
-		wrapper.putObject(VALUE, childWrapper);
+		wrapper.put("measureId", node.getValue("measureId"));
+		wrapper.put(VALUE, childWrapper);
 	}
 
 	/**
