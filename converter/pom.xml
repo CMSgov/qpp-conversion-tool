@@ -31,13 +31,6 @@
 			</plugin>
 
 			<plugin>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<configuration>
-					<excludes>**/correlation/model/*</excludes>
-				</configuration>
-			</plugin>
-
-			<plugin>
 				<groupId>com.github.spotbugs</groupId>
 				<artifactId>spotbugs-maven-plugin</artifactId>
 			</plugin>
