@@ -46,7 +46,7 @@ public class ReportingParametersActEncoder extends QppOutputEncoder {
 		} catch (RuntimeException dtpe) {
 			final String message = "Error parsing reporting parameter " + key;
 			DEV_LOG.error(message, dtpe);
-			wrapper.putString(key, date);
+			wrapper.put(key, date);
 		}
 	}
 }

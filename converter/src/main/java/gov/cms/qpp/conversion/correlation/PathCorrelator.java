@@ -1,16 +1,5 @@
 package gov.cms.qpp.conversion.correlation;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.JsonPath;
-import gov.cms.qpp.conversion.correlation.model.CorrelationConfig;
-import gov.cms.qpp.conversion.correlation.model.Correlation;
-import gov.cms.qpp.conversion.correlation.model.Goods;
-import gov.cms.qpp.conversion.correlation.model.PathCorrelation;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
-import org.reflections.util.ClasspathHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Comparator;
@@ -19,13 +8,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.reflections.util.ClasspathHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
+
+import gov.cms.qpp.conversion.correlation.model.Correlation;
+import gov.cms.qpp.conversion.correlation.model.CorrelationConfig;
+import gov.cms.qpp.conversion.correlation.model.Goods;
+import gov.cms.qpp.conversion.correlation.model.PathCorrelation;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+
 /**
  * Maintains associations between QPP json paths and their pre-transformation xpaths.
  */
 public class PathCorrelator {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(PathCorrelator.class);
 	public static final String KEY_DELIMITER = "#";
-	private static final String ENCODE_LABEL = "encodeLabel";
 	private static String config = "pathing/path-correlation.json";
 	private static Map<String, Goods> pathCorrelationMap = new HashMap<>();
 	private static String uriSubstitution = "";
@@ -134,7 +135,8 @@ public class PathCorrelator {
 		}
 
 		JsonPath compiledPath = JsonPath.compile(base);
-		Map<String, Object> jsonMap = compiledPath.read(wrapper.toString());
+		String json = wrapper.toStringWithMetadata();
+		Map<String, Object> jsonMap = compiledPath.read(json); // TODO asdf refactor because this is json text to map not a path
 		Map<String, String> metaMap = getMetaMap(jsonMap, leaf);
 
 		String preparedPath = "";
@@ -157,7 +159,7 @@ public class PathCorrelator {
 		return metaHolder.stream()
 				.sorted(labeledFirst())
 				.filter(entry -> {
-					String encodeLabel = entry.get(ENCODE_LABEL);
+					String encodeLabel = entry.get(JsonWrapper.ENCODING_KEY);
 					if (encodeLabel.equals(leaf)) {
 						return leaf.isEmpty()
 								|| PathCorrelator.getXpath(entry.get("template"), leaf, entry.get("nsuri")) != null;
@@ -176,8 +178,8 @@ public class PathCorrelator {
 	 */
 	private static Comparator<Map<String, String>> labeledFirst() {
 		return (Map<String, String> map1, Map<String, String> map2) -> {
-			String map1Label = map1.get(ENCODE_LABEL);
-			String map2Label = map2.get(ENCODE_LABEL);
+			String map1Label = map1.get(JsonWrapper.ENCODING_KEY);
+			String map2Label = map2.get(JsonWrapper.ENCODING_KEY);
 			
 			return Boolean.compare(map1Label.isEmpty(), map2Label.isEmpty());
 		};
