@@ -80,7 +80,7 @@ class QrdaControllerV1Test {
 	@BeforeEach
 	void initialization() throws IOException {
 		JsonWrapper wrapper = new JsonWrapper();
-		wrapper.putString("key", "Good Qpp");
+		wrapper.put("key", "Good Qpp");
 
 		validationInputStream = Files.newInputStream(validationJsonFilePath);
 

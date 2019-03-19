@@ -61,7 +61,7 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 	public void encode(JsonWrapper wrapper, Node node, boolean mergeMetadata) {
 		try {
 			internalEncode(wrapper, node);
-			if (mergeMetadata && wrapper.isObject()) {
+			if (mergeMetadata && wrapper.isMap()) {
 				wrapper.attachMetadata(node);
 			}
 		} catch (EncodeException exception) {

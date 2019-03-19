@@ -57,9 +57,10 @@ class PiProportionDenominatorEncoderTest {
 	void testEncoderWithoutValue() {
 		numeratorDenominatorValueNode.putValue("aggregateCount", null);
 		runEncoder();
-
+		
+		// QPPCT-1008 wrappers are protected from null
 		assertThat(json.toString())
-				.isEqualTo("null");
+				.isEqualTo("{ }");
 	}
 
 	private void runEncoder() {

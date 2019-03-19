@@ -14,7 +14,7 @@
 		<requiredCodeCoverage>0.95</requiredCodeCoverage>
 		<verificationsPhase>verify</verificationsPhase>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<aws.version>1.11.455</aws.version>
+		<aws.version>1.11.490</aws.version>
 		<jackson.version>2.9.8</jackson.version>
 		<guava.version>25.1-jre</guava.version>
 		<junit.version>5.2.0</junit.version>
@@ -129,38 +129,6 @@
 							</configuration>
 						</execution>
 					</executions>
-				</plugin>
-
- 				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-checkstyle-plugin</artifactId>
-					<version>3.0.0</version>
-					<executions>
-						<execution>
-							<id>verify</id>
-							<phase>verify</phase>
-							<configuration>
-								<consoleOutput>true</consoleOutput>
-								<configLocation>checkstyle.xml</configLocation>
-								<encoding>UTF-8</encoding>
-								<linkXRef>false</linkXRef>
-								<failOnViolation>true</failOnViolation>
-								<failOnError>true</failOnError>
-								<violationSeverity>warning</violationSeverity>
-								<linkXRef>false</linkXRef>
-							</configuration>
-							<goals>
-								<goal>check</goal>
-							</goals>
-						</execution>
-					</executions>
-					<dependencies>
-						<dependency>
-							<groupId>com.puppycrawl.tools</groupId>
-							<artifactId>checkstyle</artifactId>
-							<version>8.8</version>
-						</dependency>
-					</dependencies>
 				</plugin>
 
 				<plugin>

@@ -44,4 +44,22 @@ class DefaultEncoderTest {
 		new DefaultEncoder("Default Encode test").internalEncode(wrapper, root);
 		assertThat(wrapper.toString()).hasLength(3);
 	}
+
+	@Test
+	void encodeNodes() throws EncodeException {
+		Node root = new Node(TemplateId.DEFAULT);
+		Node placeHolder = new Node(TemplateId.PLACEHOLDER, root);
+		root.addChildNode(placeHolder);
+		placeHolder.putValue("name1", "value1");
+		Node qed = new Node(TemplateId.QED, root);
+		root.addChildNode(qed);
+		qed.putValue("name2", "value2");
+		JsonWrapper wrapper = new JsonWrapper();
+		new DefaultEncoder("Default Encode test").internalEncode(wrapper, root);
+		String json = wrapper.toString();
+		String acutal = json.replaceAll("\\s", "");
+//		String expect = "{\"DEFAULT\":[\"PLACEHOLDER\":{\"name\":\"value\"}]}"; // TODO maybe the children should be a list and data should be a map
+		String expect = "{\"DEFAULT\":{\"PLACEHOLDER\":{\"name1\":\"value1\"},\"QED\":{\"name2\":\"value2\"}}}";
+		assertThat(acutal).isEqualTo(expect);
+	}
 }

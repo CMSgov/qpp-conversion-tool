@@ -84,11 +84,11 @@ class PiNumeratorDenominatorEncoderTest {
 		//assert
 		assertThat(jsonWrapper.getString("measureId"))
 				.isEqualTo(MEASURE_ID);
-		assertThat(jsonWrapper.getObject())
+		assertThat(jsonWrapper.toObject())
 				.isNotNull();
-		assertThat(jsonWrapper.getObject())
+		assertThat(jsonWrapper.toObject())
 				.isInstanceOf(Map.class);
-		assertThat(((Map<?, ?>)jsonWrapper.getObject()).get("value"))
+		assertThat(((Map<?, ?>)jsonWrapper.toObject()).get("value"))
 				.isNotNull();
 	}
 
