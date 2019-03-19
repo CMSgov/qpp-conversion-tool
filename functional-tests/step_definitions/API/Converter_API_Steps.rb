@@ -12,7 +12,7 @@ def MULTI_PART_POST(endpoint=nil, file_path, file_name)
     http.use_ssl = true
     http.verify_mode = OpenSSL::SSL::VERIFY_PEER
   end
-  request = Net::HTTP::Post::Multipart.new(url.path,{'file' => UploadIO.new("#{dir}/" + "Data Files/Integration/QPPCT/" + file_path,"application.xml", file_name)})
+  request = Net::HTTP::Post::Multipart.new(url.path,{'file' => UploadIO.new("#{dir}/" + file_path,"application.xml", file_name)})
 
   request["authorization"] = $authToken if $authToken != nil
   request["cookie"] = 'ACA=z3DUR2WH3Y' if $url.include? "imp"

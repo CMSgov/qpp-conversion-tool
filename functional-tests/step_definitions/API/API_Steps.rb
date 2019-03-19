@@ -6,7 +6,7 @@ Given(/^User starts(?: (.*))? API test$/) do |app|
   $userObj = nil
   $authToken = nil
 
-  app ? @app = app : @app = 'QPPWI'
+  app ? @app = app : @app = 'QPPCT'
   rootURL = UserUtil.get_homepage(@app)
 
   # removes cookie from URL if it exists
