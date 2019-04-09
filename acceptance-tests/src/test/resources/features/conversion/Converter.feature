@@ -22,21 +22,22 @@ Feature: Validate that the ct repository's sample files successfully convert
     Then User receives 422 response code
 
     Examples:
-      | file_path                                                               |
-      | 2018/Repo_Files/CPCPlus_Error_IncNumofGroup1Measures_SampleQRDA-III.xml |
-      | 2018/Repo_Files/CPCPlus_Error_Performance_Rate_Number.xml               |
-      | 2018/Repo_Files/CPCPlus_Missing_Perf_Rate.xml                           |
-      | 2018/Repo_Files/CPCPlus_Missing_Practice-Site-Addr.xml                  |
-      | 2018/Repo_Files/CPCPlus_Missing_TINs.xml                                |
-      | 2018/Repo_Files/CPCPlus_No_APM_ID.xml                                   |
-      | 2018/Repo_Files/CPCPlus_No_Quality_Section.xml                          |
-      | 2018/Repo_Files/CPCPlus_Wrong_End-Date.xml                              |
-      | 2018/Repo_Files/CPCPlus_Wrong_Start-Date.xml                            |
-      | 2018/Repo_Files/error-NaN-numerator.xml                                 |
-      | 2018/Repo_Files/error_missing_subpopulations.xml                        |
+      | file_path                                                                   |
+      | ./sample-files/2018/CPCPlus_Error_IncNumofGroup1Measures_SampleQRDA-III.xml |
+      | ./sample-files/2018/CPCPlus_Error_Performance_Rate_Number.xml               |
+      | ./sample-files/2018/CPCPlus_Missing_Perf_Rate.xml                           |
+      | ./sample-files/2018/CPCPlus_Missing_Practice-Site-Addr.xml                  |
+      | ./sample-files/2018/CPCPlus_Missing_TINs.xml                                |
+      | ./sample-files/2018/CPCPlus_No_APM_ID.xml                                   |
+      | ./sample-files/2018/CPCPlus_No_Quality_Section.xml                          |
+      | ./sample-files/2018/CPCPlus_Wrong_End-Date.xml                              |
+      | ./sample-files/2018/CPCPlus_Wrong_Start-Date.xml                            |
+      | ./sample-files/2018/error-NaN-numerator.xml                                 |
+      | ./sample-files/2018/error_missing_subpopulations.xml                        |
 
   Scenario: Positive - QPPCT-871 CPC+ Measure Group Validation
     Given User starts QPPCT API test
     When User makes a Multipart POST request with 2018/Repo_Files/ComprehensivePrimaryCareSampleQRDA-III_SDE.xml
-    Then User receives 201 response code
-   # And the JSON response at "qpp/measurementSets" should not be null
+    Then User receives 422 response code
+    #Then User receives 201 response code
+    #And the JSON response at "$.qpp.measurementSets" should not be null

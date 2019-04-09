@@ -9,7 +9,6 @@
 
     <groupId>conversion-tests</groupId>
     <artifactId>acceptance-tests</artifactId>
-    <version>2.1.2</version>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -57,6 +56,22 @@
             <artifactId>spring-web</artifactId>
             <version>5.0.7.RELEASE</version>
         </dependency>
+
+        <dependency>
+            <groupId>gov.cms.qpp.conversion</groupId>
+            <artifactId>converter</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>gov.cms.qpp.conversion</groupId>
+            <artifactId>converter</artifactId>
+            <version>2.1.2-RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>gov.cms.qpp.conversion</groupId>
+            <artifactId>converter</artifactId>
+            <version>2.1.2-RELEASE</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -69,7 +84,7 @@
                     <encoding>UTF-8</encoding>
                     <source>1.8</source>
                     <target>1.8</target>
-                    <compilerArgument>-Werror</compilerArgument>
+                    <compilerArgument>error</compilerArgument>
                 </configuration>
             </plugin>
         </plugins>

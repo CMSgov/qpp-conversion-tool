@@ -6,10 +6,16 @@ Feature: Validate that the new CMS160 GUID validates in the converter
     Given User starts QPPCT API test
     When User makes a Multipart POST request with 2018/CMS160_GUID_Changes/CMS160_New_GUID.xml
     Then User receives 422 response code
-    And  the JSON at "errors/0/details" message should never contain CT - The measure GUID supplied 40280382-5b4d-eebc-015b-5e87add90267 is invalid. Please see the 2018 IG https://ecqi.healthit.gov/system/files/2018_CMS_QRDA_III_Eligible_Clinicians_and_EP_IG_v2_508.pdf#page=94 for valid measure GUIDs.
+    And  the JSON response at $.errors[*].details[*].message should never contain CT - The measure GUID supplied 40280382-5b4d-eebc-015b-5e87add90267 is invalid. Please see the 2018 IG https://ecqi.healthit.gov/system/files/2018_CMS_QRDA_III_Eligible_Clinicians_and_EP_IG_v2_508.pdf#page=94 for valid measure GUIDs.
 
   Scenario: Negative - CMS160 old GUID 422
     Given User starts QPPCT API test
     When User makes a Multipart POST request with 2018/CMS160_GUID_Changes/CMS160_Old_GUID.xml
     Then User receives 422 response code
-    And  the JSON at "errors/0/details" message should once contain CT - The measure GUID supplied 40280381-503f-a1fc-0150-afe320c01761 is invalid. Please see the 2018 IG https://ecqi.healthit.gov/system/files/2018_CMS_QRDA_III_Eligible_Clinicians_and_EP_IG_v2_508.pdf#page=94 for valid measure GUIDs.
+    And  the JSON response at $.errors[*].details[*].message should contain CT - The measure GUID supplied 40280381-503f-a1fc-0150-afe320c01761 is invalid. Please see the 2018 IG https://ecqi.healthit.gov/system/files/2018_CMS_QRDA_III_Eligible_Clinicians_and_EP_IG_v2_508.pdf#page=94 for valid measure GUIDs.
+
+
+    #$.qpp.measurementSets"
+    #"errors/0/details" "$.errors.[0].details"
+    # "errors/0/details" "$['errors'][0]['details']
+    #$.errors[*].details[*].message
