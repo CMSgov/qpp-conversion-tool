@@ -216,6 +216,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 					.format(ipopCount.getParent().getType().name(), DuplicationCheckHelper.calculateDuplications
 						(ipopCount, AggregateCountDecoder.AGGREGATE_COUNT)),
 				AggregateCountDecoder.AGGREGATE_COUNT);
+		
 		forceCheckErrors(denomCount)
 				.incompleteValidation()
 				.intValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
