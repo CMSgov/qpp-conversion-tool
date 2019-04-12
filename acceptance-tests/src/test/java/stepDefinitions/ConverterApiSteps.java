@@ -34,6 +34,7 @@ public class ConverterApiSteps {
 
 	@When("User makes a Multipart POST request(?: to (.*))? with (.*?)(?: and (.*))?$")
 	public void user_user_makes_multipart_post(String endpoint, String filepath, String filename) {
+		System.out.println("For file: " + filepath );
 		MultiValueMap<String, Object> body
 			= new LinkedMultiValueMap<>();
 		body.add("file", new FileSystemResource(filepath));
@@ -42,7 +43,8 @@ public class ConverterApiSteps {
 		headers.add("Accept", "application/vnd.qpp.cms.gov.v2+json");
 
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-				String serverUrl = "http://internal-qpp-qrda3converter-dev-app-2081849179.us-east-1.elb.amazonaws.com";
+		String serverUrl = "http://localhost:8080/";
+		//String serverUrl = "http://internal-qpp-qrda3converter-dev-app-2081849179.us-east-1.elb.amazonaws.com";
 		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.setErrorHandler(new ErrorHandler());
 		ResponseEntity<String> response = restTemplate
@@ -74,6 +76,9 @@ public class ConverterApiSteps {
 	public void json_response_could_contain_this_many(String jsonPath, String expected) {
 		List<String> acceptedJsonResponse =
 			JsonHelper.readJsonAtJsonPath(testResponse.getJsonResponse(), jsonPath, new TypeRef<List<String>>() { });
+		for(String message: acceptedJsonResponse) {
+			System.out.println("Message: " + message);
+		}
 		assertThat(acceptedJsonResponse, hasItem(expected));
 
 	}

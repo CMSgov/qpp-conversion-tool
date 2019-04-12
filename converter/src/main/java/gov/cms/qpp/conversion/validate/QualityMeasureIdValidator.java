@@ -14,6 +14,7 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import gov.cms.qpp.conversion.util.DuplicationCheckHelper;
 import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 import gov.cms.qpp.conversion.util.StringHelper;
 
@@ -210,6 +211,11 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param ipopCount Aggregate Count node of initial population
 	 */
 	private void validateDenominatorCount(Node denomCount, Node ipopCount) {
+		forceCheckErrors(ipopCount)
+			.intValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR
+					.format(ipopCount.getParent().getType().name(), DuplicationCheckHelper.calculateDuplications
+						(ipopCount, AggregateCountDecoder.AGGREGATE_COUNT)),
+				AggregateCountDecoder.AGGREGATE_COUNT);
 		forceCheckErrors(denomCount)
 				.incompleteValidation()
 				.intValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
@@ -218,7 +224,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 						Integer.parseInt(ipopCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT)));
 	}
 
-	/**
+	/*
 	 * Method template for measure validations.
 	 *
 	 * @param sub {@link SubPopulation} against which follow validations may be performed
