@@ -211,18 +211,15 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param ipopCount Aggregate Count node of initial population
 	 */
 	private void validateDenominatorCount(Node denomCount, Node ipopCount) {
-		forceCheckErrors(ipopCount)
-			.intValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR
-					.format(ipopCount.getParent().getType().name(), DuplicationCheckHelper.calculateDuplications
-						(ipopCount, AggregateCountDecoder.AGGREGATE_COUNT)),
-				AggregateCountDecoder.AGGREGATE_COUNT);
-		
-		forceCheckErrors(denomCount)
+		String ipopValue = ipopCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT);
+		if (ipopValue != null) {
+			forceCheckErrors(denomCount)
 				.incompleteValidation()
 				.intValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
-						AggregateCountDecoder.AGGREGATE_COUNT)
+					AggregateCountDecoder.AGGREGATE_COUNT)
 				.lessThanOrEqualTo(ErrorCode.DENOMINATOR_COUNT_INVALID,
-						Integer.parseInt(ipopCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT)));
+					Integer.parseInt(ipopValue));
+		}
 	}
 
 	/*
