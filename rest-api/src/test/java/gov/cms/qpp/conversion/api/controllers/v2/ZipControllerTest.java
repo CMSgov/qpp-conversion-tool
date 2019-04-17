@@ -96,8 +96,8 @@ class ZipControllerTest {
 
 		verify(qrdaService, atLeastOnce()).convertQrda3ToQpp(any(Source.class));
 
-		assertThat(qppResponse.getBody().get(0).getQpp())
-				.isEqualTo(report.getEncodedWithMetadata().toObject());
+		assertThat(qppResponse.getBody().get(0).getQpp().toString())
+				.isEqualTo(report.getEncodedWithMetadata().toObject().toString());
 	}
 
 	@Test

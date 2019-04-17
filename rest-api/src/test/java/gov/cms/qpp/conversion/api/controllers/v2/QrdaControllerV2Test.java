@@ -97,8 +97,8 @@ class QrdaControllerV2Test {
 
 		verify(qrdaService, atLeastOnce()).convertQrda3ToQpp(any(Source.class));
 
-		assertThat(qppResponse.getBody().getQpp())
-				.isEqualTo(report.getEncodedWithMetadata().toObject());
+		assertThat(qppResponse.getBody().getQpp().toString())
+				.isEqualTo(report.getEncodedWithMetadata().toObject().toString());
 	}
 
 	@Test
