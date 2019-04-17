@@ -58,7 +58,7 @@ class SubmissionIntegrationTest {
 	@Test
 	@SuppressWarnings("unchecked")
 	void testSubmissionApiPostFailure() throws IOException {
-		Map<String, Object> obj = (Map<String, Object>) qpp.getObject();
+		Map<String, Object> obj = (Map<String, Object>) qpp.toObject();
 		obj.remove("performanceYear");
 		HttpResponse httpResponse = servicePost(qpp);
 		Assumptions.assumeTrue(endpointIsUp(httpResponse), "Validation api is down");

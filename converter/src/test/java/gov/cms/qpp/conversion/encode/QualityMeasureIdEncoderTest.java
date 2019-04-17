@@ -1,22 +1,22 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
+import static com.google.common.truth.Truth.assertThat;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.LinkedHashMap;
-
-import static com.google.common.truth.Truth.assertThat;
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 
 class QualityMeasureIdEncoderTest {
 
 	private Node qualityMeasureId;
 	private Node populationNode;
 	private Node denomExclusionNode;
+	private Node denominatorExceptionNode;
 	private Node numeratorNode;
 	private Node denominatorNode;
 	private Node aggregateCountNode;
@@ -44,6 +44,10 @@ class QualityMeasureIdEncoderTest {
 		denomExclusionNode.putValue(type, SubPopulationLabel.DENEX.name());
 		denomExclusionNode.addChildNode(aggregateCountNode);
 
+		denominatorExceptionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		denominatorExceptionNode.putValue(type, SubPopulationLabel.DENEXCEP.name());
+		denominatorExceptionNode.addChildNode(aggregateCountNode);
+
 		numeratorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		numeratorNode.putValue(type, SubPopulationLabel.NUMER.name());
 		numeratorNode.addChildNode(aggregateCountNode);
@@ -69,19 +73,19 @@ class QualityMeasureIdEncoderTest {
 	@Test
 	void testEndToEndReportedIsEncoded() {
 		executeInternalEncode();
-		LinkedHashMap<String, Object> childValues = getChildValues();
+		JsonWrapper childValues = getChildValues();
 
-		assertThat((Boolean)childValues.get("isEndToEndReported"))
+		assertThat(childValues.getBoolean("isEndToEndReported"))
 				.isTrue();
 	}
 
 	@Test
 	void testPopulationTotalIsEncoded() {
 		executeInternalEncode();
-		LinkedHashMap<String, Object> childValues = getChildValues();
+		JsonWrapper childValues = getChildValues();
 
 
-		assertThat(childValues.get(ELIGIBLE_POPULATION))
+		assertThat(childValues.getInteger(ELIGIBLE_POPULATION))
 				.isEqualTo(600);
 	}
 
@@ -91,40 +95,110 @@ class QualityMeasureIdEncoderTest {
 		populationNode.putValue(type, "IPP");
 		populationNode.addChildNode(aggregateCountNode);
 		executeInternalEncode();
-		LinkedHashMap<String, Object> childValues = getChildValues();
+		JsonWrapper childValues = getChildValues();
 
-		assertThat(childValues.get(ELIGIBLE_POPULATION))
+		assertThat(childValues.getInteger(ELIGIBLE_POPULATION))
 				.isEqualTo(600);
 	}
 
 	@Test
 	void testPerformanceMetIsEncoded() {
 		executeInternalEncode();
-		LinkedHashMap<String, Object> childValues = getChildValues();
-		assertThat(childValues.get("performanceMet"))
+		JsonWrapper childValues = getChildValues();
+		assertThat(childValues.getInteger("performanceMet"))
 				.isEqualTo(600);
 	}
 
 	@Test
 	void testPerformanceExclusionIsEncoded() {
 		executeInternalEncode();
-		LinkedHashMap<String, Object> childValues = getChildValues();
+		JsonWrapper childValues = getChildValues();
 
-		assertThat(childValues.get("eligiblePopulationExclusion"))
+		assertThat(childValues.getInteger("eligiblePopulationExclusion"))
 				.isEqualTo(600);
 	}
 
 	@Test
 	void testPerformanceNotMetIsEncoded() {
 		executeInternalEncode();
-		LinkedHashMap<String, Object> childValues = getChildValues();
+		JsonWrapper childValues = getChildValues();
 
-		assertThat(childValues.get("performanceNotMet"))
-				.isEqualTo(-600);
+		assertThat(childValues.getInteger("performanceNotMet"))
+				.isEqualTo(-1200);
+	}
+
+	@Test
+	void testMeasure438EncodingEndToEndEncoded() {
+		qualityMeasureId.putValue("measureId", "40280382-5b4d-eebc-015b-8245e0fa06b7");
+		executeInternalEncode();
+		JsonWrapper childValues = getChildValues();
+
+		assertThat(childValues.getBoolean("isEndToEndReported"))
+			.isTrue();
+	}
+
+	@Test
+	void testMeasure438EncodingEligiblePopulation() {
+		qualityMeasureId.putValue("measureId", "40280382-5b4d-eebc-015b-8245e0fa06b7");
+		executeInternalEncode();
+		JsonWrapper childValues = getChildValues();
+
+		assertThat(childValues.getInteger(ELIGIBLE_POPULATION))
+			.isEqualTo(600);
+	}
+
+	@Test
+	void testMeasure438EncodingPerformanceMet() {
+		qualityMeasureId.putValue("measureId", "40280382-5b4d-eebc-015b-8245e0fa06b7");
+		executeInternalEncode();
+		JsonWrapper childValues = getChildValues();
+
+		assertThat(childValues.getInteger("performanceMet"))
+			.isEqualTo(600);
+	}
+
+	@Test
+	void testMeasure438EncodingEligiblePopulationExclusion() {
+		qualityMeasureId.putValue("measureId", "40280382-5b4d-eebc-015b-8245e0fa06b7");
+		executeInternalEncode();
+		JsonWrapper childValues = getChildValues();
+
+		assertThat(childValues.getInteger("eligiblePopulationExclusion"))
+			.isEqualTo(600);
+	}
+
+	@Test
+	void testMeasure438EncodingEligiblePopulationException() {
+		qualityMeasureId.putValue("measureId", "40280382-5b4d-eebc-015b-8245e0fa06b7");
+		executeInternalEncode();
+		JsonWrapper childValues = getChildValues();
+
+		assertThat(childValues.getInteger("eligiblePopulationException"))
+			.isEqualTo(600);
+	}
+
+	@Test
+	void testMeasure438EncodingPerformanceNotMet() {
+		qualityMeasureId.putValue("measureId", "40280382-5b4d-eebc-015b-8245e0fa06b7");
+		executeInternalEncode();
+		JsonWrapper childValues = getChildValues();
+
+		assertThat(childValues.getInteger("performanceNotMet"))
+			.isEqualTo(-1200);
+	}
+
+	@Test
+	void testIgnoresNonMeasureDataNodes() {
+		qualityMeasureId.addChildNode(aggregateCountNode);
+		executeInternalEncode();
+		JsonWrapper childValues = getChildValues();
+
+		assertThat(childValues.getInteger("aggregateCount")).isNull();
 	}
 
 	private void executeInternalEncode() {
-		qualityMeasureId.addChildNodes(populationNode, denomExclusionNode, numeratorNode, denominatorNode);
+		qualityMeasureId.addChildNodes(populationNode, denomExclusionNode, numeratorNode, denominatorNode,
+			denominatorExceptionNode);
 		try {
 			encoder.internalEncode(wrapper, qualityMeasureId);
 		} catch (EncodeException e) {
@@ -133,7 +207,7 @@ class QualityMeasureIdEncoderTest {
 	}
 
 	@SuppressWarnings("unchecked")
-	private LinkedHashMap<String, Object> getChildValues() {
-		return (LinkedHashMap<String, Object>)((LinkedHashMap<String, Object>) wrapper.getObject()).get("value");
+	private JsonWrapper getChildValues() {
+		return wrapper.get("value");
 	}
 }

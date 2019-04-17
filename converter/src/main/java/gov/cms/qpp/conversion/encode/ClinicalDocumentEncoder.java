@@ -40,9 +40,8 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		Map<TemplateId, Node> childMapByTemplateId = thisNode.getChildNodes().stream().collect(
 				Collectors.toMap(Node::getType, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
 
-		JsonWrapper measurementSets =
-			encodeMeasurementSets(childMapByTemplateId);
-		wrapper.putObject(MEASUREMENT_SETS, measurementSets);
+		JsonWrapper measurementSets = encodeMeasurementSets(childMapByTemplateId);
+		wrapper.put(MEASUREMENT_SETS, measurementSets);
 	}
 
 	/**
@@ -55,19 +54,21 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		String entityType = thisNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE);
 
 		encodePerformanceYear(wrapper, thisNode);
-		wrapper.putString(ClinicalDocumentDecoder.ENTITY_TYPE, entityType);
-		wrapper.putString(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
-				thisNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER));
-		wrapper.putString(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER,
+		wrapper.put(ClinicalDocumentDecoder.ENTITY_TYPE, entityType);
+		if (!ClinicalDocumentDecoder.ENTITY_APM.equals(entityType)) {
+			wrapper.put(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER,
 				thisNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER));
+		}
+		wrapper.put(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
+				thisNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER));
 
 		if (ClinicalDocumentDecoder.ENTITY_APM.equals(entityType)) {
-			wrapper.putString(ClinicalDocumentDecoder.ENTITY_ID,
+			wrapper.put(ClinicalDocumentDecoder.ENTITY_ID,
 				thisNode.getValue(ClinicalDocumentDecoder.PRACTICE_ID));
 		}
 
 		if (ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP.equals(entityType)) {
-			wrapper.putString(ClinicalDocumentDecoder.ENTITY_ID,
+			wrapper.put(ClinicalDocumentDecoder.ENTITY_ID,
 				thisNode.getValue(ClinicalDocumentDecoder.ENTITY_ID));
 		}
 	}
@@ -101,13 +102,20 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		JsonOutputEncoder sectionEncoder;
 
 		for (Node child : childMapByTemplateId.values()) {
-			TemplateId childType = child.getType();
+			if (child == null) {
+				continue;
+			}
+
 			try {
+				TemplateId childType = child.getType();
+
 				childWrapper = new JsonWrapper();
 				sectionEncoder = encoders.get(childType);
+
 				sectionEncoder.encode(childWrapper, child);
-				measurementSetsWrapper.putObject(childWrapper);
-			} catch (NullPointerException exc) {
+
+				measurementSetsWrapper.put(childWrapper);
+			} catch (NullPointerException exc) { //NOSONAR NPE can be deep in method calls
 				String message = "An unexpected error occured for " + child.getType();
 				throw new EncodeException(message, exc);
 			}

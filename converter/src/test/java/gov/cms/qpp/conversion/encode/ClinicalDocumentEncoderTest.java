@@ -10,7 +10,6 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -127,10 +126,9 @@ class ClinicalDocumentEncoderTest {
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
-		Object performanceYear = testJsonWrapper.getValue(ReportingParametersActDecoder.PERFORMANCE_YEAR);
+		Object performanceYear = testJsonWrapper.getInteger(ReportingParametersActDecoder.PERFORMANCE_YEAR);
 
-		assertThat(performanceYear)
-				.isEqualTo(2017);
+		assertThat(performanceYear).isEqualTo(2017);
 	}
 
 	@Test
@@ -140,13 +138,11 @@ class ClinicalDocumentEncoderTest {
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 
-		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
-
-		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_TYPE))
+		assertThat(testJsonWrapper.getString(ClinicalDocumentDecoder.ENTITY_TYPE))
 				.isEqualTo("individual");
-		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
+		assertThat(testJsonWrapper.getString(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
-		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+		assertThat(testJsonWrapper.getString(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
 				.isEqualTo("2567891421");
 	}
 
@@ -158,7 +154,7 @@ class ClinicalDocumentEncoderTest {
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 
-		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
+		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.toObject());
 
 		assertThat(clinicalDocMap.get(MEASUREMENT_SETS))
 				.isNull();
@@ -173,7 +169,7 @@ class ClinicalDocumentEncoderTest {
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 
-		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
+		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.toObject());
 
 		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.PRACTICE_ID))
 				.isNull();
@@ -188,7 +184,7 @@ class ClinicalDocumentEncoderTest {
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 
-		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
+		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.toObject());
 
 		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.PRACTICE_ID))
 				.isNull();
@@ -205,11 +201,10 @@ class ClinicalDocumentEncoderTest {
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 
-		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
-		List<LinkedHashMap<String, Object>> measurementSets = getMeasurementSets(clinicalDocMap);
-		String value = (String)measurementSets.get(0).get("category");
+		JsonWrapper measurementSets = getMeasurementSets(testJsonWrapper);
+		String value = measurementSets.get(0).getString("category");
 
-		assertThat(measurementSets).hasSize(1);
+		assertThat(measurementSets.size()).isEqualTo(1);
 		assertThat(value).isEqualTo(expectedSection);
 	}
 
@@ -222,15 +217,26 @@ class ClinicalDocumentEncoderTest {
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 
-		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
+		assertThat(testJsonWrapper.getString(ClinicalDocumentDecoder.ENTITY_ID))
+			.isEqualTo("x12345"); // TODO asdf refactor equals to toObject maybe if not comparing to JsW
+	}
 
-		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID))
-			.isEqualTo("x12345");
+	@Test
+	void testApmExcludeNpiEncoding() throws EncodeException {
+		JsonWrapper testJsonWrapper = new JsonWrapper();
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "apm");
+
+		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
+		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
+
+		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.toObject());
+
+		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+			.isNull();
 	}
 
 
-	@SuppressWarnings("unchecked")
-	private List<LinkedHashMap<String, Object>> getMeasurementSets(Map clinicalDocumentMap) {
-		return ((List<LinkedHashMap<String, Object>>) clinicalDocumentMap.get("measurementSets"));
+	private JsonWrapper getMeasurementSets(JsonWrapper clinicalDocument) {
+		return clinicalDocument.get("measurementSets");
 	}
 }

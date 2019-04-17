@@ -4,6 +4,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
+import gov.cms.qpp.conversion.correlation.ValueOriginMapper.Association;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 
 class QrdaQppAssociationTest {
@@ -22,7 +24,6 @@ class QrdaQppAssociationTest {
 	static void setup() {
 		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 		Context context = new Context();
-		context.setMetadataAutoStrip(false);
 		Converter converter = new Converter(new PathSource(path), context);
 
 		qpp = converter.transform();
@@ -30,11 +31,13 @@ class QrdaQppAssociationTest {
 
 	@Test
 	void testAssociation() {
-		mapper.mapIt("$", qpp.getObject());
+		mapper.mapItJsW("$", qpp);
 		mapper.writeAssociations();
 
+		List<Association> associations = mapper.getAssociations();
+		
 		assertWithMessage("registered associations does not match expectation")
-				.that(mapper.getAssociations()).hasSize(60);
+				.that(associations).hasSize(60);
 	}
 
 }

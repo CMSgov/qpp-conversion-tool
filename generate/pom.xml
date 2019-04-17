@@ -5,7 +5,7 @@
     <parent>
         <artifactId>qpp-conversion-tool-parent</artifactId>
         <groupId>gov.cms.qpp.conversion</groupId>
-        <version>2.0.0-RELEASE</version>
+        <version>2.1.2-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -26,10 +26,6 @@
 			<plugin>
 				<groupId>org.gaul</groupId>
 				<artifactId>modernizer-maven-plugin</artifactId>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-checkstyle-plugin</artifactId>
 			</plugin>
 
 			<plugin>

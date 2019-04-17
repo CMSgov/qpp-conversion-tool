@@ -80,7 +80,7 @@ public class Converter {
 			DEV_LOG.error(ErrorCode.NOT_VALID_XML_DOCUMENT.getMessage(), xe);
 			Detail detail = Detail.forErrorCode(ErrorCode.NOT_VALID_XML_DOCUMENT);
 			errors.add(detail);
-		} catch (Exception exception) {
+		} catch (RuntimeException exception) {
 			DEV_LOG.error(ErrorCode.UNEXPECTED_ERROR.getMessage(), exception);
 			Detail detail = Detail.forErrorCode(ErrorCode.UNEXPECTED_ERROR);
 			errors.add(detail);
@@ -138,20 +138,12 @@ public class Converter {
 		try {
 			encoder.setNodes(Collections.singletonList(decoded));
 			JsonWrapper qpp = encoder.encode();
-			qpp = stripped(qpp);
 			errors.addAll(encoder.getErrors());
 			warnings.addAll(encoder.getWarnings());
 			return qpp;
 		} catch (EncodeException e) {
 			throw new XmlInputFileException("Issues decoding/encoding.", e);
 		}
-	}
-
-	private JsonWrapper stripped(JsonWrapper wrapper) {
-		if (wrapper != null && context.isMetadataAutoStrip()) {
-			return wrapper.copyWithoutMetadata();
-		}
-		return wrapper;
 	}
 
 	/**

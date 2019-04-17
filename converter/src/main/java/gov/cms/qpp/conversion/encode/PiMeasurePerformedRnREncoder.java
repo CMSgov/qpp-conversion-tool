@@ -20,7 +20,7 @@ public class PiMeasurePerformedRnREncoder extends QppOutputEncoder {
 	 */
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
-		wrapper.putObject("measureId", node.getValue("measureId"));
+		wrapper.put("measureId", node.getValue("measureId"));
 		encodeChild(wrapper, node);
 	}
 
@@ -36,7 +36,7 @@ public class PiMeasurePerformedRnREncoder extends QppOutputEncoder {
 			if ("Y".equalsIgnoreCase(measureValue) || "N".equalsIgnoreCase(measureValue)) {
 				wrapper.putBoolean(VALUE, measureValue);
 			} else {
-				wrapper.putObject(VALUE, measureValue);
+				wrapper.put(VALUE, measureValue);
 			}
 		}
 	}

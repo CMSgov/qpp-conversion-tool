@@ -80,11 +80,11 @@ class QrdaControllerV1Test {
 	@BeforeEach
 	void initialization() throws IOException {
 		JsonWrapper wrapper = new JsonWrapper();
-		wrapper.putString("key", "Good Qpp");
+		wrapper.put("key", "Good Qpp");
 
 		validationInputStream = Files.newInputStream(validationJsonFilePath);
 
-		when(report.getEncoded()).thenReturn(wrapper);
+		when(report.getEncodedWithMetadata()).thenReturn(wrapper);
 
 		multipartFile = new MockMultipartFile(GOOD_FILE_CONTENT,
 				new ByteArrayInputStream(GOOD_FILE_CONTENT.getBytes()));
@@ -103,7 +103,7 @@ class QrdaControllerV1Test {
 		verify(qrdaService, atLeastOnce()).convertQrda3ToQpp(any(Source.class));
 
 		assertThat(qppResponse.getBody())
-				.isEqualTo(report.getEncoded().toString());
+				.isEqualTo(report.getEncodedWithMetadata().toString());
 	}
 
 	@Test

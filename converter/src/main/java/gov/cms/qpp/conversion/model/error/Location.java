@@ -14,7 +14,7 @@ public class Location implements Serializable {
 
 	private static final long serialVersionUID = 1812341767532590176L;
 
-	private String location;
+	private String location; //NOSONAR location field is desired. 
 	private String path = "";
 	private Integer line;
 	private Integer column;

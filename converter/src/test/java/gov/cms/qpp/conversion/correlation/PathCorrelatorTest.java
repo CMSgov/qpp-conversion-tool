@@ -1,27 +1,24 @@
 package gov.cms.qpp.conversion.correlation;
 
-import com.google.common.collect.Lists;
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
-import gov.cms.qpp.conversion.model.TemplateId;
-import org.junit.jupiter.api.Test;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
+
+import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.model.TemplateId;
 
 class PathCorrelatorTest {
 
 	@Test
-	void testPrivateConstructor() throws NoSuchMethodException, IllegalAccessException,
-			InvocationTargetException, InstantiationException {
+	void testPrivateConstructor() throws Exception {
 		Constructor<PathCorrelator> constructor = PathCorrelator.class.getDeclaredConstructor();
 		constructor.setAccessible(true);
 		constructor.newInstance();
@@ -35,7 +32,7 @@ class PathCorrelatorTest {
 	}
 
 	@Test
-	void pathCorrelatorInitilizationNegative() throws Throwable {
+	void pathCorrelatorInitilizationNegative() throws Exception {
 		Field configPath = PathCorrelator.class.getDeclaredField("config");
 		configPath.setAccessible(true);
 		configPath.set(null, "meep.json");
@@ -63,12 +60,36 @@ class PathCorrelatorTest {
 
 	@Test
 	void unacknowledgedEncodedLabel() {
-		Map<String, String> map = new HashMap<>();
-		map.put("meep", "meep");
-		map.put("encodeLabel", "mawp");
-		JsonWrapper wrapper = new JsonWrapper();
-		wrapper.putObject("metadata_holder", Lists.newArrayList(map));
+		JsonWrapper metadata = new JsonWrapper();
+		metadata.putMetadata("meep", "meep");
+		metadata.putMetadata(JsonWrapper.ENCODING_KEY, "mawp");
 
-		assertThat(PathCorrelator.prepPath("$.mawp", wrapper)).isEmpty();
+		JsonWrapper wrapper = new JsonWrapper();
+		wrapper.addMetadata(metadata);
+		wrapper.put("mop","mop"); // TODO asdf test list object. note that JSON require top level to be object not list
+		
+		String actual = PathCorrelator.prepPath("$.mawp", wrapper);
+		assertThat(actual).isEmpty();
+	}
+
+	@Test
+	void unacknowledgedEncodedLabel_multipleMetadata() {
+		JsonWrapper metadata = new JsonWrapper();
+		metadata.putMetadata("meep", "meep");
+		metadata.putMetadata(JsonWrapper.ENCODING_KEY, "mawp");
+		JsonWrapper metadata2 = new JsonWrapper();
+		metadata2.putMetadata("template", "mip");
+		metadata2.putMetadata("nsuri", "mip");
+		metadata2.putMetadata(JsonWrapper.ENCODING_KEY, "mip");
+		// TODO asdf what about encodedLabel empty string?
+		// TODO asdf what about prepPath returning something other than empty?
+
+		JsonWrapper wrapper = new JsonWrapper();
+		wrapper.addMetadata(metadata);
+		wrapper.addMetadata(metadata2);
+		wrapper.put("mop","mop");
+		
+		String actual = PathCorrelator.prepPath("$.mawp", wrapper);
+		assertThat(actual).isEmpty();
 	}
 }

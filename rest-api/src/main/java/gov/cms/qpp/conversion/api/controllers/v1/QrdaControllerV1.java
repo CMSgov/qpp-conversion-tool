@@ -37,7 +37,7 @@ public class QrdaControllerV1 extends SkeletalQrdaController<String> {
 		if (null != metadata) {
 			httpHeaders.add("Location", metadata.getUuid());
 		}
-		return conversionReport.getEncoded().toString(); // TODO toObject?
+		return report.getEncodedWithMetadata().copyWithoutMetadata().toString(); // TODO toObject?
 	}
 
 }
