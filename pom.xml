@@ -21,6 +21,7 @@
 		<powermock.version>1.7.4</powermock.version>
 		<junit.excludes>integration, acceptance</junit.excludes>
 		<junit.includes></junit.includes>
+		<maven.version>3.5.3</maven.version>
 	</properties>
 
 	<modules>
