@@ -1,5 +1,11 @@
 package gov.cms.qpp.conversion.api.controllers;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -18,17 +24,10 @@ import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
 import gov.cms.qpp.conversion.api.exceptions.AuditException;
 import gov.cms.qpp.conversion.api.exceptions.InvalidPurposeException;
-import gov.cms.qpp.conversion.api.model.CpcValidationInfoMap;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.api.services.ValidationService;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Controller to handle uploading files for QRDA-III Conversion
@@ -43,6 +42,8 @@ public abstract class SkeletalQrdaController<T> {
 	protected final QrdaService qrdaService;
 	protected final ValidationService validationService;
 	protected final AuditService auditService;
+
+	protected abstract T respond(MultipartFile file, String checkedPurpose, HttpHeaders httpHeaders);
 
 	/**
 	 * init dependencies
@@ -68,7 +69,6 @@ public abstract class SkeletalQrdaController<T> {
 	public ResponseEntity<T> uploadQrdaFile(
 		@RequestParam(name = "file") MultipartFile file,
 		@RequestHeader(required = false, name = "Purpose") String purpose) {
-		String originalFilename = file.getOriginalFilename();
 
 		if (!StringUtils.isEmpty(purpose)) {
 			if (purpose.length() > MAX_PURPOSE_LENGTH) {
@@ -81,34 +81,21 @@ public abstract class SkeletalQrdaController<T> {
 			API_LOG.info("Conversion request received");
 		}
 
-		ConversionReport conversionReport = qrdaService.convertQrda3ToQpp(
-				new InputStreamSupplierSource(originalFilename, inputStream(file), purpose));
-
-		validationService.validateQpp(conversionReport);
-
-		Metadata metadata = audit(conversionReport);
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+		
+		T response = respond(file, purpose, httpHeaders);
 
 		API_LOG.info("Conversion request succeeded");
 
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
-
-		if (metadata != null) {
-			httpHeaders.add("Location", metadata.getUuid());
-		}
-
-		return new ResponseEntity<>(respond(conversionReport), httpHeaders, HttpStatus.CREATED);
+		return new ResponseEntity<>(response, httpHeaders, HttpStatus.CREATED);
 	}
 
-	protected abstract T respond(ConversionReport report);
-
-	public Metadata audit(ConversionReport conversionReport) {
-		try {
-			CompletableFuture<Metadata> metadata = auditService.success(conversionReport);
-			return metadata == null ? null : metadata.get();
-		} catch (InterruptedException | ExecutionException exception) { //NOSONAR
-			throw new AuditException(exception);
-		}
+	protected ConversionReport buildReport(String filename, InputStream inputStream, String purpose) {
+		ConversionReport conversionReport = qrdaService.convertQrda3ToQpp(
+				new InputStreamSupplierSource(filename, inputStream, purpose));
+		validationService.validateQpp(conversionReport);
+		return conversionReport;
 	}
 
 	/**
@@ -122,6 +109,15 @@ public abstract class SkeletalQrdaController<T> {
 			return file.getInputStream();
 		} catch (IOException ex) {
 			throw new UncheckedIOException(ex);
+		}
+	}
+
+	protected Metadata audit(ConversionReport conversionReport) {
+		try {
+			CompletableFuture<Metadata> metadata = auditService.success(conversionReport);
+			return metadata == null ? null : metadata.get();
+		} catch (InterruptedException | ExecutionException exception) { //NOSONAR
+			throw new AuditException(exception);
 		}
 	}
 

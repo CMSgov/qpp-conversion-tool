@@ -1,12 +1,15 @@
 package gov.cms.qpp.conversion.api.controllers.v2;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.api.controllers.SkeletalQrdaController;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.ConvertResponse;
+import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.api.services.ValidationService;
@@ -19,7 +22,7 @@ import gov.cms.qpp.conversion.api.services.ValidationService;
 public class QrdaControllerV2 extends SkeletalQrdaController<ConvertResponse> {
 
 	/**
-	 * Constructor to supper class to initialize fields
+	 * Constructor to super class to initialize fields
 	 * @param qrdaService {@link QrdaService} to perform QRDA to QPP conversion
 	 * @param validationService {@link ValidationService} to perform post conversion validation
 	 * @param auditService {@link AuditService} to persist audit information
@@ -35,10 +38,16 @@ public class QrdaControllerV2 extends SkeletalQrdaController<ConvertResponse> {
 	 * The version 2 API responds with validation warnings as well as the encoded QPP JsonWrapper.
 	 */
 	@Override
-	protected ConvertResponse respond(ConversionReport report) {
+	protected ConvertResponse respond(MultipartFile file, String checkedPurpose, HttpHeaders httpHeaders) {
+		ConversionReport conversionReport = buildReport(file.getOriginalFilename(), inputStream(file), checkedPurpose);
 		ConvertResponse response = new ConvertResponse();
-		response.setQpp(report.getEncodedWithMetadata().copyWithoutMetadata().toObject());
-		response.setWarnings(report.getWarnings());
+		response.setQpp(conversionReport.getEncodedWithMetadata().copyWithoutMetadata().toObject());
+		response.setWarnings(conversionReport.getWarnings());
+		Metadata metadata = audit(conversionReport);
+		if (null != metadata) {
+			httpHeaders.add("Location", metadata.getUuid());
+			response.setLocation(metadata.getUuid());
+		}
 		return response;
 	}
 
