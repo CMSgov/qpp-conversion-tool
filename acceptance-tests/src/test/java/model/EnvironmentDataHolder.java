@@ -3,7 +3,6 @@ package model;
 public class EnvironmentDataHolder {
 	String serverUrl;
 	String serverCookie;
-	String environment;
 
 	public EnvironmentDataHolder() {
 
@@ -23,13 +22,5 @@ public class EnvironmentDataHolder {
 
 	public void setServerCookie(final String serverCookie) {
 		this.serverCookie = serverCookie;
-	}
-
-	public String getEnvironment() {
-		return environment;
-	}
-
-	public void setEnvironment(final String environment) {
-		this.environment = environment;
 	}
 }
