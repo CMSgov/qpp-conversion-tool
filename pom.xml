@@ -22,6 +22,7 @@
 		<junit.excludes>integration, acceptance</junit.excludes>
 		<junit.includes></junit.includes>
 		<maven.version>3.5.3</maven.version>
+		<maven.generate.phase>generate-sources</maven.generate.phase>
 	</properties>
 
 	<modules>
