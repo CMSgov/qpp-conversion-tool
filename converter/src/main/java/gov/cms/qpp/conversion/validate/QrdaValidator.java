@@ -7,7 +7,6 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ValidationResult;
-import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +24,6 @@ public class QrdaValidator {
 
 	private final List<Detail> errors = new ArrayList<>();
 	private final List<Detail> warnings = new ArrayList<>();
-	private final Set<TemplateId> scope;
 	private final Registry<NodeValidator> validators;
 
 	/**
@@ -35,7 +33,6 @@ public class QrdaValidator {
 	 */
 	public QrdaValidator(Context context) {
 		this.validators = context.getRegistry(Validator.class);
-		this.scope = context.hasScope() ? QrdaScope.getTemplates(context.getScope()) : null;
 	}
 
 	/**
@@ -80,7 +77,7 @@ public class QrdaValidator {
 	}
 
 	/**
-	 * Retrieve permitted {@link Validator}s. {@link #scope} is used to determine which VALIDATORS are allowable.
+	 * Retrieve permitted {@link Validator}s.
 	 *
 	 * @param templateId string representation of a would be validator's template id
 	 * @return validators that correspond to the given template id
@@ -89,11 +86,6 @@ public class QrdaValidator {
 		Set<NodeValidator> nodeValidators = validators.inclusiveGet(templateId);
 		return nodeValidators.stream()
 				.filter(Objects::nonNull)
-				.filter(nodeValidator -> {
-					Validator validator = nodeValidator.getClass().getAnnotation(Validator.class);
-					TemplateId template = validator == null ? TemplateId.DEFAULT : validator.value();
-					return scope == null || scope.contains(template);
-				})
 				.distinct();
 	}
 
