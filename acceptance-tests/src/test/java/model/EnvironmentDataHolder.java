@@ -3,6 +3,8 @@ package model;
 public class EnvironmentDataHolder {
 	String serverUrl;
 	String serverCookie;
+	String hivvsUser;
+	String hivvsPass;
 
 	public EnvironmentDataHolder() {
 
@@ -22,5 +24,21 @@ public class EnvironmentDataHolder {
 
 	public void setServerCookie(final String serverCookie) {
 		this.serverCookie = serverCookie;
+	}
+
+	public String getHivvsUser() {
+		return hivvsUser;
+	}
+
+	public void setHivvsUser(final String hivvsUser) {
+		this.hivvsUser = hivvsUser;
+	}
+
+	public String getHivvsPass() {
+		return hivvsPass;
+	}
+
+	public void setHivvsPass(final String hivvsPass) {
+		this.hivvsPass = hivvsPass;
 	}
 }

@@ -5,12 +5,12 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import model.ErrorHandler;
 import model.EnvironmentDataHolder;
+import model.ErrorHandler;
+import model.RestClient;
 import model.TestResponse;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -38,6 +38,8 @@ public class ConverterApiSteps {
 	public void user_starts_api_tests() {
 		environmentDataHolder.setServerUrl(EnvironmentHelper.get("environment_url"));
 		environmentDataHolder.setServerCookie(EnvironmentHelper.get("environment_cookie"));
+		environmentDataHolder.setHivvsUser(EnvironmentHelper.get("hivvs_user"));
+		environmentDataHolder.setHivvsPass(EnvironmentHelper.get("hivvs_pw"));
 		if (StringUtils.isEmpty(environmentDataHolder.getServerUrl())) {
 			environmentDataHolder.setServerUrl("http://localhost:8080/");
 		}
@@ -56,15 +58,35 @@ public class ConverterApiSteps {
 			addCookieHeader(headers);
 		}
 
+		if( StringUtils.isEmpty(environmentDataHolder.getHivvsUser())) {
+			postWithNoCredentials(body, headers);
+		} else {
+			postWithCredentials(body, headers);
+		}
+
+	}
+
+	private void postWithNoCredentials(final MultiValueMap<String, Object> body, final MultiValueMap<String, String> headers) {
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.setErrorHandler(new ErrorHandler());
 		ResponseEntity<String> response = restTemplate
 				.postForEntity(environmentDataHolder.getServerUrl(), requestEntity, String.class);
-			testResponse.setStatus(response.getStatusCode().value());
-			testResponse.setJsonResponse(response.getBody());
-			System.out.println(testResponse.getJsonResponse());
+		testResponse.setStatus(response.getStatusCode().value());
+		testResponse.setJsonResponse(response.getBody());
 	}
+
+	private void postWithCredentials(final MultiValueMap<String, Object> body, final MultiValueMap<String, String> headers) {
+		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+		RestClient restClient = new RestClient(environmentDataHolder.getHivvsUser(), environmentDataHolder.getHivvsPass());
+		restClient.setErrorHandler(new ErrorHandler());
+		ResponseEntity<String> response = restClient
+			.postForEntity(environmentDataHolder.getServerUrl(), requestEntity, String.class);
+		testResponse.setStatus(response.getStatusCode().value());
+		testResponse.setJsonResponse(response.getBody());
+	}
+
+
 
 	private void addCookieHeader(MultiValueMap<String, String> httpHeaders) {
 		String cookie = environmentDataHolder.getServerCookie();
@@ -73,17 +95,7 @@ public class ConverterApiSteps {
 
 	@Then("User receives (.*) response code")
 	public void user_receives_response_201(int expected) {
-		//Work around for CPC+ submission end date
-		if (expected == 422) {
-			String jsonPath = "$.errors[*].details[*].errorCode";
-			String errorExpected = "68";
-			List<Map<String, String>> acceptedJsonResponse =
-				JsonHelper.readJsonAtJsonPath(testResponse.getJsonResponse(), jsonPath, new TypeRef<List<Map<String, String>>>() { });
-			assertEquals(errorExpected, acceptedJsonResponse);
-		} else {
-			assertEquals(expected, testResponse.getStatus());
-		}
-
+		assertEquals(expected, testResponse.getStatus());
 	}
 
 	@And("the JSON response at (.*) should not be (.*)")
