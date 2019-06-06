@@ -1,12 +1,5 @@
 package gov.cms.qpp.conversion;
 
-import org.apache.commons.cli.CommandLine;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import gov.cms.qpp.conversion.segmentation.QrdaScope;
-import gov.cms.qpp.conversion.util.Finder;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -15,10 +8,8 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -26,17 +17,21 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.apache.commons.cli.CommandLine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import gov.cms.qpp.conversion.util.Finder;
+
 /**
  * Responsible for executing the given command line instructions
  */
 public class CommandLineRunner implements Runnable {
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(CommandLineRunner.class);
-	private static final Pattern LITERAL_COMMA = Pattern.compile(",", Pattern.LITERAL);
 
 	private final CommandLine commandLine;
 	private final FileSystem fileSystem;
-	private Set<QrdaScope> scope;
 	private boolean doValidation;
 	private boolean historical;
 	private Pattern normalPathPattern;
@@ -73,28 +68,21 @@ public class CommandLineRunner implements Runnable {
 		if (isHelp()) {
 			sendHelp();
 		} else if (hasPotentialFiles()) {
-			Scopes scopes = getScopes();
-			scope = scopes.getQrdaScopes();
-			if (scopes.isValid()) {
-				Set<Path> convert = getRequestedFilesForConversion();
+			Set<Path> convert = getRequestedFilesForConversion();
 
-				List<Path> invalid = convert.stream()
-						.filter(path -> !isValid(path))
-						.collect(Collectors.toList());
-				if (invalid.isEmpty()) {
-					doValidation = !commandLine.hasOption(CommandLineMain.SKIP_VALIDATION);
-					historical = commandLine.hasOption(CommandLineMain.BYGONE);
+			List<Path> invalid = convert.stream()
+					.filter(path -> !isValid(path))
+					.collect(Collectors.toList());
+			if (invalid.isEmpty()) {
+				doValidation = !commandLine.hasOption(CommandLineMain.SKIP_VALIDATION);
+				historical = commandLine.hasOption(CommandLineMain.BYGONE);
 
-					convert.parallelStream()
-						.map(ConversionFileWriterWrapper::new)
-						.peek(conversion -> conversion.setContext(createContext()))
-						.forEach(ConversionFileWriterWrapper::transform);
-				} else {
-					DEV_LOG.error("Invalid or missing paths: " + invalid);
-					sendHelpHint();
-				}
+				convert.parallelStream()
+					.map(ConversionFileWriterWrapper::new)
+					.peek(conversion -> conversion.setContext(createContext()))
+					.forEach(ConversionFileWriterWrapper::transform);
 			} else {
-				DEV_LOG.error("A given template scope was invalid");
+				DEV_LOG.error("Invalid or missing paths: " + invalid);
 				sendHelpHint();
 			}
 		} else {
@@ -107,7 +95,6 @@ public class CommandLineRunner implements Runnable {
 		Context context = new Context();
 		context.setDoValidation(doValidation);
 		context.setHistorical(historical);
-		context.setScope(scope);
 		return context;
 	}
 
@@ -130,25 +117,6 @@ public class CommandLineRunner implements Runnable {
 
 	private boolean hasPotentialFiles() {
 		return !commandLine.getArgList().isEmpty();
-	}
-
-	private Scopes getScopes() {
-		Scopes scopes = new Scopes();
-		if (commandLine.hasOption(CommandLineMain.TEMPLATE_SCOPE)) {
-			String[] templateScope = LITERAL_COMMA.split(commandLine.getOptionValue(CommandLineMain.TEMPLATE_SCOPE));
-			Set<QrdaScope> validScopes = Arrays.stream(templateScope)
-					.map(QrdaScope::getInstanceByName)
-					.filter(Objects::nonNull)
-					.collect(Collectors.toCollection(() -> EnumSet.noneOf(QrdaScope.class)));
-
-			scopes.setValid(validScopes.size() == templateScope.length);
-
-			scopes.setQrdaScopes(validScopes);
-			return scopes;
-		}
-		scopes.setQrdaScopes(EnumSet.noneOf(QrdaScope.class));
-		scopes.setValid(true);
-		return scopes;
 	}
 
 	private Set<Path> getRequestedFilesForConversion() {
