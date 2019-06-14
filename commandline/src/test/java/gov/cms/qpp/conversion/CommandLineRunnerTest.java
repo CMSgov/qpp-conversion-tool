@@ -5,7 +5,6 @@ import org.apache.commons.cli.CommandLine;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.test.jimfs.JimfsTest;
 import gov.cms.qpp.test.logging.LoggerContract;
 
@@ -42,20 +41,6 @@ class CommandLineRunnerTest implements LoggerContract {
 		CommandLineRunner runner = new CommandLineRunner(line());
 		runner.run();
 		Truth.assertThat(getLogs()).contains("You must specify files to convert");
-	}
-
-	@Test
-	void testRunWithInvalidScope() {
-		CommandLineRunner runner = new CommandLineRunner(line(INVALID_FILE, "-t", "SOME_INVALID_SCOPE"));
-		runner.run();
-		Truth.assertThat(getLogs()).contains("A given template scope was invalid");
-	}
-
-	@Test
-	void testRunWithValidScope() {
-		CommandLineRunner runner = new CommandLineRunner(line(INVALID_FILE, "-t", QrdaScope.CLINICAL_DOCUMENT.name()));
-		runner.run();
-		Truth.assertThat(getLogs()).doesNotContain("A given template scope was invalid");
 	}
 
 	@Test

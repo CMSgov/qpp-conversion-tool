@@ -5,7 +5,6 @@ import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATIO
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
