@@ -160,7 +160,9 @@ public enum ErrorCode implements LocalizedError {
 	MISSING_PII_VALIDATOR(79, "There is no TIN validator present, so NPI/Alternative Payment Model (APM) "
 			+ "combinations cannot be verified"),
 	INCORRECT_API_NPI_COMBINATION(80, "The given National Provider (NPI) Identifier and Alternative Payment Model (APM) "
-			+ "are not a valid combination");
+			+ "are not a valid combination"),
+	TOO_MANY_ERRORS(81, "There are too many errors associated with this QRDA-III file."
+		+ " Please fix the given errors and re-submit");
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));
