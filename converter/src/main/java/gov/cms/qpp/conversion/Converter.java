@@ -128,9 +128,11 @@ public class Converter {
 	}
 
 	private List<Detail> truncateTooManyErrors(List<Detail> errors) {
-		if (errors != null && errors.size() > 100) {
-			List<Detail> truncatedList = errors.subList(0, 100);
-			truncatedList.add(Detail.forErrorCode(ErrorCode.TOO_MANY_ERRORS));
+		int sizeLimit = 100;
+		if (errors != null && errors.size() > sizeLimit) {
+			List<Detail> truncatedList = errors.subList(0, sizeLimit);
+			truncatedList.add(Detail.forErrorCode(
+				ErrorCode.TOO_MANY_ERRORS.format((errors.size()))));
 			return truncatedList;
 		}
 		return errors;

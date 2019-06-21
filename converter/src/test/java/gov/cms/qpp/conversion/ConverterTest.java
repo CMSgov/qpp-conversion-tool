@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.shadow.com.univocity.parsers.common.TextParsingException;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.mockito.internal.debugging.Localized;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -239,6 +240,8 @@ public class ConverterTest {
 
 	@Test
 	public void testTooManyErrorsInQrdaIIIFile() {
+		LocalizedError expectedError = ErrorCode.TOO_MANY_ERRORS.format(782);
+
 		Path path = Paths.get(TOO_MANY_ERRORS);
 		Converter converter = new Converter(new PathSource(path));
 		try {
@@ -250,7 +253,7 @@ public class ConverterTest {
 			assertWithMessage("The validation error was incorrect")
 				.that(errors.get(0).getDetails())
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(ErrorCode.TOO_MANY_ERRORS);
+				.contains(expectedError);
 		}
 
 	}
