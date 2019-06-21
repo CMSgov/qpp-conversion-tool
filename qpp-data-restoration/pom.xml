@@ -66,12 +66,12 @@
 		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk</artifactId>
-			<version>1.11.576</version>
+			<version>${aws.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-dynamodb-encryption-java</artifactId>
-			<version>1.13.0</version>
+			<version>${awsDynamodbEncryption.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>

@@ -14,8 +14,9 @@
 		<requiredCodeCoverage>0.95</requiredCodeCoverage>
 		<verificationsPhase>verify</verificationsPhase>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<aws.version>1.11.490</aws.version>
-		<jackson.version>2.9.8</jackson.version>
+		<aws.version>1.11.576</aws.version>
+		<awsDynamodbEncryption.version>1.13.0</awsDynamodbEncryption.version>
+		<jackson.version>2.9.9</jackson.version>
 		<guava.version>25.1-jre</guava.version>
 		<junit.version>5.2.0</junit.version>
 		<powermock.version>1.7.4</powermock.version>
