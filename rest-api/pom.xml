@@ -266,7 +266,7 @@
 
 		<dependency>
 			<groupId>com.amazonaws</groupId>
-			<artifactId>aws-dynamodb-encryption</artifactId>
+			<artifactId>aws-dynamodb-encryption-java</artifactId>
 			<version>${awsDynamodbEncryption.version}</version>
 		</dependency>
 
