@@ -3,13 +3,10 @@ package gov.cms.qpp.conversion;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import gov.cms.qpp.conversion.segmentation.QrdaScope;
 
 /**
  * Entry point for the converter when ran from the command line
@@ -23,7 +20,6 @@ public class CommandLineMain {
 
 	public static final String BYGONE = "bygone";
 	public static final String SKIP_VALIDATION = "skipValidation";
-	public static final String TEMPLATE_SCOPE = "templateScope";
 	public static final String RECURSIVE = "recursive";
 	public static final String HELP = "help";
 
@@ -33,14 +29,6 @@ public class CommandLineMain {
 		OPTIONS.addOption("v", SKIP_VALIDATION, false, "Skip validations");
 		OPTIONS.addOption("r", RECURSIVE, false, "Search for specified files recursively");
 		OPTIONS.addOption("h", HELP, false, "This help message");
-
-		Option templateScope = Option.builder("t")
-				.longOpt(TEMPLATE_SCOPE)
-				.argName("scope1,scope2,...")
-				.hasArg()
-				.desc("Comma delimited scope values to use for context. Valid values: " + QrdaScope.getNames())
-				.build();
-		OPTIONS.addOption(templateScope);
 
 		HELP_FORMAT = new HelpFormatter();
 	}

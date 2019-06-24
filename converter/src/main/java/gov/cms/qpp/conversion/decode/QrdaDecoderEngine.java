@@ -7,7 +7,6 @@ import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import org.jdom2.Element;
 import org.jdom2.located.Located;
 import org.slf4j.Logger;
@@ -32,7 +31,6 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 	private static final String EXTENSION_STRING = "extension";
 
 	protected final Context context;
-	private final Set<TemplateId> scope;
 	private final Registry<QrdaDecoder> decoders;
 
 	/**
@@ -44,7 +42,6 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 		Objects.requireNonNull(context, "converter");
 
 		this.context = context;
-		this.scope = context.hasScope() ? QrdaScope.getTemplates(context.getScope()) : null;
 		this.decoders = context.getRegistry(Decoder.class);
 	}
 
@@ -255,22 +252,13 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 	}
 
 	/**
-	 * Retrieve a permitted {@link Decoder}. {@link #scope} is used to determine which DECODERS are allowable.
+	 * Retrieve a permitted {@link Decoder}.
 	 *
 	 * @param templateId string representation of a would be decoder's template id
 	 * @return decoder that corresponds to the given template id
 	 */
 	private QrdaDecoder getDecoder(TemplateId templateId) {
-		QrdaDecoder qppDecoder = decoders.get(templateId);
-		if (qppDecoder != null) {
-			if (scope == null) {
-				return qppDecoder;
-			}
-
-			Decoder decoder = qppDecoder.getClass().getAnnotation(Decoder.class);
-			return decoder == null || !scope.contains(decoder.value()) ? null : qppDecoder;
-		}
-		return null;
+		return decoders.get(templateId);
 	}
 
 	/**
