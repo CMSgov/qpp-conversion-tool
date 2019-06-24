@@ -127,8 +127,8 @@ public class JsonWrapper {
 	
 	public static final String METADATA_HOLDER = "metadata_holder";
 	public static final String ENCODING_KEY = "encodeLabel";
-	private static ObjectMapper jsonMapper;
-	private static ObjectMapper metaMapper;
+	public static final ObjectMapper jsonMapper;
+	private static final ObjectMapper metaMapper;
 
 	private static DefaultPrettyPrinter standardPrinter() {
 		DefaultIndenter withLinefeed = new DefaultIndenter("  ", "\n");
