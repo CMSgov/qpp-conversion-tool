@@ -22,6 +22,7 @@ class QualityMeasureSectionValidatorTest {
 	private static MarkupManipulationHandler manipulatorHandler;
 	private Node reportingParameterNode;
 	private Node qualityMeasureSectionNode;
+	private Node measure;
 
 
 	@BeforeAll
@@ -33,16 +34,31 @@ class QualityMeasureSectionValidatorTest {
 	void setUpQualityMeasureSection() {
 		reportingParameterNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		qualityMeasureSectionNode = new Node(TemplateId.MEASURE_SECTION_V2);
+		measure = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
 	}
 
 	@Test
-	void validQualityMeasureSectionValidation() {
+	void testValidQualityMeasureSectionValidation() {
 		qualityMeasureSectionNode.addChildNode(reportingParameterNode);
+		qualityMeasureSectionNode.addChildNode(measure);
 
 		List<Detail> errors = validateQualityMeasureSection();
 
 		assertWithMessage("Must not contain errors")
 				.that(errors).isEmpty();
+	}
+
+	@Test
+	void testQualityMeasureSectionWithoutMeasure() {
+		qualityMeasureSectionNode.addChildNode(reportingParameterNode);
+
+		List<Detail> errors = validateQualityMeasureSection();
+
+		assertWithMessage("Must contain 1 error")
+				.that(errors).hasSize(1);
+
+		assertWithMessage("Error must be " + ErrorCode.MEASURE_SECTION_MISSING_MEASURE)
+			.that(errors.get(0).getErrorCode()).isEqualTo(ErrorCode.MEASURE_SECTION_MISSING_MEASURE.getCode());
 	}
 
 	@Test
