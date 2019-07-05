@@ -30,12 +30,12 @@
 		<verificationsPhase>verify</verificationsPhase>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<aws.version>1.11.490</aws.version>
-		<jackson.version>2.9.9</jackson.version>
+		<jackson.version>2.9.9.1</jackson.version>
 		<guava.version>25.1-jre</guava.version>
 		<junit.version>5.2.0</junit.version>
 		<powermock.version>1.7.4</powermock.version>
 		<junit.excludes>integration, acceptance</junit.excludes>
-		<junit.includes></junit.includes>
+		<junit.includes/>
 		<maven.version>3.5.3</maven.version>
 	</properties>
 
@@ -354,7 +354,7 @@
 			<properties>
 				<jacoco.skip>true</jacoco.skip>
 				<junit.includes>integration, acceptance</junit.includes>
-				<junit.excludes></junit.excludes>
+				<junit.excludes/>
 			</properties>
 		</profile>
 	</profiles>
