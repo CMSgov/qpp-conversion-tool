@@ -54,14 +54,12 @@
   - name: Delete old QPP Conversion Tools Docker image
     docker_image:
       name: qpp_conversion
-      state: absent
-      force: yes
+      force_absent: yes
     become: true
   - name: Load QPP Conversion Tools Docker image
     docker_image:
       name: qpp_conversion
-      state: present
-      force: yes
+      force_present: yes
       load_path: ~/qpp_conversion_docker_image.tar
     become: true
   - name: Start QPP Conversion Tools Docker container
