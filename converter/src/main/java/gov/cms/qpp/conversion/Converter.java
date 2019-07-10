@@ -6,7 +6,6 @@ import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
-import gov.cms.qpp.conversion.encode.ScopedQppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
@@ -165,7 +164,7 @@ public class Converter {
 	 * @return an encoder
 	 */
 	protected JsonOutputEncoder getEncoder() {
-		return (!context.getScope().isEmpty()) ? new ScopedQppOutputEncoder(context) : new QppOutputEncoder(context);
+		return new QppOutputEncoder(context);
 	}
 
 	/**
