@@ -9,13 +9,28 @@
 	<version>2.1.2-RELEASE</version>
 	<name>QPP Conversion Tool</name>
 
+	<repositories>
+		<repository>
+			<id>qpp-internal</id>
+			<name>QPP internal repo</name>
+			<url>http://nexus.qppa.qpp.internal:8081/repository/apache_maven/</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>qpp-internal</id>
+			<name>QPP internal repo</name>
+			<url>http://nexus.qppa.qpp.internal:8081/repository/apache_maven/</url>
+		</pluginRepository>
+	</pluginRepositories>
+
 	<properties>
 		<java.version>1.8</java.version>
 		<requiredCodeCoverage>0.95</requiredCodeCoverage>
 		<verificationsPhase>verify</verificationsPhase>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<aws.version>1.11.490</aws.version>
-		<jackson.version>2.9.8</jackson.version>
+		<jackson.version>2.9.9</jackson.version>
 		<guava.version>25.1-jre</guava.version>
 		<junit.version>5.2.0</junit.version>
 		<powermock.version>1.7.4</powermock.version>
