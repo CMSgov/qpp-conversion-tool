@@ -44,7 +44,7 @@
 				</configuration>
 				<executions>
 					<execution>
-						<phase>generate-sources</phase>
+						<phase>${maven.generate.phase}</phase>
 						<goals>
 							<goal>generateErrorCodeDoc</goal>
 						</goals>
