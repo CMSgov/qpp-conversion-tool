@@ -1,11 +1,13 @@
 package gov.cms.qpp.conversion;
 
 import com.google.common.truth.Truth;
+import com.jayway.jsonpath.TypeRef;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.shadow.com.univocity.parsers.common.TextParsingException;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.mockito.internal.debugging.Localized;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -31,6 +33,7 @@ import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.stubs.JennyDecoder;
 import gov.cms.qpp.conversion.stubs.TestDefaultValidator;
+import gov.cms.qpp.conversion.util.JsonHelper;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.test.helper.NioHelper;
 
@@ -58,6 +61,7 @@ public class ConverterTest {
 	public static final String EXCEPT_FILE  = "src/test/resources/converter/defaultedNode.xml";
 	public static final String INVALID_XML  = "src/test/resources/non-xml-file.xml";
 	public static final String INVALID_QRDA = "src/test/resources/not-a-QRDA-III-file.xml";
+	private static final String TOO_MANY_ERRORS = "src/test/resources/negative/tooManyErrors.xml";
 
 	@Test(expected = org.junit.Test.None.class)
 	public void testValidQppFile() {
@@ -232,6 +236,26 @@ public class ConverterTest {
 		Source source = mock(Source.class);
 		when(source.getPurpose()).thenReturn(null);
 		Truth.assertThat(new Converter(source).getReport().getPurpose()).isNull();
+	}
+
+	@Test
+	public void testTooManyErrorsInQrdaIIIFile() {
+		LocalizedError expectedError = ErrorCode.TOO_MANY_ERRORS.format(782);
+
+		Path path = Paths.get(TOO_MANY_ERRORS);
+		Converter converter = new Converter(new PathSource(path));
+		try {
+			converter.transform();
+			fail();
+		} catch (TransformException exception) {
+			AllErrors allErrors = exception.getDetails();
+			List<Error> errors = allErrors.getErrors();
+			assertWithMessage("The validation error was incorrect")
+				.that(errors.get(0).getDetails())
+				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.contains(expectedError);
+		}
+
 	}
 
 	private void checkup(TransformException exception, LocalizedError error) {
