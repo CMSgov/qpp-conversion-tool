@@ -1,5 +1,5 @@
 {
-	"CPCPlus_CMS122v5IncUUID_SampleQRDA-III.xml": {
+	"CPCPLUS-11b-CMS122v7IncorrectUUID_06192019.xml": {
 		"strict": false,
 		"errorData": [
 			{
@@ -9,8 +9,8 @@
 			}
 		]
 	},
-	"CPCPlus_CMS124v5IncUUID_SampleQRDA-III.xml": {
-		"strict": true,
+	"CPCPlus_CMS124v7IncUUID_SampleQRDA-III.xml": {
+		"strict": false,
 		"errorData": [
 			{
 				"errorCode": 6,
@@ -232,7 +232,7 @@
 			}
 		]
 	},
-	"CPCPlus_PracID_Not_Provided_SampleQRDA-III.xml": {
+	"CPCPLUS-5a-PracticeSiteAddressNotProvided_03282019.xml": {
 		"strict": true,
 		"errorData": [
 			{
