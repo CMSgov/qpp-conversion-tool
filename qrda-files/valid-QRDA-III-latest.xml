@@ -725,7 +725,7 @@ CDA Header
                   <value xsi:type="REAL" value=".888889" />
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="709D84FA-637D-42CD-8934-43C3FBAD0979" />
+                      <id root="A815D9EA-5CE0-4AD8-A703-BC69D19E360B" />
                       <code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Numerator" />
                     </externalObservation>
                   </reference>
@@ -4044,7 +4044,7 @@ CDA Header
       			</organizer>
       		</entry>
 
-					<!--Measure Entry for CMS68v8  -->
+					<!--Measure Entry for CMS68v8-->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
@@ -4075,7 +4075,7 @@ CDA Header
 									<value xsi:type="REAL" value="0.816327"/>
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="16258F72-CA04-4FB6-AF26-DBB372D4E265"/>
+											<id root="4E058941-CA3D-48BF-BABC-358F3A9FE2AF"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
 												codeSystemName="ActCode"
 												displayName="Numerator"/>
@@ -5988,7 +5988,7 @@ CDA Header
 						</organizer>
 					</entry>
 
-					<!--Measure Entry for CMS160v5/NQF0712: Depression Utilization of the PHQ-9 Tool -->
+					<!--Measure Entry for CMS160v7-->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
@@ -6000,7 +6000,7 @@ CDA Header
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<id root="2.16.840.1.113883.4.738"
-										extension=""/>
+										extension="40280382-6258-7581-0162-63106f9201b2"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
 										codeSystemName="LOINC"
 										displayName="Health Quality Measure Document"/>
@@ -6020,7 +6020,7 @@ CDA Header
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
 											<!-- The root contains the UUID for the Numerator population -->
-											<id root="6E41C227-F801-45AC-8271-0E9325CE1481"/>
+											<id root="539B0A53-F5B0-47CB-887E-392792E9D4ED"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
 												codeSystemName="ActCode"
 												displayName="Numerator"/>
@@ -6041,7 +6041,7 @@ CDA Header
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
 											<!-- The root contains the UUID for the Numerator population -->
-											<id root="7B13A87F-621F-4682-BE2C-B0900AEF6AE5"/>
+											<id root="92D313A7-3A3D-44EC-8A94-103CC0003A30"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
 												codeSystemName="ActCode"
 												displayName="Numerator"/>
@@ -6062,7 +6062,7 @@ CDA Header
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
 											<!-- The root contains the UUID for the Numerator population -->
-											<id root="3948D321-8D57-4F5B-B3E1-3140D4E6CBBB"/>
+											<id root="9FCE046B-5EF9-4A19-9D22-D3A6518EDA51"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
 												codeSystemName="ActCode"
 												displayName="Numerator"/>

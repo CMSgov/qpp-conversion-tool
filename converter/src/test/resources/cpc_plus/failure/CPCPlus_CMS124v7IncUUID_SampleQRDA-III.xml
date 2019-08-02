@@ -3779,7 +3779,7 @@
               </effectiveTime>
             </act>
           </entry>
-      		<!--Measure Entry for NQF 0059 / CMS122v7-->
+          <!--Measure Entry for CMS122v7-->
       		<entry>
       			<organizer classCode="CLUSTER" moodCode="EVN">
       				<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
@@ -29113,7 +29113,7 @@
               </component>
             </organizer>
           </entry>
-          <!--Measure Entry for NQF 0018 / CMS165v7-->
+          <!--Measure Entry for CMS165v7-->
           <entry>
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
@@ -29140,7 +29140,7 @@
                   <value xsi:type="REAL" value=".888889" />
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="709D84FA-637D-42CD-8934-43C3FBAD0979" />
+                      <id root="A815D9EA-5CE0-4AD8-A703-BC69D19E360B" />
                       <code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Numerator" />
                     </externalObservation>
                   </reference>
