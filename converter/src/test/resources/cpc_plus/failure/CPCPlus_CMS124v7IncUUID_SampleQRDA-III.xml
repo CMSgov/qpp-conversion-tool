@@ -5476,7 +5476,7 @@
       				</component>
       			</organizer>
       		</entry>
-          <!--Measure Entry for NQF 0032 / CMS124v7 changed "14b9" to "1111" -->
+          <!--Measure Entry for CMS124v7 changed "14b9" to "1111" -->
           <entry>
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
@@ -5503,7 +5503,7 @@
                   <value xsi:type="REAL" value=".888889" />
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="3854BDE6-9614-475D-8E3B-5A041C04C291" />
+                      <id root="58569B1E-E97B-4733-BC6A-1AF476D2721C" />
                       <code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Numerator" />
                     </externalObservation>
                   </reference>
@@ -7099,7 +7099,7 @@
               </component>
             </organizer>
           </entry>
-          <!--Measure Entry for NQF 2372 / CMS125v7-->
+          <!--Measure Entry for CMS125v7-->
           <entry>
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
@@ -7126,7 +7126,7 @@
                   <value xsi:type="REAL" value=".888889" />
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="475ABF74-7880-45F6-AE2A-FC6333EACCDA" />
+                      <id root="7C63166F-CAFA-4786-A469-E8DE4942AD5C" />
                       <code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Numerator" />
                     </externalObservation>
                   </reference>
@@ -8746,7 +8746,7 @@
               </component>
             </organizer>
           </entry>
-          <!--Measure Entry for NQF 0034 / CMS130v7-->
+          <!--Measure Entry for CMS130v7-->
           <entry>
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
@@ -8773,7 +8773,7 @@
                   <value xsi:type="REAL" value=".888889" />
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="4CB09E04-EB4E-4902-9775-F4F36EFF57C2" />
+                      <id root="A537E11B-5A76-4A55-8DDE-6FB83FEC87FB" />
                       <code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Numerator" />
                     </externalObservation>
                   </reference>
@@ -10393,7 +10393,7 @@
               </component>
             </organizer>
           </entry>
-          <!--Measure Entry for NQF 0055 / CMS131v7-->
+          <!--Measure Entry for CMS131v7-->
           <entry>
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
@@ -10420,7 +10420,7 @@
                   <value xsi:type="REAL" value=".8" />
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="C7D4A675-E578-45F2-B637-5C1FC90FCCFA" />
+                      <id root="88F63A33-6D05-4BD2-8159-2C3712CA5638" />
                       <code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Numerator" />
                     </externalObservation>
                   </reference>
@@ -12040,7 +12040,7 @@
               </component>
             </organizer>
           </entry>
-          <!--Measure Entry for NQF 0004 / CMS137v7-->
+          <!--Measure Entry for CMS137v7-->
           <entry>
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
@@ -12056,7 +12056,7 @@
                   <text>Initiation and Engagement of Alcohol and Other Drug Dependence Treatment</text>
                 </externalDocument>
               </reference>
-              <!--Performance Rate-->
+              <!--Performance Rate 1-->
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01" />
@@ -12067,13 +12067,13 @@
                   <value xsi:type="REAL" value=".888889" />
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="6F8814A6-A26A-4FCB-8A41-902971713FCB" />
+                      <id root="22DE67FC-79C0-4725-BDE3-3C9B0A1ACAF7" />
                       <code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Numerator" />
                     </externalObservation>
                   </reference>
                 </observation>
               </component>
-              <!--Performance Rate-->
+              <!--Performance Rate 2-->
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01" />
@@ -12084,7 +12084,7 @@
                   <value xsi:type="REAL" value=".888889" />
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="431A7185-548C-4F05-B0D3-90108E4AAD57" />
+                      <id root="C3D3C7F3-CADA-45E9-A5AA-A05A3C04A76A" />
                       <code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Numerator" />
                     </externalObservation>
                   </reference>
@@ -13050,7 +13050,7 @@
                       </entryRelationship>
                       <reference typeCode="REFR">
                         <externalObservation>
-                          <id root="F2765AD3-E5E4-40BE-ADCF-E1CCA92B0D42" />
+                          <id root="F7764C47-6BAE-4359-A3DF-9C452DC95A33" />
                         </externalObservation>
                       </reference>
                     </observation>
@@ -13078,7 +13078,7 @@
                       </entryRelationship>
                       <reference typeCode="REFR">
                         <externalObservation>
-                          <id root="C17E38FE-4BC4-46A6-B35D-6F172C4D5F41" />
+                          <id root="44729C98-B535-4C78-8BC3-A716323B9965" />
                         </externalObservation>
                       </reference>
                     </observation>
@@ -13921,7 +13921,7 @@
                   <!--NUMER Population ID from eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="6F8814A6-A26A-4FCB-8A41-902971713FCB" />
+                      <id root="22DE67FC-79C0-4725-BDE3-3C9B0A1ACAF7" />
                     </externalObservation>
                   </reference>
                 </observation>
@@ -15764,7 +15764,7 @@
               </component>
             </organizer>
           </entry>
-          <!--Measure Entry for NQF 0028 / CMS138v7-->
+          <!--Measure Entry for CMS138v7-->
           <entry>
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
@@ -15792,7 +15792,7 @@
                   <value xsi:type="REAL" value=".888889" />
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="03EB885E-F7CF-491D-B589-76C35404A6E8" />
+                      <id root="1356052C-4C82-4859-85B4-D04ACF269564" />
                       <code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Numerator" />
                     </externalObservation>
                   </reference>
@@ -17422,7 +17422,7 @@
                   <value xsi:type="REAL" value=".888889" />
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="70DBF8C1-7DD3-4413-A501-021212C44181" />
+                      <id root="D10D6789-32F2-4A72-9588-611C4765FC13" />
                       <code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Numerator" />
                     </externalObservation>
                   </reference>
@@ -19052,7 +19052,7 @@
                   <value xsi:type="REAL" value=".888889" />
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="C0CCE0E5-CD1A-4F94-8A75-F750EA4D4251" />
+                      <id root="98958164-44A0-4759-AF5C-86EFB56AF1BA" />
                       <code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Numerator" />
                     </externalObservation>
                   </reference>
@@ -20672,7 +20672,7 @@
               </component>
             </organizer>
           </entry>
-          <!--Measure Entry for NQF 0101 / CMS139v7-->
+          <!--Measure Entry for CMS139v7-->
           <entry>
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
@@ -20699,7 +20699,7 @@
                   <value xsi:type="REAL" value=".888889" />
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="714CCB1D-9F3F-403E-B636-2F2A38258D31" />
+                      <id root="726DED9F-9CBC-4FEE-B261-4AB16657126D" />
                       <code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Numerator" />
                     </externalObservation>
                   </reference>
@@ -22319,7 +22319,7 @@
               </component>
             </organizer>
           </entry>
-          <!--Measure Entry for NQF Not Applicable / CMS149v7-->
+          <!--Measure Entry for CMS149v7-->
           <entry>
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
@@ -22346,7 +22346,7 @@
                   <value xsi:type="REAL" value=".888889" />
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="9B6325F1-07B8-4B1C-AF92-4F4F1269C234" />
+                      <id root="8C9729F4-4DB8-421C-960C-BEE98F624340" />
                       <code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Numerator" />
                     </externalObservation>
                   </reference>
@@ -23966,7 +23966,7 @@
               </component>
             </organizer>
           </entry>
-          <!--Measure Entry for NQF 0022 / CMS156v7-->
+          <!--Measure Entry for CMS156v7-->
           <entry>
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
@@ -23993,13 +23993,13 @@
                   <value xsi:type="REAL" value=".8" />
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="C23BC68E-9FB9-4799-9B10-A7DC31339A03" />
+                      <id root="A5797141-A910-4FA0-8A5F-32FB348848A0" />
                       <code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Numerator" />
                     </externalObservation>
                   </reference>
                 </observation>
               </component>
-              <!--Performance Rate-->
+              <!--Performance Rate 2-->
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01" />
@@ -24010,7 +24010,7 @@
                   <value xsi:type="REAL" value=".8" />
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="8B77586E-A421-42C4-A8E2-741FDBCF60B6" />
+                      <id root="51CCFD8B-C7B1-492F-88DE-041AD08FDAED" />
                       <code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Numerator" />
                     </externalObservation>
                   </reference>
@@ -27242,7 +27242,7 @@
               </component>
             </organizer>
           </entry>
-          <!--Measure Entry for NQF 0710 / CMS159v7-->
+          <!--Measure Entry for CMS159v7-->
           <entry>
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
@@ -27269,7 +27269,7 @@
                   <value xsi:type="REAL" value=".888889" />
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="6D7953F6-DBDA-420C-A866-39A2A0E8EFF4" />
+                      <id root="F4580E7F-EB6C-42AB-93A8-9AF1A4FD46EE" />
                       <code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Numerator" />
                     </externalObservation>
                   </reference>
@@ -30760,7 +30760,7 @@
               </component>
             </organizer>
           </entry>
-          <!--Measure Entry for NQF Not Applicable / CMS50v7-->
+          <!--Measure Entry for CMS50v7-->
           <entry>
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
@@ -30787,7 +30787,7 @@
                   <value xsi:type="REAL" value=".8" />
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="B682F9C1-F175-4521-9C22-BF848156DD0A" />
+                      <id root="4075E039-7118-460C-9356-D8B329DE183D" />
                       <code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Numerator" />
                     </externalObservation>
                   </reference>
