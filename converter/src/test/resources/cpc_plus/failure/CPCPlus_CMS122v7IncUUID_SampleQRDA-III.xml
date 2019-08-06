@@ -174,17 +174,17 @@
     </consent>
   </authorization>
   <!--
-  ********************************************************
-  CDA Body
-  ********************************************************
-  -->
+********************************************************
+CDA Body
+********************************************************
+-->
   <component>
     <structuredBody>
       <!--
-      ********************************************************
-      QRDA Category III Measure Section (CMS EP)
-      ********************************************************
-      -->
+********************************************************
+QRDA Category III Measure Section (CMS EP)
+********************************************************
+-->
       <component>
         <section>
           <templateId root="2.16.840.1.113883.10.20.27.2.1" extension="2017-06-01" />
@@ -3779,7 +3779,7 @@
               </effectiveTime>
             </act>
           </entry>
-          <!--Measure Entry for CMS122v7-->
+          <!--Measure Entry for CMS122v7 changed "1447" to "1111"-->
       		<entry>
       			<organizer classCode="CLUSTER" moodCode="EVN">
       				<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
@@ -3794,7 +3794,7 @@
       				<reference typeCode="REFR">
       					<externalDocument classCode="DOC" moodCode="EVN">
       						<id root="2.16.840.1.113883.4.738"
-      							extension="40280382-6258-7581-0162-9249c8ab1447"/>
+      							extension="40280382-6258-7581-0162-9249c8ab1111"/>
       						<code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
       							  codeSystemName="LOINC" displayName="Health Quality Measure Document"/>
       						<text>Diabetes: Hemoglobin A1c (HbA1c) Poor Control (&gt; 9%)</text>
@@ -5456,7 +5456,7 @@
       				</component>
       			</organizer>
       		</entry>
-          <!--Measure Entry for CMS124v7 changed "14b9" to "1111" -->
+          <!--Measure Entry for CMS124v7 -->
           <entry>
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
@@ -5467,7 +5467,7 @@
               <!--Measure Reference and Results-->
               <reference typeCode="REFR">
                 <externalDocument classCode="DOC" moodCode="EVN">
-                  <id root="2.16.840.1.113883.4.738" extension="40280382-6258-7581-0162-92660f241111" />
+                  <id root="2.16.840.1.113883.4.738" extension="40280382-6258-7581-0162-92660f2414b9" />
                   <code code="57024-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Health Quality Measure Document" />
                   <text>Cervical Cancer Screening</text>
                 </externalDocument>
