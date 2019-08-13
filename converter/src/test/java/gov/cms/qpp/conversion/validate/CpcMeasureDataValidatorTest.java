@@ -25,7 +25,7 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 
 class CpcMeasureDataValidatorTest {
 
-	private static final String MEASURE_ID = "CMS122v6";
+	private static final String MEASURE_ID = "CMS122v7";
 	private static final String MISSING_SUPPLEMENTAL_CODES_FILE = "missingSupplementalCodeFile.xml";
 
 	@Test
