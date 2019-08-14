@@ -16,21 +16,6 @@
 		]
 	},
 	{
-		"eMeasureId": "CMS22v7",
-		"eMeasureUuid": "40280382-6258-7581-0162-9208ce991364",
-		"strata": [
-			{
-				"description": "Patients who were screened for future fall risk at least once within the measurement period",
-				"eMeasureUuids": {
-					"initialPopulationUuid": "6BB57058-1BA6-4CC8-82A0-36DDE72E01D3",
-					"denominatorUuid": "8586069F-F8C7-44C1-B3A6-1078F5F5936E",
-					"numeratorUuid": "726DED9F-9CBC-4FEE-B261-4AB16657126D",
-					"denominatorExclusionUuid": "794FFEE9-6FB6-4DF7-A723-9BABEDEA8E23"
-				}
-			}
-		]
-	},
-	{
 		"eMeasureId": "CMS50v7",
 		"eMeasureUuid": "40280382-6240-b6b9-0162-5467c36a0b71",
 		"strata": [
