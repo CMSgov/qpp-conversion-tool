@@ -22,7 +22,7 @@
 		</patientRole>
 	</recordTarget>
 	<author>
-		<time value="20170131061231"/>
+		<time value="20190131061231"/>
 		<assignedAuthor>
 			<id root="3d0a32f3-5164-4a6f-8922-de3badf83de4"/>
 			<assignedAuthoringDevice>
@@ -35,7 +35,7 @@
 		</assignedAuthor>
 	</author>
 	<author>
-		<time value="20170131114411"/>
+		<time value="20190131114411"/>
 		<assignedAuthor>
 			<id root="2.16.840.1.113883.4.6" extension="1234567893" assigningAuthorityName="NPI"/>
 			<assignedPerson>
@@ -84,8 +84,8 @@
 	<documentationOf typeCode="DOC">
 		<serviceEvent classCode="PCPR">
 			<effectiveTime>
-				<low value="20170101"/>
-				<high value="20171231"/>
+				<low value="20190101"/>
+				<high value="20191231"/>
 			</effectiveTime>
 			<performer typeCode="PRF">
 				<time>
@@ -641,13 +641,13 @@
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
 							<templateId root="2.16.840.1.113883.10.20.27.3.1" extension="2016-09-01"/>
 							<templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2016-11-01"/>
-							<id root="40280381-51f0-825b-0152-2273af5a150b"/>
+							<id root="40280382-6258-7581-0162-8cfbf64110c1"/>
 							<statusCode code="completed"/>
 							<!--Measure Reference and Results-->
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<id root="2.16.840.1.113883.4.738"
-										extension="40280382-5971-4eed-015a-4df98a314b40"/>
+										extension="40280382-6258-7581-0162-8cfbf64110c1"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
 										codeSystemName="LOINC"
 										displayName="Health Quality Measure Document"/>
@@ -667,7 +667,7 @@
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
 											<!-- The root contains the UUID for the Numerator population -->
-											<id root="F883CF79-13E1-40BD-BBB4-5E26AFAF2E24"/>
+											<id root="B0B86C82-753C-41B6-ABC0-C40605738B19"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
 												codeSystemName="ActCode"
 												displayName="Numerator"/>
@@ -688,7 +688,7 @@
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
 											<!-- The root contains the UUID for the Numerator population -->
-											<id root="0F2F49CB-BA85-4F5B-B4EE-F8A725174120"/>
+											<id root="8C4B62DB-A300-4FAC-ACE1-9DBADC125338"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
 												codeSystemName="ActCode"
 												displayName="Numerator"/>
@@ -727,7 +727,7 @@
 									<!--IPOP Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="AF9E3B00-9A22-46BB-9354-EC4AC32D2EA4"/>
+											<id root="D37F8791-745C-422B-AC54-AFE90EF73403"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -762,7 +762,7 @@
 									<!--DENOM Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="8B0F028C-2196-4984-A034-B969BD75D013"/>
+											<id root="FA3204A5-C7E7-4DCF-883C-E30E1EAF6B15"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -778,7 +778,7 @@
 									<value xsi:type="CD" code="DENEXCEP"
 										codeSystem="2.16.840.1.113883.5.1063"
 										codeSystemName="ObservationValue"/>
-									<!--DENEX Count-->
+									<!--DENEXCEP Count-->
 									<entryRelationship typeCode="SUBJ" inversionInd="true">
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
@@ -794,10 +794,10 @@
 												displayName="Count"/>
 										</observation>
 									</entryRelationship>
-									<!--DENEX Population ID from eMeasure-->
+									<!--DENEXCEP Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="88EF4FC4-B428-4FFA-8C42-552AC66765BB"/>
+											<id root="5C10D849-3AAF-4AB8-AC42-C41593EA4B41"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -832,7 +832,7 @@
 									<!--NUMER Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="F883CF79-13E1-40BD-BBB4-5E26AFAF2E24"/>
+											<id root="B0B86C82-753C-41B6-ABC0-C40605738B19"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -869,7 +869,7 @@
 									<!--IPOP Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="B9E2115F-5BA9-4884-9EBE-3E07254C7DFE"/>
+											<id root="FF8E828F-3079-422E-8A60-DC7E07DC04EB"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -904,7 +904,7 @@
 									<!--DENOM Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="DB77B19D-6CAF-43B6-B3CF-2E34000B1970"/>
+											<id root="87EBA461-3E66-45D9-9798-E0BD11ED7D3E"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -939,7 +939,7 @@
 									<!--DENEXCEP Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="7C4A3988-5F29-46BF-9C51-41EF60611C39"/>
+											<id root="F46DADC8-C8A8-4CDD-8599-07B771C60DD5"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -974,7 +974,7 @@
 									<!--NUMER Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="0F2F49CB-BA85-4F5B-B4EE-F8A725174120"/>
+											<id root="8C4B62DB-A300-4FAC-ACE1-9DBADC125338"/>
 										</externalObservation>
 									</reference>
 								</observation>
