@@ -1,13 +1,11 @@
 package gov.cms.qpp.conversion;
 
 import com.google.common.truth.Truth;
-import com.jayway.jsonpath.TypeRef;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.shadow.com.univocity.parsers.common.TextParsingException;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mockito.internal.debugging.Localized;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -33,7 +31,6 @@ import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.stubs.JennyDecoder;
 import gov.cms.qpp.conversion.stubs.TestDefaultValidator;
-import gov.cms.qpp.conversion.util.JsonHelper;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.test.helper.NioHelper;
 
@@ -240,7 +237,7 @@ public class ConverterTest {
 
 	@Test
 	public void testTooManyErrorsInQrdaIIIFile() {
-		LocalizedError expectedError = ErrorCode.TOO_MANY_ERRORS.format(782);
+		LocalizedError expectedError = ErrorCode.TOO_MANY_ERRORS.format(108);
 
 		Path path = Paths.get(TOO_MANY_ERRORS);
 		Converter converter = new Converter(new PathSource(path));
