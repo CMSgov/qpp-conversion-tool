@@ -45,12 +45,13 @@ class CpcPlusRoundTripTest {
 	@ParameterizedTest
 	@ValueSource(strings = { "entityId", "entityType", "measurementSets", "performanceYear" })
 	void hasAppropriateTopLevelAttributes(String value) {
-
+		System.out.println(json);
 		assertThat(json.get(value)).isNotNull();
 	}
 
 	@Test
 	void hasNoInAppropriateTopLevelAttributes() {
+		System.out.println(json);
 		assertThat(json.keySet()).containsExactly("entityId", "entityType", "measurementSets",
 			"performanceYear");
 	}

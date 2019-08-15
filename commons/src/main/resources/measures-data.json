@@ -4418,6 +4418,7 @@
 		},
 		"strata": [
 			{
+				"name": "Within14Days",
 				"description": "Patients who initiated treatment within 14 days of the diagnosis",
 				"eMeasureUuids": {
 					"initialPopulationUuid": "452021F9-5466-45A8-9528-0F92E70C95DD",
@@ -4431,6 +4432,7 @@
 				}
 			},
 			{
+				"name": "Within30Days",
 				"description": "Patients who initiated treatment and who had two or more additional services with an alcohol, opioid, or other drug abuse or dependence diagnosis within 30 days of the initiation visit",
 				"eMeasureUuids": {
 					"initialPopulationUuid": "C7127400-8034-45D1-8227-6C244349AB6E",
