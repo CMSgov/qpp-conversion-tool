@@ -109,7 +109,8 @@ public class Converter {
 			if (context.isDoValidation()) {
 				QrdaValidator validator = new QrdaValidator(context);
 				ValidationResult result = validator.validate(decoded);
-				errors.addAll(result.getErrors());
+				List<Detail> truncatedErrors = truncateTooManyErrors(result.getErrors());
+				errors.addAll(truncatedErrors);
 				warnings.addAll(result.getWarnings());
 			}
 
@@ -123,6 +124,17 @@ public class Converter {
 		}
 
 		return qpp;
+	}
+
+	private List<Detail> truncateTooManyErrors(List<Detail> errors) {
+		int sizeLimit = 100;
+		if (errors != null && errors.size() > sizeLimit) {
+			List<Detail> truncatedList = errors.subList(0, sizeLimit);
+			truncatedList.add(Detail.forErrorCode(
+				ErrorCode.TOO_MANY_ERRORS.format((errors.size()))));
+			return truncatedList;
+		}
+		return errors;
 	}
 
 	/**
