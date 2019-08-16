@@ -9,6 +9,8 @@ target/
 *.iml
 *.log
 .idea/
+.vscode/
+.factorypath
 *.swp
 qrdaToQppAssociations.txt
 
