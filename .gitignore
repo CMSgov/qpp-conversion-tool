@@ -2,6 +2,7 @@
 jacoco.exec
 *.orig
 target/
+bin/
 .settings/
 .scannerwork/
 .classpath
@@ -9,6 +10,8 @@ target/
 *.iml
 *.log
 .idea/
+.vscode/
+.factorypath
 *.swp
 qrdaToQppAssociations.txt
 
