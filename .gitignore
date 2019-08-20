@@ -2,6 +2,7 @@
 jacoco.exec
 *.orig
 target/
+bin/
 .settings/
 .scannerwork/
 .classpath
