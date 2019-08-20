@@ -31,6 +31,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	public static final String CPCPLUS_PROGRAM_NAME = "cpcPlus";
 	public static final String PRACTICE_ID = "practiceId";
 	public static final String PRACTICE_SITE_ADDR = "practiceSiteAddr";
+	public static final String CEHRT = "cehrt";
 	public static final String MIPS = "MIPS";
 	private static final String MIPS_GROUP = "MIPS_GROUP";
 	private static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
@@ -58,6 +59,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 		setProgramNameOnNode(element, thisNode);
 		setEntityIdOnNode(element, thisNode);
 		setPracticeSiteAddress(element, thisNode);
+		setCehrtOnNode(element, thisNode);
 		String entityType = thisNode.getValue(ENTITY_TYPE);
 		if (ENTITY_INDIVIDUAL.equals(entityType)) {
 			setNationalProviderIdOnNode(element, thisNode);
@@ -100,6 +102,21 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 			Consumer<Element> consumer = p ->
 					thisNode.putValue(PRACTICE_SITE_ADDR, p.getValue().trim(), false);
 			setOnNode(element, getXpath(PRACTICE_SITE_ADDR), consumer, Filters.element(), false);
+		}
+	}
+
+	/**
+	 * Looks up the CEHRT from the element if the program name is CPC+
+	 * {@code <id root="2.16.840.1.113883.3.2074.1" extension="0014ABC1D1EFG1H"/>}
+	 *
+	 * @param element Xml fragment being parsed.
+	 * @param thisNode The output internal representation of the document
+	 */
+	private void setCehrtOnNode(Element element, Node thisNode) {
+		if (Program.isCpc(thisNode)) {
+			Consumer<Attribute> consumer = cehrt ->
+				thisNode.putValue(CEHRT, cehrt.getValue(), false);
+			setOnNode(element, getXpath(CEHRT), consumer, Filters.attribute(), false);
 		}
 	}
 

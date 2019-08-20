@@ -163,7 +163,10 @@ public enum ErrorCode implements LocalizedError {
 			+ "are not a valid combination"),
 	MEASURE_SECTION_MISSING_MEASURE(81, "At least one measure is required in a measure section"),
 	TOO_MANY_ERRORS(82, "There are too many errors associated with this QRDA-III file. Showing 100 out of `(Error amount)` errors."
-		+ " Please fix the given errors and re-submit", true);
+		+ " Please fix the given errors and re-submit", true),
+	MISSING_CEHRT(83, "CPC+ submissions should contain a CEHRT."
+		+ " Please refer to the `(Submission year's)` IG for more details " + DocumentationReference.CEHRT
+	    + " regarding practice CEHRTs.", true),;
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));
