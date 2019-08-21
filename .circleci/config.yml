@@ -17,7 +17,7 @@ jobs:
   build:
     <<: *container_config
     environment:
-      MAVEN_OPTS: "-Xms5G -Xmx5G"
+      MAVEN_OPTS: "-Xms8G -Xmx8G"
     resource_class: xlarge
     steps:
       - attach_workspace:
