@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 
+import com.google.common.collect.Sets;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
@@ -18,6 +20,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -34,8 +37,9 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	private static final String SINGLE_PERFORMANCE_RATE = "singlePerformanceRate";
 	public static final String IS_END_TO_END_REPORTED = "isEndToEndReported";
 	private static final String TRUE = "true";
-	private static final String CMS347_MEASURE_ID = "438";
 	private static final String PERFORMANCE_NOT_MET = "performanceNotMet";
+
+	private static final Set MULTI_TO_SINGLE_PERF_RATE_MEASURE_ID = Sets.newHashSet("005", "008", "143", "438");
 
 	public QualityMeasureIdEncoder(Context context) {
 		super(context);
@@ -53,7 +57,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		MeasureConfig measureConfig = MeasureConfigHelper.getMeasureConfig(node);
 		String measureId = measureConfig.getMeasureId();
 		wrapper.put(MEASURE_ID, measureId);
-		if (CMS347_MEASURE_ID.equals(measureId)) {
+		if (MULTI_TO_SINGLE_PERF_RATE_MEASURE_ID.contains(measureId)) {
 			encodeAllSubPopulationSums(wrapper, node);
 		} else if (isASinglePerformanceRate(measureConfig)) {
 			encodeChildren(wrapper, node, measureConfig);
