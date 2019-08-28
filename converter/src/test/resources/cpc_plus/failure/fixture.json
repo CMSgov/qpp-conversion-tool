@@ -1,5 +1,5 @@
 {
-	"CPCPlus_CMS122v5IncUUID_SampleQRDA-III.xml": {
+	"CPCPlus_CMS122v7IncUUID_SampleQRDA-III.xml": {
 		"strict": false,
 		"errorData": [
 			{
@@ -9,107 +9,7 @@
 			}
 		]
 	},
-	"CPCPlus_CMS124v5IncUUID_SampleQRDA-III.xml": {
-		"strict": true,
-		"errorData": [
-			{
-				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
-				"occurrences": 1
-			}
-		]
-	},
-	"CPCPlus_CMS125v5IncUUID_SampleQRDA-III.xml": {
-		"strict": true,
-		"errorData": [
-			{
-				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
-				"occurrences": 1
-			}
-		]
-	},
-	"CPCPlus_CMS130v5IncUUID_SampleQRDA-III.xml": {
-		"strict": true,
-		"errorData": [
-			{
-				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
-				"occurrences": 1
-			}
-		]
-	},
-	"CPCPlus_CMS131v5IncUUID_SampleQRDA-III.xml": {
-		"strict": true,
-		"errorData": [
-			{
-				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
-				"occurrences": 1
-			}
-		]
-	},
-	"CPCPlus_CMS137v5IncUUID_SampleQRDA-III.xml": {
-		"strict": true,
-		"errorData": [
-			{
-				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
-				"occurrences": 1
-			}
-		]
-	},
-	"CPCPlus_CMS138v5IncUUID_SampleQRDA-III.xml": {
-		"strict": true,
-		"errorData": [
-			{
-				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
-				"occurrences": 1
-			}
-		]
-	},
-	"CPCPlus_CMS139v5IncUUID_SampleQRDA-III.xml": {
-		"strict": true,
-		"errorData": [
-			{
-				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
-				"occurrences": 1
-			}
-		]
-	},
-	"CPCPlus_CMS149v5IncUUID_SampleQRDA-III.xml": {
-		"strict": true,
-		"errorData": [
-			{
-				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
-				"occurrences": 1
-			}
-		]
-	},
-	"CPCPlus_CMS156v5IncUUID_SampleQRDA-III.xml": {
-		"strict": true,
-		"errorData": [
-			{
-				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{16}", "[0-9]{4}"],
-				"occurrences": 1
-			}
-		]
-	},
-	"CPCPlus_CMS159v5IncUUID_SampleQRDA-III.xml": {
-		"strict": true,
-		"errorData": [
-			{
-				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
-				"occurrences": 1
-			}
-		]
-	},
-	"CPCPlus_CMS165v5IncUUID_SampleQRDA-III.xml": {
+	"CPCPlus_CMS124v7IncUUID_SampleQRDA-III.xml": {
 		"strict": false,
 		"errorData": [
 			{
@@ -119,7 +19,7 @@
 			}
 		]
 	},
-	"CPCPlus_CMS166v6IncUUID_SampleQRDA-III.xml": {
+	"CPCPlus_CMS125v7IncUUID_SampleQRDA-III.xml": {
 		"strict": true,
 		"errorData": [
 			{
@@ -129,13 +29,103 @@
 			}
 		]
 	},
-	"CPCPlus_CMS50v5IncUUID_SampleQRDA-III.xml": {
+	"CPCPlus_CMS130v7IncUUID_SampleQRDA-III.xml": {
 		"strict": true,
 		"errorData": [
 			{
 				"errorCode": 6,
 				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS131v7IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS137v7IncUUID_SampleQRDA-III.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
+				"occurrences": 2
+			}
+		]
+	},
+	"CPCPlus_CMS138v7IncUUID_SampleQRDA-III.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS139v7IncUUID_SampleQRDA-III.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
+				"occurrences": 4
+			}
+		]
+	},
+	"CPCPlus_CMS149v7IncUUID_SampleQRDA-III.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS156v7IncUUID_SampleQRDA-III.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
+				"occurrences": 6
+			}
+		]
+	},
+	"CPCPlus_CMS159v7IncUUID_SampleQRDA-III.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS165v7IncUUID_SampleQRDA-III.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS50v7IncUUID_SampleQRDA-III.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
+				"occurrences": 2
 			}
 		]
 	},
@@ -180,7 +170,7 @@
 					"CMS\\d{2,3}v\\d{1}",
 					".*",
 					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
-				"occurrences": 1
+				"occurrences": 2
 			},
 			{
 				"errorCode": 37,
@@ -195,11 +185,6 @@
 			{
 				"errorCode": 33,
 				"subs": ["2.2"],
-				"occurrences": 1
-			},
-			{
-				"errorCode": 33,
-				"subs": ["String"],
 				"occurrences": 1
 			}
 		]
@@ -228,15 +213,6 @@
 		"errorData": [
 			{
 				"errorCode": 63,
-				"occurrences": 1
-			}
-		]
-	},
-	"CPCPlus_PracID_Not_Provided_SampleQRDA-III.xml": {
-		"strict": true,
-		"errorData": [
-			{
-				"errorCode": 35,
 				"occurrences": 1
 			}
 		]
@@ -363,16 +339,6 @@
 				"errorCode": 66,
 				"subs": [".*", ".*", ".*", "CMS\\d{2,3}v\\d{1}", "[A-Z]{3,10}"],
 				"occurrences": 14
-			}
-		]
-	},
-	"CPCPlus_WithQuality_149PerfRateOver1_SampleQRDA-III.xml": {
-		"strict": true,
-		"errorData": [
-			{
-				"errorCode": 33,
-				"subs": ["1.888889"],
-				"occurrences": 1
 			}
 		]
 	},
@@ -513,17 +479,7 @@
 		"errorData": [
 			{
 				"errorCode": 64,
-				"subs": [2, "outcome", "40280382-5abd-fa46-015b-49abb28d38b2,40280382-5abd-fa46-015b-4981e40b37e6"],
-				"occurrences": 1
-			}
-		]
-	},
-	"CPCPlus_IncNumofGroup2Measures_SampleQRDA-III.xml": {
-		"strict": false,
-		"errorData": [
-			{
-				"errorCode": 64,
-				"subs": [2, "outcome", "40280382-5abd-fa46-015b-49abb28d38b2,40280382-5abd-fa46-015b-4981e40b37e6"],
+				"subs": [2, "outcome", "40280382-6258-7581-0162-9249c8ab1447,40280382-6258-7581-0162-92d6e6db1680"],
 				"occurrences": 1
 			}
 		]
@@ -553,15 +509,15 @@
 			}
 		]
 	},
-	"CPCPlus_WithQuality_139_IncDenomExUUID_SampleQRDA-III.xml": {
+	"CPCPlus_WithQuality_139_IncDenomUUID_SampleQRDA-III.xml": {
 		"strict": false,
 		"errorData": [
 			{
 				"errorCode": 59,
 				"subs": [
-					"CMS139v6",
-					"DENEX",
-					"D97B59F6-89D4-4635-8F38-4C8369D1776E"
+					"CMS139v7",
+					"DENOM",
+					"8586069F-F8C7-44C1-B3A6-1078F5F5936E"
 				],
 				"occurrences": 1
 			}
@@ -573,9 +529,9 @@
 			{
 				"errorCode": 59,
 				"subs": [
-					"CMS149v6",
+					"CMS149v7",
 					"NUMER",
-					"9B6325F1-07B8-4B1C-AF92-4F4F1269C234"
+					"8C9729F4-4DB8-421C-960C-BEE98F624340"
 				],
 				"occurrences": 1
 			}]
@@ -590,7 +546,7 @@
 			{
 				"errorCode": 66,
 				"subs": [".*", ".*", ".*", "CMS\\d{2,3}v\\d{1}", "[A-Z]{3,10}"],
-				"occurrences": 16
+				"occurrences": 1
 			}
 		]
 	}

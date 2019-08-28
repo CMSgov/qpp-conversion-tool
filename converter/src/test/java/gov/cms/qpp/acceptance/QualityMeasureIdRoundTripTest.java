@@ -61,7 +61,7 @@ class QualityMeasureIdRoundTripTest {
 	}
 
 	@Test
-	void testMeasureCMS68v7PerformanceRateUuid() {
+	void testMeasureCMS68v8PerformanceRateUuid() {
 		Converter converter = new Converter(new PathSource(INVALID_PERFORMANCE_UUID_FILE));
 		List<Detail> details = new ArrayList<>();
 
@@ -72,9 +72,9 @@ class QualityMeasureIdRoundTripTest {
 			details.addAll(errors.getErrors().get(0).getDetails());
 		}
 
-		String measureId = "CMS68v7";
+		String measureId = "CMS68v8";
 		String correctId = MeasureConfigs.getConfigurationMap()
-			.get("40280382-5abd-fa46-015b-1afe205e2890").getSubPopulation().get(0).getNumeratorUuid();
+			.get("40280382-5fa6-fe85-0160-0ea3e0012376").getSubPopulation().get(0).getNumeratorUuid();
 
 		LocalizedError error = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(measureId,
 				PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID, correctId);
@@ -83,7 +83,7 @@ class QualityMeasureIdRoundTripTest {
 	}
 
 	@Test
-	void testMeasureCMS160v5PerformanceRateUuid() {
+	void testMeasureCMS138v7PerformanceRateUuid() {
 		Converter converter = new Converter(new PathSource(INVALID_PERFORMANCE_UUID_FILE));
 		List<Detail> details = new ArrayList<>();
 

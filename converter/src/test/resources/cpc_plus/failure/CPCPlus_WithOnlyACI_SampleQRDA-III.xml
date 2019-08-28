@@ -36,7 +36,7 @@
    </author>
    <!--Person Author Example-->
 	  <author>
-      <time value="20180311061231"/>
+      <time value="20190311061231"/>
       <assignedAuthor>
          <id root="2.16.840.1.113883.4.6"
              extension="2567891421"
@@ -112,7 +112,7 @@
          <effectiveTime>
             <low value="20170101"/>
             <high value="20171231"/>
-         </effectiveTime>	
+         </effectiveTime>
          <performer typeCode="PRF">
             <time>
                <low value="20170101"/>
@@ -125,7 +125,7 @@
                   <name>Good Health Clinic</name>
                </representedOrganization>
             </assignedEntity>
-         </performer>	
+         </performer>
          <performer typeCode="PRF">
             <time>
                <low value="20170101"/>
@@ -138,7 +138,7 @@
                   <name>Good Health Clinic</name>
                </representedOrganization>
             </assignedEntity>
-         </performer>	
+         </performer>
          <performer typeCode="PRF">
             <time>
                <low value="20170101"/>
@@ -151,7 +151,7 @@
                   <name>Good Health Clinic</name>
                </representedOrganization>
             </assignedEntity>
-         </performer>	
+         </performer>
          <performer typeCode="PRF">
             <time>
                <low value="20170101"/>
@@ -164,7 +164,7 @@
                   <name>Good Health Clinic</name>
                </representedOrganization>
             </assignedEntity>
-         </performer>	
+         </performer>
          <performer typeCode="PRF">
             <time>
                <low value="20170101"/>
@@ -197,10 +197,10 @@ CDA Body
 -->
 	  <component>
       <structuredBody>
-  
-      <!-- 
+
+      <!--
 	         ********************************************************
-	         Advancing Care Information Section
+	         Promoting Interoperability Section
 	         ********************************************************
 	         -->
 			<component>
@@ -465,14 +465,14 @@ CDA Body
 							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
 								displayName="Observation Parameters"/>
 							<effectiveTime>
-								<low value="20180101"/>
-								<high value="20181231"/>
+								<low value="20190101"/>
+								<high value="20191231"/>
 							</effectiveTime>
 						</act>
 					</entry>
 				</section>
 			</component>
-			
+
       </structuredBody>
    </component>
 </ClinicalDocument>

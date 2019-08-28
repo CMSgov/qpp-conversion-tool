@@ -45,7 +45,6 @@ class CpcPlusRoundTripTest {
 	@ParameterizedTest
 	@ValueSource(strings = { "entityId", "entityType", "measurementSets", "performanceYear" })
 	void hasAppropriateTopLevelAttributes(String value) {
-
 		assertThat(json.get(value)).isNotNull();
 	}
 

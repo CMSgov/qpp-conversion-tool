@@ -279,7 +279,7 @@ CDA Header
 							<!--Measure Reference and Results-->
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
-									<id root="2.16.840.1.113883.4.738" extension="40280382-5abd-fa46-015b-49abb28d38b2"/>
+									<id root="2.16.840.1.113883.4.738" extension="40280382-6258-7581-0162-92d6e6db1680"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 										  displayName="Health Quality Measure Document"/>
 									<text>Controlling High Blood Pressure</text>
@@ -778,7 +778,7 @@ CDA Header
 									<!--IPOP Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="5C206C23-4CF9-4390-9E76-0F243FE59DCF"/>
+											<id root="A096B729-ECCA-4C7A-9CA0-A601D8D70396"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -1246,7 +1246,7 @@ CDA Header
 									<!--DENOM Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="1D456B20-71F7-4477-BD23-D39600D5A095"/>
+											<id root="BA4CB92A-1635-4E1B-BC23-1ED7B967072A"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -1714,7 +1714,7 @@ CDA Header
 									<!--DENEX Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="9805BC7D-274C-4CCF-916A-B5BA34D62A31"/>
+											<id root="4A61F526-AFFA-465F-89C9-B2DB8E6ECEBC"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -2182,7 +2182,7 @@ CDA Header
 									<!--NUMER Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="709D84FA-637D-42CD-8934-43C3FBAD0979"/>
+											<id root="A815D9EA-5CE0-4AD8-A703-BC69D19E360B"/>
 										</externalObservation>
 									</reference>
 								</observation>
