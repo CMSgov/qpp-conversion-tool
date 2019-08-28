@@ -699,7 +699,7 @@ CDA Header
 					</text>
 
 					<!--Measure Entry for CMS165v7-->
-          			<entry>
+          <entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
 						  <templateId root="2.16.840.1.113883.10.20.24.3.98" />
 						  <templateId root="2.16.840.1.113883.10.20.27.3.1" extension="2016-09-01" />
@@ -2347,7 +2347,7 @@ CDA Header
 					</entry>
 
 					<!--Measure Entry for CMS122v7-->
-      				<entry>
+      		<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
 							<!-- Measure Reference Template -->
