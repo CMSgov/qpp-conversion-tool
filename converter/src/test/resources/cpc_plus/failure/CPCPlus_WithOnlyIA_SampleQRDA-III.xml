@@ -112,7 +112,7 @@
          <effectiveTime>
             <low value="20170101"/>
             <high value="20171231"/>
-         </effectiveTime>	
+         </effectiveTime>
          <performer typeCode="PRF">
             <time>
                <low value="20170101"/>
@@ -125,7 +125,7 @@
                   <name>Good Health Clinic</name>
                </representedOrganization>
             </assignedEntity>
-         </performer>	
+         </performer>
          <performer typeCode="PRF">
             <time>
                <low value="20170101"/>
@@ -138,7 +138,7 @@
                   <name>Good Health Clinic</name>
                </representedOrganization>
             </assignedEntity>
-         </performer>	
+         </performer>
          <performer typeCode="PRF">
             <time>
                <low value="20170101"/>
@@ -151,7 +151,7 @@
                   <name>Good Health Clinic</name>
                </representedOrganization>
             </assignedEntity>
-         </performer>	
+         </performer>
          <performer typeCode="PRF">
             <time>
                <low value="20170101"/>
@@ -164,7 +164,7 @@
                   <name>Good Health Clinic</name>
                </representedOrganization>
             </assignedEntity>
-         </performer>	
+         </performer>
          <performer typeCode="PRF">
             <time>
                <low value="20170101"/>
@@ -197,8 +197,8 @@ CDA Body
 -->
 	  <component>
       <structuredBody>
-  
-     		<!-- 
+
+     		<!--
 	         ********************************************************
 	         Improvement Activity Section
 	         ********************************************************
@@ -231,7 +231,7 @@ CDA Body
 									<td>Anticoagulant management improvements</td>
 									<td>IA_PM_2</td>
 									<td>Y</td>
-								</tr>								
+								</tr>
 							</tbody>
 						</table>
 					</text>
@@ -269,7 +269,7 @@ CDA Body
 							</component>
 						</organizer>
 					</entry>
-					<!-- improvement activity: IA_PM_2 -->					
+					<!-- improvement activity: IA_PM_2 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<!-- Implied template Measure Reference templateId -->
@@ -302,7 +302,7 @@ CDA Body
 								</observation>
 							</component>
 						</organizer>
-					</entry>					
+					</entry>
 					<!-- Performance period -->
 					<entry typeCode="DRIV">
 						<act classCode="ACT" moodCode="EVN">
@@ -312,14 +312,14 @@ CDA Body
 							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
 								displayName="Observation Parameters"/>
 							<effectiveTime>
-								<low value="20180101"/>
-								<high value="20181231"/>
+								<low value="20190101"/>
+								<high value="20191231"/>
 							</effectiveTime>
 						</act>
 					</entry>
 				</section>
 			</component>
-		
+
       </structuredBody>
    </component>
 </ClinicalDocument>
