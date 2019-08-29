@@ -5883,7 +5883,7 @@ CDA Header
 									</reference>
 								</observation>
 							</component>
-							<!--Wrong NUMER Population-->
+							<!--NUMER Population-->
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
@@ -5910,10 +5910,10 @@ CDA Header
 														displayName="Count"/>
 										</observation>
 									</entryRelationship>
-									<!--Wrong UUID: NUMER Population ID from eMeasure-->
+									<!--NUMER Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="41EF9FF5-7260-41D8-88E6-760F876WRONG"/>
+											<id root="41EF9FF5-7260-41D8-88E6-760F876C66FB"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -5990,7 +5990,7 @@ CDA Header
 									</reference>
 								</observation>
 							</component>
-							<!--Incorrect UUID for DENOM Population-->
+							<!--DENOM Population-->
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
@@ -6017,10 +6017,10 @@ CDA Header
 														displayName="Count"/>
 										</observation>
 									</entryRelationship>
-									<!--Incorrect UUID DENOM Population ID from eMeasure-->
+									<!--DENOM Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="89C9D1EC-FDAD-4982-9CE4-F144E8AWRONG"/>
+											<id root="89C9D1EC-FDAD-4982-9CE4-F144E8A85A53"/>
 										</externalObservation>
 									</reference>
 								</observation>

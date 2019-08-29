@@ -138,7 +138,7 @@ class QualityMeasureIdEncoderTest {
 	}
 
 	@Test
-	void testMeasure438EncodingEligiblePopulation() {
+	void testMeasureMultiToSingleEncodingEligiblePopulation() {
 		qualityMeasureId.putValue("measureId", "40280382-610b-e7a4-0161-9a6155603811");
 		executeInternalEncode();
 		JsonWrapper childValues = getChildValues();
@@ -148,7 +148,7 @@ class QualityMeasureIdEncoderTest {
 	}
 
 	@Test
-	void testMeasure438EncodingPerformanceMet() {
+	void testMultiToSingleEncodingPerformanceMet() {
 		qualityMeasureId.putValue("measureId", "40280382-610b-e7a4-0161-9a6155603811");
 		executeInternalEncode();
 		JsonWrapper childValues = getChildValues();
@@ -158,7 +158,7 @@ class QualityMeasureIdEncoderTest {
 	}
 
 	@Test
-	void testMeasure438EncodingEligiblePopulationExclusion() {
+	void testMeasureMultiToSingleEncodingEligiblePopulationExclusion() {
 		qualityMeasureId.putValue("measureId", "40280382-610b-e7a4-0161-9a6155603811");
 		executeInternalEncode();
 		JsonWrapper childValues = getChildValues();
@@ -168,7 +168,7 @@ class QualityMeasureIdEncoderTest {
 	}
 
 	@Test
-	void testMeasure438EncodingEligiblePopulationException() {
+	void testMeasureMultiToSingleEncodingEligiblePopulationException() {
 		qualityMeasureId.putValue("measureId", "40280382-610b-e7a4-0161-9a6155603811");
 		executeInternalEncode();
 		JsonWrapper childValues = getChildValues();
@@ -178,7 +178,7 @@ class QualityMeasureIdEncoderTest {
 	}
 
 	@Test
-	void testMeasure438EncodingPerformanceNotMet() {
+	void testMeasureMultiToSingleEncodingPerformanceNotMet() {
 		qualityMeasureId.putValue("measureId", "40280382-610b-e7a4-0161-9a6155603811");
 		executeInternalEncode();
 		JsonWrapper childValues = getChildValues();
