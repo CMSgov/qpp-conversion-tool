@@ -74,30 +74,10 @@ class CpcQualityMeasureSectionValidatorTest {
 	}
 
 	@Test
-	void missingGroupBmeasures() {
+	void missingGroupBmeasuresNoLongerFails() {
 		Node node = setupMeasures(groupAmeasures);
-		LocalizedError message = CpcGroupMinimum.OTHER_MEASURE.makeError(groupBmeasures);
 		List<Detail> details = validator.validateSingleNode(node).getErrors();
-		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(message);
-	}
-
-	@Test
-	void tooFewBmeasures() {
-		Node node = setupMeasures(groupAmeasures, new String[] {groupBmeasures[0]});
-		LocalizedError message = CpcGroupMinimum.OTHER_MEASURE.makeError(groupBmeasures);
-		List<Detail> details = validator.validateSingleNode(node).getErrors();
-		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(message);
-	}
-
-	@Test
-	void tooFewOverallmeasures() {
-		Node node = setupMeasures(groupAmeasures, new String[] {groupBmeasures[0], groupBmeasures[1]});
-		LocalizedError message = CpcGroupMinimum.makeOverallError(overallMeasures);
-		List<Detail> details = validator.validateSingleNode(node).getErrors();
-		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(message);
+		assertThat(details).isEmpty();
 	}
 
 	@Test
