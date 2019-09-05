@@ -77,9 +77,9 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 	 */
 	enum CpcGroupMinimum {
 		OUTCOME_MEASURE("Outcome_Measure", "outcome", 2),
-		OTHER_MEASURE("Other_Measure", "other", 7);
+		OTHER_MEASURE("Other_Measure", "other", 0);
 
-		private static final int NUMBER_OF_MEASURES_REQUIRED = 9;
+		private static final int NUMBER_OF_MEASURES_REQUIRED = 2;
 		private String mapName;
 		private String label;
 		private int minimum;
