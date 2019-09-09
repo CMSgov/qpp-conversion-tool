@@ -1,16 +1,16 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.model.Decoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Program;
-import gov.cms.qpp.conversion.model.TemplateId;
-
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
+
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.model.Decoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Program;
+import gov.cms.qpp.conversion.model.TemplateId;
 
 import java.util.Locale;
 import java.util.function.Consumer;
