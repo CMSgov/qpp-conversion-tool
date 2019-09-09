@@ -106,18 +106,16 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	}
 
 	/**
-	 * Looks up the CEHRT from the element if the program name is CPC+
+	 * Looks up the CEHRT from the element
 	 * {@code <id root="2.16.840.1.113883.3.2074.1" extension="0014ABC1D1EFG1H"/>}
 	 *
 	 * @param element Xml fragment being parsed.
 	 * @param thisNode The output internal representation of the document
 	 */
 	private void setCehrtOnNode(Element element, Node thisNode) {
-		if (Program.isCpc(thisNode)) {
-			Consumer<Attribute> consumer = cehrt ->
-				thisNode.putValue(CEHRT, cehrt.getValue(), false);
-			setOnNode(element, getXpath(CEHRT), consumer, Filters.attribute(), false);
-		}
+		Consumer<Attribute> consumer = cehrt ->
+			thisNode.putValue(CEHRT, cehrt.getValue(), false);
+		setOnNode(element, getXpath(CEHRT), consumer, Filters.attribute(), false);
 	}
 
 	/**

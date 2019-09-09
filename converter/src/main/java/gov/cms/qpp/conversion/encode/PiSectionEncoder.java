@@ -1,10 +1,12 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.correlation.model.Template;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
@@ -53,6 +55,10 @@ public class PiSectionEncoder extends QppOutputEncoder {
 	private void encodeTopLevelValues(JsonWrapper wrapper, Node node) {
 		wrapper.put("category", node.getValue("category"));
 		wrapper.put(SUBMISSION_METHOD, "electronicHealthRecord");
+		if (TemplateId.PI_SECTION == node.getType() || (TemplateId.MEASURE_SECTION_V2 == node.getType()
+				&& Program.isCpc(node.getParent()))) {
+			wrapper.put(ClinicalDocumentDecoder.CEHRT, node.getParent().getValue(ClinicalDocumentDecoder.CEHRT));
+		}
 	}
 
 	/**

@@ -14,8 +14,12 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mockito;
 
 import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -39,6 +43,9 @@ class PiSectionEncoderTest {
 	private Node piProportionDenominatorNode;
 	private Node numeratorValueNode;
 	private Node denominatorValueNode;
+	private Node clinicalDocumentNode;
+
+	@Captor ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
 
 	@BeforeEach
 	void createNode() {
@@ -63,7 +70,11 @@ class PiSectionEncoderTest {
 		reportingParametersNode.putValue(ReportingParametersActDecoder.PERFORMANCE_START,"20170101");
 		reportingParametersNode.putValue(ReportingParametersActDecoder.PERFORMANCE_END,"20171231");
 
-		piSectionNode = new Node(TemplateId.PI_SECTION);
+		clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.CEHRT, "xxxxxxxxxx12345");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS_PROGRAM_NAME);
+
+		piSectionNode = new Node(TemplateId.PI_SECTION, clinicalDocumentNode);
 		piSectionNode.putValue(CATEGORY, PI);
 		piSectionNode.addChildNode(piNumeratorDenominatorNode);
 		piSectionNode.addChildNode(reportingParametersNode);
@@ -106,6 +117,8 @@ class PiSectionEncoderTest {
 		piSectionNode.addChildNode(invalidAciNumeratorDenominatorNode);
 		piSectionNode.addChildNode(reportingParametersNode);
 
+		piSectionNode.setParent(clinicalDocumentNode);
+
 		PiSectionEncoder piSectionEncoder = new PiSectionEncoder(new Context());
 		piSectionEncoder.internalEncode(testWrapper, piSectionNode);
 
@@ -123,6 +136,7 @@ class PiSectionEncoderTest {
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		encoder.internalEncode(jsonWrapper, piSectionNode);
 
-		verify(encoder, never()).maintainContinuity(any(JsonWrapper.class), any(Node.class), anyString());
+		//verify that maintain continuity was not called for both reporting parameters
+		verify(encoder, Mockito.times(1)).maintainContinuity(any(JsonWrapper.class), any(Node.class), anyString());
 	}
 }
