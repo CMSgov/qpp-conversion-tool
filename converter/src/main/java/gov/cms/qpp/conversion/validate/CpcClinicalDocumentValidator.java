@@ -70,6 +70,9 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 					.childMinimum(ErrorCode.CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED,
 							1, TemplateId.MEASURE_SECTION_V2);
 
+			checkWarnings(node)
+				.valueIsNotEmpty(ErrorCode.MISSING_CEHRT.format(Context.REPORTING_YEAR), ClinicalDocumentDecoder.CEHRT);
+
 			validateApmEntityId(node);
 			validateApmNpiCombination(node);
 	}

@@ -110,4 +110,13 @@ public abstract class NodeValidator {
 	protected final Checker forceCheckErrors(Node node) {
 		return Checker.forceCheck(node, errors);
 	}
+
+	/**
+	 * Returns a checker for implementations of performValidation(Node)
+	 * @param node the node for the checker to visit
+	 * @return an instance of Checker for the node and the continuing collection of warnings.
+	 */
+	protected final Checker checkWarnings(Node node) {
+		return Checker.check(node, warnings);
+	}
 }
