@@ -40,6 +40,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	private static final String PERFORMANCE_NOT_MET = "performanceNotMet";
 
 	private static final Set MULTI_TO_SINGLE_PERF_RATE_MEASURE_ID = Sets.newHashSet("005", "008", "143", "438");
+	private static final Set SINGLE_PERF_STRATUM_MEASURES = Sets.newHashSet("379", "310", "370");
 
 	public QualityMeasureIdEncoder(Context context) {
 		super(context);
@@ -261,9 +262,14 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 				measureDataEncoder.encode(childWrapper, childNode);
 			}
 		}
-		if (isMultiRate) {
+		String measureId = measureConfig.getMeasureId();
+		if (isMultiRate || isAStratumSinglePerfRate(measureId)) {
 			this.encodeStratum(childWrapper, parentNode, measureConfig);
 		}
+	}
+
+	private boolean isAStratumSinglePerfRate(String measureId) {
+		return SINGLE_PERF_STRATUM_MEASURES.contains(measureId);
 	}
 
 	/**

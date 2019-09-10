@@ -4537,6 +4537,7 @@
 		"eMeasureUuid": "40280382-6258-7581-0162-97958ac818e6",
 		"strata": [
 			{
+				"name" : ">=1",
 				"description": "Women with at least one chlamydia test during the measurement period",
 				"eMeasureUuids": {
 					"initialPopulationUuid": "74AD1F30-A634-433F-A963-41A64ECA9826",
@@ -5932,6 +5933,7 @@
 		},
 		"strata": [
 			{
+				"name" : "12-17",
 				"description": "Adolescent patients 12 to 17 years of age and adult patients 18 years of age and older who achieved remission at twelve months as demonstrated by a twelve month (+/- 60 days) PHQ-9 or PHQ-9M score of less than five",
 				"eMeasureUuids": {
 					"initialPopulationUuid": "28EF715E-00EF-495A-B529-9FEF83EDA5FF",
@@ -6330,6 +6332,7 @@
 		"eMeasureUuid": "40280382-6258-7581-0162-92fea60316ee",
 		"strata": [
 			{
+				"name" : "fva",
 				"description": "Children who receive a fluoride varnish application",
 				"eMeasureUuids": {
 					"initialPopulationUuid": "4DAE1F06-ACAC-4FE8-B2DB-6819D5106076",
