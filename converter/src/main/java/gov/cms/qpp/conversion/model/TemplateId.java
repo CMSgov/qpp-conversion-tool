@@ -1,13 +1,13 @@
 package gov.cms.qpp.conversion.model;
 
+import org.apache.commons.lang3.StringUtils;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.util.EnvironmentHelper;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * An enumeration of known templates IDs.

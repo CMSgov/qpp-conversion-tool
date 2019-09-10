@@ -58,7 +58,8 @@ class SingularAttributeTest{
 						SupplementalDataEthnicityDecoder.SUPPLEMENTAL_DATA_CODE,
 						SupplementalDataPayerDecoder.SUPPLEMENTAL_DATA_PAYER_CODE,
 						//stratum is not currently mapped
-						"stratum")
+						"stratum",
+						"cehrt")
 		);
 
 		corrMap.keySet().forEach(key -> {
@@ -78,7 +79,7 @@ class SingularAttributeTest{
 	@Test
 	void blanketDoubleUp() {
 		assertWithMessage("failed duplication scenarios should equal the inclusion count")
-				.that(blanketCheck(false))
+ 				.that(blanketCheck(false))
 				.isEqualTo(inclusionCount);
 	}
 

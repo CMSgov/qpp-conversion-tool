@@ -1,16 +1,16 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.model.Decoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Program;
-import gov.cms.qpp.conversion.model.TemplateId;
-
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
+
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.model.Decoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Program;
+import gov.cms.qpp.conversion.model.TemplateId;
 
 import java.util.Locale;
 import java.util.function.Consumer;
@@ -31,6 +31,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	public static final String CPCPLUS_PROGRAM_NAME = "cpcPlus";
 	public static final String PRACTICE_ID = "practiceId";
 	public static final String PRACTICE_SITE_ADDR = "practiceSiteAddr";
+	public static final String CEHRT = "cehrt";
 	public static final String MIPS = "MIPS";
 	private static final String MIPS_GROUP = "MIPS_GROUP";
 	private static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
@@ -58,6 +59,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 		setProgramNameOnNode(element, thisNode);
 		setEntityIdOnNode(element, thisNode);
 		setPracticeSiteAddress(element, thisNode);
+		setCehrtOnNode(element, thisNode);
 		String entityType = thisNode.getValue(ENTITY_TYPE);
 		if (ENTITY_INDIVIDUAL.equals(entityType)) {
 			setNationalProviderIdOnNode(element, thisNode);
@@ -101,6 +103,19 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 					thisNode.putValue(PRACTICE_SITE_ADDR, p.getValue().trim(), false);
 			setOnNode(element, getXpath(PRACTICE_SITE_ADDR), consumer, Filters.element(), false);
 		}
+	}
+
+	/**
+	 * Looks up the CEHRT from the element
+	 * {@code <id root="2.16.840.1.113883.3.2074.1" extension="0014ABC1D1EFG1H"/>}
+	 *
+	 * @param element Xml fragment being parsed.
+	 * @param thisNode The output internal representation of the document
+	 */
+	private void setCehrtOnNode(Element element, Node thisNode) {
+		Consumer<Attribute> consumer = cehrt ->
+			thisNode.putValue(CEHRT, cehrt.getValue(), false);
+		setOnNode(element, getXpath(CEHRT), consumer, Filters.attribute(), false);
 	}
 
 	/**

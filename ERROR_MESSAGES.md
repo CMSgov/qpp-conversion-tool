@@ -70,3 +70,4 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 80 : CT - The given National Provider (NPI) Identifier and Alternative Payment Model (APM) are not a valid combination
 * 81 : CT - At least one measure is required in a measure section
 * 82 : CT - There are too many errors associated with this QRDA-III file. Showing 100 out of `(Error amount)` errors. Please fix the given errors and re-submit
+* 83 : CT - CPC+ submissions should contain a CEHRT. Please refer to the `(Submission year's)` IG for more details https://ecqi.healthit.gov/system/files/2018_CMS_QRDA_III_Eligible_Clinicians_and_EP_IG_v2_508.pdf#page=15 regarding practice CEHRTs.

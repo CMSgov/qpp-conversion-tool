@@ -240,7 +240,7 @@ class ClinicalDocumentDecoderTest {
 	@Test
 	void decodeCpcPlusEntityIdTest() {
 		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
-		clinicalDocument.addContent( prepareParticipant( clinicalDocument.getNamespace()) );
+		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace()));
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
