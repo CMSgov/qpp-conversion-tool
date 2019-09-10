@@ -88,21 +88,20 @@ public class ValidationServiceImpl implements ValidationService {
 			return;
 		}
 
-		conversionReport.getEncodedWithMetadata().stream().forEach(wrapper -> {
-			ResponseEntity<String> validationResponse = callValidationEndpoint(validationUrl, wrapper.copyWithoutMetadata());
+		JsonWrapper wrapper = conversionReport.getEncodedWithMetadata();
+		ResponseEntity<String> validationResponse = callValidationEndpoint(validationUrl, wrapper.copyWithoutMetadata());
 
-			if (HttpStatus.UNPROCESSABLE_ENTITY == validationResponse.getStatusCode()) {
+		if (HttpStatus.UNPROCESSABLE_ENTITY == validationResponse.getStatusCode()) {
 
-				API_LOG.warn("Failed QPP validation");
+			API_LOG.warn("Failed QPP validation");
 
-				AllErrors convertedErrors = convertQppValidationErrorsToQrda(validationResponse.getBody(), wrapper);
+			AllErrors convertedErrors = convertQppValidationErrorsToQrda(validationResponse.getBody(), wrapper);
 
-				conversionReport.setRawValidationDetails(validationResponse.getBody());
-				conversionReport.setReportDetails(convertedErrors);
+			conversionReport.setRawValidationDetails(validationResponse.getBody());
+			conversionReport.setReportDetails(convertedErrors);
 
-				throw new QppValidationException("Converted QPP failed validation", null, conversionReport);
-			}
-		});
+			throw new QppValidationException("Converted QPP failed validation", null, conversionReport);
+		}
 	}
 
 	/**
