@@ -26,6 +26,8 @@ class ClinicalDocumentDecoderTest {
 	private static final String ENTITY_ID_VALUE = "AR000000";
 	private static String xmlFragment;
 	private Node clinicalDocument;
+	private static final String TEST_TIN = "123456789";
+	private static final String TEST_NPI = "2567891421";
 
 	@BeforeAll
 	static void init() throws IOException {
@@ -56,13 +58,13 @@ class ClinicalDocumentDecoderTest {
 	@Test
 	void testRootNationalProviderIdentifier() {
 		assertThat(clinicalDocument.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
-				.isEqualTo("2567891421");
+				.isEqualTo(TEST_NPI);
 	}
 
 	@Test
 	void testRootTaxpayerIdentificationNumber() {
 		assertThat(clinicalDocument.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
-				.isEqualTo("123456789");
+				.isEqualTo(TEST_TIN);
 	}
 
 	@Test
@@ -261,6 +263,30 @@ class ClinicalDocumentDecoderTest {
 		assertWithMessage("Clinical Document contains the Entity Id")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR))
 				.isEqualTo("testing123");
+	}
+
+	@Test
+	void decodeCpcTinTest() {
+		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
+		clinicalDocument.addContent( prepareParticipant( clinicalDocument.getNamespace()) );
+		Node testParentNode = new Node();
+		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
+		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
+		objectUnderTest.decode(clinicalDocument, testParentNode);
+		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
+			.isEqualTo(TEST_TIN);
+	}
+
+	@Test
+	void decodeCpcNpiTest() {
+		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
+		clinicalDocument.addContent( prepareParticipant( clinicalDocument.getNamespace()) );
+		Node testParentNode = new Node();
+		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
+		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
+		objectUnderTest.decode(clinicalDocument, testParentNode);
+		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+			.isEqualTo(TEST_NPI);
 	}
 
 	@Test
