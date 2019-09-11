@@ -1,11 +1,5 @@
 package gov.cms.qpp.conversion.validate;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
-
-import java.time.LocalDate;
-import java.util.List;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,6 +16,12 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 class CpcClinicalDocumentValidatorTest {
 
@@ -162,6 +162,28 @@ class CpcClinicalDocumentValidatorTest {
 		assertThat(errors)
 			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 			.containsExactly(ErrorCode.CPC_PLUS_SUBMISSION_ENDED.format(formattedDate, expected));
+	}
+
+	@Test
+	void testCpcPlusMissingTin() {
+		Node clinicalDocumentNode = createCpcPlusClinicalDocument();
+		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER);
+		List<Detail> errors = cpcValidator.validateSingleNode(clinicalDocumentNode).getErrors();
+
+		assertWithMessage("Must validate with the correct error")
+			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ErrorCode.CPC_PLUS_TIN_REQUIRED);
+	}
+
+	@Test
+	void testCpcPlusMissingNpi() {
+		Node clinicalDocumentNode = createCpcPlusClinicalDocument();
+		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER);
+		List<Detail> errors = cpcValidator.validateSingleNode(clinicalDocumentNode).getErrors();
+
+		assertWithMessage("Must validate with the correct error")
+			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ErrorCode.CPC_PLUS_NPI_REQUIRED);
 	}
 
 	private Node createValidCpcPlusClinicalDocument() {
