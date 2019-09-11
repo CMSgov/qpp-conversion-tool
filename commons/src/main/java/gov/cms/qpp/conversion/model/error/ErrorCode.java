@@ -166,7 +166,9 @@ public enum ErrorCode implements LocalizedError {
 		+ " Please fix the given errors and re-submit", true),
 	MISSING_CEHRT(83, "CPC+ submissions should contain a CEHRT."
 		+ " Please refer to the `(Submission year's)` IG for more details " + DocumentationReference.CEHRT
-	    + " regarding practice CEHRTs.", true),;
+	    + " regarding practice CEHRTs.", true),
+	CPC_PLUS_TIN_REQUIRED(84, "CPC+ QRDA-III Submissions require at least one TIN to be present."),
+	CPC_PLUS_NPI_REQUIRED(85, "CPC+ QRDA-III Submissions require at least one NPI to be present.");
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));
