@@ -78,21 +78,21 @@ class ClinicalDocumentDecoderTest {
 	void testAciPea1MeasureId() {
 		Node aciSectionNode = clinicalDocument.getChildNodes().get(0);
 		assertThat(aciSectionNode.getChildNodes().get(0).getValue("measureId"))
-				.isEqualTo("ACI-PEA-1");
+				.isEqualTo("PI-PEA-1");
 	}
 
 	@Test
 	void testAciEp1MeasureId() {
 		Node aciSectionNode = clinicalDocument.getChildNodes().get(0);
 		assertThat(aciSectionNode.getChildNodes().get(1).getValue("measureId"))
-				.isEqualTo("ACI_EP_1");
+				.isEqualTo("PI_EP_1");
 	}
 
 	@Test
 	void testAciCctpe3MeasureId() {
 		Node aciSectionNode = clinicalDocument.getChildNodes().get(0);
 		assertThat(aciSectionNode.getChildNodes().get(2).getValue("measureId"))
-				.isEqualTo("ACI_CCTPE_3");
+				.isEqualTo("PI_CCTPE_3");
 	}
 
 	@Test

@@ -4,7 +4,7 @@
   <realmCode code="US" />
   <typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040" />
   <templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01" />
-  <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2017-07-01" />
+  <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2018-05-01"/>
   <id root="26a42253-99f5-48e7-9274-b467c6c7f623" />
   <code code="55184-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Quality Reporting Document Architecture Calculated Summary Report" />
   <title>2017 Eligible Clinicians (EC) and Eligible Professionals (EP) Sample QRDA-III</title>
@@ -156,7 +156,7 @@
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.14" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2018-05-01"/>
                   <templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01" />
                   <code code="72510-1" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Performance Rate" />
                   <statusCode code="completed" />
@@ -176,7 +176,7 @@
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="IPOP" codeSystem="2.16.840.1.113883.5.1063" codeSystemName="ObservationValue" />
@@ -395,7 +395,7 @@
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="95945202-241B-11E5-1027-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -422,7 +422,7 @@
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="95945203-241B-11E5-1027-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -449,7 +449,7 @@
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="95945204-241B-11E5-1027-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -476,7 +476,7 @@
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="95945205-241B-11E5-1027-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -511,7 +511,7 @@
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="DENEXCEP" codeSystem="2.16.840.1.113883.5.1063" codeSystemName="ObservationValue" />
@@ -730,7 +730,7 @@
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="9594520E-241B-11E5-1027-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -757,7 +757,7 @@
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="9594520F-241B-11E5-1027-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -784,7 +784,7 @@
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="95945210-241B-11E5-1027-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -811,7 +811,7 @@
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="95945211-241B-11E5-1027-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -846,7 +846,7 @@
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="DENOM" codeSystem="2.16.840.1.113883.5.1063" codeSystemName="ObservationValue" />
@@ -1065,7 +1065,7 @@
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="9594521A-241B-11E5-1027-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -1092,7 +1092,7 @@
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="9594521B-241B-11E5-1027-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -1119,7 +1119,7 @@
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="9594521C-241B-11E5-1027-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -1146,7 +1146,7 @@
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="9594521D-241B-11E5-1027-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -1181,7 +1181,7 @@
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="NUMER" codeSystem="2.16.840.1.113883.5.1063" codeSystemName="ObservationValue" />
@@ -1400,7 +1400,7 @@
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="95945226-241B-11E5-1027-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -1427,7 +1427,7 @@
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="95945227-241B-11E5-1027-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -1454,7 +1454,7 @@
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="95945228-241B-11E5-1027-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -1481,7 +1481,7 @@
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="95945229-241B-11E5-1027-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -1536,7 +1536,7 @@
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01" />
                   <templateId root="2.16.840.1.113883.10.20.27.3.14" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2018-05-01"/>
                   <code code="72510-1" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Performance Rate" />
                   <statusCode code="completed" />
                   <value xsi:type="REAL" value=".888889" />
@@ -1552,7 +1552,7 @@
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="IPOP" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -1780,7 +1780,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68370-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -1861,7 +1861,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68371-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -1890,7 +1890,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68372-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -1919,7 +1919,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68373-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -1955,7 +1955,7 @@
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="DENOM" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -2183,7 +2183,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6837C-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -2264,7 +2264,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6837D-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -2293,7 +2293,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6837E-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -2322,7 +2322,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6837F-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -2358,7 +2358,7 @@
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="DENEXCEP" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -2638,7 +2638,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68388-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -2667,7 +2667,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68389-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -2696,7 +2696,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6838A-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -2725,7 +2725,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6838B-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -2761,7 +2761,7 @@
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -3041,7 +3041,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68394-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -3070,7 +3070,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68395-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -3099,7 +3099,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68396-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -3128,7 +3128,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68397-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -3166,7 +3166,7 @@
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01" />
                   <templateId root="2.16.840.1.113883.10.20.27.3.14" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2018-05-01"/>
                   <code code="72510-1" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Performance Rate" />
                   <statusCode code="completed" />
                   <value xsi:type="REAL" value=".888889" />
@@ -3182,7 +3182,7 @@
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="IPOP" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -3410,7 +3410,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68370-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -3491,7 +3491,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68371-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -3520,7 +3520,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68372-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -3549,7 +3549,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68373-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -3585,7 +3585,7 @@
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="DENOM" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -3813,7 +3813,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6837C-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -3894,7 +3894,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6837D-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -3923,7 +3923,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6837E-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -3952,7 +3952,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6837F-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -3988,7 +3988,7 @@
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="DENEXCEP" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -4268,7 +4268,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68388-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -4297,7 +4297,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68389-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -4326,7 +4326,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6838A-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -4355,7 +4355,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6838B-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -4391,7 +4391,7 @@
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -4671,7 +4671,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68394-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -4700,7 +4700,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68395-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -4729,7 +4729,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68396-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -4758,7 +4758,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68397-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -4796,7 +4796,7 @@
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01" />
                   <templateId root="2.16.840.1.113883.10.20.27.3.14" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2018-05-01"/>
                   <code code="72510-1" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Performance Rate" />
                   <statusCode code="completed" />
                   <value xsi:type="REAL" value=".888889" />
@@ -4812,7 +4812,7 @@
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="IPOP" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -5040,7 +5040,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68370-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -5121,7 +5121,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68371-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -5150,7 +5150,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68372-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -5179,7 +5179,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68373-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -5215,7 +5215,7 @@
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="DENOM" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -5443,7 +5443,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6837C-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -5524,7 +5524,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6837D-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -5553,7 +5553,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6837E-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -5582,7 +5582,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6837F-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -5618,7 +5618,7 @@
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="DENEXCEP" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -5898,7 +5898,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68388-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -5927,7 +5927,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68389-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -5956,7 +5956,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6838A-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -5985,7 +5985,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6838B-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -6021,7 +6021,7 @@
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -6301,7 +6301,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68394-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -6330,7 +6330,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68395-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -6359,7 +6359,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68396-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -6388,7 +6388,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68397-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
