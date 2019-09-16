@@ -49,8 +49,8 @@ Summary of the main changes:
 -->
 
 <ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-				  xmlns:voc="urn:hl7-org:v3/voc"
-				  xsi:schemaLocation="urn:hl7-org:v3 ../CDA_Schema_Files/infrastructure/cda/CDA_SDTC.xsd" xmlns="urn:hl7-org:v3">
+				  xsi:schemaLocation="urn:hl7-org:v3 ../CDA_Schema_Files/infrastructure/cda/CDA_SDTC.xsd"
+				  xmlns="urn:hl7-org:v3" xmlns:voc="urn:hl7-org:v3/voc">
 	<!--
 ********************************************************
 CDA Header
@@ -132,6 +132,7 @@ CDA Header
 			<id root="2.16.840.1.113883.3.249.5.1"
 				extension="AR000000"
 				assigningAuthorityName="CMS-CMMI"/>
+			<id root="2.16.840.1.113883.3.2074.1" extension="0014ABC1D1EFG1H"/>
 			<code code="394730007"
 				  displayName="healthcare related organization"
 				  codeSystem="2.16.840.1.113883.6.96"
@@ -197,7 +198,665 @@ CDA Header
 					<code code="55186-1" codeSystem="2.16.840.1.113883.6.1"
 						  displayName="measure section"/>
 					<title>Measure Section</title>
+					<text>
+						<!--CMS165v5/NQF0018: Controlling High Blood Pressure -->
+						<table border="1" width="100%">
+							<thead>
+								<tr>
+									<th>eMeasure Title</th>
+									<th>Version neutral identifier</th>
+									<th>Version specific identifier</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Controlling High Blood Pressure</td>
+									<td>abdc37cc-bac6-4156-9b91-d1be2c8b7268</td>
+									<td>40280381-51f0-825b-0152-22b98cff181a</td>
+								</tr>
+							</tbody>
+						</table>
+						<list>
+							<item>
+								<content styleCode="Bold">Performance Rate</content>:0.842105
+							</item>
+							<item>
+								<content styleCode="Bold">Initial Population</content>:1000
+								<list>
+									<item>
+										<content styleCode="Bold">Gender - Male</content>400
+									</item>
+									<item>
+										<content styleCode="Bold">Gender - Female</content>600
+									</item>
+									<item>
+										<content styleCode="Bold">Ethnicity - Not Hispanic or Latino</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Ethnicity - Hispanic or Latino</content>650
+									</item>
+									<item>
+										<content styleCode="Bold">Race - Black or African American</content>300
+									</item>
+									<item>
+										<content styleCode="Bold">Race - White</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Race - Asian</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Race - American Indian or Alaska
+											Native</content>0
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Medicare</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Medicaid</content>250
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Private Health Insurance</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Other</content>50
+									</item>
+								</list>
+							</item>
+							<item>
+								<content styleCode="Bold">Denominator Exclusions</content>:50
+								<list>
+									<item>
+										<content styleCode="Bold">Gender - Male</content>30
+									</item>
+									<item>
+										<content styleCode="Bold">Gender - Female</content>20
+									</item>
+									<item>
+										<content styleCode="Bold">Ethnicity - Not Hispanic or Latino</content>40
+									</item>
+									<item>
+										<content styleCode="Bold">Ethnicity - Hispanic or Latino</content>10
+									</item>
+									<item>
+										<content styleCode="Bold">Race - Black or African American</content>10
+									</item>
+									<item>
+										<content styleCode="Bold">Race - White</content>20
+									</item>
+									<item>
+										<content styleCode="Bold">Race - Asian</content>20
+									</item>
+									<item>
+										<content styleCode="Bold">Race - American Indian or Alaska Native</content>0
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Medicare</content>15
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Medicaid</content>10
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Private Health Insurance</content>15
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Other</content>10
+									</item>
+								</list>
+							</item>
+							<item>
+								<content styleCode="Bold">Denominator</content>:1000
+								<list>
+									<item>
+										<content styleCode="Bold">Gender - Male</content>400
+									</item>
+									<item>
+										<content styleCode="Bold">Gender -
+											Female</content>600
+									</item>
+									<item>
+										<content styleCode="Bold">Ethnicity - Not Hispanic or
+											Latino</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Ethnicity - Hispanic or
+											Latino</content>650
+									</item>
+									<item>
+										<content styleCode="Bold">Race - Black or African
+											American</content>300
+									</item>
+									<item>
+										<content styleCode="Bold">Race - White</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Race - Asian</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Race - American Indian or Alaska
+											Native</content>0
+									</item>
+									<item>
+										<content styleCode="Bold">Payer -
+											Medicare</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Payer -
+											Medicaid</content>250
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Private Health
+											Insurance</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Other</content>50
+									</item>
+								</list>
+							</item>
+							<item>
+								<content styleCode="Bold">Numerator</content>:800
+								<list>
+									<item>
+										<content styleCode="Bold">Gender - Male</content>300
+									</item>
+									<item>
+										<content styleCode="Bold">Gender -
+											Female</content>500
+									</item>
+									<item>
+										<content styleCode="Bold">Ethnicity - Not Hispanic or
+											Latino</content>250
+									</item>
+									<item>
+										<content styleCode="Bold">Ethnicity - Hispanic or
+											Latino</content>550
+									</item>
+									<item>
+										<content styleCode="Bold">Race - Black or African
+											American</content>250
+									</item>
+									<item>
+										<content styleCode="Bold">Race - White</content>300
+									</item>
+									<item>
+										<content styleCode="Bold">Race - Asian</content>250
+									</item>
+									<item>
+										<content styleCode="Bold">Race - American Indian or Alaska
+											Native</content>0
+									</item>
+									<item>
+										<content styleCode="Bold">Payer -
+											Medicare</content>300
+									</item>
+									<item>
+										<content styleCode="Bold">Payer -
+											Medicaid</content>200
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Private Health
+											Insurance</content>250
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Other</content>50
+									</item>
+								</list>
+							</item>
+						</list>
 
+						<!-- CMS122v5/NQF0059: Diabetes: Hemoglobin A1c (HbA1c) Poor Control (> 9%)-->
+						<table border="1" width="100%">
+							<thead>
+								<tr>
+									<th>eMeasure Title</th>
+									<th>Version neutral identifier</th>
+									<th>Version specific identifier</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Diabetes: Hemoglobin A1c (HbA1c) Poor Control (> 9%)</td>
+									<td>f2986519-5a4e-4149-a8f2-af0a1dc7f6bc</td>
+									<td>40280381-51f0-825b-0152-229afff616ee</td>
+								</tr>
+							</tbody>
+						</table>
+						<list>
+							<item>
+								<content styleCode="Bold">Performance Rate</content>0.947368
+							</item>
+							<item>
+								<content styleCode="Bold">Initial Population</content>:950
+								<list>
+									<item>
+										<content styleCode="Bold">Gender - Male</content>400
+									</item>
+									<item>
+										<content styleCode="Bold">Gender -
+											Female</content>550
+									</item>
+									<item>
+										<content styleCode="Bold">Ethnicity - Not Hispanic or
+											Latino</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Ethnicity - Hispanic or
+											Latino</content>600
+									</item>
+									<item>
+										<content styleCode="Bold">Race - Black or African
+											American</content>300
+									</item>
+									<item>
+										<content styleCode="Bold">Race - White</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Race - Asian</content>300
+									</item>
+									<item>
+										<content styleCode="Bold">Race - American Indian or Alaska
+											Native</content>0
+									</item>
+									<item>
+										<content styleCode="Bold">Payer -
+											Medicare</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Payer -
+											Medicaid</content>250
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Private Health
+											Insurance</content>300
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Other</content>50
+									</item>
+								</list>
+							</item>
+							<item>
+								<content styleCode="Bold">Denominator</content>:950
+								<list>
+									<item>
+										<content styleCode="Bold">Gender - Male</content>400
+									</item>
+									<item>
+										<content styleCode="Bold">Gender -
+											Female</content>550
+									</item>
+									<item>
+										<content styleCode="Bold">Ethnicity - Not Hispanic or
+											Latino</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Ethnicity - Hispanic or
+											Latino</content>600
+									</item>
+									<item>
+										<content styleCode="Bold">Race - Black or African
+											American</content>300
+									</item>
+									<item>
+										<content styleCode="Bold">Race - White</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Race - Asian</content>300
+									</item>
+									<item>
+										<content styleCode="Bold">Race - American Indian or Alaska
+											Native</content>0
+									</item>
+									<item>
+										<content styleCode="Bold">Payer -
+											Medicare</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Payer -
+											Medicaid</content>250
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Private Health
+											Insurance</content>300
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Other</content>50
+									</item>
+								</list>
+							</item>
+							<item>
+								<content styleCode="Bold">Numerator</content>:900
+								<list>
+									<item>
+										<content styleCode="Bold">Gender - Male</content>400
+									</item>
+									<item>
+										<content styleCode="Bold">Gender -
+											Female</content>500
+									</item>
+									<item>
+										<content styleCode="Bold">Ethnicity - Not Hispanic or
+											Latino</content>550
+									</item>
+									<item>
+										<content styleCode="Bold">Ethnicity - Hispanic or
+											Latino</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Race - Black or African
+											American</content>250
+									</item>
+									<item>
+										<content styleCode="Bold">Race - White</content>598
+									</item>
+									<item>
+										<content styleCode="Bold">Race - Asian</content>50
+									</item>
+									<item>
+										<content styleCode="Bold">Race - American Indian or Alaska
+											Native</content>2
+									</item>
+									<item>
+										<content styleCode="Bold">Payer -
+											Medicare</content>300
+									</item>
+									<item>
+										<content styleCode="Bold">Payer -
+											Medicaid</content>200
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Private Health
+											Insurance</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Other</content>50
+									</item>
+								</list>
+							</item>
+						</list>
+
+						<!-- CMS68v6/NQF0419: Documentation of Current Medications in the Medical Record -->
+						<table border="1" width="100%">
+							<thead>
+								<tr>
+									<th>eMeasure Title</th>
+									<th>Version neutral identifier</th>
+									<th>Version specific identifier</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Documentation of Current Medications in the Medical Record</td>
+									<td>9a032d9c-3d9b-11e1-8634-00237d5bf174</td>
+									<td>40280381-52fc-3a32-0153-3d64af97147b</td>
+								</tr>
+							</tbody>
+						</table>
+						<list>
+							<item>
+								<content styleCode="Bold">Performance Rate</content>0.816327
+							</item>
+							<item>
+								<content styleCode="Bold">Initial Population</content>:1000
+								<list>
+									<item>
+										<content styleCode="Bold">Gender - Male</content>400
+									</item>
+									<item>
+										<content styleCode="Bold">Gender -
+											Female</content>600
+									</item>
+									<item>
+										<content styleCode="Bold">Ethnicity - Not Hispanic or
+											Latino</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Ethnicity - Hispanic or
+											Latino</content>650
+									</item>
+									<item>
+										<content styleCode="Bold">Race - Black or African
+											American</content>300
+									</item>
+									<item>
+										<content styleCode="Bold">Race - White</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Race - Asian</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Race - American Indian or Alaska
+											Native</content>0
+									</item>
+									<item>
+										<content styleCode="Bold">Payer -
+											Medicare</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Payer -
+											Medicaid</content>250
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Private Health
+											Insurance</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Other</content>50
+									</item>
+								</list>
+							</item>
+							<item>
+								<content styleCode="Bold">Denominator Exceptions</content>:20
+								<list>
+									<item>
+										<content styleCode="Bold">Gender - Male</content>12
+									</item>
+									<item>
+										<content styleCode="Bold">Gender - Female</content>8
+									</item>
+									<item>
+										<content styleCode="Bold">Ethnicity - Not Hispanic or
+											Latino</content>18
+									</item>
+									<item>
+										<content styleCode="Bold">Ethnicity - Hispanic or
+											Latino</content>2
+									</item>
+									<item>
+										<content styleCode="Bold">Race - Black or African
+											American</content>3
+									</item>
+									<item>
+										<content styleCode="Bold">Race - White</content>15
+									</item>
+									<item>
+										<content styleCode="Bold">Race - Asian</content>2
+									</item>
+									<item>
+										<content styleCode="Bold">Race - American Indian or Alaska
+											Native</content>0
+									</item>
+									<item>
+										<content styleCode="Bold">Payer -
+											Medicare</content>10
+									</item>
+									<item>
+										<content styleCode="Bold">Payer -
+											Medicaid</content>3
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Private Health
+											Insurance</content>5
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Other</content>2
+									</item>
+								</list>
+							</item>
+							<item>
+								<content styleCode="Bold">Denominator</content>:1000
+								<list>
+									<item>
+										<content styleCode="Bold">Gender - Male</content>400
+									</item>
+									<item>
+										<content styleCode="Bold">Gender -
+											Female</content>600
+									</item>
+									<item>
+										<content styleCode="Bold">Ethnicity - Not Hispanic or
+											Latino</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Ethnicity - Hispanic or
+											Latino</content>650
+									</item>
+									<item>
+										<content styleCode="Bold">Race - Black or African
+											American</content>300
+									</item>
+									<item>
+										<content styleCode="Bold">Race - White</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Race - Asian</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Race - American Indian or Alaska
+											Native</content>0
+									</item>
+									<item>
+										<content styleCode="Bold">Payer -
+											Medicare</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Payer -
+											Medicaid</content>250
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Private Health
+											Insurance</content>350
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Other</content>50
+									</item>
+								</list>
+							</item>
+							<item>
+								<content styleCode="Bold">Numerator</content>:800
+								<list>
+									<item>
+										<content styleCode="Bold">Gender - Male</content>300
+									</item>
+									<item>
+										<content styleCode="Bold">Gender -
+											Female</content>500
+									</item>
+									<item>
+										<content styleCode="Bold">Ethnicity - Not Hispanic or
+											Latino</content>250
+									</item>
+									<item>
+										<content styleCode="Bold">Ethnicity - Hispanic or
+											Latino</content>550
+									</item>
+									<item>
+										<content styleCode="Bold">Race - Black or African
+											American</content>250
+									</item>
+									<item>
+										<content styleCode="Bold">Race - White</content>300
+									</item>
+									<item>
+										<content styleCode="Bold">Race - Asian</content>250
+									</item>
+									<item>
+										<content styleCode="Bold">Race - American Indian or Alaska
+											Native</content>0
+									</item>
+									<item>
+										<content styleCode="Bold">Payer -
+											Medicare</content>300
+									</item>
+									<item>
+										<content styleCode="Bold">Payer -
+											Medicaid</content>200
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Private Health
+											Insurance</content>250
+									</item>
+									<item>
+										<content styleCode="Bold">Payer - Other</content>50
+									</item>
+								</list>
+							</item>
+						</list>
+
+
+						<!-- CMS160v5/NQF0712: Depression Utilization of the PHQ-9 Tool -->
+						<table border="1" width="100%">
+							<thead>
+								<tr>
+									<th>eMeasure Title</th>
+									<th>Version neutral identifier</th>
+									<th>Version specific identifier</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Depression Utilization of the PHQ-9 Tool</td>
+									<td>a4b9763c-847e-4e02-bb7e-acc596e90e2c</td>
+									<td>40280381-503f-a1fc-0150-afe320c01761</td>
+								</tr>
+							</tbody>
+						</table>
+						<list>
+							<item>
+								<content styleCode="Bold">Performance Rate</content>0.860177
+							</item>
+							<item>
+								<content styleCode="Bold">Initial Population</content>:600
+							</item>
+							<item>
+								<content styleCode="Bold">Denominator Population</content>:600
+							</item>
+							<item>
+								<content styleCode="Bold">Denominator Exclusions</content>:35
+							</item>
+							<item>
+								<content styleCode="Bold">Numerator</content>:486
+							</item>
+							<item>
+								<content styleCode="Bold">Performance Rate</content>0.921052
+							</item>
+							<item>
+								<content styleCode="Bold">Initial Population</content>:800
+							</item>
+							<item>
+								<content styleCode="Bold">Denominator Population</content>:800
+							</item>
+							<item>
+								<content styleCode="Bold">Denominator Exclusions</content>:40
+							</item>
+							<item>
+								<content styleCode="Bold">Numerator</content>:700
+							</item>
+							<item>
+								<content styleCode="Bold">Performance Rate</content>0.962963
+							</item>
+							<item>
+								<content styleCode="Bold">Initial Population</content>:580
+							</item>
+							<item>
+								<content styleCode="Bold">Denominator Population</content>:580
+							</item>
+							<item>
+								<content styleCode="Bold">Denominator Exclusions</content>:40
+							</item>
+							<item>
+								<content styleCode="Bold">Numerator</content>:520
+							</item>
+						</list>
+					</text>
 
 					<!--Measure Entry for CMS165v7-->
 					<entry>
@@ -221,7 +880,7 @@ CDA Header
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01"/>
 									<templateId root="2.16.840.1.113883.10.20.27.3.14" extension="2016-09-01"/>
-									<templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2018-05-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2016-11-01"/>
 									<code code="72510-1" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 										  displayName="Performance Rate"/>
 									<statusCode code="completed"/>
@@ -3830,7 +4489,7 @@ CDA Header
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.14" extension="2016-09-01"/>
-									<templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2018-05-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2016-11-01"/>
 									<templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01"/>
 									<code code="72510-1" codeSystem="2.16.840.1.113883.6.1"
 										  codeSystemName="LOINC" displayName="Performance Rate"/>
@@ -5751,7 +6410,7 @@ CDA Header
 						</organizer>
 					</entry>
 
-					<!--Measure Entry for CMS135v7-->
+					<!--Measure Entry for CMS160v7-->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
@@ -5763,7 +6422,7 @@ CDA Header
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<id root="2.16.840.1.113883.4.738"
-										extension="40280382-6240-b6b9-0162-5462542a0b59"/>
+										extension="40280382-6258-7581-0162-63106f9201b2"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
 										  codeSystemName="LOINC"
 										  displayName="Health Quality Measure Document"/>
@@ -5774,7 +6433,7 @@ CDA Header
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.14" extension="2016-09-01"/>
-									<templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2018-05-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2016-11-01"/>
 									<templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01"/>
 									<code code="72510-1" codeSystem="2.16.840.1.113883.6.1"
 										  codeSystemName="LOINC" displayName="Performance Rate"/>
@@ -5783,7 +6442,7 @@ CDA Header
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
 											<!-- The root contains the UUID for the Numerator population -->
-											<id root="41EF9FF5-7260-41D8-88E6-760F876C66FB"/>
+											<id root="539B0A53-F5B0-47CB-887E-392792E9D4ED"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
 												  codeSystemName="ActCode"
 												  displayName="Numerator"/>
@@ -5795,7 +6454,7 @@ CDA Header
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.14" extension="2016-09-01"/>
-									<templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2018-05-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2016-11-01"/>
 									<templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01"/>
 									<code code="72510-1" codeSystem="2.16.840.1.113883.6.1"
 										  codeSystemName="LOINC" displayName="Performance Rate"/>
@@ -5804,7 +6463,28 @@ CDA Header
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
 											<!-- The root contains the UUID for the Numerator population -->
-											<id root="88762E67-6197-4F77-9800-46707A34C062"/>
+											<id root="92D313A7-3A3D-44EC-8A94-103CC0003A30"/>
+											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
+												  codeSystemName="ActCode"
+												  displayName="Numerator"/>
+										</externalObservation>
+									</reference>
+								</observation>
+							</component>
+							<!--Performance Rate: Population Criteria 3 -->
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.14" extension="2016-09-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2016-11-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01"/>
+									<code code="72510-1" codeSystem="2.16.840.1.113883.6.1"
+										  codeSystemName="LOINC" displayName="Performance Rate"/>
+									<statusCode code="completed"/>
+									<value xsi:type="REAL" value="0.962963"/>
+									<reference typeCode="REFR">
+										<externalObservation classCode="OBS" moodCode="EVN">
+											<!-- The root contains the UUID for the Numerator population -->
+											<id root="9FCE046B-5EF9-4A19-9D22-D3A6518EDA51"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
 												  codeSystemName="ActCode"
 												  displayName="Numerator"/>
@@ -5840,10 +6520,72 @@ CDA Header
 														displayName="Count"/>
 										</observation>
 									</entryRelationship>
+									<!-- Stratifier for 13406420-1144-4100-9439-ED134656A4FC-->
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.20"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+											<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
+												  displayName="Assertion"/>
+											<statusCode code="completed"/>
+											<value xsi:type="CD" nullFlavor="OTH">
+												<originalText>Stratum</originalText>
+											</value>
+											<!-- Count-->
+											<entryRelationship typeCode="SUBJ" inversionInd="true">
+												<observation classCode="OBS" moodCode="EVN">
+													<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+													<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+													<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+														  codeSystemName="ActCode" displayName="rate aggregation"/>
+													<statusCode code="completed"/>
+													<value xsi:type="INT" value="500"/>
+													<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+																codeSystemName="ObservationMethod" displayName="Count"/>
+												</observation>
+											</entryRelationship>
+											<reference typeCode="REFR">
+												<externalObservation>
+													<id root="13406420-1144-4100-9439-ED134656A4FC"/>
+												</externalObservation>
+											</reference>
+										</observation>
+									</entryRelationship>
+									<!-- Stratifier for DD7E5C35-6825-496B-A155-A4CBE9056535-->
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.20"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+											<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
+												  displayName="Assertion"/>
+											<statusCode code="completed"/>
+											<value xsi:type="CD" nullFlavor="OTH">
+												<originalText>Stratum</originalText>
+											</value>
+											<!-- Count-->
+											<entryRelationship typeCode="SUBJ" inversionInd="true">
+												<observation classCode="OBS" moodCode="EVN">
+													<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+													<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+													<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+														  codeSystemName="ActCode" displayName="rate aggregation"/>
+													<statusCode code="completed"/>
+													<value xsi:type="INT" value="500"/>
+													<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+																codeSystemName="ObservationMethod" displayName="Count"/>
+												</observation>
+											</entryRelationship>
+											<reference typeCode="REFR">
+												<externalObservation>
+													<id root="DD7E5C35-6825-496B-A155-A4CBE9056535"/>
+												</externalObservation>
+											</reference>
+										</observation>
+									</entryRelationship>
 									<!--IPOP Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="24092CC9-3820-4099-9F70-D0BFAC65AE89"/>
+											<id root="D00E7D31-7F59-468D-99C6-631D07715E59"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -5875,10 +6617,169 @@ CDA Header
 														displayName="Count"/>
 										</observation>
 									</entryRelationship>
+									<!-- Stratifier for 13406420-1144-4100-9439-ED134656A4FC-->
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.20"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+											<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
+												  displayName="Assertion"/>
+											<statusCode code="completed"/>
+											<value xsi:type="CD" nullFlavor="OTH">
+												<originalText>Stratum</originalText>
+											</value>
+											<!-- Count-->
+											<entryRelationship typeCode="SUBJ" inversionInd="true">
+												<observation classCode="OBS" moodCode="EVN">
+													<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+													<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+													<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+														  codeSystemName="ActCode" displayName="rate aggregation"/>
+													<statusCode code="completed"/>
+													<value xsi:type="INT" value="500"/>
+													<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+																codeSystemName="ObservationMethod" displayName="Count"/>
+												</observation>
+											</entryRelationship>
+											<reference typeCode="REFR">
+												<externalObservation>
+													<id root="13406420-1144-4100-9439-ED134656A4FC"/>
+												</externalObservation>
+											</reference>
+										</observation>
+									</entryRelationship>
+									<!-- Stratifier for DD7E5C35-6825-496B-A155-A4CBE9056535-->
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.20"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+											<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
+												  displayName="Assertion"/>
+											<statusCode code="completed"/>
+											<value xsi:type="CD" nullFlavor="OTH">
+												<originalText>Stratum</originalText>
+											</value>
+											<!-- Count-->
+											<entryRelationship typeCode="SUBJ" inversionInd="true">
+												<observation classCode="OBS" moodCode="EVN">
+													<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+													<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+													<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+														  codeSystemName="ActCode" displayName="rate aggregation"/>
+													<statusCode code="completed"/>
+													<value xsi:type="INT" value="500"/>
+													<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+																codeSystemName="ObservationMethod" displayName="Count"/>
+												</observation>
+											</entryRelationship>
+											<reference typeCode="REFR">
+												<externalObservation>
+													<id root="DD7E5C35-6825-496B-A155-A4CBE9056535"/>
+												</externalObservation>
+											</reference>
+										</observation>
+									</entryRelationship>
 									<!--DENOM Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="D18CEF8F-9533-4B09-8A69-003F327CE469"/>
+											<id root="A52E93B8-A2D1-414E-94D0-90155E8FF81F"/>
+										</externalObservation>
+									</reference>
+								</observation>
+							</component>
+							<!--DENEX Population-->
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										  codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="DENEX"
+										   codeSystem="2.16.840.1.113883.5.1063"
+										   codeSystemName="ObservationValue"/>
+									<!--DENEX Count-->
+									<entryRelationship typeCode="SUBJ" inversionInd="true">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+												  codeSystemName="ActCode"
+												  displayName="rate aggregation"/>
+											<statusCode code="completed"/>
+											<value xsi:type="INT" value="35"/>
+											<methodCode code="COUNT"
+														codeSystem="2.16.840.1.113883.5.84"
+														codeSystemName="ObservationMethod"
+														displayName="Count"/>
+										</observation>
+									</entryRelationship>
+									<!-- Stratifier for 13406420-1144-4100-9439-ED134656A4FC-->
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.20"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+											<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
+												  displayName="Assertion"/>
+											<statusCode code="completed"/>
+											<value xsi:type="CD" nullFlavor="OTH">
+												<originalText>Stratum</originalText>
+											</value>
+											<!-- Count-->
+											<entryRelationship typeCode="SUBJ" inversionInd="true">
+												<observation classCode="OBS" moodCode="EVN">
+													<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+													<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+													<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+														  codeSystemName="ActCode" displayName="rate aggregation"/>
+													<statusCode code="completed"/>
+													<value xsi:type="INT" value="500"/>
+													<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+																codeSystemName="ObservationMethod" displayName="Count"/>
+												</observation>
+											</entryRelationship>
+											<reference typeCode="REFR">
+												<externalObservation>
+													<id root="13406420-1144-4100-9439-ED134656A4FC"/>
+												</externalObservation>
+											</reference>
+										</observation>
+									</entryRelationship>
+									<!-- Stratifier for DD7E5C35-6825-496B-A155-A4CBE9056535-->
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.20"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+											<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
+												  displayName="Assertion"/>
+											<statusCode code="completed"/>
+											<value xsi:type="CD" nullFlavor="OTH">
+												<originalText>Stratum</originalText>
+											</value>
+											<!-- Count-->
+											<entryRelationship typeCode="SUBJ" inversionInd="true">
+												<observation classCode="OBS" moodCode="EVN">
+													<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+													<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+													<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+														  codeSystemName="ActCode" displayName="rate aggregation"/>
+													<statusCode code="completed"/>
+													<value xsi:type="INT" value="500"/>
+													<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+																codeSystemName="ObservationMethod" displayName="Count"/>
+												</observation>
+											</entryRelationship>
+											<reference typeCode="REFR">
+												<externalObservation>
+													<id root="DD7E5C35-6825-496B-A155-A4CBE9056535"/>
+												</externalObservation>
+											</reference>
+										</observation>
+									</entryRelationship>
+									<!--DENEX Population ID from eMeasure-->
+									<reference typeCode="REFR">
+										<externalObservation classCode="OBS" moodCode="EVN">
+											<id root="0830DDCA-C45E-4D80-B359-E69E2F83D7B2"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -5910,45 +6811,72 @@ CDA Header
 														displayName="Count"/>
 										</observation>
 									</entryRelationship>
+									<!-- Stratifier for 13406420-1144-4100-9439-ED134656A4FC-->
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.20"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+											<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
+												  displayName="Assertion"/>
+											<statusCode code="completed"/>
+											<value xsi:type="CD" nullFlavor="OTH">
+												<originalText>Stratum</originalText>
+											</value>
+											<!-- Count-->
+											<entryRelationship typeCode="SUBJ" inversionInd="true">
+												<observation classCode="OBS" moodCode="EVN">
+													<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+													<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+													<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+														  codeSystemName="ActCode" displayName="rate aggregation"/>
+													<statusCode code="completed"/>
+													<value xsi:type="INT" value="500"/>
+													<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+																codeSystemName="ObservationMethod" displayName="Count"/>
+												</observation>
+											</entryRelationship>
+											<reference typeCode="REFR">
+												<externalObservation>
+													<id root="13406420-1144-4100-9439-ED134656A4FC"/>
+												</externalObservation>
+											</reference>
+										</observation>
+									</entryRelationship>
+									<!-- Stratifier for DD7E5C35-6825-496B-A155-A4CBE9056535-->
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.20"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+											<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
+												  displayName="Assertion"/>
+											<statusCode code="completed"/>
+											<value xsi:type="CD" nullFlavor="OTH">
+												<originalText>Stratum</originalText>
+											</value>
+											<!-- Count-->
+											<entryRelationship typeCode="SUBJ" inversionInd="true">
+												<observation classCode="OBS" moodCode="EVN">
+													<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+													<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+													<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+														  codeSystemName="ActCode" displayName="rate aggregation"/>
+													<statusCode code="completed"/>
+													<value xsi:type="INT" value="500"/>
+													<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+																codeSystemName="ObservationMethod" displayName="Count"/>
+												</observation>
+											</entryRelationship>
+											<reference typeCode="REFR">
+												<externalObservation>
+													<id root="DD7E5C35-6825-496B-A155-A4CBE9056535"/>
+												</externalObservation>
+											</reference>
+										</observation>
+									</entryRelationship>
 									<!--NUMER Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="41EF9FF5-7260-41D8-88E6-760F876C66FB"/>
-										</externalObservation>
-									</reference>
-								</observation>
-							</component>
-							<!--DENEXCEP Population-->
-							<component>
-								<observation classCode="OBS" moodCode="EVN">
-									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
-									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
-									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
-										  codeSystemName="ActCode" displayName="Assertion"/>
-									<statusCode code="completed"/>
-									<value xsi:type="CD" code="DENEXCEP"
-										   codeSystem="2.16.840.1.113883.5.1063"
-										   codeSystemName="ObservationValue"/>
-									<!--DENEXCEP Count-->
-									<entryRelationship typeCode="SUBJ" inversionInd="true">
-										<observation classCode="OBS" moodCode="EVN">
-											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
-											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
-												  codeSystemName="ActCode"
-												  displayName="rate aggregation"/>
-											<statusCode code="completed"/>
-											<value xsi:type="INT" value="35"/>
-											<methodCode code="COUNT"
-														codeSystem="2.16.840.1.113883.5.84"
-														codeSystemName="ObservationMethod"
-														displayName="Count"/>
-										</observation>
-									</entryRelationship>
-									<!--DENEXCEP Population ID from eMeasure-->
-									<reference typeCode="REFR">
-										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="635D1D87-8196-453D-9A80-332E6FBD4F7F"/>
+											<id root="539B0A53-F5B0-47CB-887E-392792E9D4ED"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -5982,10 +6910,72 @@ CDA Header
 														displayName="Count"/>
 										</observation>
 									</entryRelationship>
+									<!-- Stratifier for 39B15197-7895-4AFC-B4AA-83DABFF66373-->
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.20"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+											<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
+												  displayName="Assertion"/>
+											<statusCode code="completed"/>
+											<value xsi:type="CD" nullFlavor="OTH">
+												<originalText>Stratum</originalText>
+											</value>
+											<!-- Count-->
+											<entryRelationship typeCode="SUBJ" inversionInd="true">
+												<observation classCode="OBS" moodCode="EVN">
+													<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+													<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+													<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+														  codeSystemName="ActCode" displayName="rate aggregation"/>
+													<statusCode code="completed"/>
+													<value xsi:type="INT" value="500"/>
+													<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+																codeSystemName="ObservationMethod" displayName="Count"/>
+												</observation>
+											</entryRelationship>
+											<reference typeCode="REFR">
+												<externalObservation>
+													<id root="39B15197-7895-4AFC-B4AA-83DABFF66373"/>
+												</externalObservation>
+											</reference>
+										</observation>
+									</entryRelationship>
+									<!-- Stratifier for 0416AB91-F7FF-4432-A5D9-77B27F5AE30C-->
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.20"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+											<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
+												  displayName="Assertion"/>
+											<statusCode code="completed"/>
+											<value xsi:type="CD" nullFlavor="OTH">
+												<originalText>Stratum</originalText>
+											</value>
+											<!-- Count-->
+											<entryRelationship typeCode="SUBJ" inversionInd="true">
+												<observation classCode="OBS" moodCode="EVN">
+													<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+													<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+													<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+														  codeSystemName="ActCode" displayName="rate aggregation"/>
+													<statusCode code="completed"/>
+													<value xsi:type="INT" value="500"/>
+													<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+																codeSystemName="ObservationMethod" displayName="Count"/>
+												</observation>
+											</entryRelationship>
+											<reference typeCode="REFR">
+												<externalObservation>
+													<id root="0416AB91-F7FF-4432-A5D9-77B27F5AE30C"/>
+												</externalObservation>
+											</reference>
+										</observation>
+									</entryRelationship>
 									<!--IPOP Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="B859035C-8ECD-4F04-86D9-546BBF293396"/>
+											<id root="95F5AFA0-CB23-4786-A2E0-0646C0494E4F"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -6017,10 +7007,169 @@ CDA Header
 														displayName="Count"/>
 										</observation>
 									</entryRelationship>
+									<!-- Stratifier for 39B15197-7895-4AFC-B4AA-83DABFF66373-->
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.20"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+											<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
+												  displayName="Assertion"/>
+											<statusCode code="completed"/>
+											<value xsi:type="CD" nullFlavor="OTH">
+												<originalText>Stratum</originalText>
+											</value>
+											<!-- Count-->
+											<entryRelationship typeCode="SUBJ" inversionInd="true">
+												<observation classCode="OBS" moodCode="EVN">
+													<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+													<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+													<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+														  codeSystemName="ActCode" displayName="rate aggregation"/>
+													<statusCode code="completed"/>
+													<value xsi:type="INT" value="500"/>
+													<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+																codeSystemName="ObservationMethod" displayName="Count"/>
+												</observation>
+											</entryRelationship>
+											<reference typeCode="REFR">
+												<externalObservation>
+													<id root="39B15197-7895-4AFC-B4AA-83DABFF66373"/>
+												</externalObservation>
+											</reference>
+										</observation>
+									</entryRelationship>
+									<!-- Stratifier for 0416AB91-F7FF-4432-A5D9-77B27F5AE30C-->
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.20"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+											<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
+												  displayName="Assertion"/>
+											<statusCode code="completed"/>
+											<value xsi:type="CD" nullFlavor="OTH">
+												<originalText>Stratum</originalText>
+											</value>
+											<!-- Count-->
+											<entryRelationship typeCode="SUBJ" inversionInd="true">
+												<observation classCode="OBS" moodCode="EVN">
+													<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+													<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+													<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+														  codeSystemName="ActCode" displayName="rate aggregation"/>
+													<statusCode code="completed"/>
+													<value xsi:type="INT" value="500"/>
+													<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+																codeSystemName="ObservationMethod" displayName="Count"/>
+												</observation>
+											</entryRelationship>
+											<reference typeCode="REFR">
+												<externalObservation>
+													<id root="0416AB91-F7FF-4432-A5D9-77B27F5AE30C"/>
+												</externalObservation>
+											</reference>
+										</observation>
+									</entryRelationship>
 									<!--DENOM Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="89C9D1EC-FDAD-4982-9CE4-F144E8A85A53"/>
+											<id root="1B9C4359-5DF7-4B6D-ACD8-C12175C67EFD"/>
+										</externalObservation>
+									</reference>
+								</observation>
+							</component>
+							<!--DENEX Population-->
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										  codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="DENEX"
+										   codeSystem="2.16.840.1.113883.5.1063"
+										   codeSystemName="ObservationValue"/>
+									<!--DENEX Count-->
+									<entryRelationship typeCode="SUBJ" inversionInd="true">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+												  codeSystemName="ActCode"
+												  displayName="rate aggregation"/>
+											<statusCode code="completed"/>
+											<value xsi:type="INT" value="40"/>
+											<methodCode code="COUNT"
+														codeSystem="2.16.840.1.113883.5.84"
+														codeSystemName="ObservationMethod"
+														displayName="Count"/>
+										</observation>
+									</entryRelationship>
+									<!-- Stratifier for 39B15197-7895-4AFC-B4AA-83DABFF66373-->
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.20"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+											<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
+												  displayName="Assertion"/>
+											<statusCode code="completed"/>
+											<value xsi:type="CD" nullFlavor="OTH">
+												<originalText>Stratum</originalText>
+											</value>
+											<!-- Count-->
+											<entryRelationship typeCode="SUBJ" inversionInd="true">
+												<observation classCode="OBS" moodCode="EVN">
+													<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+													<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+													<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+														  codeSystemName="ActCode" displayName="rate aggregation"/>
+													<statusCode code="completed"/>
+													<value xsi:type="INT" value="500"/>
+													<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+																codeSystemName="ObservationMethod" displayName="Count"/>
+												</observation>
+											</entryRelationship>
+											<reference typeCode="REFR">
+												<externalObservation>
+													<id root="39B15197-7895-4AFC-B4AA-83DABFF66373"/>
+												</externalObservation>
+											</reference>
+										</observation>
+									</entryRelationship>
+									<!-- Stratifier for 0416AB91-F7FF-4432-A5D9-77B27F5AE30C-->
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.20"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+											<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
+												  displayName="Assertion"/>
+											<statusCode code="completed"/>
+											<value xsi:type="CD" nullFlavor="OTH">
+												<originalText>Stratum</originalText>
+											</value>
+											<!-- Count-->
+											<entryRelationship typeCode="SUBJ" inversionInd="true">
+												<observation classCode="OBS" moodCode="EVN">
+													<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+													<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+													<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+														  codeSystemName="ActCode" displayName="rate aggregation"/>
+													<statusCode code="completed"/>
+													<value xsi:type="INT" value="500"/>
+													<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+																codeSystemName="ObservationMethod" displayName="Count"/>
+												</observation>
+											</entryRelationship>
+											<reference typeCode="REFR">
+												<externalObservation>
+													<id root="0416AB91-F7FF-4432-A5D9-77B27F5AE30C"/>
+												</externalObservation>
+											</reference>
+										</observation>
+									</entryRelationship>
+									<!--DENEX Population ID from eMeasure-->
+									<reference typeCode="REFR">
+										<externalObservation classCode="OBS" moodCode="EVN">
+											<id root="7889D513-C24C-482F-8C9C-FC31F35E3999"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -6052,15 +7201,79 @@ CDA Header
 														displayName="Count"/>
 										</observation>
 									</entryRelationship>
+									<!-- Stratifier for 39B15197-7895-4AFC-B4AA-83DABFF66373-->
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.20"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+											<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
+												  displayName="Assertion"/>
+											<statusCode code="completed"/>
+											<value xsi:type="CD" nullFlavor="OTH">
+												<originalText>Stratum</originalText>
+											</value>
+											<!-- Count-->
+											<entryRelationship typeCode="SUBJ" inversionInd="true">
+												<observation classCode="OBS" moodCode="EVN">
+													<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+													<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+													<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+														  codeSystemName="ActCode" displayName="rate aggregation"/>
+													<statusCode code="completed"/>
+													<value xsi:type="INT" value="500"/>
+													<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+																codeSystemName="ObservationMethod" displayName="Count"/>
+												</observation>
+											</entryRelationship>
+											<reference typeCode="REFR">
+												<externalObservation>
+													<id root="39B15197-7895-4AFC-B4AA-83DABFF66373"/>
+												</externalObservation>
+											</reference>
+										</observation>
+									</entryRelationship>
+									<!-- Stratifier for 0416AB91-F7FF-4432-A5D9-77B27F5AE30C-->
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.20"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+											<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
+												  displayName="Assertion"/>
+											<statusCode code="completed"/>
+											<value xsi:type="CD" nullFlavor="OTH">
+												<originalText>Stratum</originalText>
+											</value>
+											<!-- Count-->
+											<entryRelationship typeCode="SUBJ" inversionInd="true">
+												<observation classCode="OBS" moodCode="EVN">
+													<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+													<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+													<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+														  codeSystemName="ActCode" displayName="rate aggregation"/>
+													<statusCode code="completed"/>
+													<value xsi:type="INT" value="500"/>
+													<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+																codeSystemName="ObservationMethod" displayName="Count"/>
+												</observation>
+											</entryRelationship>
+											<reference typeCode="REFR">
+												<externalObservation>
+													<id root="0416AB91-F7FF-4432-A5D9-77B27F5AE30C"/>
+												</externalObservation>
+											</reference>
+										</observation>
+									</entryRelationship>
 									<!--NUMER Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="88762E67-6197-4F77-9800-46707A34C062"/>
+											<id root="92D313A7-3A3D-44EC-8A94-103CC0003A30"/>
 										</externalObservation>
 									</reference>
 								</observation>
 							</component>
-							<!--DENEXCEP Population-->
+
+							<!-- Population Criteria 3 -->
+							<!--IPOP Population-->
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
@@ -6068,10 +7281,204 @@ CDA Header
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
 										  codeSystemName="ActCode" displayName="Assertion"/>
 									<statusCode code="completed"/>
-									<value xsi:type="CD" code="DENEXCEP"
+									<value xsi:type="CD" code="IPOP"
 										   codeSystem="2.16.840.1.113883.5.1063"
 										   codeSystemName="ObservationValue"/>
-									<!--DENEXCEP Count-->
+									<!--IPOP Count-->
+									<entryRelationship typeCode="SUBJ" inversionInd="true">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+												  codeSystemName="ActCode"
+												  displayName="rate aggregation"/>
+											<statusCode code="completed"/>
+											<value xsi:type="INT" value="580"/>
+											<methodCode code="COUNT"
+														codeSystem="2.16.840.1.113883.5.84"
+														codeSystemName="ObservationMethod"
+														displayName="Count"/>
+										</observation>
+									</entryRelationship>
+									<!-- Stratifier for 1FD9CB54-2485-43C9-A9CB-041E6FE078F0-->
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.20"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+											<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
+												  displayName="Assertion"/>
+											<statusCode code="completed"/>
+											<value xsi:type="CD" nullFlavor="OTH">
+												<originalText>Stratum</originalText>
+											</value>
+											<!-- Count-->
+											<entryRelationship typeCode="SUBJ" inversionInd="true">
+												<observation classCode="OBS" moodCode="EVN">
+													<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+													<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+													<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+														  codeSystemName="ActCode" displayName="rate aggregation"/>
+													<statusCode code="completed"/>
+													<value xsi:type="INT" value="500"/>
+													<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+																codeSystemName="ObservationMethod" displayName="Count"/>
+												</observation>
+											</entryRelationship>
+											<reference typeCode="REFR">
+												<externalObservation>
+													<id root="1FD9CB54-2485-43C9-A9CB-041E6FE078F0"/>
+												</externalObservation>
+											</reference>
+										</observation>
+									</entryRelationship>
+									<!-- Stratifier for B4B269AE-AE95-4FFF-AD3A-0C7F62DC0C72-->
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.20"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+											<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
+												  displayName="Assertion"/>
+											<statusCode code="completed"/>
+											<value xsi:type="CD" nullFlavor="OTH">
+												<originalText>Stratum</originalText>
+											</value>
+											<!-- Count-->
+											<entryRelationship typeCode="SUBJ" inversionInd="true">
+												<observation classCode="OBS" moodCode="EVN">
+													<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+													<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+													<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+														  codeSystemName="ActCode" displayName="rate aggregation"/>
+													<statusCode code="completed"/>
+													<value xsi:type="INT" value="500"/>
+													<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+																codeSystemName="ObservationMethod" displayName="Count"/>
+												</observation>
+											</entryRelationship>
+											<reference typeCode="REFR">
+												<externalObservation>
+													<id root="B4B269AE-AE95-4FFF-AD3A-0C7F62DC0C72"/>
+												</externalObservation>
+											</reference>
+										</observation>
+									</entryRelationship>
+									<!--IPOP Population ID from eMeasure-->
+									<reference typeCode="REFR">
+										<externalObservation classCode="OBS" moodCode="EVN">
+											<id root="750B4DDA-EC94-4082-9AB4-86824666D808"/>
+										</externalObservation>
+									</reference>
+								</observation>
+							</component>
+							<!--DENOM Population-->
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										  codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="DENOM"
+										   codeSystem="2.16.840.1.113883.5.1063"
+										   codeSystemName="ObservationValue"/>
+									<!--DENOM Count-->
+									<entryRelationship typeCode="SUBJ" inversionInd="true">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+												  codeSystemName="ActCode"
+												  displayName="rate aggregation"/>
+											<statusCode code="completed"/>
+											<value xsi:type="INT" value="580"/>
+											<methodCode code="COUNT"
+														codeSystem="2.16.840.1.113883.5.84"
+														codeSystemName="ObservationMethod"
+														displayName="Count"/>
+										</observation>
+									</entryRelationship>
+									<!-- Stratifier for 1FD9CB54-2485-43C9-A9CB-041E6FE078F0-->
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.20"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+											<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
+												  displayName="Assertion"/>
+											<statusCode code="completed"/>
+											<value xsi:type="CD" nullFlavor="OTH">
+												<originalText>Stratum</originalText>
+											</value>
+											<!-- Count-->
+											<entryRelationship typeCode="SUBJ" inversionInd="true">
+												<observation classCode="OBS" moodCode="EVN">
+													<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+													<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+													<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+														  codeSystemName="ActCode" displayName="rate aggregation"/>
+													<statusCode code="completed"/>
+													<value xsi:type="INT" value="500"/>
+													<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+																codeSystemName="ObservationMethod" displayName="Count"/>
+												</observation>
+											</entryRelationship>
+											<reference typeCode="REFR">
+												<externalObservation>
+													<id root="1FD9CB54-2485-43C9-A9CB-041E6FE078F0"/>
+												</externalObservation>
+											</reference>
+										</observation>
+									</entryRelationship>
+									<!-- Stratifier for B4B269AE-AE95-4FFF-AD3A-0C7F62DC0C72-->
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.20"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+											<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
+												  displayName="Assertion"/>
+											<statusCode code="completed"/>
+											<value xsi:type="CD" nullFlavor="OTH">
+												<originalText>Stratum</originalText>
+											</value>
+											<!-- Count-->
+											<entryRelationship typeCode="SUBJ" inversionInd="true">
+												<observation classCode="OBS" moodCode="EVN">
+													<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+													<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+													<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+														  codeSystemName="ActCode" displayName="rate aggregation"/>
+													<statusCode code="completed"/>
+													<value xsi:type="INT" value="500"/>
+													<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+																codeSystemName="ObservationMethod" displayName="Count"/>
+												</observation>
+											</entryRelationship>
+											<reference typeCode="REFR">
+												<externalObservation>
+													<id root="B4B269AE-AE95-4FFF-AD3A-0C7F62DC0C72"/>
+												</externalObservation>
+											</reference>
+										</observation>
+									</entryRelationship>
+									<!--DENOM Population ID from eMeasure-->
+									<reference typeCode="REFR">
+										<externalObservation classCode="OBS" moodCode="EVN">
+											<id root="2E3A7115-247D-4A0E-918C-AB581E13486A"/>
+										</externalObservation>
+									</reference>
+								</observation>
+							</component>
+							<!--DENEX Population-->
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										  codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="DENEX"
+										   codeSystem="2.16.840.1.113883.5.1063"
+										   codeSystemName="ObservationValue"/>
+									<!--DENEX Count-->
 									<entryRelationship typeCode="SUBJ" inversionInd="true">
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
@@ -6087,10 +7494,169 @@ CDA Header
 														displayName="Count"/>
 										</observation>
 									</entryRelationship>
-									<!--DENEXCEP Population ID from eMeasure-->
+									<!-- Stratifier for 1FD9CB54-2485-43C9-A9CB-041E6FE078F0-->
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.20"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+											<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
+												  displayName="Assertion"/>
+											<statusCode code="completed"/>
+											<value xsi:type="CD" nullFlavor="OTH">
+												<originalText>Stratum</originalText>
+											</value>
+											<!-- Count-->
+											<entryRelationship typeCode="SUBJ" inversionInd="true">
+												<observation classCode="OBS" moodCode="EVN">
+													<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+													<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+													<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+														  codeSystemName="ActCode" displayName="rate aggregation"/>
+													<statusCode code="completed"/>
+													<value xsi:type="INT" value="500"/>
+													<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+																codeSystemName="ObservationMethod" displayName="Count"/>
+												</observation>
+											</entryRelationship>
+											<reference typeCode="REFR">
+												<externalObservation>
+													<id root="1FD9CB54-2485-43C9-A9CB-041E6FE078F0"/>
+												</externalObservation>
+											</reference>
+										</observation>
+									</entryRelationship>
+									<!-- Stratifier for B4B269AE-AE95-4FFF-AD3A-0C7F62DC0C72-->
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.20"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+											<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
+												  displayName="Assertion"/>
+											<statusCode code="completed"/>
+											<value xsi:type="CD" nullFlavor="OTH">
+												<originalText>Stratum</originalText>
+											</value>
+											<!-- Count-->
+											<entryRelationship typeCode="SUBJ" inversionInd="true">
+												<observation classCode="OBS" moodCode="EVN">
+													<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+													<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+													<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+														  codeSystemName="ActCode" displayName="rate aggregation"/>
+													<statusCode code="completed"/>
+													<value xsi:type="INT" value="500"/>
+													<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+																codeSystemName="ObservationMethod" displayName="Count"/>
+												</observation>
+											</entryRelationship>
+											<reference typeCode="REFR">
+												<externalObservation>
+													<id root="B4B269AE-AE95-4FFF-AD3A-0C7F62DC0C72"/>
+												</externalObservation>
+											</reference>
+										</observation>
+									</entryRelationship>
+									<!--DENEX Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="1504BDD4-8AAD-4B91-87C3-5F0B12B6E97D"/>
+											<id root="DE1952F9-9E35-4493-BA65-3F6CD8904059"/>
+										</externalObservation>
+									</reference>
+								</observation>
+							</component>
+							<!--NUMER Population-->
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										  codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="NUMER"
+										   codeSystem="2.16.840.1.113883.5.1063"
+										   codeSystemName="ObservationValue"/>
+									<!--NUMER Count-->
+									<entryRelationship typeCode="SUBJ" inversionInd="true">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+												  codeSystemName="ActCode"
+												  displayName="rate aggregation"/>
+											<statusCode code="completed"/>
+											<value xsi:type="INT" value="520"/>
+											<methodCode code="COUNT"
+														codeSystem="2.16.840.1.113883.5.84"
+														codeSystemName="ObservationMethod"
+														displayName="Count"/>
+										</observation>
+									</entryRelationship>
+									<!-- Stratifier for 1FD9CB54-2485-43C9-A9CB-041E6FE078F0-->
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.20"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+											<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
+												  displayName="Assertion"/>
+											<statusCode code="completed"/>
+											<value xsi:type="CD" nullFlavor="OTH">
+												<originalText>Stratum</originalText>
+											</value>
+											<!-- Count-->
+											<entryRelationship typeCode="SUBJ" inversionInd="true">
+												<observation classCode="OBS" moodCode="EVN">
+													<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+													<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+													<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+														  codeSystemName="ActCode" displayName="rate aggregation"/>
+													<statusCode code="completed"/>
+													<value xsi:type="INT" value="500"/>
+													<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+																codeSystemName="ObservationMethod" displayName="Count"/>
+												</observation>
+											</entryRelationship>
+											<reference typeCode="REFR">
+												<externalObservation>
+													<id root="1FD9CB54-2485-43C9-A9CB-041E6FE078F0"/>
+												</externalObservation>
+											</reference>
+										</observation>
+									</entryRelationship>
+									<!-- Stratifier for B4B269AE-AE95-4FFF-AD3A-0C7F62DC0C72-->
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.20"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+											<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
+												  displayName="Assertion"/>
+											<statusCode code="completed"/>
+											<value xsi:type="CD" nullFlavor="OTH">
+												<originalText>Stratum</originalText>
+											</value>
+											<!-- Count-->
+											<entryRelationship typeCode="SUBJ" inversionInd="true">
+												<observation classCode="OBS" moodCode="EVN">
+													<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+													<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+													<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+														  codeSystemName="ActCode" displayName="rate aggregation"/>
+													<statusCode code="completed"/>
+													<value xsi:type="INT" value="500"/>
+													<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+																codeSystemName="ObservationMethod" displayName="Count"/>
+												</observation>
+											</entryRelationship>
+											<reference typeCode="REFR">
+												<externalObservation>
+													<id root="B4B269AE-AE95-4FFF-AD3A-0C7F62DC0C72"/>
+												</externalObservation>
+											</reference>
+										</observation>
+									</entryRelationship>
+									<!--NUMER Population ID from eMeasure-->
+									<reference typeCode="REFR">
+										<externalObservation classCode="OBS" moodCode="EVN">
+											<id root="9FCE046B-5EF9-4A19-9D22-D3A6518EDA51"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -6346,7 +7912,8 @@ CDA Header
 							<!-- Implied template Measure Reference templateId -->
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
 							<!-- Improvement Activity Performed Reference and Results templateId -->
-							<templateId root="2.16.840.1.113883.3.249.20.3.1" extension="2018-05-01"/>
+							<templateId root="2.16.840.1.113883.10.20.27.3.33"
+										extension="2016-09-01"/>
 							<id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
 							<statusCode code="completed"/>
 							<reference typeCode="REFR">
