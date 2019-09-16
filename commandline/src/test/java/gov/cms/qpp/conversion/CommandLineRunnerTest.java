@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion;
 
 import com.google.common.truth.Truth;
 import org.apache.commons.cli.CommandLine;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.logging.LoggerFactory;
@@ -34,7 +35,6 @@ class CommandLineRunnerTest implements LoggerContract {
 
 	@Test
 	void testRunHelp() {
-		Logger commandLineLogger = (Logger) LoggerFactory.getLogger(CommandLineRunner.class);
 		CommandLineRunner runner = new CommandLineRunner(line("-" + CommandLineMain.HELP));
 		runner.run();
 		Truth.assertThat(getLogs()).isNotEmpty();
