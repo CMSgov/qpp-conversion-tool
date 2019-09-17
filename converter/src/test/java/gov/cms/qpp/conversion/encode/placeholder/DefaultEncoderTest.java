@@ -22,7 +22,7 @@ class DefaultEncoderTest {
 
 	@Test
 	void encodeAllNodes() throws Exception {
-		InputStream stream = NioHelper.fileToStream(Paths.get("../qrda-files/valid-QRDA-III.xml"));
+		InputStream stream = NioHelper.fileToStream(Paths.get("../qrda-files/valid-QRDA-III-latest.xml"));
 		String xmlFragment = IOUtils.toString(stream, StandardCharsets.UTF_8);
 
 		Node node = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));

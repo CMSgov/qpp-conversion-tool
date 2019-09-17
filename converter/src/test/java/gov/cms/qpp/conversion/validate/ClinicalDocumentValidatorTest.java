@@ -229,8 +229,8 @@ class ClinicalDocumentValidatorTest {
 
 		List<Detail> errors = getErrors(allErrors);
 
-		assertWithMessage("Must have 3 errors")
-				.that(errors).hasSize(3);
+		assertWithMessage("Must have 2 errors")
+				.that(errors).hasSize(2);
 
 		assertWithMessage("Must contain the correct errors")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)

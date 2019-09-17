@@ -7,7 +7,7 @@
 	<realmCode code="US"/>
 	<typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
 	<templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01"/>
-	<templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2017-07-01"/>
+	<templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2018-05-01"/>
 	<id root="26a42253-99f5-48e7-9274-b467c6c7f623"/>
 	<code code="55184-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Quality Reporting Document Architecture Calculated Summary Report"/>
 	<title>Eligible Clinicians (EC) Meaningful Use Group Sample QRDA-III		(Informative)</title>
@@ -146,53 +146,7 @@
 
 					<templateId root="2.16.840.1.113883.10.20.27.2.5" extension="2017-06-01"/>
 					<code code="55186-1" codeSystem="2.16.840.1.113883.6.1" displayName="Measure Section"/>
-					<title>Measure Section</title>
-					<text>
-						<table border="1" width="100%">
-							<thead>
-								<tr>
-									<th>ACI Measure Title</th>
-									<th>Measure Identifier</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Security Risk Analysis</td>
-									<td>ACI-PPHI-1</td>
-								</tr>
-							</tbody>
-						</table>
-						<list>
-							<item>
-								<content styleCode="Bold">Measure Answer (Yes/No):								</content>Yes
-							</item>
-						</list>
-						<table border="1" width="100%">
-							<thead>
-								<tr>
-									<th>ACI Measure Title</th>
-									<th>Measure Identifier</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Patient Access</td>
-									<td>ACI-PEA-1</td>
-								</tr>
-							</tbody>
-						</table>
-						<list>
-							<item>
-								<content styleCode="Bold">Denominator: </content>800
-							</item>
-							<item>
-								<content styleCode="Bold">Numerator: </content>600
-							</item>
-							<item>
-								<content styleCode="Bold">Performance Rate:								</content>0.750000
-							</item>
-						</list>
-					</text>
+					<title>Measure Section</title>				
 					<entry typeCode="DRIV">
 						<act classCode="ACT" moodCode="EVN">
 							<templateId root="2.16.840.1.113883.10.20.17.3.8"/>
@@ -396,28 +350,10 @@
 					<templateId root="2.16.840.1.113883.10.20.27.2.4" extension="2017-06-01"/>
 					<code code="55186-1" codeSystem="2.16.840.1.113883.6.1" displayName="Measure Section"/>
 					<title>Measure Section</title>
-					<text>
-						<table border="1" width="100%">
-							<thead>
-								<tr>
-									<th>CPIA Activity</th>
-									<th>Activity Identifier</th>
-									<th>Question Answer Code</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Collection of patient experience and satisfaction data on										access to care and development of an improvement plan, such										as outlining steps for improving communications with										patients to help understanding of urgent access needs.</td>
-									<td>CPIA-1</td>
-									<td>Y</td>
-								</tr>
-							</tbody>
-						</table>
-					</text>
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
-							<templateId root="2.16.840.1.113883.10.20.27.3.33" extension="2016-09-01"/>
+							<templateId root="2.16.840.1.113883.3.249.20.3.1" extension="2018-05-01"/>
 							<id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
 							<statusCode code="completed"/>
 							<reference typeCode="REFR">
