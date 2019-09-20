@@ -5,11 +5,13 @@ import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
 import org.jdom2.filter.Filter;
@@ -73,6 +75,16 @@ public abstract class QrdaDecoder {
 			Optional.ofNullable(elems)
 				.ifPresent(notNullElems -> notNullElems.forEach(consumer));
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	protected void setMultipleAttributesOnNode(Element element, String expressionStr,
+		Consumer consumer, Filter<Attribute> filter) {
+		XPathExpression<Attribute> expression = XPathFactory.instance().compile(expressionStr, filter, null,  xpathNs);
+		List<Attribute> elems = expression.evaluate(element);
+		ArrayList<String> values = new ArrayList<>();
+		elems.forEach(attr -> values.add(attr.getValue()));
+		consumer.accept(values);
 	}
 
 }
