@@ -109,6 +109,17 @@ class Checker {
 		return this;
 	}
 
+	Checker listValuesAreValidLengths(LocalizedError code, String name, int size) {
+		lastAppraised = node.getValue(name);
+		List<String> values = Arrays.asList(((String)lastAppraised).split(","));
+		values.forEach(value -> {
+			if (!shouldShortcut() && size != value.length()) {
+				details.add(detail(code));
+			}
+		});
+		return this;
+	}
+
 	/**
 	 * Tests if given value matches specified regex
 	 *
