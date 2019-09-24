@@ -72,4 +72,8 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 82 : CT - There are too many errors associated with this QRDA-III file. Showing 100 out of `(Error amount)` errors. Please fix the given errors and re-submit
 * 83 : CT - CPC+ submissions should contain a CEHRT. Please refer to the `(Submission year's)` IG for more details https://ecqi.healthit.gov/system/files/2019_CMS_QRDA_III_Eligible_Clinicians_and_EP_IG-508.pdf#page=15 regarding practice CEHRTs.
 * 84 : CT - CPC+ QRDA-III Submissions require at least one TIN to be present.
-* 85 : CT - CPC+ QRDA-III Submissions require at least one NPI to be present.
+* 85 : CT - CPC+ QRDA-III Submission TINs require a length of 9
+* 86 : CT - This CPC+ QRDA-III submission is missing a TIN. Please ensure there is a TIN associated with every NPI submitted
+* 87 : CT - CPC+ QRDA-III Submissions require at least one NPI to be present
+* 88 : CT - CPC+ QRDA-III Submission NPIs require a length of 10
+* 89 : CT - This CPC+ QRDA-III submission is missing a NPI. Please ensure there is an NPI associated with every TIN submitted
