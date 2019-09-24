@@ -65,10 +65,10 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 
 		checkErrors(node)
 			.valueIsNotEmpty(ErrorCode.CPC_PLUS_TIN_REQUIRED, ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER)
-			.listValuesAreValidLengths(
+			.listValuesAreValid(
 				ErrorCode.CPC_PLUS_INVALID_TIN, ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, 9)
 			.valueIsNotEmpty(ErrorCode.CPC_PLUS_NPI_REQUIRED, ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER)
-			.listValuesAreValidLengths(
+			.listValuesAreValid(
 				ErrorCode.CPC_PLUS_INVALID_NPI, ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, 10)
 			.valueIsNotEmpty(addressError, ClinicalDocumentDecoder.PRACTICE_SITE_ADDR)
 			.singleValue(ErrorCode.CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED,
@@ -80,9 +80,22 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 		checkWarnings(node)
 			.valueIsNotEmpty(ErrorCode.MISSING_CEHRT.format(Context.REPORTING_YEAR), ClinicalDocumentDecoder.CEHRT);
 
-		validateNumberOfTinsAndNpis(node);
+
 		validateApmEntityId(node);
+		if (hasTinAndNpi(node))
+		validateNumberOfTinsAndNpis(node);
 		validateApmNpiCombination(node);
+	}
+
+	/**
+	 * Checks to see if the node has a tin and npi
+	 *
+	 * @param node
+	 * @return
+	 */
+	private boolean hasTinAndNpi(final Node node) {
+		return null != node.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER) &&
+			null != node.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER);
 	}
 
 	/**

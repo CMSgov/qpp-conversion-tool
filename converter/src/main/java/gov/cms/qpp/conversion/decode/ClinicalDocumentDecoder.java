@@ -151,20 +151,21 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	}
 
 	/**
-	 * Will decode multiple NPIs from the xml into a list
+	 * Will decode multiple NPIs from the xml into a list and remove all brackets.
 	 *
 	 * @param element Xml fragment being parsed.
 	 * @param thisNode The output internal representation of the document
 	 */
 	private void setMultipleNationalProviderIdsOnNode(Element element, Node thisNode) {
 		Consumer<? super List<String>> consumer = p ->
-			thisNode.putValue(NATIONAL_PROVIDER_IDENTIFIER, p.toString());
+			thisNode.putValue(NATIONAL_PROVIDER_IDENTIFIER,
+				p.toString().substring(1, p.toString().length() - 1));
 		setMultipleAttributesOnNode(element, getXpath(NATIONAL_PROVIDER_IDENTIFIER),
 			consumer, Filters.attribute());
 	}
 
 	/**
-	 * Will decode the TPI from the xml
+	 * Will decode the TIN from the xml
 	 *
 	 * @param element Xml fragment being parsed.
 	 * @param thisNode The output internal representation of the document
@@ -178,7 +179,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	}
 
 	/**
-	 * Will decode the TPI from the xml
+	 * Will decode multiple TINs from the xml into a list and remove all brackets.
 	 *
 	 * @param element Xml fragment being parsed.
 	 * @param thisNode The output internal representation of the document
@@ -186,8 +187,8 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	private void setMultipleTaxProviderTaxIdsOnNode(Element element, Node thisNode) {
 		Consumer<? super List<String>> consumer = p ->
 			thisNode.putValue(TAX_PAYER_IDENTIFICATION_NUMBER,
-				p.toString());
-		setMultipleAttributesOnNode(element, getXpath(NATIONAL_PROVIDER_IDENTIFIER),
+				p.toString().substring(1, p.toString().length() - 1).trim());
+		setMultipleAttributesOnNode(element, getXpath(TAX_PAYER_IDENTIFICATION_NUMBER),
 			consumer, Filters.attribute());
 	}
 
