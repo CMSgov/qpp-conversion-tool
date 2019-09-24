@@ -168,11 +168,11 @@ public enum ErrorCode implements LocalizedError {
 		+ " Please refer to the `(Submission year's)` IG for more details " + DocumentationReference.CEHRT
 	    + " regarding practice CEHRTs.", true),
 	CPC_PLUS_TIN_REQUIRED(84, "CPC+ QRDA-III Submissions require at least one TIN to be present."),
-	CPC_PLUS_INVALID_TIN(85, "CPC+ QRDA-III Submission TINs require a length of 9"),
+	CPC_PLUS_INVALID_TIN(85, "CPC+ QRDA-III Submission TINs require a 9 digit numerical value"),
 	CPC_PLUS_MISSING_TIN(86, "This CPC+ QRDA-III submission is missing a TIN. Please ensure there is a TIN associated with every "
 		+ "NPI submitted"),
 	CPC_PLUS_NPI_REQUIRED(87, "CPC+ QRDA-III Submissions require at least one NPI to be present"),
-	CPC_PLUS_INVALID_NPI(88, "CPC+ QRDA-III Submission NPIs require a length of 10"),
+	CPC_PLUS_INVALID_NPI(88, "CPC+ QRDA-III Submission NPIs require a 10 digit numerical value"),
 	CPC_PLUS_MISSING_NPI(89, "This CPC+ QRDA-III submission is missing a NPI. Please ensure there is an NPI associated with "
 		+ "every TIN submitted");
 

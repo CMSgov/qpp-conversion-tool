@@ -585,5 +585,23 @@
 				"occurrences": 1
 			}
 		]
+	},
+	"CPCPlus_InvalidAlphaNpi.xml" : {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 88,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_InvalidAlphaTin.xml" : {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 85,
+				"occurrences": 1
+			}
+		]
 	}
 }
