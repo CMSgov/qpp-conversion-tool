@@ -82,9 +82,29 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 
 
 		validateApmEntityId(node);
-		if (hasTinAndNpi(node))
-		validateNumberOfTinsAndNpis(node);
-		validateApmNpiCombination(node);
+		if (hasTinAndNpi(node)) {
+			validateNumberOfTinsAndNpis(node);
+			validateApmNpiCombination(node);
+		}
+	}
+
+	/**
+	 * Validates the APM Entity ID in the given node is valid.
+	 *
+	 * A validation error is created if the APM Entity ID is invalid.
+	 *
+	 * @param node The node to validate
+	 */
+	private void validateApmEntityId(Node node) {
+		String apmEntityId = node.getValue(ClinicalDocumentDecoder.PRACTICE_ID);
+
+		if (StringUtils.isEmpty(apmEntityId)) {
+			return;
+		}
+
+		if (!ApmEntityIds.idExists(apmEntityId)) {
+			addError(Detail.forErrorAndNode(ErrorCode.CPC_CLINICAL_DOCUMENT_INVALID_APM, node));
+		}
 	}
 
 	/**
@@ -112,25 +132,6 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 			addError(Detail.forErrorAndNode(ErrorCode.CPC_PLUS_MISSING_NPI, node));
 		} else if (numOfNpis > numOfTins) {
 			addError(Detail.forErrorAndNode(ErrorCode.CPC_PLUS_MISSING_TIN, node));
-		}
-	}
-
-	/**
-	 * Validates the APM Entity ID in the given node is valid.
-	 *
-	 * A validation error is created if the APM Entity ID is invalid.
-	 *
-	 * @param node The node to validate
-	 */
-	private void validateApmEntityId(Node node) {
-		String apmEntityId = node.getValue(ClinicalDocumentDecoder.PRACTICE_ID);
-
-		if (StringUtils.isEmpty(apmEntityId)) {
-			return;
-		}
-
-		if (!ApmEntityIds.idExists(apmEntityId)) {
-			addError(Detail.forErrorAndNode(ErrorCode.CPC_CLINICAL_DOCUMENT_INVALID_APM, node));
 		}
 	}
 
