@@ -96,9 +96,9 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 		int numOfNpis = Arrays.asList(
 			node.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER).split(",")).size();
 		if (numOfTins > numOfNpis) {
-			addError(Detail.forErrorAndNode(ErrorCode.CPC_PLUS_INVALID_NPI, node));
+			addError(Detail.forErrorAndNode(ErrorCode.CPC_PLUS_MISSING_NPI, node));
 		} else if (numOfNpis > numOfTins) {
-			addError(Detail.forErrorAndNode(ErrorCode.CPC_PLUS_INVALID_TIN, node));
+			addError(Detail.forErrorAndNode(ErrorCode.CPC_PLUS_MISSING_TIN, node));
 		}
 	}
 
