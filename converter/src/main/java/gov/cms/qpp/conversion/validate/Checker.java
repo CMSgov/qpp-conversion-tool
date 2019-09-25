@@ -109,6 +109,27 @@ class Checker {
 		return this;
 	}
 
+	Checker listValuesAreValid(LocalizedError code, String name, int size) {
+		lastAppraised = node.getValue(name);
+		if (!shouldShortcut()) {
+			List<String> values = Arrays.asList(((String)lastAppraised).split(","));
+			values.forEach(value -> {
+				String trimmedValue = value.trim();
+				if (size != trimmedValue.length()) {
+					details.add(detail(code));
+				}
+				if (!isNumeric(trimmedValue)) {
+					details.add(detail(code));
+				}
+			});
+		}
+		return this;
+	}
+
+	private boolean isNumeric(String value) {
+		return value.matches("-?\\d+");
+	}
+
 	/**
 	 * Tests if given value matches specified regex
 	 *

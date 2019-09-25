@@ -549,5 +549,59 @@
 				"occurrences": 1
 			}
 		]
+	},
+	"CPCPLUS-2e-MissingTIN_03282019.xml" : {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 86,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPLUS-6a-InvalidTIN_04152019.xml" : {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 85,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPLUS-7a-ImproperNPIFormat_04152019.xml" : {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 88,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPLUS-2f-MissingNpi_03282019.xml" : {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 89,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_InvalidAlphaNpi.xml" : {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 88,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_InvalidAlphaTin.xml" : {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 85,
+				"occurrences": 1
+			}
+		]
 	}
 }

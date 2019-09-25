@@ -12,6 +12,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.function.Consumer;
 
@@ -60,12 +61,18 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 		setEntityIdOnNode(element, thisNode);
 		setPracticeSiteAddress(element, thisNode);
 		setCehrtOnNode(element, thisNode);
-		setTaxProviderTaxIdOnNode(element, thisNode);
 		String entityType = thisNode.getValue(ENTITY_TYPE);
-		if (ENTITY_INDIVIDUAL.equals(entityType) || ENTITY_APM.equalsIgnoreCase(entityType)) {
-			setNationalProviderIdOnNode(element, thisNode);
-		} else if (ENTITY_VIRTUAL_GROUP.equals(entityType)) {
-			setVirtualGroupOnNode(element, thisNode);
+		if (ENTITY_APM.equalsIgnoreCase(entityType)){
+			setMultipleNationalProviderIdsOnNode(element, thisNode);
+			setMultipleTaxProviderTaxIdsOnNode(element, thisNode);
+		} else {
+			setTaxProviderTaxIdOnNode(element, thisNode);
+			if (ENTITY_INDIVIDUAL.equals(entityType)) {
+				setNationalProviderIdOnNode(element, thisNode);
+			}
+			if (ENTITY_VIRTUAL_GROUP.equals(entityType)) {
+				setVirtualGroupOnNode(element, thisNode);
+			}
 		}
 
 		return DecodeResult.TREE_CONTINUE;
@@ -139,12 +146,26 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	private void setNationalProviderIdOnNode(Element element, Node thisNode) {
 		Consumer<? super Attribute> consumer = p ->
 				thisNode.putValue(NATIONAL_PROVIDER_IDENTIFIER, p.getValue());
-		setOnNode(element, getXpath(NATIONAL_PROVIDER_IDENTIFIER),
+			setOnNode(element, getXpath(NATIONAL_PROVIDER_IDENTIFIER),
 				consumer, Filters.attribute(), true);
 	}
 
 	/**
-	 * Will decode the TPI from the xml
+	 * Will decode multiple NPIs from the xml into a list and remove all brackets.
+	 *
+	 * @param element Xml fragment being parsed.
+	 * @param thisNode The output internal representation of the document
+	 */
+	private void setMultipleNationalProviderIdsOnNode(Element element, Node thisNode) {
+		Consumer<? super List<String>> consumer = p ->
+			thisNode.putValue(NATIONAL_PROVIDER_IDENTIFIER,
+				p.toString().substring(1, p.toString().length() - 1));
+		setMultipleAttributesOnNode(element, getXpath(NATIONAL_PROVIDER_IDENTIFIER),
+			consumer, Filters.attribute());
+	}
+
+	/**
+	 * Will decode the TIN from the xml
 	 *
 	 * @param element Xml fragment being parsed.
 	 * @param thisNode The output internal representation of the document
@@ -154,7 +175,21 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 				thisNode.putValue(TAX_PAYER_IDENTIFICATION_NUMBER,
 						p.getValue());
 		setOnNode(element, getXpath(TAX_PAYER_IDENTIFICATION_NUMBER),
-				consumer, Filters.attribute(), true);
+			consumer, Filters.attribute(), true);
+	}
+
+	/**
+	 * Will decode multiple TINs from the xml into a list and remove all brackets.
+	 *
+	 * @param element Xml fragment being parsed.
+	 * @param thisNode The output internal representation of the document
+	 */
+	private void setMultipleTaxProviderTaxIdsOnNode(Element element, Node thisNode) {
+		Consumer<? super List<String>> consumer = p ->
+			thisNode.putValue(TAX_PAYER_IDENTIFICATION_NUMBER,
+				p.toString().substring(1, p.toString().length() - 1).trim());
+		setMultipleAttributesOnNode(element, getXpath(TAX_PAYER_IDENTIFICATION_NUMBER),
+			consumer, Filters.attribute());
 	}
 
 	private void setVirtualGroupOnNode(Element element, Node thisNode) {

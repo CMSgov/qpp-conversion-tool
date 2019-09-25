@@ -17,6 +17,9 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -273,8 +276,9 @@ class ClinicalDocumentDecoderTest {
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
 		objectUnderTest.decode(clinicalDocument, testParentNode);
-		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
-			.isEqualTo(TEST_TIN);
+		List<String> tinNumbers =
+			Arrays.asList(testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER).split(","));
+		tinNumbers.forEach(tinNumber -> assertThat(tinNumber).isNotEmpty());
 	}
 
 	@Test
@@ -285,8 +289,9 @@ class ClinicalDocumentDecoderTest {
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
 		objectUnderTest.decode(clinicalDocument, testParentNode);
-		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
-			.isEqualTo(TEST_NPI);
+		List<String> npiNumbers =
+			Arrays.asList(testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER).split(","));
+		npiNumbers.forEach(npiNumber -> assertThat(npiNumber).isNotEmpty());
 	}
 
 	@Test
@@ -352,11 +357,19 @@ class ClinicalDocumentDecoderTest {
 		Element documentationOf = new Element("documentationOf", rootns);
 		Element serviceEvent = new Element("serviceEvent", rootns);
 		Element performer = new Element("performer", rootns);
+		Element performer2 = new Element("performer", rootns);
 		Element assignedEntity = new Element("assignedEntity", rootns);
+		Element assignedEntity2 = new Element("assignedEntity", rootns);
 		Element nationalProviderIdentifier = new Element("id", rootns)
 				.setAttribute("root", "2.16.840.1.113883.4.6")
 				.setAttribute("extension", "2567891421");
+		Element nationalProviderIdentifier2 = new Element("id", rootns)
+			.setAttribute("root", "2.16.840.1.113883.4.6")
+			.setAttribute("extension", "0007891421");
 		Element virtualGroup = new Element("id", rootns)
+			.setAttribute("root", "2.16.840.1.113883.3.249.5.2")
+			.setAttribute("extension", "x12345");
+		Element virtualGroup2 = new Element("id", rootns)
 			.setAttribute("root", "2.16.840.1.113883.3.249.5.2")
 			.setAttribute("extension", "x12345");
 
@@ -365,7 +378,15 @@ class ClinicalDocumentDecoderTest {
 		assignedEntity.addContent(representedOrganization);
 		assignedEntity.addContent(nationalProviderIdentifier);
 		performer.addContent(assignedEntity);
+
+		Element representedOrganization2 = prepareRepOrgWithTaxPayerId(rootns);
+		representedOrganization2.addContent(virtualGroup2);
+		assignedEntity2.addContent(representedOrganization2);
+		assignedEntity2.addContent(nationalProviderIdentifier2);
+		performer2.addContent(assignedEntity2);
+
 		serviceEvent.addContent(performer);
+		serviceEvent.addContent(performer2);
 		documentationOf.addContent(serviceEvent);
 		return documentationOf;
 	}
