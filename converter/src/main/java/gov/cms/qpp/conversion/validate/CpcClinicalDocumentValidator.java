@@ -139,10 +139,6 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 		context.getPiiValidator().validateApmNpiCombination(node, this);
 	}
 
-	private void validateAllTinAndNpis(Node node) {
-
-	}
-
 	/**
 	 * Validates the submission is not after the set end date
 	 *
