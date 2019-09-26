@@ -638,6 +638,18 @@ class CheckerTest {
 	}
 
 	@Test
+	void testdoesNotChildrenErrors() {
+		Node iaSectionNode = new Node(TemplateId.IA_SECTION);
+		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
+		clinicalDocumentNode.addChildNode(iaSectionNode);
+
+		Checker checker = Checker.check(clinicalDocumentNode, details);
+		checker.doesNotHaveChildren(ERROR_MESSAGE, TemplateId.IA_SECTION);
+
+		assertThat(details).isNotEmpty();
+	}
+
+	@Test
 	void testHasChildrenWithTemplateIdFailure() {
 		Node iaSectionNode = new Node(TemplateId.IA_SECTION);
 		Node iaMeasureNode = new Node(TemplateId.IA_MEASURE);
@@ -785,6 +797,8 @@ class CheckerTest {
 		checker.isValidDate(ERROR_MESSAGE, key);
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE).containsExactly(ERROR_MESSAGE);
 	}
+
+
 
 	private Node makeTestNode(String key, String value) {
 		Node testNode = new Node();
