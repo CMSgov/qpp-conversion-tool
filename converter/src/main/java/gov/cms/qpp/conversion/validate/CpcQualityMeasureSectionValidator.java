@@ -78,11 +78,6 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 			return mapName;
 		}
 
-		static LocalizedError makeOverallError(String... measureIds) {
-			return ErrorCode.CPC_PLUS_TOO_FEW_QUALITY_MEASURES
-					.format(CpcGroupMinimum.NUMBER_OF_MEASURES_REQUIRED, String.join(",", measureIds));
-		}
-
 		LocalizedError makeError(String... measureIds) {
 			return ErrorCode.CPC_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY
 					.format(minimum, label, String.join(",", measureIds));
