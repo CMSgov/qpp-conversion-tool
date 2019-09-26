@@ -30,7 +30,6 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 
 		Arrays.stream(CpcGroupMinimum.values())
 				.forEach(group -> checkGroupMinimum(checker, group));
-		verifyOverallCount(checker);
 	}
 
 	/**
@@ -55,21 +54,6 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 		return cpcPlusGroups.get(groupMinimum.getMapName()).stream()
 				.map(MeasureConfig::getElectronicMeasureVerUuid)
 				.toArray(String[]::new);
-	}
-
-	/**
-	 * Verify minimum across all groups.
-	 * @param checker node validator helper
-	 */
-	private void verifyOverallCount(Checker checker) {
-		String[] measureIds = MeasureConfigs.getCpcPlusGroups()
-				.values().stream()
-				.flatMap(List::stream)
-				.map(MeasureConfig::getElectronicMeasureVerUuid)
-				.toArray(String[]::new);
-
-		checker.hasMeasures(
-				CpcGroupMinimum.makeOverallError(measureIds), CpcGroupMinimum.NUMBER_OF_MEASURES_REQUIRED, measureIds);
 	}
 
 	/**
