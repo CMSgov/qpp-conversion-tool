@@ -186,6 +186,30 @@ class CpcClinicalDocumentValidatorTest {
 			.containsExactly(ErrorCode.CPC_PLUS_NPI_REQUIRED);
 	}
 
+	@Test
+	void testWarnWhenContainsIa() {
+		Node clinicalDocumentNode = createCpcPlusClinicalDocument();
+		Node iaSection = new Node(TemplateId.IA_SECTION);
+		clinicalDocumentNode.addChildNode(iaSection);
+		List<Detail> warnings = cpcValidator.validateSingleNode(clinicalDocumentNode).getWarnings();
+
+		assertThat(warnings)
+			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.contains(ErrorCode.CPC_PLUS_NO_IA_OR_PI);
+	}
+
+	@Test
+	void testWarnWhenContainsPi() {
+		Node clinicalDocumentNode = createCpcPlusClinicalDocument();
+		Node piSection = new Node(TemplateId.PI_SECTION);
+		clinicalDocumentNode.addChildNode(piSection);
+		List<Detail> warnings = cpcValidator.validateSingleNode(clinicalDocumentNode).getWarnings();
+
+		assertThat(warnings)
+			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.contains(ErrorCode.CPC_PLUS_NO_IA_OR_PI);
+	}
+
 	private Node createValidCpcPlusClinicalDocument() {
 		Node clinicalDocumentNode = createCpcPlusClinicalDocument();
 		addMeasureSectionNode(clinicalDocumentNode);
@@ -200,6 +224,7 @@ class CpcClinicalDocumentValidatorTest {
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID, "DogCow");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, "123456789");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, "9900000099");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.CEHRT, "1234567890x");
 
 		return clinicalDocumentNode;
 	}
@@ -208,5 +233,4 @@ class CpcClinicalDocumentValidatorTest {
 		Node measureSection = new Node(TemplateId.MEASURE_SECTION_V2);
 		clinicalDocumentNode.addChildNode(measureSection);
 	}
-
 }

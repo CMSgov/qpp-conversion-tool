@@ -48,8 +48,8 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 51 : CT - A single measure performed value is required and must be either a Y or an N.
 * 52 : CT - The measure data with population id '`(population id)`' must have exactly one Aggregate Count.
 * 53 : CT - Measure data with population id '`(population id)`' must be a whole number greater than or equal to 0
-* 55 : CT - A CPC Plus Performance period start must be 01/01/2018. Please refer to the IG for more information here: https://ecqi.healthit.gov/system/files/2019_CMS_QRDA_III_Eligible_Clinicians_and_EP_IG-508.pdf#page=14
-* 56 : CT - A CPC Plus Performance period end must be 12/31/2018. Please refer to the IG for more information here: https://ecqi.healthit.gov/system/files/2019_CMS_QRDA_III_Eligible_Clinicians_and_EP_IG-508.pdf#page=14
+* 55 : CT - A CPC Plus Performance period start must be 01/01/2019. Please refer to the IG for more information here: https://ecqi.healthit.gov/system/files/2019_CMS_QRDA_III_Eligible_Clinicians_and_EP_IG-508.pdf#page=14
+* 56 : CT - A CPC Plus Performance period end must be 12/31/2019. Please refer to the IG for more information here: https://ecqi.healthit.gov/system/files/2019_CMS_QRDA_III_Eligible_Clinicians_and_EP_IG-508.pdf#page=14
 * 57 : CT - The measure reference results must have a single measure population
 * 58 : CT - The measure reference results must have a single measure type
 * 59 : CT - The electronic measure id: `(Current eMeasure ID)` requires a `(Subpopulation type)` with the correct UUID of `(Correct uuid required)`. Here is a link to the IG containing all the valid measure ids: https://ecqi.healthit.gov/system/files/2019_CMS_QRDA_III_Eligible_Clinicians_and_EP_IG-508.pdf#page=31
@@ -60,7 +60,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 66 : CT - Missing the `(Supplemental Type)` - `(Type Qualification)` supplemental data for code `(Supplemental Data Code)` for the measure id `(Measure Id)`'s Sub-population `(Sub Population)`
 * 67 : CT - Must have one count for Supplemental Data `(Supplemental Data Code)` on Sub-population `(Sub Population)` for the measure id `(Measure Id)`
 * 68 : CT - Your CPC+ submission was made after the CPC+ Measure section submission deadline of `(Submission end date)`. Your CPC+ QRDA III file has not been processed. Please contact CPC+ Support at `(CPC+ contact email)` for assistance.
-* 69 : CT - `(Performance period start or end date)` is an invalid date format. Please use a standard ISO date format. Example valid values are 2018-02-26, 2018/02/26T01:45:23, or 2018-02-26T01:45:23.123. Please see the Implementation Guide for information on the performance period here: https://ecqi.healthit.gov/system/files/2019_CMS_QRDA_III_Eligible_Clinicians_and_EP_IG-508.pdf#page=17
+* 69 : CT - `(Performance period start or end date)` is an invalid date format. Please use a standard ISO date format. Example valid values are 2019-02-26, 2019/02/26T01:45:23, or 2019-02-26T01:45:23.123. Please see the Implementation Guide for information on the performance period here: https://ecqi.healthit.gov/system/files/2019_CMS_QRDA_III_Eligible_Clinicians_and_EP_IG-508.pdf#page=17
 * 70 : CT - The measure section measure reference and results has an incorrect number of measure GUID supplied. Please ensure that only one measure GUID is provided per measure.
 * 71 : CT - Two or more different measure section measure reference and results have the same measure GUID. Please ensure that each measure section measure reference and results do not have the same measure GUID.
 * 72 : CT - The Performance Rate is missing
@@ -76,3 +76,4 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 87 : CT - CPC+ QRDA-III Submissions require at least one NPI to be present
 * 88 : CT - CPC+ QRDA-III Submission NPIs require a 10 digit numerical value
 * 89 : CT - This CPC+ QRDA-III submission is missing a NPI. Please ensure there is an NPI associated with every TIN submitted
+* 90 : CT - CPC+ QRDA-III submissions must not contain an IA or PI section
