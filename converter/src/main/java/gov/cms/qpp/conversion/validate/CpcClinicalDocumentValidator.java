@@ -78,8 +78,8 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 					1, TemplateId.MEASURE_SECTION_V2);
 
 		checkWarnings(node)
-			.valueIsNotEmpty(ErrorCode.MISSING_CEHRT.format(Context.REPORTING_YEAR), ClinicalDocumentDecoder.CEHRT);
-
+			.valueIsNotEmpty(ErrorCode.MISSING_CEHRT.format(Context.REPORTING_YEAR), ClinicalDocumentDecoder.CEHRT)
+			.doesNotHaveChildren(ErrorCode.CPC_PLUS_NO_IA_OR_PI, TemplateId.IA_SECTION, TemplateId.PI_SECTION);
 
 		validateApmEntityId(node);
 		if (hasTinAndNpi(node)) {
