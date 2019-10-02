@@ -13,6 +13,7 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.util.MeasureConfigHelper;
+import gov.cms.qpp.conversion.util.NumberHelper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -125,6 +126,13 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 				addError(Detail.forErrorAndNode(error, node));
 			}
 		});
+	}
+
+	private int getPopulationDataOrDefault(Node node, String valueName) {
+		String value = node.getValue(valueName);
+		if (null == value || !NumberHelper.isNumeric(value))
+			return 0;
+		return Integer.parseInt(value);
 	}
 
 }

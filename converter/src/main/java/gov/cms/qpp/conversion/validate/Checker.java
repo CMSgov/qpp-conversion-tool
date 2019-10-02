@@ -10,6 +10,7 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.util.DuplicationCheckHelper;
 import gov.cms.qpp.conversion.util.FormatHelper;
+import gov.cms.qpp.conversion.util.NumberHelper;
 
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
@@ -118,16 +119,12 @@ class Checker {
 				if (size != trimmedValue.length()) {
 					details.add(detail(code));
 				}
-				if (!isNumeric(trimmedValue)) {
+				if (!NumberHelper.isNumeric(trimmedValue)) {
 					details.add(detail(code));
 				}
 			});
 		}
 		return this;
-	}
-
-	private boolean isNumeric(String value) {
-		return value.matches("-?\\d+");
 	}
 
 	/**
