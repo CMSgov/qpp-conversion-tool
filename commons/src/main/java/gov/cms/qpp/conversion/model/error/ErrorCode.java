@@ -135,8 +135,6 @@ public enum ErrorCode implements LocalizedError {
 			+ " Here is a link to the IG section on identifiers: " + DocumentationReference.IDENTIFIERS),
 	CPC_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY(64, "CPC+ Submissions must have at least `(CPC+ measure group minimum)` "
 			+ "of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`", true),
-	CPC_PLUS_TOO_FEW_QUALITY_MEASURES(65, "CPC+ Submissions must have at least `(Overall CPC+ measure minimum)` of "
-		+ "the following measures: `(Listing of all CPC+ measure ids)`.", true),
 	CPC_PLUS_MISSING_SUPPLEMENTAL_CODE(66, "Missing the `(Supplemental Type)` - `(Type Qualification)` supplemental data for code "
 		+ "`(Supplemental Data Code)` for the measure id `(Measure Id)`'s Sub-population `(Sub Population)`", true),
 	CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT(67, "Must have one count for Supplemental Data `(Supplemental Data Code)` "
