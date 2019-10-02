@@ -435,8 +435,8 @@ class Checker {
 	 * Verifies that the target node contains only children of specified template ids
 	 *
 	 * @param code that identifies the error
-	 * @param types types of template ids to filter
-	 * @return The checker, for chaining method calls.
+	 * @param types of template ids to filter
+	 * @return The checker, for chaining method calls
 	 */
 	Checker onlyHasChildren(LocalizedError code, TemplateId... types) {
 		if (!shouldShortcut()) {
@@ -449,6 +449,30 @@ class Checker {
 				.stream()
 				.allMatch(childNode -> templateIds.contains(childNode.getType()));
 			if (!valid) {
+				details.add(detail(code));
+			}
+		}
+		return this;
+	}
+
+	/**
+	 * Verifies that the target node does not contain the specified template ids as children.
+	 *
+	 * @param code that identifies the error
+	 * @param types of template ids to filter for
+	 * @return The checker, for chaining method calls
+	 */
+	Checker doesNotHaveChildren(LocalizedError code, TemplateId... types) {
+		if (!shouldShortcut()) {
+			Set<TemplateId> templateIds = EnumSet.noneOf(TemplateId.class);
+			for (TemplateId templateId : types) {
+				templateIds.add(templateId);
+			}
+
+			boolean invalid = node.getChildNodes()
+				.stream()
+				.anyMatch(childNode -> templateIds.contains(childNode.getType()));
+			if (invalid) {
 				details.add(detail(code));
 			}
 		}
