@@ -12,7 +12,7 @@ import gov.cms.qpp.conversion.model.error.ErrorCode;
 @Validator(value = TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
 public class PerformanceRateValidator extends NodeValidator {
 
-	protected static final String NULL_ATTRIBUTE = "NA";
+	public static final String NULL_ATTRIBUTE = "NA";
 
 	/**
 	 * Validates that the node given contains a value in range of 0-1 or null attribute

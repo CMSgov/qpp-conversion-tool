@@ -283,7 +283,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param populationCriteriaTypes measure type i.e. "DENOM", "NUMER", ...
 	 * @return predicate that filters measure nodes by measure type
 	 */
-	private Predicate<Node> makeTypeChildFinder(String... populationCriteriaTypes) {
+	protected Predicate<Node> makeTypeChildFinder(String... populationCriteriaTypes) {
 		return thisNode -> {
 			forceCheckErrors(thisNode)
 					.incompleteValidation()

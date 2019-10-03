@@ -1,7 +1,10 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
+import gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder;
 import gov.cms.qpp.conversion.decode.StratifierDecoder;
+import gov.cms.qpp.conversion.encode.QualityMeasureIdEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -50,6 +53,42 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 						ErrorCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
 							.format(requiredPerformanceRateCount, MeasureConfigHelper.getPrioritizedId(node)),
 						requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
+		}
+
+		//Validation for the Performance Denominator. Performance denominator is Denominator - Denex - Denexcep.
+		//Skips this validation if any of the measure data errors occur before this.
+		if (viewErrors().isEmpty()) {
+			List<Node> subPopNodes = MeasureConfigHelper.createSubPopulationGrouping(node, measureConfig);
+			for (Node subpopulationNode: subPopNodes) {
+				Node numeratorNode = subpopulationNode.findChildNode(
+					n -> SubPopulationLabel.NUMER.hasAlias(n.getValue(QualityMeasureIdEncoder.TYPE)));
+				Node denominatorNode = subpopulationNode.findChildNode(
+					n -> SubPopulationLabel.DENOM.hasAlias(n.getValue(QualityMeasureIdEncoder.TYPE)));
+				Node denomExclusionNode = subpopulationNode.findChildNode(
+					n -> SubPopulationLabel.DENEX.hasAlias(n.getValue(QualityMeasureIdEncoder.TYPE)));
+				Node denomExceptionNode = subpopulationNode.findChildNode(
+					n -> SubPopulationLabel.DENEXCEP.hasAlias(n.getValue(QualityMeasureIdEncoder.TYPE)));
+
+				Node performanceRateNode = node.getChildNodes(n ->
+					TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE.equals(n.getType()))
+					.filter(n -> numeratorNode.getValue(MEASURE_POPULATION).equalsIgnoreCase
+						(n.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID)))
+					.findFirst()
+					.orElse(null);
+
+				//skip if performance rate is missing
+				if (null != performanceRateNode) {
+					if (PerformanceRateValidator.NULL_ATTRIBUTE.equals(
+						performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE))) {
+						int performanceDenominator =
+							calculatePerformanceDenom(denominatorNode, denomExclusionNode, denomExceptionNode);
+						if (performanceDenominator != 0 || extractAggregateValue(numeratorNode) != 0) {
+							addError(Detail.forErrorAndNode(ErrorCode.CPC_PLUS_INVALID_NULL_PERFORMANCE_RATE, node));
+						}
+					}
+				}
+
+			}
 		}
 	}
 
@@ -128,11 +167,40 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 		});
 	}
 
-	private int getPopulationDataOrDefault(Node node, String valueName) {
-		String value = node.getValue(valueName);
-		if (null == value || !NumberHelper.isNumeric(value))
-			return 0;
-		return Integer.parseInt(value);
+	/**
+	 * calculates the Performance Denominator from the extracted aggregate values of each node
+	 *
+	 * @param denom node that holds the denominator aggregate count
+	 * @param denex node that holds the denominator exclusion aggregate count
+	 * @param denexcep node that holds the denominator exception aggregate count
+	 * @return
+	 */
+	private Integer calculatePerformanceDenom(Node denom, Node denex, Node denexcep) {
+		int denomValue = extractAggregateValue(denom);
+		int denexValue = extractAggregateValue(denex);
+		int denexcepValue = extractAggregateValue(denexcep);
+
+		return denomValue - denexValue - denexcepValue;
 	}
 
+	/**
+	 * Extracts the aggregate count from the node or returns 0 if not found.
+	 *
+	 * @param node
+	 * @return
+	 */
+	private Integer extractAggregateValue(Node node) {
+		Integer extractedValue = 0;
+		if (null != node) {
+			Node aggregate =
+				node.getChildNodes(n -> TemplateId.PI_AGGREGATE_COUNT.equals(n.getType())).findFirst().orElse(null);
+			if (aggregate != null) {
+				String value = aggregate.getValue(AggregateCountDecoder.AGGREGATE_COUNT);
+				if (NumberHelper.isNumeric(value)) {
+					extractedValue = Integer.valueOf(value);
+				}
+			}
+		}
+		return extractedValue;
+	}
 }
