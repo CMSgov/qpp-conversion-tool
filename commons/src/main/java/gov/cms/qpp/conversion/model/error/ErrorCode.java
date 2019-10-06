@@ -177,12 +177,12 @@ public enum ErrorCode implements LocalizedError {
 	CPC_PLUS_INVALID_NULL_PERFORMANCE_RATE(91, "The performance rate `(performanceRateUuid)` has an invalid null value. "
 		+ "A performance rate cannot be null unless the performance denominator is 0", true),
 	CPC_PLUS_PERFORMANCE_DENOM_LESS_THAN_ZERO(92, "The performance denominator for measure `(measureId)` was less than 0. "
-		+ "A performance rate cannot be null unless the performance denominator is 0"),
+		+ "A performance rate cannot be null unless the performance denominator is 0", true),
 	CPC_PLUS_NUMERATOR_GREATER_THAN_EITHER_DENOMINATORS(93, "The numerator id `(numeratorUuid)` has a count value that is "
 		+ "greater than the denominator and/or the performance denominator "
 		+ "(Denominator count - Denominator exclusion count - Denominator Exception count)", true),
 	CPC_PLUS_DENEX_GREATER_THAN_DENOMINATOR(94, "The denominator exclusion id `(denexUuid)` has a count value that is greater than the "
-		+ "denominator. The Denominator exclusion cannot be a greater value than the denominator.",true);
+		+ "denominator. The Denominator exclusion cannot be a greater value than the denominator.", true);
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));
