@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
@@ -62,10 +64,49 @@ class CpcQualityMeasureIdValidatorTest {
 					.format(2, E_MEASURE_ID));
 	}
 
+	@Test
+	void testIgnoreMissingAggCount() {
+		addMeasureDataWithoutAggCount();
+		List<Detail> details = validator.validateSingleNode(testNode).getErrors();
+
+		assertThat(details)
+			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.doesNotContain(ErrorCode.CPC_PLUS_PERFORMANCE_DENOM_LESS_THAN_ZERO);
+	}
+
+	@Test
+	void testIgnoreInvalidAggCount() {
+		addMeasureDataWithInvalidAggCount();
+		List<Detail> details = validator.validateSingleNode(testNode).getErrors();
+
+		assertThat(details)
+			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.doesNotContain(ErrorCode.CPC_PLUS_PERFORMANCE_DENOM_LESS_THAN_ZERO);
+	}
+
 	private void addAnyNumberOfChildren(int size) {
 		for (int count = 0 ; count < size; count++) {
 			Node childNode = new Node(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
 			testNode.addChildNode(childNode);
 		}
+	}
+
+	private void addMeasureDataWithoutAggCount() {
+		Node childNode = createMeasureDataNode();
+		testNode.addChildNode(childNode);
+	}
+
+	private void addMeasureDataWithInvalidAggCount() {
+		Node childNode = createMeasureDataNode();
+		Node aggCount = new Node(TemplateId.PI_AGGREGATE_COUNT);
+		aggCount.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "ab1234");
+
+		testNode.addChildNode(childNode);
+	}
+
+	private Node createMeasureDataNode() {
+		Node childNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		childNode.putValue("type", "DENOM");
+		return childNode;
 	}
 }

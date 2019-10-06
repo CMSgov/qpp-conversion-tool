@@ -36,6 +36,8 @@ class QualityMeasureIdRoundTripTest {
 		Paths.get("src/test/resources/correctMultiToSinglePerfMeasureExample.xml");
 	static final Path INCORRECT_MULTI_TO_SINGLE_PERF_RATE_FILE =
 		Paths.get("src/test/resources/negative/wrongSubPopulationsMeasure135.xml");
+	static final Path MISSING_COUNT_FOR_PERF_DENOM =
+		Paths.get("src/test/resources/negative/perfDenomAggCountMissing.xml");
 
 	@Test
 	void testRoundTripForQualityMeasureId() {
@@ -165,5 +167,24 @@ class QualityMeasureIdRoundTripTest {
 		for(Detail detail: details) {
 			assertThat(detail.getErrorCode()).isEqualTo(59);
 		}
+	}
+
+	@Test
+	void testMissingPerfDenomAggregateCount() {
+		Converter converter = new Converter(new PathSource(MISSING_COUNT_FOR_PERF_DENOM));
+		List<Detail> details = new ArrayList<>();
+
+		try {
+			converter.transform();
+		} catch (TransformException exception) {
+			AllErrors errors = exception.getDetails();
+			details.addAll(errors.getErrors().get(0).getDetails());
+		}
+
+		String populationId = "F50E5334-415D-482F-A30D-0623C082B602";
+
+		LocalizedError error = ErrorCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(populationId);
+		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.contains(error);
 	}
 }
