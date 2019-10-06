@@ -193,17 +193,16 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	 * @param node
 	 * @return
 	 */
-	private int extractAggregateValue(Node node) {
-		int extractedValue = 0;
+	private Integer extractAggregateValue(Node node) {
+		Integer extractedValue = 0;
 		if (null != node) {
 			Node aggregate =
 				node.getChildNodes(n -> TemplateId.PI_AGGREGATE_COUNT.equals(n.getType())).findFirst().orElse(null);
-			if (aggregate != null) {
-				String value = aggregate.getValue(AggregateCountDecoder.AGGREGATE_COUNT);
-				if (NumberHelper.isNumeric(value)) {
-					extractedValue = Integer.valueOf(value);
-				}
+			String value = aggregate.getValue(AggregateCountDecoder.AGGREGATE_COUNT);
+			if (NumberHelper.isNumeric(value)) {
+				extractedValue = Integer.valueOf(value);
 			}
+
 		}
 		return extractedValue;
 	}
