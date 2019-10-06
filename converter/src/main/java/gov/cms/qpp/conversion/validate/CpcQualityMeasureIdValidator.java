@@ -68,7 +68,6 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 					n -> SubPopulationLabel.DENEX.hasAlias(n.getValue(QualityMeasureIdEncoder.TYPE)));
 				Node denomExceptionNode = subpopulationNode.findChildNode(
 					n -> SubPopulationLabel.DENEXCEP.hasAlias(n.getValue(QualityMeasureIdEncoder.TYPE)));
-
 				Node performanceRateNode = node.getChildNodes(n ->
 					TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE.equals(n.getType()))
 					.filter(n -> numeratorNode.getValue(MEASURE_POPULATION).equalsIgnoreCase
