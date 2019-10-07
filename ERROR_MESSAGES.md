@@ -77,3 +77,4 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 88 : CT - CPC+ QRDA-III Submission NPIs require a 10 digit numerical value
 * 89 : CT - This CPC+ QRDA-III submission is missing a NPI. Please ensure there is an NPI associated with every TIN submitted
 * 90 : CT - CPC+ QRDA-III submissions must not contain an IA or PI section
+* 95 : CT - The Clinical Document must contain one Measure Section v4 with the extension 2017-06-01

@@ -173,7 +173,8 @@ public enum ErrorCode implements LocalizedError {
 	CPC_PLUS_INVALID_NPI(88, "CPC+ QRDA-III Submission NPIs require a 10 digit numerical value"),
 	CPC_PLUS_MISSING_NPI(89, "This CPC+ QRDA-III submission is missing a NPI. Please ensure there is an NPI associated with "
 		+ "every TIN submitted"),
-	CPC_PLUS_NO_IA_OR_PI(90, "CPC+ QRDA-III submissions must not contain an IA or PI section");
+	CPC_PLUS_NO_IA_OR_PI(90, "CPC+ QRDA-III submissions must not contain an IA or PI section"),
+	MEASURE_SECTION_V4_REQUIRED(95, "The Clinical Document must contain one Measure Section v4 with the extension 2017-06-01");
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));

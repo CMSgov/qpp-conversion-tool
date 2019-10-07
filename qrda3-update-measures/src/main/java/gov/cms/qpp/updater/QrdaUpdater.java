@@ -82,7 +82,7 @@ public class QrdaUpdater {
 			Element measureComponent = measureComponents.stream().filter(
 				component -> component.getChild("section", rootNamespace)
 						.getChildren("templateId", rootNamespace).stream()
-						.anyMatch(templateIdElement -> TemplateId.MEASURE_SECTION_V2.getRoot()
+						.anyMatch(templateIdElement -> TemplateId.MEASURE_SECTION_V3.getRoot()
 							.equals(templateIdElement.getAttribute("root").getValue())))
 				.findFirst().orElse(null);
 

@@ -75,7 +75,7 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 					ClinicalDocumentDecoder.PRACTICE_ID)
 			.valueIsNotEmpty(ErrorCode.CPC_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.PRACTICE_ID)
 			.childMinimum(ErrorCode.CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED,
-					1, TemplateId.MEASURE_SECTION_V2);
+					1, TemplateId.MEASURE_SECTION_V3);
 
 		checkWarnings(node)
 			.valueIsNotEmpty(ErrorCode.MISSING_CEHRT.format(Context.REPORTING_YEAR), ClinicalDocumentDecoder.CEHRT)

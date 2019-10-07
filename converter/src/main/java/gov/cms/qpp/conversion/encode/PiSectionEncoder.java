@@ -54,7 +54,7 @@ public class PiSectionEncoder extends QppOutputEncoder {
 	private void encodeTopLevelValues(JsonWrapper wrapper, Node node) {
 		wrapper.put("category", node.getValue("category"));
 		wrapper.put(SUBMISSION_METHOD, "electronicHealthRecord");
-		if (TemplateId.PI_SECTION == node.getType() || (TemplateId.MEASURE_SECTION_V2 == node.getType()
+		if (TemplateId.PI_SECTION == node.getType() || (TemplateId.MEASURE_SECTION_V3 == node.getType()
 				&& Program.isCpc(node.getParent()))) {
 			wrapper.put(ClinicalDocumentDecoder.CEHRT, node.getParent().getValue(ClinicalDocumentDecoder.CEHRT));
 		}
