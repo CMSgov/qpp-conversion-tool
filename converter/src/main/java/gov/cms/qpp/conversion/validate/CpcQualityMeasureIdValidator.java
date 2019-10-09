@@ -1,7 +1,10 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
+import gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder;
 import gov.cms.qpp.conversion.decode.StratifierDecoder;
+import gov.cms.qpp.conversion.encode.QualityMeasureIdEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -13,6 +16,7 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.util.MeasureConfigHelper;
+import gov.cms.qpp.conversion.util.NumberHelper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -49,6 +53,62 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 						ErrorCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
 							.format(requiredPerformanceRateCount, MeasureConfigHelper.getPrioritizedId(node)),
 						requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
+		}
+
+		//Validation for the Performance Denominator. Performance denominator is Denominator - Denex - Denexcep.
+		//Skips this validation if any of the measure data errors occur before this.
+		if (viewErrors().isEmpty()) {
+			List<Node> subPopNodes = MeasureConfigHelper.createSubPopulationGrouping(node, measureConfig);
+			for (Node subpopulationNode: subPopNodes) {
+				Node numeratorNode = subpopulationNode.findChildNode(
+					n -> SubPopulationLabel.NUMER.hasAlias(n.getValue(QualityMeasureIdEncoder.TYPE)));
+				Node denominatorNode = subpopulationNode.findChildNode(
+					n -> SubPopulationLabel.DENOM.hasAlias(n.getValue(QualityMeasureIdEncoder.TYPE)));
+				Node denomExclusionNode = subpopulationNode.findChildNode(
+					n -> SubPopulationLabel.DENEX.hasAlias(n.getValue(QualityMeasureIdEncoder.TYPE)));
+				Node denomExceptionNode = subpopulationNode.findChildNode(
+					n -> SubPopulationLabel.DENEXCEP.hasAlias(n.getValue(QualityMeasureIdEncoder.TYPE)));
+				Node performanceRateNode = node.getChildNodes(n ->
+					TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE.equals(n.getType()))
+					.filter(n -> numeratorNode.getValue(MEASURE_POPULATION).equalsIgnoreCase
+						(n.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID)))
+					.findFirst()
+					.orElse(null);
+
+				int denominatorValue = extractAggregateValue(denominatorNode);
+				int denexValue = extractAggregateValue(denomExclusionNode);
+				int denexcepValue = extractAggregateValue(denomExceptionNode);
+				int numeratorValue = extractAggregateValue(numeratorNode);
+				int performanceDenominator =
+					calculatePerformanceDenom(denominatorValue, denexValue, denexcepValue);
+
+				if (performanceDenominator < 0) {
+					addError(Detail.forErrorAndNode(ErrorCode.CPC_PLUS_PERFORMANCE_DENOM_LESS_THAN_ZERO
+						.format(MeasureConfigHelper.getPrioritizedId(node)), node));
+				}
+				if (numeratorValue > performanceDenominator || numeratorValue > denominatorValue) {
+					addError(Detail.forErrorAndNode(ErrorCode.CPC_PLUS_NUMERATOR_GREATER_THAN_EITHER_DENOMINATORS
+						.format(numeratorNode
+							.getValue(MEASURE_POPULATION)), node));
+				}
+				if (denexValue > denominatorValue) {
+					addError(Detail.forErrorAndNode(ErrorCode.CPC_PLUS_DENEX_GREATER_THAN_DENOMINATOR
+						.format(denomExclusionNode.getValue(MEASURE_POPULATION)), node));
+				}
+				//skip if performance rate is missing
+				if (null != performanceRateNode) {
+					if (PerformanceRateValidator.NULL_ATTRIBUTE.equals(
+						performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE))) {
+						if (performanceDenominator != 0) {
+							addError(Detail.forErrorAndNode(
+								ErrorCode.CPC_PLUS_INVALID_NULL_PERFORMANCE_RATE
+									.format(performanceRateNode
+										.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID)), node));
+						}
+					}
+				}
+
+			}
 		}
 	}
 
@@ -127,4 +187,35 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 		});
 	}
 
+	/**
+	 * Extracts the aggregate count from the node or returns 0 if not found.
+	 *
+	 * @param node
+	 * @return
+	 */
+	private Integer extractAggregateValue(Node node) {
+		Integer extractedValue = 0;
+		if (null != node) {
+			Node aggregate =
+				node.getChildNodes(n -> TemplateId.PI_AGGREGATE_COUNT.equals(n.getType())).findFirst().orElse(null);
+			String value = aggregate.getValue(AggregateCountDecoder.AGGREGATE_COUNT);
+			if (NumberHelper.isNumeric(value)) {
+				extractedValue = Integer.valueOf(value);
+			}
+
+		}
+		return extractedValue;
+	}
+
+	/**
+	 * calculates the Performance Denominator from the given values
+	 *
+	 * @param denom node that holds the denominator aggregate count
+	 * @param denex node that holds the denominator exclusion aggregate count
+	 * @param denexcep node that holds the denominator exception aggregate count
+	 * @return
+	 */
+	private int calculatePerformanceDenom(int denom, int denex, int denexcep) {
+		return denom - denex - denexcep;
+	}
 }

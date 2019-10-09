@@ -93,7 +93,7 @@ class CpcPlusAcceptanceTest {
 		Converter converter = new Converter(new PathSource(entry));
 
 		TransformException expected = Assertions.assertThrows(TransformException.class, converter::transform);
-		//runnning conversions on individual files
+		//running conversions on individual files
 		List<Detail> details = expected.getDetails().getErrors().get(0).getDetails();
 		verifyOutcome(fileName, details);
 	}
