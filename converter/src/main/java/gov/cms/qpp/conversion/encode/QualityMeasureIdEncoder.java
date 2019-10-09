@@ -33,13 +33,13 @@ import static gov.cms.qpp.conversion.decode.AggregateCountDecoder.AGGREGATE_COUN
 public class QualityMeasureIdEncoder extends QppOutputEncoder {
 
 	private static final String MEASURE_ID = "measureId";
-	private static final String TYPE = "type";
 	private static final String SINGLE_PERFORMANCE_RATE = "singlePerformanceRate";
-	public static final String IS_END_TO_END_REPORTED = "isEndToEndReported";
 	private static final String TRUE = "true";
 	private static final String PERFORMANCE_NOT_MET = "performanceNotMet";
-
 	private static final Set MULTI_TO_SINGLE_PERF_RATE_MEASURE_ID = Sets.newHashSet("005", "008", "143", "438");
+
+	public static final String TYPE = "type";
+	public static final String IS_END_TO_END_REPORTED = "isEndToEndReported";
 
 	public QualityMeasureIdEncoder(Context context) {
 		super(context);
@@ -163,64 +163,8 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param measureConfig configurations to group performance rate proportion measures
 	 */
 	private void encodeMultiPerformanceRate(JsonWrapper wrapper, Node node, MeasureConfig measureConfig) {
-		List<Node> subPopNodes = createSubPopulationGrouping(node, measureConfig);
+		List<Node> subPopNodes = MeasureConfigHelper.createSubPopulationGrouping(node, measureConfig);
 		encodeMultiPerformanceChildren(wrapper, subPopNodes, measureConfig);
-	}
-
-	/**
-	 * Creates a grouping of sub populations extracted from the measure configurations
-	 *
-	 * @param node object that holds the nodes to be grouped
-	 * @param measureConfig object that holds the groupings
-	 * @return List of decoded Nodes
-	 */
-	private List<Node> createSubPopulationGrouping(Node node, MeasureConfig measureConfig) {
-		int subPopCount = measureConfig.getSubPopulation().size();
-		List<Node> subPopNodes = initializeMeasureDataList(subPopCount);
-		Map<String, Integer> mapPopulationIdToSubPopIndex = createSubPopulationIndexMap(measureConfig);
-		node.getChildNodes().stream()
-				.filter(childNode -> TemplateId.MEASURE_DATA_CMS_V2 == childNode.getType())
-				.forEach(childNode -> {
-					String populationId = childNode.getValue(MeasureDataDecoder.MEASURE_POPULATION);
-					Integer subPopIndex = mapPopulationIdToSubPopIndex.get(populationId.toUpperCase(Locale.ENGLISH));
-					if (subPopIndex != null) {
-						Node newParentNode = subPopNodes.get(subPopIndex);
-						newParentNode.addChildNode(childNode);
-					}
-				});
-		return subPopNodes;
-	}
-
-	/**
-	 * Initializes a list of Measure Section nodes from how many sub populations are being converted
-	 *
-	 * @param subPopulationCount number of sub populations to convert
-	 * @return List of decoded Nodes
-	 */
-	private List<Node> initializeMeasureDataList(int subPopulationCount) {
-		return IntStream.range(0, subPopulationCount)
-				.mapToObj(ignore -> new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2))
-				.collect(Collectors.toList());
-	}
-
-	/**
-	 * Creates a map of child guids to indexes for sub population grouping
-	 *
-	 * @param measureConfig configurations that group the sub populations
-	 * @return Map of Population UUID keys and index values
-	 */
-	private Map<String, Integer> createSubPopulationIndexMap(MeasureConfig measureConfig) {
-		Map<String, Integer> supPopMap = new HashMap<>();
-		int index = 0;
-		for (SubPopulation subPopulation : measureConfig.getSubPopulation()) {
-			supPopMap.put(subPopulation.getDenominatorUuid(), index);
-			supPopMap.put(subPopulation.getDenominatorExceptionsUuid(), index);
-			supPopMap.put(subPopulation.getDenominatorExclusionsUuid(), index);
-			supPopMap.put(subPopulation.getNumeratorUuid(), index);
-			supPopMap.put(subPopulation.getInitialPopulationUuid(), index);
-			index++;
-		}
-		return supPopMap;
 	}
 
 	/**
