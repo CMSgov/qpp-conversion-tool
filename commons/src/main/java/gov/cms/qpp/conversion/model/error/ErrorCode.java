@@ -182,7 +182,8 @@ public enum ErrorCode implements LocalizedError {
 		+ "greater than the denominator and/or the performance denominator "
 		+ "(Denominator count - Denominator exclusion count - Denominator Exception count)", true),
 	CPC_PLUS_DENEX_GREATER_THAN_DENOMINATOR(94, "The denominator exclusion id `(denexUuid)` has a count value that is greater than the "
-		+ "denominator. The Denominator exclusion cannot be a greater value than the denominator.", true);
+		+ "denominator. The Denominator exclusion cannot be a greater value than the denominator.", true),
+	MEASURE_SECTION_V4_REQUIRED(95, "The Clinical Document must contain one Measure Section v4 with the extension 2017-06-01");
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));

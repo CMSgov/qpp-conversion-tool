@@ -81,3 +81,4 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 92 : CT - The performance denominator for measure `(measureId)` was less than 0. A performance rate cannot be null unless the performance denominator is 0
 * 93 : CT - The numerator id `(numeratorUuid)` has a count value that is greater than the denominator and/or the performance denominator (Denominator count - Denominator exclusion count - Denominator Exception count)
 * 94 : CT - The denominator exclusion id `(denexUuid)` has a count value that is greater than the denominator. The Denominator exclusion cannot be a greater value than the denominator.
+* 95 : CT - The Clinical Document must contain one Measure Section v4 with the extension 2017-06-01
