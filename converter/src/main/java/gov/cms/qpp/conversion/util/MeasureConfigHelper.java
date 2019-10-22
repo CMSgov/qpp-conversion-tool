@@ -7,6 +7,7 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -20,6 +21,7 @@ public class MeasureConfigHelper {
 
 	public static final String MEASURE_ID = "measureId";
 	public static final String NO_MEASURE = "No given measure id";
+	public static final String SINGLE_TO_MULTIPLE_SUP_POPULATION = "CMS159v7";
 
 	private MeasureConfigHelper() {
 		// private for this helper class
@@ -77,9 +79,13 @@ public class MeasureConfigHelper {
 	 * @return List of decoded Nodes
 	 */
 	public static List<Node> createSubPopulationGrouping(Node node, MeasureConfig measureConfig) {
-		int subPopCount = measureConfig.getSubPopulation().size();
+		List<SubPopulation> measureConfigSubPopulations = measureConfig.getSubPopulation();
+		if (SINGLE_TO_MULTIPLE_SUP_POPULATION.equalsIgnoreCase(measureConfig.getElectronicMeasureId())) {
+			measureConfigSubPopulations = setUpSingleToMultiSubPops(measureConfig, measureConfigSubPopulations);
+		}
+		int subPopCount = measureConfigSubPopulations.size();
 		List<Node> subPopNodes = initializeMeasureDataList(subPopCount);
-		Map<String, Integer> mapPopulationIdToSubPopIndex = createSubPopulationIndexMap(measureConfig);
+		Map<String, Integer> mapPopulationIdToSubPopIndex = createSubPopulationIndexMap(measureConfigSubPopulations);
 		node.getChildNodes().stream()
 			.filter(childNode -> TemplateId.MEASURE_DATA_CMS_V2 == childNode.getType())
 			.forEach(childNode -> {
@@ -91,6 +97,19 @@ public class MeasureConfigHelper {
 				}
 			});
 		return subPopNodes;
+	}
+
+	private static List<SubPopulation> setUpSingleToMultiSubPops(final MeasureConfig measureConfig,
+		List<SubPopulation> measureConfigSubPopulations) {
+		List<SubPopulation> subPopulationsToIndex = new ArrayList<>();
+
+		for(SubPopulation subPopulation: measureConfigSubPopulations) {
+			if (subPopulation != null) {
+				subPopulationsToIndex.add(subPopulation);
+			}
+		}
+		measureConfigSubPopulations = subPopulationsToIndex;
+		return measureConfigSubPopulations;
 	}
 
 	/**
@@ -109,19 +128,21 @@ public class MeasureConfigHelper {
 	/**
 	 * Creates a map of child uuids to indexes for sub population grouping
 	 *
-	 * @param measureConfig configurations that group the sub populations
+	 * @param subPopulations list of Subpopulations to index
 	 * @return Map of Population UUID keys and index values
 	 */
-	private static Map<String, Integer> createSubPopulationIndexMap(MeasureConfig measureConfig) {
+	private static Map<String, Integer> createSubPopulationIndexMap(List<SubPopulation> subPopulations) {
 		Map<String, Integer> supPopMap = new HashMap<>();
 		int index = 0;
-		for (SubPopulation subPopulation : measureConfig.getSubPopulation()) {
-			supPopMap.put(subPopulation.getDenominatorUuid(), index);
-			supPopMap.put(subPopulation.getDenominatorExceptionsUuid(), index);
-			supPopMap.put(subPopulation.getDenominatorExclusionsUuid(), index);
-			supPopMap.put(subPopulation.getNumeratorUuid(), index);
-			supPopMap.put(subPopulation.getInitialPopulationUuid(), index);
-			index++;
+		for (SubPopulation subPopulation : subPopulations) {
+			if (null !=subPopulation.getNumeratorUuid()) {
+				supPopMap.put(subPopulation.getDenominatorUuid(), index);
+				supPopMap.put(subPopulation.getDenominatorExceptionsUuid(), index);
+				supPopMap.put(subPopulation.getDenominatorExclusionsUuid(), index);
+				supPopMap.put(subPopulation.getNumeratorUuid(), index);
+				supPopMap.put(subPopulation.getInitialPopulationUuid(), index);
+				index++;
+			}
 		}
 		return supPopMap;
 	}
