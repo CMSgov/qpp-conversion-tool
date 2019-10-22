@@ -81,7 +81,7 @@ public class MeasureConfigHelper {
 	public static List<Node> createSubPopulationGrouping(Node node, MeasureConfig measureConfig) {
 		List<SubPopulation> measureConfigSubPopulations = measureConfig.getSubPopulation();
 		if (SINGLE_TO_MULTIPLE_SUP_POPULATION.equalsIgnoreCase(measureConfig.getElectronicMeasureId())) {
-			measureConfigSubPopulations = setUpSingleToMultiSubPops(measureConfig, measureConfigSubPopulations);
+			measureConfigSubPopulations = setUpSingleToMultiSubPops(measureConfigSubPopulations);
 		}
 		int subPopCount = measureConfigSubPopulations.size();
 		List<Node> subPopNodes = initializeMeasureDataList(subPopCount);
@@ -99,8 +99,7 @@ public class MeasureConfigHelper {
 		return subPopNodes;
 	}
 
-	private static List<SubPopulation> setUpSingleToMultiSubPops(final MeasureConfig measureConfig,
-		List<SubPopulation> measureConfigSubPopulations) {
+	private static List<SubPopulation> setUpSingleToMultiSubPops(List<SubPopulation> measureConfigSubPopulations) {
 		List<SubPopulation> subPopulationsToIndex = new ArrayList<>();
 
 		for(SubPopulation subPopulation: measureConfigSubPopulations) {

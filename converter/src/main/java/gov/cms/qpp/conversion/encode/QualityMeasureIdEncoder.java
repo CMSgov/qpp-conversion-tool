@@ -37,6 +37,8 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	private static final String TRUE = "true";
 	private static final String PERFORMANCE_NOT_MET = "performanceNotMet";
 	private static final Set MULTI_TO_SINGLE_PERF_RATE_MEASURE_ID = Sets.newHashSet("005", "008", "143", "438");
+	private static final String SINGLE_TO_MULTI_PERF_RATE_MEASURE_ID = "370";
+	protected static final String STRATUM_FIELD_NAME = "stratum";
 
 	public static final String TYPE = "type";
 	public static final String IS_END_TO_END_REPORTED = "isEndToEndReported";
@@ -60,7 +62,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		wrapper.put(MEASURE_ID, measureId);
 		if (MULTI_TO_SINGLE_PERF_RATE_MEASURE_ID.contains(measureId)) {
 			encodeAllSubPopulationSums(wrapper, node);
-		} else if (MeasureConfigHelper.SINGLE_TO_MULTIPLE_SUP_POPULATION.equalsIgnoreCase(measureId)) {
+		} else if (SINGLE_TO_MULTI_PERF_RATE_MEASURE_ID.equalsIgnoreCase(measureId)) {
 			encodeSingleToMultiPerformance(wrapper, node, measureConfig);
 		} else if (isASinglePerformanceRate(measureConfig)) {
 			encodeChildren(wrapper, node, measureConfig);
@@ -200,33 +202,24 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 			JsonWrapper strataWrapper = new JsonWrapper();
 			if (measureConfig.getStrata().get(index).getElectronicMeasureUuids() != null) {
 				encodeSubPopulation(parentNode, strataWrapper, true, measureConfig);
-				strataListWrapper.put(strataWrapper);
 			} else {
-				encodeDefaultSubPopulation(strataWrapper, measureConfig);
+				encodeDefaultSubPopulation(strataWrapper, measureConfig, index);
 			}
+			strataListWrapper.put(strataWrapper);
 		}
 
 		childWrapper.put("strata", strataListWrapper);
 		wrapper.put(VALUE, childWrapper);
 	}
 
-	private void encodeDefaultSubPopulation(JsonWrapper wrapper, MeasureConfig measureConfig) {
-		wrapper.putInteger(SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.NUMER), DEFAULT_INT_VALUE);
-		if (isEligiblePopulationException(measureConfig)) {
-			wrapper.putInteger(SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.DENEXCEP), DEFAULT_INT_VALUE);
-		}
+	private void encodeDefaultSubPopulation(JsonWrapper wrapper, MeasureConfig measureConfig, int index) {
+		wrapper.put(SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.NUMER), DEFAULT_INT_VALUE);
 		if (isEligiblePopulationExclusion(measureConfig)) {
-			wrapper.putInteger(SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.DENEX), DEFAULT_INT_VALUE);
+			wrapper.put(SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.DENEX), DEFAULT_INT_VALUE);
 		}
-		wrapper.putInteger(PERFORMANCE_NOT_MET, DEFAULT_INT_VALUE);
-		wrapper.putInteger(SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.DENOM), DEFAULT_INT_VALUE);
-	}
-
-	private boolean isEligiblePopulationException(MeasureConfig measureConfig) {
-		return measureConfig.getStrata()
-			.stream()
-			.filter(strata -> strata.getElectronicMeasureUuids() != null)
-			.anyMatch(strata -> strata.getElectronicMeasureUuids().getDenominatorExceptionsUuid() != null);
+		wrapper.put(PERFORMANCE_NOT_MET, DEFAULT_INT_VALUE);
+		wrapper.put(SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.DENOM), DEFAULT_INT_VALUE);
+		wrapper.put(STRATUM_FIELD_NAME ,measureConfig.getStrata().get(index).getName());
 	}
 
 	private boolean isEligiblePopulationExclusion(MeasureConfig measureConfig) {
@@ -292,7 +285,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 					String numeratorPopulationId =
 							node.getValue(MeasureDataDecoder.MEASURE_POPULATION).toUpperCase(Locale.ENGLISH);
 					String stratum = stratumForNumeratorUuid(numeratorPopulationId, measureConfig);
-					wrapper.put("stratum", stratum);
+					wrapper.put(STRATUM_FIELD_NAME, stratum);
 				});
 	}
 
