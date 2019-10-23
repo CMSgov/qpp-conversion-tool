@@ -213,12 +213,12 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	}
 
 	private void encodeDefaultSubPopulation(JsonWrapper wrapper, MeasureConfig measureConfig, int index) {
-		wrapper.put(SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.NUMER), DEFAULT_INT_VALUE);
+		wrapper.putInteger(SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.NUMER), DEFAULT_INT_VALUE);
 		if (isEligiblePopulationExclusion(measureConfig)) {
-			wrapper.put(SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.DENEX), DEFAULT_INT_VALUE);
+			wrapper.putInteger(SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.DENEX), DEFAULT_INT_VALUE);
 		}
-		wrapper.put(PERFORMANCE_NOT_MET, DEFAULT_INT_VALUE);
-		wrapper.put(SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.DENOM), DEFAULT_INT_VALUE);
+		wrapper.putInteger(PERFORMANCE_NOT_MET, DEFAULT_INT_VALUE);
+		wrapper.putInteger(SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.DENOM), DEFAULT_INT_VALUE);
 		wrapper.put(STRATUM_FIELD_NAME ,measureConfig.getStrata().get(index).getName());
 	}
 
