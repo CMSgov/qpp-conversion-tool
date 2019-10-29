@@ -30,17 +30,17 @@ class TemplateIdTest implements EnumContract {
 
 	@Test
 	void testRoot() {
-		assertThat(TemplateId.CLINICAL_DOCUMENT.getRoot()).isSameAs("2.16.840.1.113883.10.20.27.1.2");
+		assertThat(TemplateId.CLINICAL_DOCUMENT.getRoot()).isSameInstanceAs("2.16.840.1.113883.10.20.27.1.2");
 	}
 
 	@Test
 	void testExtension() {
-		assertThat(TemplateId.CLINICAL_DOCUMENT.getExtension()).isSameAs("2018-05-01");
+		assertThat(TemplateId.CLINICAL_DOCUMENT.getExtension()).isSameInstanceAs("2018-05-01");
 	}
 
 	@Test
 	void testHumanReadableTitle() {
-		assertThat(TemplateId.CLINICAL_DOCUMENT.getHumanReadableTitle()).isSameAs("Clinical Document");
+		assertThat(TemplateId.CLINICAL_DOCUMENT.getHumanReadableTitle()).isSameInstanceAs("Clinical Document");
 	}
 
 	@Test
@@ -85,7 +85,7 @@ class TemplateIdTest implements EnumContract {
 		TemplateId actual = TemplateId.getTemplateId(clinicalDocument.getRoot(),
 				clinicalDocument.getExtension(), new Context());
 
-		assertThat(actual).isSameAs(clinicalDocument);
+		assertThat(actual).isSameInstanceAs(clinicalDocument);
 	}
 
 	@ParameterizedTest
@@ -94,7 +94,7 @@ class TemplateIdTest implements EnumContract {
 		TemplateId actual = TemplateId.getTemplateId(templateId.getRoot(),
 				"nonExistingExtension", new Context());
 
-		assertThat(actual).isSameAs(templateId);
+		assertThat(actual).isSameInstanceAs(templateId);
 	}
 
 	@ParameterizedTest
@@ -104,7 +104,7 @@ class TemplateIdTest implements EnumContract {
 		TemplateId actual = TemplateId.getTemplateId(templateId.getRoot(),
 			"nonExistingExtension", defaultsContext);
 
-		assertThat(actual).isSameAs(TemplateId.UNIMPLEMENTED);
+		assertThat(actual).isSameInstanceAs(TemplateId.UNIMPLEMENTED);
 	}
 
 	@ParameterizedTest
@@ -114,7 +114,7 @@ class TemplateIdTest implements EnumContract {
 		TemplateId actual = TemplateId.getTemplateId(templateId.getRoot(),
 			templateId.getExtension(), new Context());
 
-		assertThat(actual).isSameAs(templateId);
+		assertThat(actual).isSameInstanceAs(templateId);
 	}
 
 	@ParameterizedTest
@@ -123,7 +123,7 @@ class TemplateIdTest implements EnumContract {
 		TemplateId actual = TemplateId.getTemplateId(templateId.getRoot(),
 			null, defaultsContext);
 
-		assertThat(actual).isSameAs(templateId);
+		assertThat(actual).isSameInstanceAs(templateId);
 	}
 
 	@Test
@@ -131,7 +131,7 @@ class TemplateIdTest implements EnumContract {
 		TemplateId actual = TemplateId.getTemplateId(TemplateId.CLINICAL_DOCUMENT.getRoot(),
 			"nonExistingExtension", defaultsContext);
 
-		assertThat(actual).isSameAs(TemplateId.UNIMPLEMENTED);
+		assertThat(actual).isSameInstanceAs(TemplateId.UNIMPLEMENTED);
 	}
 
 	@Test
@@ -140,7 +140,7 @@ class TemplateIdTest implements EnumContract {
 		TemplateId actual = TemplateId.getTemplateId(TemplateId.CLINICAL_DOCUMENT.getRoot(),
 			null, defaultsContext);
 
-		assertThat(actual).isSameAs(TemplateId.UNIMPLEMENTED);
+		assertThat(actual).isSameInstanceAs(TemplateId.UNIMPLEMENTED);
 	}
 
 	@Test
@@ -148,7 +148,7 @@ class TemplateIdTest implements EnumContract {
 		TemplateId actual = TemplateId.getTemplateId(TemplateId.CLINICAL_DOCUMENT.getRoot(),
 			null, defaultsContext);
 
-		assertThat(actual).isSameAs(TemplateId.UNIMPLEMENTED);
+		assertThat(actual).isSameInstanceAs(TemplateId.UNIMPLEMENTED);
 	}
 
 	@ParameterizedTest
@@ -158,7 +158,7 @@ class TemplateIdTest implements EnumContract {
 		TemplateId actual = TemplateId.getTemplateId(templateId.getRoot(),
 			null, defaultsContext);
 
-		assertThat(actual).isSameAs(templateId);
+		assertThat(actual).isSameInstanceAs(templateId);
 	}
 
 	@Test
@@ -166,7 +166,7 @@ class TemplateIdTest implements EnumContract {
 		TemplateId actual = TemplateId.getTemplateId("nonExistingRoot",
 				TemplateId.CLINICAL_DOCUMENT.getExtension(), defaultsContext);
 
-		assertThat(actual).isSameAs(TemplateId.UNIMPLEMENTED);
+		assertThat(actual).isSameInstanceAs(TemplateId.UNIMPLEMENTED);
 	}
 
 	@Test

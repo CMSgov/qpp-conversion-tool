@@ -47,7 +47,7 @@ class ErrorTest {
 		assertWithMessage("The list should be one")
 				.that(objectUnderTest.getDetails()).hasSize(1);
 		assertWithMessage("The source identifier should be set")
-				.that(objectUnderTest.getSourceIdentifier()).isSameAs("meep");
+				.that(objectUnderTest.getSourceIdentifier()).isSameInstanceAs("meep");
 	}
 
 	@Test

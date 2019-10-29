@@ -54,7 +54,7 @@ class JsonHelperTest implements HelperContract {
 			Assertions.fail("An exception should have been thrown.");
 		} catch(JsonReadException exception) {
 			assertWithMessage("Wrong exception reason.")
-					.that(exception).hasMessageThat().isSameAs("Problem parsing json string");
+					.that(exception).hasMessageThat().isSameInstanceAs("Problem parsing json string");
 		} catch(Exception exception) {
 			Assertions.fail("Incorrect exception was thrown.");
 		}
@@ -69,7 +69,7 @@ class JsonHelperTest implements HelperContract {
 			Assertions.fail("An exception should have been thrown.");
 		} catch(JsonReadException exception) {
 			assertWithMessage("Wrong exception reason.")
-					.that(exception).hasMessageThat().isSameAs("Problem parsing json string");
+					.that(exception).hasMessageThat().isSameInstanceAs("Problem parsing json string");
 		} catch(Exception exception) {
 			Assertions.fail("Incorrect exception was thrown.");
 		}

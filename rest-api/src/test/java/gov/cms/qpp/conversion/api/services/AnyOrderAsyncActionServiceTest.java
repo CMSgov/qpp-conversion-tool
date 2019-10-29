@@ -59,7 +59,7 @@ class AnyOrderAsyncActionServiceTest {
 	void testObjectToActOnPassedDown() {
 		Object objectToActOn = runSimpleScenario(0);
 
-		assertThat(objectUnderTest.objectThatWasActedOn.get()).isSameAs(objectToActOn);
+		assertThat(objectUnderTest.objectThatWasActedOn.get()).isSameInstanceAs(objectToActOn);
 	}
 
 	@Test
@@ -82,7 +82,7 @@ class AnyOrderAsyncActionServiceTest {
 	void testObjectToActOnPassedDownWithFailures() {
 		Object objectToActOn = runSimpleScenario(2);
 
-		assertThat(objectUnderTest.objectThatWasActedOn.get()).isSameAs(objectToActOn);
+		assertThat(objectUnderTest.objectThatWasActedOn.get()).isSameInstanceAs(objectToActOn);
 	}
 
 	@Test

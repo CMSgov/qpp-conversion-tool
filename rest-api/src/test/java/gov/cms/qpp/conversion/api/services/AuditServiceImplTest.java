@@ -75,9 +75,9 @@ public class AuditServiceImplTest {
 		allGood();
 		underTest.success(report);
 
-		assertThat(metadata.getQppLocator()).isSameAs(AN_ID);
-		assertThat(metadata.getSubmissionLocator()).isSameAs(AN_ID);
-		assertThat(metadata.getFileName()).isSameAs(FILENAME);
+		assertThat(metadata.getQppLocator()).isSameInstanceAs(AN_ID);
+		assertThat(metadata.getSubmissionLocator()).isSameInstanceAs(AN_ID);
+		assertThat(metadata.getFileName()).isSameInstanceAs(FILENAME);
 	}
 
 	@Test
@@ -87,9 +87,9 @@ public class AuditServiceImplTest {
 		allGood();
 		underTest.success(report);
 
-		assertThat(metadata.getQppLocator()).isSameAs(AN_ID);
-		assertThat(metadata.getSubmissionLocator()).isSameAs(AN_ID);
-		assertThat(metadata.getFileName()).isSameAs(FILENAME);
+		assertThat(metadata.getQppLocator()).isSameInstanceAs(AN_ID);
+		assertThat(metadata.getSubmissionLocator()).isSameInstanceAs(AN_ID);
+		assertThat(metadata.getFileName()).isSameInstanceAs(FILENAME);
 	}
 
 	@Test
@@ -139,8 +139,8 @@ public class AuditServiceImplTest {
 		allGood();
 		underTest.failConversion(report);
 
-		assertThat(metadata.getConversionErrorLocator()).isSameAs(AN_ID);
-		assertThat(metadata.getSubmissionLocator()).isSameAs(AN_ID);
+		assertThat(metadata.getConversionErrorLocator()).isSameInstanceAs(AN_ID);
+		assertThat(metadata.getSubmissionLocator()).isSameInstanceAs(AN_ID);
 	}
 
 	@Test
@@ -162,10 +162,10 @@ public class AuditServiceImplTest {
 		allGood();
 		underTest.failValidation(report);
 
-		assertThat(metadata.getRawValidationErrorLocator()).isSameAs(AN_ID);
-		assertThat(metadata.getValidationErrorLocator()).isSameAs(AN_ID);
-		assertThat(metadata.getQppLocator()).isSameAs(AN_ID);
-		assertThat(metadata.getSubmissionLocator()).isSameAs(AN_ID);
+		assertThat(metadata.getRawValidationErrorLocator()).isSameInstanceAs(AN_ID);
+		assertThat(metadata.getValidationErrorLocator()).isSameInstanceAs(AN_ID);
+		assertThat(metadata.getQppLocator()).isSameInstanceAs(AN_ID);
+		assertThat(metadata.getSubmissionLocator()).isSameInstanceAs(AN_ID);
 	}
 
 	@Test
