@@ -113,6 +113,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 				sectionEncoder = encoders.get(childType);
 
 				sectionEncoder.encode(childWrapper, child);
+				childWrapper.put("source", "qrda3");
 
 				measurementSetsWrapper.put(childWrapper);
 			} catch (NullPointerException exc) { //NOSONAR NPE can be deep in method calls
