@@ -114,11 +114,11 @@ public class AuditServiceImplTest {
 	}
 
 	@Test
-	public void testFileUploadFailureException() throws TimeoutException {
+	public void testFileUploadFailureException() throws TimeoutException, InterruptedException {
 		when(environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE)).thenReturn(null);
 		successfulEncodingPrep();
 		problematic();
-		final Waiter waiter = new Waiter();
+		Waiter waiter = new Waiter();
 		CompletableFuture<Metadata> future = underTest.success(report);
 
 		future.whenComplete((nada, ex) -> {
