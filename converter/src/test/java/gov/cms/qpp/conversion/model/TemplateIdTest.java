@@ -30,17 +30,17 @@ class TemplateIdTest implements EnumContract {
 
 	@Test
 	void testRoot() {
-		assertThat(TemplateId.CLINICAL_DOCUMENT.getRoot()).isSameInstanceAs("2.16.840.1.113883.10.20.27.1.2");
+		assertThat(TemplateId.CLINICAL_DOCUMENT.getRoot()).isEqualTo("2.16.840.1.113883.10.20.27.1.2");
 	}
 
 	@Test
 	void testExtension() {
-		assertThat(TemplateId.CLINICAL_DOCUMENT.getExtension()).isSameInstanceAs("2018-05-01");
+		assertThat(TemplateId.CLINICAL_DOCUMENT.getExtension()).isEqualTo("2018-05-01");
 	}
 
 	@Test
 	void testHumanReadableTitle() {
-		assertThat(TemplateId.CLINICAL_DOCUMENT.getHumanReadableTitle()).isSameInstanceAs("Clinical Document");
+		assertThat(TemplateId.CLINICAL_DOCUMENT.getHumanReadableTitle()).isEqualTo("Clinical Document");
 	}
 
 	@Test

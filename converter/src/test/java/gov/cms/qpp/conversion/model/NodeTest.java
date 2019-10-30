@@ -22,7 +22,7 @@ class NodeTest {
 		node.putValue("DEF", "GHI");
 
 		assertWithMessage("get value should equal put value")
-				.that(node.getValue("DEF")).isSameInstanceAs("GHI");
+				.that(node.getValue("DEF")).isEqualTo("GHI");
 	}
 
 	@Test
@@ -31,7 +31,7 @@ class NodeTest {
 		node.putValue("DEF", "GHI");
 
 		assertWithMessage("get value should equal put value")
-			.that(node.getValueOrDefault("DEF", "")).isSameInstanceAs("GHI");
+			.that(node.getValueOrDefault("DEF", "")).isEqualTo("GHI");
 	}
 
 	@Test
@@ -40,7 +40,7 @@ class NodeTest {
 		node.putValue("DEF", null);
 
 		assertWithMessage("get value should equal put value")
-			.that(node.getValueOrDefault("DEF", "")).isSameInstanceAs("");
+			.that(node.getValueOrDefault("DEF", "")).isEqualTo("");
 	}
 
 	@Test
