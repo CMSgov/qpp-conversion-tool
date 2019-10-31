@@ -117,7 +117,7 @@ class RegistryTest {
 				.that(componentKeys).hasSize(1);
 		for (ComponentKey componentKey : componentKeys) {
 			assertWithMessage("The templateId should be")
-					.that(componentKey.getTemplate()).isSameAs(TemplateId.PI_AGGREGATE_COUNT);
+					.that(componentKey.getTemplate()).isSameInstanceAs(TemplateId.PI_AGGREGATE_COUNT);
 		}
 
 		componentKeys = context.getRegistry(Encoder.class).getComponentKeys(AggregateCountEncoder.class);
@@ -125,7 +125,7 @@ class RegistryTest {
 				.that(componentKeys).hasSize(1);
 		for (ComponentKey componentKey : componentKeys) {
 			assertWithMessage("The templateId should be")
-					.that(componentKey.getTemplate()).isSameAs(TemplateId.PI_AGGREGATE_COUNT);
+					.that(componentKey.getTemplate()).isSameInstanceAs(TemplateId.PI_AGGREGATE_COUNT);
 		}
 	}
 

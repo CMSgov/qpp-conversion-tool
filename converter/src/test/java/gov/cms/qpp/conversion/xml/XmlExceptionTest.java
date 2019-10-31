@@ -17,6 +17,6 @@ class XmlExceptionTest {
 				.that(xmlException)
 				.hasCauseThat()
 				.hasMessageThat()
-				.isSameAs(reason);
+				.isSameInstanceAs(reason);
 	}
 }

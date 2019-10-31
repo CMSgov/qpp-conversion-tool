@@ -143,9 +143,9 @@ public class QrdaValidatorTest {
 		assertWithMessage("The node must not be null")
 				.that(node).isNotNull();
 		assertWithMessage("The node's Id is incorrect")
-				.that(node.getType()).isSameAs(expectedTemplateId);
+				.that(node.getType()).isSameInstanceAs(expectedTemplateId);
 		assertWithMessage("The node's key/value is incorrect")
-				.that(node.getValue(keyToQuery)).isSameAs(expectedValue);
+				.that(node.getValue(keyToQuery)).isSameInstanceAs(expectedValue);
 	}
 
 	public static class RequiredTestValidator extends NodeValidator {
