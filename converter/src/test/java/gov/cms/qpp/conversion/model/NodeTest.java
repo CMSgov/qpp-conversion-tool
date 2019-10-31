@@ -22,7 +22,7 @@ class NodeTest {
 		node.putValue("DEF", "GHI");
 
 		assertWithMessage("get value should equal put value")
-				.that(node.getValue("DEF")).isSameAs("GHI");
+				.that(node.getValue("DEF")).isEqualTo("GHI");
 	}
 
 	@Test
@@ -31,7 +31,7 @@ class NodeTest {
 		node.putValue("DEF", "GHI");
 
 		assertWithMessage("get value should equal put value")
-			.that(node.getValueOrDefault("DEF", "")).isSameAs("GHI");
+			.that(node.getValueOrDefault("DEF", "")).isEqualTo("GHI");
 	}
 
 	@Test
@@ -40,7 +40,7 @@ class NodeTest {
 		node.putValue("DEF", null);
 
 		assertWithMessage("get value should equal put value")
-			.that(node.getValueOrDefault("DEF", "")).isSameAs("");
+			.that(node.getValueOrDefault("DEF", "")).isEqualTo("");
 	}
 
 	@Test
@@ -51,7 +51,7 @@ class NodeTest {
 		node.addChildNode(childNode);
 
 		assertWithMessage("Did not retrieve expected node")
-				.that(node.getChildNodes().get(0)).isSameAs(childNode);
+				.that(node.getChildNodes().get(0)).isSameInstanceAs(childNode);
 	}
 
 	@Test
@@ -105,7 +105,7 @@ class NodeTest {
 		Node parent = new Node();
 		child.setParent(parent);
 
-		assertThat(child.getParent()).isSameAs(parent);
+		assertThat(child.getParent()).isSameInstanceAs(parent);
 	}
 
 	@Test
@@ -149,7 +149,7 @@ class NodeTest {
 		assertWithMessage("should find first node that has the searched id")
 			.that(results).hasSize(2);
 		assertWithMessage("should search self first")
-			.that(results.get(0)).isSameAs(parent);
+			.that(results.get(0)).isSameInstanceAs(parent);
 	}
 
 	@Test
@@ -202,7 +202,7 @@ class NodeTest {
 
 		assertWithMessage("should find itself if it has the searched id")
 				.that(parent.findFirstNode(TemplateId.PLACEHOLDER))
-				.isSameAs(parent);
+				.isSameInstanceAs(parent);
 	}
 
 	@Test
@@ -215,7 +215,7 @@ class NodeTest {
 
 		assertWithMessage("should find first child that has the searched id")
 				.that(parent.findFirstNode(TemplateId.PLACEHOLDER))
-				.isSameAs(childTwo);
+				.isSameInstanceAs(childTwo);
 	}
 
 	@Test
@@ -260,8 +260,8 @@ class NodeTest {
 
 		Node humanReadableNode = bottomLevelNode.findParentNodeWithHumanReadableTemplateId();
 
-		assertThat(humanReadableNode).isSameAs(middleLevelNode);
-		assertThat(humanReadableNode).isNotSameAs(topLevelNode);
+		assertThat(humanReadableNode).isSameInstanceAs(middleLevelNode);
+		assertThat(humanReadableNode).isNotSameInstanceAs(topLevelNode);
 	}
 
 	@Test
@@ -270,7 +270,7 @@ class NodeTest {
 
 		Node humanReadableNode = node.findParentNodeWithHumanReadableTemplateId();
 
-		assertThat(humanReadableNode).isSameAs(node);
+		assertThat(humanReadableNode).isSameInstanceAs(node);
 	}
 
 	@Test

@@ -63,6 +63,6 @@ class AllErrorsTest {
 		errors.add(new Error());
 		new AllErrors(errors);
 		assertThat(new AllErrors(errors).getErrors())
-				.containsAllIn(errors);
+				.containsAtLeastElementsIn(errors);
 	}
 }

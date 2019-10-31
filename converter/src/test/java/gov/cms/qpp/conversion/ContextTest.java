@@ -36,7 +36,7 @@ class ContextTest {
 	@Test
 	void testProgramIsAllByDefault() {
 		assertThat(new Context().getProgram())
-				.isSameAs(Program.ALL);
+				.isSameInstanceAs(Program.ALL);
 	}
 
 	@Test
@@ -44,7 +44,7 @@ class ContextTest {
 		Context context = new Context();
 		context.setProgram(Program.MIPS);
 		assertThat(context.getProgram())
-				.isSameAs(Program.MIPS);
+				.isSameInstanceAs(Program.MIPS);
 	}
 
 	@Test
@@ -56,7 +56,7 @@ class ContextTest {
 	void testGetRegistryIdentity() {
 		Context context = new Context();
 		assertThat(context.getRegistry(Decoder.class))
-				.isSameAs(context.getRegistry(Decoder.class));
+				.isSameInstanceAs(context.getRegistry(Decoder.class));
 	}
 
 }

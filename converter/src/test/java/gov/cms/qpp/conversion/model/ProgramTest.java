@@ -19,26 +19,26 @@ class ProgramTest implements EnumContract {
 	void instanceRetrievalMips() {
 		Stream.of("MIPS_GROUP", "MIPS_INDIV").forEach(mip ->
 			assertWithMessage("Program other than %s was returned", Program.MIPS)
-					.that(Program.getInstance(mip)).isSameAs(Program.MIPS)
+					.that(Program.getInstance(mip)).isSameInstanceAs(Program.MIPS)
 		);
 	}
 
 	@Test
 	void instanceRetrievalCpcPlus() {
 		assertWithMessage("Program other than %s was returned", Program.CPC)
-				.that(Program.getInstance("CPCPLUS")).isSameAs(Program.CPC);
+				.that(Program.getInstance("CPCPLUS")).isSameInstanceAs(Program.CPC);
 	}
 
 	@Test
 	void instanceRetrievalDefault() {
 		assertWithMessage("Program other than %s was returned", Program.ALL)
-				.that(Program.getInstance("meep")).isSameAs(Program.ALL);
+				.that(Program.getInstance("meep")).isSameInstanceAs(Program.ALL);
 	}
 
 	@Test
 	void instanceRetrievalNullProgramName() {
 		assertWithMessage("Program other than %s was returned", Program.ALL)
-				.that(Program.getInstance(null)).isSameAs(Program.ALL);
+				.that(Program.getInstance(null)).isSameInstanceAs(Program.ALL);
 	}
 
 	@Test
@@ -104,7 +104,7 @@ class ProgramTest implements EnumContract {
 			expected.addAll(program.getAliases());
 		}
 
-		assertThat(actual).containsAllIn(expected);
+		assertThat(actual).containsAtLeastElementsIn(expected);
 	}
 
 	@Override

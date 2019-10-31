@@ -19,7 +19,7 @@ class ErrorCodeTest implements EnumContract {
 	@ParameterizedTest
 	@EnumSource(ErrorCode.class)
 	void testGetErrorCodeReturnsSelf(ErrorCode errorCode) {
-		Truth.assertThat(errorCode.getErrorCode()).isSameAs(errorCode);
+		Truth.assertThat(errorCode.getErrorCode()).isSameInstanceAs(errorCode);
 	}
 
 	@ParameterizedTest
@@ -31,7 +31,7 @@ class ErrorCodeTest implements EnumContract {
 	@ParameterizedTest
 	@EnumSource(ErrorCode.class)
 	void testGetByCode(ErrorCode errorCode) {
-		Truth.assertThat(ErrorCode.getByCode(errorCode.getCode())).isSameAs(errorCode);
+		Truth.assertThat(ErrorCode.getByCode(errorCode.getCode())).isSameInstanceAs(errorCode);
 	}
 
 	@ParameterizedTest

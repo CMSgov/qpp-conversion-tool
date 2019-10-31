@@ -44,7 +44,7 @@ public final class ApmEntityIds {
 	 * @param fileName The file to parse.
 	 * @return Set of Strings.
 	 */
-	private static Set<String> grabConfiguration(final String fileName) {
+	private static Set<String> grabConfiguration(String fileName) {
 		TypeReference<Set<String>> setOfStringsType = new TypeReference<Set<String>>() {};
 
 		InputStream apmEntityIdsInput = ClasspathHelper.contextClassLoader().getResourceAsStream(fileName);
