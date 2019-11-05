@@ -100,15 +100,10 @@ public class MeasureConfigHelper {
 	}
 
 	private static List<SubPopulation> setUpSingleToMultiSubPops(List<SubPopulation> measureConfigSubPopulations) {
-		List<SubPopulation> subPopulationsToIndex = new ArrayList<>();
-
-		for(SubPopulation subPopulation: measureConfigSubPopulations) {
-			if (subPopulation != null) {
-				subPopulationsToIndex.add(subPopulation);
-			}
-		}
-		measureConfigSubPopulations = subPopulationsToIndex;
-		return measureConfigSubPopulations;
+		return measureConfigSubPopulations
+			.stream()
+			.filter(Objects::nonNull)
+			.collect(Collectors.toList());
 	}
 
 	/**
