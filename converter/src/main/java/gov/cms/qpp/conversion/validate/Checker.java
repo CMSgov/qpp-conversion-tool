@@ -128,24 +128,6 @@ class Checker {
 	}
 
 	/**
-	 * Tests if given value matches specified regex
-	 *
-	 * @param code that identifies the error
-	 * @param name key of expected value
-	 * @param regex regular expression that must be satisfied
-	 * @return The checker, for chaining method calls.
-	 */
-	Checker valueRegex(LocalizedError code, String name, String regex) {
-		lastAppraised = node.getValue(name);
-
-		String last = (String) lastAppraised;
-		if (!shouldShortcut() && (StringUtils.isEmpty(last) || !last.matches(regex))) {
-			details.add(detail(code));
-		}
-		return this;
-	}
-
-	/**
 	 * checks target node for the existence of a single value with the given name key
 	 *
 	 * @param code that identifies the error
