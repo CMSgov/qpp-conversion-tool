@@ -34,7 +34,7 @@ public class HealthRestIntegrationTest {
 	void shouldBeHealthy() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/health"))
 			.andExpect(status().is(200))
-			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(jsonPath("$.environmentVariables").exists())
 			.andExpect(jsonPath("$.systemProperties").exists())
 			.andExpect(jsonPath("$.implementationVersion").exists());

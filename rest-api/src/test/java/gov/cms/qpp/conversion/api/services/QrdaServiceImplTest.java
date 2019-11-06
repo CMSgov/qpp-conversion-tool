@@ -67,7 +67,7 @@ class QrdaServiceImplTest {
 	@Test
 	void testConvertQrda3ToQppSuccess() {
 		JsonWrapper qpp = objectUnderTest.convertQrda3ToQpp(MOCK_SUCCESS_QRDA_SOURCE).getEncodedWithMetadata();
-		assertThat(qpp.getString(KEY)).isSameAs(MOCK_SUCCESS_QPP_STRING);
+		assertThat(qpp.getString(KEY)).isSameInstanceAs(MOCK_SUCCESS_QPP_STRING);
 	}
 
 	@Test
@@ -75,7 +75,7 @@ class QrdaServiceImplTest {
 		TransformException exception = assertThrows(TransformException.class,
 				() -> objectUnderTest.convertQrda3ToQpp(MOCK_ERROR_QRDA_SOURCE));
 		AllErrors allErrors = exception.getDetails();
-		assertThat(allErrors.getErrors().get(0).getSourceIdentifier()).isSameAs(MOCK_ERROR_SOURCE_IDENTIFIER);
+		assertThat(allErrors.getErrors().get(0).getSourceIdentifier()).isSameInstanceAs(MOCK_ERROR_SOURCE_IDENTIFIER);
 	}
 
 	@Test

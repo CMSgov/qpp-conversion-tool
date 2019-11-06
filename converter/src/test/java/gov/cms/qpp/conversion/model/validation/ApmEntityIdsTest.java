@@ -1,14 +1,12 @@
 package gov.cms.qpp.conversion.model.validation;
 
-import gov.cms.qpp.conversion.util.JsonReadException;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.util.Locale;
 
-import static com.google.common.truth.Truth.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 class ApmEntityIdsTest {
 
@@ -37,11 +35,5 @@ class ApmEntityIdsTest {
 	@Test
 	void testIdDoesNotExists() {
 		assertThat(ApmEntityIds.idExists("PropertyTaxes")).isFalse();
-	}
-
-	@Test
-	void testNonExistentFileNotLooseData() {
-		assertThrows(JsonReadException.class, () -> ApmEntityIds.setApmDataFile("file_does_not_exist.json"));
-		assertThat(ApmEntityIds.idExists(APM_ID_THAT_EXISTS)).isTrue();
 	}
 }

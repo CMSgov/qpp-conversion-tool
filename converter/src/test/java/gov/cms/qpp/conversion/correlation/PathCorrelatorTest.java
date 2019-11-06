@@ -32,19 +32,6 @@ class PathCorrelatorTest {
 	}
 
 	@Test
-	void pathCorrelatorInitilizationNegative() throws Exception {
-		Field configPath = PathCorrelator.class.getDeclaredField("config");
-		configPath.setAccessible(true);
-		configPath.set(null, "meep.json");
-
-		Method method = PathCorrelator.class.getDeclaredMethod("loadPathCorrelation");
-		method.setAccessible(true);
-
-		InvocationTargetException ex = assertThrows(InvocationTargetException.class, () -> method.invoke(null));
-		assertThat(ex).hasCauseThat().isInstanceOf(PathCorrelationException.class);
-	}
-
-	@Test
 	void verifyXpathNsSubstitution() {
 		String meep = "meep";
 		String path = PathCorrelator.getXpath(

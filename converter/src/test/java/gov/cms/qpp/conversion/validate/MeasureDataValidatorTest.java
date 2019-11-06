@@ -107,7 +107,7 @@ class MeasureDataValidatorTest {
 
 		assertWithMessage("Must contain the error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsAllOf(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
+				.containsAtLeast(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
 						ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(TemplateId.MEASURE_DATA_CMS_V2.name(), 2),
 						ErrorCode.MEASURE_DATA_VALUE_NOT_INTEGER.format("58347456-D1F3-4BBB-9B35-5D42825A0AB3"));
 	}
