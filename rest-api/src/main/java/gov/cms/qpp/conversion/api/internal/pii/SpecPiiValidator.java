@@ -23,11 +23,11 @@ public class SpecPiiValidator implements PiiValidator {
 	@Override
 	public void validateApmNpiCombination(Node node, NodeValidator validator) {
 		String apm = node.getValue(ClinicalDocumentDecoder.PRACTICE_ID);
-		List<String> npiList = Arrays.asList(
-			node.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER).split(","));
+		List<String> tinList = Arrays.asList(
+			node.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER).split(","));
 
-		for (final String npi : npiList) {
-			CpcValidationInfo spec = file.getApmToSpec().get(npi);
+		for (final String tin : tinList) {
+			CpcValidationInfo spec = file.getApmToSpec().get(tin);
 			if (spec == null) {
 				validator.addWarning(Detail.forErrorAndNode(ErrorCode.INCORRECT_API_NPI_COMBINATION, node));
 			} else {
