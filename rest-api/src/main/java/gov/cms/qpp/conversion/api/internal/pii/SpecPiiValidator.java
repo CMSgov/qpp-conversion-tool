@@ -29,16 +29,21 @@ public class SpecPiiValidator implements PiiValidator {
 			node.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER).split(","));
 
 		List<CpcValidationInfo> tinNpiCombinationList = file.getApmTinNpiCombination().get(apm);
-		if (tinNpiCombinationList == null ){
+		if (tinNpiCombinationList == null){
 			validator.addWarning(Detail.forErrorAndNode(ErrorCode.INCORRECT_API_NPI_COMBINATION, node));
 		} else {
 			for (int index = 0; index < npiList.size(); index++) {
 				String currentTin = tinList.get(index);
 				String currentNpi = npiList.get(index);
+				boolean isValidCombination = false;
 				for (CpcValidationInfo tinNpiCombination : tinNpiCombinationList) {
-					if (!tinNpiCombination.getTin().equals(currentTin) || !tinNpiCombination.getNpi().equals(currentNpi)) {
-						validator.addWarning(Detail.forErrorAndNode(ErrorCode.INCORRECT_API_NPI_COMBINATION, node));
+					if (tinNpiCombination.getTin().equals(currentTin) && tinNpiCombination.getNpi().equals(currentNpi)) {
+						isValidCombination = true;
+						break;
 					}
+				}
+				if (!isValidCombination) {
+					validator.addWarning(Detail.forErrorAndNode(ErrorCode.INCORRECT_API_NPI_COMBINATION, node));
 				}
 
 			}

@@ -30,6 +30,19 @@ public class SpecPiiValidatorTest {
 	}
 
 	@Test
+	void testDuplicateSpecStillValid() throws Exception {
+		SpecPiiValidator validator = validatorWithDupeSpec("DogCow_APM", "DogCow_NPI");
+		Node node = node("DogCow_APM", "DogCow_NPI", "DogCow");
+		NodeValidator nodeValidator = new NodeValidator() {
+			@Override
+			protected void performValidation(Node node) {
+			}
+		};
+		validator.validateApmTinNpiCombination(node, nodeValidator);
+		Truth.assertThat(nodeValidator.viewWarnings()).isEmpty();
+	}
+
+	@Test
 	void testInvalidCombination() throws Exception {
 		SpecPiiValidator validator = validator("Valid_DogCow_APM", "Valid_DogCow_NPI");
 		Node node = node("Valid_DogCow_APM", "Invalid_Entered_DogCow_NPI", "DogCow");
@@ -59,14 +72,42 @@ public class SpecPiiValidatorTest {
 		return new SpecPiiValidator(createSpecFile(apm, npi));
 	}
 
+	private SpecPiiValidator validatorWithDupeSpec(String apm, String npi) throws Exception {
+		return new SpecPiiValidator(createDuplicatedSpecFile(apm, npi));
+	}
+
 	private CpcValidationInfoMap createSpecFile(String apm, String npi) throws Exception {
 		String json = ("[\r\n" +
 			    "   {\r\n" + 
-				"		\"apm_entity_id\": \"{apm}\",\r\n" + 
-				"		\"tin\": \"DogCow\",\r\n" + 
+				"		\"apm_entity_id\": \"{apm}\",\r\n" +
+				"		\"tin\": \"DogCow\",\r\n" +
 				"		\"npi\": \"{npi}\"\r\n" + 
+				"	},\r\n" +
+				"   {\r\n" +
+				"		\"apm_entity_id\": \"DogCow_APM\",\r\n" +
+				"		\"tin\": \"DogCow2\",\r\n" +
+				"		\"npi\": \"DogCow_NPI2\"\r\n" +
 				"	}\r\n" +
 				"]\r\n").replace("{apm}", apm).replace("{npi}", npi);
+		InputStream jsonStream = new StringInputStream(json);
+		CpcValidationInfoMap file = new CpcValidationInfoMap(jsonStream);
+		Assumptions.assumeFalse(file.getApmTinNpiCombination() == null);
+		return file;
+	}
+
+	private CpcValidationInfoMap createDuplicatedSpecFile(String apm, String npi) throws Exception {
+		String json = ("[\r\n" +
+			"   {\r\n" +
+			"		\"apm_entity_id\": \"{apm}\",\r\n" +
+			"		\"tin\": \"DogCow\",\r\n" +
+			"		\"npi\": \"{npi}\"\r\n" +
+			"	},\r\n" +
+			"   {\r\n" +
+			"		\"apm_entity_id\": \"{apm}\",\r\n" +
+			"		\"tin\": \"DogCow\",\r\n" +
+			"		\"npi\": \"{npi}\"\r\n" +
+			"	}\r\n" +
+			"]\r\n").replace("{apm}", apm).replace("{npi}", npi);
 		InputStream jsonStream = new StringInputStream(json);
 		CpcValidationInfoMap file = new CpcValidationInfoMap(jsonStream);
 		Assumptions.assumeFalse(file.getApmTinNpiCombination() == null);

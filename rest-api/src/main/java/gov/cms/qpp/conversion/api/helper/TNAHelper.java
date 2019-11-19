@@ -14,8 +14,8 @@ public class TNAHelper {
 		List<CpcValidationInfo> validationInfo) {
 		boolean results = false;
 		for (CpcValidationInfo currentValidationInfo: validationInfo) {
-			if (currentValidationInfo.getTin() == newNpiApmCombo.getTin() &&
-				currentValidationInfo.getApm() == newNpiApmCombo.getApm()) {
+			if (currentValidationInfo.getTin().equals(newNpiApmCombo.getTin()) &&
+				currentValidationInfo.getApm().equals(newNpiApmCombo.getApm())) {
 				results = true;
 				break;
 			}

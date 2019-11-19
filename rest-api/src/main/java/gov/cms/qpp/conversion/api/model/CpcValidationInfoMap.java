@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.api.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.MoreObjects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +41,7 @@ public class CpcValidationInfoMap {
 
 		HashMap<String, List<CpcValidationInfo>> apmTinNpiMap = new HashMap<>();
 		for (CpcValidationInfo cpcValidationInfo: cpcValidationInfoList) {
-			if (apmTinNpiMap.containsKey(cpcValidationInfo.getTin())) {
+			if (apmTinNpiMap.containsKey(cpcValidationInfo.getApm())) {
 				if(!TNAHelper.tinNpiCombinationExists(cpcValidationInfo, apmTinNpiMap.get(cpcValidationInfo.getApm()))) {
 					apmTinNpiMap.get(cpcValidationInfo.getApm()).add(cpcValidationInfo);
 				}

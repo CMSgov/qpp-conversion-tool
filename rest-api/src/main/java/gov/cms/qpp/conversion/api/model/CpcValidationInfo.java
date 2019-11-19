@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.MoreObjects;
 
 public class CpcValidationInfo {
 	private String npi;
@@ -42,4 +43,5 @@ public class CpcValidationInfo {
 	public void setApm(final String apm) {
 		this.apm = apm;
 	}
+
 }
