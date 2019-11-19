@@ -75,7 +75,7 @@ public class QrdaServiceImpl implements QrdaService {
 	private CpcValidationInfoMap retreiveCpcValidationInfoMap() {
 		API_LOG.info("Fetching CPC+ validations APM/NPI/TIN file");
 		CpcValidationInfoMap file = new CpcValidationInfoMap(retrieveS3CpcPlusValidationFile());
-		if (file.getApmToSpec() != null) {
+		if (file.getApmTinNpiCombination() != null) {
 			API_LOG.info("Fetched CPC+ validations APM/NPI/TIN file");
 		} else {
 			API_LOG.info("Could not fetching CPC+ validations APM/NPI/TIN file");
@@ -92,7 +92,7 @@ public class QrdaServiceImpl implements QrdaService {
 	Converter initConverter(Source source) {
 		Context context = new Context();
 		CpcValidationInfoMap apmToNpiValidationFile = cpcValidationData.get();
-		if (apmToNpiValidationFile != null && apmToNpiValidationFile.getApmToSpec() != null) {
+		if (apmToNpiValidationFile != null && apmToNpiValidationFile.getApmTinNpiCombination() != null) {
 			context.setPiiValidator(new SpecPiiValidator(apmToNpiValidationFile));
 		}
 		return new Converter(source, context);

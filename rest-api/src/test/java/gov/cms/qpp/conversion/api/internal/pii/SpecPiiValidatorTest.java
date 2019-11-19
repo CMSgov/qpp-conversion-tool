@@ -19,7 +19,7 @@ public class SpecPiiValidatorTest {
 	@Test
 	void testValidCombination() throws Exception {
 		SpecPiiValidator validator = validator("DogCow_APM", "DogCow_NPI");
-		Node node = node("DogCow_APM", "DogCow_NPI");
+		Node node = node("DogCow_APM", "DogCow_NPI", "DogCow");
 		NodeValidator nodeValidator = new NodeValidator() {
 			@Override
 			protected void performValidation(Node node) {
@@ -32,7 +32,7 @@ public class SpecPiiValidatorTest {
 	@Test
 	void testInvalidCombination() throws Exception {
 		SpecPiiValidator validator = validator("Valid_DogCow_APM", "Valid_DogCow_NPI");
-		Node node = node("Valid_DogCow_APM", "Invalid_Entered_DogCow_NPI");
+		Node node = node("Valid_DogCow_APM", "Invalid_Entered_DogCow_NPI", "DogCow");
 		NodeValidator nodeValidator = new NodeValidator() {
 			@Override
 			protected void performValidation(Node node) {
@@ -45,7 +45,7 @@ public class SpecPiiValidatorTest {
 	@Test
 	void testNullSpec() throws  Exception {
 		SpecPiiValidator validator = validator("Valid_DogCow_APM", "Valid_DogCow_NPI");
-		Node node = node("invalid", "Invalid_Entered_DogCow_NPI");
+		Node node = node("invalid", "Invalid_Entered_DogCow_NPI", "DogCow");
 		NodeValidator nodeValidator = new NodeValidator() {
 			@Override
 			protected void performValidation(Node node) {
@@ -69,14 +69,15 @@ public class SpecPiiValidatorTest {
 				"]\r\n").replace("{apm}", apm).replace("{npi}", npi);
 		InputStream jsonStream = new StringInputStream(json);
 		CpcValidationInfoMap file = new CpcValidationInfoMap(jsonStream);
-		Assumptions.assumeFalse(file.getApmToSpec() == null);
+		Assumptions.assumeFalse(file.getApmTinNpiCombination() == null);
 		return file;
 	}
 
-	private Node node(String apm, String npi) {
+	private Node node(String apm, String npi, String tin) {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID, apm);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, npi);
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, tin);
 		return clinicalDocumentNode;
 	}
 

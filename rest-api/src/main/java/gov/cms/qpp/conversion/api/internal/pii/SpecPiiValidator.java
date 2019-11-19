@@ -36,7 +36,7 @@ public class SpecPiiValidator implements PiiValidator {
 				String currentTin = tinList.get(index);
 				String currentNpi = npiList.get(index);
 				for (CpcValidationInfo tinNpiCombination : tinNpiCombinationList) {
-					if (tinNpiCombination.getTin() != currentTin || tinNpiCombination.getNpi() != currentNpi) {
+					if (!tinNpiCombination.getTin().equals(currentTin) || !tinNpiCombination.getNpi().equals(currentNpi)) {
 						validator.addWarning(Detail.forErrorAndNode(ErrorCode.INCORRECT_API_NPI_COMBINATION, node));
 					}
 				}
