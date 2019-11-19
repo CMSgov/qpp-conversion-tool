@@ -25,7 +25,7 @@ public class SpecPiiValidatorTest {
 			protected void performValidation(Node node) {
 			}
 		};
-		validator.validateApmNpiCombination(node, nodeValidator);
+		validator.validateApmTinNpiCombination(node, nodeValidator);
 		Truth.assertThat(nodeValidator.viewWarnings()).isEmpty();
 	}
 
@@ -38,7 +38,7 @@ public class SpecPiiValidatorTest {
 			protected void performValidation(Node node) {
 			}
 		};
-		validator.validateApmNpiCombination(node, nodeValidator);
+		validator.validateApmTinNpiCombination(node, nodeValidator);
 		Truth.assertThat(nodeValidator.viewWarnings()).isNotEmpty();
 	}
 
@@ -51,7 +51,7 @@ public class SpecPiiValidatorTest {
 			protected void performValidation(Node node) {
 			}
 		};
-		validator.validateApmNpiCombination(node, nodeValidator);
+		validator.validateApmTinNpiCombination(node, nodeValidator);
 		Truth.assertThat(nodeValidator.viewWarnings()).isNotEmpty();
 	}
 

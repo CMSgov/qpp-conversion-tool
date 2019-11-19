@@ -15,66 +15,46 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class CpcValidationInfoMap {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(CpcValidationInfoMap.class);
-	private Map<String, CpcValidationInfo> apmToSpec;
-	private Map<String, List<CpcValidationInfo>> tinNpiApmCombinations;
+	private HashMap<String, List<CpcValidationInfo>> apmTinNpiCombinations;
 
 	public CpcValidationInfoMap(InputStream cpcNpiToApmJson) {
-		tinNpiApmCombinations = convertJsonToMapOfLists(cpcNpiToApmJson);
+		apmTinNpiCombinations = convertJsonToMapOfLists(cpcNpiToApmJson);
 	}
 
-	private Map<String, CpcValidationInfo> convertJsonToMap(InputStream cpcNpiToApmJson) {
-		if (cpcNpiToApmJson == null) {
+	private HashMap<String, List<CpcValidationInfo>> convertJsonToMapOfLists(InputStream cpcApmNpiTinJson) {
+		if (cpcApmNpiTinJson == null) {
 			return null;
 		}
 		List<CpcValidationInfo> cpcValidationInfoList = new ArrayList<>();
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
 			cpcValidationInfoList =
-				Arrays.asList(objectMapper.readValue(new InputStreamReader(cpcNpiToApmJson, StandardCharsets.UTF_8),
+				Arrays.asList(objectMapper.readValue(new InputStreamReader(cpcApmNpiTinJson, StandardCharsets.UTF_8),
 					CpcValidationInfo[].class));
 		} catch (IOException exc) {
 			DEV_LOG.info("Failed to parse the cpc+ validation npi to apm list...");
 		}
 
-		return cpcValidationInfoList.stream()
-			.collect(Collectors.toMap(CpcValidationInfo::getTin, Function.identity()));
-	}
-
-	private Map<String, List<CpcValidationInfo>> convertJsonToMapOfLists(InputStream cpcNpiToApmJson) {
-		if (cpcNpiToApmJson == null) {
-			return null;
-		}
-		List<CpcValidationInfo> cpcValidationInfoList = new ArrayList<>();
-		try {
-			ObjectMapper objectMapper = new ObjectMapper();
-			cpcValidationInfoList =
-				Arrays.asList(objectMapper.readValue(new InputStreamReader(cpcNpiToApmJson, StandardCharsets.UTF_8),
-					CpcValidationInfo[].class));
-		} catch (IOException exc) {
-			DEV_LOG.info("Failed to parse the cpc+ validation npi to apm list...");
-		}
-
-		Map<String, List<CpcValidationInfo>> npiApmCombinationMap = new HashMap<>();
+		HashMap<String, List<CpcValidationInfo>> apmTinNpiMap = new HashMap<>();
 		for (CpcValidationInfo cpcValidationInfo: cpcValidationInfoList) {
-			ArrayList<CpcValidationInfo> validationInfo = new ArrayList<>();
-			if (npiApmCombinationMap.containsKey(cpcValidationInfo.getTin())) {
-				if(!TNAHelper.checkNpiApmCombinationExistence(cpcValidationInfo, validationInfo)) {
-					validationInfo.add(cpcValidationInfo);
+			if (apmTinNpiMap.containsKey(cpcValidationInfo.getTin())) {
+				if(!TNAHelper.tinNpiCombinationExists(cpcValidationInfo, apmTinNpiMap.get(cpcValidationInfo.getApm()))) {
+					apmTinNpiMap.get(cpcValidationInfo.getApm()).add(cpcValidationInfo);
 				}
 			} else {
+				ArrayList<CpcValidationInfo> validationInfo = new ArrayList<>();
 				validationInfo.add(cpcValidationInfo);
+				apmTinNpiMap.put(cpcValidationInfo.getApm(), validationInfo);
 			}
 		}
 
-		return npiApmCombinationMap;
+		return apmTinNpiMap;
 	}
 
-	public Map<String, CpcValidationInfo> getApmToSpec() {
-		return apmToSpec;
+	public Map<String, List<CpcValidationInfo>> getApmTinNpiCombination() {
+		return apmTinNpiCombinations;
 	}
 }
