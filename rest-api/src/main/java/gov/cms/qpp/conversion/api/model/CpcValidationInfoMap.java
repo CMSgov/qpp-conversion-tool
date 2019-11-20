@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion.api.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.MoreObjects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +18,7 @@ import java.util.Map;
 
 public class CpcValidationInfoMap {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(CpcValidationInfoMap.class);
-	private HashMap<String, List<CpcValidationInfo>> apmTinNpiCombinations;
+	private Map<String, List<CpcValidationInfo>> apmTinNpiCombinations;
 
 	public CpcValidationInfoMap(InputStream cpcNpiToApmJson) {
 		apmTinNpiCombinations = convertJsonToMapOfLists(cpcNpiToApmJson);
