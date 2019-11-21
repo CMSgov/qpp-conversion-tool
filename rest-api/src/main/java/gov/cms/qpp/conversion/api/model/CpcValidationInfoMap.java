@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import gov.cms.qpp.conversion.api.helper.TNAHelper;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -18,16 +16,17 @@ import java.util.Map;
 
 public class CpcValidationInfoMap {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(CpcValidationInfoMap.class);
-	private Map<String, List<CpcValidationInfo>> apmTinNpiCombinations;
+	private Map<String, Map<String, List<String>>> apmTinNpiCombinationMap;
 
 	public CpcValidationInfoMap(InputStream cpcNpiToApmJson) {
-		apmTinNpiCombinations = convertJsonToMapOfLists(cpcNpiToApmJson);
+		convertJsonToMapOfLists(cpcNpiToApmJson);
 	}
 
-	private HashMap<String, List<CpcValidationInfo>> convertJsonToMapOfLists(InputStream cpcApmNpiTinJson) {
+	private void convertJsonToMapOfLists(InputStream cpcApmNpiTinJson) {
 		if (cpcApmNpiTinJson == null) {
-			return null;
+			apmTinNpiCombinationMap = null;
 		}
+
 		List<CpcValidationInfo> cpcValidationInfoList = new ArrayList<>();
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
@@ -38,23 +37,33 @@ public class CpcValidationInfoMap {
 			DEV_LOG.info("Failed to parse the cpc+ validation npi to apm list...");
 		}
 
-		HashMap<String, List<CpcValidationInfo>> apmTinNpiMap = new HashMap<>();
+
 		for (CpcValidationInfo cpcValidationInfo: cpcValidationInfoList) {
-			if (apmTinNpiMap.containsKey(cpcValidationInfo.getApm())) {
-				if(!TNAHelper.tinNpiCombinationExists(cpcValidationInfo, apmTinNpiMap.get(cpcValidationInfo.getApm()))) {
-					apmTinNpiMap.get(cpcValidationInfo.getApm()).add(cpcValidationInfo);
-				}
+			String currentApm = cpcValidationInfo.getApm();
+			String currentTin = cpcValidationInfo.getTin();
+			String currentNpi = cpcValidationInfo.getNpi();
+
+			if(!isExistingCombination(currentApm, currentTin, cpcValidationInfo.getNpi())) {
+				apmTinNpiCombinationMap.get(currentApm)
+					.get(currentTin)
+					.add(currentNpi);
 			} else {
-				ArrayList<CpcValidationInfo> validationInfo = new ArrayList<>();
-				validationInfo.add(cpcValidationInfo);
-				apmTinNpiMap.put(cpcValidationInfo.getApm(), validationInfo);
+				List<String> npiList = new ArrayList<>();
+				npiList.add(currentNpi);
+				Map<String, List<String>> tinNpisMap = new HashMap<>();
+				tinNpisMap.put(currentTin, npiList);
+				apmTinNpiCombinationMap.put(currentApm, tinNpisMap);
 			}
 		}
-
-		return apmTinNpiMap;
 	}
 
-	public Map<String, List<CpcValidationInfo>> getApmTinNpiCombination() {
-		return apmTinNpiCombinations;
+	public boolean isExistingCombination(String apm, String tin, String npi) {
+		if (apmTinNpiCombinationMap.get(apm) == null) return false;
+		if (apmTinNpiCombinationMap.get(apm).get(tin) == null) return false;
+		return (apmTinNpiCombinationMap.get(apm).get(tin)).indexOf(npi) > -1;
+	}
+
+	public Map<String, Map<String, List<String>>> getApmTinNpiCombinationMap() {
+		return apmTinNpiCombinationMap;
 	}
 }

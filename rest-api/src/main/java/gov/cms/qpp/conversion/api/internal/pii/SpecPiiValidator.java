@@ -11,6 +11,7 @@ import gov.cms.qpp.conversion.validate.pii.PiiValidator;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class SpecPiiValidator implements PiiValidator {
 
@@ -28,24 +29,16 @@ public class SpecPiiValidator implements PiiValidator {
 		List<String> tinList = Arrays.asList(
 			node.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER).split(","));
 
-		List<CpcValidationInfo> tinNpiCombinationList = file.getApmTinNpiCombination().get(apm);
-		if (tinNpiCombinationList == null){
+		Map<String, List<String>> tinNpisMap = file.getApmTinNpiCombinationMap().get(apm);
+		if (tinNpisMap == null) {
 			validator.addWarning(Detail.forErrorAndNode(ErrorCode.INCORRECT_API_NPI_COMBINATION, node));
 		} else {
 			for (int index = 0; index < npiList.size(); index++) {
 				String currentTin = tinList.get(index);
 				String currentNpi = npiList.get(index);
-				boolean isValidCombination = false;
-				for (CpcValidationInfo tinNpiCombination : tinNpiCombinationList) {
-					if (tinNpiCombination.getTin().equals(currentTin) && tinNpiCombination.getNpi().equals(currentNpi)) {
-						isValidCombination = true;
-						break;
-					}
-				}
-				if (!isValidCombination) {
+				if (tinNpisMap.get(currentTin) == null || !(tinNpisMap.get(currentTin).indexOf(currentNpi) > -1)) {
 					validator.addWarning(Detail.forErrorAndNode(ErrorCode.INCORRECT_API_NPI_COMBINATION, node));
 				}
-
 			}
 		}
 	}
