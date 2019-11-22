@@ -33,7 +33,8 @@ public class SpecPiiValidator implements PiiValidator {
 		if (tinNpisMap == null) {
 			validator.addWarning(Detail.forErrorAndNode(ErrorCode.INCORRECT_API_NPI_COMBINATION, node));
 		} else {
-			for (int index = 0; index < npiList.size(); index++) {
+			int npiSize = npiList.size();
+			for (int index = 0; index < npiSize; index++) {
 				String currentTin = tinList.get(index);
 				String currentNpi = npiList.get(index);
 				if (tinNpisMap.get(currentTin) == null || !(tinNpisMap.get(currentTin).indexOf(currentNpi) > -1)) {
