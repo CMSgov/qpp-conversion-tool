@@ -46,18 +46,13 @@ public class CpcValidationInfoMap {
 
 			if(apmTinNpiCombinationMap.containsKey(currentApm)) {
 				if (!hasTinKey(currentApm, currentTin)) {
-					List<String> npiList = Arrays.asList(currentNpi);
-					apmTinNpiCombinationMap.get(currentApm).put(currentTin, npiList);
+					apmTinNpiCombinationMap.get(currentApm).put(currentTin, Arrays.asList(currentNpi));
 				} else if(!isExistingCombination(currentApm, currentTin, cpcValidationInfo.getNpi())) {
-					apmTinNpiCombinationMap.get(currentApm)
-						.get(currentTin)
-						.add(currentNpi);
+					apmTinNpiCombinationMap.get(currentApm).get(currentTin).add(currentNpi);
 				}
 			} else {
-				List<String> npiList = new ArrayList<>();
-				npiList.add(currentNpi);
 				Map<String, List<String>> tinNpisMap = new HashMap<>();
-				tinNpisMap.put(currentTin, npiList);
+				tinNpisMap.put(currentTin, Arrays.asList(currentNpi));
 				apmTinNpiCombinationMap.put(currentApm, tinNpisMap);
 			}
 		}
