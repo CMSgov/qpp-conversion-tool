@@ -7,6 +7,7 @@ import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.correlation.model.Goods;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder;
+import gov.cms.qpp.conversion.decode.QualitySectionDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.decode.SupplementalDataEthnicityDecoder;
 import gov.cms.qpp.conversion.decode.SupplementalDataPayerDecoder;
@@ -57,8 +58,10 @@ class SingularAttributeTest{
 						ReportingParametersActDecoder.PERFORMANCE_YEAR,
 						SupplementalDataEthnicityDecoder.SUPPLEMENTAL_DATA_CODE,
 						SupplementalDataPayerDecoder.SUPPLEMENTAL_DATA_PAYER_CODE,
+						QualitySectionDecoder.MEASURE_SECTION_V4,
 						//stratum is not currently mapped
-						"stratum")
+						"stratum",
+						"cehrt")
 		);
 
 		corrMap.keySet().forEach(key -> {
@@ -78,7 +81,7 @@ class SingularAttributeTest{
 	@Test
 	void blanketDoubleUp() {
 		assertWithMessage("failed duplication scenarios should equal the inclusion count")
-				.that(blanketCheck(false))
+ 				.that(blanketCheck(false))
 				.isEqualTo(inclusionCount);
 	}
 

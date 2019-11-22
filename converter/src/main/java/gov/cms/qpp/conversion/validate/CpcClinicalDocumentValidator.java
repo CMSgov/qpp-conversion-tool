@@ -16,6 +16,7 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -57,21 +58,34 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	 */
 	@Override
 	protected void performValidation(Node node) {
-			validateSubmissionDate(node);
+		validateSubmissionDate(node);
 
-			LocalizedError addressError = ErrorCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
-				.format(Context.REPORTING_YEAR);
+		LocalizedError addressError = ErrorCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
+			.format(Context.REPORTING_YEAR);
 
-			checkErrors(node)
-					.valueIsNotEmpty(addressError, ClinicalDocumentDecoder.PRACTICE_SITE_ADDR)
-					.singleValue(ErrorCode.CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED,
-							ClinicalDocumentDecoder.PRACTICE_ID)
-					.valueIsNotEmpty(ErrorCode.CPC_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.PRACTICE_ID)
-					.childMinimum(ErrorCode.CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED,
-							1, TemplateId.MEASURE_SECTION_V2);
+		checkErrors(node)
+			.valueIsNotEmpty(ErrorCode.CPC_PLUS_TIN_REQUIRED, ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER)
+			.listValuesAreValid(
+				ErrorCode.CPC_PLUS_INVALID_TIN, ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, 9)
+			.valueIsNotEmpty(ErrorCode.CPC_PLUS_NPI_REQUIRED, ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER)
+			.listValuesAreValid(
+				ErrorCode.CPC_PLUS_INVALID_NPI, ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, 10)
+			.valueIsNotEmpty(addressError, ClinicalDocumentDecoder.PRACTICE_SITE_ADDR)
+			.singleValue(ErrorCode.CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED,
+					ClinicalDocumentDecoder.PRACTICE_ID)
+			.valueIsNotEmpty(ErrorCode.CPC_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.PRACTICE_ID)
+			.childMinimum(ErrorCode.CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED,
+					1, TemplateId.MEASURE_SECTION_V3);
 
-			validateApmEntityId(node);
+		checkWarnings(node)
+			.valueIsNotEmpty(ErrorCode.MISSING_CEHRT.format(Context.REPORTING_YEAR), ClinicalDocumentDecoder.CEHRT)
+			.doesNotHaveChildren(ErrorCode.CPC_PLUS_NO_IA_OR_PI, TemplateId.IA_SECTION, TemplateId.PI_SECTION);
+
+		validateApmEntityId(node);
+		if (hasTinAndNpi(node)) {
+			validateNumberOfTinsAndNpis(node);
 			validateApmNpiCombination(node);
+		}
 	}
 
 	/**
@@ -90,6 +104,34 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 
 		if (!ApmEntityIds.idExists(apmEntityId)) {
 			addError(Detail.forErrorAndNode(ErrorCode.CPC_CLINICAL_DOCUMENT_INVALID_APM, node));
+		}
+	}
+
+	/**
+	 * Checks to see if the node has a tin and npi
+	 *
+	 * @param node
+	 * @return
+	 */
+	private boolean hasTinAndNpi(final Node node) {
+		return null != node.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER) &&
+			null != node.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER);
+	}
+
+	/**
+	 * Validates to ensure that for every TIN there is an NPI submitted to it.
+	 *
+	 * @param node
+	 */
+	private void validateNumberOfTinsAndNpis(final Node node) {
+		int numOfTins = Arrays.asList(
+			node.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER).split(",")).size();
+		int numOfNpis = Arrays.asList(
+			node.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER).split(",")).size();
+		if (numOfTins > numOfNpis) {
+			addError(Detail.forErrorAndNode(ErrorCode.CPC_PLUS_MISSING_NPI, node));
+		} else if (numOfNpis > numOfTins) {
+			addError(Detail.forErrorAndNode(ErrorCode.CPC_PLUS_MISSING_TIN, node));
 		}
 	}
 

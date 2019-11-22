@@ -65,7 +65,7 @@ class SubPopulationsTest {
 
 		for (SubPopulationLabel key : SubPopulations.getExclusiveKeys(Sets.newHashSet(SubPopulationLabel.IPOP))) {
 			assertThat(SubPopulations.getUniqueIdForKey(key.name(), subPopulation))
-					.isSameAs(expected.get(key.name()));
+					.isSameInstanceAs(expected.get(key.name()));
 		}
 	}
 

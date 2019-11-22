@@ -18,7 +18,7 @@ class EncoderTest {
 
 	private final Set<TemplateId> templateIds = EnumSet.of(
 			TemplateId.CLINICAL_DOCUMENT,
-			TemplateId.MEASURE_SECTION_V2,
+			TemplateId.MEASURE_SECTION_V3,
 			TemplateId.IA_SECTION,
 			TemplateId.PI_SECTION,
 			TemplateId.PI_AGGREGATE_COUNT,

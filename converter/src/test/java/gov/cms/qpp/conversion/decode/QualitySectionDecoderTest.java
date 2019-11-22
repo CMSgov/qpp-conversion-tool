@@ -1,16 +1,34 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.apache.commons.io.IOUtils;
 import org.jdom2.Element;
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.reflections.util.ClasspathHelper;
 
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import static com.google.common.truth.Truth.assertThat;
 
 class QualitySectionDecoderTest {
+
+	private QualitySectionDecoder sectionDecoder;
+	private Node node;
+
+	@BeforeEach
+	void setUp() {
+		node = new Node();
+		sectionDecoder = new QualitySectionDecoder(new Context());
+	}
 
 
 	/**
@@ -21,18 +39,25 @@ class QualitySectionDecoderTest {
 	 */
 	@Test
 	void testInternalDecodeValidXml() throws XmlException {
-
 		String validXML = getValidXML();
-
 		Element element = XmlUtils.stringToDom(validXML);
-		Node node = new Node();
 
-		QualitySectionDecoder sectionDecoder = new QualitySectionDecoder(new Context());
 		sectionDecoder.decode(element, node);
-
 		assertThat(node.getValue("category"))
 				.isEqualTo("quality");
-		//Performance start and Performance end are parsed by ReportParameters decoder and are not children of this decoder
+	}
+
+	@Test
+	void testMeasureSectionV4Decoding() throws XmlException, IOException{
+		InputStream stream =
+			ClasspathHelper.contextClassLoader().getResourceAsStream("correctMultiToSinglePerfMeasureExample.xml");
+		String xmlFragment = IOUtils.toString(stream, StandardCharsets.UTF_8);
+
+		Node root = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node measureSectionV3 = root.findFirstNode(TemplateId.MEASURE_SECTION_V3);
+
+		assertThat(measureSectionV3.getValue(QualitySectionDecoder.MEASURE_SECTION_V4))
+			.isEqualTo(TemplateId.MEASURE_SECTION_V4.getExtension());
 	}
 
 	private String getValidXML() {
@@ -42,7 +67,7 @@ class QualitySectionDecoderTest {
 				+ " 	xsi:schemaLocation=\"urn:hl7-org:v3 ../CDA_Schema_Files/infrastructure/cda/CDA_SDTC.xsd\"  "
 				+ " 	xmlns=\"urn:hl7-org:v3\"  "
 				+ " 	xmlns:voc=\"urn:hl7-org:v3/voc\"> "
-				+ " <templateId root=\"2.16.840.1.113883.10.20.27.1.2\" extension=\"2016-11-01\"/> "
+				+ " <templateId root=\"2.16.840.1.113883.10.20.27.1.2\" extension=\"2018-05-01\"/> "
 				+ " <component> "
 				+ " 	<structuredBody><!-- QRDA-III Reporting Parameters Section (CMS EP) --> "
 				+ " 		<component> "
@@ -61,7 +86,7 @@ class QualitySectionDecoderTest {
 				+ " 				</entry> "
 				+ " 			</section> "
 				+ " 		</component> "
-				+ " <!-- Advancing Care Information Section--> "
+				+ "         <!-- Advancing Care Information Section--> "
 				+ " 		<component> "
 				+ " 			<section> "
 				+ " 				<!-- Measure Section --> "
@@ -79,10 +104,12 @@ class QualitySectionDecoderTest {
 				+ " 				</component> "
 				+ " 			</section> "
 				+ " 		</component> "
-				+ " 		<templateId root=\"2.16.840.1.113883.10.20.27.2.3\" extension=\"2016-11-01\"/> "
-				+ " 		<code code=\"55186-1\" codeSystem=\"2.16.840.1.113883.6.1\" displayName=\"measure section\"/> "
-				+ " 		<title>Measure Section</title> "
-				+ " 		<entry> "
+				+ "         <component> "
+				+ "           <templateId root=\"2.16.840.1.113883.10.20.27.2.1\" extension=\"2017-06-01\"/> "
+				+ " 		  <templateId root=\"2.16.840.1.113883.10.20.27.2.3\" extension=\"2016-11-01\"/> "
+				+ " 		  <code code=\"55186-1\" codeSystem=\"2.16.840.1.113883.6.1\" displayName=\"measure section\"/> "
+				+ " 		  <title>Measure Section</title> "
+				+ " 		  <entry> "
 				+ " 			<organizer classCode=\"CLUSTER\" moodCode=\"EVN\"> "
 				+ " 				<templateId root=\"2.16.840.1.113883.10.20.24.3.98\"/> "
 				+ " 				<templateId root=\"2.16.840.1.113883.10.20.27.3.1\" extension=\"2016-09-01\"/> "
@@ -114,8 +141,9 @@ class QualitySectionDecoderTest {
 				+ " 						</reference> "
 				+ " 					</observation> "
 				+ " 				</component> "
-				+ "	 		</organizer> "
-				+ "	 		</entry> "
+				+ "	 		    </organizer> "
+				+ "	 		  </entry> "
+			    + "         </component> "
 				+ " 		</structuredBody> "
 				+ " </component> "
 				+ " </ClinicalDocument> ";

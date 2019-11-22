@@ -103,7 +103,7 @@ class StorageServiceImplTest {
 
 	@Test
 	void testPutRecoverableFailure() throws InterruptedException {
-		when(upload.waitForUploadResult()).thenThrow(Exception.class).thenReturn(result);
+		when(upload.waitForUploadResult()).thenThrow(RuntimeException.class).thenReturn(result);
 		Mockito.when(environment.getProperty(eq(Constants.BUCKET_NAME_ENV_VARIABLE))).thenReturn(bucketName);
 		Mockito.when(environment.getProperty(eq(Constants.KMS_KEY_ENV_VARIABLE))).thenReturn(ksmKey);
 

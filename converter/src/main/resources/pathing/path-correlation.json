@@ -49,6 +49,9 @@
 		},{
 			"templateId": "PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2",
 			"correlationId": "supplementData"
+		},{
+			"templateId": "MEASURE_SECTION_V3",
+			"correlationId": "measureSectionV3"
 		}
 	],
 	"correlations": [
@@ -101,6 +104,16 @@
 					],
 					"goods": {
 						"relativeXPath": "./*[local-name() = 'participant' and namespace-uri() = '<nsuri>']/*[local-name() = 'associatedEntity' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.3.249.5.1']/@extension",
+						"xmltype": "attribute"
+					}
+				},
+				{
+					"decodeLabel": "cehrt",
+					"encodeLabels": [
+						"cehrt"
+					],
+					"goods": {
+						"relativeXPath": "./*[local-name() = 'participant' and namespace-uri() = '<nsuri>']/*[local-name() = 'associatedEntity' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.3.2074.1']/@extension",
 						"xmltype": "attribute"
 					}
 				},
@@ -291,6 +304,18 @@
 					],
 					"goods": {
 						"relativeXPath": "./*[local-name() = 'effectiveTime' and namespace-uri() = '<nsuri>']/*[local-name() = 'high' and namespace-uri() = '<nsuri>']/@value",
+						"xmltype": "attribute"
+					}
+				}
+			]
+		},
+		{
+			"correlationId": "measureSectionV3",
+			"config": [
+				{
+					"decodeLabel": "measureSectionV4",
+					"goods": {
+						"relativeXPath": "./*[local-name() = 'templateId' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.10.20.27.2.1']/@extension",
 						"xmltype": "attribute"
 					}
 				}

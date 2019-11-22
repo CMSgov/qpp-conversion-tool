@@ -2,14 +2,20 @@ package gov.cms.qpp.conversion.encode;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.jayway.jsonpath.TypeRef;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
+import gov.cms.qpp.conversion.util.JsonHelper;
+
+import java.util.List;
+import java.util.Map;
 
 class QualityMeasureIdEncoderTest {
 
@@ -138,7 +144,7 @@ class QualityMeasureIdEncoderTest {
 	}
 
 	@Test
-	void testMeasure438EncodingEligiblePopulation() {
+	void testMeasureMultiToSingleEncodingEligiblePopulation() {
 		qualityMeasureId.putValue("measureId", "40280382-610b-e7a4-0161-9a6155603811");
 		executeInternalEncode();
 		JsonWrapper childValues = getChildValues();
@@ -148,7 +154,7 @@ class QualityMeasureIdEncoderTest {
 	}
 
 	@Test
-	void testMeasure438EncodingPerformanceMet() {
+	void testMultiToSingleEncodingPerformanceMet() {
 		qualityMeasureId.putValue("measureId", "40280382-610b-e7a4-0161-9a6155603811");
 		executeInternalEncode();
 		JsonWrapper childValues = getChildValues();
@@ -158,7 +164,7 @@ class QualityMeasureIdEncoderTest {
 	}
 
 	@Test
-	void testMeasure438EncodingEligiblePopulationExclusion() {
+	void testMeasureMultiToSingleEncodingEligiblePopulationExclusion() {
 		qualityMeasureId.putValue("measureId", "40280382-610b-e7a4-0161-9a6155603811");
 		executeInternalEncode();
 		JsonWrapper childValues = getChildValues();
@@ -168,7 +174,7 @@ class QualityMeasureIdEncoderTest {
 	}
 
 	@Test
-	void testMeasure438EncodingEligiblePopulationException() {
+	void testMeasureMultiToSingleEncodingEligiblePopulationException() {
 		qualityMeasureId.putValue("measureId", "40280382-610b-e7a4-0161-9a6155603811");
 		executeInternalEncode();
 		JsonWrapper childValues = getChildValues();
@@ -178,7 +184,7 @@ class QualityMeasureIdEncoderTest {
 	}
 
 	@Test
-	void testMeasure438EncodingPerformanceNotMet() {
+	void testMeasureMultiToSingleEncodingPerformanceNotMet() {
 		qualityMeasureId.putValue("measureId", "40280382-610b-e7a4-0161-9a6155603811");
 		executeInternalEncode();
 		JsonWrapper childValues = getChildValues();
@@ -194,6 +200,16 @@ class QualityMeasureIdEncoderTest {
 		JsonWrapper childValues = getChildValues();
 
 		assertThat(childValues.getInteger("aggregateCount")).isNull();
+	}
+
+	@Test
+	void testEncodeSingleToMultiDefault() {
+		qualityMeasureId.putValue("measureId", "40280382-6258-7581-0162-626f31a0009e");
+		numeratorNode.putValue(MeasureDataDecoder.MEASURE_POPULATION,"F4580E7F-EB6C-42AB-93A8-9AF1A4FD46EE");
+		executeInternalEncode();
+		JsonWrapper childValues = getChildValues();
+		List<?> strata = JsonHelper.readJsonAtJsonPath(childValues.toString(), "$.strata", new TypeRef<List<?>>() {});
+		assertThat(strata.size()).isEqualTo(2);
 	}
 
 	private void executeInternalEncode() {

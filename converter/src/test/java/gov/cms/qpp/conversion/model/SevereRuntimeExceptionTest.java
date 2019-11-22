@@ -10,6 +10,6 @@ class SevereRuntimeExceptionTest {
 		Throwable cause = new Throwable();
 		SevereRuntimeException exception = new SevereRuntimeException(cause);
 
-		assertThat(exception).hasCauseThat().isSameAs(cause);
+		assertThat(exception).hasCauseThat().isSameInstanceAs(cause);
 	}
 }

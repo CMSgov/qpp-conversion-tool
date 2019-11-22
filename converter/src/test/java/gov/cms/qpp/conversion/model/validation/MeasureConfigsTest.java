@@ -27,14 +27,6 @@ class MeasureConfigsTest {
 	}
 
 	@Test
-	void testNonExistingMeasureDataFile() {
-		IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () ->
-			MeasureConfigs.setMeasureDataFile("Bogus file name"));
-
-		assertThat(thrown).hasCauseThat().isInstanceOf(IOException.class);
-	}
-
-	@Test
 	void testBadFormattedMeasureDataFile() {
 		IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () ->
 			MeasureConfigs.setMeasureDataFile("bad_formatted_measures_data.json"));

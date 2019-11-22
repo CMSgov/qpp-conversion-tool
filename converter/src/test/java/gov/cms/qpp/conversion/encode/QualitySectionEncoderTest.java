@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -63,7 +64,10 @@ class QualitySectionEncoderTest {
 	 * @return the newly constructed Quality Section Node
 	 */
 	private Node getQualitySectionNode() {
-		Node qualitySectionNode = new Node(TemplateId.MEASURE_SECTION_V2);
+		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.CEHRT, "xxxxxxxxxx12345");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
+		Node qualitySectionNode = new Node(TemplateId.MEASURE_SECTION_V3, clinicalDocumentNode);
 		qualitySectionNode.putValue("category", "quality");
 		qualitySectionNode.putValue("submissionMethod", "electronicHealthRecord");
 		Node reportingParameterNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);

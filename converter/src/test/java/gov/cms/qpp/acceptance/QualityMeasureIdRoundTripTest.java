@@ -32,6 +32,12 @@ class QualityMeasureIdRoundTripTest {
 			Paths.get("src/test/resources/negative/mipsInvalidPerformanceRateUuid.xml");
 	static final Path INSENSITIVE_TEXT_FILE =
 			Paths.get("src/test/resources/fixtures/textInsensitiveQualityMeasureUuids.xml");
+	static final Path CORRECT_MULTI_TO_SINGLE_PERF_RATE_FILE =
+		Paths.get("src/test/resources/correctMultiToSinglePerfMeasureExample.xml");
+	static final Path INCORRECT_MULTI_TO_SINGLE_PERF_RATE_FILE =
+		Paths.get("src/test/resources/negative/wrongSubPopulationsMeasure135.xml");
+	static final Path MISSING_COUNT_FOR_PERF_DENOM =
+		Paths.get("src/test/resources/negative/perfDenomAggCountMissing.xml");
 
 	@Test
 	void testRoundTripForQualityMeasureId() {
@@ -131,5 +137,54 @@ class QualityMeasureIdRoundTripTest {
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.doesNotContain(error);
+	}
+
+	@Test
+	void testCorrectMultiToSinglePerfMeasureExample() {
+		Converter converter = new Converter(new PathSource(CORRECT_MULTI_TO_SINGLE_PERF_RATE_FILE));
+		JsonWrapper qpp = converter.transform();
+
+		String cms135MeasureId= "005";
+
+		List<String> measureIds = JsonHelper.readJsonAtJsonPath(qpp.toString(),
+			"$.measurementSets[?(@.category=='quality')].measurements[*].measureId", new TypeRef<List<String>>() { });
+		assertThat(measureIds).contains(cms135MeasureId);
+	}
+
+	@Test
+	void testIncorrectMultiToSinglePerfMeasureExample() {
+		Converter converter = new Converter(new PathSource(INCORRECT_MULTI_TO_SINGLE_PERF_RATE_FILE));
+		List<Detail> details = new ArrayList<>();
+
+		try {
+			converter.transform();
+		} catch (TransformException exception) {
+			AllErrors errors = exception.getDetails();
+			details.addAll(errors.getErrors().get(0).getDetails());
+		}
+
+		assertThat(details.size()).isEqualTo(2);
+		for(Detail detail: details) {
+			assertThat(detail.getErrorCode()).isEqualTo(59);
+		}
+	}
+
+	@Test
+	void testMissingPerfDenomAggregateCount() {
+		Converter converter = new Converter(new PathSource(MISSING_COUNT_FOR_PERF_DENOM));
+		List<Detail> details = new ArrayList<>();
+
+		try {
+			converter.transform();
+		} catch (TransformException exception) {
+			AllErrors errors = exception.getDetails();
+			details.addAll(errors.getErrors().get(0).getDetails());
+		}
+
+		String populationId = "F50E5334-415D-482F-A30D-0623C082B602";
+
+		LocalizedError error = ErrorCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(populationId);
+		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.contains(error);
 	}
 }

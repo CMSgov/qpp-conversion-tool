@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.MarkupManipulationHandler;
+import gov.cms.qpp.conversion.decode.QualitySectionDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
@@ -33,7 +34,7 @@ class QualityMeasureSectionValidatorTest {
 	@BeforeEach
 	void setUpQualityMeasureSection() {
 		reportingParameterNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
-		qualityMeasureSectionNode = new Node(TemplateId.MEASURE_SECTION_V2);
+		qualityMeasureSectionNode = new Node(TemplateId.MEASURE_SECTION_V3);
 		measure = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
 	}
 
@@ -41,6 +42,8 @@ class QualityMeasureSectionValidatorTest {
 	void testValidQualityMeasureSectionValidation() {
 		qualityMeasureSectionNode.addChildNode(reportingParameterNode);
 		qualityMeasureSectionNode.addChildNode(measure);
+		qualityMeasureSectionNode.putValue(QualitySectionDecoder.MEASURE_SECTION_V4,
+			TemplateId.MEASURE_SECTION_V4.getExtension());
 
 		List<Detail> errors = validateQualityMeasureSection();
 
@@ -51,6 +54,8 @@ class QualityMeasureSectionValidatorTest {
 	@Test
 	void testQualityMeasureSectionWithoutMeasure() {
 		qualityMeasureSectionNode.addChildNode(reportingParameterNode);
+		qualityMeasureSectionNode.putValue(QualitySectionDecoder.MEASURE_SECTION_V4,
+			TemplateId.MEASURE_SECTION_V4.getExtension());
 
 		List<Detail> errors = validateQualityMeasureSection();
 
@@ -63,6 +68,9 @@ class QualityMeasureSectionValidatorTest {
 
 	@Test
 	void testMissingReportingParams() {
+		qualityMeasureSectionNode.putValue(QualitySectionDecoder.MEASURE_SECTION_V4,
+			TemplateId.MEASURE_SECTION_V4.getExtension());
+
 		List<Detail> errors = validateQualityMeasureSection();
 
 		assertWithMessage("Must contain correct error")
@@ -75,6 +83,8 @@ class QualityMeasureSectionValidatorTest {
 	void testTooManyReportingParams() {
 		Node secondReportingParameterNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		qualityMeasureSectionNode.addChildNodes(reportingParameterNode, secondReportingParameterNode);
+		qualityMeasureSectionNode.putValue(QualitySectionDecoder.MEASURE_SECTION_V4,
+			TemplateId.MEASURE_SECTION_V4.getExtension());
 
 		List<Detail> errors = validateQualityMeasureSection();
 
@@ -100,6 +110,18 @@ class QualityMeasureSectionValidatorTest {
 		assertThat(errorDetails)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(ErrorCode.MEASURES_RNR_WITH_DUPLICATED_MEASURE_GUID);
+	}
+
+	@Test
+	void testMissingQualityMeasureSectionV4() {
+		qualityMeasureSectionNode.addChildNode(reportingParameterNode);
+		qualityMeasureSectionNode.addChildNode(measure);
+
+		List<Detail> errors = validateQualityMeasureSection();
+
+		assertThat(errors)
+			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.contains(ErrorCode.MEASURE_SECTION_V4_REQUIRED);
 	}
 
 	private List<Detail> validateQualityMeasureSection() {

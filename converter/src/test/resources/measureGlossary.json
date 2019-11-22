@@ -750,6 +750,7 @@
 		"eMeasureUuid": "40280382-6258-7581-0162-626f31a0009e",
 		"strata": [
 			{
+				"name" : "12-17",
 				"description": "Adolescent patients 12 to 17 years of age and adult patients 18 years of age and older who achieved remission at twelve months as demonstrated by a twelve month (+/- 60 days) PHQ-9 or PHQ-9M score of less than five",
 				"eMeasureUuids": {
 					"initialPopulationUuid": "28EF715E-00EF-495A-B529-9FEF83EDA5FF",
@@ -761,6 +762,9 @@
 						"E4C1A2E2-1959-4BF7-873E-8EB80128C206"
 					]
 				}
+			},
+			{
+				"name" : "18+"
 			}
 		]
 	},

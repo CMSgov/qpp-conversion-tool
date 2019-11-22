@@ -115,7 +115,10 @@ class ClinicalDocumentEncoderTest {
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, "2567891421");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID,  "AR000000" );
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID,  "x12345" );
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.CEHRT, "xxxxxxxxxx12345");
 		clinicalDocumentNode.addChildNode(aciSectionNode);
+
+		aciSectionNode.setParent(clinicalDocumentNode);
 
 		nodes = new ArrayList<>();
 		nodes.add(clinicalDocumentNode);

@@ -3,7 +3,7 @@
    <realmCode code="US"/>
    <typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
    <templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01"/>
-   <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2017-07-01"/>
+   <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2018-05-01"/>
    <id root="D5E68223-5760-11E7-1256-09173F13E4C5"/>
    <code code="55184-6"
          codeSystem="2.16.840.1.113883.6.1"
@@ -482,7 +482,7 @@ CDA Body
 					<!-- Measure Section -->
 					<templateId root="2.16.840.1.113883.10.20.24.2.2"/>
 					<!-- Improvement Activity Section V2 templateId -->
-					<templateId root="2.16.840.1.113883.10.20.27.2.4" extension="2017-06-01"/>
+					<templateId root="2.16.840.1.113883.3.249.20.2.1" extension="2018-05-01"/>
 					<code code="55186-1" codeSystem="2.16.840.1.113883.6.1"
 						displayName="Measure Section"/>
 					<title>Measure Section</title>
@@ -515,8 +515,7 @@ CDA Body
 							<!-- Implied template Measure Reference templateId -->
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
 							<!-- Improvement Activity Performed Reference and Results templateId -->
-							<templateId root="2.16.840.1.113883.10.20.27.3.33"
-								extension="2016-09-01"/>
+							<templateId root="2.16.840.1.113883.3.249.20.3.1" extension="2018-05-01"/>
 							<id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
 							<statusCode code="completed"/>
 							<reference typeCode="REFR">
@@ -549,8 +548,7 @@ CDA Body
 							<!-- Implied template Measure Reference templateId -->
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
 							<!-- Improvement Activity Performed Reference and Results templateId -->
-							<templateId root="2.16.840.1.113883.10.20.27.3.33"
-								extension="2016-09-01"/>
+							<templateId root="2.16.840.1.113883.3.249.20.3.1" extension="2018-05-01"/>
 							<id root="ae58d929-3574-47ae-87b8-438d2eac86d9"/>
 							<statusCode code="completed"/>
 							<reference typeCode="REFR">

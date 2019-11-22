@@ -5,15 +5,12 @@ import com.google.common.truth.Correspondence;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 
-public final class DetailsCodeEquals extends Correspondence<Detail, ErrorCode> {
+public final class DetailsCodeEquals implements Correspondence.BinaryPredicate<Detail, ErrorCode> {
 
-	private DetailsCodeEquals() {
-	}
-
-	public static DetailsCodeEquals INSTANCE = new DetailsCodeEquals();
+	public static Correspondence<Detail, ErrorCode> INSTANCE = Correspondence.from(new DetailsCodeEquals(), "Compare a Detail and an ErrorCode");
 
 	@Override
-	public boolean compare(Detail actual, ErrorCode expected) {
+	public boolean apply(Detail actual, ErrorCode expected) {
 		if (actual == null) {
 			return expected == null;
 		}
