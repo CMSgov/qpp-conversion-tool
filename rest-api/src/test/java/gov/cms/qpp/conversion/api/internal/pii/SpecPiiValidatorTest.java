@@ -91,7 +91,7 @@ public class SpecPiiValidatorTest {
 				"]\r\n").replace("{apm}", apm).replace("{npi}", npi);
 		InputStream jsonStream = new StringInputStream(json);
 		CpcValidationInfoMap file = new CpcValidationInfoMap(jsonStream);
-		Assumptions.assumeFalse(file.getApmTinNpiCombination() == null);
+		Assumptions.assumeFalse(file.getApmTinNpiCombinationMap() == null);
 		return file;
 	}
 
@@ -110,7 +110,7 @@ public class SpecPiiValidatorTest {
 			"]\r\n").replace("{apm}", apm).replace("{npi}", npi);
 		InputStream jsonStream = new StringInputStream(json);
 		CpcValidationInfoMap file = new CpcValidationInfoMap(jsonStream);
-		Assumptions.assumeFalse(file.getApmTinNpiCombination() == null);
+		Assumptions.assumeFalse(file.getApmTinNpiCombinationMap() == null);
 		return file;
 	}
 

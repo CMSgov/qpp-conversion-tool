@@ -39,20 +39,18 @@ class CpcValidationInfoMapTest {
 		InputStream jsonStream = new StringInputStream(json);
 		
 		CpcValidationInfoMap cpc = new CpcValidationInfoMap(jsonStream);
-		Map<String, List<CpcValidationInfo>> map = cpc.getApmTinNpiCombination();
+		Map<String, Map<String, List<String>>> map = cpc.getApmTinNpiCombinationMap();
 		
 		assertThat(map).isNotNull();
 		assertThat(map.size()).isEqualTo(2);
-		assertThat(map.get("T1AR0503").get(0).getTin()).isEqualTo("000333333");
-		assertThat(map.get("T1AR0503").get(0).getNpi()).isEqualTo("0333333333");
-		assertThat(map.get("T1AR0518").get(0).getTin()).isEqualTo("000444444");
-		assertThat(map.get("T1AR0518").get(0).getNpi()).isEqualTo("0444444444");
+		assertThat(map.get("T1AR0503").get("000333333").indexOf("0333333333")).isGreaterThan(-1);
+		assertThat(map.get("T1AR0518").get("000444444").indexOf("0444444444")).isGreaterThan(-1);
 	}
 
 	@Test
 	void test_loadNullStream() throws Exception {
 		CpcValidationInfoMap cpc = new CpcValidationInfoMap(null);
-		Map<String, List<CpcValidationInfo>> map = cpc.getApmTinNpiCombination();
+		Map<String, Map<String, List<String>>> map = cpc.getApmTinNpiCombinationMap();
 
 		assertThat(map).isNull();
 	}
@@ -62,7 +60,7 @@ class CpcValidationInfoMapTest {
 		Mockito.when(mockIns.read()).thenThrow(new IOException());
 		
 		CpcValidationInfoMap cpc = new CpcValidationInfoMap(mockIns);
-		Map<String, List<CpcValidationInfo>> map = cpc.getApmTinNpiCombination();
+		Map<String, Map<String, List<String>>> map = cpc.getApmTinNpiCombinationMap();
 		
 		assertThat(map).isNotNull();
 		assertThat(map.size()).isEqualTo(0);

@@ -25,6 +25,8 @@ public class CpcValidationInfoMap {
 	private void convertJsonToMapOfLists(InputStream cpcApmNpiTinJson) {
 		if (cpcApmNpiTinJson == null) {
 			apmTinNpiCombinationMap = null;
+		} else {
+			apmTinNpiCombinationMap = new HashMap<>();
 		}
 
 		List<CpcValidationInfo> cpcValidationInfoList = new ArrayList<>();
@@ -33,20 +35,24 @@ public class CpcValidationInfoMap {
 			cpcValidationInfoList =
 				Arrays.asList(objectMapper.readValue(new InputStreamReader(cpcApmNpiTinJson, StandardCharsets.UTF_8),
 					CpcValidationInfo[].class));
-		} catch (IOException exc) {
+		} catch (IOException | NullPointerException exc){
 			DEV_LOG.info("Failed to parse the cpc+ validation npi to apm list...");
 		}
-
 
 		for (CpcValidationInfo cpcValidationInfo: cpcValidationInfoList) {
 			String currentApm = cpcValidationInfo.getApm();
 			String currentTin = cpcValidationInfo.getTin();
 			String currentNpi = cpcValidationInfo.getNpi();
 
-			if(!isExistingCombination(currentApm, currentTin, cpcValidationInfo.getNpi())) {
-				apmTinNpiCombinationMap.get(currentApm)
-					.get(currentTin)
-					.add(currentNpi);
+			if(apmTinNpiCombinationMap.containsKey(currentApm)) {
+				if (!hasTinKey(currentApm, currentTin)) {
+					List<String> npiList = Arrays.asList(currentNpi);
+					apmTinNpiCombinationMap.get(currentApm).put(currentTin, npiList);
+				} else if(!isExistingCombination(currentApm, currentTin, cpcValidationInfo.getNpi())) {
+					apmTinNpiCombinationMap.get(currentApm)
+						.get(currentTin)
+						.add(currentNpi);
+				}
 			} else {
 				List<String> npiList = new ArrayList<>();
 				npiList.add(currentNpi);
@@ -57,9 +63,11 @@ public class CpcValidationInfoMap {
 		}
 	}
 
-	public boolean isExistingCombination(String apm, String tin, String npi) {
-		if (apmTinNpiCombinationMap.get(apm) == null) return false;
-		if (apmTinNpiCombinationMap.get(apm).get(tin) == null) return false;
+	private boolean hasTinKey(String apm, String tin) {
+		return (apmTinNpiCombinationMap.get(apm).containsKey(tin));
+	}
+
+	private boolean isExistingCombination(String apm, String tin, String npi) {
 		return (apmTinNpiCombinationMap.get(apm).get(tin)).indexOf(npi) > -1;
 	}
 
