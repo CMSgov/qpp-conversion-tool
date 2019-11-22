@@ -66,7 +66,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 72 : CT - The Performance Rate is missing
 * 78 : CT - The Program 'Mips Virtual Group' was found. The required entity id for this program name was missing. Please provide a virtual group identifier with the 'Mips Virtual Group' program name.
 * 79 : CT - There is no TIN validator present, so NPI/Alternative Payment Model (APM) combinations cannot be verified
-* 80 : CT - The given National Provider (NPI) Identifier and Alternative Payment Model (APM) are not a valid combination
+* 80 : CT - The given National Provider (NPI) Identifier, Taxpayer Identification Number (Tin), and Alternative Payment Model (APM) are not a valid combination
 * 81 : CT - At least one measure is required in a measure section
 * 82 : CT - There are too many errors associated with this QRDA-III file. Showing 100 out of `(Error amount)` errors. Please fix the given errors and re-submit
 * 83 : CT - CPC+ submissions should contain a CEHRT. Please refer to the `(Submission year's)` IG for more details https://ecqi.healthit.gov/system/files/2019_CMS_QRDA_III_Eligible_Clinicians_and_EP_IG-508.pdf#page=15 regarding practice CEHRTs.
