@@ -157,8 +157,8 @@ public enum ErrorCode implements LocalizedError {
 		+ "program name was missing. Please provide a virtual group identifier with the 'Mips Virtual Group' program name."),
 	MISSING_PII_VALIDATOR(79, "There is no TIN validator present, so NPI/Alternative Payment Model (APM) "
 			+ "combinations cannot be verified"),
-	INCORRECT_API_NPI_COMBINATION(80, "The given National Provider (NPI) Identifier and Alternative Payment Model (APM) "
-			+ "are not a valid combination"),
+	INCORRECT_API_NPI_COMBINATION(80, "The given National Provider (NPI) Identifier, Taxpayer Identification Number (Tin), "
+			+ "and Alternative Payment Model (APM) are not a valid combination"),
 	MEASURE_SECTION_MISSING_MEASURE(81, "At least one measure is required in a measure section"),
 	TOO_MANY_ERRORS(82, "There are too many errors associated with this QRDA-III file. Showing 100 out of `(Error amount)` errors."
 		+ " Please fix the given errors and re-submit", true),
