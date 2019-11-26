@@ -5,6 +5,6 @@ import gov.cms.qpp.conversion.validate.NodeValidator;
 
 public interface PiiValidator {
 
-	void validateApmNpiCombination(Node node, NodeValidator validator);
+	void validateApmTinNpiCombination(Node node, NodeValidator validator);
 
 }
