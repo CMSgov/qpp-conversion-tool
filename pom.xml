@@ -29,6 +29,7 @@
 		<requiredCodeCoverage>0.95</requiredCodeCoverage>
 		<verificationsPhase>verify</verificationsPhase>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<aws.version>1.11.659</aws.version>
 		<junit.excludes>integration, acceptance</junit.excludes>
 		<junit.includes></junit.includes>
 		<maven.generate.phase>generate-sources</maven.generate.phase>
