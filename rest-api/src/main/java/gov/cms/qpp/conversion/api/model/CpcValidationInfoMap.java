@@ -40,9 +40,9 @@ public class CpcValidationInfoMap {
 		}
 
 		for (CpcValidationInfo cpcValidationInfo: cpcValidationInfoList) {
-			String currentApm = cpcValidationInfo.getApm();
-			String currentTin = cpcValidationInfo.getTin();
-			String currentNpi = cpcValidationInfo.getNpi();
+			String currentApm = cpcValidationInfo.getApm().trim();
+			String currentTin = cpcValidationInfo.getTin().trim();
+			String currentNpi = cpcValidationInfo.getNpi().trim();
 
 			if(apmTinNpiCombinationMap.containsKey(currentApm)) {
 				if (!hasTinKey(currentApm, currentTin)) {

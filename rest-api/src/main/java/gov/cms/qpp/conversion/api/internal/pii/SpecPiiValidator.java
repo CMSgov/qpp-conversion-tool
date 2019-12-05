@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.api.internal.pii;
 
-import gov.cms.qpp.conversion.api.model.CpcValidationInfo;
 import gov.cms.qpp.conversion.api.model.CpcValidationInfoMap;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
