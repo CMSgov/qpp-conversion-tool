@@ -10,7 +10,7 @@ public enum MissingPiiValidator implements PiiValidator {
 	INSTANCE;
 
 	@Override
-	public void validateApmNpiCombination(Node node, NodeValidator validator) {
+	public void validateApmTinNpiCombination(Node node, NodeValidator validator) {
 		validator.addWarning(Detail.forErrorAndNode(ErrorCode.MISSING_PII_VALIDATOR, node));
 	}
 

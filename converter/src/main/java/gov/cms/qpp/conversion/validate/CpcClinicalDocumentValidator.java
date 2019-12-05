@@ -136,7 +136,7 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	}
 
 	private void validateApmNpiCombination(Node node) {
-		context.getPiiValidator().validateApmNpiCombination(node, this);
+		context.getPiiValidator().validateApmTinNpiCombination(node, this);
 	}
 
 	/**

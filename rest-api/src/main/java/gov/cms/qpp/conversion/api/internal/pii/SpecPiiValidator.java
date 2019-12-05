@@ -11,6 +11,7 @@ import gov.cms.qpp.conversion.validate.pii.PiiValidator;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class SpecPiiValidator implements PiiValidator {
 
@@ -21,17 +22,22 @@ public class SpecPiiValidator implements PiiValidator {
 	}
 
 	@Override
-	public void validateApmNpiCombination(Node node, NodeValidator validator) {
+	public void validateApmTinNpiCombination(Node node, NodeValidator validator) {
 		String apm = node.getValue(ClinicalDocumentDecoder.PRACTICE_ID);
 		List<String> npiList = Arrays.asList(
 			node.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER).split(","));
+		List<String> tinList = Arrays.asList(
+			node.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER).split(","));
 
-		for (final String npi : npiList) {
-			CpcValidationInfo spec = file.getApmToSpec().get(npi);
-			if (spec == null) {
-				validator.addWarning(Detail.forErrorAndNode(ErrorCode.INCORRECT_API_NPI_COMBINATION, node));
-			} else {
-				if (spec.getApm() != null && !spec.getApm().equalsIgnoreCase(apm)) {
+		Map<String, List<String>> tinNpisMap = file.getApmTinNpiCombinationMap().get(apm);
+		if (tinNpisMap == null) {
+			validator.addWarning(Detail.forErrorAndNode(ErrorCode.INCORRECT_API_NPI_COMBINATION, node));
+		} else {
+			int npiSize = npiList.size();
+			for (int index = 0; index < npiSize; index++) {
+				String currentTin = tinList.get(index);
+				String currentNpi = npiList.get(index);
+				if (tinNpisMap.get(currentTin) == null || !(tinNpisMap.get(currentTin).indexOf(currentNpi) > -1)) {
 					validator.addWarning(Detail.forErrorAndNode(ErrorCode.INCORRECT_API_NPI_COMBINATION, node));
 				}
 			}
