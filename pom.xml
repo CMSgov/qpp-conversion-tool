@@ -30,13 +30,8 @@
 		<verificationsPhase>verify</verificationsPhase>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<aws.version>1.11.659</aws.version>
-		<jackson.version>2.10.0</jackson.version>
-		<guava.version>28.1-jre</guava.version>
-		<junit.version>5.5.2</junit.version>
-		<powermock.version>2.0.4</powermock.version>
 		<junit.excludes>integration, acceptance</junit.excludes>
 		<junit.includes></junit.includes>
-		<maven.version>3.6.2</maven.version>
 		<maven.generate.phase>generate-sources</maven.generate.phase>
 	</properties>
 
@@ -240,13 +235,13 @@
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-core</artifactId>
-				<version>${jackson.version}</version>
+				<version>2.10.0</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-annotations</artifactId>
-				<version>${jackson.version}</version>
+				<version>2.10.0</version>
 			</dependency>
 
 			<dependency>
@@ -258,19 +253,19 @@
 			<dependency>
 				<groupId>com.fasterxml.jackson.dataformat</groupId>
 				<artifactId>jackson-dataformat-xml</artifactId>
-				<version>${jackson.version}</version>
+				<version>2.10.0</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
-				<version>${guava.version}</version>
+				<version>28.1-jre</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava-testlib</artifactId>
-				<version>${guava.version}</version>
+				<version>28.1-jre</version>
 			</dependency>
 
 			<dependency>
@@ -294,19 +289,19 @@
 			<dependency>
 				<groupId>org.junit.vintage</groupId>
 				<artifactId>junit-vintage-engine</artifactId>
-				<version>${junit.version}</version>
+				<version>5.5.2</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter-engine</artifactId>
-				<version>${junit.version}</version>
+				<version>5.5.2</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter-params</artifactId>
-				<version>${junit.version}</version>
+				<version>5.5.2</version>
 			</dependency>
 
 			<dependency>
@@ -324,13 +319,13 @@
 			<dependency>
 				<groupId>org.powermock</groupId>
 				<artifactId>powermock-module-junit4</artifactId>
-				<version>${powermock.version}</version>
+				<version>2.0.4</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.powermock</groupId>
 				<artifactId>powermock-api-mockito2</artifactId>
-				<version>${powermock.version}</version>
+				<version>2.0.4</version>
 			</dependency>
 
 			<dependency>
