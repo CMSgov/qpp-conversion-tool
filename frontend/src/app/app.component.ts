@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FileSelectDirective, FileDropDirective, FileUploader } from '../../node_modules/ng2-file-upload/ng2-file-upload';
 import 'rxjs/Rx' ;
 
-const URL  = 'https://qpp.cms.gov/api/submissions/converter';
+const URL  = 'https://preview.qpp.cms.gov/api/submissions/converter';
 
 @Component({
 	selector: 'app-root',
