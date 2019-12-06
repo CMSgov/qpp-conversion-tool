@@ -37,7 +37,7 @@ public class SpecPiiValidator implements PiiValidator {
 			for (int index = 0; index < npiSize; index++) {
 				String currentTin = tinList.get(index).trim();
 				String currentNpi = npiList.get(index).trim();
-				LocalizedError error = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(currentNpi, currentTin, apm);
+				LocalizedError error = ErrorCode.INCORRECT_API_NPI_COMBINATION.format(currentNpi, currentTin, apm);
 				if (tinNpisMap.get(currentTin) == null || !(tinNpisMap.get(currentTin).indexOf(currentNpi) > -1)) {
 					validator.addWarning(Detail.forErrorAndNode(error, node));
 				}
