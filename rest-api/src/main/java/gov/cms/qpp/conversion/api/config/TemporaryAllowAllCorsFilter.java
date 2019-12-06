@@ -17,7 +17,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * @author zack
  */
 @Component
-public class CorsFilter extends OncePerRequestFilter {
+public class TemporaryAllowAllCorsFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 			FilterChain filterChain) throws ServletException, IOException {
 
