@@ -66,6 +66,7 @@ public abstract class SkeletalQrdaController<T> {
 	 * @return Valid json or error json content
 	 */
 	@PostMapping
+	@CrossOrigin(origins = "*")
 	public ResponseEntity<T> uploadQrdaFile(
 		@RequestParam(name = "file") MultipartFile file,
 		@RequestHeader(required = false, name = "Purpose") String purpose) {
@@ -82,7 +83,7 @@ public abstract class SkeletalQrdaController<T> {
 		}
 
 		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+		httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 		
 		T response = respond(file, purpose, httpHeaders);
 

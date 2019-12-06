@@ -88,7 +88,7 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleTransformException(exception);
 
 		assertThat(responseEntity.getHeaders().getContentType())
-				.isEquivalentAccordingToCompareTo(MediaType.APPLICATION_JSON_UTF8);
+				.isEquivalentAccordingToCompareTo(MediaType.APPLICATION_JSON);
 	}
 
 	@Test
@@ -120,7 +120,7 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleQppValidationException(exception);
 
 		assertThat(responseEntity.getHeaders().getContentType())
-				.isEquivalentAccordingToCompareTo(MediaType.APPLICATION_JSON_UTF8);
+				.isEquivalentAccordingToCompareTo(MediaType.APPLICATION_JSON);
 	}
 
 	@Test

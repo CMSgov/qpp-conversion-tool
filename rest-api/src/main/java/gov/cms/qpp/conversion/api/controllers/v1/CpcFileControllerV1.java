@@ -69,7 +69,7 @@ public class CpcFileControllerV1 {
 
 		API_LOG.info("CPC+ unprocessed files request succeeded");
 
-		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(unprocessedCpcFileDataList);
+		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(unprocessedCpcFileDataList);
 	}
 
 	/**

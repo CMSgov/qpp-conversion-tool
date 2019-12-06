@@ -124,7 +124,7 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 
 	private ResponseEntity<AllErrors> cope(TransformException exception) {
 		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+		httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
 		return new ResponseEntity<>(exception.getDetails(), httpHeaders, HttpStatus.UNPROCESSABLE_ENTITY);
 	}
