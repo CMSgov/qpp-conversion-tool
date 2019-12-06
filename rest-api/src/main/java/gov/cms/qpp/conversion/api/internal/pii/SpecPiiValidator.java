@@ -34,8 +34,8 @@ public class SpecPiiValidator implements PiiValidator {
 		} else {
 			int npiSize = npiList.size();
 			for (int index = 0; index < npiSize; index++) {
-				String currentTin = tinList.get(index);
-				String currentNpi = npiList.get(index);
+				String currentTin = tinList.get(index).trim();
+				String currentNpi = npiList.get(index).trim();
 				if (tinNpisMap.get(currentTin) == null || !(tinNpisMap.get(currentTin).indexOf(currentNpi) > -1)) {
 					validator.addWarning(Detail.forErrorAndNode(ErrorCode.INCORRECT_API_NPI_COMBINATION, node));
 				}
