@@ -159,7 +159,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	private void setMultipleNationalProviderIdsOnNode(Element element, Node thisNode) {
 		Consumer<? super List<String>> consumer = p ->
 			thisNode.putValue(NATIONAL_PROVIDER_IDENTIFIER,
-				p.toString().substring(1, p.toString().length() - 1));
+				p.toString().substring(1, p.toString().length() - 1).trim());
 		setMultipleAttributesOnNode(element, getXpath(NATIONAL_PROVIDER_IDENTIFIER),
 			consumer, Filters.attribute());
 	}

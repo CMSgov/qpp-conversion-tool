@@ -66,7 +66,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 72 : CT - The Performance Rate is missing
 * 78 : CT - The Program 'Mips Virtual Group' was found. The required entity id for this program name was missing. Please provide a virtual group identifier with the 'Mips Virtual Group' program name.
 * 79 : CT - There is no TIN validator present, so NPI/Alternative Payment Model (APM) combinations cannot be verified
-* 80 : CT - The given National Provider (NPI) Identifier, Taxpayer Identification Number (Tin), and Alternative Payment Model (APM) are not a valid combination
+* 80 : CT - The given National Provider Identifier `(npi)`, Taxpayer Identification Number `(tin)`, and Alternative Payment Model `(apm)` are not a valid combination
 * 81 : CT - At least one measure is required in a measure section
 * 82 : CT - There are too many errors associated with this QRDA-III file. Showing 100 out of `(Error amount)` errors. Please fix the given errors and re-submit
 * 83 : CT - CPC+ submissions should contain a CEHRT. Please refer to the `(Submission year's)` IG for more details https://ecqi.healthit.gov/system/files/2019_CMS_QRDA_III_Eligible_Clinicians_and_EP_IG-508.pdf#page=15 regarding practice CEHRTs.
@@ -82,3 +82,4 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 93 : CT - The numerator id `(numeratorUuid)` has a count value that is greater than the denominator and/or the performance denominator (Denominator count - Denominator exclusion count - Denominator Exception count)
 * 94 : CT - The denominator exclusion id `(denexUuid)` has a count value that is greater than the denominator. The Denominator exclusion cannot be a greater value than the denominator.
 * 95 : CT - The Clinical Document must contain one Measure Section v4 with the extension 2017-06-01
+* 96 : CT - The APM to TIN/NPI Combination file is missing.
