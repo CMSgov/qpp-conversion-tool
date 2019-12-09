@@ -11,14 +11,14 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.encryption.providers.DirectKmsMaterialProvider;
 import com.amazonaws.services.kms.AWSKMS;
-import gov.cms.qpp.conversion.api.model.Constants;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+
+import gov.cms.qpp.conversion.api.model.Constants;
 
 import java.util.Optional;
 
@@ -146,7 +146,9 @@ public class DynamoDbConfig {
 	 * @return A DynamoDB configuration that forces the table name.
 	 */
 	DynamoDBMapperConfig tableNameOverrideConfig(String tableName) {
-		return DynamoDBMapperConfig.builder().withTableNameOverride(new DynamoDBMapperConfig.TableNameOverride(tableName))
+		return DynamoDBMapperConfig.builder()
+			.withSaveBehavior(DynamoDBMapperConfig.SaveBehavior.PUT)
+			.withTableNameOverride(new DynamoDBMapperConfig.TableNameOverride(tableName))
 			.build();
 	}
 
