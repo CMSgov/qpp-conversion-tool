@@ -147,7 +147,7 @@ public class DynamoDbConfig {
 	 */
 	DynamoDBMapperConfig tableNameOverrideConfig(String tableName) {
 		return DynamoDBMapperConfig.builder()
-			.withSaveBehavior(DynamoDBMapperConfig.SaveBehavior.PUT)
+			//.withSaveBehavior(DynamoDBMapperConfig.SaveBehavior.PUT)
 			.withTableNameOverride(new DynamoDBMapperConfig.TableNameOverride(tableName))
 			.build();
 	}
