@@ -156,9 +156,9 @@ public enum ErrorCode implements LocalizedError {
 	VIRTUAL_GROUP_ID_REQUIRED(78, "The Program 'Mips Virtual Group' was found. The required entity id for this "
 		+ "program name was missing. Please provide a virtual group identifier with the 'Mips Virtual Group' program name."),
 	MISSING_PII_VALIDATOR(79, "There is no TIN validator present, so NPI/Alternative Payment Model (APM) "
-			+ "combinations cannot be verified"),
-	INCORRECT_API_NPI_COMBINATION(80, "The given National Provider (NPI) Identifier, Taxpayer Identification Number (Tin), "
-			+ "and Alternative Payment Model (APM) are not a valid combination"),
+		+ "combinations cannot be verified"),
+	INCORRECT_API_NPI_COMBINATION(80, "The given National Provider Identifier `(npi)`, Taxpayer Identification Number `(tin)`, "
+		+ "and Alternative Payment Model `(apm)` are not a valid combination", true),
 	MEASURE_SECTION_MISSING_MEASURE(81, "At least one measure is required in a measure section"),
 	TOO_MANY_ERRORS(82, "There are too many errors associated with this QRDA-III file. Showing 100 out of `(Error amount)` errors."
 		+ " Please fix the given errors and re-submit", true),
@@ -183,7 +183,8 @@ public enum ErrorCode implements LocalizedError {
 		+ "(Denominator count - Denominator exclusion count - Denominator Exception count)", true),
 	CPC_PLUS_DENEX_GREATER_THAN_DENOMINATOR(94, "The denominator exclusion id `(denexUuid)` has a count value that is greater than the "
 		+ "denominator. The Denominator exclusion cannot be a greater value than the denominator.", true),
-	MEASURE_SECTION_V4_REQUIRED(95, "The Clinical Document must contain one Measure Section v4 with the extension 2017-06-01");
+	MEASURE_SECTION_V4_REQUIRED(95, "The Clinical Document must contain one Measure Section v4 with the extension 2017-06-01"),
+	MISSING_API_TIN_NPI_FILE(96, "The APM to TIN/NPI Combination file is missing.");
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));

@@ -19,7 +19,7 @@ public class SpecPiiValidatorTest {
 	@Test
 	void testValidCombination() throws Exception {
 		SpecPiiValidator validator = validator("DogCow_APM", "DogCow_NPI");
-		Node node = node("DogCow_APM", "DogCow_NPI", "DogCow");
+		Node node = node("DogCow_APM", "DogCow_NPI,DogCow_NPI2", "DogCow,DogCow");
 		NodeValidator nodeValidator = new NodeValidator() {
 			@Override
 			protected void performValidation(Node node) {
@@ -85,7 +85,7 @@ public class SpecPiiValidatorTest {
 				"	},\r\n" +
 				"   {\r\n" +
 				"		\"apm_entity_id\": \"DogCow_APM\",\r\n" +
-				"		\"tin\": \"DogCow2\",\r\n" +
+				"		\"tin\": \"DogCow\",\r\n" +
 				"		\"npi\": \"DogCow_NPI2\"\r\n" +
 				"	}\r\n" +
 				"]\r\n").replace("{apm}", apm).replace("{npi}", npi);
