@@ -32,7 +32,6 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(DbServiceImpl.class);
 	private static final int LIMIT = 3;
-	public static final String START_OF_UNALLOWED_CONVERSION_TIME = "2018-01-02T04:59:59.999Z";
 
 	private final Optional<DynamoDBMapper> mapper;
 	private final Environment environment;
@@ -76,12 +75,13 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	public List<Metadata> getUnprocessedCpcPlusMetaData() {
 		if (mapper.isPresent()) {
 			API_LOG.info("Getting list of unprocessed CPC+ metadata");
+			String cpcConversionStartDate = environment.getProperty(Constants.CPC_PLUS_UNPROCESSED_FILE_SEARCH_DATE_VARIABLE);
 
 			return IntStream.range(0, Constants.CPC_DYNAMO_PARTITIONS).mapToObj(partition -> {
 				Map<String, AttributeValue> valueMap = new HashMap<>();
 				valueMap.put(":cpcValue", new AttributeValue().withS(Constants.CPC_DYNAMO_PARTITION_START + partition));
 				valueMap.put(":cpcProcessedValue", new AttributeValue().withS("false"));
-				valueMap.put(":createDate", new AttributeValue().withS(START_OF_UNALLOWED_CONVERSION_TIME));
+				valueMap.put(":createDate", new AttributeValue().withS(cpcConversionStartDate));
 
 				DynamoDBQueryExpression<Metadata> metadataQuery = new DynamoDBQueryExpression<Metadata>()
 					.withIndexName("Cpc-CpcProcessed_CreateDate-index")

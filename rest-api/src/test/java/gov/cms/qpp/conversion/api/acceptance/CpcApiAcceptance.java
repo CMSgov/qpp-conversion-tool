@@ -91,7 +91,7 @@ class CpcApiAcceptance {
 	@AcceptanceTest
 	void testUnprocessedFilesDates() {
 		Metadata afterJanuarySecondMetadata = createDatedCpcMetadata("2018-01-02T05:00:00.000Z");
-		Metadata beforeJanuarySecondMetadata = createDatedCpcMetadata(DbServiceImpl.START_OF_UNALLOWED_CONVERSION_TIME);
+		Metadata beforeJanuarySecondMetadata = createDatedCpcMetadata("2018-01-02T04:59:59.999Z");
 		Metadata anotherAllowedMetadata = createDatedCpcMetadata("2018-02-26T14:36:43.723Z");
 		Metadata anotherUnallowedMetadata = createDatedCpcMetadata("2017-12-25T00:00:00.000Z");
 
@@ -101,7 +101,7 @@ class CpcApiAcceptance {
 
 		responseBody.stream().forEach(map ->
 			assertThat(Instant.parse((String)map.get("conversionDate")))
-				.isGreaterThan(Instant.parse(DbServiceImpl.START_OF_UNALLOWED_CONVERSION_TIME)));
+				.isGreaterThan(Instant.parse("2018-01-02T04:59:59.999Z")));
 	}
 
 	@AcceptanceTest
