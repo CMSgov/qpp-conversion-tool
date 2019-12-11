@@ -83,7 +83,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 			SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 			dateFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-			String formattedDate = dateFormatter.format(Instant.parse(TEST_STATIC_DATE);
+			String formattedDate = dateFormatter.format(Instant.parse(TEST_STATIC_DATE));
 
 			return IntStream.range(0, Constants.CPC_DYNAMO_PARTITIONS).mapToObj(partition -> {
 				Map<String, AttributeValue> valueMap = new HashMap<>();
