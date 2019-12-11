@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.api.services;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import org.joda.time.Instant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -13,11 +14,13 @@ import org.springframework.util.StringUtils;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TimeZone;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -77,12 +80,16 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 		if (mapper.isPresent()) {
 			API_LOG.info("Getting list of unprocessed CPC+ metadata...");
 			//String cpcConversionStartDate = environment.getProperty(Constants.CPC_PLUS_UNPROCESSED_FILE_SEARCH_DATE_VARIABLE);
+			SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+			dateFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+			String formattedDate = dateFormatter.format(Instant.parse(TEST_STATIC_DATE);
 
 			return IntStream.range(0, Constants.CPC_DYNAMO_PARTITIONS).mapToObj(partition -> {
 				Map<String, AttributeValue> valueMap = new HashMap<>();
 				valueMap.put(":cpcValue", new AttributeValue().withS(Constants.CPC_DYNAMO_PARTITION_START + partition));
 				valueMap.put(":cpcProcessedValue", new AttributeValue().withS("false"));
-				valueMap.put(":createDate", new AttributeValue().withS(TEST_STATIC_DATE));
+				valueMap.put(":createDate", new AttributeValue().withS(formattedDate));
 
 				DynamoDBQueryExpression<Metadata> metadataQuery = new DynamoDBQueryExpression<Metadata>()
 					.withIndexName("Cpc-CpcProcessed_CreateDate-index")
