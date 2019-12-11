@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.api.services;
 
-
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -30,7 +29,6 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.Upload;
 import com.amazonaws.services.s3.transfer.model.UploadResult;
@@ -38,7 +36,6 @@ import com.amazonaws.services.s3.transfer.model.UploadResult;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.util.MeasuredInputStreamSupplier;
 import gov.cms.qpp.test.MockitoExtension;
-
 
 @ExtendWith(MockitoExtension.class)
 class StorageServiceImplTest {
@@ -158,57 +155,5 @@ class StorageServiceImplTest {
 		CompletableFuture<String> storeResult = underTest.store(
 				"submission", source, source.size());
 		return storeResult.join();
-	}
-	
-	@Test
-	void test_getCpcPlusValidationFile_noBucket() {
-		Mockito.when(environment.getProperty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE)).thenReturn(null);
-		InputStream ins = underTest.getCpcPlusValidationFile();
-		assertThat(ins).isNull();
-		
-		Mockito.when(environment.getProperty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE)).thenReturn("");
-		ins = underTest.getCpcPlusValidationFile();
-		assertThat(ins).isNull();
-		
-		Mockito.when(environment.getProperty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE)).thenReturn("   ");
-		ins = underTest.getCpcPlusValidationFile();
-		assertThat(ins).isNull();
-	}
-	
-	@Test
-	void test_getCpcPlusValidationFile_noFileKey() {
-		Mockito.when(environment.getProperty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE)).thenReturn("Mock_Bucket");
-		
-		Mockito.when(environment.getProperty(Constants.CPC_PLUS_FILENAME_VARIABLE)).thenReturn(null);
-		InputStream ins = underTest.getCpcPlusValidationFile();
-		assertThat(ins).isNull();
-		
-		Mockito.when(environment.getProperty(Constants.CPC_PLUS_FILENAME_VARIABLE)).thenReturn("");
-		ins = underTest.getCpcPlusValidationFile();
-		assertThat(ins).isNull();
-	}
-	
-	@Test()
-	void test_getCpcPlusValidationFile_NPE() {
-		Mockito.when(environment.getProperty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE)).thenReturn("Mock_Bucket");
-		
-		// note that blank (all whitespace) is not tested in isEmpty checks.
-		Mockito.when(environment.getProperty(Constants.CPC_PLUS_FILENAME_VARIABLE)).thenReturn("   ");
-		assertThrows(NullPointerException.class, underTest::getCpcPlusValidationFile);
-	}
-	
-	@Test
-	void test_getCpcPlusValidationFile() {
-		S3ObjectInputStream expected = new S3ObjectInputStream(null, null);
-		S3Object mockS3Obj = mock(S3Object.class);
-		Mockito.when(mockS3Obj.getObjectContent()).thenReturn(expected);
-		
-		Mockito.when(environment.getProperty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE)).thenReturn("Mock_Bucket");
-		Mockito.when(environment.getProperty(Constants.CPC_PLUS_FILENAME_VARIABLE)).thenReturn("Mock_Filename");
-		Mockito.when(amazonS3Client.getObject( any(GetObjectRequest.class) )).thenReturn(mockS3Obj);
-		
-		InputStream actual = underTest.getCpcPlusValidationFile();
-		
-		assertThat(actual).isEqualTo(expected);
 	}
 }
