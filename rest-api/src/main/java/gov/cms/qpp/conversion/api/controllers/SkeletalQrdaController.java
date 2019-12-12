@@ -66,7 +66,6 @@ public abstract class SkeletalQrdaController<T> {
 	 * @return Valid json or error json content
 	 */
 	@PostMapping
-	@CrossOrigin(origins = "*")
 	public ResponseEntity<T> uploadQrdaFile(
 		@RequestParam(name = "file") MultipartFile file,
 		@RequestHeader(required = false, name = "Purpose") String purpose) {
