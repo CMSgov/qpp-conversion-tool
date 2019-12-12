@@ -31,7 +31,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 		implements DbService {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(DbServiceImpl.class);
-	private static final int LIMIT = 3;
+	private static final int LIMIT = 10;
 
 	private final Optional<DynamoDBMapper> mapper;
 	private final Environment environment;

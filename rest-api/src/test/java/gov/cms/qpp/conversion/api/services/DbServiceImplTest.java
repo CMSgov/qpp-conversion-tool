@@ -24,6 +24,7 @@ import static org.mockito.Mockito.when;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
 import com.amazonaws.services.dynamodbv2.datamodeling.QueryResultPage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -108,9 +109,9 @@ class DbServiceImplTest {
 	void testGetUnprocessedCpcPlusMetaData() {
 		int itemsPerPartition = 2;
 
-		QueryResultPage<Metadata> mockMetadataPage = mock(QueryResultPage.class);
-		when(mockMetadataPage.getResults()).thenReturn(Stream.generate(Metadata::new).limit(itemsPerPartition).collect(Collectors.toList()));
-		when(dbMapper.queryPage(eq(Metadata.class), any(DynamoDBQueryExpression.class))).thenReturn(mockMetadataPage);
+		PaginatedQueryList<Metadata> mockMetadataPage = mock(PaginatedQueryList.class);
+		when(mockMetadataPage).thenReturn(Stream.generate(Metadata::new).limit(itemsPerPartition).collect(Collectors.toList()));
+		when(dbMapper.query(eq(Metadata.class), any(DynamoDBQueryExpression.class))).thenReturn(mockMetadataPage);
 
 		List<Metadata> metaDataList = underTest.getUnprocessedCpcPlusMetaData();
 
