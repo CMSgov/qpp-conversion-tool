@@ -113,16 +113,18 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 	 */
 	@Override
 	public byte[] getCpcPlusValidationFile() {
-		if (StringUtils.isEmpty(Constants.FMS_TOKEN)) {
-			API_LOG.warn("No FMS_TOKEN specified");
+		String fmsToken = environment.getProperty(Constants.FMS_TOKEN_ENV_VARIABLE);
+		if (StringUtils.isEmpty(fmsToken)) {
+			API_LOG.warn("No " + Constants.FMS_TOKEN_ENV_VARIABLE + " specified, not retrieving CPC+ validation file");
 			return null;
 		}
 		API_LOG.info("Retrieving CPC+ validation file from FMS");
 
 		RestTemplate rest = new RestTemplate();
 		RequestEntity<?> entity = RequestEntity.get(
-					URI.create(Constants.AR_API_BASE_URL + "/v1/fms/file/qppct/cpc_plus_validations"))
-				.header("Authorization", "Bearer: " + Constants.FMS_TOKEN)
+					URI.create(environment.getProperty(Constants.AR_API_BASE_URL_ENV_VARIABLE, Constants.AR_API_BASE_URL_DEFAULT) +
+							"/v1/fms/file/qppct/cpc_plus_validation_file"))
+				.header("Authorization", "Bearer: " + fmsToken)
 				.build();
 		ResponseEntity<byte[]> response = rest.exchange(entity, byte[].class);
 		return response.getBody();

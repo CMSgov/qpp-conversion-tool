@@ -19,8 +19,9 @@ public class Constants {
 	public static final String DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE = "CpcProcessed_CreateDate";
 	public static final String DYNAMO_CREATE_DATE_ATTRIBUTE = "CreateDate";
 	public static final String CPC_PLUS_UNPROCESSED_FILE_SEARCH_DATE_VARIABLE = "CPC_PLUS_UNPROCESSED_FILTER_START_DATE";
-	public static final String FMS_TOKEN = "";
-	public static final String AR_API_BASE_URL = "https://ar.qpp.internal/api";
+	public static final String FMS_TOKEN_ENV_VARIABLE = "FMS_TOKEN";
+	public static final String AR_API_BASE_URL_ENV_VARIABLE = "AR_API_BASE_URL";
+	public static final String AR_API_BASE_URL_DEFAULT = "https://ar.qpp.internal/api";
 
 	/**
 	 * Library utility class so the constructor is private and empty.
