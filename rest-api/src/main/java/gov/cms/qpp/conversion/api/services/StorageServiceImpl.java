@@ -1,5 +1,21 @@
 package gov.cms.qpp.conversion.api.services;
 
+import java.io.InputStream;
+import java.net.URI;
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.env.Environment;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -8,20 +24,9 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.SSEAwsKeyManagementParams;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.Upload;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.env.Environment;
-import org.springframework.core.task.TaskExecutor;
-import org.springframework.stereotype.Service;
 
 import gov.cms.qpp.conversion.api.exceptions.UncheckedInterruptedException;
 import gov.cms.qpp.conversion.api.model.Constants;
-
-import java.io.InputStream;
-import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
 
 /**
  * Used to store an {@link InputStream} in S3.
@@ -107,19 +112,22 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 	 * @return file used for cpc+ validation.
 	 */
 	@Override
-	public InputStream getCpcPlusValidationFile() {
-		String bucketName = environment.getProperty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE);
-		String key = environment.getProperty(Constants.CPC_PLUS_FILENAME_VARIABLE);
-		if (StringUtils.isEmpty(bucketName) || StringUtils.isEmpty(key)) {
-			API_LOG.warn("No CPC+ bucket name and/or CPC+ key specified");
+	public byte[] getCpcPlusValidationFile() {
+		String fmsToken = environment.getProperty(Constants.FMS_TOKEN_ENV_VARIABLE);
+		if (StringUtils.isEmpty(fmsToken)) {
+			API_LOG.warn("No " + Constants.FMS_TOKEN_ENV_VARIABLE + " specified, not retrieving CPC+ validation file");
 			return null;
 		}
-		API_LOG.info("Retrieving CPC+ validation file from bucket {}", bucketName);
+		API_LOG.info("Retrieving CPC+ validation file from FMS");
 
-		GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, key);
-		S3Object s3Object = amazonS3.getObject(getObjectRequest);
-
-		return s3Object.getObjectContent();
+		RestTemplate rest = new RestTemplate();
+		RequestEntity<?> entity = RequestEntity.get(
+					URI.create(environment.getProperty(Constants.AR_API_BASE_URL_ENV_VARIABLE, Constants.AR_API_BASE_URL_DEFAULT) +
+							"/v1/fms/file/qppct/cpc_plus_validation_file"))
+				.header("Authorization", "Bearer: " + fmsToken)
+				.build();
+		ResponseEntity<byte[]> response = rest.exchange(entity, byte[].class);
+		return response.getBody();
 	}
 
 	/**

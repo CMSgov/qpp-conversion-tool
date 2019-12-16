@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.api.services;
 
-import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
@@ -63,12 +62,12 @@ public class QrdaServiceImpl implements QrdaService {
 	}
 
 	/**
-	 * Opens a stream to s3 to retrieve the Cpc Plus Validation file for the QPP Service
+	 * Retrieve the CPC+ Validation file for the QPP Service
 	 *
 	 * @return cpc+ validation file.
 	 */
 	@Override
-	public InputStream retrieveS3CpcPlusValidationFile() {
+	public byte[] retrieveS3CpcPlusValidationFile() {
 		return storageService.getCpcPlusValidationFile();
 	}
 
