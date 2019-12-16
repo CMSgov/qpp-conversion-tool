@@ -116,7 +116,7 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 		String fmsToken = environment.getProperty(Constants.FMS_TOKEN_ENV_VARIABLE);
 		if (StringUtils.isEmpty(fmsToken)) {
 			API_LOG.warn("No " + Constants.FMS_TOKEN_ENV_VARIABLE + " specified, not retrieving CPC+ validation file");
-			return new byte[0];
+			return null;
 		}
 		API_LOG.info("Retrieving CPC+ validation file from FMS");
 
@@ -127,12 +127,7 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 				.header("Authorization", "Bearer: " + fmsToken)
 				.build();
 		ResponseEntity<byte[]> response = rest.exchange(entity, byte[].class);
-		if (response.hasBody()) {
-			return response.getBody();
-		}
-		API_LOG.error("/qppct/cpc_plus_validation_file was empty, missing, or did not return a response body. "
-				+ "HTTP Status was " + response.getStatusCodeValue());
-		return new byte[0];
+		return response.getBody();
 	}
 
 	/**
