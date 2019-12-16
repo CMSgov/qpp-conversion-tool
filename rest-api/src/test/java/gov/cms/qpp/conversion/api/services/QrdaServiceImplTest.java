@@ -54,7 +54,7 @@ class QrdaServiceImplTest {
 		when(objectUnderTest.initConverter(MOCK_SUCCESS_QRDA_SOURCE))
 				.thenReturn(success);
 
-		when(objectUnderTest.retrieveS3CpcPlusValidationFile())
+		when(objectUnderTest.retrieveCpcPlusValidationFile())
 				.thenReturn(cpcValidationFile);
 
 		Converter error = errorConverter();
