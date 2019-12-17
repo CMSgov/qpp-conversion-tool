@@ -126,9 +126,11 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 					URI.create(arUrl))
 				.header("Authorization", "Bearer: " + fmsToken)
 				.build();
-		ResponseEntity<byte[]> response = rest.exchange(entity, byte[].class);
-		if (response.hasBody()) {
-			return response.getBody();
+		ResponseEntity<String> response = rest.exchange(entity, String.class);
+		String s3PresignedUrl = response.getBody();
+		if (StringUtils.isNotEmpty(s3PresignedUrl)) {
+			System.out.println("Received a valid presigned url: " + s3PresignedUrl);
+			return new byte[0];
 		}
 		API_LOG.error("/qppct/cpc_plus_validation_file was empty, missing, or did not return a response body. "
 				+ "HTTP Status was " + response.getStatusCodeValue());
