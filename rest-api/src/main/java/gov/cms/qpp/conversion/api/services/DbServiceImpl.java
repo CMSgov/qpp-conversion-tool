@@ -31,7 +31,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 		implements DbService {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(DbServiceImpl.class);
-	private static final int LIMIT = 3;
+	private static final int LIMIT = 10;
 
 	private final Optional<DynamoDBMapper> mapper;
 	private final Environment environment;
@@ -74,7 +74,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	 */
 	public List<Metadata> getUnprocessedCpcPlusMetaData() {
 		if (mapper.isPresent()) {
-			API_LOG.info("Getting list of unprocessed CPC+ metadata");
+			API_LOG.info("Getting list of unprocessed CPC+ metadata...");
 			String cpcConversionStartDate = environment.getProperty(Constants.CPC_PLUS_UNPROCESSED_FILE_SEARCH_DATE_VARIABLE);
 
 			return IntStream.range(0, Constants.CPC_DYNAMO_PARTITIONS).mapToObj(partition -> {
@@ -87,12 +87,12 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 					.withIndexName("Cpc-CpcProcessed_CreateDate-index")
 					.withKeyConditionExpression(Constants.DYNAMO_CPC_ATTRIBUTE + " = :cpcValue and begins_with("
 							+ Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE + ", :cpcProcessedValue)")
-					.withExpressionAttributeValues(valueMap)
 					.withFilterExpression(Constants.DYNAMO_CREATE_DATE_ATTRIBUTE + " > :createDate")
+					.withExpressionAttributeValues(valueMap)
 					.withConsistentRead(false)
 					.withLimit(LIMIT);
 
-				return mapper.get().queryPage(Metadata.class, metadataQuery).getResults().stream();
+				return mapper.get().query(Metadata.class, metadataQuery).stream();
 			}).flatMap(Function.identity()).collect(Collectors.toList());
 		} else {
 			API_LOG.warn("Could not get unprocessed CPC+ metadata because the dynamodb mapper is absent");
