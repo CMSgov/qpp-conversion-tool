@@ -16,7 +16,7 @@
 	<description>API end-point for the QRDA3 to QPP conversion</description>
 
 	<properties>
-		<requiredCodeCoverage>0.90</requiredCodeCoverage>
+		<requiredCodeCoverage>0.85</requiredCodeCoverage>
 	</properties>
 
 	<build>

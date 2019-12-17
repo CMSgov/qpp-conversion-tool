@@ -82,6 +82,6 @@ public class QrdaRestIntegrationTest {
 				.multipart("/").file(qrda3File))
 			.andExpect(status().is(422))
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-			.andExpect(jsonPath("$.errors[0].type").value("ValidationError"));
+			.andExpect(jsonPath("$.errors[0]").exists());
 	}
 }
