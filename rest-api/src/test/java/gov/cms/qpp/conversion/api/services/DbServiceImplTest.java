@@ -19,7 +19,7 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
@@ -99,7 +99,7 @@ class DbServiceImplTest {
 
 		Metadata metadataOut = writeMeta(metadataIn);
 
-		verifyZeroInteractions(dbMapper);
+		verifyNoInteractions(dbMapper);
 		assertWithMessage("The returned metadata must be an empty metadata.")
 				.that(metadataOut.getUuid()).isNull();
 	}

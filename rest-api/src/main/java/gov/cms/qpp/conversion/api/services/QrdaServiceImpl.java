@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.api.services;
 
-import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
@@ -63,18 +62,18 @@ public class QrdaServiceImpl implements QrdaService {
 	}
 
 	/**
-	 * Opens a stream to s3 to retrieve the Cpc Plus Validation file for the QPP Service
+	 * Retrieve the CPC+ Validation file for the QPP Service
 	 *
 	 * @return cpc+ validation file.
 	 */
 	@Override
-	public InputStream retrieveS3CpcPlusValidationFile() {
+	public byte[] retrieveCpcPlusValidationFile() {
 		return storageService.getCpcPlusValidationFile();
 	}
 
 	private CpcValidationInfoMap retreiveCpcValidationInfoMap() {
 		API_LOG.info("Fetching CPC+ validations APM/NPI/TIN file");
-		CpcValidationInfoMap file = new CpcValidationInfoMap(retrieveS3CpcPlusValidationFile());
+		CpcValidationInfoMap file = new CpcValidationInfoMap(retrieveCpcPlusValidationFile());
 		if (file.getApmTinNpiCombinationMap() != null) {
 			API_LOG.info("Fetched CPC+ validations APM/NPI/TIN file");
 		} else {
