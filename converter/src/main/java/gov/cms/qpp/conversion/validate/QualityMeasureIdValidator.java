@@ -1,9 +1,9 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.conversion.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -17,6 +17,7 @@ import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 import gov.cms.qpp.conversion.util.StringHelper;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -91,15 +92,25 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 */
 	void validateAllSubPopulations(final Node node, final MeasureConfig measureConfig) {
 		List<SubPopulation> subPopulations = measureConfig.getSubPopulation();
-
 		if (subPopulations.isEmpty()) {
 			return;
 		}
 
-		SubPopulations.getExclusiveKeys(subPopulationExclusions)
-				.forEach(subPopulationLabel -> validateChildTypeCount(subPopulations, subPopulationLabel, node));
+		if (MeasureConfigHelper.SINGLE_TO_MULTIPLE_SUP_POPULATION.equalsIgnoreCase(measureConfig.getElectronicMeasureId())) {
+			List<SubPopulation> replacementList = new ArrayList<>();
+			for (SubPopulation subPopulation: subPopulations) {
+				if (null != subPopulation) {
+					replacementList.add(subPopulation);
+				}
+			}
+			subPopulations = replacementList;
+		}
 
-		for (SubPopulation subPopulation : subPopulations) {
+		final List<SubPopulation> finalSubPopulationList = subPopulations;
+		SubPopulations.getExclusiveKeys(subPopulationExclusions)
+				.forEach(subPopulationLabel -> validateChildTypeCount(finalSubPopulationList, subPopulationLabel, node));
+
+		for (SubPopulation subPopulation : finalSubPopulationList) {
 			validateSubPopulation(node, subPopulation);
 		}
 	}

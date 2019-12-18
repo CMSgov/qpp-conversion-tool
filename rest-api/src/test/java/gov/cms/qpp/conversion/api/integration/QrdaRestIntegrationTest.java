@@ -41,7 +41,7 @@ public class QrdaRestIntegrationTest {
 		mockMvc.perform(MockMvcRequestBuilders
 			.multipart("/").file(qrda3File))
 			.andExpect(status().is(201))
-			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(jsonPath("$.taxpayerIdentificationNumber").exists());
 	}
 
@@ -51,7 +51,7 @@ public class QrdaRestIntegrationTest {
 		mockMvc.perform(MockMvcRequestBuilders
 				.multipart("/").file(qrda3File).accept(Constants.V1_API_ACCEPT))
 				.andExpect(status().is(201))
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.taxpayerIdentificationNumber").exists());
 	}
 
@@ -61,7 +61,7 @@ public class QrdaRestIntegrationTest {
 		mockMvc.perform(MockMvcRequestBuilders
 			.multipart("/").file(qrda3File))
 			.andExpect(status().is(422))
-			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(jsonPath("$.errors").exists());
 	}
 
@@ -81,7 +81,7 @@ public class QrdaRestIntegrationTest {
 		mockMvc.perform(MockMvcRequestBuilders
 				.multipart("/").file(qrda3File))
 			.andExpect(status().is(422))
-			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-			.andExpect(jsonPath("$.errors[0].type").value("ValidationError"));
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(jsonPath("$.errors[0]").exists());
 	}
 }

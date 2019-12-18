@@ -82,7 +82,7 @@ public abstract class SkeletalQrdaController<T> {
 		}
 
 		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+		httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 		
 		T response = respond(file, purpose, httpHeaders);
 

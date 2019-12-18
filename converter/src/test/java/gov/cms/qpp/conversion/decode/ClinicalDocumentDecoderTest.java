@@ -271,7 +271,7 @@ class ClinicalDocumentDecoderTest {
 	@Test
 	void decodeCpcTinTest() {
 		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
-		clinicalDocument.addContent( prepareParticipant( clinicalDocument.getNamespace()) );
+		clinicalDocument.addContent( prepareParticipant(clinicalDocument.getNamespace()) );
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
@@ -373,13 +373,13 @@ class ClinicalDocumentDecoderTest {
 			.setAttribute("root", "2.16.840.1.113883.3.249.5.2")
 			.setAttribute("extension", "x12345");
 
-		Element representedOrganization = prepareRepOrgWithTaxPayerId(rootns);
+		Element representedOrganization = prepareRepOrgWithTaxPayerId(rootns, "123456789");
 		representedOrganization.addContent(virtualGroup);
 		assignedEntity.addContent(representedOrganization);
 		assignedEntity.addContent(nationalProviderIdentifier);
 		performer.addContent(assignedEntity);
 
-		Element representedOrganization2 = prepareRepOrgWithTaxPayerId(rootns);
+		Element representedOrganization2 = prepareRepOrgWithTaxPayerId(rootns, "222222222");
 		representedOrganization2.addContent(virtualGroup2);
 		assignedEntity2.addContent(representedOrganization2);
 		assignedEntity2.addContent(nationalProviderIdentifier2);
@@ -391,11 +391,11 @@ class ClinicalDocumentDecoderTest {
 		return documentationOf;
 	}
 
-	private Element prepareRepOrgWithTaxPayerId(Namespace rootns) {
+	private Element prepareRepOrgWithTaxPayerId(Namespace rootns, String taxId) {
 		Element representedOrganization = new Element("representedOrganization", rootns);
 		Element taxpayerIdentificationNumber = new Element("id", rootns)
 				.setAttribute("root", "2.16.840.1.113883.4.2")
-				.setAttribute("extension", "123456789");
+				.setAttribute("extension", taxId);
 
 		representedOrganization.addContent(taxpayerIdentificationNumber);
 		return representedOrganization;

@@ -42,4 +42,5 @@ public class CpcValidationInfo {
 	public void setApm(final String apm) {
 		this.apm = apm;
 	}
+
 }

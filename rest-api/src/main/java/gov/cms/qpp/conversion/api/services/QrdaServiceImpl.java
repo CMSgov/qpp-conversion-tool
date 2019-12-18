@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.api.services;
 
-import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
@@ -63,19 +62,19 @@ public class QrdaServiceImpl implements QrdaService {
 	}
 
 	/**
-	 * Opens a stream to s3 to retrieve the Cpc Plus Validation file for the QPP Service
+	 * Retrieve the CPC+ Validation file for the QPP Service
 	 *
 	 * @return cpc+ validation file.
 	 */
 	@Override
-	public InputStream retrieveS3CpcPlusValidationFile() {
+	public byte[] retrieveCpcPlusValidationFile() {
 		return storageService.getCpcPlusValidationFile();
 	}
 
 	private CpcValidationInfoMap retreiveCpcValidationInfoMap() {
 		API_LOG.info("Fetching CPC+ validations APM/NPI/TIN file");
-		CpcValidationInfoMap file = new CpcValidationInfoMap(retrieveS3CpcPlusValidationFile());
-		if (file.getApmToSpec() != null) {
+		CpcValidationInfoMap file = new CpcValidationInfoMap(retrieveCpcPlusValidationFile());
+		if (file.getApmTinNpiCombinationMap() != null) {
 			API_LOG.info("Fetched CPC+ validations APM/NPI/TIN file");
 		} else {
 			API_LOG.info("Could not fetching CPC+ validations APM/NPI/TIN file");
@@ -92,7 +91,7 @@ public class QrdaServiceImpl implements QrdaService {
 	Converter initConverter(Source source) {
 		Context context = new Context();
 		CpcValidationInfoMap apmToNpiValidationFile = cpcValidationData.get();
-		if (apmToNpiValidationFile != null && apmToNpiValidationFile.getApmToSpec() != null) {
+		if (apmToNpiValidationFile != null && apmToNpiValidationFile.getApmTinNpiCombinationMap() != null) {
 			context.setPiiValidator(new SpecPiiValidator(apmToNpiValidationFile));
 		}
 		return new Converter(source, context);

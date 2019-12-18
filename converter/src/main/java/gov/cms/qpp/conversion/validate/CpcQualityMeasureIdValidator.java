@@ -47,6 +47,9 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 		MeasureConfig measureConfig = MeasureConfigHelper.getMeasureConfig(node);
 		if (measureConfig != null && measureConfig.getStrata() != null) {
 			int requiredPerformanceRateCount = measureConfig.getStrata().size();
+			if (MeasureConfigHelper.SINGLE_TO_MULTIPLE_SUP_POPULATION.equalsIgnoreCase(measureConfig.getElectronicMeasureId())) {
+				requiredPerformanceRateCount = 1;
+			}
 
 			forceCheckErrors(node)
 					.childExact(
