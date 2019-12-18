@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.api.services;
 
-
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
@@ -29,9 +28,9 @@ public interface StorageService {
 	InputStream getFileByLocationId(String fileId);
 
 	/**
-	 * Retrieve the CPC+ API to NPI Validation file from S3
+	 * Retrieve the CPC+ API to NPI Validation file
 	 *
 	 * @return file used for cpc+ validation.
 	 */
-	InputStream getCpcPlusValidationFile();
+	byte[] getCpcPlusValidationFile();
 }

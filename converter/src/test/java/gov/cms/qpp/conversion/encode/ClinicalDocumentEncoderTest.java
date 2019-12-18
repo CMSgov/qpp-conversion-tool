@@ -238,6 +238,21 @@ class ClinicalDocumentEncoderTest {
 			.isNull();
 	}
 
+	@Test
+	void testMeasurementSetIncludesSource() throws EncodeException {
+		JsonWrapper testJsonWrapper = new JsonWrapper();
+
+		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
+		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
+
+		@SuppressWarnings("unchecked")
+		List<JsonWrapper> measurementSets = (List<JsonWrapper>) testJsonWrapper.get("measurementSets").toObject();
+		assertThat(measurementSets).isNotEmpty();
+		for (JsonWrapper measurement : measurementSets) {
+			assertThat(measurement.get("source")).isNotNull();
+		}
+	}
+
 
 	private JsonWrapper getMeasurementSets(JsonWrapper clinicalDocument) {
 		return clinicalDocument.get("measurementSets");
