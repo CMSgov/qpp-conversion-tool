@@ -9,7 +9,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -114,13 +113,6 @@ class ZipControllerTest {
 
 		assertThat(qppResponse).isNotNull();
 		assertThat(peopleCaptor.getValue().getPurpose()).isEqualTo("Test");
-	}
-
-	@Test
-	void uploadNullQrdaFile() {
-		Assertions.assertThrows(UncheckedIOException.class, () -> {
-			objectUnderTest.uploadQrdaFile(new MockMultipartFile("null.zip", new byte[0]), "Test");
-		});
 	}
 
 	@Test
