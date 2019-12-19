@@ -2,20 +2,28 @@ package gov.cms.qpp.conversion.api.model;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+
+import com.amazonaws.util.StringInputStream;
 
 import gov.cms.qpp.test.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class CpcValidationInfoMapTest {
 
+	@Mock
+	private InputStream mockIns;
+
 	@Test
-	void test_loadJsonByteArray() throws Exception {
+	void test_loadJsonStream() throws Exception {
 		String json = "[" +
 			    "   {\r\n" + 
 				"		\"apm_entity_id\": \"T1AR0503\",\r\n" + 
@@ -28,8 +36,9 @@ class CpcValidationInfoMapTest {
 				"		\"npi\": \"0444444444\"\r\n" + 
 				"	}\r\n" + 
 				"]\r\n";
-
-		CpcValidationInfoMap cpc = new CpcValidationInfoMap(json.getBytes(StandardCharsets.UTF_8));
+		InputStream jsonStream = new StringInputStream(json);
+		
+		CpcValidationInfoMap cpc = new CpcValidationInfoMap(jsonStream);
 		Map<String, Map<String, List<String>>> map = cpc.getApmTinNpiCombinationMap();
 		
 		assertThat(map).isNotNull();
@@ -39,11 +48,21 @@ class CpcValidationInfoMapTest {
 	}
 
 	@Test
-	void test_loadNullByteArray() throws Exception {
+	void test_loadNullStream() throws Exception {
 		CpcValidationInfoMap cpc = new CpcValidationInfoMap(null);
 		Map<String, Map<String, List<String>>> map = cpc.getApmTinNpiCombinationMap();
 
 		assertThat(map).isNull();
 	}
 
+	@Test
+	void test_loadNullStream_throwsIOE() throws Exception {
+		Mockito.when(mockIns.read()).thenThrow(new IOException());
+		
+		CpcValidationInfoMap cpc = new CpcValidationInfoMap(mockIns);
+		Map<String, Map<String, List<String>>> map = cpc.getApmTinNpiCombinationMap();
+		
+		assertThat(map).isNotNull();
+		assertThat(map.size()).isEqualTo(0);
+	}
 }
