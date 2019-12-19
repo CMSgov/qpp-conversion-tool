@@ -13,6 +13,7 @@ import gov.cms.qpp.conversion.api.helper.JwtTestHelper;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.CpcFileStatusUpdateRequest;
 import gov.cms.qpp.conversion.api.model.Metadata;
+import gov.cms.qpp.conversion.api.services.DbServiceImpl;
 import gov.cms.qpp.conversion.util.EnvironmentHelper;
 import gov.cms.qpp.test.annotations.AcceptanceTest;
 import gov.cms.qpp.test.helper.AwsTestHelper;

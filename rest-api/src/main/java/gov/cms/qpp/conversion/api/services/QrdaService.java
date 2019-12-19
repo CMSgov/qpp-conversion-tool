@@ -21,5 +21,5 @@ public interface QrdaService {
 	 *
 	 * @return cpc+ validation file.
 	 */
-	byte[] retrieveCpcPlusValidationFile();
+	byte[] retrieveS3CpcPlusValidationFile();
 }
