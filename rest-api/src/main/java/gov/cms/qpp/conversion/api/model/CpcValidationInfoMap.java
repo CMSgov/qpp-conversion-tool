@@ -5,6 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -15,11 +18,11 @@ public class CpcValidationInfoMap {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(CpcValidationInfoMap.class);
 	private Map<String, Map<String, List<String>>> apmTinNpiCombinationMap;
 
-	public CpcValidationInfoMap(byte[] cpcNpiToApmJson) {
+	public CpcValidationInfoMap(InputStream cpcNpiToApmJson) {
 		convertJsonToMapOfLists(cpcNpiToApmJson);
 	}
 
-	private void convertJsonToMapOfLists(byte[] cpcApmNpiTinJson) {
+	private void convertJsonToMapOfLists(InputStream cpcApmNpiTinJson) {
 		if (cpcApmNpiTinJson == null) {
 			apmTinNpiCombinationMap = null;
 		} else {
@@ -30,7 +33,7 @@ public class CpcValidationInfoMap {
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
 			cpcValidationInfoList =
-				Arrays.asList(objectMapper.readValue(cpcApmNpiTinJson,
+				Arrays.asList(objectMapper.readValue(new InputStreamReader(cpcApmNpiTinJson, StandardCharsets.UTF_8),
 					CpcValidationInfo[].class));
 		} catch (IOException | NullPointerException exc){
 			DEV_LOG.info("Failed to parse the cpc+ validation npi to apm list...");

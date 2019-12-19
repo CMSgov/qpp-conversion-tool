@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -50,7 +51,7 @@ class QrdaControllerV2Test {
 
 	private MultipartFile multipartFile;
 
-	private byte[] validationBytes;
+	private InputStream validationInputStream;
 
 	@InjectMocks
 	private QrdaControllerV2 objectUnderTest;
@@ -76,7 +77,7 @@ class QrdaControllerV2Test {
 		JsonWrapper wrapper = new JsonWrapper();
 		wrapper.put("key", "Good Qpp");
 
-		validationBytes = Files.readAllBytes(validationJsonFilePath);
+		validationInputStream = Files.newInputStream(validationJsonFilePath);
 
 		when(report.getEncodedWithMetadata()).thenReturn(wrapper);
 
@@ -88,7 +89,7 @@ class QrdaControllerV2Test {
 	void uploadQrdaFile() {
 		Metadata metadata = Metadata.create();
 		when(qrdaService.convertQrda3ToQpp(any(Source.class))).thenReturn(report);
-		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationBytes);
+		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationInputStream);
 		when(auditService.success(any(ConversionReport.class)))
 				.then(invocation -> CompletableFuture.completedFuture(metadata));
 
@@ -105,7 +106,7 @@ class QrdaControllerV2Test {
 		ArgumentCaptor<Source> peopleCaptor = ArgumentCaptor.forClass(Source.class);
 
 		when(qrdaService.convertQrda3ToQpp(peopleCaptor.capture())).thenReturn(report);
-		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationBytes);
+		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationInputStream);
 		when(auditService.success(any(ConversionReport.class)))
 				.then(invocation -> null);
 
@@ -121,7 +122,7 @@ class QrdaControllerV2Test {
 		ArgumentCaptor<Source> peopleCaptor = ArgumentCaptor.forClass(Source.class);
 
 		when(qrdaService.convertQrda3ToQpp(peopleCaptor.capture())).thenReturn(report);
-		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationBytes);
+		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationInputStream);
 		when(auditService.success(any(ConversionReport.class))).thenReturn(mockMetadata);
 		when(mockMetadata.get()).thenThrow(new InterruptedException("Testing Audit Exception Handling"));
 		
@@ -135,7 +136,7 @@ class QrdaControllerV2Test {
 		ArgumentCaptor<Source> peopleCaptor = ArgumentCaptor.forClass(Source.class);
 
 		when(qrdaService.convertQrda3ToQpp(peopleCaptor.capture())).thenReturn(report);
-		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationBytes);
+		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationInputStream);
 		when(auditService.success(any(ConversionReport.class))).thenReturn(mockMetadata);
 		when(mockMetadata.get()).thenThrow(new ExecutionException(new RuntimeException("Testing Audit Exception Handling")));
 		
@@ -164,7 +165,7 @@ class QrdaControllerV2Test {
 		Metadata metadata = Metadata.create();
 		metadata.setUuid(UUID.randomUUID().toString());
 		when(qrdaService.convertQrda3ToQpp(any(Source.class))).thenReturn(report);
-		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationBytes);
+		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationInputStream);
 		when(auditService.success(any(ConversionReport.class)))
 				.then(invocation -> CompletableFuture.completedFuture(metadata));
 
@@ -178,7 +179,7 @@ class QrdaControllerV2Test {
 
 		when(qrdaService.convertQrda3ToQpp(any(Source.class)))
 				.thenReturn(null);
-		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationBytes);
+		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationInputStream);
 		Mockito.doThrow(new TransformException(transformationErrorMessage, null, null))
 			.when(validationService).validateQpp(isNull());
 

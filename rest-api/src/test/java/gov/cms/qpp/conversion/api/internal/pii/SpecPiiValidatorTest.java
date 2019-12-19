@@ -1,10 +1,11 @@
 package gov.cms.qpp.conversion.api.internal.pii;
 
-import java.nio.charset.StandardCharsets;
+import java.io.InputStream;
 
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 
+import com.amazonaws.util.StringInputStream;
 import com.google.common.truth.Truth;
 
 import gov.cms.qpp.conversion.api.model.CpcValidationInfoMap;
@@ -88,7 +89,8 @@ public class SpecPiiValidatorTest {
 				"		\"npi\": \"DogCow_NPI2\"\r\n" +
 				"	}\r\n" +
 				"]\r\n").replace("{apm}", apm).replace("{npi}", npi);
-		CpcValidationInfoMap file = new CpcValidationInfoMap(json.getBytes(StandardCharsets.UTF_8));
+		InputStream jsonStream = new StringInputStream(json);
+		CpcValidationInfoMap file = new CpcValidationInfoMap(jsonStream);
 		Assumptions.assumeFalse(file.getApmTinNpiCombinationMap() == null);
 		return file;
 	}
@@ -106,7 +108,8 @@ public class SpecPiiValidatorTest {
 			"		\"npi\": \"{npi}\"\r\n" +
 			"	}\r\n" +
 			"]\r\n").replace("{apm}", apm).replace("{npi}", npi);
-		CpcValidationInfoMap file = new CpcValidationInfoMap(json.getBytes(StandardCharsets.UTF_8));
+		InputStream jsonStream = new StringInputStream(json);
+		CpcValidationInfoMap file = new CpcValidationInfoMap(jsonStream);
 		Assumptions.assumeFalse(file.getApmTinNpiCombinationMap() == null);
 		return file;
 	}
