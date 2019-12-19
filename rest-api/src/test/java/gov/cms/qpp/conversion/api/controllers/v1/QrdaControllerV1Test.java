@@ -56,7 +56,7 @@ class QrdaControllerV1Test {
 
 	private MultipartFile multipartFile;
 
-	private byte[] validationBytes;
+	private InputStream validationInputStream;
 
 	@InjectMocks
 	private QrdaControllerV1 objectUnderTest;
@@ -82,7 +82,7 @@ class QrdaControllerV1Test {
 		JsonWrapper wrapper = new JsonWrapper();
 		wrapper.put("key", "Good Qpp");
 
-		validationBytes = Files.readAllBytes(validationJsonFilePath);
+		validationInputStream = Files.newInputStream(validationJsonFilePath);
 
 		when(report.getEncodedWithMetadata()).thenReturn(wrapper);
 
@@ -94,7 +94,7 @@ class QrdaControllerV1Test {
 	void uploadQrdaFile() {
 		Metadata metadata = Metadata.create();
 		when(qrdaService.convertQrda3ToQpp(any(Source.class))).thenReturn(report);
-		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationBytes);
+		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationInputStream);
 		when(auditService.success(any(ConversionReport.class)))
 				.then(invocation -> CompletableFuture.completedFuture(metadata));
 
@@ -111,7 +111,7 @@ class QrdaControllerV1Test {
 		ArgumentCaptor<Source> peopleCaptor = ArgumentCaptor.forClass(Source.class);
 
 		when(qrdaService.convertQrda3ToQpp(peopleCaptor.capture())).thenReturn(report);
-		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationBytes);
+		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationInputStream);
 		when(auditService.success(any(ConversionReport.class)))
 				.then(invocation -> null);
 
@@ -127,7 +127,7 @@ class QrdaControllerV1Test {
 		ArgumentCaptor<Source> peopleCaptor = ArgumentCaptor.forClass(Source.class);
 
 		when(qrdaService.convertQrda3ToQpp(peopleCaptor.capture())).thenReturn(report);
-		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationBytes);
+		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationInputStream);
 		when(auditService.success(any(ConversionReport.class))).thenReturn(mockMetadata);
 		when(mockMetadata.get()).thenThrow(new InterruptedException("Testing Audit Exception Handling"));
 		
@@ -141,7 +141,7 @@ class QrdaControllerV1Test {
 		ArgumentCaptor<Source> peopleCaptor = ArgumentCaptor.forClass(Source.class);
 
 		when(qrdaService.convertQrda3ToQpp(peopleCaptor.capture())).thenReturn(report);
-		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationBytes);
+		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationInputStream);
 		when(auditService.success(any(ConversionReport.class))).thenReturn(mockMetadata);
 		when(mockMetadata.get()).thenThrow(new ExecutionException(new RuntimeException("Testing Audit Exception Handling")));
 		
@@ -155,7 +155,7 @@ class QrdaControllerV1Test {
 		ArgumentCaptor<Source> peopleCaptor = ArgumentCaptor.forClass(Source.class);
 
 		when(qrdaService.convertQrda3ToQpp(peopleCaptor.capture())).thenReturn(report);
-		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationBytes);
+		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationInputStream);
 		when(auditService.success(any(ConversionReport.class)))
 				.then(invocation -> null);
 
@@ -188,7 +188,7 @@ class QrdaControllerV1Test {
 		Metadata metadata = Metadata.create();
 		metadata.setUuid(UUID.randomUUID().toString());
 		when(qrdaService.convertQrda3ToQpp(any(Source.class))).thenReturn(report);
-		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationBytes);
+		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationInputStream);
 		when(auditService.success(any(ConversionReport.class)))
 				.then(invocation -> CompletableFuture.completedFuture(metadata));
 
@@ -202,7 +202,7 @@ class QrdaControllerV1Test {
 
 		when(qrdaService.convertQrda3ToQpp(any(Source.class)))
 				.thenReturn(null);
-		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationBytes);
+		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationInputStream);
 		Mockito.doThrow(new TransformException(transformationErrorMessage, null, null))
 			.when(validationService).validateQpp(isNull());
 

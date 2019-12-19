@@ -19,6 +19,7 @@ import gov.cms.qpp.test.MockitoExtension;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,6 +40,7 @@ class QrdaServiceImplTest {
 	private static final String MOCK_SUCCESS_QPP_STRING = "Good Qpp";
 	private static final String MOCK_ERROR_SOURCE_IDENTIFIER = "Error Identifier";
 	private static final Path VALIDATION_JSON_FILE_PATH = Paths.get("src/test/resources/testCpcPlusValidationFile.json");
+	private InputStream MOCK_INPUT_STREAM;
 
 	@Spy
 	@InjectMocks
@@ -49,13 +51,13 @@ class QrdaServiceImplTest {
 
 	@BeforeEach
 	void mockConverter() throws IOException {
-		byte[] cpcValidationFile = Files.readAllBytes(VALIDATION_JSON_FILE_PATH);
+		MOCK_INPUT_STREAM = Files.newInputStream(VALIDATION_JSON_FILE_PATH);
 		Converter success = successConverter();
 		when(objectUnderTest.initConverter(MOCK_SUCCESS_QRDA_SOURCE))
 				.thenReturn(success);
 
 		when(objectUnderTest.retrieveS3CpcPlusValidationFile())
-				.thenReturn(cpcValidationFile);
+				.thenReturn(MOCK_INPUT_STREAM);
 
 		Converter error = errorConverter();
 		when(objectUnderTest.initConverter(MOCK_ERROR_QRDA_SOURCE))
