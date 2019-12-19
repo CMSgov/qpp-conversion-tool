@@ -20,12 +20,11 @@ public class CpcValidationInfoMap {
 	}
 
 	private void convertJsonToMapOfLists(byte[] cpcApmNpiTinJson) {
-		if (cpcApmNpiTinJson == null || cpcApmNpiTinJson.length == 0) {
+		if (cpcApmNpiTinJson == null) {
 			apmTinNpiCombinationMap = null;
-			return;
+		} else {
+			apmTinNpiCombinationMap = new HashMap<>();
 		}
-
-		apmTinNpiCombinationMap = new HashMap<>();
 
 		List<CpcValidationInfo> cpcValidationInfoList = new ArrayList<>();
 		try {
