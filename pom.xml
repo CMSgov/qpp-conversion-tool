@@ -345,6 +345,14 @@
 				<junit.excludes></junit.excludes>
 			</properties>
 		</profile>
+
+		<profile>
+			<id>offline</id>
+
+			<properties>
+				<junit.excludes>internet</junit.excludes>
+			</properties>
+		</profile>
 	</profiles>
 
 </project>
