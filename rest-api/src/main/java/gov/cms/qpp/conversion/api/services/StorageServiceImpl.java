@@ -102,7 +102,7 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 	}
 
 	/**
-	 * Opens a stream to s3 to retrieve the CPC+ API to NPI Validation file
+	 * Opens a stream to retrieve the CPC+ API to NPI Validation file
 	 *
 	 * @return file used for cpc+ validation.
 	 */

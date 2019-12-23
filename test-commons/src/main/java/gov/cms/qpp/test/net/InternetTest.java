@@ -8,11 +8,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ArgumentsSource;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@ParameterizedTest
-@ArgumentsSource(InternetArgumentSource.class)
+@Test
+@ExtendWith(InternetExecutionCondition.class)
 @Tag("internet")
 @Retention(RUNTIME)
 @Target({ METHOD, ANNOTATION_TYPE})
