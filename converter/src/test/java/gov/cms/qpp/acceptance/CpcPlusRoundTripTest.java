@@ -73,7 +73,7 @@ class CpcPlusRoundTripTest {
 	@Test
 	void hasCehrtId() {
 		String cehrtId = JsonHelper.readJsonAtJsonPath(wrapper.copyWithoutMetadata().toString(),
-			"$.measurementSets[?(@.category=='quality')].cehrt", new TypeRef<List<String>>() { }).get(0);
+			"$.measurementSets[?(@.category=='quality')].cehrtId", new TypeRef<List<String>>() { }).get(0);
 
 		assertThat(cehrtId).isEqualTo("0014ABC1D1EFG1H");
 	}
