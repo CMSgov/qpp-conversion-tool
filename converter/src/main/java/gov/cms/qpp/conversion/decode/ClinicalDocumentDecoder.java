@@ -32,7 +32,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	public static final String CPCPLUS_PROGRAM_NAME = "cpcPlus";
 	public static final String PRACTICE_ID = "practiceId";
 	public static final String PRACTICE_SITE_ADDR = "practiceSiteAddr";
-	public static final String CEHRT = "cehrt";
+	public static final String CEHRT = "cehrtId";
 	public static final String MIPS = "MIPS";
 	private static final String MIPS_GROUP = "MIPS_GROUP";
 	private static final String MIPS_INDIVIDUAL = "MIPS_INDIV";

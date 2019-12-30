@@ -20,7 +20,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 class PiSectionEncoderMultiMeasureTest {
 
 	private static final String EXPECTED = "{\n  \"category\" : \"aci\",\n  \"submissionMethod\" : \"electronicHealthRecord\",\n  "
-			+ "\"cehrt\" : \"xxxxxxxxxx12345\",\n  "
+			+ "\"cehrtId\" : \"xxxxxxxxxx12345\",\n  "
 			+ "\"measurements\" : [ "
 			+ "{\n    \"measureId\" : \"ACI-PEA-1\",\n    \"value\" : {\n"
 			+ "      \"numerator\" : 400,\n      \"denominator\" : 600\n    }\n  }, "
