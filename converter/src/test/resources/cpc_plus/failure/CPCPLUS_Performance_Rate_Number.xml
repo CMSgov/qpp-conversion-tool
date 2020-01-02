@@ -3,7 +3,7 @@
   <realmCode code="US" />
   <typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040" />
   <templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01" />
-  <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2017-07-01" />
+  <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2018-05-01"/>
   <id root="D5E68223-5760-11E7-1256-09173F13E4C5" />
   <code code="55184-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Quality Reporting Document Architecture Calculated Summary Report" />
   <title>Comprehensive Primary Care Plus (CPC+) Sample QRDA-III Report</title>
@@ -1149,7 +1149,7 @@ QRDA Category III Measure Section (CMS EP)
               </effectiveTime>
             </act>
           </entry>
-          <!--No Performance Rates Measure Entry for NQF 0034 / CMS130-->
+          <!--Missing performance rate Measure Entry for CMS130v7-->
           <entry>
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
@@ -1160,17 +1160,18 @@ QRDA Category III Measure Section (CMS EP)
               <!--Measure Reference and Results-->
               <reference typeCode="REFR">
                 <externalDocument classCode="DOC" moodCode="EVN">
-                  <id root="2.16.840.1.113883.4.738" extension="40280382-5abd-fa46-015b-4993577e382e" />
+                  <id root="2.16.840.1.113883.4.738" extension="40280382-6258-7581-0162-92959376159d" />
                   <code code="57024-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Health Quality Measure Document" />
                   <text>Colorectal Cancer Screening</text>
                 </externalDocument>
               </reference>
-              <!--No Performance Rate-->
+              <!--Missing Performance Rate-->
+
               <!--IPOP Population-->
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="IPOP" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -1450,7 +1451,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E682B9-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -1479,7 +1480,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E682BA-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -1508,7 +1509,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E682BB-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -1537,7 +1538,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E682BC-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -1564,7 +1565,7 @@ QRDA Category III Measure Section (CMS EP)
                   <!--IPOP Population ID from eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="FA04C05D-FABF-4ED8-BC56-5E1C9E7F4170" />
+                      <id root="92842C82-25C1-4262-BD71-537BB8400E96" />
                     </externalObservation>
                   </reference>
                 </observation>
@@ -1573,7 +1574,7 @@ QRDA Category III Measure Section (CMS EP)
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="DENOM" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -1801,7 +1802,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E682C5-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -1882,7 +1883,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E682C6-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -1911,7 +1912,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E682C7-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -1940,7 +1941,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E682C8-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -1967,7 +1968,7 @@ QRDA Category III Measure Section (CMS EP)
                   <!--DENOM Population ID from eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="65F9718A-2BE8-4FE7-801C-2FEB861C55D2" />
+                      <id root="F2257E5C-85C1-41BC-8F9D-FC5118FA7363" />
                     </externalObservation>
                   </reference>
                 </observation>
@@ -1976,7 +1977,7 @@ QRDA Category III Measure Section (CMS EP)
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="DENEX" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -2204,7 +2205,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E682D1-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -2285,7 +2286,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E682D2-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -2314,7 +2315,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E682D3-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -2343,7 +2344,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E682D4-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -2370,7 +2371,7 @@ QRDA Category III Measure Section (CMS EP)
                   <!--DENEX Population ID from eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="DC79FC52-DE56-4B39-A9A4-BC82F32564BE" />
+                      <id root="79DF7019-7CD4-4D38-BFA0-6C6DFC261B53" />
                     </externalObservation>
                   </reference>
                 </observation>
@@ -2379,7 +2380,7 @@ QRDA Category III Measure Section (CMS EP)
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -2659,7 +2660,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E682DD-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -2688,7 +2689,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E682DE-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -2717,7 +2718,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E682DF-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -2746,7 +2747,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E682E0-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -2773,14 +2774,14 @@ QRDA Category III Measure Section (CMS EP)
                   <!--NUMER Population ID from eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="4CB09E04-EB4E-4902-9775-F4F36EFF57C2" />
+                      <id root="A537E11B-5A76-4A55-8DDE-6FB83FEC87FB" />
                     </externalObservation>
                   </reference>
                 </observation>
               </component>
             </organizer>
           </entry>
-          <!--Measure Entry for NQF 0055 / CMS131(Too many performance rates)-->
+          <!--Too many performance rates Measure Entry for CMS131v7-->
           <entry>
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
@@ -2791,7 +2792,7 @@ QRDA Category III Measure Section (CMS EP)
               <!--Measure Reference and Results-->
               <reference typeCode="REFR">
                 <externalDocument classCode="DOC" moodCode="EVN">
-                  <id root="2.16.840.1.113883.4.738" extension="40280382-5abd-fa46-015b-49956e7c383a" />
+                  <id root="2.16.840.1.113883.4.738" extension="40280382-6258-7581-0162-9241a52a13fd" />
                   <code code="57024-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Health Quality Measure Document" />
                   <text>Diabetes: Eye Exam</text>
                 </externalDocument>
@@ -2801,30 +2802,30 @@ QRDA Category III Measure Section (CMS EP)
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01" />
                   <templateId root="2.16.840.1.113883.10.20.27.3.14" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2018-05-01"/>
                   <code code="72510-1" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Performance Rate" />
                   <statusCode code="completed" />
                   <value xsi:type="REAL" value=".8" />
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="C7D4A675-E578-45F2-B637-5C1FC90FCCFA" />
+                      <id root="88F63A33-6D05-4BD2-8159-2C3712CA5638" />
                       <code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Numerator" />
                     </externalObservation>
                   </reference>
                 </observation>
               </component>
-              <!--Copied Performance Rate-->
+              <!--Extra Performance Rate-->
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01" />
                   <templateId root="2.16.840.1.113883.10.20.27.3.14" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2018-05-01"/>
                   <code code="72510-1" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Performance Rate" />
                   <statusCode code="completed" />
                   <value xsi:type="REAL" value=".8" />
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="C7D4A675-E578-45F2-B637-5C1FC90FCCFA" />
+                      <id root="88F63A33-6D05-4BD2-8159-2C3712CA5638" />
                       <code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Numerator" />
                     </externalObservation>
                   </reference>
@@ -2834,7 +2835,7 @@ QRDA Category III Measure Section (CMS EP)
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="IPOP" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -3114,7 +3115,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E682EA-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -3143,7 +3144,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E682EB-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -3172,7 +3173,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E682EC-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -3201,7 +3202,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E682ED-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -3228,7 +3229,7 @@ QRDA Category III Measure Section (CMS EP)
                   <!--IPOP Population ID from eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="A14D91B3-CD7F-432D-8148-B9563BAA960D" />
+                      <id root="47D97F49-B5D4-4F0C-BE7E-CF33065EEC68" />
                     </externalObservation>
                   </reference>
                 </observation>
@@ -3237,7 +3238,7 @@ QRDA Category III Measure Section (CMS EP)
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="DENOM" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -3517,7 +3518,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E682F6-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -3546,7 +3547,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E682F7-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -3575,7 +3576,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E682F8-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -3604,7 +3605,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E682F9-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -3631,7 +3632,7 @@ QRDA Category III Measure Section (CMS EP)
                   <!--DENOM Population ID from eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="FCA38355-BD5D-445A-895C-5B6E09C41B77" />
+                      <id root="B69DBC72-834A-41A1-B796-B3408E531D9C" />
                     </externalObservation>
                   </reference>
                 </observation>
@@ -3640,7 +3641,7 @@ QRDA Category III Measure Section (CMS EP)
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -3920,7 +3921,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68302-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -3949,7 +3950,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68303-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -3978,7 +3979,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68304-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -4007,7 +4008,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68305-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -4034,7 +4035,7 @@ QRDA Category III Measure Section (CMS EP)
                   <!--NUMER Population ID from eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="C7D4A675-E578-45F2-B637-5C1FC90FCCFA" />
+                      <id root="88F63A33-6D05-4BD2-8159-2C3712CA5638" />
                     </externalObservation>
                   </reference>
                 </observation>
@@ -4043,7 +4044,7 @@ QRDA Category III Measure Section (CMS EP)
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="DENEX" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -4323,7 +4324,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6826F-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -4352,7 +4353,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68270-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -4381,7 +4382,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68271-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -4410,7 +4411,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68272-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -4437,14 +4438,14 @@ QRDA Category III Measure Section (CMS EP)
                   <!--DENEX Population ID from eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="53F076FE-F9B6-45C0-963E-BF5E38716C11" />
+                      <id root="C865E42B-466C-4CD5-9EA2-46C532AE818A" />
                     </externalObservation>
                   </reference>
                 </observation>
               </component>
             </organizer>
           </entry>
-          <!--Measure Entry for NQF 0004 / CMS137(Too few performance rates)-->
+          <!--Missing performance rate for Multi-Measure Entry for CMS137v7-->
           <entry>
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
@@ -4455,34 +4456,35 @@ QRDA Category III Measure Section (CMS EP)
               <!--Measure Reference and Results-->
               <reference typeCode="REFR">
                 <externalDocument classCode="DOC" moodCode="EVN">
-                  <id root="2.16.840.1.113883.4.738" extension="D5E68306-5760-11E7-1256-09173F13E4C5" />
+                  <id root="2.16.840.1.113883.4.738" extension="40280382-6258-7581-0162-92a37a9b15df" />
                   <code code="57024-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Health Quality Measure Document" />
                   <text>Initiation and Engagement of Alcohol and Other Drug Dependence Treatment</text>
                 </externalDocument>
               </reference>
-              <!--Missing Performance Rate-->
-              <!--Performance Rate-->
+              <!--Performance Rate 1-->
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01" />
                   <templateId root="2.16.840.1.113883.10.20.27.3.14" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2018-05-01"/>
                   <code code="72510-1" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Performance Rate" />
                   <statusCode code="completed" />
                   <value xsi:type="REAL" value=".888889" />
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="7FFA49C4-D708-491E-85FE-6855F0A725DF" />
+                      <id root="22DE67FC-79C0-4725-BDE3-3C9B0A1ACAF7" />
                       <code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Numerator" />
                     </externalObservation>
                   </reference>
                 </observation>
               </component>
-              <!--IPOP Population-->
+              <!--Missing Performance Rate 2-->
+
+              <!--IPOP 1 Population-->
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="IPOP" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -4495,6 +4497,62 @@ QRDA Category III Measure Section (CMS EP)
                       <statusCode code="completed" />
                       <value xsi:type="INT" value="1000" />
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for F7764C47-6BAE-4359-A3DF-9C452DC95A33-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="F7764C47-6BAE-4359-A3DF-9C452DC95A33" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 44729C98-B535-4C78-8BC3-A716323B9965-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="44729C98-B535-4C78-8BC3-A716323B9965" />
+                        </externalObservation>
+                      </reference>
                     </observation>
                   </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
@@ -4762,7 +4820,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6830F-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -4791,7 +4849,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68310-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -4820,7 +4878,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68311-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -4849,7 +4907,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68312-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -4876,16 +4934,16 @@ QRDA Category III Measure Section (CMS EP)
                   <!--IPOP Population ID from eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="E6569B35-D2C5-464B-A608-BDB2F082FE57" />
+                      <id root="452021F9-5466-45A8-9528-0F92E70C95DD" />
                     </externalObservation>
                   </reference>
                 </observation>
               </component>
-              <!--DENOM Population-->
+              <!--DENOM 1 Population-->
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="DENOM" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -4898,6 +4956,62 @@ QRDA Category III Measure Section (CMS EP)
                       <statusCode code="completed" />
                       <value xsi:type="INT" value="1000" />
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for F7764C47-6BAE-4359-A3DF-9C452DC95A33-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="F7764C47-6BAE-4359-A3DF-9C452DC95A33" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 44729C98-B535-4C78-8BC3-A716323B9965-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="44729C98-B535-4C78-8BC3-A716323B9965" />
+                        </externalObservation>
+                      </reference>
                     </observation>
                   </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
@@ -5165,7 +5279,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6831B-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -5194,7 +5308,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6831C-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -5223,7 +5337,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6831D-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -5252,7 +5366,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6831E-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -5279,16 +5393,16 @@ QRDA Category III Measure Section (CMS EP)
                   <!--DENOM Population ID from eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="3F6350CA-654C-4B00-8B62-EC810D1CA790" />
+                      <id root="39C79E71-7369-46C3-AD5F-1C5D83BA474A" />
                     </externalObservation>
                   </reference>
                 </observation>
               </component>
-              <!--DENEX Population-->
+              <!--DENEX 1 Population-->
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="DENEX" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -5301,6 +5415,62 @@ QRDA Category III Measure Section (CMS EP)
                       <statusCode code="completed" />
                       <value xsi:type="INT" value="100" />
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for F7764C47-6BAE-4359-A3DF-9C452DC95A33-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="F7764C47-6BAE-4359-A3DF-9C452DC95A33" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 44729C98-B535-4C78-8BC3-A716323B9965-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="44729C98-B535-4C78-8BC3-A716323B9965" />
+                        </externalObservation>
+                      </reference>
                     </observation>
                   </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
@@ -5568,7 +5738,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68327-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -5597,7 +5767,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68328-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -5626,7 +5796,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68329-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -5655,7 +5825,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6832A-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -5682,16 +5852,16 @@ QRDA Category III Measure Section (CMS EP)
                   <!--DENEX Population ID from eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="9242AAE1-D2C4-44A4-AF6B-7DF4C5C9BE31" />
+                      <id root="B0687FEA-DC33-40B2-95F7-279E11E3AB28" />
                     </externalObservation>
                   </reference>
                 </observation>
               </component>
-              <!--NUMER Population-->
+              <!--NUMER 1 Population-->
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -5704,6 +5874,62 @@ QRDA Category III Measure Section (CMS EP)
                       <statusCode code="completed" />
                       <value xsi:type="INT" value="800" />
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for F7764C47-6BAE-4359-A3DF-9C452DC95A33-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="F7764C47-6BAE-4359-A3DF-9C452DC95A33" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 44729C98-B535-4C78-8BC3-A716323B9965-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="44729C98-B535-4C78-8BC3-A716323B9965" />
+                        </externalObservation>
+                      </reference>
                     </observation>
                   </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
@@ -5971,7 +6197,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68333-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -6000,7 +6226,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68334-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -6029,7 +6255,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68335-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -6058,7 +6284,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68336-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -6085,16 +6311,16 @@ QRDA Category III Measure Section (CMS EP)
                   <!--NUMER Population ID from eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="6F8814A6-A26A-4FCB-8A41-902971713FCB" />
+                      <id root="22DE67FC-79C0-4725-BDE3-3C9B0A1ACAF7" />
                     </externalObservation>
                   </reference>
                 </observation>
               </component>
-              <!--IPOP Population-->
+              <!--IPOP 2 Population-->
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="IPOP" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -6107,6 +6333,62 @@ QRDA Category III Measure Section (CMS EP)
                       <statusCode code="completed" />
                       <value xsi:type="INT" value="1000" />
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 2A93884C-D881-447F-BA9B-F2EA0A2F30F4-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="2A93884C-D881-447F-BA9B-F2EA0A2F30F4" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 7ECED382-8389-4028-9623-36ED3537E010-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="7ECED382-8389-4028-9623-36ED3537E010" />
+                        </externalObservation>
+                      </reference>
                     </observation>
                   </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
@@ -6374,7 +6656,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6833F-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -6403,7 +6685,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68340-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -6432,7 +6714,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68341-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -6461,7 +6743,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68342-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -6488,16 +6770,16 @@ QRDA Category III Measure Section (CMS EP)
                   <!--IPOP Population ID from eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="68E401E4-8CB6-4A5D-A83D-58F8E902E012" />
+                      <id root="C7127400-8034-45D1-8227-6C244349AB6E" />
                     </externalObservation>
                   </reference>
                 </observation>
               </component>
-              <!--DENOM Population-->
+              <!--DENOM 2 Population-->
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="DENOM" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -6510,6 +6792,62 @@ QRDA Category III Measure Section (CMS EP)
                       <statusCode code="completed" />
                       <value xsi:type="INT" value="1000" />
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 2A93884C-D881-447F-BA9B-F2EA0A2F30F4-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="2A93884C-D881-447F-BA9B-F2EA0A2F30F4" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 7ECED382-8389-4028-9623-36ED3537E010-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="7ECED382-8389-4028-9623-36ED3537E010" />
+                        </externalObservation>
+                      </reference>
                     </observation>
                   </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
@@ -6777,7 +7115,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6834B-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -6806,7 +7144,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6834C-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -6835,7 +7173,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6834D-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -6864,7 +7202,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6834E-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -6891,16 +7229,16 @@ QRDA Category III Measure Section (CMS EP)
                   <!--DENOM Population ID from eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="417055BD-AECD-49D5-8FA7-764FF1544611" />
+                      <id root="B636C467-23C5-4A23-8709-C71641B1A3AE" />
                     </externalObservation>
                   </reference>
                 </observation>
               </component>
-              <!--DENEX Population-->
+              <!--DENEX 2 Population-->
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="DENEX" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -6913,6 +7251,62 @@ QRDA Category III Measure Section (CMS EP)
                       <statusCode code="completed" />
                       <value xsi:type="INT" value="100" />
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 2A93884C-D881-447F-BA9B-F2EA0A2F30F4-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="2A93884C-D881-447F-BA9B-F2EA0A2F30F4" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 7ECED382-8389-4028-9623-36ED3537E010-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="7ECED382-8389-4028-9623-36ED3537E010" />
+                        </externalObservation>
+                      </reference>
                     </observation>
                   </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
@@ -7180,7 +7574,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68357-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -7209,7 +7603,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68358-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -7238,7 +7632,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68359-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -7267,7 +7661,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E6835A-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -7294,16 +7688,16 @@ QRDA Category III Measure Section (CMS EP)
                   <!--DENEX Population ID from eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="F1AA2B4F-003E-4770-9394-8D465715CC4D" />
+                      <id root="089CFF04-2838-4B37-8BDA-647E7B94C709" />
                     </externalObservation>
                   </reference>
                 </observation>
               </component>
-              <!--NUMER Population-->
+              <!--NUMER 2 Population-->
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01" />
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -7316,6 +7710,62 @@ QRDA Category III Measure Section (CMS EP)
                       <statusCode code="completed" />
                       <value xsi:type="INT" value="800" />
                       <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 2A93884C-D881-447F-BA9B-F2EA0A2F30F4-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="2A93884C-D881-447F-BA9B-F2EA0A2F30F4" />
+                        </externalObservation>
+                      </reference>
+                    </observation>
+                  </entryRelationship>
+                  <!-- Stratifier for 7ECED382-8389-4028-9623-36ED3537E010-->
+                  <entryRelationship typeCode="COMP">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.27.3.20" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.4" />
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CD" nullFlavor="OTH">
+                        <originalText>Stratum</originalText>
+                      </value>
+                      <!-- Count-->
+                      <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                          <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+                          <templateId root="2.16.840.1.113883.10.20.27.3.24" />
+                          <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+                          <statusCode code="completed" />
+                          <value xsi:type="INT" value="500" />
+                          <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+                        </observation>
+                      </entryRelationship>
+                      <reference typeCode="REFR">
+                        <externalObservation>
+                          <id root="7ECED382-8389-4028-9623-36ED3537E010" />
+                        </externalObservation>
+                      </reference>
                     </observation>
                   </entryRelationship>
                   <!--Gender Supplemental Data Element - Male-->
@@ -7531,7 +7981,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68363-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -7612,7 +8062,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68364-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -7641,7 +8091,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68365-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -7670,7 +8120,7 @@ QRDA Category III Measure Section (CMS EP)
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
                       <templateId root="2.16.840.1.113883.10.20.24.3.55" />
-                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01" />
+                      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
                       <id root="D5E68366-5760-11E7-1256-09173F13E4C5" />
                       <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment Source" />
                       <statusCode code="completed" />
@@ -7697,7 +8147,7 @@ QRDA Category III Measure Section (CMS EP)
                   <!--NUMER Population ID from eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="431A7185-548C-4F05-B0D3-90108E4AAD57" />
+                      <id root="C3D3C7F3-CADA-45E9-A5AA-A05A3C04A76A" />
                     </externalObservation>
                   </reference>
                 </observation>

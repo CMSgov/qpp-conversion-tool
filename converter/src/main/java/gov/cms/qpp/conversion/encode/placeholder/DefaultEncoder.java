@@ -29,17 +29,18 @@ public class DefaultEncoder extends JsonOutputEncoder {
 
 		JsonWrapper childWrapper = new JsonWrapper();
 
-		for (String name : node.getKeys()) {
+		for (Node child : node.getChildNodes()) { // LIST encoding for this node
+			//childWrapper.put(child.getType().name(), childWrapper); // cyclic self reference
+			encode(childWrapper, child); // child LIST entry for this node
+		}
+		
+		for (String name : node.getKeys()) { // MAP encoding
 			String nameForEncode = name.replace("Decoder", "Encoder");
-			childWrapper.putString(nameForEncode, node.getValue(name));
+			childWrapper.put(nameForEncode, node.getValue(name));
 		}
 
-		wrapper.putObject(node.getType().name(), childWrapper);
+		wrapper.put(node.getType().name(), childWrapper);
 
-		for (Node child : node.getChildNodes()) {
-			childWrapper.putObject(child.getType().name(), childWrapper);
-			encode(childWrapper, child);
-		}
 	}
 
 	@Encoder(TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS)

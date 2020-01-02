@@ -3,7 +3,7 @@
    <realmCode code="US"/>
    <typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
    <templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01"/>
-   <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2017-07-01"/>
+   <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2018-05-01"/>
    <id root="D5E68223-5760-11E7-1256-09173F13E4C5"/>
    <code code="55184-6"
          codeSystem="2.16.840.1.113883.6.1"
@@ -36,7 +36,7 @@
    </author>
    <!--Person Author Example-->
 	  <author>
-      <time value="20180311061231"/>
+      <time value="20190311061231"/>
       <assignedAuthor>
          <id root="2.16.840.1.113883.4.6"
              extension="2567891421"
@@ -112,7 +112,7 @@
          <effectiveTime>
             <low value="20170101"/>
             <high value="20171231"/>
-         </effectiveTime>	
+         </effectiveTime>
          <performer typeCode="PRF">
             <time>
                <low value="20170101"/>
@@ -125,7 +125,7 @@
                   <name>Good Health Clinic</name>
                </representedOrganization>
             </assignedEntity>
-         </performer>	
+         </performer>
          <performer typeCode="PRF">
             <time>
                <low value="20170101"/>
@@ -138,7 +138,7 @@
                   <name>Good Health Clinic</name>
                </representedOrganization>
             </assignedEntity>
-         </performer>	
+         </performer>
          <performer typeCode="PRF">
             <time>
                <low value="20170101"/>
@@ -151,7 +151,7 @@
                   <name>Good Health Clinic</name>
                </representedOrganization>
             </assignedEntity>
-         </performer>	
+         </performer>
          <performer typeCode="PRF">
             <time>
                <low value="20170101"/>
@@ -164,7 +164,7 @@
                   <name>Good Health Clinic</name>
                </representedOrganization>
             </assignedEntity>
-         </performer>	
+         </performer>
          <performer typeCode="PRF">
             <time>
                <low value="20170101"/>
@@ -197,8 +197,8 @@ CDA Body
 -->
 	  <component>
       <structuredBody>
-  
-      <!-- 
+
+      <!--
 	         ********************************************************
 	         Advancing Care Information Section
 	         ********************************************************
@@ -465,14 +465,14 @@ CDA Body
 							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
 								displayName="Observation Parameters"/>
 							<effectiveTime>
-								<low value="20180101"/>
-								<high value="20181231"/>
+								<low value="20190101"/>
+								<high value="20191231"/>
 							</effectiveTime>
 						</act>
 					</entry>
 				</section>
 			</component>
-			<!-- 
+			<!--
 	         ********************************************************
 	         Improvement Activity Section
 	         ********************************************************
@@ -482,7 +482,7 @@ CDA Body
 					<!-- Measure Section -->
 					<templateId root="2.16.840.1.113883.10.20.24.2.2"/>
 					<!-- Improvement Activity Section V2 templateId -->
-					<templateId root="2.16.840.1.113883.10.20.27.2.4" extension="2017-06-01"/>
+					<templateId root="2.16.840.1.113883.3.249.20.2.1" extension="2018-05-01"/>
 					<code code="55186-1" codeSystem="2.16.840.1.113883.6.1"
 						displayName="Measure Section"/>
 					<title>Measure Section</title>
@@ -505,7 +505,7 @@ CDA Body
 									<td>Anticoagulant management improvements</td>
 									<td>IA_PM_2</td>
 									<td>Y</td>
-								</tr>								
+								</tr>
 							</tbody>
 						</table>
 					</text>
@@ -515,8 +515,7 @@ CDA Body
 							<!-- Implied template Measure Reference templateId -->
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
 							<!-- Improvement Activity Performed Reference and Results templateId -->
-							<templateId root="2.16.840.1.113883.10.20.27.3.33"
-								extension="2016-09-01"/>
+							<templateId root="2.16.840.1.113883.3.249.20.3.1" extension="2018-05-01"/>
 							<id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
 							<statusCode code="completed"/>
 							<reference typeCode="REFR">
@@ -543,14 +542,13 @@ CDA Body
 							</component>
 						</organizer>
 					</entry>
-					<!-- improvement activity: IA_PM_2 -->					
+					<!-- improvement activity: IA_PM_2 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<!-- Implied template Measure Reference templateId -->
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
 							<!-- Improvement Activity Performed Reference and Results templateId -->
-							<templateId root="2.16.840.1.113883.10.20.27.3.33"
-								extension="2016-09-01"/>
+							<templateId root="2.16.840.1.113883.3.249.20.3.1" extension="2018-05-01"/>
 							<id root="ae58d929-3574-47ae-87b8-438d2eac86d9"/>
 							<statusCode code="completed"/>
 							<reference typeCode="REFR">
@@ -576,7 +574,7 @@ CDA Body
 								</observation>
 							</component>
 						</organizer>
-					</entry>					
+					</entry>
 					<!-- Performance period -->
 					<entry typeCode="DRIV">
 						<act classCode="ACT" moodCode="EVN">
@@ -586,14 +584,14 @@ CDA Body
 							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
 								displayName="Observation Parameters"/>
 							<effectiveTime>
-								<low value="20180101"/>
-								<high value="20181231"/>
+								<low value="20190101"/>
+								<high value="20191231"/>
 							</effectiveTime>
 						</act>
 					</entry>
 				</section>
 			</component>
-		
+
       </structuredBody>
    </component>
 </ClinicalDocument>

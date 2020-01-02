@@ -31,7 +31,7 @@ CDA Header
 	<!-- QRDA Category III Report (QRDA III) -->
 	<templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01"/>
 	<!-- QRDA Category III Report - CMS EP -->
-	<templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2017-07-01"/>
+	<templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2018-05-01"/>
 	<!-- SHALL contain exactly one [1..1] id (CONF:17236).  This id SHALL be a globally unique identifier for the document (CONF:17242). -->
 	<id root="26a42253-99f5-48e7-9274-b467c6c7f623"/>
 	<!-- SHALL contain exactly one [1..1] code (CodeSystem: LOINC 2.16.840.1.113883.6.1 STATIC) (CONF:17210).
@@ -279,7 +279,7 @@ CDA Header
 							<!--Measure Reference and Results-->
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
-									<id root="2.16.840.1.113883.4.738" extension="40280382-5abd-fa46-015b-49abb28d38b2"/>
+									<id root="2.16.840.1.113883.4.738" extension="40280382-6258-7581-0162-92d6e6db1680"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 										  displayName="Health Quality Measure Document"/>
 									<text>Controlling High Blood Pressure</text>
@@ -290,7 +290,7 @@ CDA Header
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01"/>
 									<templateId root="2.16.840.1.113883.10.20.27.3.14" extension="2016-09-01"/>
-									<templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2016-11-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2018-05-01"/>
 									<code code="72510-1" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 										  displayName="Performance Rate"/>
 									<statusCode code="completed"/>
@@ -320,7 +320,7 @@ CDA Header
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
-									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
 										  displayName="Assertion"/>
 									<statusCode code="completed"/>
@@ -647,7 +647,7 @@ CDA Header
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01"/>
 											<templateId root="2.16.840.1.113883.10.20.24.3.55"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
 											<id root="D5E6847D-5760-11E7-1256-09173F13E4C5"/>
 											<code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 												  displayName="Payment Source"/>
@@ -680,7 +680,7 @@ CDA Header
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01"/>
 											<templateId root="2.16.840.1.113883.10.20.24.3.55"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
 											<id root="D5E6847E-5760-11E7-1256-09173F13E4C5"/>
 											<code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 												  displayName="Payment Source"/>
@@ -713,7 +713,7 @@ CDA Header
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01"/>
 											<templateId root="2.16.840.1.113883.10.20.24.3.55"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
 											<id root="D5E6847F-5760-11E7-1256-09173F13E4C5"/>
 											<code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 												  displayName="Payment Source"/>
@@ -747,7 +747,7 @@ CDA Header
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01"/>
 											<templateId root="2.16.840.1.113883.10.20.24.3.55"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
 											<id root="D5E68480-5760-11E7-1256-09173F13E4C5"/>
 											<code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 												  displayName="Payment Source"/>
@@ -778,7 +778,7 @@ CDA Header
 									<!--IPOP Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="5C206C23-4CF9-4390-9E76-0F243FE59DCF"/>
+											<id root="A096B729-ECCA-4C7A-9CA0-A601D8D70396"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -787,7 +787,7 @@ CDA Header
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
-									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
 										  displayName="Assertion"/>
 									<statusCode code="completed"/>
@@ -1115,7 +1115,7 @@ CDA Header
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01"/>
 											<templateId root="2.16.840.1.113883.10.20.24.3.55"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
 											<id root="D5E68489-5760-11E7-1256-09173F13E4C5"/>
 											<code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 												  displayName="Payment Source"/>
@@ -1148,7 +1148,7 @@ CDA Header
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01"/>
 											<templateId root="2.16.840.1.113883.10.20.24.3.55"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
 											<id root="D5E6848A-5760-11E7-1256-09173F13E4C5"/>
 											<code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 												  displayName="Payment Source"/>
@@ -1181,7 +1181,7 @@ CDA Header
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01"/>
 											<templateId root="2.16.840.1.113883.10.20.24.3.55"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
 											<id root="D5E6848B-5760-11E7-1256-09173F13E4C5"/>
 											<code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 												  displayName="Payment Source"/>
@@ -1215,7 +1215,7 @@ CDA Header
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01"/>
 											<templateId root="2.16.840.1.113883.10.20.24.3.55"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
 											<id root="D5E6848C-5760-11E7-1256-09173F13E4C5"/>
 											<code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 												  displayName="Payment Source"/>
@@ -1246,7 +1246,7 @@ CDA Header
 									<!--DENOM Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="1D456B20-71F7-4477-BD23-D39600D5A095"/>
+											<id root="BA4CB92A-1635-4E1B-BC23-1ED7B967072A"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -1255,7 +1255,7 @@ CDA Header
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
-									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
 										  displayName="Assertion"/>
 									<statusCode code="completed"/>
@@ -1583,7 +1583,7 @@ CDA Header
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01"/>
 											<templateId root="2.16.840.1.113883.10.20.24.3.55"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
 											<id root="D5E68495-5760-11E7-1256-09173F13E4C5"/>
 											<code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 												  displayName="Payment Source"/>
@@ -1616,7 +1616,7 @@ CDA Header
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01"/>
 											<templateId root="2.16.840.1.113883.10.20.24.3.55"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
 											<id root="D5E68496-5760-11E7-1256-09173F13E4C5"/>
 											<code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 												  displayName="Payment Source"/>
@@ -1649,7 +1649,7 @@ CDA Header
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01"/>
 											<templateId root="2.16.840.1.113883.10.20.24.3.55"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
 											<id root="D5E68497-5760-11E7-1256-09173F13E4C5"/>
 											<code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 												  displayName="Payment Source"/>
@@ -1683,7 +1683,7 @@ CDA Header
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01"/>
 											<templateId root="2.16.840.1.113883.10.20.24.3.55"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
 											<id root="D5E68498-5760-11E7-1256-09173F13E4C5"/>
 											<code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 												  displayName="Payment Source"/>
@@ -1714,7 +1714,7 @@ CDA Header
 									<!--DENEX Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="9805BC7D-274C-4CCF-916A-B5BA34D62A31"/>
+											<id root="4A61F526-AFFA-465F-89C9-B2DB8E6ECEBC"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -1723,7 +1723,7 @@ CDA Header
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
-									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
 										  displayName="Assertion"/>
 									<statusCode code="completed"/>
@@ -2051,7 +2051,7 @@ CDA Header
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01"/>
 											<templateId root="2.16.840.1.113883.10.20.24.3.55"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
 											<id root="D5E684A1-5760-11E7-1256-09173F13E4C5"/>
 											<code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 												  displayName="Payment Source"/>
@@ -2084,7 +2084,7 @@ CDA Header
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01"/>
 											<templateId root="2.16.840.1.113883.10.20.24.3.55"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
 											<id root="D5E684A2-5760-11E7-1256-09173F13E4C5"/>
 											<code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 												  displayName="Payment Source"/>
@@ -2117,7 +2117,7 @@ CDA Header
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01"/>
 											<templateId root="2.16.840.1.113883.10.20.24.3.55"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
 											<id root="D5E684A3-5760-11E7-1256-09173F13E4C5"/>
 											<code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 												  displayName="Payment Source"/>
@@ -2151,7 +2151,7 @@ CDA Header
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01"/>
 											<templateId root="2.16.840.1.113883.10.20.24.3.55"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01"/>
 											<id root="D5E684A4-5760-11E7-1256-09173F13E4C5"/>
 											<code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 												  displayName="Payment Source"/>
@@ -2182,7 +2182,7 @@ CDA Header
 									<!--NUMER Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="709D84FA-637D-42CD-8934-43C3FBAD0979"/>
+											<id root="A815D9EA-5CE0-4AD8-A703-BC69D19E360B"/>
 										</externalObservation>
 									</reference>
 								</observation>

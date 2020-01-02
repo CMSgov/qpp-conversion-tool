@@ -1,14 +1,11 @@
 package gov.cms.qpp.conversion;
 
 import java.lang.annotation.Annotation;
-import java.util.EnumSet;
 import java.util.IdentityHashMap;
 import java.util.Map;
-import java.util.Set;
 
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.Registry;
-import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.validate.pii.MissingPiiValidator;
 import gov.cms.qpp.conversion.validate.pii.PiiValidator;
 
@@ -17,10 +14,9 @@ import gov.cms.qpp.conversion.validate.pii.PiiValidator;
  * throughout the conversion.
  */
 public class Context {
-	public static final String REPORTING_YEAR = "2018";
+	public static final String REPORTING_YEAR = "2019";
 	private final Map<Class<? extends Annotation>, Registry<?>> registries = new IdentityHashMap<>();
 	private Program program = Program.ALL;
-	private Set<QrdaScope> scope = EnumSet.noneOf(QrdaScope.class);
 	private boolean historical;
 	private boolean doValidation = true;
 	private PiiValidator piiValidator = MissingPiiValidator.INSTANCE;
@@ -41,33 +37,6 @@ public class Context {
 	 */
 	public void setProgram(Program program) {
 		this.program = program;
-	}
-
-	/**
-	 * Get the scope that determines which data may be transformed.
-	 *
-	 * @return scope The scope.
-	 */
-	public Set<QrdaScope> getScope() {
-		return scope;
-	}
-
-	/**
-	 * Sets the scope of the converter.
-	 *
-	 * @param scope The new scope.
-	 */
-	public void setScope(Set<QrdaScope> scope) {
-		this.scope = scope;
-	}
-
-	/**
-	 * Checks whether or not the context has a non-empty scope
-	 *
-	 * @return true if the scope is not null and contains at least one element
-	 */
-	public boolean hasScope() {
-		return scope != null && !scope.isEmpty();
 	}
 
 	/**

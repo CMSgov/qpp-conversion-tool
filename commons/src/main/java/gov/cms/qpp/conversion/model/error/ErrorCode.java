@@ -116,9 +116,9 @@ public enum ErrorCode implements LocalizedError {
 			+ "Aggregate Count.", true),
 	MEASURE_DATA_VALUE_NOT_INTEGER(53, "Measure data with population id '`(population id)`' "
 			+ "must be a whole number greater than or equal to 0", true),
-	CPC_PERFORMANCE_PERIOD_START(55, "A CPC Plus Performance period start must be 01/01/2018. "
+	CPC_PERFORMANCE_PERIOD_START(55, "A CPC Plus Performance period start must be 01/01/2019. "
 			+ "Please refer to the IG for more information here: " + DocumentationReference.CPC_PLUS_SUBMISSIONS),
-	CPC_PERFORMANCE_PERIOD_END(56, "A CPC Plus Performance period end must be 12/31/2018. "
+	CPC_PERFORMANCE_PERIOD_END(56, "A CPC Plus Performance period end must be 12/31/2019. "
 			+ "Please refer to the IG for more information here: " + DocumentationReference.CPC_PLUS_SUBMISSIONS),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION(57, "The measure reference results must have a single "
 			+ "measure population"),
@@ -135,8 +135,6 @@ public enum ErrorCode implements LocalizedError {
 			+ " Here is a link to the IG section on identifiers: " + DocumentationReference.IDENTIFIERS),
 	CPC_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY(64, "CPC+ Submissions must have at least `(CPC+ measure group minimum)` "
 			+ "of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`", true),
-	CPC_PLUS_TOO_FEW_QUALITY_MEASURES(65, "CPC+ Submissions must have at least `(Overall CPC+ measure minimum)` of "
-		+ "the following measures: `(Listing of all CPC+ measure ids)`.", true),
 	CPC_PLUS_MISSING_SUPPLEMENTAL_CODE(66, "Missing the `(Supplemental Type)` - `(Type Qualification)` supplemental data for code "
 		+ "`(Supplemental Data Code)` for the measure id `(Measure Id)`'s Sub-population `(Sub Population)`", true),
 	CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT(67, "Must have one count for Supplemental Data `(Supplemental Data Code)` "
@@ -146,7 +144,7 @@ public enum ErrorCode implements LocalizedError {
 		+ "`(CPC+ contact email)` for assistance.", true),
 	INVALID_PERFORMANCE_PERIOD_FORMAT(69, "`(Performance period start or end date)` is an invalid date format. "
 		+ "Please use a standard ISO date format. "
-		+ "Example valid values are 2018-02-26, 2018/02/26T01:45:23, or 2018-02-26T01:45:23.123. "
+		+ "Example valid values are 2019-02-26, 2019/02/26T01:45:23, or 2019-02-26T01:45:23.123. "
 		+ "Please see the Implementation Guide for information on the performance period here: "
 		+ DocumentationReference.PERFORMANCE_PERIOD, true),
 	MISSING_OR_DUPLICATED_MEASURE_GUID(70, "The measure section measure reference and results has an incorrect number of "
@@ -158,9 +156,35 @@ public enum ErrorCode implements LocalizedError {
 	VIRTUAL_GROUP_ID_REQUIRED(78, "The Program 'Mips Virtual Group' was found. The required entity id for this "
 		+ "program name was missing. Please provide a virtual group identifier with the 'Mips Virtual Group' program name."),
 	MISSING_PII_VALIDATOR(79, "There is no TIN validator present, so NPI/Alternative Payment Model (APM) "
-			+ "combinations cannot be verified"),
-	INCORRECT_API_NPI_COMBINATION(80, "The given National Provider (NPI) Identifier and Alternative Payment Model (APM) "
-			+ "are not a valid combination");
+		+ "combinations cannot be verified"),
+	INCORRECT_API_NPI_COMBINATION(80, "The given National Provider Identifier `(npi)`, Taxpayer Identification Number `(tin)`, "
+		+ "and Alternative Payment Model `(apm)` are not a valid combination", true),
+	MEASURE_SECTION_MISSING_MEASURE(81, "At least one measure is required in a measure section"),
+	TOO_MANY_ERRORS(82, "There are too many errors associated with this QRDA-III file. Showing 100 out of `(Error amount)` errors."
+		+ " Please fix the given errors and re-submit", true),
+	MISSING_CEHRT(83, "CPC+ submissions should contain a CEHRT."
+		+ " Please refer to the `(Submission year's)` IG for more details " + DocumentationReference.CEHRT
+	    + " regarding practice CEHRTs.", true),
+	CPC_PLUS_TIN_REQUIRED(84, "CPC+ QRDA-III Submissions require at least one TIN to be present."),
+	CPC_PLUS_INVALID_TIN(85, "CPC+ QRDA-III Submission TINs require a 9 digit numerical value"),
+	CPC_PLUS_MISSING_TIN(86, "This CPC+ QRDA-III submission is missing a TIN. Please ensure there is a TIN associated with every "
+		+ "NPI submitted"),
+	CPC_PLUS_NPI_REQUIRED(87, "CPC+ QRDA-III Submissions require at least one NPI to be present"),
+	CPC_PLUS_INVALID_NPI(88, "CPC+ QRDA-III Submission NPIs require a 10 digit numerical value"),
+	CPC_PLUS_MISSING_NPI(89, "This CPC+ QRDA-III submission is missing a NPI. Please ensure there is an NPI associated with "
+		+ "every TIN submitted"),
+	CPC_PLUS_NO_IA_OR_PI(90, "CPC+ QRDA-III submissions must not contain an IA or PI section"),
+	CPC_PLUS_INVALID_NULL_PERFORMANCE_RATE(91, "The performance rate `(performanceRateUuid)` has an invalid null value. "
+		+ "A performance rate cannot be null unless the performance denominator is 0", true),
+	CPC_PLUS_PERFORMANCE_DENOM_LESS_THAN_ZERO(92, "The performance denominator for measure `(measureId)` was less than 0. "
+		+ "A performance rate cannot be null unless the performance denominator is 0", true),
+	CPC_PLUS_NUMERATOR_GREATER_THAN_EITHER_DENOMINATORS(93, "The numerator id `(numeratorUuid)` has a count value that is "
+		+ "greater than the denominator and/or the performance denominator "
+		+ "(Denominator count - Denominator exclusion count - Denominator Exception count)", true),
+	CPC_PLUS_DENEX_GREATER_THAN_DENOMINATOR(94, "The denominator exclusion id `(denexUuid)` has a count value that is greater than the "
+		+ "denominator. The Denominator exclusion cannot be a greater value than the denominator.", true),
+	MEASURE_SECTION_V4_REQUIRED(95, "The Clinical Document must contain one Measure Section v4 with the extension 2017-06-01"),
+	MISSING_API_TIN_NPI_FILE(96, "The APM to TIN/NPI Combination file is missing.");
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));

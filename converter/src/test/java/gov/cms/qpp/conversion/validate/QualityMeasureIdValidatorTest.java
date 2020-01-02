@@ -5,7 +5,6 @@ import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATIO
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
@@ -61,12 +60,12 @@ class QualityMeasureIdValidatorTest {
 	private QualityMeasureIdValidator objectUnderTest = new MipsQualityMeasureIdValidator();
 
 	@BeforeAll
-	static void setupCustomMeasuresData() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	static void setupCustomMeasuresData() throws Exception {
 		MeasureConfigs.setMeasureDataFile("reduced-test-measures-data.json");
 	}
 
 	@AfterAll
-	static void resetMeasuresData() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	static void resetMeasuresData() throws Exception {
 		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 	}
 

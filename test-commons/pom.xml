@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>2.1.2-RELEASE</version>
+		<version>3.0.0-RELEASE</version>
 		<relativePath>../</relativePath>
 	</parent>
 
@@ -24,11 +24,6 @@
 			<plugin>
 				<groupId>org.gaul</groupId>
 				<artifactId>modernizer-maven-plugin</artifactId>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
 			</plugin>
 
 			<plugin>
@@ -110,25 +105,25 @@
 		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk-core</artifactId>
-			<version>${aws.version}</version>
+			<version>1.11.659</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk-s3</artifactId>
-			<version>${aws.version}</version>
+			<version>1.11.659</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk-kms</artifactId>
-			<version>${aws.version}</version>
+			<version>1.11.659</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk-dynamodb</artifactId>
-			<version>${aws.version}</version>
+			<version>1.11.659</version>
 		</dependency>
 	</dependencies>
 

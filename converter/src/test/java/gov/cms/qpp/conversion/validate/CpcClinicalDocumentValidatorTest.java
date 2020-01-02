@@ -1,11 +1,5 @@
 package gov.cms.qpp.conversion.validate;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
-
-import java.time.LocalDate;
-import java.util.List;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,6 +16,12 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 class CpcClinicalDocumentValidatorTest {
 
@@ -164,6 +164,52 @@ class CpcClinicalDocumentValidatorTest {
 			.containsExactly(ErrorCode.CPC_PLUS_SUBMISSION_ENDED.format(formattedDate, expected));
 	}
 
+	@Test
+	void testCpcPlusMissingTin() {
+		Node clinicalDocumentNode = createCpcPlusClinicalDocument();
+		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER);
+		List<Detail> errors = cpcValidator.validateSingleNode(clinicalDocumentNode).getErrors();
+
+		assertWithMessage("Must validate with the correct error")
+			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ErrorCode.CPC_PLUS_TIN_REQUIRED);
+	}
+
+	@Test
+	void testCpcPlusMissingNpi() {
+		Node clinicalDocumentNode = createCpcPlusClinicalDocument();
+		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER);
+		List<Detail> errors = cpcValidator.validateSingleNode(clinicalDocumentNode).getErrors();
+
+		assertWithMessage("Must validate with the correct error")
+			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ErrorCode.CPC_PLUS_NPI_REQUIRED);
+	}
+
+	@Test
+	void testWarnWhenContainsIa() {
+		Node clinicalDocumentNode = createCpcPlusClinicalDocument();
+		Node iaSection = new Node(TemplateId.IA_SECTION);
+		clinicalDocumentNode.addChildNode(iaSection);
+		List<Detail> warnings = cpcValidator.validateSingleNode(clinicalDocumentNode).getWarnings();
+
+		assertThat(warnings)
+			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.contains(ErrorCode.CPC_PLUS_NO_IA_OR_PI);
+	}
+
+	@Test
+	void testWarnWhenContainsPi() {
+		Node clinicalDocumentNode = createCpcPlusClinicalDocument();
+		Node piSection = new Node(TemplateId.PI_SECTION);
+		clinicalDocumentNode.addChildNode(piSection);
+		List<Detail> warnings = cpcValidator.validateSingleNode(clinicalDocumentNode).getWarnings();
+
+		assertThat(warnings)
+			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.contains(ErrorCode.CPC_PLUS_NO_IA_OR_PI);
+	}
+
 	private Node createValidCpcPlusClinicalDocument() {
 		Node clinicalDocumentNode = createCpcPlusClinicalDocument();
 		addMeasureSectionNode(clinicalDocumentNode);
@@ -178,13 +224,13 @@ class CpcClinicalDocumentValidatorTest {
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID, "DogCow");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, "123456789");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, "9900000099");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.CEHRT, "1234567890x");
 
 		return clinicalDocumentNode;
 	}
 
 	private void addMeasureSectionNode(Node clinicalDocumentNode) {
-		Node measureSection = new Node(TemplateId.MEASURE_SECTION_V2);
+		Node measureSection = new Node(TemplateId.MEASURE_SECTION_V3);
 		clinicalDocumentNode.addChildNode(measureSection);
 	}
-
 }

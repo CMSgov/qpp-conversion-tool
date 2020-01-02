@@ -1,16 +1,21 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
+import static com.google.common.truth.Truth.assertThat;
+
+import com.jayway.jsonpath.TypeRef;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.LinkedHashMap;
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
+import gov.cms.qpp.conversion.util.JsonHelper;
 
-import static com.google.common.truth.Truth.assertThat;
+import java.util.List;
+import java.util.Map;
 
 class QualityMeasureIdEncoderTest {
 
@@ -29,7 +34,7 @@ class QualityMeasureIdEncoderTest {
 	@BeforeEach
 	void setUp() {
 		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
-		qualityMeasureId.putValue("measureId", "40280382-5abd-fa46-015b-49abb28d38b2");
+		qualityMeasureId.putValue("measureId", "40280382-6258-7581-0162-92d6e6db1680");
 
 		aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		aggregateCountNode.putValue("aggregateCount", "600");
@@ -74,19 +79,19 @@ class QualityMeasureIdEncoderTest {
 	@Test
 	void testEndToEndReportedIsEncoded() {
 		executeInternalEncode();
-		LinkedHashMap<String, Object> childValues = getChildValues();
+		JsonWrapper childValues = getChildValues();
 
-		assertThat((Boolean)childValues.get("isEndToEndReported"))
+		assertThat(childValues.getBoolean("isEndToEndReported"))
 				.isTrue();
 	}
 
 	@Test
 	void testPopulationTotalIsEncoded() {
 		executeInternalEncode();
-		LinkedHashMap<String, Object> childValues = getChildValues();
+		JsonWrapper childValues = getChildValues();
 
 
-		assertThat(childValues.get(ELIGIBLE_POPULATION))
+		assertThat(childValues.getInteger(ELIGIBLE_POPULATION))
 				.isEqualTo(600);
 	}
 
@@ -96,96 +101,95 @@ class QualityMeasureIdEncoderTest {
 		populationNode.putValue(type, "IPP");
 		populationNode.addChildNode(aggregateCountNode);
 		executeInternalEncode();
-		LinkedHashMap<String, Object> childValues = getChildValues();
+		JsonWrapper childValues = getChildValues();
 
-		assertThat(childValues.get(ELIGIBLE_POPULATION))
+		assertThat(childValues.getInteger(ELIGIBLE_POPULATION))
 				.isEqualTo(600);
 	}
 
 	@Test
 	void testPerformanceMetIsEncoded() {
 		executeInternalEncode();
-		LinkedHashMap<String, Object> childValues = getChildValues();
-		assertThat(childValues.get("performanceMet"))
+		JsonWrapper childValues = getChildValues();
+		assertThat(childValues.getInteger("performanceMet"))
 				.isEqualTo(600);
 	}
 
 	@Test
 	void testPerformanceExclusionIsEncoded() {
 		executeInternalEncode();
-		LinkedHashMap<String, Object> childValues = getChildValues();
+		JsonWrapper childValues = getChildValues();
 
-		assertThat(childValues.get("eligiblePopulationExclusion"))
+		assertThat(childValues.getInteger("eligiblePopulationExclusion"))
 				.isEqualTo(600);
 	}
 
 	@Test
 	void testPerformanceNotMetIsEncoded() {
 		executeInternalEncode();
-		LinkedHashMap<String, Object> childValues = getChildValues();
+		JsonWrapper childValues = getChildValues();
 
-		assertThat(childValues.get("performanceNotMet"))
+		assertThat(childValues.getInteger("performanceNotMet"))
 				.isEqualTo(-1200);
 	}
 
 	@Test
-	void testMeasure438EncodingEndToEndEncoded()
-	{
-		qualityMeasureId.putValue("measureId", "40280382-5b4d-eebc-015b-8245e0fa06b7");
+	void testMeasure438EncodingEndToEndEncoded() {
+		qualityMeasureId.putValue("measureId", "40280382-610b-e7a4-0161-9a6155603811");
 		executeInternalEncode();
-		LinkedHashMap<String, Object> childValues = getChildValues();
+		JsonWrapper childValues = getChildValues();
 
-		assertThat((Boolean)childValues.get("isEndToEndReported"))
+		assertThat(childValues.getBoolean("isEndToEndReported"))
 			.isTrue();
 	}
 
 	@Test
-	void testMeasure438EncodingEligiblePopulation() {
-		qualityMeasureId.putValue("measureId", "40280382-5b4d-eebc-015b-8245e0fa06b7");
+	void testMeasureMultiToSingleEncodingEligiblePopulation() {
+		qualityMeasureId.putValue("measureId", "40280382-610b-e7a4-0161-9a6155603811");
 		executeInternalEncode();
-		LinkedHashMap<String, Object> childValues = getChildValues();
+		JsonWrapper childValues = getChildValues();
 
-		assertThat(childValues.get(ELIGIBLE_POPULATION))
+		assertThat(childValues.getInteger(ELIGIBLE_POPULATION))
 			.isEqualTo(600);
 	}
 
 	@Test
-	void testMeasure438EncodingPerformanceMet() {
-		qualityMeasureId.putValue("measureId", "40280382-5b4d-eebc-015b-8245e0fa06b7");
+	void testMultiToSingleEncodingPerformanceMet() {
+		qualityMeasureId.putValue("measureId", "40280382-610b-e7a4-0161-9a6155603811");
 		executeInternalEncode();
-		LinkedHashMap<String, Object> childValues = getChildValues();
+		JsonWrapper childValues = getChildValues();
 
-		assertThat(childValues.get("performanceMet"))
+		assertThat(childValues.getInteger("performanceMet"))
 			.isEqualTo(600);
 	}
 
 	@Test
-	void testMeasure438EncodingEligiblePopulationExclusion() {
-		qualityMeasureId.putValue("measureId", "40280382-5b4d-eebc-015b-8245e0fa06b7");
+	void testMeasureMultiToSingleEncodingEligiblePopulationExclusion() {
+		qualityMeasureId.putValue("measureId", "40280382-610b-e7a4-0161-9a6155603811");
 		executeInternalEncode();
-		LinkedHashMap<String, Object> childValues = getChildValues();
+		JsonWrapper childValues = getChildValues();
 
-		assertThat(childValues.get("eligiblePopulationExclusion"))
+		assertThat(childValues.getInteger("eligiblePopulationExclusion"))
 			.isEqualTo(600);
 	}
 
 	@Test
-	void testMeasure438EncodingEligiblePopulationException() {
-		qualityMeasureId.putValue("measureId", "40280382-5b4d-eebc-015b-8245e0fa06b7");
+	void testMeasureMultiToSingleEncodingEligiblePopulationException() {
+		qualityMeasureId.putValue("measureId", "40280382-610b-e7a4-0161-9a6155603811");
 		executeInternalEncode();
-		LinkedHashMap<String, Object> childValues = getChildValues();
+		JsonWrapper childValues = getChildValues();
 
-		assertThat(childValues.get("eligiblePopulationException"))
+		assertThat(childValues.getInteger("eligiblePopulationException"))
 			.isEqualTo(600);
 	}
 
 	@Test
-	void testMeasure438EncodingPerformanceNotMet() {
-		qualityMeasureId.putValue("measureId", "40280382-5b4d-eebc-015b-8245e0fa06b7");
+	void testMeasureMultiToSingleEncodingPerformanceNotMet() {
+		qualityMeasureId.putValue("measureId", "40280382-610b-e7a4-0161-9a6155603811");
 		executeInternalEncode();
-		LinkedHashMap<String, Object> childValues = getChildValues();
+		JsonWrapper childValues = getChildValues();
 
-		assertThat(childValues.get("performanceNotMet"))
+		assertThat(childValues.getInteger("performanceNotMet"))
 			.isEqualTo(-1200);
 	}
 
@@ -193,9 +197,19 @@ class QualityMeasureIdEncoderTest {
 	void testIgnoresNonMeasureDataNodes() {
 		qualityMeasureId.addChildNode(aggregateCountNode);
 		executeInternalEncode();
-		LinkedHashMap<String, Object> childValues = getChildValues();
+		JsonWrapper childValues = getChildValues();
 
-		assertThat(childValues.get("aggregateCount")).isNull();
+		assertThat(childValues.getInteger("aggregateCount")).isNull();
+	}
+
+	@Test
+	void testEncodeSingleToMultiDefault() {
+		qualityMeasureId.putValue("measureId", "40280382-6258-7581-0162-626f31a0009e");
+		numeratorNode.putValue(MeasureDataDecoder.MEASURE_POPULATION,"F4580E7F-EB6C-42AB-93A8-9AF1A4FD46EE");
+		executeInternalEncode();
+		JsonWrapper childValues = getChildValues();
+		List<?> strata = JsonHelper.readJsonAtJsonPath(childValues.toString(), "$.strata", new TypeRef<List<?>>() {});
+		assertThat(strata.size()).isEqualTo(2);
 	}
 
 	private void executeInternalEncode() {
@@ -209,7 +223,7 @@ class QualityMeasureIdEncoderTest {
 	}
 
 	@SuppressWarnings("unchecked")
-	private LinkedHashMap<String, Object> getChildValues() {
-		return (LinkedHashMap<String, Object>)((LinkedHashMap<String, Object>) wrapper.getObject()).get("value");
+	private JsonWrapper getChildValues() {
+		return wrapper.get("value");
 	}
 }

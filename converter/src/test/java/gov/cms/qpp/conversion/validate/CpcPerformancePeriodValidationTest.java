@@ -23,9 +23,9 @@ class CpcPerformancePeriodValidationTest {
 	void setup() {
 		cpcValidator = new CpcPerformancePeriodValidation();
 		node = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
-		node.putValue(ReportingParametersActDecoder.PERFORMANCE_YEAR, "2018");
-		node.putValue(ReportingParametersActDecoder.PERFORMANCE_START, "20180101");
-		node.putValue(ReportingParametersActDecoder.PERFORMANCE_END, "20181231");
+		node.putValue(ReportingParametersActDecoder.PERFORMANCE_YEAR, "2019");
+		node.putValue(ReportingParametersActDecoder.PERFORMANCE_START, "20190101");
+		node.putValue(ReportingParametersActDecoder.PERFORMANCE_END, "20191231");
 	}
 
 	@Test

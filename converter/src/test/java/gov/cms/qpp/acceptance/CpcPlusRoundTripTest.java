@@ -1,15 +1,18 @@
 package gov.cms.qpp.acceptance;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.cms.qpp.acceptance.helper.JsonPathToXpathHelper;
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
-import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
+import com.jayway.jsonpath.TypeRef;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import gov.cms.qpp.acceptance.helper.JsonPathToXpathHelper;
+import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
+import gov.cms.qpp.conversion.util.JsonHelper;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -17,6 +20,7 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -45,7 +49,6 @@ class CpcPlusRoundTripTest {
 	@ParameterizedTest
 	@ValueSource(strings = { "entityId", "entityType", "measurementSets", "performanceYear" })
 	void hasAppropriateTopLevelAttributes(String value) {
-
 		assertThat(json.get(value)).isNotNull();
 	}
 
@@ -65,6 +68,14 @@ class CpcPlusRoundTripTest {
 	void hasEntityType() {
 		String entityId = (String) json.get("entityType");
 		assertThat(entityId).isEqualTo(ClinicalDocumentDecoder.ENTITY_APM);
+	}
+
+	@Test
+	void hasCehrtId() {
+		String cehrtId = JsonHelper.readJsonAtJsonPath(wrapper.copyWithoutMetadata().toString(),
+			"$.measurementSets[?(@.category=='quality')].cehrtId", new TypeRef<List<String>>() { }).get(0);
+
+		assertThat(cehrtId).isEqualTo("0014ABC1D1EFG1H");
 	}
 
 }

@@ -2,25 +2,30 @@ package gov.cms.qpp.conversion;
 
 import com.google.common.truth.Truth;
 import org.apache.commons.cli.CommandLine;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.logging.LoggerFactory;
+import org.slf4j.Logger;
 
-import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.test.jimfs.JimfsTest;
 import gov.cms.qpp.test.logging.LoggerContract;
 
 import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class CommandLineRunnerTest implements LoggerContract {
 
-	private static final String VALID_FILE = "src/test/resources/valid-QRDA-III-abridged.xml";
+	private static final String VALID_FILE = "src/test/resources/valid-QRDA-III-latest.xml";
 	private static final String INVALID_FILE = "THIS_FILE_SHOULD_NOT_EXIST.xml";
-	private static final String WINDOWS_FILE = "src\\test\\resources\\valid-QRDA-III-abridged.xml";
+	private static final String WINDOWS_FILE = "src\\test\\resources\\valid-QRDA-III-latest.xml";
+	public static final String VALID_QRDA_III_LATEST_QPP_JSON = "valid-QRDA-III-latest-qpp.json";
 
 	@Test
 	void testNewNull() {
@@ -43,20 +48,6 @@ class CommandLineRunnerTest implements LoggerContract {
 	}
 
 	@Test
-	void testRunWithInvalidScope() {
-		CommandLineRunner runner = new CommandLineRunner(line(INVALID_FILE, "-t", "SOME_INVALID_SCOPE"));
-		runner.run();
-		Truth.assertThat(getLogs()).contains("A given template scope was invalid");
-	}
-
-	@Test
-	void testRunWithValidScope() {
-		CommandLineRunner runner = new CommandLineRunner(line(INVALID_FILE, "-t", QrdaScope.CLINICAL_DOCUMENT.name()));
-		runner.run();
-		Truth.assertThat(getLogs()).doesNotContain("A given template scope was invalid");
-	}
-
-	@Test
 	void testRunWithMissingFile() {
 		CommandLineRunner runner = new CommandLineRunner(line(INVALID_FILE));
 		runner.run();
@@ -68,7 +59,7 @@ class CommandLineRunnerTest implements LoggerContract {
 		String path = VALID_FILE.replaceAll("/", "\\" + fileSystem.getSeparator());
 		CommandLineRunner runner = new CommandLineRunner(line(path), fileSystem);
 		runner.run();
-		Truth.assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged-qpp.json"))).isTrue();
+		Truth.assertThat(Files.exists(fileSystem.getPath(VALID_QRDA_III_LATEST_QPP_JSON))).isTrue();
 	}
 
 	@JimfsTest
@@ -90,18 +81,18 @@ class CommandLineRunnerTest implements LoggerContract {
 
 	@JimfsTest
 	void testRunWithValidFileGlobAtHeadInRoot(FileSystem fileSystem) throws IOException {
-		Files.copy(fileSystem.getPath(VALID_FILE), fileSystem.getPath("valid-QRDA-III-abridged.xml"));
+		Files.copy(fileSystem.getPath(VALID_FILE), fileSystem.getPath(VALID_QRDA_III_LATEST_QPP_JSON));
 		CommandLineRunner runner = new CommandLineRunner(line("*.xml"), fileSystem);
 		runner.run();
-		Truth.assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged-qpp.json"))).isTrue();
+		Truth.assertThat(Files.exists(fileSystem.getPath(VALID_QRDA_III_LATEST_QPP_JSON))).isTrue();
 	}
 
 	@JimfsTest
 	void testRunWithValidFileGlobAtTailInRoot(FileSystem fileSystem) throws IOException {
-		Files.copy(fileSystem.getPath(VALID_FILE), fileSystem.getPath("valid-QRDA-III-abridged.xml"));
-		CommandLineRunner runner = new CommandLineRunner(line("valid-QRDA-III-abridged.*"), fileSystem);
+		Files.copy(fileSystem.getPath(VALID_FILE), fileSystem.getPath(VALID_QRDA_III_LATEST_QPP_JSON));
+		CommandLineRunner runner = new CommandLineRunner(line("valid-QRDA-III-latest.*"), fileSystem);
 		runner.run();
-		Truth.assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged-qpp.json"))).isTrue();
+		Truth.assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-latest-qpp.json"))).isTrue();
 	}
 
 	@JimfsTest
@@ -109,7 +100,7 @@ class CommandLineRunnerTest implements LoggerContract {
 		String path = "src/test/resources/*".replaceAll("/", "\\" + fileSystem.getSeparator());
 		CommandLineRunner runner = new CommandLineRunner(line(path), fileSystem);
 		runner.run();
-		Truth.assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged-qpp.json"))).isTrue();
+		Truth.assertThat(Files.exists(fileSystem.getPath(VALID_QRDA_III_LATEST_QPP_JSON))).isTrue();
 		Truth.assertThat(Files.exists(fileSystem.getPath("not-a-QRDA-III-file-error.json"))).isTrue();
 	}
 
@@ -148,5 +139,21 @@ class CommandLineRunnerTest implements LoggerContract {
 	@Override
 	public Class<?> getLoggerType() {
 		return CommandLineRunner.class;
+	}
+	
+	@Test
+	void testValidPath_valid() {
+		Path path = Paths.get(VALID_FILE);
+		boolean valid = CommandLineRunner.isValid(path);
+		
+		Truth.assertThat(valid).isTrue();
+	}
+	
+	@Test
+	void testValidPath_invalid() {
+		Path path = Paths.get(INVALID_FILE);
+		boolean invalid = CommandLineRunner.isValid(path);
+		
+		Truth.assertThat(invalid).isFalse();
 	}
 }

@@ -1,22 +1,22 @@
 package gov.cms.qpp.conversion.model.validation;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
+
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.util.List;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 class MeasureConfigsTest {
 
 	@AfterAll
-	static void resetMeasureConfiguration() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	static void resetMeasureConfiguration() throws Exception {
 		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 	}
 
@@ -24,14 +24,6 @@ class MeasureConfigsTest {
 	void testGoodMeasureDataFile() {
 		MeasureConfigs.setMeasureDataFile("reduced-test-measures-data.json");
 		//no exception thrown
-	}
-
-	@Test
-	void testNonExistingMeasureDataFile() {
-		IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () ->
-			MeasureConfigs.setMeasureDataFile("Bogus file name"));
-
-		assertThat(thrown).hasCauseThat().isInstanceOf(IOException.class);
 	}
 
 	@Test

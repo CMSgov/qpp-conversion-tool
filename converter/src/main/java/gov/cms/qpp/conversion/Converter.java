@@ -6,7 +6,6 @@ import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
-import gov.cms.qpp.conversion.encode.ScopedQppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
@@ -80,7 +79,7 @@ public class Converter {
 			DEV_LOG.error(ErrorCode.NOT_VALID_XML_DOCUMENT.getMessage(), xe);
 			Detail detail = Detail.forErrorCode(ErrorCode.NOT_VALID_XML_DOCUMENT);
 			errors.add(detail);
-		} catch (Exception exception) {
+		} catch (RuntimeException exception) {
 			DEV_LOG.error(ErrorCode.UNEXPECTED_ERROR.getMessage(), exception);
 			Detail detail = Detail.forErrorCode(ErrorCode.UNEXPECTED_ERROR);
 			errors.add(detail);
@@ -110,7 +109,8 @@ public class Converter {
 			if (context.isDoValidation()) {
 				QrdaValidator validator = new QrdaValidator(context);
 				ValidationResult result = validator.validate(decoded);
-				errors.addAll(result.getErrors());
+				List<Detail> truncatedErrors = truncateTooManyErrors(result.getErrors());
+				errors.addAll(truncatedErrors);
 				warnings.addAll(result.getWarnings());
 			}
 
@@ -124,6 +124,17 @@ public class Converter {
 		}
 
 		return qpp;
+	}
+
+	private List<Detail> truncateTooManyErrors(List<Detail> errors) {
+		int sizeLimit = 100;
+		if (errors != null && errors.size() > sizeLimit) {
+			List<Detail> truncatedList = errors.subList(0, sizeLimit);
+			truncatedList.add(Detail.forErrorCode(
+				ErrorCode.TOO_MANY_ERRORS.format((errors.size()))));
+			return truncatedList;
+		}
+		return errors;
 	}
 
 	/**
@@ -153,7 +164,7 @@ public class Converter {
 	 * @return an encoder
 	 */
 	protected JsonOutputEncoder getEncoder() {
-		return (!context.getScope().isEmpty()) ? new ScopedQppOutputEncoder(context) : new QppOutputEncoder(context);
+		return new QppOutputEncoder(context);
 	}
 
 	/**

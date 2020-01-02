@@ -7,8 +7,17 @@ import gov.cms.qpp.conversion.model.error.Detail;
 
 public class ConvertResponse {
 
+	private String location;
 	private Object qpp;
 	private List<Detail> warnings;
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
 
 	public Object getQpp() {
 		return qpp;
@@ -38,14 +47,15 @@ public class ConvertResponse {
 
 		ConvertResponse that = (ConvertResponse) o;
 
-		boolean equals = Objects.equals(qpp, that.qpp);
+		boolean equals = Objects.equals(location, that.location);
+		equals &= Objects.equals(qpp, that.qpp);
 		equals &= Objects.equals(warnings, that.warnings);
 		return equals;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(qpp, warnings);
+		return Objects.hash(location, qpp, warnings);
 	}
 
 }

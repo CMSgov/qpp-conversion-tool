@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -19,13 +20,14 @@ import gov.cms.qpp.conversion.model.TemplateId;
 class PiSectionEncoderMultiMeasureTest {
 
 	private static final String EXPECTED = "{\n  \"category\" : \"aci\",\n  \"submissionMethod\" : \"electronicHealthRecord\",\n  "
+			+ "\"cehrtId\" : \"xxxxxxxxxx12345\",\n  "
 			+ "\"measurements\" : [ "
 			+ "{\n    \"measureId\" : \"ACI-PEA-1\",\n    \"value\" : {\n"
 			+ "      \"numerator\" : 400,\n      \"denominator\" : 600\n    }\n  }, "
 			+ "{\n    \"measureId\" : \"ACI_EP_1\",\n    \"value\" : {\n"
 			+ "      \"numerator\" : 500,\n      \"denominator\" : 700\n    }\n  }, "
 			+ "{\n    \"measureId\" : \"ACI_CCTPE_3\",\n    \"value\" : {\n"
-			+ "      \"numerator\" : 400,\n      \"denominator\" : 600\n    }\n  }" + " ],\n  \"performanceStart\" : \"2017-01-01\",\n  \"performanceEnd\" : \"2017-12-31\"\n}";
+			+ "      \"numerator\" : 400,\n      \"denominator\" : 600\n    }\n  }" + " ],\n  \"programName\" : \"mips\",\n  \"performanceStart\" : \"2017-01-01\",\n  \"performanceEnd\" : \"2017-12-31\"\n}";
 
 	private Node aciSectionNode;
 	private Node reportingParametersNode;
@@ -44,6 +46,7 @@ class PiSectionEncoderMultiMeasureTest {
 	private Node aciProportionDenominatorNode3;
 	private Node numeratorValueNode3;
 	private Node denominatorValueNode3;
+	private Node clinicalDocumentNode;
 	private List<Node> nodes;
 
 	@BeforeEach
@@ -99,7 +102,11 @@ class PiSectionEncoderMultiMeasureTest {
 		aciProportionMeasureNode3.addChildNode(aciProportionDenominatorNode3);
 		aciProportionMeasureNode3.putValue("measureId", "ACI_CCTPE_3");
 
-		aciSectionNode = new Node(TemplateId.PI_SECTION);
+		clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.CEHRT, "xxxxxxxxxx12345");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS_PROGRAM_NAME);
+
+		aciSectionNode = new Node(TemplateId.PI_SECTION, clinicalDocumentNode);
 		aciSectionNode.putValue("category", "aci");
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
 		aciSectionNode.addChildNode(aciProportionMeasureNode2);

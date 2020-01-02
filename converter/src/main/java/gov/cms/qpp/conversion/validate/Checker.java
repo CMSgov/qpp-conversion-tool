@@ -10,6 +10,7 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.util.DuplicationCheckHelper;
 import gov.cms.qpp.conversion.util.FormatHelper;
+import gov.cms.qpp.conversion.util.NumberHelper;
 
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
@@ -109,20 +110,19 @@ class Checker {
 		return this;
 	}
 
-	/**
-	 * Tests if given value matches specified regex
-	 *
-	 * @param code that identifies the error
-	 * @param name key of expected value
-	 * @param regex regular expression that must be satisfied
-	 * @return The checker, for chaining method calls.
-	 */
-	Checker valueRegex(LocalizedError code, String name, String regex) {
+	Checker listValuesAreValid(LocalizedError code, String name, int size) {
 		lastAppraised = node.getValue(name);
-
-		String last = (String) lastAppraised;
-		if (!shouldShortcut() && (StringUtils.isEmpty(last) || !last.matches(regex))) {
-			details.add(detail(code));
+		if (!shouldShortcut()) {
+			List<String> values = Arrays.asList(((String)lastAppraised).split(","));
+			values.forEach(value -> {
+				String trimmedValue = value.trim();
+				if (size != trimmedValue.length()) {
+					details.add(detail(code));
+				}
+				if (!NumberHelper.isNumeric(trimmedValue)) {
+					details.add(detail(code));
+				}
+			});
 		}
 		return this;
 	}
@@ -414,8 +414,8 @@ class Checker {
 	 * Verifies that the target node contains only children of specified template ids
 	 *
 	 * @param code that identifies the error
-	 * @param types types of template ids to filter
-	 * @return The checker, for chaining method calls.
+	 * @param types of template ids to filter
+	 * @return The checker, for chaining method calls
 	 */
 	Checker onlyHasChildren(LocalizedError code, TemplateId... types) {
 		if (!shouldShortcut()) {
@@ -428,6 +428,30 @@ class Checker {
 				.stream()
 				.allMatch(childNode -> templateIds.contains(childNode.getType()));
 			if (!valid) {
+				details.add(detail(code));
+			}
+		}
+		return this;
+	}
+
+	/**
+	 * Verifies that the target node does not contain the specified template ids as children.
+	 *
+	 * @param code that identifies the error
+	 * @param types of template ids to filter for
+	 * @return The checker, for chaining method calls
+	 */
+	Checker doesNotHaveChildren(LocalizedError code, TemplateId... types) {
+		if (!shouldShortcut()) {
+			Set<TemplateId> templateIds = EnumSet.noneOf(TemplateId.class);
+			for (TemplateId templateId : types) {
+				templateIds.add(templateId);
+			}
+
+			boolean invalid = node.getChildNodes()
+				.stream()
+				.anyMatch(childNode -> templateIds.contains(childNode.getType()));
+			if (invalid) {
 				details.add(detail(code));
 			}
 		}

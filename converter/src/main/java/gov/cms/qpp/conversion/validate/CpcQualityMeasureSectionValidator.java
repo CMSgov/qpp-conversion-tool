@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Validates a measure groupings for a CPC+ Quality Measure Section node.
  */
-@Validator(value = TemplateId.MEASURE_SECTION_V2, program = Program.CPC)
+@Validator(value = TemplateId.MEASURE_SECTION_V3, program = Program.CPC)
 public class CpcQualityMeasureSectionValidator extends NodeValidator {
 
 	/**
@@ -30,7 +30,6 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 
 		Arrays.stream(CpcGroupMinimum.values())
 				.forEach(group -> checkGroupMinimum(checker, group));
-		verifyOverallCount(checker);
 	}
 
 	/**
@@ -58,28 +57,13 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 	}
 
 	/**
-	 * Verify minimum across all groups.
-	 * @param checker node validator helper
-	 */
-	private void verifyOverallCount(Checker checker) {
-		String[] measureIds = MeasureConfigs.getCpcPlusGroups()
-				.values().stream()
-				.flatMap(List::stream)
-				.map(MeasureConfig::getElectronicMeasureVerUuid)
-				.toArray(String[]::new);
-
-		checker.hasMeasures(
-				CpcGroupMinimum.makeOverallError(measureIds), CpcGroupMinimum.NUMBER_OF_MEASURES_REQUIRED, measureIds);
-	}
-
-	/**
 	 * A holder of CPC+ group specific configuration information.
 	 */
 	enum CpcGroupMinimum {
 		OUTCOME_MEASURE("Outcome_Measure", "outcome", 2),
-		OTHER_MEASURE("Other_Measure", "other", 7);
+		OTHER_MEASURE("Other_Measure", "other", 0);
 
-		private static final int NUMBER_OF_MEASURES_REQUIRED = 9;
+		private static final int NUMBER_OF_MEASURES_REQUIRED = 2;
 		private String mapName;
 		private String label;
 		private int minimum;
@@ -92,11 +76,6 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 
 		public String getMapName() {
 			return mapName;
-		}
-
-		static LocalizedError makeOverallError(String... measureIds) {
-			return ErrorCode.CPC_PLUS_TOO_FEW_QUALITY_MEASURES
-					.format(CpcGroupMinimum.NUMBER_OF_MEASURES_REQUIRED, String.join(",", measureIds));
 		}
 
 		LocalizedError makeError(String... measureIds) {

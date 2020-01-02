@@ -8,15 +8,12 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
 
-public final class DetailsErrorEquals extends Correspondence<Detail, LocalizedError> {
+public final class DetailsErrorEquals implements Correspondence.BinaryPredicate<Detail, LocalizedError> {
 
-	private DetailsErrorEquals() {
-	}
-
-	public static DetailsErrorEquals INSTANCE = new DetailsErrorEquals();
+	public static Correspondence<Detail, LocalizedError> INSTANCE = Correspondence.from(new DetailsErrorEquals(), "Compare a Detail and a LocalizedError");
 
 	@Override
-	public boolean compare(Detail actual, LocalizedError expected) {
+	public boolean apply(Detail actual, LocalizedError expected) {
 		if (actual == null) {
 			return expected == null;
 		}

@@ -57,13 +57,13 @@ class XpathJsonPathComparisonTest {
 	@Test
 	void compareAciMeasurePerformanceEnd() throws XmlException {
 		String jsonPath = "measurementSets[1].performanceEnd";
-		helper.executeAttributeTest(jsonPath, "value", "20180531");
+		helper.executeAttributeTest(jsonPath, "value", "20190531");
 	}
 
 	@Test
 	void compareAciMeasurePerformanceStart() throws XmlException {
 		String jsonPath = "measurementSets[1].performanceStart";
-		helper.executeAttributeTest(jsonPath, "value", "20180201");
+		helper.executeAttributeTest(jsonPath, "value", "20190201");
 	}
 
 	@Test
@@ -88,13 +88,13 @@ class XpathJsonPathComparisonTest {
 	@Test
 	void compareIaMeasurePerformanceEnd() throws XmlException {
 		String jsonPath = "measurementSets[2].performanceEnd";
-		helper.executeAttributeTest(jsonPath, "value", "20180430");
+		helper.executeAttributeTest(jsonPath, "value", "20190430");
 	}
 
 	@Test
 	void compareIaMeasurePerformanceStart() throws XmlException {
 		String jsonPath = "measurementSets[2].performanceStart";
-		helper.executeAttributeTest(jsonPath, "value", "20180101");
+		helper.executeAttributeTest(jsonPath, "value", "20190101");
 	}
 
 	@Test
@@ -113,19 +113,19 @@ class XpathJsonPathComparisonTest {
 	@Test
 	void compareQualityMeasurePerformanceEnd() throws XmlException {
 		String jsonPath = "measurementSets[0].performanceEnd";
-		helper.executeAttributeTest(jsonPath, "value", "20181231");
+		helper.executeAttributeTest(jsonPath, "value", "20191231");
 	}
 
 	@Test
 	void compareQualityMeasurePerformanceStart() throws XmlException {
 		String jsonPath = "measurementSets[0].performanceStart";
-		helper.executeAttributeTest(jsonPath, "value", "20180101");
+		helper.executeAttributeTest(jsonPath, "value", "20190101");
 	}
 
 	@Test
 	void compareQualityMeasureIdValuePerformanceExclusion() throws XmlException {
 		String jsonPath = "measurementSets[0].measurements[0].value.eligiblePopulationExclusion";
-		helper.executeAttributeTest(jsonPath, "value", "50");
+		helper.executeAttributeTest(jsonPath, "value", "100");
 	}
 
 	@Test
@@ -155,7 +155,7 @@ class XpathJsonPathComparisonTest {
 	@Test
 	void compareQualityMeasureIdValueEligiblePopulationExclusion() throws XmlException {
 		String jsonPath = "measurementSets[0].measurements[0].value.eligiblePopulationExclusion";
-		helper.executeAttributeTest(jsonPath, "value", "50");
+		helper.executeAttributeTest(jsonPath, "value", "100");
 	}
 
 	@Test

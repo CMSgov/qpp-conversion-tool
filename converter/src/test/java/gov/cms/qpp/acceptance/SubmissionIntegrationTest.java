@@ -19,6 +19,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.Converter;
@@ -26,6 +27,7 @@ import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.test.net.InternetIntegrationTest;
 
+@Disabled
 @InternetIntegrationTest
 class SubmissionIntegrationTest {
 
@@ -58,7 +60,7 @@ class SubmissionIntegrationTest {
 	@Test
 	@SuppressWarnings("unchecked")
 	void testSubmissionApiPostFailure() throws IOException {
-		Map<String, Object> obj = (Map<String, Object>) qpp.getObject();
+		Map<String, Object> obj = (Map<String, Object>) qpp.toObject();
 		obj.remove("performanceYear");
 		HttpResponse httpResponse = servicePost(qpp);
 		Assumptions.assumeTrue(endpointIsUp(httpResponse), "Validation api is down");
