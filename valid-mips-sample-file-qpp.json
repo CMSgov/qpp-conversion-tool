@@ -1,0 +1,187 @@
+{
+  "performanceYear" : 2019,
+  "entityType" : "individual",
+  "nationalProviderIdentifier" : "0007891421",
+  "taxpayerIdentificationNumber" : "000456789",
+  "measurementSets" : [ {
+    "category" : "quality",
+    "submissionMethod" : "electronicHealthRecord",
+    "measurements" : [ {
+      "measureId" : "001",
+      "value" : {
+        "isEndToEndReported" : true,
+        "performanceMet" : 800,
+        "eligiblePopulationExclusion" : 100,
+        "performanceNotMet" : 100,
+        "eligiblePopulation" : 1000
+      }
+    }, {
+      "measureId" : "309",
+      "value" : {
+        "isEndToEndReported" : true,
+        "performanceMet" : 800,
+        "eligiblePopulationExclusion" : 100,
+        "performanceNotMet" : 100,
+        "eligiblePopulation" : 1000
+      }
+    }, {
+      "measureId" : "112",
+      "value" : {
+        "isEndToEndReported" : true,
+        "performanceMet" : 800,
+        "eligiblePopulationExclusion" : 100,
+        "performanceNotMet" : 100,
+        "eligiblePopulation" : 1000
+      }
+    }, {
+      "measureId" : "113",
+      "value" : {
+        "isEndToEndReported" : true,
+        "performanceMet" : 800,
+        "eligiblePopulationExclusion" : 100,
+        "performanceNotMet" : 100,
+        "eligiblePopulation" : 1000
+      }
+    }, {
+      "measureId" : "117",
+      "value" : {
+        "isEndToEndReported" : true,
+        "performanceMet" : 800,
+        "eligiblePopulationExclusion" : 100,
+        "performanceNotMet" : 100,
+        "eligiblePopulation" : 1000
+      }
+    }, {
+      "measureId" : "305",
+      "value" : {
+        "isEndToEndReported" : true,
+        "strata" : [ {
+          "performanceMet" : 800,
+          "eligiblePopulationExclusion" : 100,
+          "performanceNotMet" : 100,
+          "eligiblePopulation" : 1000,
+          "stratum" : "14DaysOfDiagnosis"
+        }, {
+          "performanceMet" : 800,
+          "eligiblePopulationExclusion" : 100,
+          "performanceNotMet" : 100,
+          "eligiblePopulation" : 1000,
+          "stratum" : "30DaysOfVisit"
+        } ]
+      }
+    }, {
+      "measureId" : "226",
+      "value" : {
+        "isEndToEndReported" : true,
+        "strata" : [ {
+          "performanceMet" : 800,
+          "eligiblePopulationException" : 100,
+          "performanceNotMet" : 100,
+          "eligiblePopulation" : 1000,
+          "stratum" : "screenedForUse"
+        }, {
+          "performanceMet" : 800,
+          "eligiblePopulationException" : 100,
+          "performanceNotMet" : 100,
+          "eligiblePopulation" : 1000,
+          "stratum" : "overall"
+        }, {
+          "performanceMet" : 800,
+          "eligiblePopulationException" : 100,
+          "performanceNotMet" : 100,
+          "eligiblePopulation" : 1000,
+          "stratum" : "tobacco"
+        } ]
+      }
+    }, {
+      "measureId" : "318",
+      "value" : {
+        "isEndToEndReported" : true,
+        "performanceMet" : 800,
+        "eligiblePopulationExclusion" : 100,
+        "performanceNotMet" : 100,
+        "eligiblePopulation" : 1000
+      }
+    }, {
+      "measureId" : "281",
+      "value" : {
+        "isEndToEndReported" : true,
+        "performanceMet" : 800,
+        "eligiblePopulationException" : 100,
+        "performanceNotMet" : 100,
+        "eligiblePopulation" : 1000
+      }
+    }, {
+      "measureId" : "238",
+      "value" : {
+        "isEndToEndReported" : true,
+        "strata" : [ {
+          "performanceMet" : 800,
+          "eligiblePopulationExclusion" : 100,
+          "performanceNotMet" : 100,
+          "eligiblePopulation" : 1000,
+          "stratum" : "overall"
+        }, {
+          "performanceMet" : 800,
+          "eligiblePopulationExclusion" : 100,
+          "performanceNotMet" : 100,
+          "eligiblePopulation" : 1000,
+          "stratum" : "2+"
+        } ]
+      }
+    }, {
+      "measureId" : "236",
+      "value" : {
+        "isEndToEndReported" : true,
+        "performanceMet" : 800,
+        "eligiblePopulationExclusion" : 100,
+        "performanceNotMet" : 100,
+        "eligiblePopulation" : 1000
+      }
+    }, {
+      "measureId" : "374",
+      "value" : {
+        "isEndToEndReported" : true,
+        "performanceMet" : 800,
+        "performanceNotMet" : 200,
+        "eligiblePopulation" : 1000
+      }
+    } ],
+    "programName" : "mips",
+    "performanceStart" : "2019-01-01",
+    "performanceEnd" : "2019-12-31",
+    "source" : "qrda3"
+  }, {
+    "category" : "pi",
+    "submissionMethod" : "electronicHealthRecord",
+    "cehrtId" : "0015E181NBE3YEG",
+    "measurements" : [ {
+      "measureId" : "PI_PEA_1",
+      "value" : {
+        "numerator" : 600,
+        "denominator" : 800
+      }
+    }, {
+      "measureId" : "PI_EP_1",
+      "value" : {
+        "numerator" : 500,
+        "denominator" : 700
+      }
+    } ],
+    "programName" : "mips",
+    "performanceStart" : "2019-02-01",
+    "performanceEnd" : "2019-05-31",
+    "source" : "qrda3"
+  }, {
+    "category" : "ia",
+    "submissionMethod" : "electronicHealthRecord",
+    "measurements" : [ {
+      "measureId" : "IA_EPA_1",
+      "value" : true
+    } ],
+    "programName" : "mips",
+    "performanceStart" : "2019-02-01",
+    "performanceEnd" : "2019-05-31",
+    "source" : "qrda3"
+  } ]
+}

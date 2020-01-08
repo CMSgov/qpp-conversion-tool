@@ -131,7 +131,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 			Pair<String, String> nameEntityPair = getProgramNameEntityPair(p.getValue());
 			thisNode.putValue(PROGRAM_NAME, nameEntityPair.getLeft(), false);
 			thisNode.putValue(ENTITY_TYPE, nameEntityPair.getRight(), false);
-			thisNode.putValue(RAW_PROGRAM_NAME, p.getValue(), false);
+			thisNode.putValue(RAW_PROGRAM_NAME, nameEntityPair.getKey(), false);
 		};
 		setOnNode(element, getXpath(PROGRAM_NAME), consumer, Filters.attribute(), false);
 		context.setProgram(Program.extractProgram(thisNode));
