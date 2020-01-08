@@ -87,7 +87,7 @@ class PiSectionEncoderTest {
 		piSectionEncoder.internalEncode(jsonWrapper, piSectionNode);
 
 		assertWithMessage("Must have a child node").that(jsonWrapper).isNotNull();
-		assertWithMessage("Must be category ACI").that(jsonWrapper.getString(CATEGORY)).isEqualTo(PI);
+		assertWithMessage("Must be category PI").that(jsonWrapper.getString(CATEGORY)).isEqualTo(PI);
 		assertWithMessage("Must have measurements").that(jsonWrapper.get(MEASUREMENTS)).isNotNull();
 		assertThat(jsonWrapper.getString(ClinicalDocumentDecoder.CEHRT)).isNotNull();
 		assertWithMessage("Must have submissionMethod")

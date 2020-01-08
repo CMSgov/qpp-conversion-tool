@@ -175,6 +175,18 @@ CDA Header
 			</representedOrganization>
 		</assignedEntity>
 	</legalAuthenticator>
+
+	<!-- Cehrt Id Location -->
+	<participant typeCode="DEV">
+        <associatedEntity classCode="RGPR">
+            <!-- CMS EHR Certification ID -->
+            <id root="2.16.840.1.113883.3.2074.1"
+                extension="0015E181NBE3YEG"/>
+            <code code="129465004" displayName="medical record, device"
+                codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT"/>
+        </associatedEntity>
+    </participant>
+
 	<!-- ** 1.1.6	participant is Device ** -->
 	<!--  The generic participant with a participationType of 'DEV' (device) and an associatedEntity classCode of 'RGPR' (regulated product) is used to represent the CMS EHR Certification ID. -->
 	<!--  MAY contain zero or more [0..*] participant (CONF:18300) such that it a.	SHALL contain exactly one [1..1] @typeCode="DEV" device (CodeSystem: HL7ParticipationType 2.16.840.1.113883.5.90 STATIC) (CONF:18301). -->

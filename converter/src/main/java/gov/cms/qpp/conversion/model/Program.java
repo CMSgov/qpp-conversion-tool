@@ -39,6 +39,16 @@ public enum Program {
 	}
 
 	/**
+	 * Checks if a node is using the MIPS program
+	 *
+	 * @param node
+	 * @return
+	 */
+	public static boolean isMips(Node node) {
+		return extractProgram(node) == Program.MIPS;
+	}
+
+	/**
 	 * Extracts a program type from a node
 	 *
 	 * @param node to interrogate
