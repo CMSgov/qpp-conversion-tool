@@ -30,7 +30,7 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -99,7 +99,7 @@ class DbServiceImplTest {
 
 		Metadata metadataOut = writeMeta(metadataIn);
 
-		verifyZeroInteractions(dbMapper);
+		verifyNoInteractions(dbMapper);
 		assertWithMessage("The returned metadata must be an empty metadata.")
 				.that(metadataOut.getUuid()).isNull();
 	}
@@ -110,7 +110,7 @@ class DbServiceImplTest {
 		int itemsPerPartition = 2;
 
 		PaginatedQueryList mockMetadataPage = mock(PaginatedQueryList.class);
-		Answer<Stream> answer = (InvocationOnMock invocation) -> Stream.generate(Metadata::new).limit(itemsPerPartition);
+		Answer<Stream<Metadata>> answer = (InvocationOnMock invocation) -> Stream.generate(Metadata::new).limit(itemsPerPartition);
 
 		when(mockMetadataPage.stream()).thenAnswer(answer);
 		when(dbMapper.query(eq(Metadata.class), any(DynamoDBQueryExpression.class)))
