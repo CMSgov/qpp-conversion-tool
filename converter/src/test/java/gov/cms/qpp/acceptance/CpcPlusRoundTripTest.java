@@ -69,13 +69,4 @@ class CpcPlusRoundTripTest {
 		String entityId = (String) json.get("entityType");
 		assertThat(entityId).isEqualTo(ClinicalDocumentDecoder.ENTITY_APM);
 	}
-
-	@Test
-	void ignoresCehrtId() {
-		String cehrtId = JsonHelper.readJsonAtJsonPath(wrapper.copyWithoutMetadata().toString(),
-			"$.measurementSets[?(@.category=='quality')].cehrtId", new TypeRef<List<String>>() { }).get(0);
-
-		assertThat(cehrtId).isNull();
-	}
-
 }
