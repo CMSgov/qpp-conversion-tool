@@ -73,6 +73,7 @@ class PiSectionEncoderTest {
 		clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.CEHRT, "xxxxxxxxxx12345");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS_PROGRAM_NAME);
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_INDIV");
 
 		piSectionNode = new Node(TemplateId.PI_SECTION, clinicalDocumentNode);
 		piSectionNode.putValue(CATEGORY, PI);
@@ -87,7 +88,7 @@ class PiSectionEncoderTest {
 		piSectionEncoder.internalEncode(jsonWrapper, piSectionNode);
 
 		assertWithMessage("Must have a child node").that(jsonWrapper).isNotNull();
-		assertWithMessage("Must be category ACI").that(jsonWrapper.getString(CATEGORY)).isEqualTo(PI);
+		assertWithMessage("Must be category PI").that(jsonWrapper.getString(CATEGORY)).isEqualTo(PI);
 		assertWithMessage("Must have measurements").that(jsonWrapper.get(MEASUREMENTS)).isNotNull();
 		assertThat(jsonWrapper.getString(ClinicalDocumentDecoder.CEHRT)).isNotNull();
 		assertWithMessage("Must have submissionMethod")

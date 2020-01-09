@@ -89,10 +89,24 @@ class ProgramTest implements EnumContract {
 	}
 
 	@Test
-	void testExtractProgramForMips() {
+	void testExtractProgramForMipsInd() {
 		Node node = new Node();
 		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_INDIV");
-		assertThat(Program.extractProgram(node)).isEqualTo(Program.MIPS);
+		assertThat(Program.isMips(node)).isTrue();
+	}
+
+	@Test
+	void testExtractProgramForMipsGroup() {
+		Node node = new Node();
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_GROUP");
+		assertThat(Program.isMips(node)).isTrue();
+	}
+
+	@Test
+	void testExtractProgramForMipsVirtualGroup() {
+		Node node = new Node();
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_VIRTUALGROUP");
+		assertThat(Program.isMips(node)).isTrue();
 	}
 
 	@Test
