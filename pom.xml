@@ -6,7 +6,7 @@
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-conversion-tool-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>2.1.2-RELEASE</version>
+	<version>3.0.0-RELEASE</version>
 	<name>QPP Conversion Tool</name>
 
 	<repositories>
@@ -343,6 +343,14 @@
 				<jacoco.skip>true</jacoco.skip>
 				<junit.includes>integration, acceptance</junit.includes>
 				<junit.excludes></junit.excludes>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>offline</id>
+
+			<properties>
+				<junit.excludes>internet</junit.excludes>
 			</properties>
 		</profile>
 	</profiles>

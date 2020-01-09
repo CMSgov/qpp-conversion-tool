@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * Construct that helps categorize submissions by program name.
  */
 public enum Program {
-	MIPS("MIPS_GROUP", "MIPS_INDIV", "MIPS_VIRTUALGROUP"),
+	MIPS("MIPS_GROUP", "MIPS_INDIV", "MIPS_VIRTUALGROUP", "MIPS"),
 	CPC("CPCPLUS"),
 	ALL;
 
@@ -36,6 +36,16 @@ public enum Program {
 	 */
 	public static boolean isCpc(Node node) {
 		return extractProgram(node) == Program.CPC;
+	}
+
+	/**
+	 * Checks if a node is using the MIPS program
+	 *
+	 * @param node
+	 * @return
+	 */
+	public static boolean isMips(Node node) {
+		return extractProgram(node) == Program.MIPS;
 	}
 
 	/**

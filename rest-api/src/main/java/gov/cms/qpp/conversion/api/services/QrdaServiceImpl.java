@@ -63,18 +63,18 @@ public class QrdaServiceImpl implements QrdaService {
 	}
 
 	/**
-	 * Opens a stream to s3 to retrieve the Cpc Plus Validation file for the QPP Service
+	 * Opens a stream to retrieve the CPC+ Validation file for the QPP Service
 	 *
 	 * @return cpc+ validation file.
 	 */
 	@Override
-	public InputStream retrieveS3CpcPlusValidationFile() {
+	public InputStream retrieveCpcPlusValidationFile() {
 		return storageService.getCpcPlusValidationFile();
 	}
 
 	private CpcValidationInfoMap retreiveCpcValidationInfoMap() {
 		API_LOG.info("Fetching CPC+ validations APM/NPI/TIN file");
-		CpcValidationInfoMap file = new CpcValidationInfoMap(retrieveS3CpcPlusValidationFile());
+		CpcValidationInfoMap file = new CpcValidationInfoMap(retrieveCpcPlusValidationFile());
 		if (file.getApmTinNpiCombinationMap() != null) {
 			API_LOG.info("Fetched CPC+ validations APM/NPI/TIN file");
 		} else {

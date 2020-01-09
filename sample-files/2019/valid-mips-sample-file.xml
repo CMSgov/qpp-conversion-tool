@@ -152,7 +152,7 @@ CDA Header
 			<!-- i.	Such intendedRecipients SHALL contain exactly one [1..1] id (CONF:711160).
 					1.	This id SHALL contain exactly one [1..1] @root="2.16.840.1.113883.3.249.7" CMS Program (CONF:711161).
 					2.	idsThis id SHALL contain exactly one [1..1] @extension, which SHALL be selected from ValueSet CMS Program Name 2.16.840.1.113883.3.249.14.101 (CONF:711162). -->
-			<id root="2.16.840.1.113883.3.249.7" extension="MIPS"/>
+			<id root="2.16.840.1.113883.3.249.7" extension="MIPS_INDIV"/>
 		</intendedRecipient>
 	</informationRecipient>
 	<!-- ** 1.1.5	legalAuthenticator ** -->
@@ -175,6 +175,18 @@ CDA Header
 			</representedOrganization>
 		</assignedEntity>
 	</legalAuthenticator>
+
+	<!-- Cehrt Id Location -->
+	<participant typeCode="DEV">
+        <associatedEntity classCode="RGPR">
+            <!-- CMS EHR Certification ID -->
+            <id root="2.16.840.1.113883.3.2074.1"
+                extension="0015E181NBE3YEG"/>
+            <code code="129465004" displayName="medical record, device"
+                codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT"/>
+        </associatedEntity>
+    </participant>
+
 	<!-- ** 1.1.6	participant is Device ** -->
 	<!--  The generic participant with a participationType of 'DEV' (device) and an associatedEntity classCode of 'RGPR' (regulated product) is used to represent the CMS EHR Certification ID. -->
 	<!--  MAY contain zero or more [0..*] participant (CONF:18300) such that it a.	SHALL contain exactly one [1..1] @typeCode="DEV" device (CodeSystem: HL7ParticipationType 2.16.840.1.113883.5.90 STATIC) (CONF:18301). -->
@@ -26757,71 +26769,6 @@ CDA Header
 											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation"/>
 											<statusCode code="completed"/>
 											<value xsi:type="INT" value="700"/>
-											<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count"/>
-										</observation>
-									</entryRelationship>
-								</observation>
-							</component>
-						</organizer>
-					</entry>
-					<entry>
-						<organizer classCode="CLUSTER" moodCode="EVN">
-							<!-- Implied template Measure Reference templateId -->
-							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
-							<!-- ACI Numerator Denominator Type Measure Reference and Results templateId -->
-							<templateId root="2.16.840.1.113883.10.20.27.3.28" extension="2017-06-01"/>
-							<id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
-							<statusCode code="completed"/>
-							<reference typeCode="REFR">
-								<!-- Reference to a particular ACI measure's unique identifier. -->
-								<externalDocument classCode="DOC" moodCode="EVN">
-									<id root="2.16.840.1.113883.3.7031" extension="PI_EP_2"/>
-									<!-- ACI measure title -->
-									<text>Flexion Test 2</text>
-								</externalDocument>
-							</reference>
-							<component>
-								<observation classCode="OBS" moodCode="EVN">
-									<!-- Performance Rate templateId -->
-									<templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01"/>
-									<code code="72510-1" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Performance Rate"/>
-									<statusCode code="completed"/>
-									<value xsi:type="REAL" value="0.750000"/>
-								</observation>
-							</component>
-							<component>
-								<observation classCode="OBS" moodCode="EVN">
-									<!-- ACI Numerator Denominator Type Measure Numerator Data templateId -->
-									<templateId root="2.16.840.1.113883.10.20.27.3.31" extension="2016-09-01"/>
-									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion"/>
-									<statusCode code="completed"/>
-									<value xsi:type="CD" code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"/>
-									<!-- Numerator Count-->
-									<entryRelationship typeCode="SUBJ" inversionInd="true">
-										<observation classCode="OBS" moodCode="EVN">
-											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
-											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation"/>
-											<statusCode code="completed"/>
-											<value xsi:type="INT" value="400"/>
-											<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count"/>
-										</observation>
-									</entryRelationship>
-								</observation>
-							</component>
-							<component>
-								<observation classCode="OBS" moodCode="EVN">
-									<!-- ACI Numerator Denominator Type Measure Denominator Data templateId -->
-									<templateId root="2.16.840.1.113883.10.20.27.3.32" extension="2016-09-01"/>
-									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion"/>
-									<statusCode code="completed"/>
-									<value xsi:type="CD" code="DENOM" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"/>
-									<!-- Denominator Count-->
-									<entryRelationship typeCode="SUBJ" inversionInd="true">
-										<observation classCode="OBS" moodCode="EVN">
-											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
-											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation"/>
-											<statusCode code="completed"/>
-											<value xsi:type="INT" value="600"/>
 											<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count"/>
 										</observation>
 									</entryRelationship>

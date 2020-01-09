@@ -32,7 +32,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	public static final String CPCPLUS_PROGRAM_NAME = "cpcPlus";
 	public static final String PRACTICE_ID = "practiceId";
 	public static final String PRACTICE_SITE_ADDR = "practiceSiteAddr";
-	public static final String CEHRT = "cehrt";
+	public static final String CEHRT = "cehrtId";
 	public static final String MIPS = "MIPS";
 	private static final String MIPS_GROUP = "MIPS_GROUP";
 	private static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
@@ -131,7 +131,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 			Pair<String, String> nameEntityPair = getProgramNameEntityPair(p.getValue());
 			thisNode.putValue(PROGRAM_NAME, nameEntityPair.getLeft(), false);
 			thisNode.putValue(ENTITY_TYPE, nameEntityPair.getRight(), false);
-			thisNode.putValue(RAW_PROGRAM_NAME, p.getValue(), false);
+			thisNode.putValue(RAW_PROGRAM_NAME, nameEntityPair.getKey(), false);
 		};
 		setOnNode(element, getXpath(PROGRAM_NAME), consumer, Filters.attribute(), false);
 		context.setProgram(Program.extractProgram(thisNode));

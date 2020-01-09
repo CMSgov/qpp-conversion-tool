@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -88,7 +89,7 @@ class ZipControllerTest {
 	void uploadQrdaFile() {
 		Metadata metadata = Metadata.create();
 		when(qrdaService.convertQrda3ToQpp(any(Source.class))).thenReturn(report);
-		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationInputStream);
+		when(qrdaService.retrieveCpcPlusValidationFile()).thenReturn(validationInputStream);
 		when(auditService.success(any(ConversionReport.class)))
 				.then(invocation -> CompletableFuture.completedFuture(metadata));
 
@@ -105,7 +106,7 @@ class ZipControllerTest {
 		ArgumentCaptor<Source> peopleCaptor = ArgumentCaptor.forClass(Source.class);
 
 		when(qrdaService.convertQrda3ToQpp(peopleCaptor.capture())).thenReturn(report);
-		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationInputStream);
+		when(qrdaService.retrieveCpcPlusValidationFile()).thenReturn(validationInputStream);
 		when(auditService.success(any(ConversionReport.class)))
 				.then(invocation -> null);
 
@@ -117,11 +118,18 @@ class ZipControllerTest {
 	}
 
 	@Test
+	void uploadNullQrdaFile() {
+		Assertions.assertThrows(UncheckedIOException.class, () -> {
+			objectUnderTest.uploadQrdaFile(new MockMultipartFile("null.zip", new byte[0]), "Test");
+		});
+	}
+
+	@Test
 	void uploadQrdaFile_auditInterruptionException() throws Exception {
 		ArgumentCaptor<Source> peopleCaptor = ArgumentCaptor.forClass(Source.class);
 
 		when(qrdaService.convertQrda3ToQpp(peopleCaptor.capture())).thenReturn(report);
-		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationInputStream);
+		when(qrdaService.retrieveCpcPlusValidationFile()).thenReturn(validationInputStream);
 		when(auditService.success(any(ConversionReport.class))).thenReturn(mockMetadata);
 		when(mockMetadata.get()).thenThrow(new InterruptedException("Testing Audit Exception Handling"));
 		
@@ -135,7 +143,7 @@ class ZipControllerTest {
 		ArgumentCaptor<Source> peopleCaptor = ArgumentCaptor.forClass(Source.class);
 
 		when(qrdaService.convertQrda3ToQpp(peopleCaptor.capture())).thenReturn(report);
-		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationInputStream);
+		when(qrdaService.retrieveCpcPlusValidationFile()).thenReturn(validationInputStream);
 		when(auditService.success(any(ConversionReport.class))).thenReturn(mockMetadata);
 		when(mockMetadata.get()).thenThrow(new ExecutionException(new RuntimeException("Testing Audit Exception Handling")));
 		
@@ -149,7 +157,7 @@ class ZipControllerTest {
 		ArgumentCaptor<Source> peopleCaptor = ArgumentCaptor.forClass(Source.class);
 
 		when(qrdaService.convertQrda3ToQpp(peopleCaptor.capture())).thenReturn(report);
-		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(null);
+		when(qrdaService.retrieveCpcPlusValidationFile()).thenReturn(null);
 		when(auditService.success(any(ConversionReport.class))).then(invocation -> null);
 
 		String purpose = "Test";
@@ -165,7 +173,7 @@ class ZipControllerTest {
 
 		when(qrdaService.convertQrda3ToQpp(any(Source.class)))
 				.thenReturn(null);
-		when(qrdaService.retrieveS3CpcPlusValidationFile()).thenReturn(validationInputStream);
+		when(qrdaService.retrieveCpcPlusValidationFile()).thenReturn(validationInputStream);
 		Mockito.doThrow(new TransformException(transformationErrorMessage, null, null))
 			.when(validationService).validateQpp(isNull());
 
