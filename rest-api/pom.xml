@@ -309,13 +309,6 @@
 			<artifactId>junit-platform-launcher</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>gov.cms.qpp.conversion</groupId>
-			<artifactId>test-commons</artifactId>
-			<version>${project.version}</version>
-			<scope>test</scope>
-		</dependency>
-
 	</dependencies>
 
 </project>
