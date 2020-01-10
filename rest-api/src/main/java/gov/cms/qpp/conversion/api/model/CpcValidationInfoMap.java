@@ -25,9 +25,10 @@ public class CpcValidationInfoMap {
 	private void convertJsonToMapOfLists(InputStream cpcApmNpiTinJson) {
 		if (cpcApmNpiTinJson == null) {
 			apmTinNpiCombinationMap = null;
-		} else {
-			apmTinNpiCombinationMap = new HashMap<>();
+			return;
 		}
+
+		apmTinNpiCombinationMap = new HashMap<>();
 
 		List<CpcValidationInfo> cpcValidationInfoList = new ArrayList<>();
 		try {

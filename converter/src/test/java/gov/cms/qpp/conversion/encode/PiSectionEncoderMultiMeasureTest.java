@@ -19,14 +19,14 @@ import gov.cms.qpp.conversion.model.TemplateId;
 
 class PiSectionEncoderMultiMeasureTest {
 
-	private static final String EXPECTED = "{\n  \"category\" : \"aci\",\n  \"submissionMethod\" : \"electronicHealthRecord\",\n  "
+	private static final String EXPECTED = "{\n  \"category\" : \"pi\",\n  \"submissionMethod\" : \"electronicHealthRecord\",\n  "
 			+ "\"cehrtId\" : \"xxxxxxxxxx12345\",\n  "
 			+ "\"measurements\" : [ "
-			+ "{\n    \"measureId\" : \"ACI-PEA-1\",\n    \"value\" : {\n"
+			+ "{\n    \"measureId\" : \"PI-PEA-1\",\n    \"value\" : {\n"
 			+ "      \"numerator\" : 400,\n      \"denominator\" : 600\n    }\n  }, "
-			+ "{\n    \"measureId\" : \"ACI_EP_1\",\n    \"value\" : {\n"
+			+ "{\n    \"measureId\" : \"PI_EP_1\",\n    \"value\" : {\n"
 			+ "      \"numerator\" : 500,\n      \"denominator\" : 700\n    }\n  }, "
-			+ "{\n    \"measureId\" : \"ACI_CCTPE_3\",\n    \"value\" : {\n"
+			+ "{\n    \"measureId\" : \"PI_CCTPE_3\",\n    \"value\" : {\n"
 			+ "      \"numerator\" : 400,\n      \"denominator\" : 600\n    }\n  }" + " ],\n  \"programName\" : \"mips\",\n  \"performanceStart\" : \"2017-01-01\",\n  \"performanceEnd\" : \"2017-12-31\"\n}";
 
 	private Node aciSectionNode;
@@ -90,24 +90,25 @@ class PiSectionEncoderMultiMeasureTest {
 		aciProportionMeasureNode = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR);
 		aciProportionMeasureNode.addChildNode(aciProportionNumeratorNode);
 		aciProportionMeasureNode.addChildNode(aciProportionDenominatorNode);
-		aciProportionMeasureNode.putValue("measureId", "ACI-PEA-1");
+		aciProportionMeasureNode.putValue("measureId", "PI-PEA-1");
 
 		aciProportionMeasureNode2 = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR);
 		aciProportionMeasureNode2.addChildNode(aciProportionNumeratorNode2);
 		aciProportionMeasureNode2.addChildNode(aciProportionDenominatorNode2);
-		aciProportionMeasureNode2.putValue("measureId", "ACI_EP_1");
+		aciProportionMeasureNode2.putValue("measureId", "PI_EP_1");
 
 		aciProportionMeasureNode3 = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR);
 		aciProportionMeasureNode3.addChildNode(aciProportionNumeratorNode3);
 		aciProportionMeasureNode3.addChildNode(aciProportionDenominatorNode3);
-		aciProportionMeasureNode3.putValue("measureId", "ACI_CCTPE_3");
+		aciProportionMeasureNode3.putValue("measureId", "PI_CCTPE_3");
 
 		clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.CEHRT, "xxxxxxxxxx12345");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS_PROGRAM_NAME);
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_INDIV");
 
 		aciSectionNode = new Node(TemplateId.PI_SECTION, clinicalDocumentNode);
-		aciSectionNode.putValue("category", "aci");
+		aciSectionNode.putValue("category", "pi");
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
 		aciSectionNode.addChildNode(aciProportionMeasureNode2);
 		aciSectionNode.addChildNode(aciProportionMeasureNode3);
