@@ -13,9 +13,9 @@ import org.junit.jupiter.api.Test;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
-import gov.cms.qpp.conversion.model.error.FormattedErrorCode;
-import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
+import gov.cms.qpp.conversion.model.error.FormattedProblemCode;
+import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 /**
@@ -24,8 +24,8 @@ import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 class CheckerTest {
 
 	private static final String VALUE = "value";
-	private static final LocalizedError ERROR_MESSAGE = new FormattedErrorCode(ErrorCode.UNEXPECTED_ERROR, "the checker failed");
-	private static final LocalizedError OTHER_ERROR_MESSAGE = new FormattedErrorCode(ErrorCode.UNEXPECTED_ERROR, "some other error message");
+	private static final LocalizedProblem ERROR_MESSAGE = new FormattedProblemCode(ProblemCode.UNEXPECTED_ERROR, "the checker failed");
+	private static final LocalizedProblem OTHER_ERROR_MESSAGE = new FormattedProblemCode(ProblemCode.UNEXPECTED_ERROR, "some other error message");
 
 	private List<Detail> details;
 
@@ -571,7 +571,7 @@ class CheckerTest {
 		String anotherMeausure1 = "asdf";
 		String anotherMeausure2 = "jkl;";
 		String anotherMeausure3 = "qwerty";
-		LocalizedError validationError = error("measure failure");
+		LocalizedProblem validationError = error("measure failure");
 
 		Node section = new Node();
 		Node measure1 = new Node();
@@ -605,7 +605,7 @@ class CheckerTest {
 		assertWithMessage("Checker should return one validation error")
 				.that(errors)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(new FormattedErrorCode(null, "test"));
+				.containsExactly(new FormattedProblemCode(null, "test"));
 	}
 
 	@Test
@@ -806,8 +806,8 @@ class CheckerTest {
 		return testNode;
 	}
 
-	private LocalizedError error(String message) {
-		return new FormattedErrorCode(ErrorCode.UNEXPECTED_ERROR, message);
+	private LocalizedProblem error(String message) {
+		return new FormattedProblemCode(ProblemCode.UNEXPECTED_ERROR, message);
 	}
 
 }

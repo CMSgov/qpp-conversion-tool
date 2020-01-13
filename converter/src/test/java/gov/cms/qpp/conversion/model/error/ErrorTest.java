@@ -54,7 +54,7 @@ class ErrorTest {
 	void testToString() {
 		Error objectUnderTest = new Error();
 		objectUnderTest.setSourceIdentifier("sourceID");
-		objectUnderTest.setDetails(Collections.singletonList(Detail.forErrorCode(ErrorCode.UNEXPECTED_ERROR)));
+		objectUnderTest.setDetails(Collections.singletonList(Detail.forErrorCode(ProblemCode.UNEXPECTED_ERROR)));
 		objectUnderTest.setType("aType");
 		objectUnderTest.setMessage("coolMessage");
 

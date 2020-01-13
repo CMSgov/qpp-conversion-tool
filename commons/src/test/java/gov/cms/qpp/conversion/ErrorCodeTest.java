@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion;
 
-import gov.cms.qpp.conversion.model.error.ErrorCode;
-import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
+import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 import gov.cms.qpp.test.enums.EnumContract;
 
 import java.util.Arrays;
@@ -17,26 +17,26 @@ import org.junit.jupiter.params.provider.EnumSource;
 class ErrorCodeTest implements EnumContract {
 
 	@ParameterizedTest
-	@EnumSource(ErrorCode.class)
-	void testGetErrorCodeReturnsSelf(ErrorCode errorCode) {
-		Truth.assertThat(errorCode.getErrorCode()).isSameInstanceAs(errorCode);
+	@EnumSource(ProblemCode.class)
+	void testGetErrorCodeReturnsSelf(ProblemCode errorCode) {
+		Truth.assertThat(errorCode.getProblemCode()).isSameInstanceAs(errorCode);
 	}
 
 	@ParameterizedTest
-	@EnumSource(ErrorCode.class)
-	void testGetMessageCodeReturnsNonNull(ErrorCode errorCode) {
+	@EnumSource(ProblemCode.class)
+	void testGetMessageCodeReturnsNonNull(ProblemCode errorCode) {
 		Truth.assertThat(errorCode.getMessage()).isNotNull();
 	}
 
 	@ParameterizedTest
-	@EnumSource(ErrorCode.class)
-	void testGetByCode(ErrorCode errorCode) {
-		Truth.assertThat(ErrorCode.getByCode(errorCode.getCode())).isSameInstanceAs(errorCode);
+	@EnumSource(ProblemCode.class)
+	void testGetByCode(ProblemCode errorCode) {
+		Truth.assertThat(ProblemCode.getByCode(errorCode.getCode())).isSameInstanceAs(errorCode);
 	}
 
 	@ParameterizedTest
-	@EnumSource(ErrorCode.class)
-	void testFormat(ErrorCode errorCode) {
+	@EnumSource(ProblemCode.class)
+	void testFormat(ProblemCode errorCode) {
 		try {
 			String random = UUID.randomUUID().toString();
 			Truth.assertThat(errorCode.format(random).getMessage()).contains(random);
@@ -47,33 +47,33 @@ class ErrorCodeTest implements EnumContract {
 
 	@Test
 	void testGetCodeIsUnique() {
-		long count = Arrays.stream(ErrorCode.values()).mapToInt(ErrorCode::getCode).distinct().count();
-		long expected = ErrorCode.values().length;
+		long count = Arrays.stream(ProblemCode.values()).mapToInt(ProblemCode::getCode).distinct().count();
+		long expected = ProblemCode.values().length;
 		Truth.assertThat(count).isEqualTo(expected);
 	}
 
 	@Test
 	void testFormatOnNonFormattedErrorCode() {
-		Assertions.assertThrows(IllegalStateException.class, ErrorCode.UNEXPECTED_ERROR::format);
+		Assertions.assertThrows(IllegalStateException.class, ProblemCode.UNEXPECTED_ERROR::format);
 	}
 
 	@Test
 	void testFormatOnFormattedErrorCode() {
-		ErrorCode code = ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE;
+		ProblemCode code = ProblemCode.NUMERATOR_DENOMINATOR_INVALID_VALUE;
 		Truth.assertThat(code.format("mock").getMessage()).isEqualTo(code.getMessage()
 				.replace("`(Numerator or Denominator)`", "mock"));
 	}
 
 	@Test
 	void testFormattedEqualsIdentity() {
-		LocalizedError formatted = formatted("mock");
+		LocalizedProblem formatted = formatted("mock");
 		new EqualsTester().addEqualityGroup(formatted).testEquals();
 	}
 
 	@Test
 	void testGetMessagePrependsConversionToolLabel() {
-		ErrorCode code = ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE;
-		Truth.assertThat(code.getMessage()).startsWith(ErrorCode.CT_LABEL);
+		ProblemCode code = ProblemCode.NUMERATOR_DENOMINATOR_INVALID_VALUE;
+		Truth.assertThat(code.getMessage()).startsWith(ProblemCode.CT_LABEL);
 	}
 
 	@Test
@@ -99,24 +99,24 @@ class ErrorCodeTest implements EnumContract {
 	@Test
 	void testErrorCodeOrder() {
 		int last = -1;
-		for (ErrorCode errorCode : ErrorCode.values()) {
+		for (ProblemCode errorCode : ProblemCode.values()) {
 			int currentCode = errorCode.getCode();
 			Truth.assertThat(last).isLessThan(currentCode);
 			last = currentCode;
 		}
 	}
 
-	private LocalizedError formatted(String salt) {
-		return ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(salt);
+	private LocalizedProblem formatted(String salt) {
+		return ProblemCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(salt);
 	}
 
-	private LocalizedError formattedAlt(String salt) {
-		return ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER.format(salt);
+	private LocalizedProblem formattedAlt(String salt) {
+		return ProblemCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER.format(salt);
 	}
 
 	@Override
 	public Class<? extends Enum<?>> getEnumType() {
-		return ErrorCode.class;
+		return ProblemCode.class;
 	}
 
 }

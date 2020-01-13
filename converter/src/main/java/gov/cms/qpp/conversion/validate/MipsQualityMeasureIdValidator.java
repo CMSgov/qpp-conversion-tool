@@ -7,8 +7,8 @@ import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
-import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
+import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
@@ -119,7 +119,7 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	private void validatePerformanceRateUuidExists(Node performanceRateNode) {
 		forceCheckErrors(performanceRateNode)
 				.incompleteValidation()
-				.singleValue(ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE, PERFORMANCE_RATE_ID);
+				.singleValue(ProblemCode.QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE, PERFORMANCE_RATE_ID);
 	}
 
 	/**
@@ -140,7 +140,7 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	 * @param performanceUuid The current performance rate uuid
 	 */
 	private void addPerformanceRateValidationMessage(Node node, String electronicMeasureId,String performanceUuid) {
-		LocalizedError error = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(electronicMeasureId,
+		LocalizedProblem error = ProblemCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(electronicMeasureId,
 				PERFORMANCE_RATE_ID, performanceUuid);
 		addError(Detail.forErrorAndNode(error, node));
 	}

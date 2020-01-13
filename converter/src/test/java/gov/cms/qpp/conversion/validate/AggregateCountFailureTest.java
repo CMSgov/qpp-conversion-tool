@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
 
 class AggregateCountFailureTest {
@@ -41,11 +41,11 @@ class AggregateCountFailureTest {
 		//assert
 		assertWithMessage("The error file flags a aggregate count type error")
 				.that(errorContent)
-				.contains(ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER.format("Numerator", "Bob").getMessage());
+				.contains(ProblemCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER.format("Numerator", "Bob").getMessage());
 
 		assertWithMessage("The error file flags a aggregate count value error")
 				.that(errorContent)
-				.contains(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format("Denominator", "empty").getMessage());
+				.contains(ProblemCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format("Denominator", "empty").getMessage());
 	}
 
 }

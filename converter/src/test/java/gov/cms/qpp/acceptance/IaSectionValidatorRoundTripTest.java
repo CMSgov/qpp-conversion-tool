@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
 
 class IaSectionValidatorRoundTripTest {
@@ -32,8 +32,8 @@ class IaSectionValidatorRoundTripTest {
 
 		Integer error = errors.getErrors().get(0).getDetails().get(0).getErrorCode();
 
-		assertThat(ErrorCode.getByCode(error))
-				.isEqualTo(ErrorCode.IA_SECTION_WRONG_CHILD);
+		assertThat(ProblemCode.getByCode(error))
+				.isEqualTo(ProblemCode.IA_SECTION_WRONG_CHILD);
 	}
 
 	@Test
@@ -50,8 +50,8 @@ class IaSectionValidatorRoundTripTest {
 
 		Integer error = errors.getErrors().get(0).getDetails().get(0).getErrorCode();
 
-		assertThat(ErrorCode.getByCode(error))
-				.isEqualTo(ErrorCode.IA_SECTION_MISSING_IA_MEASURE);
+		assertThat(ProblemCode.getByCode(error))
+				.isEqualTo(ProblemCode.IA_SECTION_MISSING_IA_MEASURE);
 	}
 
 	@Test
@@ -69,7 +69,7 @@ class IaSectionValidatorRoundTripTest {
 
 		Integer error = errors.getErrors().get(0).getDetails().get(0).getErrorCode();
 
-		assertThat(ErrorCode.getByCode(error))
-				.isEqualTo(ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM);
+		assertThat(ProblemCode.getByCode(error))
+				.isEqualTo(ProblemCode.IA_SECTION_MISSING_REPORTING_PARAM);
 	}
 }

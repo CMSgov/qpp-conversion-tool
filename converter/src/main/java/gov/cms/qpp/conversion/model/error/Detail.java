@@ -17,7 +17,7 @@ import gov.cms.qpp.conversion.util.MeasureConfigHelper;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Detail implements Serializable {
-	private static final long serialVersionUID = 8818544157552590677L;
+	private static final long serialVersionUID = 8818544157552598922L;
 
 	private Integer errorCode;
 	private String message;
@@ -46,13 +46,13 @@ public class Detail implements Serializable {
 	}
 
 	/**
-	 * Creates a mutable {@link Detail} based on the given {@link LocalizedError} and {@link Node}
+	 * Creates a mutable {@link Detail} based on the given {@link LocalizedProblem} and {@link Node}
 	 *
 	 * @param error error to be added
 	 * @param node node that gives the error context
 	 * @return detail for given error
 	 */
-	public static Detail forErrorAndNode(LocalizedError error, Node node) {
+	public static Detail forErrorAndNode(LocalizedProblem error, Node node) {
 		Detail detail = forErrorCode(error);
 
 		if (node != null) {
@@ -73,16 +73,16 @@ public class Detail implements Serializable {
 	}
 
 	/**
-	 * Creates a mutable {@link Detail} based on the given {@link LocalizedError}
+	 * Creates a mutable {@link Detail} based on the given {@link LocalizedProblem}
 	 *
 	 * @param error error to be added
 	 * @return detail for given error
 	 */
-	public static Detail forErrorCode(LocalizedError error) {
+	public static Detail forErrorCode(LocalizedProblem error) {
 		Objects.requireNonNull(error, "error");
 
 		Detail detail = new Detail();
-		detail.setErrorCode(error.getErrorCode().getCode());
+		detail.setErrorCode(error.getProblemCode().getCode());
 		detail.setMessage(error.getMessage());
 		return detail;
 	}
@@ -116,7 +116,7 @@ public class Detail implements Serializable {
 	/**
 	 * The code for the error
 	 *
-	 * @return An {@link ErrorCode}
+	 * @return An {@link ProblemCode}
 	 */
 	public Integer getErrorCode() {
 		return errorCode;

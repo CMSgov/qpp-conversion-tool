@@ -1,11 +1,11 @@
 package gov.cms.qpp.conversion.model.error;
 
-public interface LocalizedError {
+public interface LocalizedProblem {
 
 	/**
 	 * Gets the error code associated with this error
 	 */
-	ErrorCode getErrorCode();
+	ProblemCode getProblemCode();
 
 	/**
 	 * Gets the message associated with this error

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 /**
@@ -50,7 +50,7 @@ class AciNumeratorValidatorTest {
 		assertWithMessage("Should result in Children Validation Error")
 				.that(errors)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_CHILD_EXACT
+				.containsExactly(ProblemCode.NUMERATOR_DENOMINATOR_CHILD_EXACT
 					.format(AciNumeratorValidator.NUMERATOR_NAME, AciNumeratorValidator.NUMERATOR_NAME));
 	}
 
@@ -67,7 +67,7 @@ class AciNumeratorValidatorTest {
 
 		assertWithMessage("Incorrect child Validation Error not issued")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_CHILD_EXACT.format(
+				.containsExactly(ProblemCode.NUMERATOR_DENOMINATOR_CHILD_EXACT.format(
 						AciNumeratorValidator.NUMERATOR_NAME));
 	}
 
@@ -89,7 +89,7 @@ class AciNumeratorValidatorTest {
 
 		assertWithMessage("Too many children Validation Error not issued")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_CHILD_EXACT.format(
+				.containsExactly(ProblemCode.NUMERATOR_DENOMINATOR_CHILD_EXACT.format(
 						AciNumeratorValidator.NUMERATOR_NAME, AciNumeratorValidator.NUMERATOR_NAME));
 	}
 
@@ -123,7 +123,7 @@ class AciNumeratorValidatorTest {
 
 		assertWithMessage("Invalid Value Validation Error not issued")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(
+				.containsExactly(ProblemCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(
 						AciNumeratorValidator.NUMERATOR_NAME, value));
 	}
 

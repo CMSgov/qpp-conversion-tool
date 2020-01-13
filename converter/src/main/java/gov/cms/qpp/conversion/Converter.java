@@ -8,7 +8,7 @@ import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.ValidationResult;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
@@ -76,12 +76,12 @@ public class Converter {
 		try {
 			encoded = transform(source.toInputStream());
 		} catch (XmlInputFileException | XmlException xe) {
-			DEV_LOG.error(ErrorCode.NOT_VALID_XML_DOCUMENT.getMessage(), xe);
-			Detail detail = Detail.forErrorCode(ErrorCode.NOT_VALID_XML_DOCUMENT);
+			DEV_LOG.error(ProblemCode.NOT_VALID_XML_DOCUMENT.getMessage(), xe);
+			Detail detail = Detail.forErrorCode(ProblemCode.NOT_VALID_XML_DOCUMENT);
 			errors.add(detail);
 		} catch (RuntimeException exception) {
-			DEV_LOG.error(ErrorCode.UNEXPECTED_ERROR.getMessage(), exception);
-			Detail detail = Detail.forErrorCode(ErrorCode.UNEXPECTED_ERROR);
+			DEV_LOG.error(ProblemCode.UNEXPECTED_ERROR.getMessage(), exception);
+			Detail detail = Detail.forErrorCode(ProblemCode.UNEXPECTED_ERROR);
 			errors.add(detail);
 		}
 
@@ -118,7 +118,7 @@ public class Converter {
 				qpp = encode();
 			}
 		} else {
-			Detail detail = Detail.forErrorCode(ErrorCode.NOT_VALID_QRDA_DOCUMENT.format(
+			Detail detail = Detail.forErrorCode(ProblemCode.NOT_VALID_QRDA_DOCUMENT.format(
 				Context.REPORTING_YEAR, DocumentationReference.CLINICAL_DOCUMENT));
 			errors.add(detail);
 		}
@@ -131,7 +131,7 @@ public class Converter {
 		if (errors != null && errors.size() > sizeLimit) {
 			List<Detail> truncatedList = errors.subList(0, sizeLimit);
 			truncatedList.add(Detail.forErrorCode(
-				ErrorCode.TOO_MANY_ERRORS.format((errors.size()))));
+				ProblemCode.TOO_MANY_ERRORS.format((errors.size()))));
 			return truncatedList;
 		}
 		return errors;

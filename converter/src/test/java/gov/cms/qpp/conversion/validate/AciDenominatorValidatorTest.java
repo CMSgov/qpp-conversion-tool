@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 /**
@@ -49,7 +49,7 @@ class AciDenominatorValidatorTest {
 
 		assertWithMessage("No Children Validation Error not issued")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_CHILD_EXACT
+				.containsExactly(ProblemCode.NUMERATOR_DENOMINATOR_CHILD_EXACT
 					.format(AciDenominatorValidator.DENOMINATOR_NAME, AciDenominatorValidator.DENOMINATOR_NAME));
 	}
 
@@ -66,7 +66,7 @@ class AciDenominatorValidatorTest {
 
 		assertWithMessage("Incorrect child Validation Error not issued")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_CHILD_EXACT.format(
+				.containsExactly(ProblemCode.NUMERATOR_DENOMINATOR_CHILD_EXACT.format(
 						AciDenominatorValidator.DENOMINATOR_NAME, AciDenominatorValidator.DENOMINATOR_NAME));
 
 	}
@@ -88,7 +88,7 @@ class AciDenominatorValidatorTest {
 
 		assertWithMessage("Too many children Validation Error not issued")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_CHILD_EXACT.format(
+				.containsExactly(ProblemCode.NUMERATOR_DENOMINATOR_CHILD_EXACT.format(
 						AciDenominatorValidator.DENOMINATOR_NAME, AciDenominatorValidator.DENOMINATOR_NAME));
 	}
 
@@ -121,7 +121,7 @@ class AciDenominatorValidatorTest {
 
 		assertWithMessage("Invalid Value Validation Error not issued")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(
+				.containsExactly(ProblemCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(
 						AciDenominatorValidator.DENOMINATOR_NAME, value));
 	}
 
@@ -139,7 +139,7 @@ class AciDenominatorValidatorTest {
 
 		assertWithMessage("Invalid Value Validation Error not issued")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(
+				.containsExactly(ProblemCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(
 						AciDenominatorValidator.DENOMINATOR_NAME, value));
 	}
 }

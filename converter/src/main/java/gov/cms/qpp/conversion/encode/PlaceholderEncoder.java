@@ -5,7 +5,7 @@ import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 
 /**
  * Encoder to handle placeholder nodes.
@@ -32,7 +32,7 @@ public class PlaceholderEncoder extends QppOutputEncoder {
 			if (encoder != null) {
 				encoder.encode(wrapper, child);
 			} else {
-				addValidationError(Detail.forErrorAndNode(ErrorCode.ENCODER_MISSING, child));
+				addValidationError(Detail.forErrorAndNode(ProblemCode.ENCODER_MISSING, child));
 			}
 		}
 	}
