@@ -115,7 +115,7 @@ class CpcPlusAcceptanceTest {
 			String expectedErrorMessage = expectedError.getMessage();
 
 			long matchingActualErrors = details.stream()
-				.filter(actualError -> actualError.getErrorCode().equals(expectedErrorCode))
+				.filter(actualError -> actualError.getProblemCode().equals(expectedErrorCode))
 				.filter(actualError -> messageComparison(actualError.getMessage(), expectedErrorMessage))
 				.count();
 

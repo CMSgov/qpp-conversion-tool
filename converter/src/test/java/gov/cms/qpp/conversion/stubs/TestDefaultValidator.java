@@ -15,7 +15,7 @@ public class TestDefaultValidator extends NodeValidator {
 	@Override
 	protected void performValidation(Node node) {
 		if (node.getValue("problem") != null) {
-			Detail detail = Detail.forErrorCode(ProblemCode.UNEXPECTED_ERROR);
+			Detail detail = Detail.forProblemCode(ProblemCode.UNEXPECTED_ERROR);
 			detail.setMessage("Test validation error for Jenny");
 			addError(detail);
 		}

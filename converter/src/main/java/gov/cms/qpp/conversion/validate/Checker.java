@@ -510,7 +510,7 @@ class Checker {
 	 * @return details for the given error and present node
 	 */
 	private Detail detail(LocalizedProblem code) {
-		return Detail.forErrorAndNode(code, node);
+		return Detail.forProblemAndNode(code, node);
 	}
 
 	/**

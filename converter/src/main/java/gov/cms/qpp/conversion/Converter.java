@@ -77,11 +77,11 @@ public class Converter {
 			encoded = transform(source.toInputStream());
 		} catch (XmlInputFileException | XmlException xe) {
 			DEV_LOG.error(ProblemCode.NOT_VALID_XML_DOCUMENT.getMessage(), xe);
-			Detail detail = Detail.forErrorCode(ProblemCode.NOT_VALID_XML_DOCUMENT);
+			Detail detail = Detail.forProblemCode(ProblemCode.NOT_VALID_XML_DOCUMENT);
 			errors.add(detail);
 		} catch (RuntimeException exception) {
 			DEV_LOG.error(ProblemCode.UNEXPECTED_ERROR.getMessage(), exception);
-			Detail detail = Detail.forErrorCode(ProblemCode.UNEXPECTED_ERROR);
+			Detail detail = Detail.forProblemCode(ProblemCode.UNEXPECTED_ERROR);
 			errors.add(detail);
 		}
 
@@ -118,7 +118,7 @@ public class Converter {
 				qpp = encode();
 			}
 		} else {
-			Detail detail = Detail.forErrorCode(ProblemCode.NOT_VALID_QRDA_DOCUMENT.format(
+			Detail detail = Detail.forProblemCode(ProblemCode.NOT_VALID_QRDA_DOCUMENT.format(
 				Context.REPORTING_YEAR, DocumentationReference.CLINICAL_DOCUMENT));
 			errors.add(detail);
 		}
@@ -130,7 +130,7 @@ public class Converter {
 		int sizeLimit = 100;
 		if (errors != null && errors.size() > sizeLimit) {
 			List<Detail> truncatedList = errors.subList(0, sizeLimit);
-			truncatedList.add(Detail.forErrorCode(
+			truncatedList.add(Detail.forProblemCode(
 				ProblemCode.TOO_MANY_ERRORS.format((errors.size()))));
 			return truncatedList;
 		}

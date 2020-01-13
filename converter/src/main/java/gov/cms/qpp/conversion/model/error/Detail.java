@@ -19,7 +19,7 @@ import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 public class Detail implements Serializable {
 	private static final long serialVersionUID = 8818544157552598922L;
 
-	private Integer errorCode;
+	private Integer problemCode;
 	private String message;
 	private String value;
 	private String type;
@@ -38,7 +38,7 @@ public class Detail implements Serializable {
 	 * @param copy object to copy
 	 */
 	public Detail(Detail copy) {
-		errorCode = copy.errorCode;
+		problemCode = copy.problemCode;
 		message = copy.message;
 		value = copy.value;
 		type = copy.type;
@@ -48,12 +48,12 @@ public class Detail implements Serializable {
 	/**
 	 * Creates a mutable {@link Detail} based on the given {@link LocalizedProblem} and {@link Node}
 	 *
-	 * @param error error to be added
+	 * @param problem error to be added
 	 * @param node node that gives the error context
 	 * @return detail for given error
 	 */
-	public static Detail forErrorAndNode(LocalizedProblem error, Node node) {
-		Detail detail = forErrorCode(error);
+	public static Detail forProblemAndNode(LocalizedProblem problem, Node node) {
+		Detail detail = forProblemCode(problem);
 
 		if (node != null) {
 			Location location = detail.getLocation();
@@ -75,15 +75,15 @@ public class Detail implements Serializable {
 	/**
 	 * Creates a mutable {@link Detail} based on the given {@link LocalizedProblem}
 	 *
-	 * @param error error to be added
+	 * @param problem error to be added
 	 * @return detail for given error
 	 */
-	public static Detail forErrorCode(LocalizedProblem error) {
-		Objects.requireNonNull(error, "error");
+	public static Detail forProblemCode(LocalizedProblem problem) {
+		Objects.requireNonNull(problem, "error");
 
 		Detail detail = new Detail();
-		detail.setErrorCode(error.getProblemCode().getCode());
-		detail.setMessage(error.getMessage());
+		detail.setProblemCode(problem.getProblemCode().getCode());
+		detail.setMessage(problem.getMessage());
 		return detail;
 	}
 
@@ -118,12 +118,12 @@ public class Detail implements Serializable {
 	 *
 	 * @return An {@link ProblemCode}
 	 */
-	public Integer getErrorCode() {
-		return errorCode;
+	public Integer getProblemCode() {
+		return problemCode;
 	}
 
-	public void setErrorCode(Integer errorCode) {
-		this.errorCode = errorCode;
+	public void setProblemCode(Integer problemCode) {
+		this.problemCode = problemCode;
 	}
 
 	/**
@@ -186,7 +186,7 @@ public class Detail implements Serializable {
 	@Override
 	public String toString() {
 		return MoreObjects.toStringHelper(this)
-				.add("errorCode", errorCode)
+				.add("problemCode", problemCode)
 				.add("message", message)
 				.add("value", value)
 				.add("type", type)
@@ -206,7 +206,7 @@ public class Detail implements Serializable {
 
 		Detail that = (Detail) o;
 		return new EqualsBuilder()
-				.append(errorCode, that.errorCode)
+				.append(problemCode, that.problemCode)
 				.append(message, that.message)
 				.append(value, that.value)
 				.append(type, that.type)
@@ -216,6 +216,6 @@ public class Detail implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(errorCode, message, value, type, location);
+		return Objects.hash(problemCode, message, value, type, location);
 	}
 }

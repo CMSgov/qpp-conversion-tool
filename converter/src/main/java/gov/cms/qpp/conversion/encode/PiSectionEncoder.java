@@ -77,7 +77,7 @@ public class PiSectionEncoder extends QppOutputEncoder {
 					childEncoder.encode(childWrapper, currentChild);
 					measurementsWrapper.put(childWrapper);
 				} else {
-					addValidationError(Detail.forErrorAndNode(ProblemCode.ENCODER_MISSING, currentChild));
+					addValidationError(Detail.forProblemAndNode(ProblemCode.ENCODER_MISSING, currentChild));
 				}
 			}
 		}

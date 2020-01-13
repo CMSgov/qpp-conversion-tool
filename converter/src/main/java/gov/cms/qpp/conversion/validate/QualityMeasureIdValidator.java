@@ -79,7 +79,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 			if (value != null) { // This check has already been made and a detail will exist if value is null.
 				DEV_LOG.error(ProblemCode.MEASURE_GUID_MISSING.name() + " " + value);
 				LocalizedProblem error = ProblemCode.MEASURE_GUID_MISSING.format(value, Context.REPORTING_YEAR);
-				addError(Detail.forErrorAndNode(error, node));
+				addError(Detail.forProblemAndNode(error, node));
 			}
 		}
 	}
@@ -137,7 +137,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 					MeasureConfigHelper.getMeasureConfig(node).getElectronicMeasureId(),
 					expectedChildTypeCount, StringHelper.join(key.getAliases(), ",", "or"),
 					actualChildTypeCount);
-			Detail detail = Detail.forErrorAndNode(error, node);
+			Detail detail = Detail.forProblemAndNode(error, node);
 			addError(detail);
 		}
 	}
@@ -284,7 +284,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		LocalizedProblem error = ProblemCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(
 				MeasureConfigHelper.getMeasureConfig(node).getElectronicMeasureId(),
 				String.join(",", keys), check.get());
-		addError(Detail.forErrorAndNode(error, node));
+		addError(Detail.forProblemAndNode(error, node));
 	}
 
 	/**

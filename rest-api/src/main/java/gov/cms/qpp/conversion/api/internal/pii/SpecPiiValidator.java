@@ -31,7 +31,7 @@ public class SpecPiiValidator implements PiiValidator {
 
 		Map<String, List<String>> tinNpisMap = file.getApmTinNpiCombinationMap().get(apm);
 		if (tinNpisMap == null) {
-			validator.addWarning(Detail.forErrorAndNode(ProblemCode.MISSING_API_TIN_NPI_FILE, node));
+			validator.addWarning(Detail.forProblemAndNode(ProblemCode.MISSING_API_TIN_NPI_FILE, node));
 		} else {
 			int npiSize = npiList.size();
 			for (int index = 0; index < npiSize; index++) {
@@ -41,7 +41,7 @@ public class SpecPiiValidator implements PiiValidator {
 				LocalizedProblem error = ProblemCode.INCORRECT_API_NPI_COMBINATION
 					.format(currentNpi, maskedTin, apm);
 				if (tinNpisMap.get(currentTin) == null || !(tinNpisMap.get(currentTin).indexOf(currentNpi) > -1)) {
-					validator.addWarning(Detail.forErrorAndNode(error, node));
+					validator.addWarning(Detail.forProblemAndNode(error, node));
 				}
 			}
 		}

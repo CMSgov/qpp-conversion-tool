@@ -61,7 +61,7 @@ public class PiNumeratorDenominatorEncoder extends QppOutputEncoder {
 			if (childEncoder != null) {
 				childEncoder.encode(childWrapper, currentChild);
 			} else {
-				addValidationError(Detail.forErrorAndNode(ProblemCode.ENCODER_MISSING, currentChild));
+				addValidationError(Detail.forProblemAndNode(ProblemCode.ENCODER_MISSING, currentChild));
 			}
 		}
 

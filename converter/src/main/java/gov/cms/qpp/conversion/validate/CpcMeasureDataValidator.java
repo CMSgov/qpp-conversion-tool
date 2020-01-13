@@ -118,7 +118,7 @@ public class CpcMeasureDataValidator extends NodeValidator {
 				ProblemCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(
 					supplementalData.getType(), supplementalData, supplementalData.getCode(),
 						measureId, node.getValue(MeasureDataDecoder.MEASURE_TYPE));
-		addError(Detail.forErrorAndNode(error, node));
+		addError(Detail.forProblemAndNode(error, node));
 	}
 
 	/**

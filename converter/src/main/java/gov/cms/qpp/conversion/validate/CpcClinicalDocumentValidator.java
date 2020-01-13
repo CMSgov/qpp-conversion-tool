@@ -103,7 +103,7 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 		}
 
 		if (!ApmEntityIds.idExists(apmEntityId)) {
-			addError(Detail.forErrorAndNode(ProblemCode.CPC_CLINICAL_DOCUMENT_INVALID_APM, node));
+			addError(Detail.forProblemAndNode(ProblemCode.CPC_CLINICAL_DOCUMENT_INVALID_APM, node));
 		}
 	}
 
@@ -129,9 +129,9 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 		int numOfNpis = Arrays.asList(
 			node.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER).split(",")).size();
 		if (numOfTins > numOfNpis) {
-			addError(Detail.forErrorAndNode(ProblemCode.CPC_PLUS_MISSING_NPI, node));
+			addError(Detail.forProblemAndNode(ProblemCode.CPC_PLUS_MISSING_NPI, node));
 		} else if (numOfNpis > numOfTins) {
-			addError(Detail.forErrorAndNode(ProblemCode.CPC_PLUS_MISSING_TIN, node));
+			addError(Detail.forProblemAndNode(ProblemCode.CPC_PLUS_MISSING_TIN, node));
 		}
 	}
 
@@ -148,7 +148,7 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 		LocalDate endDate = endDate();
 		if (now().isAfter(endDate)) {
 			String formatted = endDate.format(END_DATE_FORMAT);
-			addError(Detail.forErrorAndNode(
+			addError(Detail.forProblemAndNode(
 				ProblemCode.CPC_PLUS_SUBMISSION_ENDED.format(formatted,
 					EnvironmentHelper.getOrDefault(CPC_PLUS_CONTACT_EMAIL, DEFAULT_CPC_PLUS_CONTACT_EMAIL)),
 				node));

@@ -421,7 +421,7 @@ class CheckerTest {
 	void testCompoundIntValueLessThanOrEqualToCheckFailureShortcut() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
-		details.add(Detail.forErrorCode(error("test")));
+		details.add(Detail.forProblemCode(error("test")));
 
 		Checker checker = Checker.check(meepNode, details);
 		checker.intValue(ERROR_MESSAGE, VALUE).lessThanOrEqualTo(ERROR_MESSAGE, 122);
@@ -493,7 +493,7 @@ class CheckerTest {
 	void testInDecimalRangeOfShortcut() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "-1");
-		details.add(Detail.forErrorCode(error("test")));
+		details.add(Detail.forProblemCode(error("test")));
 
 		Checker checker = Checker.check(meepNode, details);
 		checker.inDecimalRangeOf(ERROR_MESSAGE, VALUE, 0f,  1f);
@@ -731,7 +731,7 @@ class CheckerTest {
 	void testValueInShouldShortCut() throws Exception {
 		String key = "My Key";
 		Node testNode = makeTestNode(key, null);
-		details.add(Detail.forErrorCode(ERROR_MESSAGE));
+		details.add(Detail.forProblemCode(ERROR_MESSAGE));
 		Checker checker = Checker.check(testNode, details);
 		checker.valueIn(ERROR_MESSAGE, key, null , "Some Value", "My Value");
 

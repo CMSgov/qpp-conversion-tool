@@ -165,7 +165,7 @@ class QualityMeasureIdRoundTripTest {
 
 		assertThat(details.size()).isEqualTo(2);
 		for(Detail detail: details) {
-			assertThat(detail.getErrorCode()).isEqualTo(59);
+			assertThat(detail.getProblemCode()).isEqualTo(59);
 		}
 	}
 

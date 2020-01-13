@@ -35,7 +35,7 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 			writer.flush();
 		} catch (IOException exception) {
 			DEV_LOG.error("Couldn't write out JSON file.", exception);
-			Detail detail = Detail.forErrorCode(ProblemCode.UNEXPECTED_ENCODE_ERROR);
+			Detail detail = Detail.forProblemCode(ProblemCode.UNEXPECTED_ENCODE_ERROR);
 			detail.setMessage(exception.getMessage());
 			errors.add(detail);
 		}
@@ -66,7 +66,7 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 			}
 		} catch (EncodeException exception) {
 			DEV_LOG.warn("Encode error when doing internalEncode, adding a new Detail", exception);
-			Detail detail = Detail.forErrorAndNode(ProblemCode.UNEXPECTED_ENCODE_ERROR, node);
+			Detail detail = Detail.forProblemAndNode(ProblemCode.UNEXPECTED_ENCODE_ERROR, node);
 			detail.setMessage(exception.getMessage());
 			addValidationError(detail);
 		}

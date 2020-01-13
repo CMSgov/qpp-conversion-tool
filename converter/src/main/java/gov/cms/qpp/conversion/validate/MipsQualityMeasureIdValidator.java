@@ -142,6 +142,6 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	private void addPerformanceRateValidationMessage(Node node, String electronicMeasureId,String performanceUuid) {
 		LocalizedProblem error = ProblemCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(electronicMeasureId,
 				PERFORMANCE_RATE_ID, performanceUuid);
-		addError(Detail.forErrorAndNode(error, node));
+		addError(Detail.forProblemAndNode(error, node));
 	}
 }

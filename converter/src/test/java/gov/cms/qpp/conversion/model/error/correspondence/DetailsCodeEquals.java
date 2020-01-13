@@ -14,7 +14,7 @@ public final class DetailsCodeEquals implements Correspondence.BinaryPredicate<D
 		if (actual == null) {
 			return expected == null;
 		}
-		ProblemCode error = ProblemCode.getByCode(actual.getErrorCode());
+		ProblemCode error = ProblemCode.getByCode(actual.getProblemCode());
 		return error == expected;
 	}
 
