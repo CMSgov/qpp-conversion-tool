@@ -70,7 +70,7 @@ public abstract class AnyOrderActionService<T, S> {
 		return CompletableFuture.supplyAsync(() -> {
 			RetryTemplate retry = retryTemplate();
 
-			API_LOG.info("Trying to execute action " + getActionName());
+			API_LOG.info("Trying to execute action {}", getActionName());
 			return retry.execute(context -> {
 				if (context.getLastThrowable() != null) {
 					API_LOG.error("Last try resulted in a thrown throwable", context.getLastThrowable());
