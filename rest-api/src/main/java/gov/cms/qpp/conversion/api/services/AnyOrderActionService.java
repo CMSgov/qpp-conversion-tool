@@ -28,7 +28,7 @@ import java.util.concurrent.CompletableFuture;
  * @param <S> The type of object that is returned from {@link #asynchronousAction(Object)}.
  */
 public abstract class AnyOrderActionService<T, S> {
-	private static final int INITIAL_INTERVAL = 1000;
+	private static final int INITIAL_INTERVAL = 2000;
 	private static final double MULTIPLIER = 2.0;
 	private static final int MAX_INTERVAL = 60000;
 
@@ -66,22 +66,29 @@ public abstract class AnyOrderActionService<T, S> {
 	 * @param objectToActOn The item to do an action on.
 	 * @return A {@link CompletableFuture} that will complete once the action completes without failure.
 	 */
-	protected CompletableFuture<S> actOnItem(final T objectToActOn) {
+	protected CompletableFuture<S> actOnItem(T objectToActOn) {
 		return CompletableFuture.supplyAsync(() -> {
 			RetryTemplate retry = retryTemplate();
 
-			API_LOG.info("Trying to execute action");
+			API_LOG.info("Trying to execute action " + getActionName());
 			return retry.execute(context -> {
 				if (context.getLastThrowable() != null) {
-					API_LOG.warn("Last try resulted in a thrown throwable", context.getLastThrowable());
+					API_LOG.error("Last try resulted in a thrown throwable", context.getLastThrowable());
 				}
 				if (context.getRetryCount() > 0) {
 					API_LOG.warn("Retry {} - trying to execute action again", context.getRetryCount());
 				}
-				return this.asynchronousAction(objectToActOn);
+				return asynchronousAction(objectToActOn);
 			});
 		}, taskExecutor);
 	}
+
+	/**
+	 * Returns the name of the action, for usage in monitoring
+	 *
+	 * @return the name of the action
+	 */
+	protected abstract String getActionName();
 
 	/**
 	 * Returns a retry template that always retries.  Starts with a second interval between retries and doubles that interval up
@@ -95,7 +102,7 @@ public abstract class AnyOrderActionService<T, S> {
 		Map<Class<? extends Throwable>, Boolean> stopExceptions =
 				Collections.singletonMap(InterruptedException.class, Boolean.FALSE);
 		SimpleRetryPolicy retryPolicy =
-				new SimpleRetryPolicy(Integer.MAX_VALUE, stopExceptions, true, true);
+				new SimpleRetryPolicy(5, stopExceptions, true, true);
 
 		retry.setRetryPolicy(retryPolicy);
 

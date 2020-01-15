@@ -92,5 +92,10 @@ class InOrderAsyncActionServiceTest {
 
 			return retry;
 		}
+
+		@Override
+		protected String getActionName() {
+			return "Test In Order";
+		}
 	}
 }
