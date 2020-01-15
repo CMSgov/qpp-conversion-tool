@@ -1,4 +1,4 @@
-package gov.cms.qpp.conversion.api.services;
+package gov.cms.qpp.conversion.api.services.internal;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

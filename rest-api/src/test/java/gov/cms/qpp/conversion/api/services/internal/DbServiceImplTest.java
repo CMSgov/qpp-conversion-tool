@@ -1,4 +1,4 @@
-package gov.cms.qpp.conversion.api.services;
+package gov.cms.qpp.conversion.api.services.internal;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
@@ -14,6 +14,7 @@ import org.springframework.core.task.TaskExecutor;
 
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
+import gov.cms.qpp.conversion.api.services.internal.DbServiceImpl;
 import gov.cms.qpp.test.MockitoExtension;
 
 import java.util.List;

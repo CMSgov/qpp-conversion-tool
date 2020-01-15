@@ -1,9 +1,10 @@
-package gov.cms.qpp.conversion.api.services;
+package gov.cms.qpp.conversion.api.services.internal;
 
 import com.jayway.jsonpath.JsonPathException;
 import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.ErrorMessage;
+import gov.cms.qpp.conversion.api.services.ValidationService;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
