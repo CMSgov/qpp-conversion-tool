@@ -109,7 +109,7 @@ class DbServiceImplTest {
 	void testGetUnprocessedCpcPlusMetaData() {
 		int itemsPerPartition = 2;
 
-		PaginatedQueryList mockMetadataPage = mock(PaginatedQueryList.class);
+		PaginatedQueryList<Metadata> mockMetadataPage = mock(PaginatedQueryList.class);
 		Answer<Stream<Metadata>> answer = (InvocationOnMock invocation) -> Stream.generate(Metadata::new).limit(itemsPerPartition);
 
 		when(mockMetadataPage.stream()).thenAnswer(answer);
