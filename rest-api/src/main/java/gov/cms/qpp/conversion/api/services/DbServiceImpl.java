@@ -132,4 +132,9 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 		}
 		return meta;
 	}
+
+	@Override
+	protected String getActionName() {
+		return "Write Metadata";
+	}
 }
