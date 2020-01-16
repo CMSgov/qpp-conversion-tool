@@ -3,7 +3,6 @@ package gov.cms.qpp.conversion.model.validation;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.List;
 
