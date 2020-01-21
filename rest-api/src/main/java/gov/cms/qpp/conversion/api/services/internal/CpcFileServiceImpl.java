@@ -1,9 +1,13 @@
-package gov.cms.qpp.conversion.api.services;
+package gov.cms.qpp.conversion.api.services.internal;
 
 import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
 import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
+import gov.cms.qpp.conversion.api.services.CpcFileService;
+import gov.cms.qpp.conversion.api.services.DbService;
+import gov.cms.qpp.conversion.api.services.StorageService;
+
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 

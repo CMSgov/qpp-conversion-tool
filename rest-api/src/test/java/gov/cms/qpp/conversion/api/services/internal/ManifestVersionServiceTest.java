@@ -1,8 +1,10 @@
-package gov.cms.qpp.conversion.api.services;
+package gov.cms.qpp.conversion.api.services.internal;
 
 import org.junit.jupiter.api.Test;
 
 import com.google.common.truth.Truth;
+
+import gov.cms.qpp.conversion.api.services.internal.ManifestVersionService;
 
 class ManifestVersionServiceTest {
 
