@@ -162,9 +162,6 @@ public enum ErrorCode implements LocalizedError {
 	MEASURE_SECTION_MISSING_MEASURE(81, "At least one measure is required in a measure section"),
 	TOO_MANY_ERRORS(82, "There are too many errors associated with this QRDA-III file. Showing 100 out of `(Error amount)` errors."
 		+ " Please fix the given errors and re-submit", true),
-	MISSING_CEHRT(83, "CPC+ submissions should contain a CEHRT."
-		+ " Please refer to the `(Submission year's)` IG for more details " + DocumentationReference.CEHRT
-	    + " regarding practice CEHRTs.", true),
 	CPC_PLUS_TIN_REQUIRED(84, "CPC+ QRDA-III Submissions require at least one TIN to be present."),
 	CPC_PLUS_INVALID_TIN(85, "CPC+ QRDA-III Submission TINs require a 9 digit numerical value"),
 	CPC_PLUS_MISSING_TIN(86, "This CPC+ QRDA-III submission is missing a TIN. Please ensure there is a TIN associated with every "
