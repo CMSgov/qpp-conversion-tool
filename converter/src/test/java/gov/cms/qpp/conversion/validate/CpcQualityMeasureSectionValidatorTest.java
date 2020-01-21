@@ -4,7 +4,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,10 +39,6 @@ class CpcQualityMeasureSectionValidatorTest {
 		"40280382-6258-7581-0162-92660f2414b9",
 		"40280382-6258-7581-0162-9241a52a13fd",
 		"40280382-6258-7581-0162-92a37a9b15df"};
-
-	private String[] overallMeasures =
-			Stream.of(groupBmeasures, groupAmeasures).flatMap(Stream::of)
-					.toArray(String[]::new);
 
 	@BeforeAll
 	static void setup() {

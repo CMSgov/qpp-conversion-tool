@@ -219,5 +219,10 @@ class AnyOrderAsyncActionServiceTest {
 
 			return retry;
 		}
+
+		@Override
+		protected String getActionName() {
+			return "Test Any Order";
+		}
 	}
 }

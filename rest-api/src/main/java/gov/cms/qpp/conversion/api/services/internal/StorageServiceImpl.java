@@ -146,4 +146,9 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 
 		return returnValue;
 	}
+
+	@Override
+	protected String getActionName() {
+		return "Write to Storage";
+	}
 }

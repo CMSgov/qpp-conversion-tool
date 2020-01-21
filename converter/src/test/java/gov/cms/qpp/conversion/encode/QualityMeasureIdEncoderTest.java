@@ -15,7 +15,6 @@ import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.util.JsonHelper;
 
 import java.util.List;
-import java.util.Map;
 
 class QualityMeasureIdEncoderTest {
 
@@ -222,7 +221,6 @@ class QualityMeasureIdEncoderTest {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private JsonWrapper getChildValues() {
 		return wrapper.get("value");
 	}

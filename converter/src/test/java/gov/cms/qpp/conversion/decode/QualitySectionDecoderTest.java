@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion.decode;
 
 import org.apache.commons.io.IOUtils;
 import org.jdom2.Element;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.reflections.util.ClasspathHelper;
