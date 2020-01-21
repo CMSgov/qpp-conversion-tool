@@ -1,6 +1,5 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.acceptance.cpc.CPCAcceptanceFixture;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.DocumentationReference;
@@ -10,9 +9,7 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
-import gov.cms.qpp.conversion.util.JsonHelper;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -30,17 +26,10 @@ class ClinicalDocumentExtensionTest {
 	private static final Path DIR = Paths.get("src/test/resources/");
 	private static final Path VALID = DIR.resolve("Qrda_CatIII_Provider.xml");
 	private static final Path INVALID = DIR.resolve("negative/Qrda_CatIII_Provider_invalid_CD_extension.xml");
-	private static final Path BASE = Paths.get("src/test/resources/cpc_plus/");
-	private static final Path FAILURE = BASE.resolve("failure");
-	private static final Path FAILURE_FIXTURE = FAILURE.resolve("fixture.json");
-	private static Map<String, CPCAcceptanceFixture> fixtureValues;
 
 	@BeforeAll
 	static void initMockApmIds() throws IOException {
 		ApmEntityIds.setApmDataFile("test_apm_entity_ids.json");
-		TypeReference<Map<String, CPCAcceptanceFixture>> ref =
-			new TypeReference<Map<String, CPCAcceptanceFixture>>() { };
-		fixtureValues = JsonHelper.readJson(FAILURE_FIXTURE, ref);
 	}
 
 	@AfterAll
