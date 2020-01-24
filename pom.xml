@@ -29,6 +29,8 @@
 
 	<properties>
 		<java.version>1.8</java.version>
+		<aws.version>1.11.710</aws.version>
+		<junit.version>5.5.2</junit.version>
 		<requiredCodeCoverage>0.95</requiredCodeCoverage>
 		<verificationsPhase>verify</verificationsPhase>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -285,19 +287,19 @@
 			<dependency>
 				<groupId>org.junit.vintage</groupId>
 				<artifactId>junit-vintage-engine</artifactId>
-				<version>5.5.2</version>
+				<version>${junit.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter-engine</artifactId>
-				<version>5.5.2</version>
+				<version>${junit.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter-params</artifactId>
-				<version>5.5.2</version>
+				<version>${junit.version}</version>
 			</dependency>
 
 			<dependency>
@@ -339,19 +341,19 @@
 			<dependency>
 				<groupId>com.amazonaws</groupId>
 				<artifactId>aws-java-sdk-s3</artifactId>
-				<version>1.11.710</version>
+				<version>${aws.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.amazonaws</groupId>
 				<artifactId>aws-java-sdk-kms</artifactId>
-				<version>1.11.710</version>
+				<version>${aws.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.amazonaws</groupId>
 				<artifactId>aws-java-sdk-dynamodb</artifactId>
-				<version>1.11.710</version>
+				<version>${aws.version}</version>
 			</dependency>
 
 			<dependency>
@@ -447,31 +449,31 @@
 			<dependency>
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter-api</artifactId>
-				<version>5.5.2</version>
+				<version>${junit.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.amazonaws</groupId>
 				<artifactId>aws-java-sdk-core</artifactId>
-				<version>1.11.710</version>
+				<version>${aws.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.amazonaws</groupId>
 				<artifactId>aws-java-sdk-s3</artifactId>
-				<version>1.11.710</version>
+				<version>${aws.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.amazonaws</groupId>
 				<artifactId>aws-java-sdk-kms</artifactId>
-				<version>1.11.710</version>
+				<version>${aws.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.amazonaws</groupId>
 				<artifactId>aws-java-sdk-dynamodb</artifactId>
-				<version>1.11.710</version>
+				<version>${aws.version}</version>
 			</dependency>
 
 			<dependency>
@@ -531,7 +533,7 @@
 			<dependency>
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter-api</artifactId>
-				<version>5.5.2</version>
+				<version>${junit.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
