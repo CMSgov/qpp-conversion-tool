@@ -1,16 +1,17 @@
 package gov.cms.qpp.conversion.api.helper;
 
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import java.security.Key;
+import static java.sql.Date.valueOf;
+
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
-import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
 
-import static java.sql.Date.valueOf;
+import javax.crypto.SecretKey;
+
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 
 public class JwtTestHelper {
 
@@ -45,8 +46,7 @@ public class JwtTestHelper {
 	}
 
 	private static JwtBuilder createJwtBuilderWithClaimMap(Map<String, Object> claimMap) {
-		byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary("testKey");
-		Key signingKey = new SecretKeySpec(apiKeySecretBytes, SIGNATURE_ALGORITHM.getJcaName());
+		SecretKey signingKey = Keys.secretKeyFor(SIGNATURE_ALGORITHM); // TEST KEY
 
 		LocalDate now = LocalDate.now();
 		LocalDate expirationDate = LocalDate.of(2020, 12, 31);
@@ -55,6 +55,6 @@ public class JwtTestHelper {
 				.setClaims(claimMap)
 				.setIssuer("testing-org")
 				.setExpiration(valueOf(expirationDate))
-				.signWith(SIGNATURE_ALGORITHM, signingKey);
+				.signWith(signingKey, SIGNATURE_ALGORITHM);
 	}
 }
