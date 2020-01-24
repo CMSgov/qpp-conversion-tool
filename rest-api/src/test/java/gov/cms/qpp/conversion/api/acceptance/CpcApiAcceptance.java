@@ -173,7 +173,7 @@ class CpcApiAcceptance {
 	void testMarkFileProcessed() {
 
 		List<Map> unprocessedFiles = getUnprocessedFiles();
-		String firstFileId = (String)unprocessedFiles.get(0).get("fileId");
+		String firstFileId = (String) unprocessedFiles.get(0).get("fileId");
 
 		String responseBody = markFileAsProcessed(firstFileId, 200);
 
@@ -202,7 +202,7 @@ class CpcApiAcceptance {
 	void testMarkFileUnProcessed() {
 
 		List<Map> unprocessedFiles = getUnprocessedFiles();
-		String firstFileId = (String)unprocessedFiles.get(0).get("fileId");
+		String firstFileId = (String) unprocessedFiles.get(0).get("fileId");
 
 		String responseBody = markFileAsUnProcessed(firstFileId, 200);
 
