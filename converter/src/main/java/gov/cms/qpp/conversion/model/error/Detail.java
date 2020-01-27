@@ -19,7 +19,7 @@ import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 public class Detail implements Serializable {
 	private static final long serialVersionUID = 8818544157552598922L;
 
-	private Integer problemCode;
+	private Integer errorCode;
 	private String message;
 	private String value;
 	private String type;
@@ -38,7 +38,7 @@ public class Detail implements Serializable {
 	 * @param copy object to copy
 	 */
 	public Detail(Detail copy) {
-		problemCode = copy.problemCode;
+		errorCode = copy.errorCode;
 		message = copy.message;
 		value = copy.value;
 		type = copy.type;
@@ -82,7 +82,7 @@ public class Detail implements Serializable {
 		Objects.requireNonNull(problem, "error");
 
 		Detail detail = new Detail();
-		detail.setProblemCode(problem.getProblemCode().getCode());
+		detail.setErrorCode(problem.getProblemCode().getCode());
 		detail.setMessage(problem.getMessage());
 		return detail;
 	}
@@ -118,12 +118,12 @@ public class Detail implements Serializable {
 	 *
 	 * @return An {@link ProblemCode}
 	 */
-	public Integer getProblemCode() {
-		return problemCode;
+	public Integer getErrorCode() {
+		return errorCode;
 	}
 
-	public void setProblemCode(Integer problemCode) {
-		this.problemCode = problemCode;
+	public void setErrorCode(Integer errorCode) {
+		this.errorCode = errorCode;
 	}
 
 	/**
@@ -186,7 +186,7 @@ public class Detail implements Serializable {
 	@Override
 	public String toString() {
 		return MoreObjects.toStringHelper(this)
-				.add("problemCode", problemCode)
+				.add("errorCode", errorCode)
 				.add("message", message)
 				.add("value", value)
 				.add("type", type)
@@ -206,7 +206,7 @@ public class Detail implements Serializable {
 
 		Detail that = (Detail) o;
 		return new EqualsBuilder()
-				.append(problemCode, that.problemCode)
+				.append(errorCode, that.errorCode)
 				.append(message, that.message)
 				.append(value, that.value)
 				.append(type, that.type)
@@ -216,6 +216,6 @@ public class Detail implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(problemCode, message, value, type, location);
+		return Objects.hash(errorCode, message, value, type, location);
 	}
 }

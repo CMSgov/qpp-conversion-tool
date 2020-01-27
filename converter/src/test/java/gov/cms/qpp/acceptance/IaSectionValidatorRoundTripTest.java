@@ -30,7 +30,7 @@ class IaSectionValidatorRoundTripTest {
 			errors = exception.getDetails();
 		}
 
-		Integer error = errors.getErrors().get(0).getDetails().get(0).getProblemCode();
+		Integer error = errors.getErrors().get(0).getDetails().get(0).getErrorCode();
 
 		assertThat(ProblemCode.getByCode(error))
 				.isEqualTo(ProblemCode.IA_SECTION_WRONG_CHILD);
@@ -48,7 +48,7 @@ class IaSectionValidatorRoundTripTest {
 			errors = exception.getDetails();
 		}
 
-		Integer error = errors.getErrors().get(0).getDetails().get(0).getProblemCode();
+		Integer error = errors.getErrors().get(0).getDetails().get(0).getErrorCode();
 
 		assertThat(ProblemCode.getByCode(error))
 				.isEqualTo(ProblemCode.IA_SECTION_MISSING_IA_MEASURE);
@@ -67,7 +67,7 @@ class IaSectionValidatorRoundTripTest {
 			errors = exception.getDetails();
 		}
 
-		Integer error = errors.getErrors().get(0).getDetails().get(0).getProblemCode();
+		Integer error = errors.getErrors().get(0).getDetails().get(0).getErrorCode();
 
 		assertThat(ProblemCode.getByCode(error))
 				.isEqualTo(ProblemCode.IA_SECTION_MISSING_REPORTING_PARAM);

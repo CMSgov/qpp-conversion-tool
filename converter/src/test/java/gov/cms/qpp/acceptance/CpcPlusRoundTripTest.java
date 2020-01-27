@@ -1,7 +1,6 @@
 package gov.cms.qpp.acceptance;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.TypeRef;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,6 @@ import gov.cms.qpp.acceptance.helper.JsonPathToXpathHelper;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
-import gov.cms.qpp.conversion.util.JsonHelper;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -20,7 +18,6 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.List;
 
 import static com.google.common.truth.Truth.assertThat;
 

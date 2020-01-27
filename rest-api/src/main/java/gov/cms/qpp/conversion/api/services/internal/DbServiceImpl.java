@@ -1,4 +1,4 @@
-package gov.cms.qpp.conversion.api.services;
+package gov.cms.qpp.conversion.api.services.internal;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
+import gov.cms.qpp.conversion.api.services.DbService;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -131,5 +132,10 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 			API_LOG.warn("Skipping writing of item to DynamoDB with UUID {} because the dynamodb mapper is absent", meta.getUuid());
 		}
 		return meta;
+	}
+
+	@Override
+	protected String getActionName() {
+		return "Write Metadata";
 	}
 }

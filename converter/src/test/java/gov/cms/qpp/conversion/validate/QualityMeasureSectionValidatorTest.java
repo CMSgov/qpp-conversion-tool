@@ -63,7 +63,7 @@ class QualityMeasureSectionValidatorTest {
 				.that(errors).hasSize(1);
 
 		assertWithMessage("Error must be " + ProblemCode.MEASURE_SECTION_MISSING_MEASURE)
-			.that(errors.get(0).getProblemCode()).isEqualTo(ProblemCode.MEASURE_SECTION_MISSING_MEASURE.getCode());
+			.that(errors.get(0).getErrorCode()).isEqualTo(ProblemCode.MEASURE_SECTION_MISSING_MEASURE.getCode());
 	}
 
 	@Test

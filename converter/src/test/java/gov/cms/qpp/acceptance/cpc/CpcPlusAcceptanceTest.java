@@ -72,6 +72,7 @@ class CpcPlusAcceptanceTest {
 	@MethodSource("successData")
 	void testCpcPlusFileSuccesses(Path entry) {
 		AllErrors errors = null;
+		List<Detail> warnings = null;
 
 		Converter converter = new Converter(new PathSource(entry));
 
@@ -79,9 +80,11 @@ class CpcPlusAcceptanceTest {
 			converter.transform();
 		} catch (TransformException failure) {
 			errors = failure.getDetails();
+			warnings = failure.getConversionReport().getWarnings();
 		}
 
 		assertThat(errors).isNull();
+		assertThat(warnings).isNull();
 	}
 
 	@ParameterizedTest
@@ -115,7 +118,7 @@ class CpcPlusAcceptanceTest {
 			String expectedErrorMessage = expectedError.getMessage();
 
 			long matchingActualErrors = details.stream()
-				.filter(actualError -> actualError.getProblemCode().equals(expectedErrorCode))
+				.filter(actualError -> actualError.getErrorCode().equals(expectedErrorCode))
 				.filter(actualError -> messageComparison(actualError.getMessage(), expectedErrorMessage))
 				.count();
 
