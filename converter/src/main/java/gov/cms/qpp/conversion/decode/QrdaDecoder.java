@@ -77,12 +77,11 @@ public abstract class QrdaDecoder {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void setMultipleAttributesOnNode(Element element, String expressionStr,
-		Consumer consumer, Filter<Attribute> filter) {
+		Consumer<List<String>> consumer, Filter<Attribute> filter) {
 		XPathExpression<Attribute> expression = XPathFactory.instance().compile(expressionStr, filter, null,  xpathNs);
 		List<Attribute> elems = expression.evaluate(element);
-		ArrayList<String> values = new ArrayList<>();
+		List<String> values = new ArrayList<>();
 		elems.forEach(attr -> values.add(attr.getValue()));
 		consumer.accept(values);
 	}

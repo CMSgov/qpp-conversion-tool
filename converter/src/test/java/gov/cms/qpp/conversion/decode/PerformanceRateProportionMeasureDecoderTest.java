@@ -31,6 +31,7 @@ class PerformanceRateProportionMeasureDecoderTest {
 
 	@BeforeEach
 	void before() throws XmlException {
+		context = new Context();
 		decodeNodeFromFile(happy);
 		performanceRateNode = getNode();
 	}
@@ -57,8 +58,6 @@ class PerformanceRateProportionMeasureDecoderTest {
 	}
 
 	private void decodeNodeFromFile(String filename) throws XmlException {
-		context = new Context();
-		PerformanceRateProportionMeasureDecoder decoder = new PerformanceRateProportionMeasureDecoder(context);
 		QrdaDecoderEngine engine = new QrdaDecoderEngine(context);
 		placeholder = engine.decode(XmlUtils.stringToDom(filename));
 	}

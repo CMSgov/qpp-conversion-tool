@@ -4,10 +4,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import javax.inject.Inject;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,7 +19,7 @@ import gov.cms.qpp.conversion.api.SpringIntegrationTest;
 @SpringIntegrationTest
 public class HealthRestIntegrationTest {
 
-	@Inject
+	@Autowired
 	private WebApplicationContext webApplicationContext;
 
 	private MockMvc mockMvc;

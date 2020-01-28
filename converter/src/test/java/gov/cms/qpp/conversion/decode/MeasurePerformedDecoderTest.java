@@ -45,7 +45,6 @@ class MeasurePerformedDecoderTest {
 	}
 
 	private Node executeMeasurePerformedDecoder(String xmlFragment) throws XmlException {
-		MeasurePerformedDecoder measurePerformedDecoder = new MeasurePerformedDecoder(context);
 		QrdaDecoderEngine engine = new QrdaDecoderEngine(context);
 		return engine.decode(XmlUtils.stringToDom(xmlFragment));
 	}
