@@ -6,8 +6,8 @@ import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
-import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
+import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.SupplementalData;
 import gov.cms.qpp.conversion.model.validation.SupplementalData.SupplementalType;
@@ -73,7 +73,7 @@ public class CpcMeasureDataValidator extends NodeValidator {
 				if (validatedSupplementalNode == null) {
 					addSupplementalValidationError(node, supplementalData, electronicMeasureId);
 				} else {
-					LocalizedError error = makeIncorrectCountSizeLocalizedError(node, supplementalData.getCode(),
+					LocalizedProblem error = makeIncorrectCountSizeLocalizedError(node, supplementalData.getCode(),
 						electronicMeasureId);
 					checkErrors(validatedSupplementalNode)
 						.childExact(error, 1, TemplateId.PI_AGGREGATE_COUNT);
@@ -114,11 +114,11 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	 * @param measureId current electronic measure identification
 	 */
 	private void addSupplementalValidationError(Node node, SupplementalData supplementalData, String measureId) {
-		LocalizedError error =
-				ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(
+		LocalizedProblem error =
+				ProblemCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(
 					supplementalData.getType(), supplementalData, supplementalData.getCode(),
 						measureId, node.getValue(MeasureDataDecoder.MEASURE_TYPE));
-		addError(Detail.forErrorAndNode(error, node));
+		addError(Detail.forProblemAndNode(error, node));
 	}
 
 	/**
@@ -127,10 +127,10 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	 * @param node holder of the measure type
 	 * @param supplementalCode data code that is missing
 	 * @param measureId electronic measure id
-	 * @return initialized {@link LocalizedError}
+	 * @return initialized {@link LocalizedProblem}
 	 */
-	private LocalizedError makeIncorrectCountSizeLocalizedError(Node node, String supplementalCode, String measureId) {
-		return ErrorCode.CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT.format(
+	private LocalizedProblem makeIncorrectCountSizeLocalizedError(Node node, String supplementalCode, String measureId) {
+		return ProblemCode.CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT.format(
 			supplementalCode, node.getValue(MeasureDataDecoder.MEASURE_TYPE),
 				measureId);
 	}

@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 class AciSectionValidatorTest {
@@ -42,7 +42,7 @@ class AciSectionValidatorTest {
 
 		assertWithMessage("error should be about missing proportion node")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.PI_SECTION_MISSING_REPORTING_PARAMETER_ACT);
+				.containsExactly(ProblemCode.PI_SECTION_MISSING_REPORTING_PARAMETER_ACT);
 	}
 
 	@Test
@@ -56,6 +56,6 @@ class AciSectionValidatorTest {
 
 		assertWithMessage("error should be about missing required Measure")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.PI_SECTION_MISSING_REPORTING_PARAMETER_ACT);
+				.containsExactly(ProblemCode.PI_SECTION_MISSING_REPORTING_PARAMETER_ACT);
 	}
 }

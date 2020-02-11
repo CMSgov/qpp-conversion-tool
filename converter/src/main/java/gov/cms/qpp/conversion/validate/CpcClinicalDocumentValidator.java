@@ -7,8 +7,8 @@ import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
-import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
+import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 import gov.cms.qpp.conversion.util.EnvironmentHelper;
 
@@ -60,25 +60,25 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	protected void performValidation(Node node) {
 		validateSubmissionDate(node);
 
-		LocalizedError addressError = ErrorCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
+		LocalizedProblem addressError = ProblemCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
 			.format(Context.REPORTING_YEAR);
 
 		checkErrors(node)
-			.valueIsNotEmpty(ErrorCode.CPC_PLUS_TIN_REQUIRED, ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER)
+			.valueIsNotEmpty(ProblemCode.CPC_PLUS_TIN_REQUIRED, ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER)
 			.listValuesAreValid(
-				ErrorCode.CPC_PLUS_INVALID_TIN, ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, 9)
-			.valueIsNotEmpty(ErrorCode.CPC_PLUS_NPI_REQUIRED, ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER)
+				ProblemCode.CPC_PLUS_INVALID_TIN, ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, 9)
+			.valueIsNotEmpty(ProblemCode.CPC_PLUS_NPI_REQUIRED, ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER)
 			.listValuesAreValid(
-				ErrorCode.CPC_PLUS_INVALID_NPI, ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, 10)
+				ProblemCode.CPC_PLUS_INVALID_NPI, ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, 10)
 			.valueIsNotEmpty(addressError, ClinicalDocumentDecoder.PRACTICE_SITE_ADDR)
-			.singleValue(ErrorCode.CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED,
+			.singleValue(ProblemCode.CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED,
 					ClinicalDocumentDecoder.PRACTICE_ID)
-			.valueIsNotEmpty(ErrorCode.CPC_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.PRACTICE_ID)
-			.childMinimum(ErrorCode.CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED,
+			.valueIsNotEmpty(ProblemCode.CPC_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.PRACTICE_ID)
+			.childMinimum(ProblemCode.CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED,
 					1, TemplateId.MEASURE_SECTION_V3);
 
 		checkWarnings(node)
-			.doesNotHaveChildren(ErrorCode.CPC_PLUS_NO_IA_OR_PI, TemplateId.IA_SECTION, TemplateId.PI_SECTION);
+			.doesNotHaveChildren(ProblemCode.CPC_PLUS_NO_IA_OR_PI, TemplateId.IA_SECTION, TemplateId.PI_SECTION);
 
 		validateApmEntityId(node);
 		if (hasTinAndNpi(node)) {
@@ -102,7 +102,7 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 		}
 
 		if (!ApmEntityIds.idExists(apmEntityId)) {
-			addError(Detail.forErrorAndNode(ErrorCode.CPC_CLINICAL_DOCUMENT_INVALID_APM, node));
+			addError(Detail.forProblemAndNode(ProblemCode.CPC_CLINICAL_DOCUMENT_INVALID_APM, node));
 		}
 	}
 
@@ -128,9 +128,9 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 		int numOfNpis = Arrays.asList(
 			node.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER).split(",")).size();
 		if (numOfTins > numOfNpis) {
-			addError(Detail.forErrorAndNode(ErrorCode.CPC_PLUS_MISSING_NPI, node));
+			addError(Detail.forProblemAndNode(ProblemCode.CPC_PLUS_MISSING_NPI, node));
 		} else if (numOfNpis > numOfTins) {
-			addError(Detail.forErrorAndNode(ErrorCode.CPC_PLUS_MISSING_TIN, node));
+			addError(Detail.forProblemAndNode(ProblemCode.CPC_PLUS_MISSING_TIN, node));
 		}
 	}
 
@@ -147,8 +147,8 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 		LocalDate endDate = endDate();
 		if (now().isAfter(endDate)) {
 			String formatted = endDate.format(END_DATE_FORMAT);
-			addError(Detail.forErrorAndNode(
-				ErrorCode.CPC_PLUS_SUBMISSION_ENDED.format(formatted,
+			addError(Detail.forProblemAndNode(
+				ProblemCode.CPC_PLUS_SUBMISSION_ENDED.format(formatted,
 					EnvironmentHelper.getOrDefault(CPC_PLUS_CONTACT_EMAIL, DEFAULT_CPC_PLUS_CONTACT_EMAIL)),
 				node));
 		}

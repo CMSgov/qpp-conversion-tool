@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 class AciMeasurePerformedRnRValidatorTest {
@@ -42,7 +42,7 @@ class AciMeasurePerformedRnRValidatorTest {
 		List<Detail> errors = run();
 		assertWithMessage("Should result in a MEASURE_ID_IS_REQUIRED error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.PI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR);
+				.containsExactly(ProblemCode.PI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR);
 	}
 
 	@Test
@@ -51,7 +51,7 @@ class AciMeasurePerformedRnRValidatorTest {
 		List<Detail> errors = run();
 		assertWithMessage("Validation error size should be 2")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.PI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT);
+				.containsExactly(ProblemCode.PI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT);
 	}
 
 	private List<Detail> run() {

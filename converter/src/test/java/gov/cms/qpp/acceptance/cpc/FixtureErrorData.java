@@ -1,6 +1,6 @@
 package gov.cms.qpp.acceptance.cpc;
 
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class FixtureErrorData {
 	private List<Object> subs;
 
 	/**
-	 * Index value for a {@link ErrorCode} that pertains to this fixture.
+	 * Index value for a {@link ProblemCode} that pertains to this fixture.
 	 *
 	 * @return error code
 	 */
@@ -42,7 +42,7 @@ public class FixtureErrorData {
 
 	/**
 	 * A collection of substitution values to be used in formatting the
-	 * {@link ErrorCode}'s message.
+	 * {@link ProblemCode}'s message.
 	 *
 	 * @return collection of substitution values
 	 */
@@ -55,13 +55,13 @@ public class FixtureErrorData {
 	}
 
 	/**
-	 * Get or generate an {@link ErrorCode}'s message.
+	 * Get or generate an {@link ProblemCode}'s message.
 	 *
 	 * @return generated error message
 	 */
 	public String getMessage() {
 		if (message == null) {
-			ErrorCode ec = ErrorCode.getByCode(errorCode);
+			ProblemCode ec = ProblemCode.getByCode(errorCode);
 			message = (subs != null) ? ec.format(subs.toArray()).getMessage() : ec.getMessage();
 		}
 		return message;

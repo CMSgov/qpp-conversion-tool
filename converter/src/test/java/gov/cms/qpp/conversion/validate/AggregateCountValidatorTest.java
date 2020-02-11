@@ -11,7 +11,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 
@@ -37,7 +37,7 @@ class AggregateCountValidatorTest {
 
 		assertWithMessage("Should result in a value error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(TemplateId.PI_NUMERATOR.name(), 0));
+				.containsExactly(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(TemplateId.PI_NUMERATOR.name(), 0));
 	}
 
 	@Test
@@ -51,7 +51,7 @@ class AggregateCountValidatorTest {
 
 		assertWithMessage("Should result in a type error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER);
+				.containsExactly(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER);
 	}
 
 	@Test

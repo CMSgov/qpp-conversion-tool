@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 class AciNumeratorDenominatorValidatorTest {
@@ -65,7 +65,7 @@ class AciNumeratorDenominatorValidatorTest {
 
 		assertWithMessage("error should be about missing numerator denominator measure name")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.PI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID);
+				.containsExactly(ProblemCode.PI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID);
 	}
 
 	@Test
@@ -93,7 +93,7 @@ class AciNumeratorDenominatorValidatorTest {
 
 		assertWithMessage("error should be about invalid parent node")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.PI_NUMERATOR_DENOMINATOR_PARENT_NOT_PI_SECTION);
+				.containsExactly(ProblemCode.PI_NUMERATOR_DENOMINATOR_PARENT_NOT_PI_SECTION);
 	}
 
 	@Test
@@ -112,7 +112,7 @@ class AciNumeratorDenominatorValidatorTest {
 
 		assertWithMessage("error should be about no child nodes")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.PI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN);
+				.containsExactly(ProblemCode.PI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN);
 	}
 
 	@Test
@@ -137,7 +137,7 @@ class AciNumeratorDenominatorValidatorTest {
 
 		assertWithMessage("error should be about missing Numerator element")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.PI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
+				.containsExactly(ProblemCode.PI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
 					.format(AciNumeratorValidator.NUMERATOR_NAME));
 	}
 
@@ -163,7 +163,7 @@ class AciNumeratorDenominatorValidatorTest {
 
 		assertWithMessage("error should be about missing Denominator element")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.PI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
+				.containsExactly(ProblemCode.PI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
 					.format(AciDenominatorValidator.DENOMINATOR_NAME));
 	}
 
@@ -191,7 +191,7 @@ class AciNumeratorDenominatorValidatorTest {
 
 		assertWithMessage("error should be about too many Numerator nodes")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.PI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
+				.containsExactly(ProblemCode.PI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
 					.format(AciNumeratorValidator.NUMERATOR_NAME));
 	}
 
@@ -219,7 +219,7 @@ class AciNumeratorDenominatorValidatorTest {
 
 		assertWithMessage("error should be about too many Denominator nodes")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.PI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
+				.containsExactly(ProblemCode.PI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
 					.format(AciDenominatorValidator.DENOMINATOR_NAME));
 	}
 }

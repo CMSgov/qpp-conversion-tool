@@ -11,7 +11,7 @@ import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 class CpcPerformancePeriodValidationTest {
@@ -42,7 +42,7 @@ class CpcPerformancePeriodValidationTest {
 
 		assertWithMessage("Should result in a performance start error")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.CPC_PERFORMANCE_PERIOD_START);
+				.containsExactly(ProblemCode.CPC_PERFORMANCE_PERIOD_START);
 	}
 
 	@Test
@@ -51,6 +51,6 @@ class CpcPerformancePeriodValidationTest {
 		List<Detail> details = cpcValidator.validateSingleNode(node).getErrors();
 		assertWithMessage("Should result in a performance end error")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.CPC_PERFORMANCE_PERIOD_END);
+				.containsExactly(ProblemCode.CPC_PERFORMANCE_PERIOD_END);
 	}
 }

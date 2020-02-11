@@ -3,7 +3,7 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 
 /**
  * Validates IaMeasure Node - expects a child MEASURE_PERFORMED with a  Y or N value
@@ -25,6 +25,6 @@ public class IaMeasureValidator extends NodeValidator {
 	@Override
 	protected void performValidation(Node node) {
 		checkErrors(node)
-				.childExact(ErrorCode.IA_MEASURE_INCORRECT_CHILDREN_COUNT, 1, TemplateId.MEASURE_PERFORMED);
+				.childExact(ProblemCode.IA_MEASURE_INCORRECT_CHILDREN_COUNT, 1, TemplateId.MEASURE_PERFORMED);
 	}
 }

@@ -3,18 +3,18 @@ package gov.cms.qpp.conversion.model.error.correspondence;
 import com.google.common.truth.Correspondence;
 
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 
-public final class DetailsCodeEquals implements Correspondence.BinaryPredicate<Detail, ErrorCode> {
+public final class DetailsCodeEquals implements Correspondence.BinaryPredicate<Detail, ProblemCode> {
 
-	public static Correspondence<Detail, ErrorCode> INSTANCE = Correspondence.from(new DetailsCodeEquals(), "Compare a Detail and an ErrorCode");
+	public static Correspondence<Detail, ProblemCode> INSTANCE = Correspondence.from(new DetailsCodeEquals(), "Compare a Detail and an ProblemCode");
 
 	@Override
-	public boolean apply(Detail actual, ErrorCode expected) {
+	public boolean apply(Detail actual, ProblemCode expected) {
 		if (actual == null) {
 			return expected == null;
 		}
-		ErrorCode error = ErrorCode.getByCode(actual.getErrorCode());
+		ProblemCode error = ProblemCode.getByCode(actual.getErrorCode());
 		return error == expected;
 	}
 

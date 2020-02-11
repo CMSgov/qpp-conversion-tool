@@ -11,7 +11,7 @@ import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 class ReportingParametersActValidatorTest {
@@ -40,7 +40,7 @@ class ReportingParametersActValidatorTest {
 
 		List<Detail> error = reportingParametersActValidator.validateSingleNode(reportingParametersActNode).getErrors();
 		assertThat(error).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(ErrorCode.REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START);
+			.contains(ProblemCode.REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START);
 	}
 
 	@Test
@@ -49,7 +49,7 @@ class ReportingParametersActValidatorTest {
 
 		List<Detail> error = reportingParametersActValidator.validateSingleNode(reportingParametersActNode).getErrors();
 		assertThat(error).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(ErrorCode.REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_END);
+			.contains(ProblemCode.REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_END);
 	}
 
 	@Test
@@ -57,7 +57,7 @@ class ReportingParametersActValidatorTest {
 		Node reportingParametersActNode = createReportingParametersAct(PERFORMANCE_START, PERFORMANCE_END, null);
 		List<Detail> error = reportingParametersActValidator.validateSingleNode(reportingParametersActNode).getErrors();
 		assertThat(error).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(ErrorCode.REPORTING_PARAMETERS_MISSING_PERFORMANCE_YEAR);
+			.contains(ProblemCode.REPORTING_PARAMETERS_MISSING_PERFORMANCE_YEAR);
 	}
 
 	@Test
@@ -65,7 +65,7 @@ class ReportingParametersActValidatorTest {
 		Node reportingParametersActNode = createReportingParametersAct(TIMESTAMPED_DATE, PERFORMANCE_END, PERFORMANCE_YEAR);
 		List<Detail> error = reportingParametersActValidator.validateSingleNode(reportingParametersActNode).getErrors();
 		assertThat(error).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(ErrorCode.INVALID_PERFORMANCE_PERIOD_FORMAT.format(TIMESTAMPED_DATE));
+			.contains(ProblemCode.INVALID_PERFORMANCE_PERIOD_FORMAT.format(TIMESTAMPED_DATE));
 	}
 
 	@Test
@@ -73,7 +73,7 @@ class ReportingParametersActValidatorTest {
 		Node reportingParametersActNode = createReportingParametersAct(PERFORMANCE_START, TIMESTAMPED_DATE, PERFORMANCE_YEAR);
 		List<Detail> error = reportingParametersActValidator.validateSingleNode(reportingParametersActNode).getErrors();
 		assertThat(error).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(ErrorCode.INVALID_PERFORMANCE_PERIOD_FORMAT.format(TIMESTAMPED_DATE));
+			.contains(ProblemCode.INVALID_PERFORMANCE_PERIOD_FORMAT.format(TIMESTAMPED_DATE));
 	}
 
 	@Test

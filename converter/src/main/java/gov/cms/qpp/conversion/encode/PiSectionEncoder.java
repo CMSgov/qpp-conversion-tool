@@ -12,7 +12,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 
 import java.util.List;
 import java.util.Optional;
@@ -77,7 +77,7 @@ public class PiSectionEncoder extends QppOutputEncoder {
 					childEncoder.encode(childWrapper, currentChild);
 					measurementsWrapper.put(childWrapper);
 				} else {
-					addValidationError(Detail.forErrorAndNode(ErrorCode.ENCODER_MISSING, currentChild));
+					addValidationError(Detail.forProblemAndNode(ProblemCode.ENCODER_MISSING, currentChild));
 				}
 			}
 		}
