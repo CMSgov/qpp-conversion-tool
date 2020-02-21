@@ -78,6 +78,12 @@
 							<artifactId>error_prone_core</artifactId>
 							<version>2.3.3</version>
 						</dependency>
+
+						<dependency>
+							<groupId>org.reflections</groupId>
+							<artifactId>reflections</artifactId>
+							<version>0.9.9</version>
+						</dependency>
 					</dependencies>
 				</plugin>
 
@@ -373,7 +379,7 @@
 			<dependency>
 				<groupId>org.reflections</groupId>
 				<artifactId>reflections</artifactId>
-				<version>0.9.12</version>
+				<version>0.9.9</version>
 			</dependency>
 
 			<dependency>
