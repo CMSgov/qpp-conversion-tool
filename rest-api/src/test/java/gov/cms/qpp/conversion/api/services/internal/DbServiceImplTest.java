@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.api.services.internal;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
+import com.amazonaws.services.dynamodbv2.datamodeling.QueryResultPage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +21,7 @@ import gov.cms.qpp.test.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -108,18 +110,15 @@ class DbServiceImplTest {
 	@Test
 	@SuppressWarnings("unchecked")
 	void testGetUnprocessedCpcPlusMetaData() {
-		int itemsPerPartition = 2;
+		int itemsPerPartition = 4;
 
-		PaginatedQueryList<Metadata> mockMetadataPage = mock(PaginatedQueryList.class);
-		Answer<Stream<Metadata>> answer = (InvocationOnMock invocation) -> Stream.generate(Metadata::new).limit(itemsPerPartition);
-
-		when(mockMetadataPage.stream()).thenAnswer(answer);
-		when(dbMapper.query(eq(Metadata.class), any(DynamoDBQueryExpression.class)))
-			.thenReturn(mockMetadataPage);
+		QueryResultPage<Metadata> mockMetadataPage = mock(QueryResultPage.class);
+		when(mockMetadataPage.getResults()).thenReturn(Stream.generate(Metadata::new).limit(itemsPerPartition).collect(Collectors.toList()));
+		when(dbMapper.queryPage(eq(Metadata.class), any(DynamoDBQueryExpression.class))).thenReturn(mockMetadataPage);
 
 		List<Metadata> metaDataList = underTest.getUnprocessedCpcPlusMetaData();
 
-		verify(dbMapper, times(Constants.CPC_DYNAMO_PARTITIONS)).query(eq(Metadata.class), any(DynamoDBQueryExpression.class));
+		verify(dbMapper, times(Constants.CPC_DYNAMO_PARTITIONS)).queryPage(eq(Metadata.class), any(DynamoDBQueryExpression.class));
 		assertThat(metaDataList).hasSize(itemsPerPartition * Constants.CPC_DYNAMO_PARTITIONS);
 	}
 
