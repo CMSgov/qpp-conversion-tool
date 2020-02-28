@@ -112,13 +112,16 @@ class DbServiceImplTest {
 	void testGetUnprocessedCpcPlusMetaData() {
 		int itemsPerPartition = 4;
 
-		QueryResultPage<Metadata> mockMetadataPage = mock(QueryResultPage.class);
-		when(mockMetadataPage.getResults()).thenReturn(Stream.generate(Metadata::new).limit(itemsPerPartition).collect(Collectors.toList()));
-		when(dbMapper.queryPage(eq(Metadata.class), any(DynamoDBQueryExpression.class))).thenReturn(mockMetadataPage);
+		PaginatedQueryList<Metadata> mockMetadataPage = mock(PaginatedQueryList.class);
+		Answer<Stream<Metadata>> answer = (InvocationOnMock invocation) -> Stream.generate(Metadata::new).limit(itemsPerPartition);
+
+		when(mockMetadataPage.stream()).thenAnswer(answer);
+		when(dbMapper.query(eq(Metadata.class), any(DynamoDBQueryExpression.class)))
+			.thenReturn(mockMetadataPage);
 
 		List<Metadata> metaDataList = underTest.getUnprocessedCpcPlusMetaData();
 
-		verify(dbMapper, times(Constants.CPC_DYNAMO_PARTITIONS)).queryPage(eq(Metadata.class), any(DynamoDBQueryExpression.class));
+		verify(dbMapper, times(Constants.CPC_DYNAMO_PARTITIONS)).query(eq(Metadata.class), any(DynamoDBQueryExpression.class));
 		assertThat(metaDataList).hasSize(itemsPerPartition * Constants.CPC_DYNAMO_PARTITIONS);
 	}
 

@@ -91,7 +91,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 					.withExpressionAttributeValues(valueMap)
 					.withConsistentRead(false);
 
-				return mapper.get().queryPage(Metadata.class, metadataQuery).getResults().stream();
+				return mapper.get().query(Metadata.class, metadataQuery).stream();
 			}).flatMap(Function.identity()).collect(Collectors.toList());
 		} else {
 			API_LOG.warn("Could not get unprocessed CPC+ metadata because the dynamodb mapper is absent");
