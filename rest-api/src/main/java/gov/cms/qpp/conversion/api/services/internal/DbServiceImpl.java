@@ -81,17 +81,19 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 			return IntStream.range(0, Constants.CPC_DYNAMO_PARTITIONS).mapToObj(partition -> {
 				Map<String, AttributeValue> valueMap = new HashMap<>();
 				valueMap.put(":cpcValue", new AttributeValue().withS(Constants.CPC_DYNAMO_PARTITION_START + partition));
-				valueMap.put(":cpcProcessedValue", new AttributeValue().withS("false#" + cpcConversionStartDate));
+				valueMap.put(":cpcProcessedValue", new AttributeValue().withS("false"));
+				valueMap.put(":createDate", new AttributeValue().withS(cpcConversionStartDate));
 
 				DynamoDBQueryExpression<Metadata> metadataQuery = new DynamoDBQueryExpression<Metadata>()
 					.withIndexName("Cpc-CpcProcessed_CreateDate-index")
 					.withKeyConditionExpression(Constants.DYNAMO_CPC_ATTRIBUTE + " = :cpcValue and begins_with("
 							+ Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE + ", :cpcProcessedValue)")
+					.withFilterExpression(Constants.DYNAMO_CREATE_DATE_ATTRIBUTE + " > :createDate")
 					.withExpressionAttributeValues(valueMap)
 					.withConsistentRead(false)
 					.withLimit(LIMIT);
 
-				return mapper.get().queryPage(Metadata.class, metadataQuery).getResults().stream();
+				return mapper.get().query(Metadata.class, metadataQuery).stream();
 			}).flatMap(Function.identity()).collect(Collectors.toList());
 		} else {
 			API_LOG.warn("Could not get unprocessed CPC+ metadata because the dynamodb mapper is absent");
