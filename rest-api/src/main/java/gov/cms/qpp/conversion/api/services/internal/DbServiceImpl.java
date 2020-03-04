@@ -90,8 +90,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 							+ Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE + ", :cpcProcessedValue)")
 					.withFilterExpression(Constants.DYNAMO_CREATE_DATE_ATTRIBUTE + " > :createDate")
 					.withExpressionAttributeValues(valueMap)
-					.withConsistentRead(false)
-					.withLimit(LIMIT);
+					.withConsistentRead(false);
 
 				return mapper.get().query(Metadata.class, metadataQuery).stream();
 			}).flatMap(Function.identity()).collect(Collectors.toList());
