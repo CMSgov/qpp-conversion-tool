@@ -4,7 +4,7 @@ import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.util.DuplicationCheckHelper;
 
 /**
@@ -26,11 +26,11 @@ public class AggregateCountValidator extends NodeValidator {
 	@Override
 	protected void performValidation(Node node) {
 		checkErrors(node)
-			.singleValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR
+			.singleValue(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR
 				.format(node.getParent().getType().name(),
 					DuplicationCheckHelper.calculateDuplications(node, AggregateCountDecoder.AGGREGATE_COUNT)),
 				AggregateCountDecoder.AGGREGATE_COUNT)
-			.intValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER, AggregateCountDecoder.AGGREGATE_COUNT);
+			.intValue(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER, AggregateCountDecoder.AGGREGATE_COUNT);
 
 	}
 }

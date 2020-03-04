@@ -5,7 +5,7 @@ import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 import org.junit.jupiter.api.Test;
@@ -41,7 +41,7 @@ class QualitySectionEncoderTest {
 		encoder.internalEncode(jsonWrapper, qualitySectionNode);
 
 		assertThat(encoder.getErrors()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.ENCODER_MISSING);
+				.containsExactly(ProblemCode.ENCODER_MISSING);
 	}
 
 	@Test

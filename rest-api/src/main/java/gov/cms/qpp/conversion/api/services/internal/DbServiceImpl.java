@@ -1,4 +1,4 @@
-package gov.cms.qpp.conversion.api.services;
+package gov.cms.qpp.conversion.api.services.internal;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
+import gov.cms.qpp.conversion.api.services.DbService;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,7 +32,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 		implements DbService {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(DbServiceImpl.class);
-	private static final int LIMIT = 10;
+	private static final int LIMIT = 4;
 
 	private final Optional<DynamoDBMapper> mapper;
 	private final Environment environment;
@@ -95,7 +96,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 				return mapper.get().query(Metadata.class, metadataQuery).stream();
 			}).flatMap(Function.identity()).collect(Collectors.toList());
 		} else {
-			API_LOG.warn("Could not get unprocessed CPC+ metadata because the dynamodb mapper is absent");
+			API_LOG.warn("Could ngot get unprocessed CPC+ metadata because the dynamodb mapper is absent");
 			return Collections.emptyList();
 		}
 	}
@@ -131,5 +132,10 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 			API_LOG.warn("Skipping writing of item to DynamoDB with UUID {} because the dynamodb mapper is absent", meta.getUuid());
 		}
 		return meta;
+	}
+
+	@Override
+	protected String getActionName() {
+		return "Write Metadata";
 	}
 }

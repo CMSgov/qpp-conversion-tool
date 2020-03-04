@@ -34,6 +34,7 @@ public class SupplementalDataRaceDecoderTest {
 
 	@BeforeEach
 	void before() throws XmlException {
+		context = new Context();
 		decodeNodeFromFile(successFile);
 	}
 
@@ -80,8 +81,6 @@ public class SupplementalDataRaceDecoderTest {
 	}
 
 	private void decodeNodeFromFile(String filename) throws XmlException {
-		context = new Context();
-		SupplementalDataRaceDecoder decoder = new SupplementalDataRaceDecoder(context);
 		QrdaDecoderEngine engine = new QrdaDecoderEngine(context);
 		root = engine.decode(XmlUtils.stringToDom(filename));
 	}

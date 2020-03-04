@@ -17,8 +17,8 @@ import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
-import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
+import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
@@ -81,7 +81,7 @@ class QualityMeasureIdValidatorTest {
 
 	@Test
 	void validateMissingMeasureId() {
-		LocalizedError localizedError = ErrorCode.MISSING_OR_DUPLICATED_MEASURE_GUID;
+		LocalizedProblem localizedProblem = ProblemCode.MISSING_OR_DUPLICATED_MEASURE_GUID;
 		Node measureReferenceResultsNode = createMeasureReferenceResultsNode(false, true);
 
 		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
@@ -89,7 +89,7 @@ class QualityMeasureIdValidatorTest {
 		assertWithMessage("Incorrect validation error.")
 			.that(details)
 			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(localizedError);
+			.containsExactly(localizedProblem);
 	}
 
 	@Test
@@ -100,20 +100,20 @@ class QualityMeasureIdValidatorTest {
 
 		assertWithMessage("Incorrect validation error.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.CHILD_MEASURE_MISSING);
+				.containsExactly(ProblemCode.CHILD_MEASURE_MISSING);
 	}
 
 	@Test
 	void validateMissingMeasureIdAndMeasure() {
-		LocalizedError localizedError = ErrorCode.MISSING_OR_DUPLICATED_MEASURE_GUID;
+		LocalizedProblem localizedProblem = ProblemCode.MISSING_OR_DUPLICATED_MEASURE_GUID;
 		Node measureReferenceResultsNode = createMeasureReferenceResultsNode(false, false);
 
 		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 
 		assertWithMessage("Incorrect validation error.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(localizedError,
-						ErrorCode.CHILD_MEASURE_MISSING);
+				.containsExactly(localizedProblem,
+						ProblemCode.CHILD_MEASURE_MISSING);
 	}
 
 	@Test
@@ -126,9 +126,9 @@ class QualityMeasureIdValidatorTest {
 
 	@Test
 	void testDenominatorExclusionMissing() {
-		LocalizedError incorrectCount = ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format(
+		LocalizedProblem incorrectCount = ProblemCode.POPULATION_CRITERIA_COUNT_INCORRECT.format(
 				"CMS165v5", 1, SubPopulationLabel.DENEX.name(), 0);
-		LocalizedError incorrectUuid = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(
+		LocalizedProblem incorrectUuid = ProblemCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(
 				"CMS165v5", SubPopulationLabel.DENEX.name(), REQUIRES_DENOM_EXCLUSION_DENEX_GUID);
 
 		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_DENOM_EXCLUSION_GUID)
@@ -164,9 +164,9 @@ class QualityMeasureIdValidatorTest {
 
 	@Test
 	void testInternalMissingDenexcepMeasure() {
-		LocalizedError countMessage =
-			ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS68v6", 1, SubPopulationLabel.DENEXCEP.name(), 0);
-		LocalizedError uuidMessage = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(
+		LocalizedProblem countMessage =
+			ProblemCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS68v6", 1, SubPopulationLabel.DENEXCEP.name(), 0);
+		LocalizedProblem uuidMessage = ProblemCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(
 				"CMS68v6", SubPopulationLabel.DENEXCEP.name(), REQUIRES_DENOM_EXCEPTION_DENEXCEP_GUID);
 
 		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_DENOM_EXCEPTION_GUID)
@@ -192,8 +192,8 @@ class QualityMeasureIdValidatorTest {
 
 	@Test
 	void testInternalDenexcepMultipleSupPopulationsInvalidMeasureId() {
-		LocalizedError message =
-			ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(
+		LocalizedProblem message =
+			ProblemCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(
 				"CMS52v5", SubPopulationLabel.DENEXCEP.name(), MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID);
 
 		Node measureReferenceResultsNode = createCorrectMeasureReference(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
@@ -210,10 +210,10 @@ class QualityMeasureIdValidatorTest {
 
 	@Test
 	void testInternalDenexcepMultipleSupPopulationsMissingMeasureId() {
-		LocalizedError countMessage =
-			ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS52v5", 2, SubPopulationLabel.DENEXCEP.name(), 1);
-		LocalizedError uuidMessage =
-			ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5", SubPopulationLabel.DENEXCEP.name(),
+		LocalizedProblem countMessage =
+			ProblemCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS52v5", 2, SubPopulationLabel.DENEXCEP.name(), 1);
+		LocalizedProblem uuidMessage =
+			ProblemCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5", SubPopulationLabel.DENEXCEP.name(),
 				MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID);
 
 		Node measureReferenceResultsNode = createCorrectMeasureReference(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
@@ -235,8 +235,8 @@ class QualityMeasureIdValidatorTest {
 
 		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 
-		LocalizedError expectedErrorMessage =
-			ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS52v5", 3, SubPopulationLabel.NUMER.name(), 4);
+		LocalizedProblem expectedErrorMessage =
+			ProblemCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS52v5", 3, SubPopulationLabel.NUMER.name(), 4);
 		assertWithMessage("Incorrect validation error.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(expectedErrorMessage);
@@ -250,10 +250,10 @@ class QualityMeasureIdValidatorTest {
 
 		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 
-		LocalizedError expectedErrorMessage =
-			ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS52v5", 3, SubPopulationLabel.NUMER.name(), 2);
-		LocalizedError expectedUuidErrorMessage =
-			ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5", SubPopulationLabel.NUMER.name(),
+		LocalizedProblem expectedErrorMessage =
+			ProblemCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS52v5", 3, SubPopulationLabel.NUMER.name(), 2);
+		LocalizedProblem expectedUuidErrorMessage =
+			ProblemCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5", SubPopulationLabel.NUMER.name(),
 				MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID);
 
 		assertWithMessage("Incorrect validation error.")
@@ -270,7 +270,7 @@ class QualityMeasureIdValidatorTest {
 
 		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 
-		LocalizedError expectedErrorMessage = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5",
+		LocalizedProblem expectedErrorMessage = ProblemCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5",
 				SubPopulationLabel.NUMER.name(), MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID);
 
 		assertWithMessage("Incorrect validation error.")
@@ -310,7 +310,7 @@ class QualityMeasureIdValidatorTest {
 		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 		assertWithMessage("Must contain the correct error message.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.DENOMINATOR_COUNT_INVALID);
+				.containsExactly(ProblemCode.DENOMINATOR_COUNT_INVALID);
 	}
 
 	@Test
@@ -320,7 +320,7 @@ class QualityMeasureIdValidatorTest {
 				.build();
 
 		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
-		LocalizedError expectedErrorMessage = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS68v6",
+		LocalizedProblem expectedErrorMessage = ProblemCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS68v6",
 				PERFORMANCE_RATE_ID, REQUIRES_DENOM_EXCEPTION_NUMER_GUID);
 		assertWithMessage("Must contain the correct error message.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -341,7 +341,7 @@ class QualityMeasureIdValidatorTest {
 				MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER2_GUID),
 			",",
 			"or");
-		LocalizedError expectedErrorMessage = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5",
+		LocalizedProblem expectedErrorMessage = ProblemCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5",
 			PERFORMANCE_RATE_ID, expectedUuids);
 
 		assertWithMessage("Must contain the correct error message.")

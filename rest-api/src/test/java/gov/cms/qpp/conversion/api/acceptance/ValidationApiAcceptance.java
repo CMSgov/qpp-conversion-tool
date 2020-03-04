@@ -9,7 +9,7 @@ import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import gov.cms.qpp.conversion.api.services.ValidationServiceImpl;
+import gov.cms.qpp.conversion.api.services.internal.ValidationServiceImpl;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.xml.XmlException;

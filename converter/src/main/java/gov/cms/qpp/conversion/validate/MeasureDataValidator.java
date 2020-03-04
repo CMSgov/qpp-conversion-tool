@@ -5,7 +5,7 @@ import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.util.DuplicationCheckHelper;
 
 
@@ -35,18 +35,18 @@ public class MeasureDataValidator extends NodeValidator {
 		}
 
 		Checker checker = checkErrors(node)
-				.hasChildren(ErrorCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(populationId))
-				.childExact(ErrorCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(populationId),
+				.hasChildren(ProblemCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(populationId))
+				.childExact(ProblemCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(populationId),
 					1, TemplateId.PI_AGGREGATE_COUNT);
 
 		if (!checker.shouldShortcut()) {
 			Node child = node.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
 			checkErrors(child)
-					.singleValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(node.getType().name(),
+					.singleValue(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(node.getType().name(),
 						DuplicationCheckHelper.calculateDuplications(child, AggregateCountDecoder.AGGREGATE_COUNT)),
 						AggregateCountDecoder.AGGREGATE_COUNT)
-					.intValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER, AggregateCountDecoder.AGGREGATE_COUNT)
-					.greaterThan(ErrorCode.MEASURE_DATA_VALUE_NOT_INTEGER.format(populationId), -1);
+					.intValue(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER, AggregateCountDecoder.AGGREGATE_COUNT)
+					.greaterThan(ProblemCode.MEASURE_DATA_VALUE_NOT_INTEGER.format(populationId), -1);
 		}
 	}
 }

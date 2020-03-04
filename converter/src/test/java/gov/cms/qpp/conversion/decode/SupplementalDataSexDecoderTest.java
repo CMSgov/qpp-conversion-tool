@@ -34,6 +34,7 @@ public class SupplementalDataSexDecoderTest {
 
 	@BeforeEach
 	void before() throws XmlException {
+		context = new Context();
 		decodeNodeFromFile(successFile);
 	}
 
@@ -52,8 +53,6 @@ public class SupplementalDataSexDecoderTest {
 	}
 
 	private void decodeNodeFromFile(String filename) throws XmlException {
-		context = new Context();
-		SupplementalDataSexDecoder decoder = new SupplementalDataSexDecoder(context);
 		QrdaDecoderEngine engine = new QrdaDecoderEngine(context);
 		root = engine.decode(XmlUtils.stringToDom(filename));
 	}

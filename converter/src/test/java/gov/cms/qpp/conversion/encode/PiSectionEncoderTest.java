@@ -4,12 +4,9 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
-import java.util.Map;
-import java.util.Set;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +20,7 @@ import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 
 class PiSectionEncoderTest {
 
@@ -126,7 +123,7 @@ class PiSectionEncoderTest {
 
 		assertThat(piSectionEncoder.getErrors()).isNotNull();
 		assertThat(piSectionEncoder.getErrors().get(0).getMessage())
-				.isEqualTo(ErrorCode.CT_LABEL + "Failed to find an encoder");
+				.isEqualTo(ProblemCode.CT_LABEL + "Failed to find an encoder");
 	}
 
 	@Test

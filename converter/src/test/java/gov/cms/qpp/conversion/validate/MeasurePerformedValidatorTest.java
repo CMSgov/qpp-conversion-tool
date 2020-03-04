@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 /**
@@ -54,6 +54,6 @@ class MeasurePerformedValidatorTest {
 		List<Detail> errors = validator.validateSingleNode(measurePerformedNode).getErrors();
 		assertWithMessage("Should result in a single type error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.IA_MEASURE_INVALID_TYPE);
+				.containsExactly(ProblemCode.IA_MEASURE_INVALID_TYPE);
 	}
 }

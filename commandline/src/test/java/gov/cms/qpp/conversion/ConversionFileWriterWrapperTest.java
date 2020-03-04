@@ -17,8 +17,8 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
-import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
+import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 import gov.cms.qpp.test.helper.JsonTestHelper;
 
 @RunWith(PowerMockRunner.class)
@@ -120,7 +120,7 @@ public class ConversionFileWriterWrapperTest {
 
 		//then
 		assertThat(detail.getMessage())
-				.isEqualTo(ErrorCode.NOT_VALID_QRDA_DOCUMENT.format(Context.REPORTING_YEAR, DocumentationReference.CLINICAL_DOCUMENT).getMessage());
+				.isEqualTo(ProblemCode.NOT_VALID_QRDA_DOCUMENT.format(Context.REPORTING_YEAR, DocumentationReference.CLINICAL_DOCUMENT).getMessage());
 		assertThat(detail.getLocation().getPath())
 				.isEmpty();
 	}
@@ -128,8 +128,8 @@ public class ConversionFileWriterWrapperTest {
 	@Test
 	public void testErrorHasMultipleDetails() throws IOException {
 		//setup
-		LocalizedError firstError = ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format("Numerator", "-1");
-		LocalizedError secondError = ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format("Denominator", "-1");
+		LocalizedProblem firstError = ProblemCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format("Numerator", "-1");
+		LocalizedProblem secondError = ProblemCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format("Denominator", "-1");
 		Path path = Paths.get("src/test/resources/qrda_bad_denominator.xml");
 
 		//when

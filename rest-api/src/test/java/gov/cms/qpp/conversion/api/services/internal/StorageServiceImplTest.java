@@ -1,4 +1,4 @@
-package gov.cms.qpp.conversion.api.services;
+package gov.cms.qpp.conversion.api.services.internal;
 
 
 import static com.google.common.truth.Truth.assertThat;
@@ -36,6 +36,7 @@ import com.amazonaws.services.s3.transfer.Upload;
 import com.amazonaws.services.s3.transfer.model.UploadResult;
 
 import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.services.internal.StorageServiceImpl;
 import gov.cms.qpp.conversion.util.MeasuredInputStreamSupplier;
 import gov.cms.qpp.test.MockitoExtension;
 

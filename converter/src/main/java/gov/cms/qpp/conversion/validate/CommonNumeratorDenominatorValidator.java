@@ -3,8 +3,8 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
-import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
+import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 
 /**
  * Super class for AciNumeratorValidator and AciDenominatorValidator classes
@@ -25,7 +25,7 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 	 */
 	@Override
 	protected void performValidation(Node node) {
-		Checker checker = checkErrors(node).childExact(format(ErrorCode.NUMERATOR_DENOMINATOR_CHILD_EXACT), 1, TemplateId.PI_AGGREGATE_COUNT);
+		Checker checker = checkErrors(node).childExact(format(ProblemCode.NUMERATOR_DENOMINATOR_CHILD_EXACT), 1, TemplateId.PI_AGGREGATE_COUNT);
 		if (!checker.shouldShortcut()) {
 			validateAggregateCount(
 					node.findFirstNode(TemplateId.PI_AGGREGATE_COUNT));
@@ -45,18 +45,18 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 			aggregateCountValue = "empty";
 		}
 		checkErrors(aggregateCountNode)
-				.singleValue(format(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE, aggregateCountValue),
+				.singleValue(format(ProblemCode.NUMERATOR_DENOMINATOR_INVALID_VALUE, aggregateCountValue),
 					AggregateCountDecoder.AGGREGATE_COUNT)
-				.intValue(format(ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER, aggregateCountValue),
+				.intValue(format(ProblemCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER, aggregateCountValue),
 					AggregateCountDecoder.AGGREGATE_COUNT)
-				.greaterThan(format(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE, aggregateCountValue), -1);
+				.greaterThan(format(ProblemCode.NUMERATOR_DENOMINATOR_INVALID_VALUE, aggregateCountValue), -1);
 	}
 
-	private LocalizedError format(ErrorCode error) {
+	private LocalizedProblem format(ProblemCode error) {
 		return error.format(nodeName, nodeName);
 	}
 
-	private LocalizedError format(ErrorCode error, String value) {
+	private LocalizedProblem format(ProblemCode error, String value) {
 		return error.format(nodeName, value);
 	}
 }

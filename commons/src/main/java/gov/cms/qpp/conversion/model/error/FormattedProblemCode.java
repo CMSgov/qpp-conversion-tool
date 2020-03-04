@@ -4,18 +4,18 @@ import java.util.Objects;
 
 import com.google.common.base.MoreObjects;
 
-public class FormattedErrorCode implements LocalizedError {
+public class FormattedProblemCode implements LocalizedProblem {
 
-	private final ErrorCode errorCode;
+	private final ProblemCode errorCode;
 	private final String message;
 
-	public FormattedErrorCode(ErrorCode errorCode, String message) {
+	public FormattedProblemCode(ProblemCode errorCode, String message) {
 		this.errorCode = errorCode;
 		this.message = message;
 	}
 
 	@Override
-	public ErrorCode getErrorCode() {
+	public ProblemCode getProblemCode() {
 		return errorCode;
 	}
 
@@ -39,7 +39,7 @@ public class FormattedErrorCode implements LocalizedError {
 		}
 
 		if (o.getClass() == getClass()) {
-			FormattedErrorCode that = (FormattedErrorCode) o;
+			FormattedProblemCode that = (FormattedProblemCode) o;
 			return that.errorCode == errorCode && Objects.equals(that.message, message);
 		}
 

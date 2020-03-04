@@ -18,7 +18,7 @@ import java.util.stream.IntStream;
 /**
  * Error codes that may be returned by the converter
  */
-public enum ErrorCode implements LocalizedError {
+public enum ProblemCode implements LocalizedProblem {
 
 	ENCODER_MISSING(1, "Failed to find an encoder"),
 	NOT_VALID_XML_DOCUMENT(2, "The file is not a valid XML document. The file you are submitting is not a "
@@ -162,9 +162,6 @@ public enum ErrorCode implements LocalizedError {
 	MEASURE_SECTION_MISSING_MEASURE(81, "At least one measure is required in a measure section"),
 	TOO_MANY_ERRORS(82, "There are too many errors associated with this QRDA-III file. Showing 100 out of `(Error amount)` errors."
 		+ " Please fix the given errors and re-submit", true),
-	MISSING_CEHRT(83, "CPC+ submissions should contain a CEHRT."
-		+ " Please refer to the `(Submission year's)` IG for more details " + DocumentationReference.CEHRT
-	    + " regarding practice CEHRTs.", true),
 	CPC_PLUS_TIN_REQUIRED(84, "CPC+ QRDA-III Submissions require at least one TIN to be present."),
 	CPC_PLUS_INVALID_TIN(85, "CPC+ QRDA-III Submission TINs require a 9 digit numerical value"),
 	CPC_PLUS_MISSING_TIN(86, "This CPC+ QRDA-III submission is missing a TIN. Please ensure there is a TIN associated with every "
@@ -186,8 +183,8 @@ public enum ErrorCode implements LocalizedError {
 	MEASURE_SECTION_V4_REQUIRED(95, "The Clinical Document must contain one Measure Section v4 with the extension 2017-06-01"),
 	MISSING_API_TIN_NPI_FILE(96, "The APM to TIN/NPI Combination file is missing.");
 
-	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
-			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));
+	private static final Map<Integer, ProblemCode> CODE_TO_VALUE = Arrays.stream(values())
+			.collect(Collectors.toMap(ProblemCode::getCode, Function.identity()));
 	public static final String CT_LABEL = "CT - ";
 
 	private final int code;
@@ -195,11 +192,11 @@ public enum ErrorCode implements LocalizedError {
 	private final boolean hasFormat;
 	private final List<String> messageVariables;
 
-	ErrorCode(int code, String message) {
+	ProblemCode(int code, String message) {
 		this(code, message, false);
 	}
 
-	ErrorCode(int code, String message, boolean hasFormat) {
+	ProblemCode(int code, String message, boolean hasFormat) {
 		this.code = code;
 		this.message = message;
 		this.hasFormat = hasFormat;
@@ -225,7 +222,7 @@ public enum ErrorCode implements LocalizedError {
 	 * Self returning
 	 */
 	@Override
-	public final ErrorCode getErrorCode() {
+	public final ProblemCode getProblemCode() {
 		return this;
 	}
 
@@ -240,10 +237,10 @@ public enum ErrorCode implements LocalizedError {
 	 * @return the formatted version of this error code, or throws an exception if formatting is
 	 * not supported.
 	 */
-	public final LocalizedError format(Object... arguments) {
+	public final LocalizedProblem format(Object... arguments) {
 		if (hasFormat) {
 			String formatted = subValues(arguments);
-			return new FormattedErrorCode(this, formatted);
+			return new FormattedProblemCode(this, formatted);
 		}
 
 		throw new IllegalStateException(this + " does not support formatting");
@@ -256,7 +253,7 @@ public enum ErrorCode implements LocalizedError {
 		return new StringSubstitutor(valueSub, "`(", ")`").replace(getMessage());
 	}
 
-	public static ErrorCode getByCode(int code) {
+	public static ProblemCode getByCode(int code) {
 		return CODE_TO_VALUE.get(code);
 	}
 

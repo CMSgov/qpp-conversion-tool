@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import com.google.common.collect.Sets;
+import com.google.common.collect.ImmutableSet;
 
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
@@ -10,19 +10,14 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.Strata;
-import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 import gov.cms.qpp.conversion.util.SubPopulationHelper;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static gov.cms.qpp.conversion.decode.AggregateCountDecoder.AGGREGATE_COUNT;
 
@@ -36,7 +31,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	private static final String SINGLE_PERFORMANCE_RATE = "singlePerformanceRate";
 	private static final String TRUE = "true";
 	private static final String PERFORMANCE_NOT_MET = "performanceNotMet";
-	private static final Set MULTI_TO_SINGLE_PERF_RATE_MEASURE_ID = Sets.newHashSet("005", "008", "143", "438");
+	private static final Set<String> MULTI_TO_SINGLE_PERF_RATE_MEASURE_ID = ImmutableSet.of("005", "008", "143", "438");
 	private static final String SINGLE_TO_MULTI_PERF_RATE_MEASURE_ID = "370";
 	protected static final String STRATUM_FIELD_NAME = "stratum";
 

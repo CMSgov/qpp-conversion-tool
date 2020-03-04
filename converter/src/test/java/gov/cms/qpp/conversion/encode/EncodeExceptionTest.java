@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static com.google.common.truth.Truth.assertThat;
 
 /**
- * Test to provide Circle CI Coverage on EncodeException
+ * Test to provide coverage on EncodeException
  */
 class EncodeExceptionTest {
 	@Test
