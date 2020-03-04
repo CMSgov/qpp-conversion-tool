@@ -3,7 +3,6 @@ package gov.cms.qpp.conversion.api.services.internal;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
-import com.amazonaws.services.dynamodbv2.datamodeling.QueryResultPage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +20,6 @@ import gov.cms.qpp.test.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -110,7 +108,7 @@ class DbServiceImplTest {
 	@Test
 	@SuppressWarnings("unchecked")
 	void testGetUnprocessedCpcPlusMetaData() {
-		int itemsPerPartition = 4;
+		int itemsPerPartition = 2;
 
 		PaginatedQueryList<Metadata> mockMetadataPage = mock(PaginatedQueryList.class);
 		Answer<Stream<Metadata>> answer = (InvocationOnMock invocation) -> Stream.generate(Metadata::new).limit(itemsPerPartition);
