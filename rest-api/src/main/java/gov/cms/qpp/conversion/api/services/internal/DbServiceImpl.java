@@ -76,9 +76,9 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	public List<Metadata> getUnprocessedCpcPlusMetaData() {
 		if (mapper.isPresent()) {
 			API_LOG.info("Getting list of unprocessed CPC+ metadata...");
-			String cpcConversionStartDate = Optional.of(
-				environment.getProperty(Constants.CPC_PLUS_UNPROCESSED_FILE_SEARCH_DATE_VARIABLE))
-				.orElse("");
+
+			String cpcConversionStartDate = Optional.ofNullable(
+				environment.getProperty(Constants.CPC_PLUS_UNPROCESSED_FILE_SEARCH_DATE_VARIABLE)).orElse("");
 			String year = cpcConversionStartDate.substring(0, 4);
 
 			return IntStream.range(0, Constants.CPC_DYNAMO_PARTITIONS).mapToObj(partition -> {
