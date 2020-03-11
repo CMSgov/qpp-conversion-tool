@@ -18,6 +18,9 @@ import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 
 import java.time.LocalDate;
+import java.time.Year;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -138,7 +141,9 @@ class CpcClinicalDocumentValidatorTest {
 
 	@Test
 	void testCpcPlusSubmissionBeforeEndDate() {
-		System.setProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE, LocalDate.now().plusYears(3).toString());
+		System.setProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE,
+			ZonedDateTime.now(CpcClinicalDocumentValidator.EASTERN_TIME_ZONE).plusYears(3)
+			.format(CpcClinicalDocumentValidator.INPUT_END_DATE_FORMAT));
 		Node clinicalDocument = createValidCpcPlusClinicalDocument();
 		List<Detail> errors = cpcValidator.validateSingleNode(clinicalDocument).getErrors();
 
@@ -149,12 +154,12 @@ class CpcClinicalDocumentValidatorTest {
 	@ParameterizedTest
 	@CsvSource({"meep@mawp.blah, meep@mawp.blah", ", cpcplus@telligen.com"})
 	void testCpcPlusSubmissionAfterEndDate(String systemValue, String expected) {
-		LocalDate endDate = LocalDate.now().minusYears(3);
-		String formattedDate = endDate.format(CpcClinicalDocumentValidator.END_DATE_FORMAT);
+		ZonedDateTime endDate = ZonedDateTime.now(CpcClinicalDocumentValidator.EASTERN_TIME_ZONE).minusYears(3);
+		String formattedDate = endDate.format(CpcClinicalDocumentValidator.OUTPUT_END_DATE_FORMAT);
 		if (systemValue != null) {
 			System.setProperty(CpcClinicalDocumentValidator.CPC_PLUS_CONTACT_EMAIL, systemValue);
 		}
-		System.setProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE, endDate.toString());
+		System.setProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE, endDate.format(CpcClinicalDocumentValidator.INPUT_END_DATE_FORMAT));
 		Node clinicalDocument = createValidCpcPlusClinicalDocument();
 
 		List<Detail> errors = cpcValidator.validateSingleNode(clinicalDocument).getErrors();
