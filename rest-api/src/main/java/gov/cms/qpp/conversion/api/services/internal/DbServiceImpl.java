@@ -78,11 +78,12 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 			API_LOG.info("Getting list of unprocessed CPC+ metadata...");
 			String cpcConversionStartDate = Optional.ofNullable(
 				environment.getProperty(Constants.CPC_PLUS_UNPROCESSED_FILE_SEARCH_DATE_VARIABLE)).orElse("");
+			String year = cpcConversionStartDate.substring(0, 4);
 
 			return IntStream.range(0, Constants.CPC_DYNAMO_PARTITIONS).mapToObj(partition -> {
 				Map<String, AttributeValue> valueMap = new HashMap<>();
 				valueMap.put(":cpcValue", new AttributeValue().withS(Constants.CPC_DYNAMO_PARTITION_START + partition));
-				valueMap.put(":cpcProcessedValue", new AttributeValue().withS("false"));
+				valueMap.put(":cpcProcessedValue", new AttributeValue().withS("false#"+year));
 				valueMap.put(":createDate", new AttributeValue().withS(cpcConversionStartDate));
 
 				DynamoDBQueryExpression<Metadata> metadataQuery = new DynamoDBQueryExpression<Metadata>()
