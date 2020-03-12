@@ -44,7 +44,7 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	/**
 	 * Constant cpc end date format
 	 */
-	static final DateTimeFormatter INPUT_END_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy/MM/dd - HH:mm:ss")
+	static final DateTimeFormatter INPUT_END_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd - HH:mm:ss")
 		.withZone(EASTERN_TIME_ZONE);
 
 	/**
