@@ -3,6 +3,7 @@ Current list of all error messages being output by the converter.
 Any text in the following format `(Example)` are considered variables to be filled in.
 
 
+
 ### Format - Error Code : Error Message
 * 1 : CT - Failed to find an encoder
 * 2 : CT - The file is not a valid XML document. The file you are submitting is not a properly formatted XML document. Please check your document to ensure proper formatting.
