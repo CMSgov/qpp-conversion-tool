@@ -1,6 +1,7 @@
-package main.gov.cms.qpp.metadata.config;
+package gov.cms.qpp.metadata.config;
 
 import com.amazonaws.SdkClientException;
+import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
@@ -11,10 +12,13 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.datamodeling.encryption.providers.DirectKmsMaterialProvider;
 import com.amazonaws.services.kms.AWSKMS;
 import com.amazonaws.services.kms.AWSKMSClientBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import static main.gov.cms.qpp.metadata.config.DynamoDbConfigFactory.createDynamoDbMapper;
+import static gov.cms.qpp.metadata.config.DynamoDbConfigFactory.createDynamoDbMapper;
 
 public class DynamoDbConfig {
+	private static final Logger DB_LOG = LoggerFactory.getLogger(DynamoDbConfig.class);
 
 	private AWSKMS awsKms;
 
@@ -26,11 +30,11 @@ public class DynamoDbConfig {
 		AmazonDynamoDB client;
 
 		try {
-			client = AmazonDynamoDBClientBuilder.defaultClient();
+			client = getClient();
 		} catch (SdkClientException exception) {
-			client = planB();
+			DB_LOG.info("Could not retrieve Credentials!!");
+			client = null;
 		}
-
 		return client;
 	}
 
@@ -38,8 +42,15 @@ public class DynamoDbConfig {
 		return AWSKMSClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
 	}
 
-	AmazonDynamoDB planB() {
-		return AmazonDynamoDBClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
+	AmazonDynamoDB getClient() {
+		EnvironmentVariableCredentialsProvider provider = new EnvironmentVariableCredentialsProvider();
+		provider.getCredentials();
+
+		return AmazonDynamoDBClientBuilder
+			.standard()
+			.withCredentials(provider)
+			.withRegion(Regions.US_EAST_1)
+			.build();
 	}
 
 	public DynamoDBMapper dynamoDbMapper(AmazonDynamoDB dynamoDbClient, String[] args) {

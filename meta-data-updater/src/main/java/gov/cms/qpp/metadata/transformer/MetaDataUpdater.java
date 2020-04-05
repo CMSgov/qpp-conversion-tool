@@ -1,15 +1,15 @@
-package main.gov.cms.qpp.metadata.transformer;
+package gov.cms.qpp.metadata.transformer;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import main.gov.cms.qpp.metadata.config.DynamoDbConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
+import gov.cms.qpp.metadata.config.DynamoDbConfig;
 
 import java.util.HashMap;
 import java.util.List;
@@ -40,10 +40,11 @@ public class MetaDataUpdater {
 	}
 
 	private static List<Metadata> getAllFiles(DynamoDBMapper mapper)  {
+		METADATA_LOGS.info("Retrieving data from partitions...");
 		return IntStream.range(0, Constants.CPC_DYNAMO_PARTITIONS).mapToObj(partition -> {
 			Map<String, AttributeValue> valueMap = new HashMap<>();
 			valueMap.put(":cpcValue", new AttributeValue().withS(Constants.CPC_DYNAMO_PARTITION_START + partition));
-			valueMap.put(":cpcProcessedValue", new AttributeValue().withS("true#2020"));
+			valueMap.put(":cpcProcessedValue", new AttributeValue().withS("false#2020"));
 
 			DynamoDBQueryExpression<Metadata> metadataQuery = new DynamoDBQueryExpression<Metadata>()
 				.withIndexName("Cpc-CpcProcessed_CreateDate-index")
@@ -69,7 +70,7 @@ public class MetaDataUpdater {
 					itemPosition);
 				pauseExecution();
 			}
-			metadata.setCpcProcessed(false);
+			metadata.setCpcProcessed(true);
 			mapper.save(metadata);
 		});
 		METADATA_LOGS.info("Finished updating items...");

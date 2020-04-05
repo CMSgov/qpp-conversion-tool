@@ -1,4 +1,4 @@
-package main.gov.cms.qpp.metadata.config;
+package gov.cms.qpp.metadata.config;
 
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
