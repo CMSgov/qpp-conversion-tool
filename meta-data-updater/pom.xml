@@ -54,7 +54,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>gov.cms.qpp.metadata.transformer.MetaDataUpdater</mainClass>
+							<mainClass>main.gov.cms.qpp.metadata.transformer.MetaDataUpdater</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
