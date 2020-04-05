@@ -70,7 +70,7 @@ public class MetaDataUpdater {
 					itemPosition);
 				pauseExecution();
 			}
-			metadata.setCpcProcessed(true);
+			metadata.setCpcProcessed(false);
 			mapper.save(metadata);
 		});
 		METADATA_LOGS.info("Finished updating items...");
