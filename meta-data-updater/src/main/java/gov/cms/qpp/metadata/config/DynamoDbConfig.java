@@ -43,12 +43,8 @@ public class DynamoDbConfig {
 	}
 
 	AmazonDynamoDB getClient() {
-		EnvironmentVariableCredentialsProvider provider = new EnvironmentVariableCredentialsProvider();
-		provider.getCredentials();
-
 		return AmazonDynamoDBClientBuilder
 			.standard()
-			.withCredentials(provider)
 			.withRegion(Regions.US_EAST_1)
 			.build();
 	}
