@@ -65,8 +65,4 @@ public class DynamoDbConfig {
 	AttributeTransformer encryptionTransformer(String kmsKey) {
 		return new AttributeEncryptor(new DirectKmsMaterialProvider(awsKms, kmsKey));
 	}
-
-	DynamoDBMapperConfig getDynamoDbMapperConfig() {
-		return DynamoDBMapperConfig.builder().build();
-	}
 }

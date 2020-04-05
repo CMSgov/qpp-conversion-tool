@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class MetaDataUpdater {
-	private static final Logger logs = LoggerFactory.getLogger(MetaDataUpdater.class);
+	private static final Logger METADATA_LOGS = LoggerFactory.getLogger(MetaDataUpdater.class);
 
 	/**
 	 * Main method for handling the export and import of tables.
@@ -28,14 +28,14 @@ public class MetaDataUpdater {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		if (args.length == 3) {
+		if (args.length == 2) {
 		DynamoDbConfig config = new DynamoDbConfig();
 		DynamoDBMapper mapper = config.dynamoDbMapper(config.dynamoDbClient(), args);
 
 		List<Metadata> metadataList = getAllFiles(mapper);
 		updateData(metadataList, mapper);
 		} else {
-			logs.info("Please pass the KMS key ARN and Dynamodb Table name respectively as arguments");
+			METADATA_LOGS.info("Please pass the KMS key ARN and Dynamodb Table name respectively as arguments");
 		}
 	}
 
@@ -59,20 +59,20 @@ public class MetaDataUpdater {
 	}
 
 	private static void updateData(final List<Metadata> metadataList, DynamoDBMapper mapper) {
-		logs.info("Performing update on items...");
+		METADATA_LOGS.info("Performing update on items...");
 		AtomicInteger count = new AtomicInteger();
 
 		metadataList.forEach(metadata -> {
 			int itemPosition = count.incrementAndGet();
 			if ( itemPosition % 500 == 0) {
-				logs.info("Updated {} items. Sleeping for one second...",
+				METADATA_LOGS.info("Updated {} items. Sleeping for one second...",
 					itemPosition);
 				pauseExecution();
 			}
 			metadata.setCpcProcessed(false);
 			mapper.save(metadata);
 		});
-		logs.info("Finished updating items...");
+		METADATA_LOGS.info("Finished updating items...");
 	}
 
 	private static void pauseExecution() {
@@ -80,7 +80,7 @@ public class MetaDataUpdater {
 			Thread.sleep(1000);
 		}
 		catch (InterruptedException e) {
-			logs.info("Sleep has been interrupted!");
+			METADATA_LOGS.info("Sleep has been interrupted!");
 		}
 	}
 }
