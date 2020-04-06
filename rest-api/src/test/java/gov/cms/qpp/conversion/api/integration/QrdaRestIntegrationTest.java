@@ -7,10 +7,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import javax.inject.Inject;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,7 +24,7 @@ import gov.cms.qpp.test.net.InternetTest;
 @SpringIntegrationTest
 public class QrdaRestIntegrationTest {
 
-	@Inject
+	@Autowired
 	private WebApplicationContext webApplicationContext;
 
 	private MockMvc mockMvc;

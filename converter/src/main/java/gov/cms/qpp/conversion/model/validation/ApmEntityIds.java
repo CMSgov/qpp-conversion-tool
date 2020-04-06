@@ -57,7 +57,7 @@ public final class ApmEntityIds {
 	 *
 	 * @param fileName The file name to use.
 	 */
-	public static void setApmDataFile(final String fileName) {
+	public static void setApmDataFile(String fileName) {
 		apmEntityIdsFileName = fileName;
 		initApmEntityIds();
 	}
@@ -68,7 +68,7 @@ public final class ApmEntityIds {
 	 * @param apmEntityId The APM Entity ID to check.
 	 * @return Whether or not the APM Entity ID exists.
 	 */
-	public static boolean idExists(final String apmEntityId) {
+	public static boolean idExists(String apmEntityId) {
 		return validApmEntityIds.contains(apmEntityId);
 	}
 }

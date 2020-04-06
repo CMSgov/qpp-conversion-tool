@@ -3,7 +3,7 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 
 /**
  * Validate the ACI Section.
@@ -24,7 +24,7 @@ public class AciSectionValidator extends NodeValidator {
 	@Override
 	protected void performValidation(final Node node) {
 		forceCheckErrors(node)
-				.childExact(ErrorCode.PI_SECTION_MISSING_REPORTING_PARAMETER_ACT,
+				.childExact(ProblemCode.PI_SECTION_MISSING_REPORTING_PARAMETER_ACT,
 					1, TemplateId.REPORTING_PARAMETERS_ACT);
 	}
 }

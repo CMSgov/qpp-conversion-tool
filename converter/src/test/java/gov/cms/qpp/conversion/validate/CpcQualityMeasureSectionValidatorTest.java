@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.validate.CpcQualityMeasureSectionValidator.CpcGroupMinimum;
@@ -53,7 +53,7 @@ class CpcQualityMeasureSectionValidatorTest {
 	@Test
 	void missingGroupAmeasures() {
 		Node node = new Node();
-		LocalizedError message = CpcGroupMinimum.OUTCOME_MEASURE.makeError(groupAmeasures);
+		LocalizedProblem message = CpcGroupMinimum.OUTCOME_MEASURE.makeError(groupAmeasures);
 		List<Detail> details = validator.validateSingleNode(node).getErrors();
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(message);
@@ -62,7 +62,7 @@ class CpcQualityMeasureSectionValidatorTest {
 	@Test
 	void tooFewGroupAmeasures() {
 		Node node = setupMeasures(new String[] {groupAmeasures[0]});
-		LocalizedError message = CpcGroupMinimum.OUTCOME_MEASURE.makeError(groupAmeasures);
+		LocalizedProblem message = CpcGroupMinimum.OUTCOME_MEASURE.makeError(groupAmeasures);
 		List<Detail> details = validator.validateSingleNode(node).getErrors();
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(message);

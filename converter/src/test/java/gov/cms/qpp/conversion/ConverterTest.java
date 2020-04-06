@@ -24,9 +24,9 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.Error;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
-import gov.cms.qpp.conversion.model.error.FormattedErrorCode;
-import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
+import gov.cms.qpp.conversion.model.error.FormattedProblemCode;
+import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.stubs.JennyDecoder;
@@ -105,7 +105,7 @@ public class ConverterTest {
 			assertWithMessage("The expected validation error was missing")
 				.that(details)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(new FormattedErrorCode(ErrorCode.UNEXPECTED_ERROR, "Test validation error for Jenny"));
+				.contains(new FormattedProblemCode(ProblemCode.UNEXPECTED_ERROR, "Test validation error for Jenny"));
 		}
 	}
 
@@ -118,7 +118,7 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			checkup(exception, ErrorCode.NOT_VALID_XML_DOCUMENT);
+			checkup(exception, ProblemCode.NOT_VALID_XML_DOCUMENT);
 		}
 	}
 
@@ -138,7 +138,7 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			checkup(exception, ErrorCode.NOT_VALID_XML_DOCUMENT);
+			checkup(exception, ProblemCode.NOT_VALID_XML_DOCUMENT);
 		}
 	}
 
@@ -150,7 +150,7 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			checkup(exception, ErrorCode.NOT_VALID_QRDA_DOCUMENT.format(Context.REPORTING_YEAR, DocumentationReference.CLINICAL_DOCUMENT));
+			checkup(exception, ProblemCode.NOT_VALID_QRDA_DOCUMENT.format(Context.REPORTING_YEAR, DocumentationReference.CLINICAL_DOCUMENT));
 		}
 	}
 
@@ -164,7 +164,7 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			checkup(exception, ErrorCode.NOT_VALID_QRDA_DOCUMENT.format(Context.REPORTING_YEAR, DocumentationReference.CLINICAL_DOCUMENT));
+			checkup(exception, ProblemCode.NOT_VALID_QRDA_DOCUMENT.format(Context.REPORTING_YEAR, DocumentationReference.CLINICAL_DOCUMENT));
 		}
 	}
 
@@ -179,7 +179,7 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			checkup(exception, ErrorCode.UNEXPECTED_ERROR);
+			checkup(exception, ProblemCode.UNEXPECTED_ERROR);
 		}
 		
 		source = mock(Source.class);
@@ -191,7 +191,7 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			checkup(exception, ErrorCode.UNEXPECTED_ERROR);
+			checkup(exception, ProblemCode.UNEXPECTED_ERROR);
 		}
 	}
 
@@ -237,7 +237,7 @@ public class ConverterTest {
 
 	@Test
 	public void testTooManyErrorsInQrdaIIIFile() {
-		LocalizedError expectedError = ErrorCode.TOO_MANY_ERRORS.format(108);
+		LocalizedProblem expectedError = ProblemCode.TOO_MANY_ERRORS.format(108);
 
 		Path path = Paths.get(TOO_MANY_ERRORS);
 		Converter converter = new Converter(new PathSource(path));
@@ -255,7 +255,7 @@ public class ConverterTest {
 
 	}
 
-	private void checkup(TransformException exception, LocalizedError error) {
+	private void checkup(TransformException exception, LocalizedProblem error) {
 		AllErrors allErrors = exception.getDetails();
 		List<Error> errors = allErrors.getErrors();
 		assertWithMessage("There must only be one error source.")

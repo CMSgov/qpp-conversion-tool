@@ -7,8 +7,8 @@ import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
-import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
+import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
@@ -86,7 +86,7 @@ class QualityMeasureIdMultiRoundTripTest {
 		List<Detail> details = executeScenario(path, false);
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_TYPE);
+				.contains(ProblemCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_TYPE);
 	}
 
 	@Test
@@ -97,13 +97,13 @@ class QualityMeasureIdMultiRoundTripTest {
 		List<Detail> details = executeScenario(path, false);
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_TYPE);
+				.contains(ProblemCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_TYPE);
 	}
 
 	@Test
 	void testRoundTripForQualityMeasureIdWithNoDenexcepMeasureType() {
-		LocalizedError error =
-			ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS145v7", 2, SubPopulationLabel.DENEXCEP.name(), 1);
+		LocalizedProblem error =
+			ProblemCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS145v7", 2, SubPopulationLabel.DENEXCEP.name(), 1);
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[5]/observation/value/@code";
 
@@ -123,7 +123,7 @@ class QualityMeasureIdMultiRoundTripTest {
 
 		assertThat(details)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION);
+				.contains(ProblemCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION);
 	}
 
 	@Test
@@ -134,7 +134,7 @@ class QualityMeasureIdMultiRoundTripTest {
 		List<Detail> details = executeScenario(path, true);
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION);
+				.contains(ProblemCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION);
 	}
 
 	@Test
@@ -150,7 +150,7 @@ class QualityMeasureIdMultiRoundTripTest {
 		}
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(ErrorCode.DENOMINATOR_COUNT_INVALID);
+				.contains(ProblemCode.DENOMINATOR_COUNT_INVALID);
 	}
 
 	@Test

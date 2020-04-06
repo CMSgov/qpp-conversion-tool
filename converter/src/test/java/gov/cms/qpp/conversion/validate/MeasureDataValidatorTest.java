@@ -18,7 +18,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.xml.XmlUtils;
@@ -46,7 +46,7 @@ class MeasureDataValidatorTest {
 		List<Detail> errors = validator.validateSingleNode(testNode).getErrors();
 		assertWithMessage("missing error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(EMPTY_POPULATION_ID));
+				.containsExactly(ProblemCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(EMPTY_POPULATION_ID));
 	}
 
 	@Test
@@ -59,7 +59,7 @@ class MeasureDataValidatorTest {
 		List<Detail> errors = validator.validateSingleNode(testNode).getErrors();
 		assertWithMessage("Should result in a type error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER);
+				.containsExactly(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER);
 	}
 
 	@Test
@@ -73,7 +73,7 @@ class MeasureDataValidatorTest {
 		List<Detail> errors = validator.validateSingleNode(testNode).getErrors();
 		assertWithMessage("missing error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(TemplateId.MEASURE_DATA_CMS_V2.name(), 2));
+				.containsExactly(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(TemplateId.MEASURE_DATA_CMS_V2.name(), 2));
 	}
 
 	@Test
@@ -86,7 +86,7 @@ class MeasureDataValidatorTest {
 		List<Detail> errors = validator.validateSingleNode(testNode).getErrors();
 		assertWithMessage("missing error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.MEASURE_DATA_VALUE_NOT_INTEGER.format(EMPTY_POPULATION_ID));
+				.containsExactly(ProblemCode.MEASURE_DATA_VALUE_NOT_INTEGER.format(EMPTY_POPULATION_ID));
 	}
 
 	@Test
@@ -107,9 +107,9 @@ class MeasureDataValidatorTest {
 
 		assertWithMessage("Must contain the error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsAtLeast(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
-						ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(TemplateId.MEASURE_DATA_CMS_V2.name(), 2),
-						ErrorCode.MEASURE_DATA_VALUE_NOT_INTEGER.format("58347456-D1F3-4BBB-9B35-5D42825A0AB3"));
+				.containsAtLeast(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
+						ProblemCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(TemplateId.MEASURE_DATA_CMS_V2.name(), 2),
+						ProblemCode.MEASURE_DATA_VALUE_NOT_INTEGER.format("58347456-D1F3-4BBB-9B35-5D42825A0AB3"));
 	}
 
 	private List<Detail> getErrors(AllErrors content) {

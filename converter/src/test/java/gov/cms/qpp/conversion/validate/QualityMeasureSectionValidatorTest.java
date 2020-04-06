@@ -15,7 +15,7 @@ import gov.cms.qpp.conversion.decode.QualitySectionDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 class QualityMeasureSectionValidatorTest {
@@ -62,8 +62,8 @@ class QualityMeasureSectionValidatorTest {
 		assertWithMessage("Must contain 1 error")
 				.that(errors).hasSize(1);
 
-		assertWithMessage("Error must be " + ErrorCode.MEASURE_SECTION_MISSING_MEASURE)
-			.that(errors.get(0).getErrorCode()).isEqualTo(ErrorCode.MEASURE_SECTION_MISSING_MEASURE.getCode());
+		assertWithMessage("Error must be " + ProblemCode.MEASURE_SECTION_MISSING_MEASURE)
+			.that(errors.get(0).getErrorCode()).isEqualTo(ProblemCode.MEASURE_SECTION_MISSING_MEASURE.getCode());
 	}
 
 	@Test
@@ -76,7 +76,7 @@ class QualityMeasureSectionValidatorTest {
 		assertWithMessage("Must contain correct error")
 				.that(errors)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT);
+				.containsExactly(ProblemCode.QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT);
 	}
 
 	@Test
@@ -91,7 +91,7 @@ class QualityMeasureSectionValidatorTest {
 		assertWithMessage("Must contain correct error")
 				.that(errors)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT);
+				.containsExactly(ProblemCode.QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT);
 	}
 
 	@Test
@@ -100,7 +100,7 @@ class QualityMeasureSectionValidatorTest {
 				.executeScenario(MEASURE_REFERENCE_RESULTS_CMS_V2.name(), "measureId", false);
 		assertThat(errorDetails)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(ErrorCode.MISSING_OR_DUPLICATED_MEASURE_GUID);
+				.contains(ProblemCode.MISSING_OR_DUPLICATED_MEASURE_GUID);
 	}
 
 	@Test
@@ -109,7 +109,7 @@ class QualityMeasureSectionValidatorTest {
 		List<Detail> errorDetails = manipulatorHandler.executeScenario(xpath, false);
 		assertThat(errorDetails)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(ErrorCode.MEASURES_RNR_WITH_DUPLICATED_MEASURE_GUID);
+				.contains(ProblemCode.MEASURES_RNR_WITH_DUPLICATED_MEASURE_GUID);
 	}
 
 	@Test
@@ -121,7 +121,7 @@ class QualityMeasureSectionValidatorTest {
 
 		assertThat(errors)
 			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(ErrorCode.MEASURE_SECTION_V4_REQUIRED);
+			.contains(ProblemCode.MEASURE_SECTION_V4_REQUIRED);
 	}
 
 	private List<Detail> validateQualityMeasureSection() {

@@ -4,8 +4,8 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
-import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
+import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 
@@ -63,7 +63,6 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 		OUTCOME_MEASURE("Outcome_Measure", "outcome", 2),
 		OTHER_MEASURE("Other_Measure", "other", 0);
 
-		private static final int NUMBER_OF_MEASURES_REQUIRED = 2;
 		private String mapName;
 		private String label;
 		private int minimum;
@@ -78,8 +77,8 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 			return mapName;
 		}
 
-		LocalizedError makeError(String... measureIds) {
-			return ErrorCode.CPC_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY
+		LocalizedProblem makeError(String... measureIds) {
+			return ProblemCode.CPC_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY
 					.format(minimum, label, String.join(",", measureIds));
 		}
 	}

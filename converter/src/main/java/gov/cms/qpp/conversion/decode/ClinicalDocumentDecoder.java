@@ -157,7 +157,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	 * @param thisNode The output internal representation of the document
 	 */
 	private void setMultipleNationalProviderIdsOnNode(Element element, Node thisNode) {
-		Consumer<? super List<String>> consumer = p ->
+		Consumer<List<String>> consumer = p ->
 			thisNode.putValue(NATIONAL_PROVIDER_IDENTIFIER,
 				p.toString().substring(1, p.toString().length() - 1).trim());
 		setMultipleAttributesOnNode(element, getXpath(NATIONAL_PROVIDER_IDENTIFIER),
@@ -185,7 +185,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	 * @param thisNode The output internal representation of the document
 	 */
 	private void setMultipleTaxProviderTaxIdsOnNode(Element element, Node thisNode) {
-		Consumer<? super List<String>> consumer = p ->
+		Consumer<List<String>> consumer = p ->
 			thisNode.putValue(TAX_PAYER_IDENTIFICATION_NUMBER,
 				p.toString().substring(1, p.toString().length() - 1).trim());
 		setMultipleAttributesOnNode(element, getXpath(TAX_PAYER_IDENTIFICATION_NUMBER),

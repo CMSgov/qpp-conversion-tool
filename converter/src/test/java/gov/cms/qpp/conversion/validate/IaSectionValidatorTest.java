@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 class IaSectionValidatorTest {
@@ -44,7 +44,7 @@ class IaSectionValidatorTest {
 
 		assertWithMessage("Must be missing the correct child")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.IA_SECTION_MISSING_IA_MEASURE);
+				.containsExactly(ProblemCode.IA_SECTION_MISSING_IA_MEASURE);
 	}
 
 	@Test
@@ -56,7 +56,7 @@ class IaSectionValidatorTest {
 
 		assertWithMessage("Must contain correct children")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.IA_SECTION_WRONG_CHILD);
+				.containsExactly(ProblemCode.IA_SECTION_WRONG_CHILD);
 	}
 
 	@Test
@@ -67,7 +67,7 @@ class IaSectionValidatorTest {
 
 		assertWithMessage("Must contain correct children")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM);
+				.containsExactly(ProblemCode.IA_SECTION_MISSING_REPORTING_PARAM);
 	}
 
 	@Test
@@ -79,7 +79,7 @@ class IaSectionValidatorTest {
 
 		assertWithMessage("Must contain correct children")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM);
+				.containsExactly(ProblemCode.IA_SECTION_MISSING_REPORTING_PARAM);
 	}
 
 	private List<Detail> validatorIaSection() {

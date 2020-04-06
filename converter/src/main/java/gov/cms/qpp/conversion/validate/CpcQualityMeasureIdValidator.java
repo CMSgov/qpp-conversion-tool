@@ -10,8 +10,8 @@ import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
-import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
+import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
@@ -53,7 +53,7 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 
 			forceCheckErrors(node)
 					.childExact(
-						ErrorCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
+						ProblemCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
 							.format(requiredPerformanceRateCount, MeasureConfigHelper.getPrioritizedId(node)),
 						requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
 		}
@@ -86,16 +86,16 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 					calculatePerformanceDenom(denominatorValue, denexValue, denexcepValue);
 
 				if (performanceDenominator < 0) {
-					addError(Detail.forErrorAndNode(ErrorCode.CPC_PLUS_PERFORMANCE_DENOM_LESS_THAN_ZERO
+					addError(Detail.forProblemAndNode(ProblemCode.CPC_PLUS_PERFORMANCE_DENOM_LESS_THAN_ZERO
 						.format(MeasureConfigHelper.getPrioritizedId(node)), node));
 				}
 				if (numeratorValue > performanceDenominator || numeratorValue > denominatorValue) {
-					addError(Detail.forErrorAndNode(ErrorCode.CPC_PLUS_NUMERATOR_GREATER_THAN_EITHER_DENOMINATORS
+					addError(Detail.forProblemAndNode(ProblemCode.CPC_PLUS_NUMERATOR_GREATER_THAN_EITHER_DENOMINATORS
 						.format(numeratorNode
 							.getValue(MEASURE_POPULATION)), node));
 				}
 				if (denexValue > denominatorValue) {
-					addError(Detail.forErrorAndNode(ErrorCode.CPC_PLUS_DENEX_GREATER_THAN_DENOMINATOR
+					addError(Detail.forProblemAndNode(ProblemCode.CPC_PLUS_DENEX_GREATER_THAN_DENOMINATOR
 						.format(denomExclusionNode.getValue(MEASURE_POPULATION)), node));
 				}
 				//skip if performance rate is missing
@@ -103,8 +103,8 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 					if (PerformanceRateValidator.NULL_ATTRIBUTE.equals(
 						performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE))) {
 						if (performanceDenominator != 0) {
-							addError(Detail.forErrorAndNode(
-								ErrorCode.CPC_PLUS_INVALID_NULL_PERFORMANCE_RATE
+							addError(Detail.forProblemAndNode(
+								ProblemCode.CPC_PLUS_INVALID_NULL_PERFORMANCE_RATE
 									.format(performanceRateNode
 										.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID)), node));
 						}
@@ -141,7 +141,7 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 		return node -> {
 			if (check.get() != null) {
 				Predicate<Node> childUuidFinder =
-						makeUuidChildFinder(check, ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE,
+						makeUuidChildFinder(check, ProblemCode.QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE,
 								PERFORMANCE_RATE_ID);
 
 				Node existingUuidChild = node
@@ -169,12 +169,12 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 				.collect(Collectors.toList());
 
 		if (strataNodes.size() != sub.getStrata().size()) {
-			LocalizedError error = ErrorCode.CPC_QUALITY_MEASURE_ID_STRATA_MISMATCH.format(strataNodes.size(),
+			LocalizedProblem error = ProblemCode.CPC_QUALITY_MEASURE_ID_STRATA_MISMATCH.format(strataNodes.size(),
 					sub.getStrata().size(),
 					node.getValue(MeasureDataDecoder.MEASURE_TYPE),
 					node.getValue(MEASURE_POPULATION),
 					sub.getStrata());
-			addError(Detail.forErrorAndNode(error, node));
+			addError(Detail.forProblemAndNode(error, node));
 		}
 
 		sub.getStrata().forEach(stratum -> {
@@ -182,10 +182,10 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 					child.getValue(StratifierDecoder.STRATIFIER_ID).equalsIgnoreCase(stratum);
 
 			if (strataNodes.stream().noneMatch(seek)) {
-				LocalizedError error = ErrorCode.CPC_QUALITY_MEASURE_ID_MISSING_STRATA.format(stratum,
+				LocalizedProblem error = ProblemCode.CPC_QUALITY_MEASURE_ID_MISSING_STRATA.format(stratum,
 						node.getValue(MeasureDataDecoder.MEASURE_TYPE),
 						node.getValue(MEASURE_POPULATION));
-				addError(Detail.forErrorAndNode(error, node));
+				addError(Detail.forProblemAndNode(error, node));
 			}
 		});
 	}

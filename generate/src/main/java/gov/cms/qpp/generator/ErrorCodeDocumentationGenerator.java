@@ -3,14 +3,14 @@ package gov.cms.qpp.generator;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.project.MavenProject;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
@@ -26,7 +26,7 @@ public class ErrorCodeDocumentationGenerator extends AbstractMojo {
 
 		String offsetPath = args[0];
 		try (FileWriter fw = new FileWriter(offsetPath + "ERROR_MESSAGES.md")) {
-			List<ErrorCode> errorCodes = Arrays.asList(ErrorCode.values());
+			List<ProblemCode> errorCodes = Arrays.asList(ProblemCode.values());
 			mdTemplate.execute(fw, errorCodes).flush();
 			fw.flush();
 		}

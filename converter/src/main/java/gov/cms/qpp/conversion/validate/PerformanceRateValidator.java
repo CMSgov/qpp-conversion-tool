@@ -4,7 +4,7 @@ import gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 
 /**
  * Validates the QRDA Category III Performance Rate Proportion Measure for the cpc+ program
@@ -24,13 +24,13 @@ public class PerformanceRateValidator extends NodeValidator {
 		if (!NULL_ATTRIBUTE.equals(node.getValue(PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE))) {
 
 			Checker checker = checkErrors(node)
-				.valueIsNotEmpty(ErrorCode.PERFORMANCE_RATE_MISSING, PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE);
+				.valueIsNotEmpty(ProblemCode.PERFORMANCE_RATE_MISSING, PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE);
 
 			if (!checker.shouldShortcut()) {
 				String performanceRate = node.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE);
 
 				checkErrors(node)
-					.inDecimalRangeOf(ErrorCode.PERFORMANCE_RATE_INVALID_VALUE.format(performanceRate),
+					.inDecimalRangeOf(ProblemCode.PERFORMANCE_RATE_INVALID_VALUE.format(performanceRate),
 						PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE, 0F, 1F);
 			}
 		}

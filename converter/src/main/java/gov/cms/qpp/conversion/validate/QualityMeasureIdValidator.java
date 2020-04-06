@@ -8,8 +8,8 @@ import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
-import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
+import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
@@ -59,8 +59,8 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		//the meta data measures-data.json
 		//This should not be an error
 		forceCheckErrors(node)
-				.singleValue(ErrorCode.MISSING_OR_DUPLICATED_MEASURE_GUID, MeasureConfigHelper.MEASURE_ID)
-				.childMinimum(ErrorCode.CHILD_MEASURE_MISSING, 1, TemplateId.MEASURE_DATA_CMS_V2);
+				.singleValue(ProblemCode.MISSING_OR_DUPLICATED_MEASURE_GUID, MeasureConfigHelper.MEASURE_ID)
+				.childMinimum(ProblemCode.CHILD_MEASURE_MISSING, 1, TemplateId.MEASURE_DATA_CMS_V2);
 		validateMeasureConfigs(node);
 	}
 
@@ -77,9 +77,9 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		} else {
 			String value = node.getValue(MeasureConfigHelper.MEASURE_ID);
 			if (value != null) { // This check has already been made and a detail will exist if value is null.
-				DEV_LOG.error(ErrorCode.MEASURE_GUID_MISSING.name() + " " + value);
-				LocalizedError error = ErrorCode.MEASURE_GUID_MISSING.format(value, Context.REPORTING_YEAR);
-				addError(Detail.forErrorAndNode(error, node));
+				DEV_LOG.error(ProblemCode.MEASURE_GUID_MISSING.name() + " " + value);
+				LocalizedProblem error = ProblemCode.MEASURE_GUID_MISSING.format(value, Context.REPORTING_YEAR);
+				addError(Detail.forProblemAndNode(error, node));
 			}
 		}
 	}
@@ -132,12 +132,12 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		long actualChildTypeCount = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(childTypeFinder).count();
 
 		if (expectedChildTypeCount != actualChildTypeCount) {
-			LocalizedError error =
-				ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format(
+			LocalizedProblem error =
+				ProblemCode.POPULATION_CRITERIA_COUNT_INCORRECT.format(
 					MeasureConfigHelper.getMeasureConfig(node).getElectronicMeasureId(),
 					expectedChildTypeCount, StringHelper.join(key.getAliases(), ",", "or"),
 					actualChildTypeCount);
-			Detail detail = Detail.forErrorAndNode(error, node);
+			Detail detail = Detail.forProblemAndNode(error, node);
 			addError(detail);
 		}
 	}
@@ -223,9 +223,9 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	private void validateDenominatorCount(Node denomCount, Node ipopCount) {
 		forceCheckErrors(denomCount)
 				.incompleteValidation()
-				.intValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
+				.intValue(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
 						AggregateCountDecoder.AGGREGATE_COUNT)
-				.lessThanOrEqualTo(ErrorCode.DENOMINATOR_COUNT_INVALID,
+				.lessThanOrEqualTo(ProblemCode.DENOMINATOR_COUNT_INVALID,
 						Integer.parseInt(ipopCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT)));
 	}
 
@@ -244,7 +244,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 				String[] keys = subPopulationLabel.getAliases();
 				Predicate<Node> childTypeFinder = makeTypeChildFinder(keys);
 				Predicate<Node> childUuidFinder =
-						makeUuidChildFinder(check, ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION,
+						makeUuidChildFinder(check, ProblemCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION,
 								MEASURE_POPULATION);
 
 				Node existingUuidChild = node
@@ -281,10 +281,10 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param node Contains the current child nodes
 	 */
 	protected void addMeasureConfigurationValidationMessage(Supplier<String> check, String[] keys, Node node) {
-		LocalizedError error = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(
+		LocalizedProblem error = ProblemCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(
 				MeasureConfigHelper.getMeasureConfig(node).getElectronicMeasureId(),
 				String.join(",", keys), check.get());
-		addError(Detail.forErrorAndNode(error, node));
+		addError(Detail.forProblemAndNode(error, node));
 	}
 
 	/**
@@ -298,7 +298,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		return thisNode -> {
 			forceCheckErrors(thisNode)
 					.incompleteValidation()
-					.singleValue(ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_TYPE, MEASURE_TYPE);
+					.singleValue(ProblemCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_TYPE, MEASURE_TYPE);
 			return Arrays.asList(populationCriteriaTypes).contains(thisNode.getValue(MEASURE_TYPE));
 		};
 	}
@@ -311,7 +311,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param name Supplies a node field validate on
 	 * @return predicate seeking a matching uuid
 	 */
-	protected Predicate<Node> makeUuidChildFinder(Supplier<String> uuid, LocalizedError error, String name) {
+	protected Predicate<Node> makeUuidChildFinder(Supplier<String> uuid, LocalizedProblem error, String name) {
 		return thisNode -> {
 			forceCheckErrors(thisNode)
 					.incompleteValidation()

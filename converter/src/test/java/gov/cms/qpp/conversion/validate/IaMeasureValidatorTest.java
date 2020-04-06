@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 /**
@@ -62,7 +62,7 @@ class IaMeasureValidatorTest {
 
 		assertWithMessage("The INCORRECT_CHILDREN_COUNT Error is expected")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.IA_MEASURE_INCORRECT_CHILDREN_COUNT);
+				.containsExactly(ProblemCode.IA_MEASURE_INCORRECT_CHILDREN_COUNT);
 	}
 
 	/**
@@ -85,6 +85,6 @@ class IaMeasureValidatorTest {
 
 		assertWithMessage("The INCORRECT_CHILDREN_COUNT Error is expected")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.IA_MEASURE_INCORRECT_CHILDREN_COUNT);
+				.containsExactly(ProblemCode.IA_MEASURE_INCORRECT_CHILDREN_COUNT);
 	}
 }

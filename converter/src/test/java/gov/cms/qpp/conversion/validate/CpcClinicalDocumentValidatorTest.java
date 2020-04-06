@@ -13,11 +13,14 @@ import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 
 import java.time.LocalDate;
+import java.time.Year;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -65,7 +68,7 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertWithMessage("Must contain error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
+				.containsExactly(ProblemCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
 					.format(Context.REPORTING_YEAR));
 	}
 
@@ -78,7 +81,7 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertWithMessage("Must contain error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
+				.containsExactly(ProblemCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
 					.format(Context.REPORTING_YEAR));
 	}
 
@@ -92,7 +95,7 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertWithMessage("Must validate with the correct error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED);
+				.containsExactly(ProblemCode.CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED);
 	}
 
 	@Test
@@ -103,7 +106,7 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertWithMessage("Must validate with the correct error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED);
+				.containsExactly(ProblemCode.CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED);
 	}
 
 	@Test
@@ -113,7 +116,7 @@ class CpcClinicalDocumentValidatorTest {
 		List<Detail> errors = cpcValidator.validateSingleNode(clinicalDocumentNode).getErrors();
 		assertWithMessage("Must validate with the correct error")
 			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ErrorCode.CPC_CLINICAL_DOCUMENT_EMPTY_APM);
+			.containsExactly(ProblemCode.CPC_CLINICAL_DOCUMENT_EMPTY_APM);
 	}
 
 	@Test
@@ -123,7 +126,7 @@ class CpcClinicalDocumentValidatorTest {
 		List<Detail> errors = cpcValidator.validateSingleNode(clinicalDocumentNode).getErrors();
 		assertWithMessage("Must validate with the correct error")
 			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ErrorCode.CPC_CLINICAL_DOCUMENT_INVALID_APM);
+			.containsExactly(ProblemCode.CPC_CLINICAL_DOCUMENT_INVALID_APM);
 	}
 
 	@Test
@@ -133,12 +136,14 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertWithMessage("Must validate with the correct error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED);
+				.containsExactly(ProblemCode.CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED);
 	}
 
 	@Test
 	void testCpcPlusSubmissionBeforeEndDate() {
-		System.setProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE, LocalDate.now().plusYears(3).toString());
+		System.setProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE,
+			ZonedDateTime.now(CpcClinicalDocumentValidator.EASTERN_TIME_ZONE).plusYears(3)
+			.format(CpcClinicalDocumentValidator.INPUT_END_DATE_FORMAT));
 		Node clinicalDocument = createValidCpcPlusClinicalDocument();
 		List<Detail> errors = cpcValidator.validateSingleNode(clinicalDocument).getErrors();
 
@@ -149,19 +154,19 @@ class CpcClinicalDocumentValidatorTest {
 	@ParameterizedTest
 	@CsvSource({"meep@mawp.blah, meep@mawp.blah", ", cpcplus@telligen.com"})
 	void testCpcPlusSubmissionAfterEndDate(String systemValue, String expected) {
-		LocalDate endDate = LocalDate.now().minusYears(3);
-		String formattedDate = endDate.format(CpcClinicalDocumentValidator.END_DATE_FORMAT);
+		ZonedDateTime endDate = ZonedDateTime.now(CpcClinicalDocumentValidator.EASTERN_TIME_ZONE).minusYears(3);
+		String formattedDate = endDate.format(CpcClinicalDocumentValidator.OUTPUT_END_DATE_FORMAT);
 		if (systemValue != null) {
 			System.setProperty(CpcClinicalDocumentValidator.CPC_PLUS_CONTACT_EMAIL, systemValue);
 		}
-		System.setProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE, endDate.toString());
+		System.setProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE, endDate.format(CpcClinicalDocumentValidator.INPUT_END_DATE_FORMAT));
 		Node clinicalDocument = createValidCpcPlusClinicalDocument();
 
 		List<Detail> errors = cpcValidator.validateSingleNode(clinicalDocument).getErrors();
 
 		assertThat(errors)
 			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ErrorCode.CPC_PLUS_SUBMISSION_ENDED.format(formattedDate, expected));
+			.containsExactly(ProblemCode.CPC_PLUS_SUBMISSION_ENDED.format(formattedDate, expected));
 	}
 
 	@Test
@@ -172,7 +177,7 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertWithMessage("Must validate with the correct error")
 			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ErrorCode.CPC_PLUS_TIN_REQUIRED);
+			.containsExactly(ProblemCode.CPC_PLUS_TIN_REQUIRED);
 	}
 
 	@Test
@@ -183,7 +188,7 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertWithMessage("Must validate with the correct error")
 			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ErrorCode.CPC_PLUS_NPI_REQUIRED);
+			.containsExactly(ProblemCode.CPC_PLUS_NPI_REQUIRED);
 	}
 
 	@Test
@@ -195,7 +200,7 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertThat(warnings)
 			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(ErrorCode.CPC_PLUS_NO_IA_OR_PI);
+			.contains(ProblemCode.CPC_PLUS_NO_IA_OR_PI);
 	}
 
 	@Test
@@ -207,7 +212,7 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertThat(warnings)
 			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(ErrorCode.CPC_PLUS_NO_IA_OR_PI);
+			.contains(ProblemCode.CPC_PLUS_NO_IA_OR_PI);
 	}
 
 	private Node createValidCpcPlusClinicalDocument() {

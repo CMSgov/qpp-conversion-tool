@@ -7,14 +7,16 @@ import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
-import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
+import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 import gov.cms.qpp.conversion.util.EnvironmentHelper;
 
 import java.time.Clock;
 import java.time.LocalDate;
+import java.time.Year;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
@@ -31,9 +33,20 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	 */
 	static final String END_DATE_VARIABLE = "CPC_END_DATE";
 	/**
+	 * Eastern time zone
+	 */
+	static final ZoneId EASTERN_TIME_ZONE = ZoneId.of("US/Eastern");
+	/**
 	 * Constant end date format
 	 */
-	static final DateTimeFormatter END_DATE_FORMAT = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+	static final DateTimeFormatter OUTPUT_END_DATE_FORMAT = DateTimeFormatter.ofPattern("MMMM dd, yyyy - HH:mm:ss")
+		.withZone(EASTERN_TIME_ZONE);
+	/**
+	 * Constant cpc end date format
+	 */
+	static final DateTimeFormatter INPUT_END_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd - HH:mm:ss")
+		.withZone(EASTERN_TIME_ZONE);
+
 	/**
 	 * Constant default email contact
 	 */
@@ -60,25 +73,25 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	protected void performValidation(Node node) {
 		validateSubmissionDate(node);
 
-		LocalizedError addressError = ErrorCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
+		LocalizedProblem addressError = ProblemCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
 			.format(Context.REPORTING_YEAR);
 
 		checkErrors(node)
-			.valueIsNotEmpty(ErrorCode.CPC_PLUS_TIN_REQUIRED, ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER)
+			.valueIsNotEmpty(ProblemCode.CPC_PLUS_TIN_REQUIRED, ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER)
 			.listValuesAreValid(
-				ErrorCode.CPC_PLUS_INVALID_TIN, ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, 9)
-			.valueIsNotEmpty(ErrorCode.CPC_PLUS_NPI_REQUIRED, ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER)
+				ProblemCode.CPC_PLUS_INVALID_TIN, ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, 9)
+			.valueIsNotEmpty(ProblemCode.CPC_PLUS_NPI_REQUIRED, ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER)
 			.listValuesAreValid(
-				ErrorCode.CPC_PLUS_INVALID_NPI, ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, 10)
+				ProblemCode.CPC_PLUS_INVALID_NPI, ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, 10)
 			.valueIsNotEmpty(addressError, ClinicalDocumentDecoder.PRACTICE_SITE_ADDR)
-			.singleValue(ErrorCode.CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED,
+			.singleValue(ProblemCode.CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED,
 					ClinicalDocumentDecoder.PRACTICE_ID)
-			.valueIsNotEmpty(ErrorCode.CPC_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.PRACTICE_ID)
-			.childMinimum(ErrorCode.CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED,
+			.valueIsNotEmpty(ProblemCode.CPC_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.PRACTICE_ID)
+			.childMinimum(ProblemCode.CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED,
 					1, TemplateId.MEASURE_SECTION_V3);
 
 		checkWarnings(node)
-			.doesNotHaveChildren(ErrorCode.CPC_PLUS_NO_IA_OR_PI, TemplateId.IA_SECTION, TemplateId.PI_SECTION);
+			.doesNotHaveChildren(ProblemCode.CPC_PLUS_NO_IA_OR_PI, TemplateId.IA_SECTION, TemplateId.PI_SECTION);
 
 		validateApmEntityId(node);
 		if (hasTinAndNpi(node)) {
@@ -102,7 +115,7 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 		}
 
 		if (!ApmEntityIds.idExists(apmEntityId)) {
-			addError(Detail.forErrorAndNode(ErrorCode.CPC_CLINICAL_DOCUMENT_INVALID_APM, node));
+			addError(Detail.forProblemAndNode(ProblemCode.CPC_CLINICAL_DOCUMENT_INVALID_APM, node));
 		}
 	}
 
@@ -128,9 +141,9 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 		int numOfNpis = Arrays.asList(
 			node.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER).split(",")).size();
 		if (numOfTins > numOfNpis) {
-			addError(Detail.forErrorAndNode(ErrorCode.CPC_PLUS_MISSING_NPI, node));
+			addError(Detail.forProblemAndNode(ProblemCode.CPC_PLUS_MISSING_NPI, node));
 		} else if (numOfNpis > numOfTins) {
-			addError(Detail.forErrorAndNode(ErrorCode.CPC_PLUS_MISSING_TIN, node));
+			addError(Detail.forProblemAndNode(ProblemCode.CPC_PLUS_MISSING_TIN, node));
 		}
 	}
 
@@ -144,31 +157,33 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	 * @param node The node to give in the error if the submission is after the set end date
 	 */
 	private void validateSubmissionDate(Node node) {
-		LocalDate endDate = endDate();
+		ZonedDateTime endDate = endDate();
 		if (now().isAfter(endDate)) {
-			String formatted = endDate.format(END_DATE_FORMAT);
-			addError(Detail.forErrorAndNode(
-				ErrorCode.CPC_PLUS_SUBMISSION_ENDED.format(formatted,
+			String formatted = endDate.format(OUTPUT_END_DATE_FORMAT);
+			addError(Detail.forProblemAndNode(
+				ProblemCode.CPC_PLUS_SUBMISSION_ENDED.format(formatted,
 					EnvironmentHelper.getOrDefault(CPC_PLUS_CONTACT_EMAIL, DEFAULT_CPC_PLUS_CONTACT_EMAIL)),
 				node));
 		}
 	}
 
 	/**
-	 * @return the current local date, in Eastern Time
+	 * @return the current Zoned Date time for eastern time
 	 */
-	private LocalDate now() {
-		return LocalDate.now(CLOCK);
+	private ZonedDateTime now() {
+		ZoneId zone = ZoneId.of("US/Eastern");
+		return ZonedDateTime.now(zone);
 	}
 
 	/**
-	 * @return the configured cpc+ end date, or {@link LocalDate#MAX} if none is set
+	 * @return the configured cpc+ end date, or {@link ZonedDateTime} will default to max year decemeber
 	 */
-	private LocalDate endDate() {
+	private ZonedDateTime endDate() {
 		String endDate = EnvironmentHelper.get(END_DATE_VARIABLE);
 		if (endDate == null) {
-			return LocalDate.MAX;
+			return ZonedDateTime.of(Year.MAX_VALUE, 12, 31,
+				0, 0, 0, 0, ZoneId.of("US/Eastern"));
 		}
-		return LocalDate.parse(endDate);
+		return ZonedDateTime.parse(endDate, INPUT_END_DATE_FORMAT);
 	}
 }

@@ -19,8 +19,8 @@ import gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
-import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
+import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
@@ -82,7 +82,7 @@ class QualityMeasureIdRoundTripTest {
 		String correctId = MeasureConfigs.getConfigurationMap()
 			.get("40280382-5fa6-fe85-0160-0ea3e0012376").getSubPopulation().get(0).getNumeratorUuid();
 
-		LocalizedError error = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(measureId,
+		LocalizedProblem error = ProblemCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(measureId,
 				PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID, correctId);
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(error);
@@ -101,7 +101,7 @@ class QualityMeasureIdRoundTripTest {
 		}
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE);
+				.contains(ProblemCode.QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE);
 	}
 
 	@Test
@@ -117,7 +117,7 @@ class QualityMeasureIdRoundTripTest {
 		}
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.doesNotContain(ErrorCode.MEASURE_GUID_MISSING);
+				.doesNotContain(ProblemCode.MEASURE_GUID_MISSING);
 	}
 
 	@Test
@@ -125,7 +125,7 @@ class QualityMeasureIdRoundTripTest {
 		Converter converter = new Converter(new PathSource(INSENSITIVE_TEXT_FILE));
 		List<Detail> details = new ArrayList<>();
 
-		LocalizedError error = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(
+		LocalizedProblem error = ProblemCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(
 				"CMS52v5", "DENOM", "04BF53CE-6993-4EA2-BFE5-66E36172B388");
 
 		try {
@@ -183,7 +183,7 @@ class QualityMeasureIdRoundTripTest {
 
 		String populationId = "F50E5334-415D-482F-A30D-0623C082B602";
 
-		LocalizedError error = ErrorCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(populationId);
+		LocalizedProblem error = ProblemCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(populationId);
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 			.contains(error);
 	}

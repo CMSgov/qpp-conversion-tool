@@ -108,6 +108,8 @@ class DbServiceImplTest {
 	@Test
 	@SuppressWarnings("unchecked")
 	void testGetUnprocessedCpcPlusMetaData() {
+		when(environment.getProperty(Constants.CPC_PLUS_UNPROCESSED_FILE_SEARCH_DATE_VARIABLE)).thenReturn("2020-01-01");
+
 		int itemsPerPartition = 2;
 
 		PaginatedQueryList<Metadata> mockMetadataPage = mock(PaginatedQueryList.class);

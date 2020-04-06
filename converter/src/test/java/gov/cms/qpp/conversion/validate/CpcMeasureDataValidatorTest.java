@@ -16,8 +16,8 @@ import gov.cms.qpp.conversion.decode.QrdaDecoderEngine;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
-import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
+import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.model.validation.SupplementalData;
@@ -46,7 +46,7 @@ class CpcMeasureDataValidatorTest {
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		List<Detail> errors = validator.validateSingleNode(underTest).getErrors();
 
-		LocalizedError expectedError = ErrorCode.CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT.format(
+		LocalizedProblem expectedError = ProblemCode.CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT.format(
 			SupplementalData.MALE.getCode(), SubPopulationLabel.IPOP.name(), MEASURE_ID);
 
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -103,7 +103,7 @@ class CpcMeasureDataValidatorTest {
 				Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 				List<Detail> errors = validator.validateSingleNode(underTest).getErrors();
 
-				LocalizedError expectedError = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE
+				LocalizedProblem expectedError = ProblemCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE
 					.format(supplementalData.getType(), supplementalData, supplementalData.getCode(),
 						MEASURE_ID, SubPopulationLabel.IPOP.name());
 

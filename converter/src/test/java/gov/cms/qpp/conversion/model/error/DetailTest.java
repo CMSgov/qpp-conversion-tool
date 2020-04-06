@@ -32,7 +32,7 @@ class DetailTest {
 	void testComputeLocation() {
 		Node node = new Node(TemplateId.CLINICAL_DOCUMENT);
 
-		Detail detail = Detail.forErrorAndNode(ErrorCode.UNEXPECTED_ERROR, node);
+		Detail detail = Detail.forProblemAndNode(ProblemCode.UNEXPECTED_ERROR, node);
 
 		assertThat(detail.getLocation().getLocation()).isEqualTo(node.getType().getHumanReadableTitle());
 	}
@@ -43,7 +43,7 @@ class DetailTest {
 		String measureId = "Moof";
 		node.putValue("measureId", measureId);
 
-		Detail detail = Detail.forErrorAndNode(ErrorCode.UNEXPECTED_ERROR, node);
+		Detail detail = Detail.forProblemAndNode(ProblemCode.UNEXPECTED_ERROR, node);
 
 		assertThat(detail.getLocation().getLocation()).isEqualTo(node.getType().getHumanReadableTitle() + " " + measureId);
 	}
@@ -52,7 +52,7 @@ class DetailTest {
 	void testComputeLocationEmpty() {
 		Node node = new Node(TemplateId.PI_AGGREGATE_COUNT);
 
-		Detail detail = Detail.forErrorAndNode(ErrorCode.UNEXPECTED_ERROR, node);
+		Detail detail = Detail.forProblemAndNode(ProblemCode.UNEXPECTED_ERROR, node);
 
 		assertThat(detail.getLocation().getLocation()).isEmpty();
 	}

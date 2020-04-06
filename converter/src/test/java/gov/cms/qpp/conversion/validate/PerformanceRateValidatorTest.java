@@ -7,7 +7,7 @@ import gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -56,7 +56,7 @@ class PerformanceRateValidatorTest {
 		List<Detail> errors = performanceRateValidator.validateSingleNode(node).getErrors();
 		assertWithMessage("Must contain a proper value")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.PERFORMANCE_RATE_INVALID_VALUE.format(invalidValue));
+				.containsExactly(ProblemCode.PERFORMANCE_RATE_INVALID_VALUE.format(invalidValue));
 	}
 
 	@Test
@@ -66,7 +66,7 @@ class PerformanceRateValidatorTest {
 		List<Detail> errors = performanceRateValidator.validateSingleNode(node).getErrors();
 		assertWithMessage("Must contain a proper value")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.PERFORMANCE_RATE_INVALID_VALUE.format(invalidValue));
+				.containsExactly(ProblemCode.PERFORMANCE_RATE_INVALID_VALUE.format(invalidValue));
 	}
 
 	@Test
@@ -76,7 +76,7 @@ class PerformanceRateValidatorTest {
 		List<Detail> errors = performanceRateValidator.validateSingleNode(node).getErrors();
 		assertWithMessage("Must contain a proper value")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.PERFORMANCE_RATE_INVALID_VALUE.format(invalidValue));
+				.containsExactly(ProblemCode.PERFORMANCE_RATE_INVALID_VALUE.format(invalidValue));
 	}
 
 	@Test
@@ -85,7 +85,7 @@ class PerformanceRateValidatorTest {
 		List<Detail> errors = performanceRateValidator.validateSingleNode(node).getErrors();
 		assertWithMessage("The error code is incorrect")
 			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ErrorCode.PERFORMANCE_RATE_MISSING);
+			.containsExactly(ProblemCode.PERFORMANCE_RATE_MISSING);
 	}
 
 	@Test
@@ -93,6 +93,6 @@ class PerformanceRateValidatorTest {
 		List<Detail> errors = performanceRateValidator.validateSingleNode(node).getErrors();
 		assertWithMessage("The error code is incorrect")
 			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ErrorCode.PERFORMANCE_RATE_MISSING);
+			.containsExactly(ProblemCode.PERFORMANCE_RATE_MISSING);
 	}
 }
