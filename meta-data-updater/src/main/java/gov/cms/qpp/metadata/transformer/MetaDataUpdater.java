@@ -44,7 +44,7 @@ public class MetaDataUpdater {
 		return IntStream.range(0, Constants.CPC_DYNAMO_PARTITIONS).mapToObj(partition -> {
 			Map<String, AttributeValue> valueMap = new HashMap<>();
 			valueMap.put(":cpcValue", new AttributeValue().withS(Constants.CPC_DYNAMO_PARTITION_START + partition));
-			valueMap.put(":cpcProcessedValue", new AttributeValue().withS("false#2020"));
+			valueMap.put(":cpcProcessedValue", new AttributeValue().withS("true#2020"));
 
 			DynamoDBQueryExpression<Metadata> metadataQuery = new DynamoDBQueryExpression<Metadata>()
 				.withIndexName("Cpc-CpcProcessed_CreateDate-index")
