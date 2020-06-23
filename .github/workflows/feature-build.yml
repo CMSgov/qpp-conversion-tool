@@ -34,3 +34,10 @@ jobs:
 
       - name: Run Integration Tests  
         run: mvn --batch-mode test -P integration
+
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@c35654669e40ece974c8835211c2e8ad9c802df0 # pin@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        
