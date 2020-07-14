@@ -6,8 +6,8 @@ on:
       - ecr-deploy
 
 jobs:
-  # Run tests.
   test: 
+    name: Build and Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout codebase 
@@ -26,3 +26,14 @@ jobs:
 
       - name: Run Integration Tests  
         run: mvn --batch-mode test -P integration
+
+  deploy:
+    needs: test
+    name: Deploy to AWS ECR
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
