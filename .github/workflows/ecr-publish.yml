@@ -49,7 +49,7 @@ jobs:
 
       - name: Detect existing tag version from pom.xml
         if: contains(github.ref, 'refs/heads/develop/') || github.ref == 'refs/heads/ecr-deploy'
-        id: package-version
+        id: package-version-dev
         uses: salsify/action-detect-and-tag-new-version@68bbe8670f415d304e02942186441939c4692aa6 # pin@v1.0.3
         with:
           create-tag: false
@@ -58,7 +58,7 @@ jobs:
 
       - name: Detect new tag version from pom.xml
         if: contains(github.ref, 'refs/heads/release/') || github.ref == 'refs/heads/master'
-        id: package-version
+        id: package-version-prod-impl
         uses: salsify/action-detect-and-tag-new-version@68bbe8670f415d304e02942186441939c4692aa6 # pin@v1.0.3
         with:
           version-command: |
