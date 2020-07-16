@@ -77,7 +77,7 @@ jobs:
         id: build-image
         env:
           ECR_REPOSITORY: new-qpp-conversion-tool
-          ECR_REGISTRY: 003384571330.dkr.ecr.us-east-1.amazonaws.com
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: v${{ steps.package-version.outputs.current-version }}
           GITHUB_REF: ${{ github.ref }}
         run: |
