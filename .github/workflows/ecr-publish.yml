@@ -81,12 +81,6 @@ jobs:
           IMAGE_TAG: v${{ steps.package-version.outputs.current-version }}
           GITHUB_REF: ${{ github.ref }}
         run: |
-#          echo $ECR_REGISTRY
-#          echo $ECR_REPOSITORY
-#          echo $ECR_REGISTRY/$ECR_REPOSITORY
-#          echo $IMAGE_TAG
-#          echo $GITHUB_REF
-
           docker build -t new-qpp-conversion-tool:latest .
           docker tag new-qpp-conversion-tool:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker rmi $ECR_REGISTRY/$ECR_REPOSITORY:latest
