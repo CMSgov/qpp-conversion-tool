@@ -37,9 +37,6 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 2
-
-      - name: Install dependencies
-        run: mvn install
   
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -52,14 +49,30 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Detect new tag version from package.json
+      - name: Detect new tag version from pom.xml
         id: package-version
         uses: salsify/action-detect-and-tag-new-version@68bbe8670f415d304e02942186441939c4692aa6 # pin@v1.0.3
         with:
           version-command: |
             mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | grep -v '\['
 
-      - name: Build, tag, and push image to Amazon ECR
+#      ## Build & Deploy Dev
+#      - name: Build & Deploy Dev
+#        if: contains(github.ref, 'refs/heads/feature/') || github.ref == 'refs/heads/develop'
+#        run: |
+
+#      ## Build & Deploy Staging
+#      - name: Build & Deploy Staging
+#        if: contains(github.ref, 'refs/heads/release/')
+#        run: |
+
+#      ## Build & Deploy Production
+#      - name: Build & Deploy Production
+#        if: github.ref == 'refs/heads/master'
+#        run: |
+
+      - name: Build & Deploy ecr-deploy (testing)
+        if: github.ref == 'refs/heads/ecr-deploy'
         id: build-image
         env:
           ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
@@ -72,4 +85,4 @@ jobs:
           docker rmi $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker tag new-qpp-conversion-tool:latest $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG  
