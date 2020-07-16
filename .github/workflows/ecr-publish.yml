@@ -31,7 +31,8 @@ jobs:
     needs: test
     name: Deploy to AWS ECR
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
+    if: contains(github.ref, 'refs/heads/ecr-deploy/')
+#    if: github.event_name == 'push'
 
     steps:
       - uses: actions/checkout@v2
