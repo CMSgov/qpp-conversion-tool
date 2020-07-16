@@ -55,8 +55,8 @@ jobs:
       - name: Detect new tag version from pom.xml
         id: package-version
         uses: salsify/action-detect-and-tag-new-version@68bbe8670f415d304e02942186441939c4692aa6 # pin@v1.0.3
-        create-tag: false
         with:
+          create-tag: false
           version-command: |
             mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | grep -v '\['  
 
