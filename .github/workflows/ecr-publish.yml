@@ -5,10 +5,6 @@ on:
     branches:
       - ecr-deploy
 
-env:
-  ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
-  GITHUB_REF: ${{ github.ref }}
-
 jobs:
   test: 
     name: Build and Test
@@ -80,10 +76,10 @@ jobs:
         if: github.ref == 'refs/heads/ecr-deploy'
         id: build-image
         env:
-#          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
           ECR_REPOSITORY: new-qpp-conversion-tool
+          ECR_REGISTRY: 003384571330.dkr.ecr.us-east-1.amazonaws.com
           IMAGE_TAG: v${{ steps.package-version.outputs.current-version }}
-#          GITHUB_REF: ${{ github.ref }}
+          GITHUB_REF: ${{ github.ref }}
         run: |
           echo $ECR_REGISTRY
           echo $ECR_REPOSITORY
