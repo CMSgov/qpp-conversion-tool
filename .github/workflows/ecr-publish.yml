@@ -78,7 +78,7 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       ## Build & Deploy develop
-      - name: Build & Deploy Staging
+      - name: Build & Deploy develop
         if: contains(github.ref, 'refs/heads/develop/')
         env:
           ECR_REPOSITORY: qppsf/conversion-tool/dev
@@ -91,7 +91,7 @@ jobs:
       
 
       ## Build & Deploy impl
-      - name: Build & Deploy Staging
+      - name: Build & Deploy impl
         if: contains(github.ref, 'refs/heads/release/')
         env:
           ECR_REPOSITORY: qppsf/conversion-tool/impl
@@ -103,7 +103,7 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       ## Build & Deploy prod
-      - name: Build & Deploy Staging
+      - name: Build & Deploy prod
         if: contains(github.ref, 'refs/heads/master/')
         env:
           ECR_REPOSITORY: qppsf/conversion-tool/prod
