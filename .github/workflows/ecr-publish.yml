@@ -5,6 +5,9 @@ on:
     branches:
       - ecr-deploy
 
+env:
+  ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+
 jobs:
   test: 
     name: Build and Test
@@ -75,14 +78,17 @@ jobs:
         if: github.ref == 'refs/heads/ecr-deploy'
         id: build-image
         env:
-          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
-          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+#          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+          ECR_REPOSITORY: new-qpp-conversion-tool
           IMAGE_TAG: v${{ steps.package-version.outputs.current-version }}
           GITHUB_REF: ${{ github.ref }}
         run: |
-          docker build -t new-qpp-conversion-tool:latest .
-          docker tag new-qpp-conversion-tool:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
-          docker rmi $ECR_REGISTRY/$ECR_REPOSITORY:latest
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
-          docker tag new-qpp-conversion-tool:latest $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG  
+          echo $ECR_REGISTRY
+          echo $ECR_REPOSITORY
+          echo $ECR_REGISTRY/$ECR_REPOSITORY
+#          docker build -t new-qpp-conversion-tool:latest .
+#          docker tag new-qpp-conversion-tool:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
+#          docker rmi $ECR_REGISTRY/$ECR_REPOSITORY:latest
+#          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+#          docker tag new-qpp-conversion-tool:latest $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+#          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG  
