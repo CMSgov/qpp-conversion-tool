@@ -8,6 +8,7 @@ on:
       - release/*
       - master
 
+jobs:
   deploy:
     name: Deploy to AWS ECR
     runs-on: ubuntu-latest
