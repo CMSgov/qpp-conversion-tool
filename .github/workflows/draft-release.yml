@@ -14,7 +14,6 @@ jobs:
           fetch-depth: 2
 
       - name: Detect new tag version from pom.xml
-        if: contains(github.ref, 'refs/heads/release/') || github.ref == 'refs/heads/master'
         id: package-version-prod-impl
         uses: salsify/action-detect-and-tag-new-version@68bbe8670f415d304e02942186441939c4692aa6 # pin@v1.0.3
         with:
