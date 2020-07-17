@@ -4,25 +4,87 @@ on:
   push:
     branches:
       - ecr-deploy
+      - develop
+      - release/*
+      - master
 
 jobs:
-  # Run tests.
-  test: 
+  deploy:
+    name: Deploy to AWS ECR
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout codebase 
-        uses: actions/checkout@v2
-      
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
+      - uses: actions/checkout@v2
         with:
-          java-version: 1.8
-          
-      - name: Install dependencies
-        run: mvn install
+          fetch-depth: 2
+  
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Run Verification & Unit Tests 
-        run: mvn --batch-mode verify
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Run Integration Tests  
-        run: mvn --batch-mode test -P integration
+      - name: Detect existing tag version from pom.xml
+        id: package-version-dev
+        uses: salsify/action-detect-and-tag-new-version@68bbe8670f415d304e02942186441939c4692aa6 # pin@v1.0.3
+        with:
+          create-tag: false
+          version-command: |
+            mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | grep -v '\['  
+
+      # Build & Deploy ecr-deploy
+      - name: Build & Deploy ecr-deploy (testing)
+        if: github.ref == 'refs/heads/ecr-deploy'
+        id: build-image
+        env:
+          ECR_REPOSITORY: new-qpp-conversion-tool
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: v${{ steps.package-version.outputs.current-version }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      ## Build & Deploy develop
+      - name: Build & Deploy develop
+        if: contains(github.ref, 'refs/heads/develop/')
+        env:
+          ECR_REPOSITORY: qppsf/conversion-tool/dev
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: v${{ steps.package-version.outputs.current-version }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      ## Build & Deploy impl
+      - name: Build & Deploy impl
+        if: contains(github.ref, 'refs/heads/release/')
+        env:
+          ECR_REPOSITORY: qppsf/conversion-tool/impl
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: v${{ steps.package-version.outputs.current-version }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      ## Build & Deploy prod
+      - name: Build & Deploy prod
+        if: contains(github.ref, 'refs/heads/master/')
+        env:
+          ECR_REPOSITORY: qppsf/conversion-tool/prod
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: v${{ steps.package-version.outputs.current-version }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: Logout of Amazon ECR
+        if: always()
+        run: docker logout ${{ steps.login-ecr.outputs.registry }}
