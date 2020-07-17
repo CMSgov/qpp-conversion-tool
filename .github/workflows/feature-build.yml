@@ -5,12 +5,8 @@
 name: CT PR build
 
 on:
-  push:
-    branches: [ master, develop ]
-
   pull_request:
-    types: [ opened, synchronize, reopened ]
-    branches: [ develop ]
+    types: [ assigned, opened, synchronize, reopened ]
 
 jobs:
   build: 
