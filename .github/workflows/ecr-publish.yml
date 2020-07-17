@@ -51,7 +51,7 @@ jobs:
 
       ## Build & Deploy develop
       - name: Build & Deploy develop
-        if: contains(github.ref, 'refs/heads/develop/')
+        if: github.ref == 'refs/heads/develop'
         env:
           ECR_REPOSITORY: qppsf/conversion-tool/dev
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -63,7 +63,7 @@ jobs:
 
       ## Build & Deploy impl
       - name: Build & Deploy impl
-        if: contains(github.ref, 'refs/heads/release/')
+        if: github.ref == 'refs/heads/release/'
         env:
           ECR_REPOSITORY: qppsf/conversion-tool/impl
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -75,7 +75,7 @@ jobs:
 
       ## Build & Deploy prod
       - name: Build & Deploy prod
-        if: contains(github.ref, 'refs/heads/master/')
+        if: github.ref == 'refs/heads/master'
         env:
           ECR_REPOSITORY: qppsf/conversion-tool/prod
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
