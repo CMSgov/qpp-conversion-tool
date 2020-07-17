@@ -44,7 +44,7 @@ jobs:
           ECR_REPOSITORY: new-qpp-conversion-tool
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           #IMAGE_TAG: v${{ steps.package-version.outputs.current-version }}
-          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_TAG: ${{ env.GIT_TAG }}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
