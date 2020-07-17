@@ -29,21 +29,12 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Detect existing tag version from pom.xml
-        if: contains(github.ref, 'refs/heads/develop/') || github.ref == 'refs/heads/ecr-deploy'
         id: package-version-dev
         uses: salsify/action-detect-and-tag-new-version@68bbe8670f415d304e02942186441939c4692aa6 # pin@v1.0.3
         with:
           create-tag: false
           version-command: |
             mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | grep -v '\['  
-
-      - name: Detect new tag version from pom.xml
-        if: contains(github.ref, 'refs/heads/release/') || github.ref == 'refs/heads/master'
-        id: package-version-prod-impl
-        uses: salsify/action-detect-and-tag-new-version@68bbe8670f415d304e02942186441939c4692aa6 # pin@v1.0.3
-        with:
-          version-command: |
-            mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | grep -v '\['
 
       # Build & Deploy ecr-deploy
       - name: Build & Deploy ecr-deploy (testing)
@@ -69,7 +60,6 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-      
 
       ## Build & Deploy impl
       - name: Build & Deploy impl
