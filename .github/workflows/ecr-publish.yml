@@ -37,6 +37,9 @@ jobs:
 #            mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | grep -v '\['  
 
       # Build & Deploy ecr-deploy
+      - name: Extract Git Tag
+        run: echo ::set-env name=GIT_TAG::${GITHUB_REF/refs\/tags\//}
+        
       - name: Build & Deploy ecr-deploy (testing)
         if: github.ref == 'refs/heads/ecr-deploy'
         id: build-image
