@@ -28,26 +28,16 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-#      - name: Detect existing tag version from pom.xml
-#        id: package-version-dev
-#        uses: salsify/action-detect-and-tag-new-version@68bbe8670f415d304e02942186441939c4692aa6 # pin@v1.0.3
-#        with:
-#          create-tag: false
-#          version-command: |
-#            mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | grep -v '\['  
-
-      # Build & Deploy ecr-deploy
       - name: Extract Git Tag
         run: echo ::set-env name=GIT_TAG::${GITHUB_REF/refs\/tags\//}
-        
+
       - name: Build & Deploy ecr-deploy (testing)
         if: github.ref == 'refs/heads/ecr-deploy'
         id: build-image
         env:
           ECR_REPOSITORY: new-qpp-conversion-tool
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          #IMAGE_TAG: v${{ steps.package-version.outputs.current-version }}
-          IMAGE_TAG: ${{ env.GIT_TAG }}
+          IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
@@ -59,7 +49,7 @@ jobs:
         env:
           ECR_REPOSITORY: qppsf/conversion-tool/dev
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: v${{ steps.package-version.outputs.current-version }}
+          IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
@@ -71,7 +61,7 @@ jobs:
         env:
           ECR_REPOSITORY: qppsf/conversion-tool/impl
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: v${{ steps.package-version.outputs.current-version }}
+          IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
@@ -83,7 +73,7 @@ jobs:
         env:
           ECR_REPOSITORY: qppsf/conversion-tool/prod
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: v${{ steps.package-version.outputs.current-version }}
+          IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
