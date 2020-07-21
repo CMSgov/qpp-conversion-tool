@@ -1,11 +1,13 @@
 package gov.cms.qpp.conversion.validate;
 
+import org.apache.commons.collections.MapUtils;
+
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
-import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.LocalizedProblem;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 
@@ -18,6 +20,8 @@ import java.util.Map;
  */
 @Validator(value = TemplateId.MEASURE_SECTION_V3, program = Program.CPC)
 public class CpcQualityMeasureSectionValidator extends NodeValidator {
+
+	private static final String[] NO_CONFIGURED_MEASURES = {};
 
 	/**
 	 * Validate that the Quality Measure Section contains an acceptable combination of measures...
@@ -49,7 +53,10 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 	 * @return measure id array
 	 */
 	String[] grabGroupMeasures(CpcGroupMinimum groupMinimum) {
-		Map<String, List<MeasureConfig>> cpcPlusGroups = MeasureConfigs.getCpcPlusGroups();
+		Map<String, List<MeasureConfig>> cpcPlusGroups = MeasureConfigs.getCpcPlusGroup();
+		if(MapUtils.isEmpty(cpcPlusGroups)) {
+			return NO_CONFIGURED_MEASURES;
+		}
 
 		return cpcPlusGroups.get(groupMinimum.getMapName()).stream()
 				.map(MeasureConfig::getElectronicMeasureVerUuid)
