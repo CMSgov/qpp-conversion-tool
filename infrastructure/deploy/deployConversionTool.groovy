@@ -23,13 +23,13 @@ pipeline {
   stages {
 
     stage("Deploy") {
-      when {
-        anyOf {
-          branch 'develop'; // dev
-          branch 'master'; // prod or impl
-          branch 'QPPSF-6388_Migrate_CT_Deployment' ; //feature branch
-        }
-      }
+  //    when {
+  //      anyOf {
+  //        branch 'develop'; // dev
+  //        branch 'master'; // prod or impl
+  //        branch 'QPPSF-6388_Migrate_CT_Deployment' ; //feature branch
+  //      }
+   //   }
       
       steps {
         sh '''
@@ -42,14 +42,14 @@ pipeline {
     }
   }
 
-  post {
+//  post {
 //    failure {
 //      script {
 //          slackSend channel: '@jeremy.page', slackSend color: 'Error', message: '${currentBuild.fullDisplayName} failed'
 //        }
 //      }
-    always {
-       deleteDir()
-    }
-  }
+//    always {
+//       deleteDir()
+//    }
+//  }
 }
