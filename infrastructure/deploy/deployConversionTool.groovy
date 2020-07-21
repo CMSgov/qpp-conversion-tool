@@ -27,6 +27,7 @@ pipeline {
         anyOf {
           branch 'develop'; // dev
           branch 'master'; // prod or impl
+          branch 'QPPSF-6388_Migrate_CT_Deployment' ; //feature branch
         }
       }
       
@@ -48,7 +49,7 @@ pipeline {
 //        }
 //      }
     always {
-       cleanWs()
+       deleteDir()
     }
   }
 }
