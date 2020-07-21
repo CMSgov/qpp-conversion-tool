@@ -33,11 +33,11 @@ pipeline {
       
       steps {
         sh '''
-         ecs deploy ${CLUSTER_NAME}-${params.enviroment} ${SERVICE_NAME}-${params.enviroment} -t ${GIT_HASH_TAG} \
-          --region us-east-1 --timeout ${DEPLOY_TIMEOUT} --task ${SERVICE_NAME}-${params.enviroment} \
+         ecs deploy ${CLUSTER_NAME}-${params.env} ${SERVICE_NAME}-${params.env} -t ${GIT_HASH_TAG} \
+          --region us-east-1 --timeout ${DEPLOY_TIMEOUT} --task ${SERVICE_NAME}-${params.env} \
           --no-deregister
           '''
-        sh 'aws ecs wait services-stable --cluster ${CLUSTER_NAME}-${params.enviroment} --services ${SERVICE_NAME}-${params.enviroment} --region us-east-1'
+        sh 'aws ecs wait services-stable --cluster ${CLUSTER_NAME}-${params.env} --services ${SERVICE_NAME}-${params.env} --region us-east-1'
       }
     }
   }
