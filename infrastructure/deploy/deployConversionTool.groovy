@@ -10,8 +10,8 @@ pipeline {
   }
 
   environment {
-    CLUSTER_NAME="qppsf-conversion-tool-${param.environment}"
-    SERVICE_NAME="conversion-tool-${param.environment}"
+    CLUSTER_NAME='qppsf-conversion-tool'
+    SERVICE_NAME='conversion-tool'
     GIT_HASH_TAG="""${sh(returnStdout: true, script: 'git rev-parse HEAD').trim()}"""
     DEPLOY_TIMEOUT='30'
   }
@@ -32,11 +32,11 @@ pipeline {
       
       steps {
         sh '''
-         ecs deploy ${CLUSTER_NAME} ${SERVICE_NAME} -t ${GIT_HASH_TAG} \
-          --region us-east-1 --timeout ${DEPLOY_TIMEOUT} --task ${SERVICE_NAME} \
+         ecs deploy ${CLUSTER_NAME}-${params.enviroment} ${SERVICE_NAME}-${params.enviroment} -t ${GIT_HASH_TAG} \
+          --region us-east-1 --timeout ${DEPLOY_TIMEOUT} --task ${SERVICE_NAME}-${params.enviroment} \
           --no-deregister
           '''
-        sh 'aws ecs wait services-stable --cluster ${CLUSTER_NAME} --services ${SERVICE_NAME} --region us-east-1'
+        sh 'aws ecs wait services-stable --cluster ${CLUSTER_NAME}-${params.enviroment} --services ${SERVICE_NAME}-${params.enviroment} --region us-east-1'
       }
     }
   }
