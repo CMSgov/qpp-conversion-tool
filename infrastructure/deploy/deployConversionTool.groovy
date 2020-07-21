@@ -17,7 +17,7 @@ pipeline {
   }
   
   parameters {
-    choice(name: 'env', choices: ['prod', 'impl', 'dev'], description: 'Which environment do you want to run it in?')
+    choice(name: 'env', choices: ['dev', 'impl', 'prod'], description: 'Which environment do you want to run it in?')
   }
 
   stages {
