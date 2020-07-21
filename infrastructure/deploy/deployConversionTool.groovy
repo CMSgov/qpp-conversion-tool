@@ -42,11 +42,11 @@ pipeline {
   }
 
   post {
-    failure {
-      script {
-          slackSend channel: '@jeremy.page', slackSend color: 'Error', message: '${currentBuild.fullDisplayName} failed'
-        }
-      }
+//    failure {
+//      script {
+//          slackSend channel: '@jeremy.page', slackSend color: 'Error', message: '${currentBuild.fullDisplayName} failed'
+//        }
+//      }
     always {
        cleanWs()
     }
