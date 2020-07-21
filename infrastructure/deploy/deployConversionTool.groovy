@@ -32,6 +32,7 @@ pipeline {
    //   }
       
       steps {
+        sh 'env'
         sh '''
          ecs deploy ${CLUSTER_NAME}-${params.env} ${SERVICE_NAME}-${params.env} -t ${GIT_HASH_TAG} \
           --region us-east-1 --timeout ${DEPLOY_TIMEOUT} --task ${SERVICE_NAME}-${params.env} \
