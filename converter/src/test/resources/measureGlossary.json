@@ -746,115 +746,67 @@
 		]
 	},
 	{
-		"eMeasureId": "CMS159v7",
-		"eMeasureUuid": "40280382-6258-7581-0162-626f31a0009e",
+		"eMeasureId": "CMS159v8",
+		"eMeasureUuid": "40280382-6963-bf5e-016a-03dca9e446e0",
 		"strata": [
 			{
-				"name" : "12-17",
+				"name": "12-17",
 				"description": "Adolescent patients 12 to 17 years of age and adult patients 18 years of age and older who achieved remission at twelve months as demonstrated by a twelve month (+/- 60 days) PHQ-9 or PHQ-9M score of less than five",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "28EF715E-00EF-495A-B529-9FEF83EDA5FF",
-					"denominatorUuid": "81429A7D-591D-4EE0-B1E0-AE7A3AA96D56",
-					"numeratorUuid": "F4580E7F-EB6C-42AB-93A8-9AF1A4FD46EE",
-					"denominatorExclusionUuid": "6B6C8B54-B290-4258-BD5A-9B3562036108",
+					"initialPopulationUuid": "3E189A2F-18C6-4788-80AD-7B6D31977E23",
+					"denominatorUuid": "9374A2BA-D848-4631-BD7F-B9301CB16C6F",
+					"numeratorUuid": "A5976BE6-7F1C-419D-898D-7AFEB141A355",
+					"denominatorExclusionUuid": "368D79F7-DFF9-4987-B870-266C0560A1CE",
 					"strata": [
-						"1D836150-AE93-46B1-9432-DACCC20C5CDF",
-						"E4C1A2E2-1959-4BF7-873E-8EB80128C206"
+						"4A779584-DBC5-4A07-8E9F-A7502BA537E8",
+						"28EB1666-9599-452B-A722-5FDB1BA72FF4"
 					]
 				}
 			},
 			{
-				"name" : "18+"
+				"name": "18+"
 			}
 		]
 	},
 	{
-		"eMeasureId": "CMS160v7",
-		"eMeasureUuid": "40280382-6258-7581-0162-63106f9201b2",
-		"strata": [
-			{
-				"name": "4MonthsOfEnd",
-				"description": "Office visit, Psych visit, or Face to Face Interaction (No ED) within 4 months of the end of the measurement period that leads to a diagnosis of major depression including remission or dysthymia",
-				"eMeasureUuids": {
-					"initialPopulationUuid": "D00E7D31-7F59-468D-99C6-631D07715E59",
-					"denominatorUuid": "A52E93B8-A2D1-414E-94D0-90155E8FF81F",
-					"numeratorUuid": "539B0A53-F5B0-47CB-887E-392792E9D4ED",
-					"denominatorExclusionUuid": "0830DDCA-C45E-4D80-B359-E69E2F83D7B2",
-					"strata": [
-						"13406420-1144-4100-9439-ED134656A4FC",
-						"DD7E5C35-6825-496B-A155-A4CBE9056535"
-					]
-				}
-			},
-			{
-				"name": "4&8MonthsAfterStart",
-				"description": "Office visit, Psych visit, or Face to Face Interaction (No ED) between 4 and 8 months after the start of the measurement period that leads to a diagnosis of major depression including remission or dysthymia",
-				"eMeasureUuids": {
-					"initialPopulationUuid": "95F5AFA0-CB23-4786-A2E0-0646C0494E4F",
-					"denominatorUuid": "1B9C4359-5DF7-4B6D-ACD8-C12175C67EFD",
-					"numeratorUuid": "92D313A7-3A3D-44EC-8A94-103CC0003A30",
-					"denominatorExclusionUuid": "7889D513-C24C-482F-8C9C-FC31F35E3999",
-					"strata": [
-						"39B15197-7895-4AFC-B4AA-83DABFF66373",
-						"0416AB91-F7FF-4432-A5D9-77B27F5AE30C"
-					]
-				}
-			},
-			{
-				"name": "4MonthsOfStart",
-				"description": "Office visit, Psych visit, or Face to Face Interaction (No ED) within 4 months of the start of the measurement period that leads to a diagnosis of major depression including remission or dysthymia",
-				"eMeasureUuids": {
-					"initialPopulationUuid": "750B4DDA-EC94-4082-9AB4-86824666D808",
-					"denominatorUuid": "2E3A7115-247D-4A0E-918C-AB581E13486A",
-					"numeratorUuid": "9FCE046B-5EF9-4A19-9D22-D3A6518EDA51",
-					"denominatorExclusionUuid": "DE1952F9-9E35-4493-BA65-3F6CD8904059",
-					"strata": [
-						"1FD9CB54-2485-43C9-A9CB-041E6FE078F0",
-						"B4B269AE-AE95-4FFF-AD3A-0C7F62DC0C72"
-					]
-				}
-			}
-		]
-	},
-	{
-		"eMeasureId": "CMS161v7",
-		"eMeasureUuid": "40280382-6240-b6b9-0162-54a885810d2b",
+		"eMeasureId": "CMS161v8",
+		"eMeasureUuid": "40280382-6963-bf5e-0169-6dc1a7040310",
 		"strata": [
 			{
 				"description": "Patients with a suicide risk assessment completed during the visit in which a new diagnosis or recurrent episode was identified",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "33FD7F21-04D7-4EBD-A82B-F783766A2D73",
-					"denominatorUuid": "C2249005-1B28-46B0-ADF7-19AB17FE5590",
-					"numeratorUuid": "B012B952-499D-4432-A793-6CDE12630E0C"
+					"initialPopulationUuid": "F74EA264-FF5D-4AAA-AF04-241FE0DFB057",
+					"denominatorUuid": "8C1F94B8-D880-4F57-BC18-E308A6B085CE",
+					"numeratorUuid": "FDF9459C-492A-4467-95EE-D046F06AC1D7"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureId": "CMS165v7",
-		"eMeasureUuid": "40280382-6258-7581-0162-92d6e6db1680",
+		"eMeasureId": "CMS165v8",
+		"eMeasureUuid": "40280382-6963-bf5e-0169-da5e74be38bf",
 		"strata": [
 			{
-				"description": "Patients whose blood pressure at the most recent visit is adequately controlled (systolic blood pressure < 140 mmHg and diastolic blood pressure < 90 mmHg) during the measurement period",
+				"description": "Patients whose most recent blood pressure is adequately controlled (systolic blood pressure < 140 mmHg and diastolic blood pressure < 90 mmHg) during the measurement period",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "A096B729-ECCA-4C7A-9CA0-A601D8D70396",
-					"denominatorUuid": "BA4CB92A-1635-4E1B-BC23-1ED7B967072A",
-					"numeratorUuid": "A815D9EA-5CE0-4AD8-A703-BC69D19E360B",
-					"denominatorExclusionUuid": "4A61F526-AFFA-465F-89C9-B2DB8E6ECEBC"
+					"initialPopulationUuid": "1A3C24A5-7E9E-461B-BEB8-834822CC0942",
+					"denominatorUuid": "E822DECB-5DD1-421D-BFCE-F5DA550EE238",
+					"numeratorUuid": "9306E83B-3C3B-4CDF-B3EA-F99AEFC55F87",
+					"denominatorExclusionUuid": "965140D9-663B-4B08-99F9-19E14AE0CB5C"
 				}
 			}
 		]
 	},
 	{
-		"eMeasureId": "CMS177v7",
-		"eMeasureUuid": "40280382-6240-b6b9-0162-54b832d90d52",
+		"eMeasureId": "CMS177v8",
+		"eMeasureUuid": "40280382-6963-bf5e-0169-6dc350b80329",
 		"strata": [
 			{
 				"description": "Patient visits with an assessment for suicide risk",
 				"eMeasureUuids": {
-					"initialPopulationUuid": "0F0FB2E3-6F44-4A80-9D8B-B7CD02CC3595",
-					"denominatorUuid": "E008C006-7EA5-4BD8-B6A7-89927F8C9625",
-					"numeratorUuid": "FCE22FCD-291F-4606-93E9-B77588BBF50B"
+					"initialPopulationUuid": "57E186C3-9BA6-4EA0-8ED3-A7B002CE738F",
+					"denominatorUuid": "D02E6B26-38A2-44F9-8532-EDB5B86ADDE5",
+					"numeratorUuid": "AB5AD2BA-F0C8-4C38-8A84-0B57DAB1A6A2"
 				}
 			}
 		]
