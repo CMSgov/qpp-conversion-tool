@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 
 import com.jayway.jsonpath.TypeRef;
@@ -38,6 +40,12 @@ class QualityMeasureIdRoundTripTest {
 		Paths.get("src/test/resources/negative/wrongSubPopulationsMeasure135.xml");
 	static final Path MISSING_COUNT_FOR_PERF_DENOM =
 		Paths.get("src/test/resources/negative/perfDenomAggCountMissing.xml");
+
+	@BeforeClass
+	static void setUp() {
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.TEST_MEASURE_DATA);
+	}
+
 
 	@Test
 	void testRoundTripForQualityMeasureId() {

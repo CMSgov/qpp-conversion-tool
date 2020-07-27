@@ -5,6 +5,8 @@ import static com.google.common.truth.Truth.assertThat;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,6 +21,7 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.model.validation.SupplementalData;
 import gov.cms.qpp.conversion.xml.XmlUtils;
@@ -27,6 +30,11 @@ class CpcMeasureDataValidatorTest {
 
 	private static final String MEASURE_ID = "CMS122v7";
 	private static final String MISSING_SUPPLEMENTAL_CODES_FILE = "missingSupplementalCodeFile.xml";
+
+	@BeforeAll
+	static void setup() {
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.TEST_MEASURE_DATA);
+	}
 
 	@Test
 	void validateSuccessfulSupplementalDataFieldsTest() throws Exception {
