@@ -9,8 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.jayway.jsonpath.TypeRef;
@@ -41,11 +44,15 @@ class QualityMeasureIdRoundTripTest {
 	static final Path MISSING_COUNT_FOR_PERF_DENOM =
 		Paths.get("src/test/resources/negative/perfDenomAggCountMissing.xml");
 
-	@BeforeClass
-	static void setUp() {
+	@BeforeEach
+	void setup() {
 		MeasureConfigs.initMeasureConfigs(MeasureConfigs.TEST_MEASURE_DATA);
 	}
 
+	@AfterEach
+	void teardown() {
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
+	}
 
 	@Test
 	void testRoundTripForQualityMeasureId() {
@@ -98,6 +105,7 @@ class QualityMeasureIdRoundTripTest {
 
 	@Test
 	void testMeasureCMS138v7PerformanceRateUuid() {
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.TEST_MEASURE_DATA);
 		Converter converter = new Converter(new PathSource(INVALID_PERFORMANCE_UUID_FILE));
 		List<Detail> details = new ArrayList<>();
 
@@ -148,7 +156,8 @@ class QualityMeasureIdRoundTripTest {
 	}
 
 	@Test
-	void testCorrectMultiToSinglePerfMeasureExample() {
+	void test2020CorrectMultiToSinglePerfMeasureExample() {
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 		Converter converter = new Converter(new PathSource(CORRECT_MULTI_TO_SINGLE_PERF_RATE_FILE));
 		JsonWrapper qpp = converter.transform();
 
