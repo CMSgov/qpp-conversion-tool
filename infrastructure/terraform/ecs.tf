@@ -3,7 +3,7 @@ resource "aws_ecs_cluster" "conversion-tool-ecs-cluster" {
 }
 
 resource "aws_ecs_task_definition" "conversion-tool" {
-  family                   = "qppsf-conversion-tool"
+  family                   = "qppsf-conversion-tool-${var.environment}"
   execution_role_arn       = "arn:aws:iam::003384571330:role/ecsTaskExecutionRole"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
