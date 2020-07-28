@@ -33,21 +33,15 @@ class CpcPlusRoundTripTest {
 	static void setup() throws URISyntaxException, IOException {
 		ApmEntityIds.setApmDataFile("test_apm_entity_ids.json");
 		URL sample = CpcPlusRoundTripTest.class.getClassLoader()
-				.getResource("cpc_plus/success/CPCPlus_CMSPrgrm_LowerCase_SampleQRDA-III.xml");
+				.getResource("cpc_plus/success/2020/CPCPlus_2020-Guid-Updates.xml");
 		Path path = Paths.get(sample.toURI());
 		new JsonPathToXpathHelper(path, wrapper, false);
 		json = new ObjectMapper().readValue(wrapper.copyWithoutMetadata().toString(), HashMap.class);
 	}
 
-	@BeforeEach
-	void setupMeasureaConfigs() {
-		MeasureConfigs.initMeasureConfigs(MeasureConfigs.TEST_MEASURE_DATA);
-	}
-
 	@AfterAll
 	static void resetApmIds() {
 		ApmEntityIds.setApmDataFile(ApmEntityIds.DEFAULT_APM_ENTITY_FILE_NAME);
-		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 	}
 
 	@ParameterizedTest
