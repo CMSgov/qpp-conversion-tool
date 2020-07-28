@@ -1865,7 +1865,8 @@
 					"denominatorExclusionUuid": "6F7B3C8C-9741-454B-9C02-3F279DD08B53"
 				}
 			}
-		]
+		],
+		"cpcPlusGroup": "Outcome_Measure"
 	},
 	{
 		"title": "Heart Failure (HF): Angiotensin-Converting Enzyme (ACE) Inhibitor or Angiotensin Receptor Blocker (ARB) or Angiotensin Receptor-Neprilysin Inhibitor (ARNI) Therapy for Left Ventricular Systolic Dysfunction (LVSD)",
@@ -4801,7 +4802,8 @@
 					"denominatorExclusionUuid": "965140D9-663B-4B08-99F9-19E14AE0CB5C"
 				}
 			}
-		]
+		],
+		"cpcPlusGroup": "Outcome_Measure"
 	},
 	{
 		"title": "Use of High-Risk Medications in the Elderly",
