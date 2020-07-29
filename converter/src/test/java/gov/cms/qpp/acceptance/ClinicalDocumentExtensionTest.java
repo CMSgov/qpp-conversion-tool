@@ -35,8 +35,9 @@ class ClinicalDocumentExtensionTest {
 	}
 
 	@AfterAll
-	static void resetApmIds() {
+	static void teardown() {
 		ApmEntityIds.setApmDataFile(ApmEntityIds.DEFAULT_APM_ENTITY_FILE_NAME);
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 	}
 
 	@Test

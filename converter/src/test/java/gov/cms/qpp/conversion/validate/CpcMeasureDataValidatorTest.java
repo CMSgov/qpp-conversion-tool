@@ -1,11 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
-import static com.google.common.truth.Truth.assertThat;
-
-import java.util.List;
-import java.util.function.Consumer;
-
-import org.junit.Before;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,13 +13,18 @@ import gov.cms.qpp.conversion.decode.QrdaDecoderEngine;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.LocalizedProblem;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.model.validation.SupplementalData;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+
+import java.util.List;
+import java.util.function.Consumer;
+
+import static com.google.common.truth.Truth.assertThat;
 
 class CpcMeasureDataValidatorTest {
 
@@ -34,6 +34,11 @@ class CpcMeasureDataValidatorTest {
 	@BeforeAll
 	static void setup() {
 		MeasureConfigs.initMeasureConfigs(MeasureConfigs.TEST_MEASURE_DATA);
+	}
+
+	@AfterAll
+	static void teardown(){
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 	}
 
 	@Test

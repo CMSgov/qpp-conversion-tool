@@ -12,8 +12,8 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import static com.google.common.truth.Truth.assertThat;
 
 public class MeasureConfigHelperTest {
-	private static final String THE_UUID = "40280382-6258-7581-0162-9249c8ab1447";
-	private static final String THE_E_MEASURE_ID = "CMS122v7";
+	private static final String THE_UUID = "40280382-6963-bf5e-0169-da3833273869";
+	private static final String THE_E_MEASURE_ID = "CMS122v8";
 	private static final String THE_MEASURE_ID = "001";
 
 	@Test
