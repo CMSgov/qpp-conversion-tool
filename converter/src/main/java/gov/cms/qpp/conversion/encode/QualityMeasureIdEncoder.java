@@ -1,7 +1,5 @@
 package gov.cms.qpp.conversion.encode;
 
-import com.google.common.collect.ImmutableSet;
-
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
@@ -17,7 +15,6 @@ import gov.cms.qpp.conversion.util.SubPopulationHelper;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.Set;
 
 import static gov.cms.qpp.conversion.decode.AggregateCountDecoder.AGGREGATE_COUNT;
 
@@ -31,7 +28,6 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	private static final String SINGLE_PERFORMANCE_RATE = "singlePerformanceRate";
 	private static final String TRUE = "true";
 	private static final String PERFORMANCE_NOT_MET = "performanceNotMet";
-	private static final String SINGLE_TO_MULTI_PERF_RATE_MEASURE_ID = "370";
 	protected static final String STRATUM_FIELD_NAME = "stratum";
 
 	public static final String TYPE = "type";
@@ -56,7 +52,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		wrapper.put(MEASURE_ID, measureId);
 		if (MeasureConfigHelper.checkMultiToSinglePerformanceRateId(measureId)) {
 			encodeAllSubPopulationSums(wrapper, node);
-		} else if (SINGLE_TO_MULTI_PERF_RATE_MEASURE_ID.equalsIgnoreCase(measureId)) {
+		} else if (MeasureConfigHelper.SINGLE_TO_MULTI_PERF_RATE_MEASURE_ID.equalsIgnoreCase(measureId)) {
 			encodeSingleToMultiPerformance(wrapper, node, measureConfig);
 		} else if (isASinglePerformanceRate(measureConfig)) {
 			encodeChildren(wrapper, node, measureConfig);
