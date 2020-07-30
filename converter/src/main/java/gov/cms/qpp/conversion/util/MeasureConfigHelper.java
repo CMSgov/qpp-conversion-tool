@@ -24,8 +24,8 @@ public class MeasureConfigHelper {
 	public static final String MEASURE_ID = "measureId";
 	public static final String NO_MEASURE = "No given measure id";
 	public static final String SINGLE_TO_MULTIPLE_SUP_POPULATION = "CMS159v7";
-	protected static Set<String> MULTI_TO_SINGLE_PERF_RATE_MEASURE_ID = ImmutableSet.of("005", "007", "008", "143", "438");
-	public static String SINGLE_TO_MULTI_PERF_RATE_MEASURE_ID = "370";
+	private static Set<String> MULTI_TO_SINGLE_PERF_RATE_MEASURE_ID = ImmutableSet.of("005", "007", "008", "143", "438");
+	public final static String SINGLE_TO_MULTI_PERF_RATE_MEASURE_ID = "370";
 
 	private MeasureConfigHelper() {
 		// private for this helper class
