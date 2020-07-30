@@ -31,7 +31,6 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	private static final String SINGLE_PERFORMANCE_RATE = "singlePerformanceRate";
 	private static final String TRUE = "true";
 	private static final String PERFORMANCE_NOT_MET = "performanceNotMet";
-	private static final Set<String> MULTI_TO_SINGLE_PERF_RATE_MEASURE_ID = ImmutableSet.of("005", "008", "143", "438");
 	private static final String SINGLE_TO_MULTI_PERF_RATE_MEASURE_ID = "370";
 	protected static final String STRATUM_FIELD_NAME = "stratum";
 
@@ -55,7 +54,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		MeasureConfig measureConfig = MeasureConfigHelper.getMeasureConfig(node);
 		String measureId = measureConfig.getMeasureId();
 		wrapper.put(MEASURE_ID, measureId);
-		if (MULTI_TO_SINGLE_PERF_RATE_MEASURE_ID.contains(measureId)) {
+		if (MeasureConfigHelper.checkMultiToSinglePerformanceRateId(measureId)) {
 			encodeAllSubPopulationSums(wrapper, node);
 		} else if (SINGLE_TO_MULTI_PERF_RATE_MEASURE_ID.equalsIgnoreCase(measureId)) {
 			encodeSingleToMultiPerformance(wrapper, node, measureConfig);
