@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class MeasureConfigs {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(MeasureConfigs.class);
 	public static final String DEFAULT_MEASURE_DATA_FILE_NAME = "measures-data.json";
-	public static final String TEST_MEASURE_DATA = "measure-data-2019.json";
+	public static final String TEST_MEASURE_DATA = "measure-data-static.json";
 
 	private static String measureDataFileName = DEFAULT_MEASURE_DATA_FILE_NAME;
 	private static Map<String, MeasureConfig> configurationMap;

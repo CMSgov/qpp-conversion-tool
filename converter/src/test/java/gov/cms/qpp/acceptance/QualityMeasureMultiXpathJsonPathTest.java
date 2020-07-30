@@ -3,11 +3,13 @@ package gov.cms.qpp.acceptance;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.acceptance.helper.JsonPathToXpathHelper;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.xml.XmlException;
 
 class QualityMeasureMultiXpathJsonPathTest {
@@ -41,7 +43,7 @@ class QualityMeasureMultiXpathJsonPathTest {
 
 	@Test
 	void compareFirstSubPopDenominatorExceptions() throws XmlException {
-		String jsonPath = "measurementSets[0].measurements[0].value.strata[0].eligiblePopulationException";
+		String jsonPath = "measurementSets[0].measurements[0].value.strata[0].eligiblePopulationExclusion";
 		helper.executeAttributeTest(jsonPath, "value", "35");
 	}
 
@@ -59,7 +61,7 @@ class QualityMeasureMultiXpathJsonPathTest {
 
 	@Test
 	void compareSecondSubPopDenExcep() throws XmlException {
-		String jsonPath = "measurementSets[0].measurements[0].value.strata[1].eligiblePopulationException";
+		String jsonPath = "measurementSets[0].measurements[0].value.strata[1].eligiblePopulationExclusion";
 		helper.executeAttributeTest(jsonPath, "value", "40");
 	}
 }
