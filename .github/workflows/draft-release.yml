@@ -1,10 +1,10 @@
 name: Release Notes Drafter
-on:
-  create:
-    branches: [ release/* ]
+
+on: create
 
 jobs:
   release_draft:
+    if: ${{ contains(github.ref, 'refs/heads/releases/') }}
     runs-on: ubuntu-latest
     steps:
 
