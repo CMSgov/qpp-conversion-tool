@@ -9,7 +9,7 @@ resource "aws_ecs_task_definition" "conversion-tool" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = "2048"
   memory                   = "5120"
-  task_role_arn            = "arn:aws:iam::003384571330:role/ecsTaskExecutionRole"
+  task_role_arn            = aws_iam_role.qppsf_conversion_tool_ecs_role.arn
 
   container_definitions = data.template_file.ct_task_def.rendered
 }

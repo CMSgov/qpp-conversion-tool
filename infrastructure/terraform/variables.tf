@@ -39,3 +39,7 @@ variable "vpn_security_group" {
 variable "lb_security_group" {
   type = string
 }
+
+variable "task_role_arn" {
+  type = string
+}
