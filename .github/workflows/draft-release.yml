@@ -1,14 +1,14 @@
 name: Release Notes Drafter
-on:
-  create:
-    branches: [ release/* ]
+
+on: create
 
 jobs:
   release_draft:
+    if: github.ref == 'refs/heads/releases/'
     runs-on: ubuntu-latest
     steps:
 
-      - name: Checkout Codebase
+      - name: Checkout Codebase        
         uses: actions/checkout@v2
         with:
           fetch-depth: 2
