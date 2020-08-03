@@ -37,6 +37,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	private static final String MIPS_GROUP = "MIPS_GROUP";
 	private static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
 	public static final String MIPS_VIRTUAL_GROUP = "MIPS_VIRTUALGROUP";
+	public static final String MIPS_APM = "MIPSAPM";
 	public static final String ENTITY_APM = "apm";
 	static final String ENTITY_GROUP = "group";
 	static final String ENTITY_INDIVIDUAL = "individual";
@@ -223,6 +224,10 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 
 			case MIPS_VIRTUAL_GROUP:
 				pair = new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_VIRTUAL_GROUP);
+				break;
+
+			case MIPS_APM:
+				pair = new ImmutablePair<>(CPCPLUS_PROGRAM_NAME, ENTITY_APM);
 				break;
 
 			default:
