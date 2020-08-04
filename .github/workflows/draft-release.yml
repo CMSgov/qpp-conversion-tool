@@ -1,4 +1,4 @@
-name: Release Notes Drafter
+name: Draft Release Notes
 
 on: create
 

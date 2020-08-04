@@ -1,4 +1,4 @@
-name: "Detect hardcoded secrets"
+name: "Detect Hardcoded Secrets"
 
 on:
   push: 

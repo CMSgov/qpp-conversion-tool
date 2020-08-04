@@ -1,8 +1,5 @@
-#
-# Convertion Tools CI - PR
-#
-  
-name: CT PR build
+
+name: Pull Request Builder
 
 on:
   pull_request:
