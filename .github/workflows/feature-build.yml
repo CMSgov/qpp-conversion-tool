@@ -7,7 +7,7 @@ on:
 
 jobs:
   build: 
-    name: Build and Test
+    name: Run unit and verification tests
     runs-on: ubuntu-latest
 
     steps:
