@@ -31,7 +31,7 @@ CDA Header
 	<!-- QRDA Category III Report (QRDA III) -->
 	<templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01"/>
 	<!-- QRDA Category III Report - CMS EP -->
-	<templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2018-05-01"/>
+	<templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2019-05-01"/>
 	<!-- SHALL contain exactly one [1..1] id (CONF:17236).  This id SHALL be a globally unique identifier for the document (CONF:17242). -->
 	<id root="26a42253-99f5-48e7-9274-b467c6c7f623"/>
 	<!-- SHALL contain exactly one [1..1] code (CodeSystem: LOINC 2.16.840.1.113883.6.1 STATIC) (CONF:17210).
