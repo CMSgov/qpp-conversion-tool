@@ -2,7 +2,8 @@ name: "Detect hardcoded secrets"
 
 on:
   pull_request:
-  push:
+    types: [ assigned, opened, synchronize, reopened ]
+  push: 
 
 jobs:
   gitleaks:
