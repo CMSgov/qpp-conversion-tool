@@ -3,6 +3,7 @@ package gov.cms.qpp.acceptance;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -11,6 +12,7 @@ import gov.cms.qpp.acceptance.helper.JsonPathToXpathHelper;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -31,7 +33,7 @@ class CpcPlusRoundTripTest {
 	static void setup() throws URISyntaxException, IOException {
 		ApmEntityIds.setApmDataFile("test_apm_entity_ids.json");
 		URL sample = CpcPlusRoundTripTest.class.getClassLoader()
-				.getResource("cpc_plus/success/CPCPlus_CMSPrgrm_LowerCase_SampleQRDA-III.xml");
+				.getResource("cpc_plus/success/2020/CPCPlus_2020-Guid-Updates.xml");
 		Path path = Paths.get(sample.toURI());
 		new JsonPathToXpathHelper(path, wrapper, false);
 		json = new ObjectMapper().readValue(wrapper.copyWithoutMetadata().toString(), HashMap.class);
@@ -41,7 +43,6 @@ class CpcPlusRoundTripTest {
 	static void resetApmIds() {
 		ApmEntityIds.setApmDataFile(ApmEntityIds.DEFAULT_APM_ENTITY_FILE_NAME);
 	}
-
 
 	@ParameterizedTest
 	@ValueSource(strings = { "entityId", "entityType", "measurementSets", "performanceYear" })
