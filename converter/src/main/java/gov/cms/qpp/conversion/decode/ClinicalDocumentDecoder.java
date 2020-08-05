@@ -132,7 +132,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 			Pair<String, String> nameEntityPair = getProgramNameEntityPair(p.getValue());
 			thisNode.putValue(PROGRAM_NAME, nameEntityPair.getLeft(), false);
 			thisNode.putValue(ENTITY_TYPE, nameEntityPair.getRight(), false);
-			thisNode.putValue(RAW_PROGRAM_NAME, nameEntityPair.getKey(), false);
+			thisNode.putValue(RAW_PROGRAM_NAME, p.getValue(), false);
 		};
 		setOnNode(element, getXpath(PROGRAM_NAME), consumer, Filters.attribute(), false);
 		context.setProgram(Program.extractProgram(thisNode));
@@ -217,17 +217,14 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 			case MIPS_GROUP:
 				pair = new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_GROUP);
 				break;
-
+			// Fall through for the same Immutable pair with MIPS_APM program
+			case MIPS_APM:
 			case CPCPLUS:
 				pair = new ImmutablePair<>(CPCPLUS_PROGRAM_NAME, ENTITY_APM);
 				break;
 
 			case MIPS_VIRTUAL_GROUP:
 				pair = new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_VIRTUAL_GROUP);
-				break;
-
-			case MIPS_APM:
-				pair = new ImmutablePair<>(CPCPLUS_PROGRAM_NAME, ENTITY_APM);
 				break;
 
 			default:
