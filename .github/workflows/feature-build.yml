@@ -1,8 +1,5 @@
-#
-# Convertion Tools CI - PR
-#
-  
-name: CT PR build
+
+name: Pull Request Builder
 
 on:
   pull_request:
@@ -10,7 +7,7 @@ on:
 
 jobs:
   build: 
-    name: Build and Test
+    name: Run unit and verification tests
     runs-on: ubuntu-latest
 
     steps:

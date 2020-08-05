@@ -1,14 +1,15 @@
-name: Release Notes Drafter
+name: Draft Release Notes
 
 on: create
 
 jobs:
   release_draft:
-    if: ${{ contains(github.ref, 'refs/heads/releases/') }}
+    if: github.ref == 'refs/heads/releases/'
+    name: Create a new release
     runs-on: ubuntu-latest
     steps:
-
-      - name: Checkout Codebase
+    
+      - name: Checkout Codebase        
         uses: actions/checkout@v2
         with:
           fetch-depth: 2

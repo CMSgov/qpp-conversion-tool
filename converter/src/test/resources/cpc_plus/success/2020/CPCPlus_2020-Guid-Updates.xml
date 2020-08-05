@@ -3,7 +3,7 @@
   <realmCode code="US" />
   <typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040" />
   <templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01" />
-  <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2019-05-01"/>
+  <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2018-05-01"/>
   <id root="D5E68223-5760-11E7-1256-09173F13E4C5" />
   <code code="55184-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Quality Reporting Document Architecture Calculated Summary Report" />
   <title>Comprehensive Primary Care Plus (CPC+) Sample QRDA-III Report</title>
@@ -75,14 +75,14 @@
   </legalAuthenticator>
   <participant typeCode="DEV">
     <associatedEntity classCode="RGPR">
-      <id root="2.16.840.1.113883.3.2074.1" extension="XX15EXXXXXXXXXX" />
+      <id root="2.16.840.1.113883.3.2074.1" extension="0014ABC1D1EFG1H" />
       <code code="129465004" displayName="medical record, device" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" />
     </associatedEntity>
   </participant>
   <!--Practice Site-->
   <participant typeCode="LOC">
     <associatedEntity classCode="SDLOC">
-      <id root="2.16.840.1.113883.3.249.5.1" extension="TEST" assigningAuthorityName="CMS-CMMI" />
+      <id root="2.16.840.1.113883.3.249.5.1" extension="TestApmEntityId" assigningAuthorityName="CMS-CMMI" />
       <code code="394730007" displayName="healthcare related organization" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" />
       <addr>
         <streetAddressLine>123 Healthcare St</streetAddressLine>
@@ -204,7 +204,7 @@ QRDA Category III Measure Section (CMS EP)
               </effectiveTime>
             </act>
           </entry>
-          <!--Measure Entry for CMS122v7-->
+          <!--Measure Entry for CMS122v8-->
       		<entry>
       			<organizer classCode="CLUSTER" moodCode="EVN">
       				<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
@@ -219,7 +219,7 @@ QRDA Category III Measure Section (CMS EP)
       				<reference typeCode="REFR">
       					<externalDocument classCode="DOC" moodCode="EVN">
       						<id root="2.16.840.1.113883.4.738"
-      							extension="40280382-6258-7581-0162-9249c8ab1447"/>
+      							extension="40280382-6963-bf5e-0169-da3833273869"/>
       						<code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
       							  codeSystemName="LOINC" displayName="Health Quality Measure Document"/>
       						<text>Diabetes: Hemoglobin A1c (HbA1c) Poor Control (&gt; 9%)</text>
@@ -240,7 +240,7 @@ QRDA Category III Measure Section (CMS EP)
       						<value xsi:type="REAL" value=".888889"/>
       						<reference typeCode="REFR">
       							<externalObservation classCode="OBS" moodCode="EVN">
-      								<id root="BD70E166-D478-41A4-B8C8-041CE9F75850"/>
+      								<id root="2CC2A289-445C-4F15-AFC4-80B934AF5E1E"/>
       								<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
       									  codeSystemName="ActCode" displayName="Numerator"/>
       							</externalObservation>
@@ -650,7 +650,7 @@ QRDA Category III Measure Section (CMS EP)
       						<!--IPOP Population ID from eCQM-->
       						<reference typeCode="REFR">
       							<externalObservation classCode="OBS" moodCode="EVN">
-      								<id root="A15C0CC7-E072-4D9F-BB29-80429C6335DB"/>
+      								<id root="1DAA17CC-1F6C-4883-9887-C1F1F72589B9"/>
       							</externalObservation>
       						</reference>
       					</observation>
@@ -1058,7 +1058,7 @@ QRDA Category III Measure Section (CMS EP)
       						<!--DENOM Population ID from eCQM-->
       						<reference typeCode="REFR">
       							<externalObservation classCode="OBS" moodCode="EVN">
-      								<id root="F50E5334-415D-482F-A30D-0623C082B602"/>
+      								<id root="AE3CD839-EC29-4826-B4F9-B2305474402C"/>
       							</externalObservation>
       						</reference>
       					</observation>
@@ -1466,7 +1466,7 @@ QRDA Category III Measure Section (CMS EP)
       						<!--DENEX Population ID from eCQM-->
       						<reference typeCode="REFR">
       							<externalObservation classCode="OBS" moodCode="EVN">
-      								<id root="B88574B5-AE7B-4AAF-9925-6E4D75B595FA"/>
+      								<id root="6F7B3C8C-9741-454B-9C02-3F279DD08B53"/>
       							</externalObservation>
       						</reference>
       					</observation>
@@ -1874,7 +1874,7 @@ QRDA Category III Measure Section (CMS EP)
       						<!--NUMER Population ID from eCQM-->
       						<reference typeCode="REFR">
       							<externalObservation classCode="OBS" moodCode="EVN">
-      								<id root="BD70E166-D478-41A4-B8C8-041CE9F75850"/>
+      								<id root="2CC2A289-445C-4F15-AFC4-80B934AF5E1E"/>
       							</externalObservation>
       						</reference>
       					</observation>
@@ -1892,7 +1892,7 @@ QRDA Category III Measure Section (CMS EP)
               <!--Measure Reference and Results-->
               <reference typeCode="REFR">
                 <externalDocument classCode="DOC" moodCode="EVN">
-                  <id root="2.16.840.1.113883.4.738" extension="40280382-6258-7581-0162-92d6e6db1680" />
+                  <id root="2.16.840.1.113883.4.738" extension="40280382-6963-bf5e-0169-da5e74be38bf" />
                   <code code="57024-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Health Quality Measure Document" />
                   <text>Controlling High Blood Pressure</text>
                 </externalDocument>
@@ -1908,7 +1908,7 @@ QRDA Category III Measure Section (CMS EP)
                   <value xsi:type="REAL" value=".888889" />
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="A815D9EA-5CE0-4AD8-A703-BC69D19E360B" />
+                      <id root="9306E83B-3C3B-4CDF-B3EA-F99AEFC55F87" />
                       <code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Numerator" />
                     </externalObservation>
                   </reference>
@@ -2312,7 +2312,7 @@ QRDA Category III Measure Section (CMS EP)
                   <!--IPOP Population ID from eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="A096B729-ECCA-4C7A-9CA0-A601D8D70396" />
+                      <id root="1A3C24A5-7E9E-461B-BEB8-834822CC0942" />
                     </externalObservation>
                   </reference>
                 </observation>
@@ -2715,7 +2715,7 @@ QRDA Category III Measure Section (CMS EP)
                   <!--DENOM Population ID from eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="BA4CB92A-1635-4E1B-BC23-1ED7B967072A" />
+                      <id root="E822DECB-5DD1-421D-BFCE-F5DA550EE238" />
                     </externalObservation>
                   </reference>
                 </observation>
@@ -3118,7 +3118,7 @@ QRDA Category III Measure Section (CMS EP)
                   <!--DENEX Population ID from eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="4A61F526-AFFA-465F-89C9-B2DB8E6ECEBC" />
+                      <id root="965140D9-663B-4B08-99F9-19E14AE0CB5C" />
                     </externalObservation>
                   </reference>
                 </observation>
@@ -3521,7 +3521,7 @@ QRDA Category III Measure Section (CMS EP)
                   <!--NUMER Population ID from eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="A815D9EA-5CE0-4AD8-A703-BC69D19E360B" />
+                      <id root="9306E83B-3C3B-4CDF-B3EA-F99AEFC55F87" />
                     </externalObservation>
                   </reference>
                 </observation>
@@ -3530,104 +3530,6 @@ QRDA Category III Measure Section (CMS EP)
           </entry>
         </section>
       </component>
-
-      <!--
-			********************************************************
-			Improvement Activity Section (V2)
-			urn:hl7ii:2.16.840.1.113883.10.20.27.2.4:2017-06-01
-			********************************************************
-			-->
-			<component>
-				<section>
-					<!-- Measure Section -->
-					<templateId root="2.16.840.1.113883.10.20.24.2.2"/>
-					<!-- Improvement Activity Section templateId -->
-					<templateId root="2.16.840.1.113883.3.249.20.2.1" extension="2018-05-01"/>
-					<code code="55186-1" codeSystem="2.16.840.1.113883.6.1"
-						  displayName="Measure Section"/>
-					<title>Measure Section</title>
-					<!-- Must have at least one entry with a Measure Performed Reference and Result -->
-					<!-- IA_EPA_3 -->
-					<entry>
-						<organizer classCode="CLUSTER" moodCode="EVN">
-							<!-- Implied template Measure Reference templateId -->
-							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
-							<!-- Improvement Activity Performed Reference and Results templateId -->
-							<templateId root="2.16.840.1.113883.3.249.20.3.1" extension="2018-05-01"/>
-							<id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
-							<statusCode code="completed"/>
-							<reference typeCode="REFR">
-								<!-- Reference to a particular PI measure's unique identifier. -->
-								<externalDocument classCode="DOC" moodCode="EVN">
-									<!-- This is a temporary root OID that indicates this is an improvement activity identifier -->
-									<id root="2.16.840.1.113883.3.7034" extension="IA_EPA_3"/>
-									<!-- Improvement activity narrative text (for reference) -->
-									<text>Collection and use of patient experience and satisfaction data on access</text>
-								</externalDocument>
-							</reference>
-							<component>
-								<observation classCode="OBS" moodCode="EVN">
-									<!-- Measure Performed templateId -->
-									<templateId root="2.16.840.1.113883.10.20.27.3.27"
-												extension="2016-09-01"/>
-									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
-										  codeSystemName="ActCode" displayName="Assertion"/>
-									<statusCode code="completed"/>
-									<value xsi:type="CD" code="Y" displayName="Yes"
-										   codeSystemName="Yes/no indicator (HL7 Table 0136)"
-										   codeSystem="2.16.840.1.113883.12.136"/>
-								</observation>
-							</component>
-						</organizer>
-					</entry>
-					<!-- IA_CC_10 -->
-					<entry>
-						<organizer classCode="CLUSTER" moodCode="EVN">
-							<!-- Implied template Measure Reference templateId -->
-							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
-							<!-- Improvement Activity Performed Reference and Results templateId -->
-							<templateId root="2.16.840.1.113883.3.249.20.3.1" extension="2018-05-01"/>
-							<id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
-							<statusCode code="completed"/>
-							<reference typeCode="REFR">
-								<!-- Reference to a particular PI measure's unique identifier. -->
-								<externalDocument classCode="DOC" moodCode="EVN">
-									<!-- This is a temporary root OID that indicates this is an improvement activity identifier -->
-									<id root="2.16.840.1.113883.3.7034" extension="IA_CC_10"/>
-									<!-- Improvement activity narrative text (for reference) -->
-									<text>Care transition documentation practice improvements</text>
-								</externalDocument>
-							</reference>
-							<component>
-								<observation classCode="OBS" moodCode="EVN">
-									<!-- Measure Performed templateId -->
-									<templateId root="2.16.840.1.113883.10.20.27.3.27"
-												extension="2016-09-01"/>
-									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
-										  codeSystemName="ActCode" displayName="Assertion"/>
-									<statusCode code="completed"/>
-									<value xsi:type="CD" code="Y" displayName="Yes"
-										   codeSystemName="Yes/no indicator (HL7 Table 0136)"
-										   codeSystem="2.16.840.1.113883.12.136"/>
-								</observation>
-							</component>
-						</organizer>
-					</entry>
-					<!-- Reporting Parameters Act -->
-					<entry typeCode="DRIV">
-						<act classCode="ACT" moodCode="EVN">
-							<templateId root="2.16.840.1.113883.10.20.17.3.8"/>
-							<id root="00b669fd-fa4d-4f5c-b109-65c6bbbf73ae"/>
-							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
-								  displayName="Observation Parameters"/>
-							<effectiveTime>
-								<low value="20190101"/>
-								<high value="20191231"/>
-							</effectiveTime>
-						</act>
-					</entry>
-				</section>
-			</component>
     </structuredBody>
   </component>
 </ClinicalDocument>

@@ -1,6 +1,8 @@
 package gov.cms.qpp.conversion;
 
 import com.google.common.truth.Truth;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.shadow.com.univocity.parsers.common.TextParsingException;
@@ -24,11 +26,12 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.Error;
-import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.FormattedProblemCode;
 import gov.cms.qpp.conversion.model.error.LocalizedProblem;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.stubs.JennyDecoder;
 import gov.cms.qpp.conversion.stubs.TestDefaultValidator;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
@@ -60,8 +63,19 @@ public class ConverterTest {
 	public static final String INVALID_QRDA = "src/test/resources/not-a-QRDA-III-file.xml";
 	private static final String TOO_MANY_ERRORS = "src/test/resources/negative/tooManyErrors.xml";
 
+	@Before
+	public void setup() {
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.TEST_MEASURE_DATA);
+	}
+
+	@After
+	public void teardown() {
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
+	}
+
 	@Test(expected = org.junit.Test.None.class)
 	public void testValidQppFile() {
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 		Path path = Paths.get(VALID_FILE);
 		Converter converter = new Converter(new PathSource(path));
 
@@ -71,6 +85,7 @@ public class ConverterTest {
 
 	@Test(expected = org.junit.Test.None.class)
 	public void testValidQppStream() {
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 		Path path = Paths.get(VALID_FILE);
 		Converter converter = new Converter(
 				new InputStreamSupplierSource(path.toString(), NioHelper.fileToStream(path)));

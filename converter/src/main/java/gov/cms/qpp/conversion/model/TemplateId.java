@@ -13,7 +13,7 @@ import java.util.function.Function;
  * An enumeration of known templates IDs.
  */
 public enum TemplateId {
-	CLINICAL_DOCUMENT("2.16.840.1.113883.10.20.27.1.2", Extension.MAY_2018, "Clinical Document"),
+	CLINICAL_DOCUMENT("2.16.840.1.113883.10.20.27.1.2", Extension.MAY_2019, "Clinical Document"),
 	PI_AGGREGATE_COUNT("2.16.840.1.113883.10.20.27.3.3"),
 	IA_SECTION("2.16.840.1.113883.3.249.20.2.1", Extension.MAY_2018, "IA Section"),
 	PI_SECTION("2.16.840.1.113883.10.20.27.2.5", Extension.JUNE_2017, "PI Section"),
@@ -54,7 +54,8 @@ public enum TemplateId {
 		JULY_2017("2017-07-01"),
 		SEPTEMBER_2016("2016-09-01"),
 		NOVEMBER_2016("2016-11-01"),
-		MAY_2018("2018-05-01");
+		MAY_2018("2018-05-01"),
+		MAY_2019("2019-05-01");
 
 		static final String STRICT_EXTENSION = "STRICT_EXTENSION";
 
