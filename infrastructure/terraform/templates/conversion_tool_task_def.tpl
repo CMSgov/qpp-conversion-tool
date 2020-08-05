@@ -5,7 +5,7 @@
             "name": "APP_ENV",
             "value": "${env}"
           },
-          { "name": "NEWRELIC_API_KEY"
+          { "name": "NEWRELIC_API_KEY",
             "value": "f9e3fdf92c6f75d1d9378948dfcc68f37ff3c3e5"
           }
         ],
