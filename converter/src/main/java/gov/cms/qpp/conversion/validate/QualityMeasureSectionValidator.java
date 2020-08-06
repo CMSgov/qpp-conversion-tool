@@ -26,8 +26,8 @@ public class QualityMeasureSectionValidator extends NodeValidator {
 			.childMinimum(ProblemCode.MEASURE_SECTION_MISSING_MEASURE, 1, TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
 		    .oneChildPolicy(ProblemCode.MEASURES_RNR_WITH_DUPLICATED_MEASURE_GUID, TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2,
 					childNode -> childNode.getValue(QualityMeasureIdDecoder.MEASURE_ID))
-			.singleValue(ProblemCode.MEASURE_SECTION_V4_REQUIRED, QualitySectionDecoder.MEASURE_SECTION_V4)
-			.valueIs(ProblemCode.MEASURE_SECTION_V4_REQUIRED, QualitySectionDecoder.MEASURE_SECTION_V4,
+			.singleValue(ProblemCode.MEASURE_SECTION_V4_REQUIRED, QualitySectionDecoder.CATEGORY_SECTION_V4)
+			.valueIs(ProblemCode.MEASURE_SECTION_V4_REQUIRED, QualitySectionDecoder.CATEGORY_SECTION_V4,
 				TemplateId.CLINICAL_DOCUMENT_V4.getExtension());
 
 	}

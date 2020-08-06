@@ -15,7 +15,6 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
-import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.validate.ClinicalDocumentValidator;
 
 import java.lang.reflect.Field;
@@ -59,7 +58,7 @@ class SingularAttributeTest{
 						ReportingParametersActDecoder.PERFORMANCE_YEAR,
 						SupplementalDataEthnicityDecoder.SUPPLEMENTAL_DATA_CODE,
 						SupplementalDataPayerDecoder.SUPPLEMENTAL_DATA_PAYER_CODE,
-						QualitySectionDecoder.MEASURE_SECTION_V4,
+						QualitySectionDecoder.CATEGORY_SECTION_V4,
 						//stratum is not currently mapped
 						"stratum",
 						"cehrtId")
