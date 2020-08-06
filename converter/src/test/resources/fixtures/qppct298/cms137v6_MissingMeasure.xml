@@ -11,7 +11,7 @@
     <structuredBody>
         <component>
             <section>
-                <templateId root="2.16.840.1.113883.10.20.27.2.3" extension="2017-07-01"/>
+                <templateId root="2.16.840.1.113883.10.20.27.2.3" extension="2019-05-01"/>
                 <!--Has missing IPOP Uuid Measure Entry for NQF 0004 / CMS137-->
                 <entry>
                   <organizer classCode="CLUSTER" moodCode="EVN">

@@ -56,7 +56,7 @@ class QualitySectionDecoderTest {
 		Node measureSectionV3 = root.findFirstNode(TemplateId.MEASURE_SECTION_V3);
 
 		assertThat(measureSectionV3.getValue(QualitySectionDecoder.MEASURE_SECTION_V4))
-			.isEqualTo(TemplateId.MEASURE_SECTION_V4.getExtension());
+			.isEqualTo(TemplateId.CLINICAL_DOCUMENT_V4.getExtension());
 	}
 
 	private String getValidXML() {

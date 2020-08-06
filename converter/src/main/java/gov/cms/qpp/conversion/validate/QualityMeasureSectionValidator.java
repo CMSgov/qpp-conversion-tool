@@ -28,7 +28,7 @@ public class QualityMeasureSectionValidator extends NodeValidator {
 					childNode -> childNode.getValue(QualityMeasureIdDecoder.MEASURE_ID))
 			.singleValue(ProblemCode.MEASURE_SECTION_V4_REQUIRED, QualitySectionDecoder.MEASURE_SECTION_V4)
 			.valueIs(ProblemCode.MEASURE_SECTION_V4_REQUIRED, QualitySectionDecoder.MEASURE_SECTION_V4,
-				TemplateId.MEASURE_SECTION_V4.getExtension());
+				TemplateId.CLINICAL_DOCUMENT_V4.getExtension());
 
 	}
 }
