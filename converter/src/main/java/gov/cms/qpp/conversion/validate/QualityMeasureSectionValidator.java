@@ -10,7 +10,7 @@ import gov.cms.qpp.conversion.model.error.ProblemCode;
 /**
  * Validates a Quality Measure Section node.
  */
-@Validator(TemplateId.MEASURE_SECTION_V3)
+@Validator(TemplateId.MEASURE_SECTION_V4)
 public class QualityMeasureSectionValidator extends NodeValidator {
 
 	/**

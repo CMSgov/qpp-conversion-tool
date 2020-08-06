@@ -34,7 +34,7 @@ class QualityMeasureSectionValidatorTest {
 	@BeforeEach
 	void setUpQualityMeasureSection() {
 		reportingParameterNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
-		qualityMeasureSectionNode = new Node(TemplateId.MEASURE_SECTION_V3);
+		qualityMeasureSectionNode = new Node(TemplateId.MEASURE_SECTION_V4);
 		measure = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
 	}
 

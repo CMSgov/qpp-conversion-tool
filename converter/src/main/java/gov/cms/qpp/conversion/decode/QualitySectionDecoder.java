@@ -7,7 +7,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 /**
  * Decoder to read XML Data for an Quality Section (eCQM).
  */
-@Decoder(TemplateId.MEASURE_SECTION_V3)
+@Decoder(TemplateId.MEASURE_SECTION_V4)
 public class QualitySectionDecoder extends SkeletalSectionDecoder {
 
 	protected static final String QUALITY_SECTION = "quality";

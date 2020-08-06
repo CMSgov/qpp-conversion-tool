@@ -17,9 +17,6 @@ import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 
-import java.time.LocalDate;
-import java.time.Year;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -235,7 +232,7 @@ class CpcClinicalDocumentValidatorTest {
 	}
 
 	private void addMeasureSectionNode(Node clinicalDocumentNode) {
-		Node measureSection = new Node(TemplateId.MEASURE_SECTION_V3);
+		Node measureSection = new Node(TemplateId.MEASURE_SECTION_V4);
 		clinicalDocumentNode.addChildNode(measureSection);
 	}
 }
