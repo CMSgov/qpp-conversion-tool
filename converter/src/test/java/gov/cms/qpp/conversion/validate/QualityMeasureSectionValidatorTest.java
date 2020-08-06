@@ -43,7 +43,7 @@ class QualityMeasureSectionValidatorTest {
 		qualityMeasureSectionNode.addChildNode(reportingParameterNode);
 		qualityMeasureSectionNode.addChildNode(measure);
 		qualityMeasureSectionNode.putValue(QualitySectionDecoder.CATEGORY_SECTION_V4,
-			TemplateId.CLINICAL_DOCUMENT_V4.getExtension());
+			TemplateId.CATEGORY_REPORT_V4.getExtension());
 
 		List<Detail> errors = validateQualityMeasureSection();
 
@@ -55,7 +55,7 @@ class QualityMeasureSectionValidatorTest {
 	void testQualityMeasureSectionWithoutMeasure() {
 		qualityMeasureSectionNode.addChildNode(reportingParameterNode);
 		qualityMeasureSectionNode.putValue(QualitySectionDecoder.CATEGORY_SECTION_V4,
-			TemplateId.CLINICAL_DOCUMENT_V4.getExtension());
+			TemplateId.CATEGORY_REPORT_V4.getExtension());
 
 		List<Detail> errors = validateQualityMeasureSection();
 
@@ -69,7 +69,7 @@ class QualityMeasureSectionValidatorTest {
 	@Test
 	void testMissingReportingParams() {
 		qualityMeasureSectionNode.putValue(QualitySectionDecoder.CATEGORY_SECTION_V4,
-			TemplateId.CLINICAL_DOCUMENT_V4.getExtension());
+			TemplateId.CATEGORY_REPORT_V4.getExtension());
 
 		List<Detail> errors = validateQualityMeasureSection();
 
@@ -84,7 +84,7 @@ class QualityMeasureSectionValidatorTest {
 		Node secondReportingParameterNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		qualityMeasureSectionNode.addChildNodes(reportingParameterNode, secondReportingParameterNode);
 		qualityMeasureSectionNode.putValue(QualitySectionDecoder.CATEGORY_SECTION_V4,
-			TemplateId.CLINICAL_DOCUMENT_V4.getExtension());
+			TemplateId.CATEGORY_REPORT_V4.getExtension());
 
 		List<Detail> errors = validateQualityMeasureSection();
 

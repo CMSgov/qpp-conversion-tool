@@ -40,12 +40,12 @@ public abstract class SkeletalKeyValueDecoder extends QrdaDecoder {
 	protected DecodeResult decode(Element element, Node thisNode) {
 		thisNode.putValue(key, value);
 		if (QualitySectionDecoder.QUALITY_SECTION.equalsIgnoreCase(value)){
-			setClincialDocumentV4OnNode(element, thisNode);
+			setCategorySectionV4OnNode(element, thisNode);
 		}
 		return DecodeResult.TREE_CONTINUE;
 	}
 
-	private void setClincialDocumentV4OnNode(Element element, Node thisNode) {
+	private void setCategorySectionV4OnNode(Element element, Node thisNode) {
 		Consumer<? super Attribute> consumer = p ->
 			thisNode.putValue(QualitySectionDecoder.CATEGORY_SECTION_V4, p.getValue());
 		setOnNode(element, getXpath(QualitySectionDecoder.CATEGORY_SECTION_V4),
