@@ -1,0 +1,13 @@
+name: "Detect Hardcoded Secrets"
+
+on:
+  push: 
+
+jobs:
+  gitleaks:
+    name: Scan for commited secrets
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: gitleaks-action
+      uses: zricethezav/gitleaks-action@master
