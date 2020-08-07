@@ -16,9 +16,9 @@ resource "aws_ssm_parameter" "app_env" {
   }
 }
 
-resource "aws_ssm_parameter" "ap_api_base_url" {
-  name        = "/qppar-sf/${var.environment}/conversion_tool/AP_API_BASE_URL"
-  description = "AP_API_BASE_URL"
+resource "aws_ssm_parameter" "ar_api_base_url" {
+  name        = "/qppar-sf/${var.environment}/conversion_tool/AR_API_BASE_URL"
+  description = "AR_API_BASE_URL"
   type        = "String"
   value       = "https://dev.ar.qpp.internal/api/v1/fms/file/qpp_data/qppct/testCpcPlusValidationFile.json"
   overwrite   = false
@@ -171,7 +171,7 @@ resource "aws_ssm_parameter" "deploy01_public-i-p" {
 }
 
 resource "aws_ssm_parameter" "dynamo_table_name" {
-  name        = "/qppar-sf/${var.environment}/conversion_tool/DYANMO_TABLE_NAME"
+  name        = "/qppar-sf/${var.environment}/conversion_tool/DYNAMO_TABLE_NAME"
   description = "DYNAMO_TABLE_NAME"
   type        = "String"
   value       = "qpp-qrda3converter-dev-metadata"
