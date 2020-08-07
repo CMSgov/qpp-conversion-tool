@@ -156,9 +156,9 @@ resource "aws_ssm_parameter" "db_master_username" {
   }
 }
 
-resource "aws_ssm_parameter" "deploy01_public-i-p" {
-  name        = "/qppar-sf/${var.environment}/conversion_tool/DEPLOY01_PUBLIC-I-P"
-  description = "DEPLOY01_PUBLIC-I-P"
+resource "aws_ssm_parameter" "deploy0a_public-i-p" {
+  name        = "/qppar-sf/${var.environment}/conversion_tool/DEPLOY0A_PUBLIC-I-P"
+  description = "DEPLOY0A_PUBLIC-I-P"
   type        = "String"
   value       = "34.198.65.93"
   overwrite   = false

@@ -23,7 +23,7 @@
                     "name": "CPC_PLUS_BUCKET_NAME"
                 },
                 {
-                    "valueFrom": "arn:aws:ssm:us-east-1:003384571330:parameter/qppar-sf/dev/conversion_tool/CPC_PLUS_UNPROCESSED_FILTER_START",
+                    "valueFrom": "arn:aws:ssm:us-east-1:003384571330:parameter/qppar-sf/dev/conversion_tool/CPC_PLUS_UNPROCESSED_FILTER_START_DATE",
                     "name": "CPC_PLUS_UNPROCESSED_FILTER_START_DATE"
                 },
                 {
