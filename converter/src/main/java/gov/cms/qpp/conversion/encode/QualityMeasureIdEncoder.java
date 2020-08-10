@@ -119,7 +119,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @return
 	 */
 	private int calculateSubPopulationSum(Node measureReferenceNode, SubPopulationLabel label) {
-		return measureReferenceNode.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2)
+		return measureReferenceNode.getChildNodes(TemplateId.MEASURE_DATA_CMS_V4)
 			.filter(childNode ->
 				label.hasAlias(childNode.getValue(MeasureDataDecoder.MEASURE_TYPE)))
 			.mapToInt(ipopNode ->
@@ -232,7 +232,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		this.encodePerformanceNotMet(childWrapper, parentNode);
 
 		for (Node childNode : parentNode.getChildNodes()) {
-			if (TemplateId.MEASURE_DATA_CMS_V2 == childNode.getType()) {
+			if (TemplateId.MEASURE_DATA_CMS_V4 == childNode.getType()) {
 				JsonOutputEncoder measureDataEncoder = encoders.get(childNode.getType());
 				measureDataEncoder.encode(childWrapper, childNode);
 			}

@@ -91,7 +91,7 @@ public class MeasureConfigHelper {
 		List<Node> subPopNodes = initializeMeasureDataList(subPopCount);
 		Map<String, Integer> mapPopulationIdToSubPopIndex = createSubPopulationIndexMap(measureConfigSubPopulations);
 		node.getChildNodes().stream()
-			.filter(childNode -> TemplateId.MEASURE_DATA_CMS_V2 == childNode.getType())
+			.filter(childNode -> TemplateId.MEASURE_DATA_CMS_V4 == childNode.getType())
 			.forEach(childNode -> {
 				String populationId = childNode.getValue(MeasureDataDecoder.MEASURE_POPULATION);
 				Integer subPopIndex = mapPopulationIdToSubPopIndex.get(populationId.toUpperCase(Locale.ENGLISH));

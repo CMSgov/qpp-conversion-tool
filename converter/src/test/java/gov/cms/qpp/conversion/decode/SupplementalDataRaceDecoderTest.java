@@ -90,7 +90,7 @@ public class SupplementalDataRaceDecoderTest {
 	}
 
 	private List<Node> getRaceNodeList() {
-		Node measureSectionNode = root.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
+		Node measureSectionNode = root.findFirstNode(TemplateId.MEASURE_DATA_CMS_V4);
 		List<Node> raceNodeList =
 				measureSectionNode.getChildNodes(TemplateId.RACE_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
 						.collect(Collectors.toList());
