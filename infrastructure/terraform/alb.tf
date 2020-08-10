@@ -14,7 +14,7 @@ resource "aws_lb" "qppsf" {
 
 resource "aws_lb_target_group" "conversion-tg" {
   name        = "conversion-tg-${var.environment}"
-  port        = 3000
+  port        = 8080
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
   target_type = "ip"

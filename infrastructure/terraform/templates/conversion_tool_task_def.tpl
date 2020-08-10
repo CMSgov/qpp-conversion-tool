@@ -109,8 +109,8 @@
         "portMappings": [
       {
         "protocol": "tcp",
-        "containerPort": 3000,
-        "hostPort": 3000
+        "containerPort": 8080,
+        "hostPort": 8080
       }
     ],
         "name": "conversion-tool",

@@ -38,6 +38,12 @@ resource "aws_ecs_service" "conversion-tool-service" {
     assign_public_ip = "false"
   }
 
+  load_balancer {
+    target_group_arn = aws_lb_target_group.conversion-tg.arn
+    container_name   = "conversion-tool"
+    container_port   = "8080"
+  }
+
 }
 
 resource "aws_cloudwatch_log_group" "conversion-tool" {
