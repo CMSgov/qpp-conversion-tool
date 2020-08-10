@@ -26,10 +26,10 @@
 			"templateId": "REPORTING_PARAMETERS_ACT",
 			"correlationId": "reportingParameters"
 		},{
-			"templateId": "MEASURE_DATA_CMS_V2",
+			"templateId": "MEASURE_DATA_CMS_V4",
 			"correlationId": "measureData"
 		},{
-			"templateId": "MEASURE_DATA_CMS_V2",
+			"templateId": "MEASURE_DATA_CMS_V4",
 			"correlationId": "population"
 		},{
 			"templateId": "REPORTING_STRATUM_CMS",
