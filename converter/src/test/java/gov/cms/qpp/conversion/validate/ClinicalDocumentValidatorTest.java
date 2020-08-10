@@ -294,7 +294,7 @@ class ClinicalDocumentValidatorTest {
 	}
 
 	private Node createAciSectionNode(Node clinicalDocumentNode) {
-		Node aciSectionNode = new Node(TemplateId.PI_SECTION, clinicalDocumentNode);
+		Node aciSectionNode = new Node(TemplateId.PI_SECTION_V2, clinicalDocumentNode);
 		aciSectionNode.putValue("category", "aci");
 		return aciSectionNode;
 	}

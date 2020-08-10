@@ -7,7 +7,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 /**
  * Decoder to read XML Data for an PI Section.
  */
-@Decoder(TemplateId.PI_SECTION)
+@Decoder(TemplateId.PI_SECTION_V2)
 public class PiSectionDecoder extends SkeletalSectionDecoder {
 
 	public PiSectionDecoder(Context context) {

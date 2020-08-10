@@ -20,7 +20,7 @@ class EncoderTest {
 			TemplateId.CLINICAL_DOCUMENT,
 			TemplateId.MEASURE_SECTION_V3,
 			TemplateId.IA_SECTION,
-			TemplateId.PI_SECTION,
+			TemplateId.PI_SECTION_V2,
 			TemplateId.PI_AGGREGATE_COUNT,
 			TemplateId.MEASURE_DATA_CMS_V2,
 			TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2,

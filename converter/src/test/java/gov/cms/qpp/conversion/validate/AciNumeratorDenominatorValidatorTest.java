@@ -23,7 +23,7 @@ class AciNumeratorDenominatorValidatorTest {
 		clinicalDocumentNode.putValue("performanceStart", "20170101");
 		clinicalDocumentNode.putValue("performanceEnd", "20171231");
 
-		Node aciSectionNode = new Node(TemplateId.PI_SECTION, clinicalDocumentNode);
+		Node aciSectionNode = new Node(TemplateId.PI_SECTION_V2, clinicalDocumentNode);
 		aciSectionNode.putValue("category", "aci");
 
 		clinicalDocumentNode.addChildNode(aciSectionNode);
@@ -48,7 +48,7 @@ class AciNumeratorDenominatorValidatorTest {
 
 	@Test
 	void testNumerateDenominatorMissingMeasureId() {
-		Node aciSectionNode = new Node(TemplateId.PI_SECTION);
+		Node aciSectionNode = new Node(TemplateId.PI_SECTION_V2);
 		Node aciNumeratorDenominatorNode = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR, aciSectionNode);
 		Node aciDenominatorNode = new Node(TemplateId.PI_DENOMINATOR, aciNumeratorDenominatorNode);
 		Node aciNumeratorNode = new Node(TemplateId.PI_NUMERATOR, aciNumeratorDenominatorNode);
@@ -99,7 +99,7 @@ class AciNumeratorDenominatorValidatorTest {
 	@Test
 	void testNoChildNodes() {
 
-		Node aciSectionNode = new Node(TemplateId.PI_SECTION);
+		Node aciSectionNode = new Node(TemplateId.PI_SECTION_V2);
 		aciSectionNode.putValue("category", "aci");
 
 		Node aciNumeratorDenominatorNode = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR, aciSectionNode);
@@ -118,7 +118,7 @@ class AciNumeratorDenominatorValidatorTest {
 	@Test
 	void testNoNumerator() {
 
-		Node aciSectionNode = new Node(TemplateId.PI_SECTION);
+		Node aciSectionNode = new Node(TemplateId.PI_SECTION_V2);
 		aciSectionNode.putValue("category", "aci");
 
 		Node aciNumeratorDenominatorNode = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR, aciSectionNode);
@@ -144,7 +144,7 @@ class AciNumeratorDenominatorValidatorTest {
 	@Test
 	void testNoDenominator() {
 
-		Node aciSectionNode = new Node(TemplateId.PI_SECTION);
+		Node aciSectionNode = new Node(TemplateId.PI_SECTION_V2);
 		aciSectionNode.putValue("category", "aci");
 
 		Node aciNumeratorDenominatorNode = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR, aciSectionNode);
@@ -170,7 +170,7 @@ class AciNumeratorDenominatorValidatorTest {
 	@Test
 	void testTooManyNumerators() {
 
-		Node aciSectionNode = new Node(TemplateId.PI_SECTION);
+		Node aciSectionNode = new Node(TemplateId.PI_SECTION_V2);
 		aciSectionNode.putValue("category", "aci");
 
 		Node aciNumeratorDenominatorNode = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR, aciSectionNode);
@@ -198,7 +198,7 @@ class AciNumeratorDenominatorValidatorTest {
 	@Test
 	void testTooManyDenominators() {
 
-		Node aciSectionNode = new Node(TemplateId.PI_SECTION);
+		Node aciSectionNode = new Node(TemplateId.PI_SECTION_V2);
 		aciSectionNode.putValue("category", "aci");
 
 		Node aciNumeratorDenominatorNode = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR, aciSectionNode);

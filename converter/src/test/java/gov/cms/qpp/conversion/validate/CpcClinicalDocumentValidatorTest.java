@@ -17,9 +17,6 @@ import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 
-import java.time.LocalDate;
-import java.time.Year;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -206,7 +203,7 @@ class CpcClinicalDocumentValidatorTest {
 	@Test
 	void testWarnWhenContainsPi() {
 		Node clinicalDocumentNode = createCpcPlusClinicalDocument();
-		Node piSection = new Node(TemplateId.PI_SECTION);
+		Node piSection = new Node(TemplateId.PI_SECTION_V2);
 		clinicalDocumentNode.addChildNode(piSection);
 		List<Detail> warnings = cpcValidator.validateSingleNode(clinicalDocumentNode).getWarnings();
 
