@@ -6106,8 +6106,8 @@ CDA Header
 							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
 								  displayName="Observation Parameters"/>
 							<effectiveTime>
-								<low value="20190101"/>
-								<high value="20191231"/>
+								<low value="20200101" />
+								<high value="20201231" />
 							</effectiveTime>
 						</act>
 					</entry>
@@ -6381,7 +6381,7 @@ CDA Header
 							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
 								  displayName="Observation Parameters"/>
 							<effectiveTime>
-								<low value="20190101"/>
+								<low value="20200101" />
 								<high value="20190430"/>
 							</effectiveTime>
 						</act>
