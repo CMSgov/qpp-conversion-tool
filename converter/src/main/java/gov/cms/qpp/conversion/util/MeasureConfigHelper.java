@@ -118,7 +118,7 @@ public class MeasureConfigHelper {
 	 */
 	private static List<Node> initializeMeasureDataList(int subPopulationCount) {
 		return IntStream.range(0, subPopulationCount)
-			.mapToObj(ignore -> new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2))
+			.mapToObj(ignore -> new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4))
 			.collect(Collectors.toList());
 	}
 
