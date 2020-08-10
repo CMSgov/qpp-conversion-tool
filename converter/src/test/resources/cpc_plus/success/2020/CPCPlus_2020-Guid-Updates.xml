@@ -252,7 +252,7 @@ QRDA Category III Measure Section (CMS EP)
       					<observation classCode="OBS" moodCode="EVN">
       						<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
       						<!-- Measure Data Template -->
-      						<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
+      						<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2019-05-01"/>
       						<!-- CMS Measure Data Template -->
       						<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
       							  codeSystemName="ActCode" displayName="Assertion"/>
@@ -660,7 +660,7 @@ QRDA Category III Measure Section (CMS EP)
       					<observation classCode="OBS" moodCode="EVN">
       						<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
       						<!-- Measure Data Template -->
-      						<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
+      						<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2019-05-01"/>
       						<!-- CMS Measure Data Template -->
       						<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
       							  codeSystemName="ActCode" displayName="Assertion"/>
@@ -1068,7 +1068,7 @@ QRDA Category III Measure Section (CMS EP)
       					<observation classCode="OBS" moodCode="EVN">
       						<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
       						<!-- Measure Data Template -->
-      						<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
+      						<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2019-05-01"/>
       						<!-- CMS Measure Data Template -->
       						<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
       							  codeSystemName="ActCode" displayName="Assertion"/>
@@ -1476,7 +1476,7 @@ QRDA Category III Measure Section (CMS EP)
       					<observation classCode="OBS" moodCode="EVN">
       						<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
       						<!-- Measure Data Template -->
-      						<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
+      						<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2019-05-01"/>
       						<!-- CMS Measure Data Template -->
       						<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
       							  codeSystemName="ActCode" displayName="Assertion"/>
@@ -1918,7 +1918,7 @@ QRDA Category III Measure Section (CMS EP)
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2019-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="IPOP" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -2321,7 +2321,7 @@ QRDA Category III Measure Section (CMS EP)
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2019-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="DENOM" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -2724,7 +2724,7 @@ QRDA Category III Measure Section (CMS EP)
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2019-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="DENEX" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
@@ -3127,7 +3127,7 @@ QRDA Category III Measure Section (CMS EP)
               <component>
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01" />
-                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
+                  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2019-05-01"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
                   <statusCode code="completed" />
                   <value xsi:type="CD" code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
