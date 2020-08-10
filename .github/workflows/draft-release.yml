@@ -1,0 +1,31 @@
+name: Draft Release Notes
+
+on: create
+
+jobs:
+  release_draft:
+    if: github.ref == 'refs/heads/releases/'
+    name: Create a new release
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Checkout Codebase        
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - name: Detect new tag version from pom.xml
+        id: package-version-prod-impl
+        uses: salsify/action-detect-and-tag-new-version@68bbe8670f415d304e02942186441939c4692aa6 # pin@v1.0.3
+        with:
+          version-command: |
+            mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | grep -v '\['
+
+      - name: Draft release notes
+        uses: release-drafter/release-drafter@06d4616a80cd7c09ea3cf12214165ad6c1859e67 #v5.11
+        with:
+          config-name: release-draft.yml
+          version: v${{ steps.package-version.outputs.current-version }}
+          tag: v${{ steps.package-version.outputs.current-version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

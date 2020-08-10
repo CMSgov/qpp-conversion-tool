@@ -1,20 +1,13 @@
-#
-# Convertion Tools CI - PR
-#
-  
-name: CT PR build
+
+name: Pull Request Builder
 
 on:
-  push:
-    branches: [ master, develop ]
-
   pull_request:
-    types: [ opened, synchronize, reopned ]
-    branches: [ develop ]
+    types: [ assigned, opened, synchronize, reopened ]
 
 jobs:
   build: 
-    name: Build and Test
+    name: Run unit and verification tests
     runs-on: ubuntu-latest
 
     steps:

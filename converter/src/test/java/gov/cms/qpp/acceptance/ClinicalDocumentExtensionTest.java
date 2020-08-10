@@ -1,5 +1,10 @@
 package gov.cms.qpp.acceptance;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.DocumentationReference;
@@ -9,11 +14,7 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
-
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -30,11 +31,13 @@ class ClinicalDocumentExtensionTest {
 	@BeforeAll
 	static void initMockApmIds() throws IOException {
 		ApmEntityIds.setApmDataFile("test_apm_entity_ids.json");
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.TEST_MEASURE_DATA);
 	}
 
 	@AfterAll
-	static void resetApmIds() {
+	static void teardown() {
 		ApmEntityIds.setApmDataFile(ApmEntityIds.DEFAULT_APM_ENTITY_FILE_NAME);
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 	}
 
 	@Test

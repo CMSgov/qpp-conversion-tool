@@ -17,7 +17,7 @@
       <id nullFlavor="NA" />
     </patientRole>
   </recordTarget>
-  <!--Device Author Example-->
+  <!--Device Author  Example-->
   <author>
     <time value="20170311061231" />
     <assignedAuthor>

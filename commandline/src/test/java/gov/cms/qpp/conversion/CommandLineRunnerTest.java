@@ -29,22 +29,19 @@ class CommandLineRunnerTest implements LoggerContract {
 		NullPointerException exception = Assertions.assertThrows(NullPointerException.class, () -> new CommandLineRunner(null));
 		Truth.assertThat(exception).hasMessageThat().isEqualTo("commandLine");
 	}
-
-	@Test
+	
 	void testRunHelp() {
 		CommandLineRunner runner = new CommandLineRunner(line("-" + CommandLineMain.HELP));
 		runner.run();
 		Truth.assertThat(getLogs()).isNotEmpty();
 	}
 
-	@Test
 	void testRunWithoutFiles() {
 		CommandLineRunner runner = new CommandLineRunner(line());
 		runner.run();
 		Truth.assertThat(getLogs()).contains("You must specify files to convert");
 	}
 
-	@Test
 	void testRunWithMissingFile() {
 		CommandLineRunner runner = new CommandLineRunner(line(INVALID_FILE));
 		runner.run();
