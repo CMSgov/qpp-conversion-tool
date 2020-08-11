@@ -3795,7 +3795,7 @@ QRDA Category III Measure Section (CMS EP)
       				<!-- Measure Reference Template -->
       				<templateId root="2.16.840.1.113883.10.20.27.3.1" extension="2016-09-01"/>
       				<!-- Measure Reference & Results Template -->
-      				<templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2018-05-01"/>
+      				<templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2019-05-01" />
       				<!-- CMS Measure Reference & Results Template -->
       				<id root="D5E68229-5760-11E7-1256-09173F13E4C5"/>
       				<statusCode code="completed"/>
@@ -5470,7 +5470,7 @@ QRDA Category III Measure Section (CMS EP)
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
               <templateId root="2.16.840.1.113883.10.20.27.3.1" extension="2016-09-01" />
-              <templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2016-11-01" />
+              <templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2019-05-01" />
               <id root="D5E6824E-5760-11E7-1256-09173F13E4C5" />
               <statusCode code="completed" />
               <!--Measure Reference and Results-->
@@ -7093,7 +7093,7 @@ QRDA Category III Measure Section (CMS EP)
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
               <templateId root="2.16.840.1.113883.10.20.27.3.1" extension="2016-09-01" />
-              <templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2016-11-01" />
+              <templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2019-05-01" />
               <id root="40280382-6258-7581-0162-927500b514ef" />
               <statusCode code="completed" />
               <!--Measure Reference and Results-->
@@ -8740,7 +8740,7 @@ QRDA Category III Measure Section (CMS EP)
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
               <templateId root="2.16.840.1.113883.10.20.27.3.1" extension="2016-09-01" />
-              <templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2016-11-01" />
+              <templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2019-05-01" />
               <id root="D5E682B0-5760-11E7-1256-09173F13E4C5" />
               <statusCode code="completed" />
               <!--Measure Reference and Results-->
@@ -10387,7 +10387,7 @@ QRDA Category III Measure Section (CMS EP)
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
               <templateId root="2.16.840.1.113883.10.20.27.3.1" extension="2016-09-01" />
-              <templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2016-11-01" />
+              <templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2019-05-01" />
               <id root="D5E682E1-5760-11E7-1256-09173F13E4C5" />
               <statusCode code="completed" />
               <!--Measure Reference and Results-->
@@ -12034,7 +12034,7 @@ QRDA Category III Measure Section (CMS EP)
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
               <templateId root="2.16.840.1.113883.10.20.27.3.1" extension="2016-09-01" />
-              <templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2016-11-01" />
+              <templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2019-05-01" />
               <id root="D5E68306-5760-11E7-1256-09173F13E4C5" />
               <statusCode code="completed" />
               <!--Measure Reference and Results-->
@@ -15758,7 +15758,7 @@ QRDA Category III Measure Section (CMS EP)
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
               <templateId root="2.16.840.1.113883.10.20.27.3.1" extension="2016-09-01" />
-              <templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2016-11-01" />
+              <templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2019-05-01" />
               <id root="D5E68367-5760-11E7-1256-09173F13E4C5" />
               <statusCode code="completed" />
               <!--Measure Reference and Results-->
@@ -20666,7 +20666,7 @@ QRDA Category III Measure Section (CMS EP)
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
               <templateId root="2.16.840.1.113883.10.20.27.3.1" extension="2016-09-01" />
-              <templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2016-11-01" />
+              <templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2019-05-01" />
               <id root="D5E68398-5760-11E7-1256-09173F13E4C5" />
               <statusCode code="completed" />
               <!--Measure Reference and Results-->
@@ -22313,7 +22313,7 @@ QRDA Category III Measure Section (CMS EP)
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
               <templateId root="2.16.840.1.113883.10.20.27.3.1" extension="2016-09-01" />
-              <templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2016-11-01" />
+              <templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2019-05-01" />
               <id root="D5E683C9-5760-11E7-1256-09173F13E4C5" />
               <statusCode code="completed" />
               <!--Measure Reference and Results-->
@@ -23960,7 +23960,7 @@ QRDA Category III Measure Section (CMS EP)
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
               <templateId root="2.16.840.1.113883.10.20.27.3.1" extension="2016-09-01" />
-              <templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2016-11-01" />
+              <templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2019-05-01" />
               <id root="D5E683FA-5760-11E7-1256-09173F13E4C5" />
               <statusCode code="completed" />
               <!--Measure Reference and Results-->
@@ -27236,7 +27236,7 @@ QRDA Category III Measure Section (CMS EP)
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
               <templateId root="2.16.840.1.113883.10.20.27.3.1" extension="2016-09-01" />
-              <templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2016-11-01" />
+              <templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2019-05-01" />
               <id root="D5E68443-5760-11E7-1256-09173F13E4C5" />
               <statusCode code="completed" />
               <!--Measure Reference and Results-->
@@ -29107,7 +29107,7 @@ QRDA Category III Measure Section (CMS EP)
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
               <templateId root="2.16.840.1.113883.10.20.27.3.1" extension="2016-09-01" />
-              <templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2016-11-01" />
+              <templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2019-05-01" />
               <id root="D5E68474-5760-11E7-1256-09173F13E4C5" />
               <statusCode code="completed" />
               <!--Measure Reference and Results-->
@@ -30754,7 +30754,7 @@ QRDA Category III Measure Section (CMS EP)
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
               <templateId root="2.16.840.1.113883.10.20.27.3.1" extension="2016-09-01" />
-              <templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2016-11-01" />
+              <templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2019-05-01" />
               <id root="D5E684D6-5760-11E7-1256-09173F13E4C5" />
               <statusCode code="completed" />
               <!--Measure Reference and Results-->
