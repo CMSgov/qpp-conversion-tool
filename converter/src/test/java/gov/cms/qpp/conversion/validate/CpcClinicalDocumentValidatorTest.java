@@ -232,7 +232,7 @@ class CpcClinicalDocumentValidatorTest {
 	}
 
 	private void addMeasureSectionNode(Node clinicalDocumentNode) {
-		Node measureSection = new Node(TemplateId.MEASURE_SECTION_V3);
+		Node measureSection = new Node(TemplateId.MEASURE_SECTION_V4);
 		clinicalDocumentNode.addChildNode(measureSection);
 	}
 }

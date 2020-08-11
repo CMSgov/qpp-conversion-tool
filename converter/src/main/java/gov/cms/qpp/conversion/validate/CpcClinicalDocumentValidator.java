@@ -87,7 +87,7 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 					ClinicalDocumentDecoder.PRACTICE_ID)
 			.valueIsNotEmpty(ProblemCode.CPC_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.PRACTICE_ID)
 			.childMinimum(ProblemCode.CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED,
-					1, TemplateId.MEASURE_SECTION_V3);
+					1, TemplateId.MEASURE_SECTION_V4);
 
 		checkWarnings(node)
 			.doesNotHaveChildren(ProblemCode.CPC_PLUS_NO_IA_OR_PI, TemplateId.IA_SECTION, TemplateId.PI_SECTION_V2);
