@@ -28,7 +28,7 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build & Deploy ecr-deploy (testing)
+      - name: Build and deploy to Amazon ECR #remove me after rollout
         if: github.ref == 'refs/heads/ecr-deploy'
         id: build-image
         env:
@@ -39,9 +39,8 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-
-      ## Build & Deploy develop
-      - name: Build & Deploy develop
+      
+      - name: Build and deploy to Amazon ECR
         if: github.ref == 'refs/heads/develop'
         env:
           ECR_REPOSITORY: qppsf/conversion-tool/dev
@@ -52,8 +51,7 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-      ## Build & Deploy impl
-      - name: Build & Deploy impl
+      - name: Build and deploy to Amazon ECR 
         if: github.ref == 'refs/heads/release/'
         env:
           ECR_REPOSITORY: qppsf/conversion-tool/impl
@@ -63,9 +61,8 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-
-      ## Build & Deploy prod
-      - name: Build & Deploy prod
+    
+      - name: Build and deploy to Amazon ECR
         if: github.ref == 'refs/heads/master'
         env:
           ECR_REPOSITORY: qppsf/conversion-tool/prod

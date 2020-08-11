@@ -1,20 +1,23 @@
-
-name: Pull Request Builder
+name: Continuous Integration Suite
 
 on:
+  push:
+    branches:
+      - develop
+      - release/*
+      - master
   pull_request:
-    types: [ assigned, opened, synchronize, reopened ]
 
 jobs:
   build: 
-    name: Run unit and verification tests
+    name: Run unit and integration tests
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout codebase 
         uses: actions/checkout@v2
       
-      - name: Set up JDK 1.8
+      - name: Setup Java
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
@@ -22,8 +25,8 @@ jobs:
       - name: Install dependencies
         run: mvn install
 
-      - name: Run Verification & Unit Tests 
+      - name: Run unit tests 
         run: mvn --batch-mode verify
 
-      - name: Run Integration Tests  
+      - name: Run integration tests  
         run: mvn --batch-mode test -P integration

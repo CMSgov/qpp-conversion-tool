@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     
-      - name: Checkout Codebase        
+      - name: Checkout codebase        
         uses: actions/checkout@v2
         with:
           fetch-depth: 2
