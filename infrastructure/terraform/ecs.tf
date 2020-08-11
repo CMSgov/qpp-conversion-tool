@@ -55,22 +55,37 @@ resource "aws_security_group" "ct_app" {
   name        = "conversion-tool-app-${var.environment}"
   description = "Allow inbound traffic"
   vpc_id      = var.vpc_id
-
   ingress {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = var.vpc_cidr
+    security_groups = [aws_security_group.conversion-tool_alb.id]
   }
-
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
   tags = {
     Name = "conversion-tool-app-${var.environment}"
   }
+}
+
+resource "aws_security_group" "conversion-tool_alb" {
+  name        = "${var.project_name}_${var.environment}_alb_sg"
+  description = "Security group for conversion-tool."
+  vpc_id      = var.vpc_id
+  tags = {
+    Name        = "${var.project_name}_${var.environment}conversion-tool_alb"
+  }
+}
+
+resource "aws_security_group_rule" "allow_http_from_blah" {
+  type              = "ingress"
+  from_port         = 80
+  to_port           = 8080
+  protocol          = "tcp"
+  cidr_blocks       = var.vpc_cidr
+  security_group_id = aws_security_group.conversion-tool_alb.id
 }
