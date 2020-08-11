@@ -763,7 +763,7 @@
 			}
 		}
 	],
-	"MEASURE_DATA_CMS_V2": [ {
+	"MEASURE_DATA_CMS_V4": [ {
 		"eligiblePopulationExclusion" : 50
 	}, {
 		"eligiblePopulation" : 1000
