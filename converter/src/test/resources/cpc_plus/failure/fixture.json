@@ -811,5 +811,21 @@
 				"occurrences": 1
 			}
 		]
+	},
+	"CPCPlus-2020-Updates-Failures.xml" : {
+		"strict" : false,
+		"errorData" : [
+			{
+				"errorCode" : 32,
+				"occurrences": 1
+			},
+			{
+				"errorCode" : 59,
+				"subs": [
+					".*", ".*", ".*"
+				],
+				"occurrences": 1
+			}
+		]
 	}
 }
