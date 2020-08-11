@@ -37,3 +37,12 @@ resource "aws_lb_listener" "conversion-tool" {
   }
 }
 # TODO: Access logs
+
+resource "aws_security_group_rule" "ct-ingress-from-http-elb-to-ui" {
+  from_port                = 80
+  to_port                  = 8080
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.ct_app.id
+  source_security_group_id = aws_security_group.conversion-tool_alb.id
+  type                     = "ingress"
+}
