@@ -10,7 +10,7 @@ import gov.cms.qpp.conversion.model.error.ProblemCode;
 /**
  * Validates a Quality Measure Section node.
  */
-@Validator(TemplateId.MEASURE_SECTION_V3)
+@Validator(TemplateId.MEASURE_SECTION_V4)
 public class QualityMeasureSectionValidator extends NodeValidator {
 
 	/**
@@ -26,9 +26,9 @@ public class QualityMeasureSectionValidator extends NodeValidator {
 			.childMinimum(ProblemCode.MEASURE_SECTION_MISSING_MEASURE, 1, TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4)
 		    .oneChildPolicy(ProblemCode.MEASURES_RNR_WITH_DUPLICATED_MEASURE_GUID, TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4,
 					childNode -> childNode.getValue(QualityMeasureIdDecoder.MEASURE_ID))
-			.singleValue(ProblemCode.MEASURE_SECTION_V4_REQUIRED, QualitySectionDecoder.MEASURE_SECTION_V4)
-			.valueIs(ProblemCode.MEASURE_SECTION_V4_REQUIRED, QualitySectionDecoder.MEASURE_SECTION_V4,
-				TemplateId.MEASURE_SECTION_V4.getExtension());
+			.singleValue(ProblemCode.MEASURE_SECTION_V4_REQUIRED, QualitySectionDecoder.CATEGORY_SECTION_V4)
+			.valueIs(ProblemCode.MEASURE_SECTION_V4_REQUIRED, QualitySectionDecoder.CATEGORY_SECTION_V4,
+				TemplateId.CATEGORY_REPORT_V4.getExtension());
 
 	}
 }

@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * Validates a measure groupings for a CPC+ Quality Measure Section node.
  */
-@Validator(value = TemplateId.MEASURE_SECTION_V3, program = Program.CPC)
+@Validator(value = TemplateId.MEASURE_SECTION_V4, program = Program.CPC)
 public class CpcQualityMeasureSectionValidator extends NodeValidator {
 
 	private static final String[] NO_CONFIGURED_MEASURES = {};

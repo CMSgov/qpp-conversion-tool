@@ -24,7 +24,7 @@ public class ClinicalDocumentValidator extends NodeValidator {
 	 * Validates the following.
 	 * <ul>
 	 * <li>At least one child exists.</li>
-	 * <li>At least one ACI or IA or eCQM (MEASURE_SECTION_V3) section exists.</li>
+	 * <li>At least one ACI or IA or eCQM (CATEGORY_SECTION_V4) section exists.</li>
 	 * <li>Program name is required</li>
 	 * <li>TIN name is required</li>
 	 * <li>Performance year is required</li>
@@ -37,13 +37,13 @@ public class ClinicalDocumentValidator extends NodeValidator {
 
 		forceCheckErrors(node)
 			.childMinimum(ProblemCode.CLINICAL_DOCUMENT_MISSING_PI_OR_IA_OR_ECQM_CHILD, 1,
-					TemplateId.PI_SECTION, TemplateId.IA_SECTION, TemplateId.MEASURE_SECTION_V3)
+					TemplateId.PI_SECTION, TemplateId.IA_SECTION, TemplateId.MEASURE_SECTION_V4)
 			.childMaximum(ProblemCode.CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_PI_SECTIONS, 1,
 					TemplateId.PI_SECTION)
 			.childMaximum(ProblemCode.CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_IA_SECTIONS, 1,
 					TemplateId.IA_SECTION)
 			.childMaximum(ProblemCode.CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_IA_SECTIONS, 1,
-					TemplateId.MEASURE_SECTION_V3)
+					TemplateId.MEASURE_SECTION_V4)
 			.singleValue(ProblemCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME.format(VALID_PROGRAM_NAMES),
 					ClinicalDocumentDecoder.PROGRAM_NAME);
 
