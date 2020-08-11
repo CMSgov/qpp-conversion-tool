@@ -2,11 +2,11 @@ name: Continuous Integration Suite
 
 on:
   push:
-    branches:
-      - develop
-      - release/*
-      - master
+    branches: [ master, develop ]
+
   pull_request:
+    types: [ opened, synchronize, reopened ]
+    branches: [ develop ]
 
 jobs:
   build: 
