@@ -23,8 +23,8 @@ public class QualityMeasureSectionValidator extends NodeValidator {
 		checkErrors(node)
 			.childExact(ProblemCode.QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT, 1,
 				TemplateId.REPORTING_PARAMETERS_ACT)
-			.childMinimum(ProblemCode.MEASURE_SECTION_MISSING_MEASURE, 1, TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
-		    .oneChildPolicy(ProblemCode.MEASURES_RNR_WITH_DUPLICATED_MEASURE_GUID, TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2,
+			.childMinimum(ProblemCode.MEASURE_SECTION_MISSING_MEASURE, 1, TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4)
+		    .oneChildPolicy(ProblemCode.MEASURES_RNR_WITH_DUPLICATED_MEASURE_GUID, TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4,
 					childNode -> childNode.getValue(QualityMeasureIdDecoder.MEASURE_ID))
 			.singleValue(ProblemCode.MEASURE_SECTION_V4_REQUIRED, QualitySectionDecoder.MEASURE_SECTION_V4)
 			.valueIs(ProblemCode.MEASURE_SECTION_V4_REQUIRED, QualitySectionDecoder.MEASURE_SECTION_V4,

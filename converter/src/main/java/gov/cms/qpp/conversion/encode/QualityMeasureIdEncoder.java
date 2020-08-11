@@ -21,7 +21,7 @@ import static gov.cms.qpp.conversion.decode.AggregateCountDecoder.AGGREGATE_COUN
 /**
  * Encoder to serialize Quality Measure Identifier and Measure Sections
  */
-@Encoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
+@Encoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4)
 public class QualityMeasureIdEncoder extends QppOutputEncoder {
 
 	private static final String MEASURE_ID = "measureId";

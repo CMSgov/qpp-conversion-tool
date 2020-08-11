@@ -422,7 +422,7 @@ class QualityMeasureIdValidatorTest {
 		Node measureReferenceResultsNode;
 
 		MeasureReferenceBuilder() {
-			measureReferenceResultsNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
+			measureReferenceResultsNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4);
 		}
 
 		MeasureReferenceBuilder addMeasureId(String measureId) {
