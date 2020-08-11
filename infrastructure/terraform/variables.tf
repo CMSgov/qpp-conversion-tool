@@ -28,19 +28,11 @@ variable "app_subnet3" {
   type = string
 }
 
-variable "app_security_group" {
-  type = string
-}
-
 variable "vpn_security_group" {
   type = string
 }
 
 variable "lb_security_group" {
-  type = string
-}
-
-variable "task_role_arn" {
   type = string
 }
 
