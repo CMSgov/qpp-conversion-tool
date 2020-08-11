@@ -203,7 +203,7 @@ class CpcClinicalDocumentValidatorTest {
 	@Test
 	void testWarnWhenContainsPi() {
 		Node clinicalDocumentNode = createCpcPlusClinicalDocument();
-		Node piSection = new Node(TemplateId.PI_SECTION);
+		Node piSection = new Node(TemplateId.PI_SECTION_V2);
 		clinicalDocumentNode.addChildNode(piSection);
 		List<Detail> warnings = cpcValidator.validateSingleNode(clinicalDocumentNode).getWarnings();
 

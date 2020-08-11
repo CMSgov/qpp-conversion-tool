@@ -90,7 +90,7 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 					1, TemplateId.MEASURE_SECTION_V4);
 
 		checkWarnings(node)
-			.doesNotHaveChildren(ProblemCode.CPC_PLUS_NO_IA_OR_PI, TemplateId.IA_SECTION, TemplateId.PI_SECTION);
+			.doesNotHaveChildren(ProblemCode.CPC_PLUS_NO_IA_OR_PI, TemplateId.IA_SECTION, TemplateId.PI_SECTION_V2);
 
 		validateApmEntityId(node);
 		if (hasTinAndNpi(node)) {

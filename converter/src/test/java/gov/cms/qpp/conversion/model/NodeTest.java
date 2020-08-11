@@ -47,7 +47,7 @@ class NodeTest {
 	void testChild() {
 		Node node = new Node(TemplateId.PLACEHOLDER);
 		Node childNode = new Node();
-		childNode.setType(TemplateId.PI_SECTION);
+		childNode.setType(TemplateId.PI_SECTION_V2);
 		node.addChildNode(childNode);
 
 		assertWithMessage("Did not retrieve expected node")
@@ -255,7 +255,7 @@ class NodeTest {
 	@Test
 	void testFindParentNodeWithHumanReadableTemplateIdTraverse() {
 		Node topLevelNode = new Node(TemplateId.IA_MEASURE);
-		Node middleLevelNode = new Node(TemplateId.PI_SECTION, topLevelNode);
+		Node middleLevelNode = new Node(TemplateId.PI_SECTION_V2, topLevelNode);
 		Node bottomLevelNode = new Node(TemplateId.PI_AGGREGATE_COUNT, middleLevelNode);
 
 		Node humanReadableNode = bottomLevelNode.findParentNodeWithHumanReadableTemplateId();
@@ -287,7 +287,7 @@ class NodeTest {
 		Node parent = new Node(TemplateId.CLINICAL_DOCUMENT);
 		Node child1 = new Node(TemplateId.IA_SECTION);
 		child1.setParent(parent);
-		Node child2 = new Node(TemplateId.PI_SECTION);
+		Node child2 = new Node(TemplateId.PI_SECTION_V2);
 		child2.setParent(parent);
 		parent.setChildNodes(child1, child2);
 
