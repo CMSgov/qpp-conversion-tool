@@ -702,7 +702,7 @@
 		"performanceStart" : "2018-01-01",
 		"performanceEnd" : "2018-12-31"
 	},
-	"MEASURE_REFERENCE_RESULTS_CMS_V2": [ {
+	"MEASURE_REFERENCE_RESULTS_CMS_V4": [ {
 		"measureId" : "236",
 		"value" : {
 			"isEndToEndReported" : true,
