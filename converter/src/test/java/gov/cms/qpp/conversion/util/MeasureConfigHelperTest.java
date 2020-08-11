@@ -22,7 +22,7 @@ public class MeasureConfigHelperTest {
 
 	@Test
 	void testGetMeasureConfigSuccess() {
-		Node measureNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
+		Node measureNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4);
 		measureNode.putValue(MeasureConfigHelper.MEASURE_ID, THE_UUID);
 		MeasureConfig config = MeasureConfigHelper.getMeasureConfig(measureNode);
 

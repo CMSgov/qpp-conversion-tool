@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.validate;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
-import static gov.cms.qpp.conversion.model.TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2;
+import static gov.cms.qpp.conversion.model.TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ class QualityMeasureSectionValidatorTest {
 	void setUpQualityMeasureSection() {
 		reportingParameterNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		qualityMeasureSectionNode = new Node(TemplateId.MEASURE_SECTION_V3);
-		measure = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
+		measure = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4);
 	}
 
 	@Test
@@ -97,7 +97,7 @@ class QualityMeasureSectionValidatorTest {
 	@Test
 	void duplicateEcqMeasure() {
 		List<Detail> errorDetails = manipulatorHandler
-				.executeScenario(MEASURE_REFERENCE_RESULTS_CMS_V2.name(), "measureId", false);
+				.executeScenario(MEASURE_REFERENCE_RESULTS_CMS_V4.name(), "measureId", false);
 		assertThat(errorDetails)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(ProblemCode.MISSING_OR_DUPLICATED_MEASURE_GUID);
