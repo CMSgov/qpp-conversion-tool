@@ -827,5 +827,14 @@
 				"occurrences": 1
 			}
 		]
+	},
+	"CPCPlus_2020-IA-Performance-Period-Failures.xml" : {
+		"strict" : false,
+		"errorData" : [
+			{
+				"errorCode" : 44,
+				"occurrences": 1
+			}
+		]
 	}
 }
