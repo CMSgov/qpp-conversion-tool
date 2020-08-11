@@ -53,7 +53,7 @@ class AciSectionRoundTripTest {
 		Node parentNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		//assert
-		Node aciSectionNode = parentNode.findFirstNode(TemplateId.PI_SECTION);
+		Node aciSectionNode = parentNode.findFirstNode(TemplateId.PI_SECTION_V2);
 		assertAciSectionHasSingleQedNode(aciSectionNode);
 	}
 
@@ -94,7 +94,7 @@ class AciSectionRoundTripTest {
 		Node parentNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		//assert
-		Node aciSectionNode = parentNode.findFirstNode(TemplateId.PI_SECTION);
+		Node aciSectionNode = parentNode.findFirstNode(TemplateId.PI_SECTION_V2);
 		assertAciSectionHasSingleQedNode(aciSectionNode);
 	}
 

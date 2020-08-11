@@ -27,7 +27,7 @@ import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDeco
 /**
  * Validates a Measure Reference Results node.
  */
-@Validator(value = TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2, program = Program.MIPS)
+@Validator(value = TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4, program = Program.MIPS)
 public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 
 	MipsQualityMeasureIdValidator() {

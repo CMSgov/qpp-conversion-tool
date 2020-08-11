@@ -96,7 +96,7 @@ class ClinicalDocumentEncoderTest {
 		aciProportionMeasureNode3.addChildNode(aciProportionDenominatorNode3);
 		aciProportionMeasureNode3.putValue(MEASURE_ID, "ACI_CCTPE_3");
 
-		aciSectionNode = new Node(TemplateId.PI_SECTION);
+		aciSectionNode = new Node(TemplateId.PI_SECTION_V2);
 		aciSectionNode.putValue(CATEGORY, "aci");
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
 		aciSectionNode.addChildNode(aciProportionMeasureNode2);
