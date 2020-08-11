@@ -2,7 +2,7 @@ resource "aws_lb" "qppsf" {
   name               = "qppsf-conversion-tool-lb-${var.environment}"
   internal           = true
   load_balancer_type = "application"
-  security_groups    = [var.lb_security_group]
+  security_groups    = [var.lb_security_group,aws_security_group.conversion-tool_alb.id]
   subnets            = [var.app_subnet1, var.app_subnet2, var.app_subnet3]
 
   enable_deletion_protection = true
