@@ -836,5 +836,18 @@
 				"occurrences": 1
 			}
 		]
+	},
+	"CPCPlus_2020-Invalid-Performance-Period-Dates.xml" : {
+		"strict" : false,
+		"errorData" : [
+			{
+				"errorCode" : 56,
+				"occurrences": 1
+			},
+			{
+				"errorCode" : 55,
+				"occurrences": 1
+			}
+		]
 	}
 }
