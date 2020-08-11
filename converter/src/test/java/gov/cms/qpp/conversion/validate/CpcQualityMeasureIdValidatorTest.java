@@ -105,7 +105,7 @@ class CpcQualityMeasureIdValidatorTest {
 	}
 
 	private Node createMeasureDataNode() {
-		Node childNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		Node childNode = new Node(TemplateId.MEASURE_DATA_CMS_V4);
 		childNode.putValue("type", "DENOM");
 		return childNode;
 	}
