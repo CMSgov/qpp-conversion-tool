@@ -34,7 +34,7 @@ resource "aws_ecs_service" "conversion-tool-service" {
 
   network_configuration {
     subnets          = [var.app_subnet1, var.app_subnet2, var.app_subnet3]
-    security_groups  = [var.app_security_group, var.vpn_security_group]
+    security_groups  = [aws_security_group.ct_app.id, var.vpn_security_group]
     assign_public_ip = "false"
   }
 
@@ -51,4 +51,27 @@ resource "aws_cloudwatch_log_group" "conversion-tool" {
   retention_in_days = 30
 }
 
+resource "aws_security_group" "ct_app" {
+  name        = "conversion_tool-app${var.environment}"
+  description = "Allow TLS inbound traffic"
+  vpc_id      = var.vpc_id
 
+  ingress {
+    description = "TLS from VPC"
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = var.vpc_cidr
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "conversion-tool-app-${var.environment}"
+  }
+}

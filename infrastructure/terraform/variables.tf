@@ -43,3 +43,7 @@ variable "lb_security_group" {
 variable "task_role_arn" {
   type = string
 }
+
+variable "vpc_cidr" {
+  type = list
+}
