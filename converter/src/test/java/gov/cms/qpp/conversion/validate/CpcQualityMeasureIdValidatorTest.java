@@ -27,7 +27,7 @@ class CpcQualityMeasureIdValidatorTest {
 	void setUp() {
 		validator = new CpcQualityMeasureIdValidator();
 
-		testNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
+		testNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4);
 		testNode.putValue(MeasureConfigHelper.MEASURE_ID,MEASURE_ID);
 	}
 
@@ -105,7 +105,7 @@ class CpcQualityMeasureIdValidatorTest {
 	}
 
 	private Node createMeasureDataNode() {
-		Node childNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		Node childNode = new Node(TemplateId.MEASURE_DATA_CMS_V4);
 		childNode.putValue("type", "DENOM");
 		return childNode;
 	}

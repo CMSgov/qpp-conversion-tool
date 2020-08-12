@@ -28,7 +28,7 @@ class AciSectionValidatorTest {
 		measureNode = new Node(TemplateId.MEASURE_PERFORMED);
 		measureNode.putValue("measureId", VALID_ACI_MEASURE);
 
-		aciSectionNode = new Node(TemplateId.PI_SECTION);
+		aciSectionNode = new Node(TemplateId.PI_SECTION_V2);
 		aciSectionNode.putValue("category", "aci");
 	}
 

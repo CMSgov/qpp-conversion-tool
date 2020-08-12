@@ -57,7 +57,7 @@ class AciNumeratorValidatorTest {
 	@Test
 	void incorrectChildrenTest() {
 		Node aciNumeratorNode = new Node(TemplateId.PI_NUMERATOR);
-		Node aggregateCountNode = new Node(TemplateId.PI_SECTION);
+		Node aggregateCountNode = new Node(TemplateId.PI_SECTION_V2);
 		aggregateCountNode.putValue("aggregateCount", "100");
 
 		aciNumeratorNode.addChildNode(aggregateCountNode);

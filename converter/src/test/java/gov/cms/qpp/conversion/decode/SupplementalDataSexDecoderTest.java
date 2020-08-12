@@ -62,7 +62,7 @@ public class SupplementalDataSexDecoderTest {
 	}
 
 	private List<Node> getSexNodeList() {
-		Node measureSectionNode = root.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
+		Node measureSectionNode = root.findFirstNode(TemplateId.MEASURE_DATA_CMS_V4);
 		List<Node> sexNodeList =
 				measureSectionNode.getChildNodes(TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
 						.collect(Collectors.toList());
