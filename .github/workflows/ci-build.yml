@@ -26,7 +26,7 @@ jobs:
         run: mvn install
 
       - name: Run unit tests 
-        run: mvn --batch-mode verify
+        run: mvn --batch-mode verify -P sonar -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
       - name: Run integration tests  
         run: mvn --batch-mode test -P integration
