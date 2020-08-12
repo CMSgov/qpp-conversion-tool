@@ -229,14 +229,15 @@ class ClinicalDocumentValidatorTest {
 
 		List<Detail> errors = getErrors(allErrors);
 
-		assertWithMessage("Must have 2 errors")
-				.that(errors).hasSize(2);
+		assertWithMessage("Must have 3 errors")
+				.that(errors).hasSize(3);
 
 		assertWithMessage("Must contain the correct errors")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsAtLeast(
 						ProblemCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME.format(ClinicalDocumentValidator.VALID_PROGRAM_NAMES),
-						ProblemCode.REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START);
+						ProblemCode.REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START,
+						ProblemCode.IA_SECTION_MISSING_REPORTING_PARAM);
 	}
 
 	@Test

@@ -15,7 +15,7 @@ import java.util.function.Function;
 public enum TemplateId {
 	CLINICAL_DOCUMENT("2.16.840.1.113883.10.20.27.1.2", Extension.MAY_2019, "Clinical Document"),
 	PI_AGGREGATE_COUNT("2.16.840.1.113883.10.20.27.3.3"),
-	IA_SECTION("2.16.840.1.113883.3.249.20.2.1", Extension.MAY_2018, "IA Section"),
+	IA_SECTION("2.16.840.1.113883.10.20.27.2.4", Extension.JUNE_2017, "IA Section"),
 	PI_SECTION_V2("2.16.840.1.113883.10.20.27.2.5", Extension.JUNE_2017, "PI Section"),
 	MEASURE_PERFORMED("2.16.840.1.113883.10.20.27.3.27", Extension.SEPTEMBER_2016),
 	PI_NUMERATOR_DENOMINATOR("2.16.840.1.113883.10.20.27.3.28", Extension.JUNE_2017, "PI Measure"),
