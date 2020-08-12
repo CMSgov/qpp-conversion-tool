@@ -14,6 +14,17 @@ resource "aws_ssm_parameter" "app_env" {
       value
     ]
   }
+  tags = {
+    Name            = "${var.project_name}-ecr-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
+  }
+
 }
 
 resource "aws_ssm_parameter" "ar_api_base_url" {
@@ -27,6 +38,16 @@ resource "aws_ssm_parameter" "ar_api_base_url" {
     ignore_changes = [
       value
     ]
+  }
+  tags = {
+    Name            = "${var.project_name}-ecr-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
   }
 }
 
@@ -42,6 +63,16 @@ resource "aws_ssm_parameter" "bucket_name" {
       value
     ]
   }
+  tags = {
+    Name            = "${var.project_name}-ecr-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
+  }
 }
 
 resource "aws_ssm_parameter" "cpc_end_date" {
@@ -55,6 +86,16 @@ resource "aws_ssm_parameter" "cpc_end_date" {
     ignore_changes = [
       value
     ]
+  }
+  tags = {
+    Name            = "${var.project_name}-ecr-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
   }
 }
 
@@ -70,6 +111,16 @@ resource "aws_ssm_parameter" "cpc_plus_bucket_name" {
       value
     ]
   }
+  tags = {
+    Name            = "${var.project_name}-ecr-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
+  }
 }
 
 resource "aws_ssm_parameter" "cpc_plus_unprocessed_filter_start_date" {
@@ -83,6 +134,16 @@ resource "aws_ssm_parameter" "cpc_plus_unprocessed_filter_start_date" {
     ignore_changes = [
       value
     ]
+  }
+  tags = {
+    Name            = "${var.project_name}-ecr-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
   }
 }
 
@@ -98,6 +159,16 @@ resource "aws_ssm_parameter" "cpc_plus_validation_file" {
       value
     ]
   }
+  tags = {
+    Name            = "${var.project_name}-ecr-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
+  }
 }
 
 resource "aws_ssm_parameter" "db_app_password" {
@@ -111,6 +182,16 @@ resource "aws_ssm_parameter" "db_app_password" {
     ignore_changes = [
       value
     ]
+  }
+  tags = {
+    Name            = "${var.project_name}-ecr-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
   }
 }
 
@@ -126,6 +207,16 @@ resource "aws_ssm_parameter" "db_app_username" {
       value
     ]
   }
+  tags = {
+    Name            = "${var.project_name}-ecr-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
+  }
 }
 
 resource "aws_ssm_parameter" "db_master_password" {
@@ -139,6 +230,16 @@ resource "aws_ssm_parameter" "db_master_password" {
     ignore_changes = [
       value
     ]
+  }
+  tags = {
+    Name            = "${var.project_name}-ecr-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
   }
 }
 
@@ -154,6 +255,16 @@ resource "aws_ssm_parameter" "db_master_username" {
       value
     ]
   }
+  tags = {
+    Name            = "${var.project_name}-ecr-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
+  }
 }
 
 resource "aws_ssm_parameter" "deploy0a_public-i-p" {
@@ -167,6 +278,16 @@ resource "aws_ssm_parameter" "deploy0a_public-i-p" {
     ignore_changes = [
       value
     ]
+  }
+  tags = {
+    Name            = "${var.project_name}-ecr-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
   }
 }
 
@@ -182,6 +303,16 @@ resource "aws_ssm_parameter" "dynamo_table_name" {
       value
     ]
   }
+  tags = {
+    Name            = "${var.project_name}-ecr-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
+  }
 }
 
 resource "aws_ssm_parameter" "fms_token" {
@@ -195,6 +326,16 @@ resource "aws_ssm_parameter" "fms_token" {
     ignore_changes = [
       value
     ]
+  }
+  tags = {
+    Name            = "${var.project_name}-ecr-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
   }
 }
 
@@ -210,6 +351,16 @@ resource "aws_ssm_parameter" "gdit_nessus_pub_key" {
       value
     ]
   }
+  tags = {
+    Name            = "${var.project_name}-ecr-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
+  }
 }
 
 resource "aws_ssm_parameter" "java_opts" {
@@ -223,6 +374,16 @@ resource "aws_ssm_parameter" "java_opts" {
     ignore_changes = [
       value
     ]
+  }
+  tags = {
+    Name            = "${var.project_name}-ecr-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
   }
 }
 
@@ -238,6 +399,16 @@ resource "aws_ssm_parameter" "kms_key" {
       value
     ]
   }
+  tags = {
+    Name            = "${var.project_name}-ecr-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
+  }
 }
 
 resource "aws_ssm_parameter" "newrelic_api_key" {
@@ -251,6 +422,16 @@ resource "aws_ssm_parameter" "newrelic_api_key" {
     ignore_changes = [
       value
     ]
+  }
+  tags = {
+    Name            = "${var.project_name}-ecr-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
   }
 }
 
@@ -266,6 +447,16 @@ resource "aws_ssm_parameter" "nexus_creds" {
       value
     ]
   }
+  tags = {
+    Name            = "${var.project_name}-ecr-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
+  }
 }
 
 resource "aws_ssm_parameter" "nexus_host" {
@@ -279,6 +470,16 @@ resource "aws_ssm_parameter" "nexus_host" {
     ignore_changes = [
       value
     ]
+  }
+  tags = {
+    Name            = "${var.project_name}-ecr-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
   }
 }
 
@@ -294,6 +495,16 @@ resource "aws_ssm_parameter" "org_name" {
       value
     ]
   }
+  tags = {
+    Name            = "${var.project_name}-ecr-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
+  }
 }
 
 resource "aws_ssm_parameter" "splunk_token" {
@@ -308,6 +519,16 @@ resource "aws_ssm_parameter" "splunk_token" {
       value
     ]
   }
+  tags = {
+    Name            = "${var.project_name}-ecr-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
+  }
 }
 
 resource "aws_ssm_parameter" "validation_url" {
@@ -321,5 +542,15 @@ resource "aws_ssm_parameter" "validation_url" {
     ignore_changes = [
       value
     ]
+  }
+  tags = {
+    Name            = "${var.project_name}-ecr-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
   }
 }

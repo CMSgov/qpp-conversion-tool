@@ -39,3 +39,23 @@ variable "lb_security_group" {
 variable "vpc_cidr" {
   type = list
 }
+
+variable "pagerduty_email" {
+  type = string
+}
+
+variable "owner" {
+  type = string
+}
+
+variable "application" {
+  type = string
+}
+
+variable "sensitivity" {
+  type = string
+}
+
+variable "git-origin" {
+  type = string
+}

@@ -1,5 +1,21 @@
 resource "aws_ecs_cluster" "conversion-tool-ecs-cluster" {
   name = "qppsf-conversion-tool-${var.environment}"
+
+  setting {
+    name  = "containerInsights"
+    value = "enabled"
+  }
+
+  tags = {
+    Name            = "${var.project_name}-ecr-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
+  }
 }
 
 resource "aws_ecs_task_definition" "conversion-tool" {
@@ -44,6 +60,17 @@ resource "aws_ecs_service" "conversion-tool-service" {
     container_port   = "8080"
   }
 
+  tags = {
+    Name            = "${var.project_name}-ecr-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
+  }
+
 }
 
 resource "aws_cloudwatch_log_group" "conversion-tool" {
@@ -56,9 +83,9 @@ resource "aws_security_group" "ct_app" {
   description = "Allow inbound traffic"
   vpc_id      = var.vpc_id
   ingress {
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
+    from_port       = 8080
+    to_port         = 8080
+    protocol        = "tcp"
     security_groups = [aws_security_group.conversion-tool_alb.id]
   }
   egress {
@@ -77,13 +104,13 @@ resource "aws_security_group" "conversion-tool_alb" {
   description = "Security group for conversion-tool."
   vpc_id      = var.vpc_id
   tags = {
-    Name        = "${var.project_name}_${var.environment}conversion-tool_alb"
+    Name = "${var.project_name}_${var.environment}conversion-tool_alb"
   }
 }
 
-resource "aws_security_group_rule" "allow_http_from_blah" {
+resource "aws_security_group_rule" "allow_http" {
   type              = "ingress"
-  from_port         = 80
+  from_port         = 8080
   to_port           = 8080
   protocol          = "tcp"
   cidr_blocks       = var.vpc_cidr
