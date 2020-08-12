@@ -114,7 +114,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
 				sectionEncoder.encode(childWrapper, child);
 				childWrapper.put("source", "qrda3");
-				if (TemplateId.MEASURE_SECTION_V3.getRoot().equalsIgnoreCase(childType.getRoot())
+				if (TemplateId.MEASURE_SECTION_V4.getRoot().equalsIgnoreCase(childType.getRoot())
 					&& ClinicalDocumentDecoder.MIPS_APM.equalsIgnoreCase(
 						currentNode.getValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME))) {
 					childWrapper.put(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS.toLowerCase());

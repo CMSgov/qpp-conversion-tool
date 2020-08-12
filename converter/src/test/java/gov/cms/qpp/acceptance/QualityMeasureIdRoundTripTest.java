@@ -225,7 +225,7 @@ class QualityMeasureIdRoundTripTest {
 		List<String> source = JsonHelper.readJsonAtJsonPath(qpp.toString(),
 			"$.measurementSets[?(@.category=='quality' && @.programName=='mips')].source", new TypeRef<List<String>>() { });
 		List<LinkedHashMap<String, Object>> measurements = JsonHelper.readJsonAtJsonPath(qpp.toString(),
-			"$.measurementSets[?(@.category=='quality' && @.programName=='mips')].measurements[*]",
+			"$.measurementSets[?(@.category=='quality')]",
 			new TypeRef<List<LinkedHashMap<String, Object>>>() { });
 
 		assertThat(programName).contains("mips");
@@ -233,6 +233,6 @@ class QualityMeasureIdRoundTripTest {
 		assertThat(submissionMethod).contains("electronicHealthRecord");
 		assertThat(practiceId).contains("TestApmEntityId");
 		assertThat(source).contains("qrda3");
-		assertThat(measurements.get(0).keySet()).hasSize(2);
+		assertThat(measurements).hasSize(1);
 	}
 }
