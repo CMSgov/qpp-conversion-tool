@@ -231,7 +231,7 @@ class QualityMeasureIdRoundTripTest {
 		assertThat(programName).contains("mips");
 		assertThat(category).contains("quality");
 		assertThat(submissionMethod).contains("electronicHealthRecord");
-		assertThat(practiceId).isEmpty();
+		assertThat(practiceId).contains("TestApmEntityId");
 		assertThat(source).contains("qrda3");
 		assertThat(measurements.get(0).keySet()).hasSize(2);
 	}

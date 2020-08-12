@@ -117,10 +117,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 				if (TemplateId.MEASURE_SECTION_V3.getRoot().equalsIgnoreCase(childType.getRoot())
 					&& ClinicalDocumentDecoder.MIPS_APM.equalsIgnoreCase(
 						currentNode.getValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME))) {
-					JsonWrapper apmMipsWrapper = childWrapper.copyWithoutMetadata();
-					apmMipsWrapper.put(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS.toLowerCase());
-					apmMipsWrapper.remove(ClinicalDocumentDecoder.PRACTICE_ID);
-					measurementSetsWrapper.put(apmMipsWrapper);
+					childWrapper.put(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS.toLowerCase());
 				}
 
 				measurementSetsWrapper.put(childWrapper);
