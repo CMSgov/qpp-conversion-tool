@@ -96,7 +96,7 @@ public class QrdaUpdater {
 			        Element measureRnrTemplateId = measureEntryOrganizer.getChildren("templateId", rootNamespace)
 						.stream()
 						.filter(childElement ->
-							TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getRoot()
+							TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4.getRoot()
 								.equals(childElement.getAttribute("root").getValue()))
 					.findAny().orElse(null);
 					if (measureRnrTemplateId != null) {

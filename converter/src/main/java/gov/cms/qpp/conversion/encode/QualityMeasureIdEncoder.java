@@ -1,7 +1,5 @@
 package gov.cms.qpp.conversion.encode;
 
-import com.google.common.collect.ImmutableSet;
-
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
@@ -17,22 +15,19 @@ import gov.cms.qpp.conversion.util.SubPopulationHelper;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.Set;
 
 import static gov.cms.qpp.conversion.decode.AggregateCountDecoder.AGGREGATE_COUNT;
 
 /**
  * Encoder to serialize Quality Measure Identifier and Measure Sections
  */
-@Encoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
+@Encoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4)
 public class QualityMeasureIdEncoder extends QppOutputEncoder {
 
 	private static final String MEASURE_ID = "measureId";
 	private static final String SINGLE_PERFORMANCE_RATE = "singlePerformanceRate";
 	private static final String TRUE = "true";
 	private static final String PERFORMANCE_NOT_MET = "performanceNotMet";
-	private static final Set<String> MULTI_TO_SINGLE_PERF_RATE_MEASURE_ID = ImmutableSet.of("005", "008", "143", "438");
-	private static final String SINGLE_TO_MULTI_PERF_RATE_MEASURE_ID = "370";
 	protected static final String STRATUM_FIELD_NAME = "stratum";
 
 	public static final String TYPE = "type";
@@ -55,9 +50,9 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		MeasureConfig measureConfig = MeasureConfigHelper.getMeasureConfig(node);
 		String measureId = measureConfig.getMeasureId();
 		wrapper.put(MEASURE_ID, measureId);
-		if (MULTI_TO_SINGLE_PERF_RATE_MEASURE_ID.contains(measureId)) {
+		if (MeasureConfigHelper.checkMultiToSinglePerformanceRateId(measureId)) {
 			encodeAllSubPopulationSums(wrapper, node);
-		} else if (SINGLE_TO_MULTI_PERF_RATE_MEASURE_ID.equalsIgnoreCase(measureId)) {
+		} else if (MeasureConfigHelper.SINGLE_TO_MULTI_PERF_RATE_MEASURE_ID.equalsIgnoreCase(measureId)) {
 			encodeSingleToMultiPerformance(wrapper, node, measureConfig);
 		} else if (isASinglePerformanceRate(measureConfig)) {
 			encodeChildren(wrapper, node, measureConfig);
@@ -124,7 +119,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @return
 	 */
 	private int calculateSubPopulationSum(Node measureReferenceNode, SubPopulationLabel label) {
-		return measureReferenceNode.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2)
+		return measureReferenceNode.getChildNodes(TemplateId.MEASURE_DATA_CMS_V4)
 			.filter(childNode ->
 				label.hasAlias(childNode.getValue(MeasureDataDecoder.MEASURE_TYPE)))
 			.mapToInt(ipopNode ->
@@ -237,7 +232,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		this.encodePerformanceNotMet(childWrapper, parentNode);
 
 		for (Node childNode : parentNode.getChildNodes()) {
-			if (TemplateId.MEASURE_DATA_CMS_V2 == childNode.getType()) {
+			if (TemplateId.MEASURE_DATA_CMS_V4 == childNode.getType()) {
 				JsonOutputEncoder measureDataEncoder = encoders.get(childNode.getType());
 				measureDataEncoder.encode(childWrapper, childNode);
 			}

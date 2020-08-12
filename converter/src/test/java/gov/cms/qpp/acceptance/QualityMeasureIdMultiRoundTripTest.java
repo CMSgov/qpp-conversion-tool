@@ -11,8 +11,11 @@ import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.util.JsonHelper;
+
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -32,10 +35,10 @@ class QualityMeasureIdMultiRoundTripTest {
 
 	private static final String REQUIRE_ELIGIBLE_POPULATION_TOTAL = "Must have a required eligiblePopulation";
 	private static final String REQUIRE_PERFORMANCE_MET = "Must have a required performanceMet";
-	private static final String REQUIRE_ELIGIBLE_POPULATION_EXCEPTIONS = "Must have a required eligiblePopulationException";
+	private static final String REQUIRE_ELIGIBLE_POPULATION_EXCLUSIONS = "Must have a required eligiblePopulationExclusion";
 	private static final String ELIGIBLE_POPULATION = "eligiblePopulation";
 	private static final String PERFORMANCE_MET = "performanceMet";
-	private static final String ELIGIBLE_POPULATION_EXCEPTION = "eligiblePopulationException";
+	private static final String ELIGIBLE_POPULATION_EXCLUSION = "eligiblePopulationExclusion";
 
 	private static final Path JUNK_QRDA3_FILE =
 			Paths.get("src/test/resources/fixtures/multiPerformanceRatePropMeasure.xml");
@@ -51,6 +54,11 @@ class QualityMeasureIdMultiRoundTripTest {
 			.setPathname(JUNK_QRDA3_FILE).build();
 	}
 
+	@AfterEach
+	void teardown() {
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
+	}
+
 	@Test
 	void testRoundTripForQualityMeasureId() {
 		Converter converter = new Converter(new PathSource(JUNK_QRDA3_FILE));
@@ -63,7 +71,7 @@ class QualityMeasureIdMultiRoundTripTest {
 				new TypeRef<List<Map<String, ?>>>() { });
 
 		List<Map<String, ?>> subPopulation = JsonHelper.readJsonAtJsonPath(json,
-				"$.measurementSets[?(@.category=='quality')].measurements[?(@.measureId=='007')].value.strata[*]",
+				"$.measurementSets[?(@.category=='quality')].measurements[?(@.measureId=='009')].value.strata[*]",
 				new TypeRef<List<Map<String, ?>>>() { });
 
 		String message =
@@ -71,7 +79,7 @@ class QualityMeasureIdMultiRoundTripTest {
 
 		assertWithMessage(message)
 				.that(qualityMeasures.get(0).get("measureId"))
-				.isEqualTo("007");
+				.isEqualTo("009");
 
 		assertFirstSubPopulation(subPopulation);
 
@@ -101,9 +109,9 @@ class QualityMeasureIdMultiRoundTripTest {
 	}
 
 	@Test
-	void testRoundTripForQualityMeasureIdWithNoDenexcepMeasureType() {
+	void testRoundTripForQualityMeasureIdWithNoDenexMeasureType() {
 		LocalizedProblem error =
-			ProblemCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS145v7", 2, SubPopulationLabel.DENEXCEP.name(), 1);
+			ProblemCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS128v8", 2, SubPopulationLabel.DENEX.name(), 1);
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[5]/observation/value/@code";
 
@@ -138,8 +146,8 @@ class QualityMeasureIdMultiRoundTripTest {
 	}
 
 	@Test
-
 	void testRoundTripQualityMeasureIdWithDenomGreaterThanIpop() {
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.TEST_MEASURE_DATA);
 		Converter converter = new Converter(new PathSource(DENOM_GREATER_THAN_IPOP));
 		List<Detail> details = new ArrayList<>();
 		try {
@@ -182,8 +190,8 @@ class QualityMeasureIdMultiRoundTripTest {
 		assertWithMessage(REQUIRE_PERFORMANCE_MET)
 				.that(subPopulation.get(0).get(PERFORMANCE_MET))
 				.isEqualTo(486);
-		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_EXCEPTIONS)
-				.that(subPopulation.get(0).get(ELIGIBLE_POPULATION_EXCEPTION))
+		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_EXCLUSIONS)
+				.that(subPopulation.get(0).get(ELIGIBLE_POPULATION_EXCLUSION))
 				.isEqualTo(35);
 	}
 
@@ -195,8 +203,8 @@ class QualityMeasureIdMultiRoundTripTest {
 		assertWithMessage(REQUIRE_PERFORMANCE_MET)
 				.that(subPopulation.get(1).get(PERFORMANCE_MET))
 				.isEqualTo(700);
-		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_EXCEPTIONS)
-				.that(subPopulation.get(1).get(ELIGIBLE_POPULATION_EXCEPTION))
+		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_EXCLUSIONS)
+				.that(subPopulation.get(1).get(ELIGIBLE_POPULATION_EXCLUSION))
 				.isEqualTo(40);
 	}
 }

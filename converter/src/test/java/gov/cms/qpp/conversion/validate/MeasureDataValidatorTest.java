@@ -33,7 +33,7 @@ class MeasureDataValidatorTest {
 		String happy = TestHelper.getFixture("measureDataHappy.xml");
 		Node placeholder = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(happy));
 		MeasureDataValidator validator = new MeasureDataValidator();
-		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
+		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V4);
 		List<Detail> errors = validator.validateSingleNode(underTest).getErrors();
 		assertWithMessage("Expect no errors on the happy path")
 				.that(errors).isEmpty();
@@ -41,7 +41,7 @@ class MeasureDataValidatorTest {
 
 	@Test
 	void missingAggregateCount() {
-		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V4);
 		MeasureDataValidator validator = new MeasureDataValidator();
 		List<Detail> errors = validator.validateSingleNode(testNode).getErrors();
 		assertWithMessage("missing error")
@@ -52,7 +52,7 @@ class MeasureDataValidatorTest {
 	@Test
 	void invalidAggregateCount() throws Exception {
 		Node aggregateCount = new Node(TemplateId.PI_AGGREGATE_COUNT);
-		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V4);
 		testNode.addChildNode(aggregateCount);
 		aggregateCount.putValue("aggregateCount", "error");
 		MeasureDataValidator validator = new MeasureDataValidator();
@@ -67,20 +67,20 @@ class MeasureDataValidatorTest {
 		Node aggregateCount = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		aggregateCount.putValue("aggregateCount", "100");
 		aggregateCount.putValue("aggregateCount", "200", false);
-		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V4);
 		testNode.addChildNodes(aggregateCount);
 		MeasureDataValidator validator = new MeasureDataValidator();
 		List<Detail> errors = validator.validateSingleNode(testNode).getErrors();
 		assertWithMessage("missing error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(TemplateId.MEASURE_DATA_CMS_V2.name(), 2));
+				.containsExactly(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(TemplateId.MEASURE_DATA_CMS_V4.name(), 2));
 	}
 
 	@Test
 	void negativeAggregateCountsFails() throws Exception {
 		Node aggregateCount = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		aggregateCount.putValue("aggregateCount", "-1");
-		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V4);
 		testNode.addChildNodes(aggregateCount);
 		MeasureDataValidator validator = new MeasureDataValidator();
 		List<Detail> errors = validator.validateSingleNode(testNode).getErrors();
@@ -108,7 +108,7 @@ class MeasureDataValidatorTest {
 		assertWithMessage("Must contain the error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsAtLeast(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
-						ProblemCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(TemplateId.MEASURE_DATA_CMS_V2.name(), 2),
+						ProblemCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(TemplateId.MEASURE_DATA_CMS_V4.name(), 2),
 						ProblemCode.MEASURE_DATA_VALUE_NOT_INTEGER.format("58347456-D1F3-4BBB-9B35-5D42825A0AB3"));
 	}
 

@@ -19,10 +19,11 @@ import java.util.stream.Collectors;
 public class MeasureConfigs {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(MeasureConfigs.class);
 	public static final String DEFAULT_MEASURE_DATA_FILE_NAME = "measures-data.json";
+	public static final String TEST_MEASURE_DATA = "measure-data-static.json";
 
 	private static String measureDataFileName = DEFAULT_MEASURE_DATA_FILE_NAME;
 	private static Map<String, MeasureConfig> configurationMap;
-	private static Map<String, List<MeasureConfig>> cpcPlusGroups;
+	private static Map<String, List<MeasureConfig>> cpcPlusGroup;
 
 	/**
 	 * Static initialization
@@ -46,15 +47,22 @@ public class MeasureConfigs {
 	}
 
 	/**
-	 * Initialize all measure configurations
+	 * Initialize default measure configurations
 	 */
 	private static void initMeasureConfigs() {
 		configurationMap = grabConfiguration(measureDataFileName);
-		cpcPlusGroups = new HashMap<>();
-		getMeasureConfigs().stream()
-				.filter(config -> config.getCpcPlusGroup() != null)
-				.forEach(config -> cpcPlusGroups.computeIfAbsent(
-						config.getCpcPlusGroup(), key -> new ArrayList<>()).add(config));
+		cpcPlusGroup = new HashMap<>();
+		setUpGroups();
+	}
+
+	/**
+	 * Initialize specific measure configurations
+	 * @param filename
+	 */
+	public static void initMeasureConfigs(String filename) {
+		configurationMap = grabConfiguration(filename);
+		cpcPlusGroup = new HashMap<>();
+		setUpGroups();
 	}
 
 	public static Map<String, MeasureConfig> grabConfiguration(String fileName) {
@@ -72,6 +80,13 @@ public class MeasureConfigs {
 			DEV_LOG.error(message);
 			throw new IllegalArgumentException(message, e);
 		}
+	}
+
+	public static void setUpGroups() {
+		getMeasureConfigs().stream()
+			.filter(config -> config.getCpcPlusGroup() != null)
+			.forEach(config -> cpcPlusGroup.computeIfAbsent(
+				config.getCpcPlusGroup(), key -> new ArrayList<>()).add(config));
 	}
 
 	/**
@@ -126,8 +141,8 @@ public class MeasureConfigs {
 	 *
 	 * @return mapped CPC+ measure groups
 	 */
-	public static Map<String, List<MeasureConfig>> getCpcPlusGroups() {
-		return cpcPlusGroups;
+	public static Map<String, List<MeasureConfig>> getCpcPlusGroup() {
+		return cpcPlusGroup;
 	}
 
 	/**

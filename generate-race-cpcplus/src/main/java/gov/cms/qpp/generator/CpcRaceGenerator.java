@@ -86,7 +86,7 @@ public class CpcRaceGenerator {
 					if (templateIds.stream()
 						.map(element -> element.getAttributeValue("root"))
 						.filter(templateIdRoot ->
-							TemplateId.MEASURE_DATA_CMS_V2.getRoot().equalsIgnoreCase(templateIdRoot))
+							TemplateId.MEASURE_DATA_CMS_V4.getRoot().equalsIgnoreCase(templateIdRoot))
 						.count() > 0) {
 						observation.addContent(
 							createRaceElement(rootElement.getNamespacesInScope().get(2), "2076-8"));

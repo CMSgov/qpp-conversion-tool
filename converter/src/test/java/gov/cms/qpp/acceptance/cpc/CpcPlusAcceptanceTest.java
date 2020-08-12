@@ -13,6 +13,8 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
+import gov.cms.qpp.conversion.model.validation.MeasureConfig;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.util.JsonHelper;
 
 import java.io.IOException;
@@ -36,16 +38,18 @@ class CpcPlusAcceptanceTest {
 	private static Map<String, CPCAcceptanceFixture> fixtureValues;
 
 	@BeforeAll
-	static void initMockApmIds() throws IOException {
+	static void setUp() throws IOException {
 		ApmEntityIds.setApmDataFile("test_apm_entity_ids.json");
 		TypeReference<Map<String, CPCAcceptanceFixture>> ref =
 				new TypeReference<Map<String, CPCAcceptanceFixture>>() { };
 		fixtureValues = JsonHelper.readJson(FAILURE_FIXTURE, ref);
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.TEST_MEASURE_DATA);
 	}
 
 	@AfterAll
-	static void resetApmIds() {
+	static void teardown() {
 		ApmEntityIds.setApmDataFile(ApmEntityIds.DEFAULT_APM_ENTITY_FILE_NAME);
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 	}
 
 	static Stream<Path> successData() {

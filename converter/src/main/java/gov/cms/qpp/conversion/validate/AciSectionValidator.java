@@ -8,7 +8,7 @@ import gov.cms.qpp.conversion.model.error.ProblemCode;
 /**
  * Validate the ACI Section.
  */
-@Validator(TemplateId.PI_SECTION)
+@Validator(TemplateId.PI_SECTION_V2)
 public class AciSectionValidator extends NodeValidator {
 
 	/**

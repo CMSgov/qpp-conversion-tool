@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.validate;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
-import static gov.cms.qpp.conversion.model.TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2;
+import static gov.cms.qpp.conversion.model.TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4;
 
 import java.util.List;
 
@@ -34,16 +34,16 @@ class QualityMeasureSectionValidatorTest {
 	@BeforeEach
 	void setUpQualityMeasureSection() {
 		reportingParameterNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
-		qualityMeasureSectionNode = new Node(TemplateId.MEASURE_SECTION_V3);
-		measure = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
+		qualityMeasureSectionNode = new Node(TemplateId.MEASURE_SECTION_V4);
+		measure = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4);
 	}
 
 	@Test
 	void testValidQualityMeasureSectionValidation() {
 		qualityMeasureSectionNode.addChildNode(reportingParameterNode);
 		qualityMeasureSectionNode.addChildNode(measure);
-		qualityMeasureSectionNode.putValue(QualitySectionDecoder.MEASURE_SECTION_V4,
-			TemplateId.MEASURE_SECTION_V4.getExtension());
+		qualityMeasureSectionNode.putValue(QualitySectionDecoder.CATEGORY_SECTION_V4,
+			TemplateId.CATEGORY_REPORT_V4.getExtension());
 
 		List<Detail> errors = validateQualityMeasureSection();
 
@@ -54,8 +54,8 @@ class QualityMeasureSectionValidatorTest {
 	@Test
 	void testQualityMeasureSectionWithoutMeasure() {
 		qualityMeasureSectionNode.addChildNode(reportingParameterNode);
-		qualityMeasureSectionNode.putValue(QualitySectionDecoder.MEASURE_SECTION_V4,
-			TemplateId.MEASURE_SECTION_V4.getExtension());
+		qualityMeasureSectionNode.putValue(QualitySectionDecoder.CATEGORY_SECTION_V4,
+			TemplateId.CATEGORY_REPORT_V4.getExtension());
 
 		List<Detail> errors = validateQualityMeasureSection();
 
@@ -68,8 +68,8 @@ class QualityMeasureSectionValidatorTest {
 
 	@Test
 	void testMissingReportingParams() {
-		qualityMeasureSectionNode.putValue(QualitySectionDecoder.MEASURE_SECTION_V4,
-			TemplateId.MEASURE_SECTION_V4.getExtension());
+		qualityMeasureSectionNode.putValue(QualitySectionDecoder.CATEGORY_SECTION_V4,
+			TemplateId.CATEGORY_REPORT_V4.getExtension());
 
 		List<Detail> errors = validateQualityMeasureSection();
 
@@ -83,8 +83,8 @@ class QualityMeasureSectionValidatorTest {
 	void testTooManyReportingParams() {
 		Node secondReportingParameterNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		qualityMeasureSectionNode.addChildNodes(reportingParameterNode, secondReportingParameterNode);
-		qualityMeasureSectionNode.putValue(QualitySectionDecoder.MEASURE_SECTION_V4,
-			TemplateId.MEASURE_SECTION_V4.getExtension());
+		qualityMeasureSectionNode.putValue(QualitySectionDecoder.CATEGORY_SECTION_V4,
+			TemplateId.CATEGORY_REPORT_V4.getExtension());
 
 		List<Detail> errors = validateQualityMeasureSection();
 
@@ -97,7 +97,7 @@ class QualityMeasureSectionValidatorTest {
 	@Test
 	void duplicateEcqMeasure() {
 		List<Detail> errorDetails = manipulatorHandler
-				.executeScenario(MEASURE_REFERENCE_RESULTS_CMS_V2.name(), "measureId", false);
+				.executeScenario(MEASURE_REFERENCE_RESULTS_CMS_V4.name(), "measureId", false);
 		assertThat(errorDetails)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(ProblemCode.MISSING_OR_DUPLICATED_MEASURE_GUID);
