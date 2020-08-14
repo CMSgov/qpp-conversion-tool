@@ -3530,6 +3530,116 @@ QRDA Category III Measure Section (CMS EP)
           </entry>
         </section>
       </component>
+
+      <!--IA Section-->
+      <component>
+        <section>
+          <!-- Measure Section -->
+          <templateId root="2.16.840.1.113883.10.20.24.2.2"/>
+          <!-- Improvement Activity Section templateId -->
+          <templateId root="2.16.840.1.113883.3.249.20.2.1" extension="2018-05-01"/>
+          <code code="55186-1" codeSystem="2.16.840.1.113883.6.1"
+                displayName="Measure Section"/>
+          <title>Measure Section</title>
+          <!-- Must have at least one entry with a Measure Performed Reference and Result -->
+          <!-- IA_EPA_3 -->
+          <entry>
+            <organizer classCode="CLUSTER" moodCode="EVN">
+              <!-- Implied template Measure Reference templateId -->
+              <templateId root="2.16.840.1.113883.10.20.24.3.98"/>
+              <!-- Improvement Activity Performed Reference and Results templateId -->
+              <templateId root="2.16.840.1.113883.3.249.20.3.1" extension="2018-05-01"/>
+              <id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
+              <statusCode code="completed"/>
+              <reference typeCode="REFR">
+                <!-- Reference to a particular PI measure's unique identifier. -->
+                <externalDocument classCode="DOC" moodCode="EVN">
+                  <!-- This is a temporary root OID that indicates this is an improvement activity identifier -->
+                  <id root="2.16.840.1.113883.3.7034" extension="IA_EPA_3"/>
+                  <!-- Improvement activity narrative text (for reference) -->
+                  <text>Collection and use of patient experience and satisfaction data on access</text>
+                </externalDocument>
+              </reference>
+              <component>
+                <observation classCode="OBS" moodCode="EVN">
+                  <!-- Measure Performed templateId -->
+                  <templateId root="2.16.840.1.113883.10.20.27.3.27"
+                              extension="2016-09-01"/>
+                  <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+                        codeSystemName="ActCode" displayName="Assertion"/>
+                  <statusCode code="completed"/>
+                  <value xsi:type="CD" code="Y" displayName="Yes"
+                         codeSystemName="Yes/no indicator (HL7 Table 0136)"
+                         codeSystem="2.16.840.1.113883.12.136"/>
+                </observation>
+              </component>
+              <!--Invalid Reporting Parameter ACT-->
+              <entry typeCode="DRIV">
+                <act classCode="ACT" moodCode="EVN">
+                  <templateId root="2.16.840.1.113883.10.20.17.3.8"/>
+                  <id root="00b669fd-fa4d-4f5c-b109-65c6bbbf73ae"/>
+                  <code code="252116004" codeSystem="2.16.840.1.113883.6.96"
+                        displayName="Observation Parameters"/>
+                  <effectiveTime>
+                    <low value="20200101"/>
+                    <high value="20200430"/>
+                  </effectiveTime>
+                </act>
+              </entry>
+            </organizer>
+          </entry>
+          <!-- IA_CC_10 -->
+          <entry>
+            <organizer classCode="CLUSTER" moodCode="EVN">
+              <!-- Implied template Measure Reference templateId -->
+              <templateId root="2.16.840.1.113883.10.20.24.3.98"/>
+              <!-- Improvement Activity Performed Reference and Results templateId -->
+              <templateId root="2.16.840.1.113883.10.20.27.3.33"
+                          extension="2016-09-01"/>
+              <id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
+              <statusCode code="completed"/>
+              <reference typeCode="REFR">
+                <!-- Reference to a particular PI measure's unique identifier. -->
+                <externalDocument classCode="DOC" moodCode="EVN">
+                  <!-- This is a temporary root OID that indicates this is an improvement activity identifier -->
+                  <id root="2.16.840.1.113883.3.7034" extension="IA_CC_10"/>
+                  <!-- Improvement activity narrative text (for reference) -->
+                  <text>Care transition documentation practice improvements</text>
+                </externalDocument>
+              </reference>
+              <component>
+                <observation classCode="OBS" moodCode="EVN">
+                  <!-- Measure Performed templateId -->
+                  <templateId root="2.16.840.1.113883.10.20.27.3.27"
+                              extension="2016-09-01"/>
+                  <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+                        codeSystemName="ActCode" displayName="Assertion"/>
+                  <statusCode code="completed"/>
+                  <value xsi:type="CD" code="Y" displayName="Yes"
+                         codeSystemName="Yes/no indicator (HL7 Table 0136)"
+                         codeSystem="2.16.840.1.113883.12.136"/>
+                </observation>
+              </component>
+
+              <!--Invalid Reporting Parameter ACT-->
+              <entry typeCode="DRIV">
+                <act classCode="ACT" moodCode="EVN">
+                  <templateId root="2.16.840.1.113883.10.20.17.3.8"/>
+                  <id root="00b669fd-fa4d-4f5c-b109-65c6bbbf73ae"/>
+                  <code code="252116004" codeSystem="2.16.840.1.113883.6.96"
+                        displayName="Observation Parameters"/>
+                  <effectiveTime>
+                    <low value="20200101"/>
+                    <high value="20200430"/>
+                  </effectiveTime>
+                </act>
+              </entry>
+            </organizer>
+          </entry>
+          <!-- Missing Reporting Parameters Act -->
+
+        </section>
+      </component>
     </structuredBody>
   </component>
 </ClinicalDocument>
