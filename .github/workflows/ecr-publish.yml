@@ -8,6 +8,9 @@ on:
       - release/*
       - master
 
+env:
+  SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
 jobs:
   deploy:
     name: Build Docker image and deploy to AWS ECR
@@ -28,7 +31,7 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Temp - Build and deploy to Amazon ECR #remove me after rollout
+      - name: Temp - Build and deploy to Amazon ECR #Reminder to remove this block after the project is completed
         if: github.ref == 'refs/heads/ecr-deploy'
         id: build-image
         env:
@@ -39,6 +42,22 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: Temp - Notify slack success
+        if: github.ref == 'refs/heads/ecr-deploy' && success()
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel: p-qpp-sub-alerts
+          status: Conversion tools - Successful Docker build and AWS ECR deployment  
+          color: good
+
+      - name: Temp - Notify slack fail
+        if: github.ref == 'refs/heads/ecr-deploy' && failure()
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel: p-qpp-sub-alerts
+          status: Conversion tools - Failed Docker build or AWS ECR deployment
+          color: danger             
       
       - name: Dev - Build and deploy to Amazon ECR
         if: github.ref == 'refs/heads/develop'
@@ -51,6 +70,22 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
+      - name: Dev - Notify slack success
+        if: github.ref == 'refs/heads/develop' && success()
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel: p-qpp-sub-alerts
+          status: Conversion tools - Successful Docker build and AWS ECR deployment
+          color: good
+
+      - name: Dev - Notify slack fail
+        if: github.ref == 'refs/heads/develop' && failure()
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel: p-qpp-sub-alerts
+          status: Conversion tools - Failed Docker build or AWS ECR deployment
+          color: danger 
+
       - name: Impl - Build and deploy to Amazon ECR 
         if: github.ref == 'refs/heads/release/'
         env:
@@ -61,7 +96,23 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-    
+
+      - name: Impl - Notify slack success
+        if: github.ref == 'refs/heads/release/' && success()
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel: p-qpp-sub-alerts
+          status: Conversion tools - Successful Docker build and AWS ECR deployment
+          color: good
+
+      - name: Impl - Notify slack fail
+        if: github.ref == 'refs/heads/release/' && failure()
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel: p-qpp-sub-alerts
+          status: Conversion tools - Failed Docker build or AWS ECR deployment
+          color: danger 
+
       - name: Prod - Build and deploy to Amazon ECR
         if: github.ref == 'refs/heads/master'
         env:
@@ -72,6 +123,22 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: Prod - Notify slack success
+        if: github.ref == 'refs/heads/master' && success()
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel: p-qpp-sub-alerts
+          status: Conversion tools - Successful Docker build and AWS ECR deployment
+          color: good
+
+      - name: Prod - Notify slack fail
+        if: github.ref == 'refs/heads/master' && failure()
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel: p-qpp-sub-alerts
+          status: Conversion tools - Failed Docker build or AWS ECR deployment
+          color: danger 
 
       - name: Logout of Amazon ECR
         if: always()
