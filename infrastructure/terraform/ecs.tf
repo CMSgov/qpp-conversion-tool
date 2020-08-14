@@ -110,7 +110,7 @@ resource "aws_security_group" "conversion-tool_alb" {
 
 resource "aws_security_group_rule" "allow_http" {
   type              = "ingress"
-  from_port         = 8080
+  from_port         = 80
   to_port           = 8080
   protocol          = "tcp"
   cidr_blocks       = var.vpc_cidr
