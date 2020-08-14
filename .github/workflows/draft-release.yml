@@ -4,12 +4,12 @@ on: create
 
 jobs:
   release_draft:
-    if: github.ref == 'refs/heads/releases/'
+    if: github.ref == 'refs/heads/release/'
     name: Create a new release
     runs-on: ubuntu-latest
     steps:
     
-      - name: Checkout Codebase        
+      - name: Checkout codebase        
         uses: actions/checkout@v2
         with:
           fetch-depth: 2

@@ -46,7 +46,7 @@ class CpcMeasureDataValidatorTest {
 		String successfulFile = TestHelper.getFixture("successfulSupplementalDataFile.xml");
 		Node placeholder = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(successfulFile));
 		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
-		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
+		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V4);
 		List<Detail> errors = validator.validateSingleNode(underTest).getErrors();
 		assertThat(errors).isEmpty();
 	}
@@ -56,7 +56,7 @@ class CpcMeasureDataValidatorTest {
 		String failurePayerFile = TestHelper.getFixture("failureSupplementalDataCountFile.xml");
 		Node placeholder = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(failurePayerFile));
 		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
-		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
+		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V4);
 		List<Detail> errors = validator.validateSingleNode(underTest).getErrors();
 
 		LocalizedProblem expectedError = ProblemCode.CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT.format(
@@ -113,7 +113,7 @@ class CpcMeasureDataValidatorTest {
 				String failureFile = TestHelper.getFixture(scenarioFile);
 				Node placeholder = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(failureFile));
 				CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
-				Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
+				Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V4);
 				List<Detail> errors = validator.validateSingleNode(underTest).getErrors();
 
 				LocalizedProblem expectedError = ProblemCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE

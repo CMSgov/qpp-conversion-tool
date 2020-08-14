@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="qrda.xsl"?>
+
+<ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				  xsi:schemaLocation="urn:hl7-org:v3 ../CDA_Schema_Files/infrastructure/cda/CDA_SDTC.xsd"
+				  xmlns="urn:hl7-org:v3" xmlns:voc="urn:hl7-org:v3/voc">
+	<realmCode code="US"/>
+	<typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
+	<templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01"/>
+	<templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2019-05-01"/>
+	<id root="26a42253-99f5-48e7-9274-b467c6c7f623"/>
+	<code code="55184-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+		  displayName="Quality Reporting Document Architecture Calculated Summary Report"/>
+	<title>2017 Eligible Clinicians (EC) and Eligible Professionals (EP) Sample QRDA-III</title>
+	<effectiveTime value="20170311061231"/>
+	<confidentialityCode codeSystem="2.16.840.1.113883.5.25" code="N"/>
+	<languageCode code="en"/>
+	<setId root="ae23711d-783d-4f5e-b942-4084b467848b"/>
+	<versionNumber value="1"/>
+	<recordTarget>
+		<patientRole>
+			<id nullFlavor="NA"/>
+		</patientRole>
+	</recordTarget>
+	<author>
+		<time value="20170131061231"/>
+		<assignedAuthor>
+			<id root="3d0a32f3-5164-4a6f-8922-de3badf83de4"/>
+			<assignedAuthoringDevice>
+				<softwareName>SOME Data Aggregator Transform Tool AS00016dev</softwareName>
+			</assignedAuthoringDevice>
+			<representedOrganization>
+				<id root="2.16.840.1.113883.19.5" extension="223344"/>
+				<name>Good Health Clinic</name>
+			</representedOrganization>
+		</assignedAuthor>
+	</author>
+	<author>
+		<time value="20170131114411"/>
+		<assignedAuthor>
+			<id root="2.16.840.1.113883.4.6" extension="1234567893" assigningAuthorityName="NPI"/>
+			<assignedPerson>
+				<name>
+					<given>Trevor</given>
+					<family>Philips</family>
+				</name>
+			</assignedPerson>
+			<representedOrganization>
+				<id root="2.16.840.1.113883.19.5" extension="223344"/>
+				<name>Good Health Clinic</name>
+			</representedOrganization>
+		</assignedAuthor>
+	</author>
+	<custodian>
+		<assignedCustodian>
+			<representedCustodianOrganization>
+				<id root="2.16.840.1.113883.19.5" extension="223344"/>
+				<name>Good Health Clinic</name>
+			</representedCustodianOrganization>
+		</assignedCustodian>
+	</custodian>
+	<informationRecipient>
+		<intendedRecipient>
+			<id root="2.16.840.1.113883.3.249.7" extension="MIPS_INDIV"/>
+		</intendedRecipient>
+	</informationRecipient>
+	<legalAuthenticator>
+		<time value="20170312153222"/>
+		<signatureCode code="S"/>
+		<assignedEntity>
+			<id root="bc01a5d1-3a34-4286-82cc-43eb04c972a7"/>
+			<representedOrganization>
+				<id root="2.16.840.1.113883.19.5" extension="223344"/>
+				<name>Good Health Clinic</name>
+			</representedOrganization>
+		</assignedEntity>
+	</legalAuthenticator>
+	<participant typeCode="LOC">
+		<associatedEntity classCode="SDLOC">
+			<id root="2.16.840.1.113883.3.249.5.1"
+				extension="AR000000"
+				assigningAuthorityName="CMS-CMMI"/>
+			<id root="2.16.840.1.113883.3.2074.1" extension="XX15EXXXXXXXXXX"/>
+			<code code="394730007"
+				  displayName="healthcare related organization"
+				  codeSystem="2.16.840.1.113883.6.96"
+				  codeSystemName="SNOMED-CT"/>
+			<addr>
+				<streetAddressLine>123 Healthcare St</streetAddressLine>
+				<city>Norman</city>
+				<state>OK</state>
+				<postalCode>73019</postalCode>
+			</addr>
+		</associatedEntity>
+	</participant>
+	<documentationOf typeCode="DOC">
+		<serviceEvent classCode="PCPR">
+			<effectiveTime>
+				<low value="20170101"/>
+				<high value="20171231"/>
+			</effectiveTime>
+			<performer typeCode="PRF">
+				<time>
+					<low value="20170101"/>
+					<high value="20171231"/>
+				</time>
+				<assignedEntity>
+					<id root="2.16.840.1.113883.4.6" extension="0777777777"/>
+					<representedOrganization>
+						<id root="2.16.840.1.113883.4.2" extension="000777777"/>
+						<name>Good Health Clinic</name>
+					</representedOrganization>
+				</assignedEntity>
+			</performer>
+		</serviceEvent>
+	</documentationOf>
+	<authorization>
+		<consent>
+			<id root="da2c8a32-d76b-4c37-a1f4-137485387650"/>
+			<code code="425691002" displayName="consent given for electronic record sharing"
+				  codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT"/>
+			<statusCode code="completed"/>
+		</consent>
+	</authorization>
+	<!--
+	********************************************************
+	CDA Body
+	********************************************************
+	-->
+	<component>
+		<structuredBody>
+			<!--
+		  	********************************************************
+		  	Promoting Interoperability Section (V2)
+		  	urn:hl7ii:2.16.840.1.113883.10.20.27.2.5:2017-06-01
+		  	********************************************************
+		  	-->
+			<component>
+				<section>
+					<!-- Measure Section -->
+					<templateId root="2.16.840.1.113883.10.20.24.2.2"/>
+					<!-- Advancing Care Information Section templateId -->
+					<templateId root="2.16.840.1.113883.10.20.27.2.5" extension="2017-06-01"/>
+					<code code="55186-1" codeSystem="2.16.840.1.113883.6.1"
+						  displayName="Measure Section"/>
+					<title>Measure Section</title>
+					<!-- PI_PEA_1	Reporting Metric: Numerator/Denominator -->
+					<!-- Advancing Care Information Numerator Denominator Type Measure Reference and Results -->
+					<entry>
+						<organizer classCode="CLUSTER" moodCode="EVN">
+							<!-- Implied template Measure Reference templateId -->
+							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
+							<!-- PI Numerator Denominator Type Measure Reference and Results templateId -->
+							<templateId root="2.16.840.1.113883.10.20.27.3.28"
+										extension="2017-06-01"/>
+							<id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
+							<statusCode code="completed"/>
+							<reference typeCode="REFR">
+								<!-- Reference to a particular PI measure's unique identifier. -->
+								<externalDocument classCode="DOC" moodCode="EVN">
+									<!-- This is a temporary root OID that indicates this is an PI measure identifier -->
+									<id root="2.16.840.1.113883.3.7031" extension="PI_PEA_1"/>
+									<!-- PI measure title -->
+									<text>Provide Patient Access</text>
+								</externalDocument>
+							</reference>
+							<!-- Performance Rate for PI is optional -->
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<!-- Performance Rate templateId -->
+									<templateId root="2.16.840.1.113883.10.20.27.3.30"
+												extension="2016-09-01"/>
+									<code code="72510-1" codeSystem="2.16.840.1.113883.6.1"
+										  codeSystemName="LOINC" displayName="Performance Rate"/>
+									<statusCode code="completed"/>
+									<value xsi:type="REAL" value="0.75"/>
+								</observation>
+							</component>
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<!-- PI Numerator Denominator Type Measure Numerator Data templateId -->
+									<templateId root="2.16.840.1.113883.10.20.27.3.31"
+												extension="2016-09-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										  codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="NUMER"
+										   codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"/>
+									<!-- Numerator Count-->
+									<entryRelationship typeCode="SUBJ" inversionInd="true">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+												  codeSystemName="ActCode"
+												  displayName="rate aggregation"/>
+											<statusCode code="completed"/>
+											<value xsi:type="INT" value="600"/>
+											<methodCode code="COUNT"
+														codeSystem="2.16.840.1.113883.5.84"
+														codeSystemName="ObservationMethod"
+														displayName="Count"/>
+										</observation>
+									</entryRelationship>
+								</observation>
+							</component>
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<!-- PI Numerator Denominator Type Measure Denominator Data templateId -->
+									<templateId root="2.16.840.1.113883.10.20.27.3.32"
+												extension="2016-09-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										  codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="DENOM"
+										   codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"/>
+									<!-- Denominator Count-->
+									<entryRelationship typeCode="SUBJ" inversionInd="true">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+												  codeSystemName="ActCode"
+												  displayName="rate aggregation"/>
+											<statusCode code="completed"/>
+											<value xsi:type="INT" value="800"/>
+											<methodCode code="COUNT"
+														codeSystem="2.16.840.1.113883.5.84"
+														codeSystemName="ObservationMethod"
+														displayName="Count"/>
+										</observation>
+									</entryRelationship>
+								</observation>
+							</component>
+						</organizer>
+					</entry>
+
+					<!-- Reporting Parameters Act -->
+					<entry typeCode="DRIV">
+						<act classCode="ACT" moodCode="EVN">
+							<templateId root="2.16.840.1.113883.10.20.17.3.8"/>
+							<id root="00b669fd-fa4d-4f5c-b109-65c6bbbf73ae"/>
+							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
+								  displayName="Observation Parameters"/>
+							<effectiveTime>
+								<low value="20200201"/>
+								<high value="20200531"/>
+							</effectiveTime>
+						</act>
+					</entry>
+				</section>
+			</component>
+
+			<!--
+			********************************************************
+			Improvement Activity Section (V2)
+			urn:hl7ii:2.16.840.1.113883.10.20.27.2.4:2017-06-01
+			********************************************************
+			-->
+			<component>
+				<section>
+					<!-- Measure Section -->
+					<templateId root="2.16.840.1.113883.10.20.24.2.2"/>
+					<!-- Improvement Activity Section templateId -->
+					<templateId root="2.16.840.1.113883.3.249.20.2.1" extension="2018-05-01"/>
+					<code code="55186-1" codeSystem="2.16.840.1.113883.6.1"
+						  displayName="Measure Section"/>
+					<title>Measure Section</title>
+					<!-- Must have at least one entry with a Measure Performed Reference and Result -->
+					<!-- IA_EPA_3 -->
+					<entry>
+						<organizer classCode="CLUSTER" moodCode="EVN">
+							<!-- Implied template Measure Reference templateId -->
+							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
+							<!-- Improvement Activity Performed Reference and Results templateId -->
+							<templateId root="2.16.840.1.113883.3.249.20.3.1" extension="2018-05-01"/>
+							<id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
+							<statusCode code="completed"/>
+							<reference typeCode="REFR">
+								<!-- Reference to a particular PI measure's unique identifier. -->
+								<externalDocument classCode="DOC" moodCode="EVN">
+									<!-- This is a temporary root OID that indicates this is an improvement activity identifier -->
+									<id root="2.16.840.1.113883.3.7034" extension="IA_EPA_3"/>
+									<!-- Improvement activity narrative text (for reference) -->
+									<text>Collection and use of patient experience and satisfaction data on access</text>
+								</externalDocument>
+							</reference>
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<!-- Measure Performed templateId -->
+									<templateId root="2.16.840.1.113883.10.20.27.3.27"
+												extension="2016-09-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										  codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="Y" displayName="Yes"
+										   codeSystemName="Yes/no indicator (HL7 Table 0136)"
+										   codeSystem="2.16.840.1.113883.12.136"/>
+								</observation>
+							</component>
+							<!--Invalid Reporting Parameter ACT location-->
+							<entry typeCode="DRIV">
+								<act classCode="ACT" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.17.3.8"/>
+									<id root="00b669fd-fa4d-4f5c-b109-65c6bbbf73ae"/>
+									<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
+										  displayName="Observation Parameters"/>
+									<effectiveTime>
+										<low value="20200101"/>
+										<high value="20200430"/>
+									</effectiveTime>
+								</act>
+							</entry>
+						</organizer>
+					</entry>
+					<!-- IA_CC_10 -->
+					<entry>
+						<organizer classCode="CLUSTER" moodCode="EVN">
+							<!-- Implied template Measure Reference templateId -->
+							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
+							<!-- Improvement Activity Performed Reference and Results templateId -->
+							<templateId root="2.16.840.1.113883.10.20.27.3.33"
+										extension="2016-09-01"/>
+							<id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
+							<statusCode code="completed"/>
+							<reference typeCode="REFR">
+								<!-- Reference to a particular PI measure's unique identifier. -->
+								<externalDocument classCode="DOC" moodCode="EVN">
+									<!-- This is a temporary root OID that indicates this is an improvement activity identifier -->
+									<id root="2.16.840.1.113883.3.7034" extension="IA_CC_10"/>
+									<!-- Improvement activity narrative text (for reference) -->
+									<text>Care transition documentation practice improvements</text>
+								</externalDocument>
+							</reference>
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<!-- Measure Performed templateId -->
+									<templateId root="2.16.840.1.113883.10.20.27.3.27"
+												extension="2016-09-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										  codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="Y" displayName="Yes"
+										   codeSystemName="Yes/no indicator (HL7 Table 0136)"
+										   codeSystem="2.16.840.1.113883.12.136"/>
+								</observation>
+							</component>
+
+							<!--Invalid Reporting Parameter ACT location-->
+							<entry typeCode="DRIV">
+								<act classCode="ACT" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.17.3.8"/>
+									<id root="00b669fd-fa4d-4f5c-b109-65c6bbbf73ae"/>
+									<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
+										  displayName="Observation Parameters"/>
+									<effectiveTime>
+										<low value="20200101"/>
+										<high value="20200430"/>
+									</effectiveTime>
+								</act>
+							</entry>
+						</organizer>
+					</entry>
+					<!-- Missing Reporting Parameters Act -->
+				</section>
+			</component>
+		</structuredBody>
+	</component>
+</ClinicalDocument>

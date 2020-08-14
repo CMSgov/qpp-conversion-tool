@@ -12,7 +12,7 @@ import gov.cms.qpp.conversion.util.DuplicationCheckHelper;
 /**
  * Validates Measure Data - an Aggregate Count child
  */
-@Validator(TemplateId.MEASURE_DATA_CMS_V2)
+@Validator(TemplateId.MEASURE_DATA_CMS_V4)
 public class MeasureDataValidator extends NodeValidator {
 	protected static final String EMPTY_POPULATION_ID = "empty population id";
 

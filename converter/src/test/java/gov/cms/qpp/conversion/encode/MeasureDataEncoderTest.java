@@ -38,7 +38,7 @@ class MeasureDataEncoderTest {
 	private Node setUpMeasureDataNode(String measureType) {
 		Node aggCount = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		aggCount.putValue(AGGREGATE_COUNT, "900");
-		Node measureDataNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		Node measureDataNode = new Node(TemplateId.MEASURE_DATA_CMS_V4);
 		measureDataNode.putValue(MEASURE_TYPE, measureType);
 		measureDataNode.addChildNode(aggCount);
 		return measureDataNode;
