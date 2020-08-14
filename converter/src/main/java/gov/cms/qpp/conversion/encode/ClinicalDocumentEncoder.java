@@ -1,15 +1,17 @@
 package gov.cms.qpp.conversion.encode;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -117,7 +119,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 				if (TemplateId.MEASURE_SECTION_V4.getRoot().equalsIgnoreCase(childType.getRoot())
 					&& ClinicalDocumentDecoder.MIPS_APM.equalsIgnoreCase(
 						currentNode.getValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME))) {
-					childWrapper.put(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS.toLowerCase());
+					childWrapper.put(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS.toLowerCase(Locale.getDefault()));
 				}
 
 				measurementSetsWrapper.put(childWrapper);
