@@ -17,6 +17,11 @@ resource "aws_lb" "qppsf" {
     sensitivity     = var.sensitivity
     git-origin      = var.git-origin
   }
+  access_logs {
+    bucket  = aws_s3_bucket.log_bucket.id
+    prefix  = "conversion-tool/${var.environment}"
+    enabled = true
+  }
 }
 
 resource "aws_lb_target_group" "conversion-tg" {
@@ -45,7 +50,7 @@ resource "aws_lb_target_group" "conversion-tg" {
 
 resource "aws_lb_listener" "conversion-tool" {
   load_balancer_arn = aws_lb.qppsf.arn
-  port              = "8080"
+  port              = "80"
   protocol          = "HTTP"
 
   default_action {
@@ -53,7 +58,6 @@ resource "aws_lb_listener" "conversion-tool" {
     target_group_arn = aws_lb_target_group.conversion-tg.arn
   }
 }
-# TODO: Access logs
 
 resource "aws_security_group_rule" "ct-ingress-from-http-elb-to-ui" {
   from_port                = 80

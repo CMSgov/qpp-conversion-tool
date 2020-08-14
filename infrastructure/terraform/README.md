@@ -12,3 +12,26 @@ AWS_DEFAULT_REGION
 AWS_SECRET_ACCESS_KEY
 AWS_ACCESS_KEY_ID
 ```
+
+The Converstion Tool Docker container requires a few dozen parameters passed to it on boot, look in the SSM terraform, S3 buckets and dynamodb:
+
+##S3 Buckets
+### Parameter buckets (legacy - the parameters are now stored in SSM)
+aws-hhs-cms-ccsq-qpp-navadevops-prod-us-east-1
+  /qpp-qrda3converter-prod
+aws-hhs-cms-ccsq-qpp-navadevops-nonprod-us-east-1
+  /qpp-qrda3converter-{env} (All non production environments: dev, impl, val)
+### Application Data
+  stores encrypted QRDA-III and QPP json files
+  Bucket: aws-hhs-cms-ccsq-qpp-navadevops-pii-convrtr-audt-*$ENV*-us-east-1
+  Key:    qpp-qrda3converter-*$ENV*-kms_alias
+### encrypted PII buckets that holds TIN/NPI/APM validation list
+   Bucket: aws-hhs-cms-ccsq-qpp-navadevops-pii-cnvrt-npicpc-*$ENV*-us-east-1
+   Key: qpp-qrda3converter-*$ENV*-cpc-plus-kms_alias
+##DynamoDb
+All tables include DynamoDB encryption context with client-side encryption of values.
+   Table: qpp-qrda3converter-$ENV-metadata
+   Key: qpp-qrda3converter-$ENV-kms_alias
+Back up:
+- Dynamodb has backups ran via jenkins that backup data. Is schedule to run once a day and holds up to 5 backups.
+
