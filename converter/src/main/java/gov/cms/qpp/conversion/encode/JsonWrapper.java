@@ -651,6 +651,17 @@ public class JsonWrapper {
 		}
 		return this;
 	}
+
+	/**
+	 * Removes the named key & value from the children map
+	 *
+	 * @param name key that needs to removed
+	 * @return <i><b>this</b></i> reference for chaining
+	 */
+	public JsonWrapper remove(String name) {
+		childrenMap.remove(name);
+		return this;
+	}
 	
 	/**
 	 * Retrieve a named {@link String} from the {@link JsonWrapper}.

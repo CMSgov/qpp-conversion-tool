@@ -1272,6 +1272,13 @@ class JsonWrapperTest {
 			.that(wrap.get(0).toObject())
 			.isEqualTo("true");
 	}
+
+	@Test
+	void removeValuesFromWrapper() {
+		JsonWrapper wrap = new JsonWrapper().put("name", "value");
+		wrap.remove("name");
+		assertThat(wrap.get("name")).isNull();
+	}
 	
 	@Test
 	void getString_valueNotFound() {

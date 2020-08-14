@@ -6106,8 +6106,8 @@ CDA Header
 							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
 								  displayName="Observation Parameters"/>
 							<effectiveTime>
-								<low value="20190101"/>
-								<high value="20191231"/>
+								<low value="20200101"/>
+								<high value="20201231"/>
 							</effectiveTime>
 						</act>
 					</entry>
@@ -6128,40 +6128,7 @@ CDA Header
 					<code code="55186-1" codeSystem="2.16.840.1.113883.6.1"
 						  displayName="Measure Section"/>
 					<title>Measure Section</title>
-					<text>
-						<table border="1" width="100%">
-							<thead>
-								<tr>
-									<th>PI Measure Title</th>
-									<th>Measure Identifier</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Provide Patient Access</td>
-									<td>PI_PEA_1</td>
-								</tr>
-							</tbody>
-						</table>
-						<list>
-							<item>
-								<content styleCode="Bold">Denominator:</content>800
-							</item>
-							<item>
-								<content styleCode="Bold">Numerator:</content>600
-							</item>
-							<item>
-								<content styleCode="Bold">Performance Rate:
-								</content>0.75
-							</item>
-						</list>
-						<list>
-							<item>
-								<content styleCode="Bold">Measure Answer (Yes/No):
-								</content>Yes
-							</item>
-						</list>
-					</text>
+
 					<!-- PI_PEA_1	Reporting Metric: Numerator/Denominator -->
 					<!-- Advancing Care Information Numerator Denominator Type Measure Reference and Results -->
 					<entry>
@@ -6259,8 +6226,8 @@ CDA Header
 							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
 								  displayName="Observation Parameters"/>
 							<effectiveTime>
-								<low value="20190201"/>
-								<high value="20190531"/>
+								<low value="20200201"/>
+								<high value="20200531"/>
 							</effectiveTime>
 						</act>
 					</entry>
