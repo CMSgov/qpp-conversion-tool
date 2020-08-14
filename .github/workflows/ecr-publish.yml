@@ -44,7 +44,7 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Notify slack success
-        if: success()
+        if: github.ref == 'refs/heads/ecr-deploy' && success()
         uses: voxmedia/github-action-slack-notify-build@v1
         with:
           channel: p-qpp-sub-alerts
@@ -52,7 +52,7 @@ jobs:
           color: good
 
       - name: Notify slack fail
-        if: failure()
+        if: github.ref == 'refs/heads/ecr-deploy' && failure()
         uses: voxmedia/github-action-slack-notify-build@v1
         with:
           channel: p-qpp-sub-alerts
@@ -71,7 +71,7 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Notify slack success
-        if: success()
+        if: github.ref == 'refs/heads/develop' && success()
         uses: voxmedia/github-action-slack-notify-build@v1
         with:
           channel: p-qpp-sub-alerts
@@ -79,7 +79,7 @@ jobs:
           color: good
 
       - name: Notify slack fail
-        if: failure()
+        if: github.ref == 'refs/heads/develop' && failure()
         uses: voxmedia/github-action-slack-notify-build@v1
         with:
           channel: p-qpp-sub-alerts
@@ -98,7 +98,7 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Notify slack success
-        if: success()
+        if: github.ref == 'refs/heads/release/' && success()
         uses: voxmedia/github-action-slack-notify-build@v1
         with:
           channel: p-qpp-sub-alerts
@@ -106,7 +106,7 @@ jobs:
           color: good
 
       - name: Notify slack fail
-        if: failure()
+        if: github.ref == 'refs/heads/release/' && failure()
         uses: voxmedia/github-action-slack-notify-build@v1
         with:
           channel: p-qpp-sub-alerts
@@ -125,7 +125,7 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Notify slack success
-        if: success()
+        if: github.ref == 'refs/heads/master' && success()
         uses: voxmedia/github-action-slack-notify-build@v1
         with:
           channel: p-qpp-sub-alerts
@@ -133,7 +133,7 @@ jobs:
           color: good
 
       - name: Notify slack fail
-        if: failure()
+        if: github.ref == 'refs/heads/master' && failure()
         uses: voxmedia/github-action-slack-notify-build@v1
         with:
           channel: p-qpp-sub-alerts
