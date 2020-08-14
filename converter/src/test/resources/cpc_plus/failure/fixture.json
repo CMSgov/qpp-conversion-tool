@@ -811,5 +811,43 @@
 				"occurrences": 1
 			}
 		]
+	},
+	"CPCPlus-2020-Updates-Failures.xml" : {
+		"strict" : false,
+		"errorData" : [
+			{
+				"errorCode" : 32,
+				"occurrences": 1
+			},
+			{
+				"errorCode" : 59,
+				"subs": [
+					".*", ".*", ".*"
+				],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_2020-IA-Performance-Period-Failures.xml" : {
+		"strict" : false,
+		"errorData" : [
+			{
+				"errorCode" : 44,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_2020-Invalid-Performance-Period-Dates.xml" : {
+		"strict" : false,
+		"errorData" : [
+			{
+				"errorCode" : 56,
+				"occurrences": 1
+			},
+			{
+				"errorCode" : 55,
+				"occurrences": 1
+			}
+		]
 	}
 }
