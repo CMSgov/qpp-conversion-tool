@@ -35,3 +35,4 @@ All tables include DynamoDB encryption context with client-side encryption of va
 Back up:
 - Dynamodb has backups ran via jenkins that backup data. Is schedule to run once a day and holds up to 5 backups.
 
+TODO: Bring in S3 & Dynamo tables. I think we can get rid of the parameter buckets.
