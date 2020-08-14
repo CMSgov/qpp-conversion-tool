@@ -35,3 +35,24 @@ data "template_file" "ecs_execution_policy_template" {
     env = var.environment
   }
 }
+
+resource "aws_iam_role_policy_attachment" "conversion_tool_dynamodb" {
+  role       = aws_iam_role.ecs_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "conversion_tool_ecs" {
+  role       = aws_iam_role.ecs_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "conversion_tool" {
+  role       = aws_iam_role.ecs_execution_role.name
+  policy_arn = aws_iam_policy.conversion_tool_iam_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "ecs-instance-role-attachment" {
+  role       = aws_iam_role.ecs_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
+}
+
