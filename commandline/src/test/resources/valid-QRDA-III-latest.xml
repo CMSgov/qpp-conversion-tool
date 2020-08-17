@@ -6594,7 +6594,7 @@ CDA Header
 					<!-- Measure Section -->
 					<templateId root="2.16.840.1.113883.10.20.24.2.2"/>
 					<!-- Improvement Activity Section templateId -->
-					<templateId root="2.16.840.1.113883.3.249.20.2.1" extension="2018-05-01"/>
+					<templateId root="2.16.840.1.113883.10.20.27.2.4" extension="2017-06-01"/>
 					<code code="55186-1" codeSystem="2.16.840.1.113883.6.1"
 						  displayName="Measure Section"/>
 					<title>Measure Section</title>
