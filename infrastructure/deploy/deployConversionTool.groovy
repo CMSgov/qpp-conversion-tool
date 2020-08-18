@@ -13,24 +13,16 @@ pipeline {
     CLUSTER_NAME='qppsf-conversion-tool'
     SERVICE_NAME='conversion-tool'
     GIT_HASH_TAG="""${sh(returnStdout: true, script: 'git rev-parse HEAD').trim()}"""
-    DEPLOY_TIMEOUT='30'
+    DEPLOY_TIMEOUT='400'
   }
   
   parameters {
-    choice(name: 'env', choices: ['dev', 'impl', 'prod'], description: 'Which environment do you want to run it in?')
+    choice(name: 'env', choices: ['dev', 'devpre', 'impl', 'prod'], description: 'Which environment do you want to run it in?')
   }
 
   stages {
 
     stage("Deploy") {
-  //    when {
-  //      anyOf {
-  //        branch 'develop'; // dev
-  //        branch 'master'; // prod or impl
-  //        branch 'QPPSF-6388_Migrate_CT_Deployment' ; //feature branch
-  //      }
-   //   }
-      
       steps {
         sh 'env'
         sh '''
@@ -43,14 +35,14 @@ pipeline {
     }
   }
 
-//  post {
+  post {
 //    failure {
 //      script {
 //          slackSend channel: '@jeremy.page', slackSend color: 'Error', message: '${currentBuild.fullDisplayName} failed'
 //        }
 //      }
-//    always {
-//       deleteDir()
-//    }
-//  }
+    always {
+       deleteDir()
+    }
+  }
 }
