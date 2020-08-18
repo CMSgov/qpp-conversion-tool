@@ -30,11 +30,8 @@ jobs:
     - name: Maven build
       run: mvn package -Dmaven.test.skip -Djacoco.skip=true
 
-    - name: Run Sonar Cube Analysis
-      run: mvn -e -Psonar -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-
-    - name: Run unit tests
-      run: mvn --batch-mode verify
+    - name: Run Unit tests & Sonar Scan
+      run: mvn --batch-mode verify -Psonar -Dsonar.organization=cmsgov -Dsonar.projectKey=gov.cms.qpp.conversion:qpp-conversion-new  -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
     - name: Run integration tests
       run: mvn --batch-mode test -Pintegration
