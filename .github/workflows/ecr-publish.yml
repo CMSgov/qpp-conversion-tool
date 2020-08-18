@@ -12,9 +12,12 @@ env:
   SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
 jobs:
+
   deploy:
+
     name: Build Docker image and deploy to AWS ECR
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
         with:
