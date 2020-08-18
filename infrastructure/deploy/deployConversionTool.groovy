@@ -34,8 +34,8 @@ pipeline {
       steps {
         sh 'env'
         sh '''
-         ecs deploy ${CLUSTER_NAME}-${env} ${SERVICE_NAME}-${env} -t ${GIT_HASH_TAG} \
-          --region us-east-1 --timeout ${DEPLOY_TIMEOUT} --task ${SERVICE_NAME}-${env} \
+         ecs deploy ${CLUSTER_NAME}-${env} ${SERVICE_NAME}-service-${env} -t ${GIT_HASH_TAG} \
+          --region us-east-1 --timeout ${DEPLOY_TIMEOUT} \
           --no-deregister
           '''
         sh 'aws ecs wait services-stable --cluster ${CLUSTER_NAME}-${env} --services ${SERVICE_NAME}-${env} --region us-east-1'
