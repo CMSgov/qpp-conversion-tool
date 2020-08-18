@@ -15,9 +15,8 @@ jobs:
 
     steps:
 
-
     - name: Checkout codebase
-    - uses: actions/checkout@v2
+      uses: actions/checkout@v2
 
     - name: Check PII & Credentiail leaks
       uses: zricethezav/gitleaks-action@58dc69eef21e5798a163aa10a467bdf2e0749f4b # pin@master
