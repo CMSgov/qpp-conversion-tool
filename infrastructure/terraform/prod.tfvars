@@ -1,0 +1,16 @@
+#Currently will build in dev if not overwritten
+project_name       = "qppsf-ct"
+region             = "us-east-1"
+vpc_id             = ""
+environment        = "prod"
+app_subnet1        = ""
+app_subnet2        = ""
+app_subnet3        = ""
+vpc_cidr           = ["", "10.232.36.0/24"]
+vpn_security_group = ""
+lb_security_group  = "sg-01f29f7f32a8789ef"
+pagerduty_email    = "qpp-final-scoring-devops@semanticbits.com"
+owner              = "qppar-final-scoring"
+git-origin         = "https://github.com/CMSgov/qpp-conversion-tool.git"
+application        = "ConversionTool"
+sensitivity        = "PII/PHI"
