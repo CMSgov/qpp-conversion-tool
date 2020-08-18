@@ -13,7 +13,7 @@ pipeline {
     CLUSTER_NAME='qppsf-conversion-tool'
     SERVICE_NAME='conversion-tool'
     GIT_HASH_TAG="""${sh(returnStdout: true, script: 'git rev-parse HEAD').trim()}"""
-    DEPLOY_TIMEOUT='400'
+    DEPLOY_TIMEOUT='600'
   }
   
   parameters {
