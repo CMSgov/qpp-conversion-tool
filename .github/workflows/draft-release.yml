@@ -3,6 +3,7 @@ name: Draft Release Notes
 on: create
 
 jobs:
+
   release_draft:
     if: github.ref == 'refs/heads/release/'
     name: Create a new release

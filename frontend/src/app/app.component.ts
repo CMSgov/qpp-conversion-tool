@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FileSelectDirective, FileDropDirective, FileUploader } from '../../node_modules/ng2-file-upload/ng2-file-upload';
+import { FileSelectDirective, FileDropDirective, FileUploader } from 'ng2-file-upload';
 import 'rxjs/Rx' ;
 
 const URL  = 'https://preview.qpp.cms.gov/api/submissions/converter';
