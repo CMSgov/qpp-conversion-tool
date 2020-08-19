@@ -59,7 +59,7 @@ CDA Header
 	<realmCode code="US"/>
 	<typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
 	<templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01"/>
-	<templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2018-05-01"/>
+	<templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2019-05-01"/>
 	<id root="26a42253-99f5-48e7-9274-b467c6c7f623"/>
 	<code code="55184-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 		  displayName="Quality Reporting Document Architecture Calculated Summary Report"/>
@@ -193,13 +193,13 @@ CDA Header
 					<!-- QRDA Category III Measure Section (V4) -->
 					<templateId root="2.16.840.1.113883.10.20.27.2.1" extension="2017-06-01"/>
 					<!-- QRDA Category III Measure Section - CMS (V2) -->
-					<templateId root="2.16.840.1.113883.10.20.27.2.3" extension="2017-07-01"/>
+					<templateId root="2.16.840.1.113883.10.20.27.2.3" extension="2019-05-01"/>
 					<code code="55186-1" codeSystem="2.16.840.1.113883.6.1"
 						  displayName="measure section"/>
 					<title>Measure Section</title>
 
 
-					<!--Measure Entry for CMS165v7-->
+					<!--Measure Entry for CMS165v8-->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
@@ -210,7 +210,7 @@ CDA Header
 							<!--Measure Reference and Results-->
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
-									<id root="2.16.840.1.113883.4.738" extension="40280382-6258-7581-0162-92d6e6db1680"/>
+									<id root="2.16.840.1.113883.4.738" extension="40280382-6963-bf5e-0169-da5e74be38bf"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 										  displayName="Health Quality Measure Document"/>
 									<text>Controlling High Blood Pressure</text>
@@ -228,7 +228,7 @@ CDA Header
 									<value xsi:type="REAL" value=".888889"/>
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="A815D9EA-5CE0-4AD8-A703-BC69D19E360B"/>
+											<id root="9306E83B-3C3B-4CDF-B3EA-F99AEFC55F87"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
 												  displayName="Numerator"/>
 										</externalObservation>
@@ -697,7 +697,7 @@ CDA Header
 									<!--IPOP Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="A096B729-ECCA-4C7A-9CA0-A601D8D70396"/>
+											<id root="1A3C24A5-7E9E-461B-BEB8-834822CC0942"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -1165,7 +1165,7 @@ CDA Header
 									<!--DENOM Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="BA4CB92A-1635-4E1B-BC23-1ED7B967072A"/>
+											<id root="E822DECB-5DD1-421D-BFCE-F5DA550EE238"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -1633,7 +1633,7 @@ CDA Header
 									<!--DENEX Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="4A61F526-AFFA-465F-89C9-B2DB8E6ECEBC"/>
+											<id root="965140D9-663B-4B08-99F9-19E14AE0CB5C"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -2101,7 +2101,7 @@ CDA Header
 									<!--NUMER Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="A815D9EA-5CE0-4AD8-A703-BC69D19E360B"/>
+											<id root="9306E83B-3C3B-4CDF-B3EA-F99AEFC55F87"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -2109,7 +2109,7 @@ CDA Header
 						</organizer>
 					</entry>
 
-					<!--Measure Entry for CMS122v7-->
+					<!--Measure Entry for CMS122v8-->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
@@ -2124,7 +2124,7 @@ CDA Header
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<id root="2.16.840.1.113883.4.738"
-										extension="40280382-6258-7581-0162-9249c8ab1447"/>
+										extension="40280382-6963-bf5e-0169-da3833273869"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
 										  codeSystemName="LOINC" displayName="Health Quality Measure Document"/>
 									<text>Diabetes: Hemoglobin A1c (HbA1c) Poor Control (&gt; 9%)</text>
@@ -2145,7 +2145,7 @@ CDA Header
 									<value xsi:type="REAL" value=".888889"/>
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="BD70E166-D478-41A4-B8C8-041CE9F75850"/>
+											<id root="2CC2A289-445C-4F15-AFC4-80B934AF5E1E"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
 												  codeSystemName="ActCode" displayName="Numerator"/>
 										</externalObservation>
@@ -2560,7 +2560,7 @@ CDA Header
 									<!--IPOP Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="A15C0CC7-E072-4D9F-BB29-80429C6335DB"/>
+											<id root="1DAA17CC-1F6C-4883-9887-C1F1F72589B9"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -2973,7 +2973,7 @@ CDA Header
 									<!--DENOM Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="F50E5334-415D-482F-A30D-0623C082B602"/>
+											<id root="AE3CD839-EC29-4826-B4F9-B2305474402C"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -3386,7 +3386,7 @@ CDA Header
 									<!--DENEX Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="B88574B5-AE7B-4AAF-9925-6E4D75B595FA"/>
+											<id root="6F7B3C8C-9741-454B-9C02-3F279DD08B53"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -3799,7 +3799,7 @@ CDA Header
 									<!--NUMER Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="BD70E166-D478-41A4-B8C8-041CE9F75850"/>
+											<id root="2CC2A289-445C-4F15-AFC4-80B934AF5E1E"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -3807,7 +3807,7 @@ CDA Header
 						</organizer>
 					</entry>
 
-					<!--Measure Entry for CMS68v8-->
+					<!--Measure Entry for CMS68v9-->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
@@ -3819,7 +3819,7 @@ CDA Header
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<id root="2.16.840.1.113883.4.738"
-										extension="40280382-5fa6-fe85-0160-0ea3e0012376"/>
+										extension="40280382-68d3-a5fe-0169-0c589537118f"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
 										  codeSystemName="LOINC"
 										  displayName="Health Quality Measure Document"/>
@@ -3838,7 +3838,7 @@ CDA Header
 									<value xsi:type="REAL" value="0.816327"/>
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="4E058941-CA3D-48BF-BABC-358F3A9FE2AF"/>
+											<id root="E64BD324-C96C-4287-A515-D16B17778480"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
 												  codeSystemName="ActCode"
 												  displayName="Numerator"/>
@@ -4318,7 +4318,7 @@ CDA Header
 									<!--IPOP Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="2C662755-088C-4C75-8401-FF2DA63A971E"/>
+											<id root="A6DABDC3-2E60-435D-BC94-888561EA383B"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -4795,7 +4795,7 @@ CDA Header
 									<!--DENEXCEP Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="146E4DDD-4E52-492D-B150-61DF3BE52676"/>
+											<id root="D8B84799-2481-4AE1-965C-D8EA597173D1"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -5270,7 +5270,7 @@ CDA Header
 									<!--DENOM Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="D4D2DEE7-385A-4C28-A09C-884A062A97AA"/>
+											<id root="AC6813F8-2411-4D4E-ACCD-3BCE094D8218"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -5743,7 +5743,7 @@ CDA Header
 									<!--NUMER Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="4E058941-CA3D-48BF-BABC-358F3A9FE2AF"/>
+											<id root="E64BD324-C96C-4287-A515-D16B17778480"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -5751,7 +5751,7 @@ CDA Header
 						</organizer>
 					</entry>
 
-					<!--Measure Entry for CMS135v7-->
+					<!--Measure Entry for CMS135v8-->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
@@ -5763,7 +5763,7 @@ CDA Header
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<id root="2.16.840.1.113883.4.738"
-										extension="40280382-6240-b6b9-0162-5462542a0b59"/>
+										extension="40280382-6963-bf5e-0169-7d10cd6f0f3f"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
 										  codeSystemName="LOINC"
 										  displayName="Health Quality Measure Document"/>
@@ -5783,7 +5783,7 @@ CDA Header
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
 											<!-- The root contains the UUID for the Numerator population -->
-											<id root="41EF9FF5-7260-41D8-88E6-760F876C66FB"/>
+											<id root="440B9AB7-C94C-44D8-8A8F-DDBA5E1A5226"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
 												  codeSystemName="ActCode"
 												  displayName="Numerator"/>
@@ -5804,7 +5804,7 @@ CDA Header
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
 											<!-- The root contains the UUID for the Numerator population -->
-											<id root="88762E67-6197-4F77-9800-46707A34C062"/>
+											<id root="A533AFC9-D94F-49E2-8633-5C874F8EFA5F"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
 												  codeSystemName="ActCode"
 												  displayName="Numerator"/>
@@ -5843,7 +5843,7 @@ CDA Header
 									<!--IPOP Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="24092CC9-3820-4099-9F70-D0BFAC65AE89"/>
+											<id root="6D023944-ABF3-4F2C-A4E4-ADB2DDCD8478"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -5878,7 +5878,7 @@ CDA Header
 									<!--DENOM Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="D18CEF8F-9533-4B09-8A69-003F327CE469"/>
+											<id root="EFBCE92A-D635-4000-9C4F-EDD98AF5DE06"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -5913,7 +5913,7 @@ CDA Header
 									<!--NUMER Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="41EF9FF5-7260-41D8-88E6-760F876C66FB"/>
+											<id root="440B9AB7-C94C-44D8-8A8F-DDBA5E1A5226"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -5948,7 +5948,7 @@ CDA Header
 									<!--DENEXCEP Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="635D1D87-8196-453D-9A80-332E6FBD4F7F"/>
+											<id root="57C66872-B1B4-4542-ACA6-7A309F99BDCD"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -5985,7 +5985,7 @@ CDA Header
 									<!--IPOP Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="B859035C-8ECD-4F04-86D9-546BBF293396"/>
+											<id root="C4E7E554-AA42-42D2-9711-875F3624B482"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -6020,7 +6020,7 @@ CDA Header
 									<!--DENOM Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="89C9D1EC-FDAD-4982-9CE4-F144E8A85A53"/>
+											<id root="489B9FD1-CB7E-4DF2-9966-B1A2CC8E2D9F"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -6055,7 +6055,7 @@ CDA Header
 									<!--NUMER Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="88762E67-6197-4F77-9800-46707A34C062"/>
+											<id root="A533AFC9-D94F-49E2-8633-5C874F8EFA5F"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -6090,7 +6090,7 @@ CDA Header
 									<!--DENEXCEP Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="1504BDD4-8AAD-4B91-87C3-5F0B12B6E97D"/>
+											<id root="9904A746-34B3-4835-84F4-9EBE6EF17521"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -6106,8 +6106,8 @@ CDA Header
 							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
 								  displayName="Observation Parameters"/>
 							<effectiveTime>
-								<low value="20190101"/>
-								<high value="20191231"/>
+								<low value="20200101"/>
+								<high value="20201231"/>
 							</effectiveTime>
 						</act>
 					</entry>
@@ -6128,40 +6128,7 @@ CDA Header
 					<code code="55186-1" codeSystem="2.16.840.1.113883.6.1"
 						  displayName="Measure Section"/>
 					<title>Measure Section</title>
-					<text>
-						<table border="1" width="100%">
-							<thead>
-								<tr>
-									<th>PI Measure Title</th>
-									<th>Measure Identifier</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Provide Patient Access</td>
-									<td>PI_PEA_1</td>
-								</tr>
-							</tbody>
-						</table>
-						<list>
-							<item>
-								<content styleCode="Bold">Denominator:</content>800
-							</item>
-							<item>
-								<content styleCode="Bold">Numerator:</content>600
-							</item>
-							<item>
-								<content styleCode="Bold">Performance Rate:
-								</content>0.75
-							</item>
-						</list>
-						<list>
-							<item>
-								<content styleCode="Bold">Measure Answer (Yes/No):
-								</content>Yes
-							</item>
-						</list>
-					</text>
+
 					<!-- PI_PEA_1	Reporting Metric: Numerator/Denominator -->
 					<!-- Advancing Care Information Numerator Denominator Type Measure Reference and Results -->
 					<entry>
@@ -6259,8 +6226,8 @@ CDA Header
 							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
 								  displayName="Observation Parameters"/>
 							<effectiveTime>
-								<low value="20190201"/>
-								<high value="20190531"/>
+								<low value="20200201"/>
+								<high value="20200531"/>
 							</effectiveTime>
 						</act>
 					</entry>
@@ -6278,7 +6245,7 @@ CDA Header
 					<!-- Measure Section -->
 					<templateId root="2.16.840.1.113883.10.20.24.2.2"/>
 					<!-- Improvement Activity Section templateId -->
-					<templateId root="2.16.840.1.113883.3.249.20.2.1" extension="2018-05-01"/>
+					<templateId root="2.16.840.1.113883.10.20.27.2.4" extension="2017-06-01"/>
 					<code code="55186-1" codeSystem="2.16.840.1.113883.6.1"
 						  displayName="Measure Section"/>
 					<title>Measure Section</title>

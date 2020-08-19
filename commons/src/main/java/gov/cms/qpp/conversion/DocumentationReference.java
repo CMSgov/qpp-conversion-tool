@@ -8,10 +8,10 @@ public enum DocumentationReference {
 	CLINICAL_DOCUMENT(19),
 	PRACTICE_SITE_ADDRESS(25),
 	REPORTING_PARAMETERS_ACT(17),
-	MEASURE_IDS(31),
+	MEASURE_IDS(40),
 	CEHRT(15);
 
-	private static final String BASE_PATH = "https://ecqi.healthit.gov/system/files/2019_CMS_QRDA_III_Eligible_Clinicians_and_EP_IG-508.pdf#page=";
+	private static final String BASE_PATH = "https://ecqi.healthit.gov/sites/default/files/2020-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-v1.1-508.pdf#page=";
 	private final String path;
 
 	DocumentationReference(int page) {

@@ -75,7 +75,7 @@ public class SupplementalDataPayerDecoderTest {
 	}
 
 	private List<Node> getPayerNodeList() {
-		Node measureSectionNode = root.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
+		Node measureSectionNode = root.findFirstNode(TemplateId.MEASURE_DATA_CMS_V4);
 		List<Node> payerNodeList =
 				measureSectionNode.getChildNodes(TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
 						.collect(Collectors.toList());

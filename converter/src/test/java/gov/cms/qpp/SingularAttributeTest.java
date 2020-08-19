@@ -58,7 +58,7 @@ class SingularAttributeTest{
 						ReportingParametersActDecoder.PERFORMANCE_YEAR,
 						SupplementalDataEthnicityDecoder.SUPPLEMENTAL_DATA_CODE,
 						SupplementalDataPayerDecoder.SUPPLEMENTAL_DATA_PAYER_CODE,
-						QualitySectionDecoder.MEASURE_SECTION_V4,
+						QualitySectionDecoder.CATEGORY_SECTION_V4,
 						//stratum is not currently mapped
 						"stratum",
 						"cehrtId")

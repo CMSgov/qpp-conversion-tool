@@ -20,7 +20,7 @@ import java.util.Optional;
 /**
  * Encoder to serialize PI Section and it's measures
  */
-@Encoder(TemplateId.PI_SECTION)
+@Encoder(TemplateId.PI_SECTION_V2)
 public class PiSectionEncoder extends QppOutputEncoder {
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(PiSectionEncoder.class);
@@ -54,7 +54,7 @@ public class PiSectionEncoder extends QppOutputEncoder {
 	private void encodeTopLevelValues(JsonWrapper wrapper, Node node) {
 		wrapper.put("category", node.getValue("category"));
 		wrapper.put(SUBMISSION_METHOD, "electronicHealthRecord");
-		if (TemplateId.PI_SECTION == node.getType() && Program.isMips(node.getParent())) {
+		if (TemplateId.PI_SECTION_V2 == node.getType() && Program.isMips(node.getParent())) {
 			wrapper.put(ClinicalDocumentDecoder.CEHRT, node.getParent().getValue(ClinicalDocumentDecoder.CEHRT));
 		}
 	}

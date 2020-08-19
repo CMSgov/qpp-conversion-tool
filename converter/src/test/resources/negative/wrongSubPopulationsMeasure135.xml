@@ -59,7 +59,7 @@ CDA Header
 	<realmCode code="US"/>
 	<typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
 	<templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01"/>
-	<templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2018-05-01"/>
+	<templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2019-05-01"/>
 	<id root="26a42253-99f5-48e7-9274-b467c6c7f623"/>
 	<code code="55184-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 		  displayName="Quality Reporting Document Architecture Calculated Summary Report"/>
@@ -193,7 +193,7 @@ CDA Header
 					<!-- QRDA Category III Measure Section (V4) -->
 					<templateId root="2.16.840.1.113883.10.20.27.2.1" extension="2017-06-01"/>
 					<!-- QRDA Category III Measure Section - CMS (V2) -->
-					<templateId root="2.16.840.1.113883.10.20.27.2.3" extension="2017-07-01"/>
+					<templateId root="2.16.840.1.113883.10.20.27.2.3" extension="2019-05-01"/>
 					<code code="55186-1" codeSystem="2.16.840.1.113883.6.1"
 						  displayName="measure section"/>
 					<title>Measure Section</title>
@@ -6106,8 +6106,8 @@ CDA Header
 							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
 								  displayName="Observation Parameters"/>
 							<effectiveTime>
-								<low value="20190101"/>
-								<high value="20191231"/>
+								<low value="20200101" />
+								<high value="20201231" />
 							</effectiveTime>
 						</act>
 					</entry>
@@ -6278,7 +6278,7 @@ CDA Header
 					<!-- Measure Section -->
 					<templateId root="2.16.840.1.113883.10.20.24.2.2"/>
 					<!-- Improvement Activity Section templateId -->
-					<templateId root="2.16.840.1.113883.3.249.20.2.1" extension="2018-05-01"/>
+					<templateId root="2.16.840.1.113883.10.20.27.2.4" extension="2017-06-01"/>
 					<code code="55186-1" codeSystem="2.16.840.1.113883.6.1"
 						  displayName="Measure Section"/>
 					<title>Measure Section</title>
@@ -6381,7 +6381,7 @@ CDA Header
 							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
 								  displayName="Observation Parameters"/>
 							<effectiveTime>
-								<low value="20190101"/>
+								<low value="20200101" />
 								<high value="20190430"/>
 							</effectiveTime>
 						</act>

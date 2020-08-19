@@ -72,11 +72,11 @@ Feature: C264827 - QPPCT-909 test Validate that the ct repository's sample files
 
     Examples:
       | file_path                                                     | message                                                                                                |
-      | ./sample-files/2018/CPCPLUS-13d-CMS124NUMERNotProvided.xml    | CT - The MEASURE_DATA_CMS_V2 has 0 aggregate count values. A single aggregate count value is required. |
-      | ./sample-files/2018/CPCPLUS-13e-CMS347NUMER1NotProvided.xml   | CT - The MEASURE_DATA_CMS_V2 has 0 aggregate count values. A single aggregate count value is required. |
-      | ./sample-files/2018/CPCPLUS-13g-CMS149DENEXCEPNotProvided.xml | CT - The MEASURE_DATA_CMS_V2 has 0 aggregate count values. A single aggregate count value is required. |
-      | ./sample-files/2018/CPCPLUS-13i-CMS156DENEX1Missing.xml       | CT - The MEASURE_DATA_CMS_V2 has 0 aggregate count values. A single aggregate count value is required. |
-      | ./sample-files/2018/CPCPLUS-14e-CMS347IPOP1Missing.xml        | CT - The MEASURE_DATA_CMS_V2 has 0 aggregate count values. A single aggregate count value is required. |
+      | ./sample-files/2018/CPCPLUS-13d-CMS124NUMERNotProvided.xml    | CT - The MEASURE_DATA_CMS_V4 has 0 aggregate count values. A single aggregate count value is required. |
+      | ./sample-files/2018/CPCPLUS-13e-CMS347NUMER1NotProvided.xml   | CT - The MEASURE_DATA_CMS_V4 has 0 aggregate count values. A single aggregate count value is required. |
+      | ./sample-files/2018/CPCPLUS-13g-CMS149DENEXCEPNotProvided.xml | CT - The MEASURE_DATA_CMS_V4 has 0 aggregate count values. A single aggregate count value is required. |
+      | ./sample-files/2018/CPCPLUS-13i-CMS156DENEX1Missing.xml       | CT - The MEASURE_DATA_CMS_V4 has 0 aggregate count values. A single aggregate count value is required. |
+      | ./sample-files/2018/CPCPLUS-14e-CMS347IPOP1Missing.xml        | CT - The MEASURE_DATA_CMS_V4 has 0 aggregate count values. A single aggregate count value is required. |
 
   Scenario Outline: Positive - CPCPlus team said these should fail, but they pass because /converter automatically translates lower case to upper case
     Given User starts QPPCT API test

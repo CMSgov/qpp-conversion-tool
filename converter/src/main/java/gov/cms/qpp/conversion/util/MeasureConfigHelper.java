@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.util;
 
+import com.google.common.collect.ImmutableSet;
+
 import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -21,6 +24,8 @@ public class MeasureConfigHelper {
 	public static final String MEASURE_ID = "measureId";
 	public static final String NO_MEASURE = "No given measure id";
 	public static final String SINGLE_TO_MULTIPLE_SUP_POPULATION = "CMS159v7";
+	private static Set<String> MULTI_TO_SINGLE_PERF_RATE_MEASURE_ID = ImmutableSet.of("005", "007", "008", "143", "438");
+	public final static String SINGLE_TO_MULTI_PERF_RATE_MEASURE_ID = "370";
 
 	private MeasureConfigHelper() {
 		// private for this helper class
@@ -86,7 +91,7 @@ public class MeasureConfigHelper {
 		List<Node> subPopNodes = initializeMeasureDataList(subPopCount);
 		Map<String, Integer> mapPopulationIdToSubPopIndex = createSubPopulationIndexMap(measureConfigSubPopulations);
 		node.getChildNodes().stream()
-			.filter(childNode -> TemplateId.MEASURE_DATA_CMS_V2 == childNode.getType())
+			.filter(childNode -> TemplateId.MEASURE_DATA_CMS_V4 == childNode.getType())
 			.forEach(childNode -> {
 				String populationId = childNode.getValue(MeasureDataDecoder.MEASURE_POPULATION);
 				Integer subPopIndex = mapPopulationIdToSubPopIndex.get(populationId.toUpperCase(Locale.ENGLISH));
@@ -113,7 +118,7 @@ public class MeasureConfigHelper {
 	 */
 	private static List<Node> initializeMeasureDataList(int subPopulationCount) {
 		return IntStream.range(0, subPopulationCount)
-			.mapToObj(ignore -> new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2))
+			.mapToObj(ignore -> new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4))
 			.collect(Collectors.toList());
 	}
 
@@ -152,5 +157,24 @@ public class MeasureConfigHelper {
 			.filter(Objects::nonNull)
 			.findFirst()
 			.orElse(NO_MEASURE);
+	}
+
+	/**
+	 * Checks the given measure id if it is a multi to single performance rate id check.
+	 *
+	 * @param measureId
+	 * @return
+	 */
+	public static boolean checkMultiToSinglePerformanceRateId(String measureId) {
+		return MULTI_TO_SINGLE_PERF_RATE_MEASURE_ID.contains(measureId);
+	}
+
+	/**
+	 * Sets multi-performance rate to single performance rate configurations.
+	 *
+	 * @param multiToSinglePerfRateMeasureIdSet
+	 */
+	public static void setMultiToSinglePerfRateMeasureId (Set<String> multiToSinglePerfRateMeasureIdSet) {
+		MULTI_TO_SINGLE_PERF_RATE_MEASURE_ID = multiToSinglePerfRateMeasureIdSet;
 	}
 }

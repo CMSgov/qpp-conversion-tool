@@ -1,30 +1,35 @@
 package gov.cms.qpp.acceptance;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.jayway.jsonpath.TypeRef;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.jayway.jsonpath.TypeRef;
-
+import gov.cms.qpp.acceptance.cpc.CPCAcceptanceFixture;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.LocalizedProblem;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.util.JsonHelper;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 class QualityMeasureIdRoundTripTest {
 	static final Path JUNK_QRDA3_FILE = Paths.get("src/test/resources/negative/junk_in_quality_measure.xml");
@@ -38,6 +43,19 @@ class QualityMeasureIdRoundTripTest {
 		Paths.get("src/test/resources/negative/wrongSubPopulationsMeasure135.xml");
 	static final Path MISSING_COUNT_FOR_PERF_DENOM =
 		Paths.get("src/test/resources/negative/perfDenomAggCountMissing.xml");
+	static final Path MIPS_APM_FILE = Paths.get("src/test/resources/CpcMipsApm-2020.xml");
+
+	@BeforeEach
+	void setup() {
+		ApmEntityIds.setApmDataFile("test_apm_entity_ids.json");
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.TEST_MEASURE_DATA);
+	}
+
+	@AfterEach
+	void teardown() {
+		ApmEntityIds.setApmDataFile(ApmEntityIds.DEFAULT_APM_ENTITY_FILE_NAME);
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
+	}
 
 	@Test
 	void testRoundTripForQualityMeasureId() {
@@ -90,6 +108,7 @@ class QualityMeasureIdRoundTripTest {
 
 	@Test
 	void testMeasureCMS138v7PerformanceRateUuid() {
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.TEST_MEASURE_DATA);
 		Converter converter = new Converter(new PathSource(INVALID_PERFORMANCE_UUID_FILE));
 		List<Detail> details = new ArrayList<>();
 
@@ -140,7 +159,8 @@ class QualityMeasureIdRoundTripTest {
 	}
 
 	@Test
-	void testCorrectMultiToSinglePerfMeasureExample() {
+	void test2020CorrectMultiToSinglePerfMeasureExample() {
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 		Converter converter = new Converter(new PathSource(CORRECT_MULTI_TO_SINGLE_PERF_RATE_FILE));
 		JsonWrapper qpp = converter.transform();
 
@@ -186,5 +206,33 @@ class QualityMeasureIdRoundTripTest {
 		LocalizedProblem error = ProblemCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(populationId);
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 			.contains(error);
+	}
+
+	@Test
+	void test2020TopLevelMipsApmSampleFile() {
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
+		Converter converter = new Converter(new PathSource(MIPS_APM_FILE));
+		JsonWrapper qpp = converter.transform();
+
+		List<String> programName = JsonHelper.readJsonAtJsonPath(qpp.toString(),
+			"$.measurementSets[?(@.category=='quality' && @.programName=='mips')].programName", new TypeRef<List<String>>() { });
+		List<String> category = JsonHelper.readJsonAtJsonPath(qpp.toString(),
+			"$.measurementSets[?(@.category=='quality' && @.programName=='mips')].category", new TypeRef<List<String>>() { });
+		List<String> submissionMethod = JsonHelper.readJsonAtJsonPath(qpp.toString(),
+			"$.measurementSets[?(@.category=='quality' && @.programName=='mips')].submissionMethod", new TypeRef<List<String>>() { });
+		List<String> practiceId = JsonHelper.readJsonAtJsonPath(qpp.toString(),
+			"$.measurementSets[?(@.category=='quality' && @.programName=='mips')].practiceId", new TypeRef<List<String>>() { });
+		List<String> source = JsonHelper.readJsonAtJsonPath(qpp.toString(),
+			"$.measurementSets[?(@.category=='quality' && @.programName=='mips')].source", new TypeRef<List<String>>() { });
+		List<LinkedHashMap<String, Object>> measurements = JsonHelper.readJsonAtJsonPath(qpp.toString(),
+			"$.measurementSets[?(@.category=='quality')]",
+			new TypeRef<List<LinkedHashMap<String, Object>>>() { });
+
+		assertThat(programName).contains("mips");
+		assertThat(category).contains("quality");
+		assertThat(submissionMethod).contains("electronicHealthRecord");
+		assertThat(practiceId).isEmpty();
+		assertThat(source).contains("qrda3");
+		assertThat(measurements).hasSize(1);
 	}
 }

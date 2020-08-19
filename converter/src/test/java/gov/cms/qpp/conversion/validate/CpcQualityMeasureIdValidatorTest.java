@@ -17,8 +17,8 @@ import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 
 class CpcQualityMeasureIdValidatorTest {
-	private static final String MEASURE_ID = "40280382-6258-7581-0162-92901c56156e";
-	private static final String E_MEASURE_ID = "CMS128v7";
+	private static final String MEASURE_ID = "40280382-6963-bf5e-0169-e4d266793da0";
+	private static final String E_MEASURE_ID = "CMS128v8";
 
 	private CpcQualityMeasureIdValidator validator;
 	private Node testNode;
@@ -27,7 +27,7 @@ class CpcQualityMeasureIdValidatorTest {
 	void setUp() {
 		validator = new CpcQualityMeasureIdValidator();
 
-		testNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
+		testNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4);
 		testNode.putValue(MeasureConfigHelper.MEASURE_ID,MEASURE_ID);
 	}
 
@@ -105,7 +105,7 @@ class CpcQualityMeasureIdValidatorTest {
 	}
 
 	private Node createMeasureDataNode() {
-		Node childNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		Node childNode = new Node(TemplateId.MEASURE_DATA_CMS_V4);
 		childNode.putValue("type", "DENOM");
 		return childNode;
 	}

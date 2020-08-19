@@ -2,8 +2,10 @@ package gov.cms.qpp.acceptance.cpc;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -13,6 +15,7 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.util.JsonHelper;
 
 import java.io.IOException;
@@ -31,12 +34,14 @@ class CpcPlusAcceptanceTest {
 
 	private static final Path BASE = Paths.get("src/test/resources/cpc_plus/");
 	private static final Path SUCCESS = BASE.resolve("success");
+	private static final Path SUCCESS_2020 = BASE.resolve("success/2020");
 	private static final Path FAILURE = BASE.resolve("failure");
+	private static final Path FAILURE_2020 = BASE.resolve("failure/2020");
 	private static final Path FAILURE_FIXTURE = FAILURE.resolve("fixture.json");
 	private static Map<String, CPCAcceptanceFixture> fixtureValues;
 
 	@BeforeAll
-	static void initMockApmIds() throws IOException {
+	static void setUp() throws IOException {
 		ApmEntityIds.setApmDataFile("test_apm_entity_ids.json");
 		TypeReference<Map<String, CPCAcceptanceFixture>> ref =
 				new TypeReference<Map<String, CPCAcceptanceFixture>>() { };
@@ -44,8 +49,18 @@ class CpcPlusAcceptanceTest {
 	}
 
 	@AfterAll
-	static void resetApmIds() {
+	static void teardown() {
 		ApmEntityIds.setApmDataFile(ApmEntityIds.DEFAULT_APM_ENTITY_FILE_NAME);
+	}
+
+	@BeforeEach
+	void measureConfigSetup() {
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.TEST_MEASURE_DATA);
+	}
+
+	@AfterEach
+	void measureConfigTeardown() {
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 	}
 
 	static Stream<Path> successData() {
@@ -54,6 +69,14 @@ class CpcPlusAcceptanceTest {
 
 	static Stream<Path> failureData() {
 		return getXml(FAILURE);
+	}
+
+	static Stream<Path> success2020Data() {
+		return getXml(SUCCESS_2020);
+	}
+
+	static Stream<Path> failure2020Data() {
+		return getXml(FAILURE_2020);
 	}
 
 	private static Stream<Path> getXml(Path directory) {
@@ -90,6 +113,42 @@ class CpcPlusAcceptanceTest {
 	@ParameterizedTest
 	@MethodSource("failureData")
 	void testCpcPlusFileFailures(Path entry) {
+		String fileName = entry.getFileName().toString();
+		assertWithMessage("No associated entry in fixture.json for the file %s", fileName).that(fixtureValues).containsKey(fileName);
+
+		Converter converter = new Converter(new PathSource(entry));
+
+		TransformException expected = Assertions.assertThrows(TransformException.class, converter::transform);
+		//running conversions on individual files
+		List<Detail> details = expected.getDetails().getErrors().get(0).getDetails();
+		verifyOutcome(fileName, details);
+	}
+
+	@ParameterizedTest
+	@MethodSource("success2020Data")
+	void test2020CpcPlusValidFiles(Path entry) {
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
+		AllErrors errors = null;
+		List<Detail> warnings = null;
+
+		Converter converter = new Converter(new PathSource(entry));
+
+		try {
+			converter.transform();
+		} catch (TransformException failure) {
+			errors = failure.getDetails();
+			warnings = failure.getConversionReport().getWarnings();
+		}
+
+		assertThat(errors).isNull();
+		assertThat(warnings).isNull();
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
+	}
+
+	@ParameterizedTest
+	@MethodSource("failure2020Data")
+	void test2020CpcPlusInvalidFiles(Path entry) {
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 		String fileName = entry.getFileName().toString();
 		assertWithMessage("No associated entry in fixture.json for the file %s", fileName).that(fixtureValues).containsKey(fileName);
 

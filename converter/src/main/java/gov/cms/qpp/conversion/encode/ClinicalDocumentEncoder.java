@@ -1,15 +1,17 @@
 package gov.cms.qpp.conversion.encode;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -40,7 +42,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		Map<TemplateId, Node> childMapByTemplateId = thisNode.getChildNodes().stream().collect(
 				Collectors.toMap(Node::getType, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
 
-		JsonWrapper measurementSets = encodeMeasurementSets(childMapByTemplateId);
+		JsonWrapper measurementSets = encodeMeasurementSets(childMapByTemplateId, thisNode);
 		wrapper.put(MEASUREMENT_SETS, measurementSets);
 	}
 
@@ -96,7 +98,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	 * @param childMapByTemplateId object that represents the document's children
 	 * @return encoded measurement sets
 	 */
-	private JsonWrapper encodeMeasurementSets(Map<TemplateId, Node> childMapByTemplateId) {
+	private JsonWrapper encodeMeasurementSets(Map<TemplateId, Node> childMapByTemplateId, Node currentNode) {
 		JsonWrapper measurementSetsWrapper = new JsonWrapper();
 		JsonWrapper childWrapper;
 		JsonOutputEncoder sectionEncoder;
@@ -114,6 +116,12 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
 				sectionEncoder.encode(childWrapper, child);
 				childWrapper.put("source", "qrda3");
+				if (TemplateId.MEASURE_SECTION_V4.getRoot().equalsIgnoreCase(childType.getRoot())
+					&& ClinicalDocumentDecoder.MIPS_APM.equalsIgnoreCase(
+						currentNode.getValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME))) {
+					childWrapper.put(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS.toLowerCase(Locale.getDefault()));
+					childWrapper.remove(ClinicalDocumentDecoder.PRACTICE_ID);
+				}
 
 				measurementSetsWrapper.put(childWrapper);
 			} catch (NullPointerException exc) { //NOSONAR NPE can be deep in method calls

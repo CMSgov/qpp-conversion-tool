@@ -1,11 +1,13 @@
 package gov.cms.qpp.conversion.validate;
 
+import org.apache.commons.collections.MapUtils;
+
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
-import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.LocalizedProblem;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 
@@ -16,8 +18,10 @@ import java.util.Map;
 /**
  * Validates a measure groupings for a CPC+ Quality Measure Section node.
  */
-@Validator(value = TemplateId.MEASURE_SECTION_V3, program = Program.CPC)
+@Validator(value = TemplateId.MEASURE_SECTION_V4, program = Program.CPC)
 public class CpcQualityMeasureSectionValidator extends NodeValidator {
+
+	private static final String[] NO_CONFIGURED_MEASURES = {};
 
 	/**
 	 * Validate that the Quality Measure Section contains an acceptable combination of measures...
@@ -49,7 +53,10 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 	 * @return measure id array
 	 */
 	String[] grabGroupMeasures(CpcGroupMinimum groupMinimum) {
-		Map<String, List<MeasureConfig>> cpcPlusGroups = MeasureConfigs.getCpcPlusGroups();
+		Map<String, List<MeasureConfig>> cpcPlusGroups = MeasureConfigs.getCpcPlusGroup();
+		if(MapUtils.isEmpty(cpcPlusGroups)) {
+			return NO_CONFIGURED_MEASURES;
+		}
 
 		return cpcPlusGroups.get(groupMinimum.getMapName()).stream()
 				.map(MeasureConfig::getElectronicMeasureVerUuid)
@@ -60,8 +67,7 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 	 * A holder of CPC+ group specific configuration information.
 	 */
 	enum CpcGroupMinimum {
-		OUTCOME_MEASURE("Outcome_Measure", "outcome", 2),
-		OTHER_MEASURE("Other_Measure", "other", 0);
+		OUTCOME_MEASURE("Outcome_Measure", "outcome", 2);
 
 		private String mapName;
 		private String label;

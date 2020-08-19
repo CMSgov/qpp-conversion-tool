@@ -72,7 +72,7 @@ class PiSectionEncoderTest {
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS_PROGRAM_NAME);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_INDIV");
 
-		piSectionNode = new Node(TemplateId.PI_SECTION, clinicalDocumentNode);
+		piSectionNode = new Node(TemplateId.PI_SECTION_V2, clinicalDocumentNode);
 		piSectionNode.putValue(CATEGORY, PI);
 		piSectionNode.addChildNode(piNumeratorDenominatorNode);
 		piSectionNode.addChildNode(reportingParametersNode);
@@ -111,7 +111,7 @@ class PiSectionEncoderTest {
 
 		Node invalidAciNumeratorDenominatorNode = new Node();
 
-		piSectionNode = new Node(TemplateId.PI_SECTION);
+		piSectionNode = new Node(TemplateId.PI_SECTION_V2);
 		piSectionNode.putValue(CATEGORY, PI);
 		piSectionNode.addChildNode(invalidAciNumeratorDenominatorNode);
 		piSectionNode.addChildNode(reportingParametersNode);

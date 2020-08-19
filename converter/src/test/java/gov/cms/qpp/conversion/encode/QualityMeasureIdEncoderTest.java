@@ -32,8 +32,8 @@ class QualityMeasureIdEncoderTest {
 
 	@BeforeEach
 	void setUp() {
-		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
-		qualityMeasureId.putValue("measureId", "40280382-6258-7581-0162-92d6e6db1680");
+		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4);
+		qualityMeasureId.putValue("measureId", "40280382-6963-bf5e-0169-da5e74be38bf");
 
 		aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		aggregateCountNode.putValue("aggregateCount", "600");
@@ -41,24 +41,24 @@ class QualityMeasureIdEncoderTest {
 		Node paymentNode = new Node(TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2);
 		paymentNode.putValue("place", "holder");
 
-		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V4);
 		populationNode.putValue(type, SubPopulationLabel.IPOP.name());
 		populationNode.addChildNode(aggregateCountNode);
 
-		denomExclusionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		denomExclusionNode = new Node(TemplateId.MEASURE_DATA_CMS_V4);
 		denomExclusionNode.putValue(type, SubPopulationLabel.DENEX.name());
 		denomExclusionNode.addChildNode(aggregateCountNode);
 
-		denominatorExceptionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		denominatorExceptionNode = new Node(TemplateId.MEASURE_DATA_CMS_V4);
 		denominatorExceptionNode.putValue(type, SubPopulationLabel.DENEXCEP.name());
 		denominatorExceptionNode.addChildNode(aggregateCountNode);
 
-		numeratorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		numeratorNode = new Node(TemplateId.MEASURE_DATA_CMS_V4);
 		numeratorNode.putValue(type, SubPopulationLabel.NUMER.name());
 		numeratorNode.addChildNode(aggregateCountNode);
 		numeratorNode.addChildNode(paymentNode);
 
-		denominatorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		denominatorNode = new Node(TemplateId.MEASURE_DATA_CMS_V4);
 		denominatorNode.putValue(type, SubPopulationLabel.DENOM.name());
 		denominatorNode.addChildNode(paymentNode);
 		denominatorNode.addChildNode(aggregateCountNode);
@@ -96,7 +96,7 @@ class QualityMeasureIdEncoderTest {
 
 	@Test
 	void testPopulationAltTotalIsEncoded() {
-		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V4);
 		populationNode.putValue(type, "IPP");
 		populationNode.addChildNode(aggregateCountNode);
 		executeInternalEncode();
@@ -134,7 +134,7 @@ class QualityMeasureIdEncoderTest {
 
 	@Test
 	void testMeasure438EncodingEndToEndEncoded() {
-		qualityMeasureId.putValue("measureId", "40280382-610b-e7a4-0161-9a6155603811");
+		qualityMeasureId.putValue("measureId", "40280382-68d3-a5fe-0169-0c78bec911bb");
 		executeInternalEncode();
 		JsonWrapper childValues = getChildValues();
 
@@ -144,7 +144,7 @@ class QualityMeasureIdEncoderTest {
 
 	@Test
 	void testMeasureMultiToSingleEncodingEligiblePopulation() {
-		qualityMeasureId.putValue("measureId", "40280382-610b-e7a4-0161-9a6155603811");
+		qualityMeasureId.putValue("measureId", "40280382-68d3-a5fe-0169-0c78bec911bb");
 		executeInternalEncode();
 		JsonWrapper childValues = getChildValues();
 
@@ -154,7 +154,7 @@ class QualityMeasureIdEncoderTest {
 
 	@Test
 	void testMultiToSingleEncodingPerformanceMet() {
-		qualityMeasureId.putValue("measureId", "40280382-610b-e7a4-0161-9a6155603811");
+		qualityMeasureId.putValue("measureId", "40280382-68d3-a5fe-0169-0c78bec911bb");
 		executeInternalEncode();
 		JsonWrapper childValues = getChildValues();
 
@@ -164,7 +164,7 @@ class QualityMeasureIdEncoderTest {
 
 	@Test
 	void testMeasureMultiToSingleEncodingEligiblePopulationExclusion() {
-		qualityMeasureId.putValue("measureId", "40280382-610b-e7a4-0161-9a6155603811");
+		qualityMeasureId.putValue("measureId", "40280382-68d3-a5fe-0169-0c78bec911bb");
 		executeInternalEncode();
 		JsonWrapper childValues = getChildValues();
 
@@ -174,7 +174,7 @@ class QualityMeasureIdEncoderTest {
 
 	@Test
 	void testMeasureMultiToSingleEncodingEligiblePopulationException() {
-		qualityMeasureId.putValue("measureId", "40280382-610b-e7a4-0161-9a6155603811");
+		qualityMeasureId.putValue("measureId", "40280382-68d3-a5fe-0169-0c78bec911bb");
 		executeInternalEncode();
 		JsonWrapper childValues = getChildValues();
 
@@ -184,7 +184,7 @@ class QualityMeasureIdEncoderTest {
 
 	@Test
 	void testMeasureMultiToSingleEncodingPerformanceNotMet() {
-		qualityMeasureId.putValue("measureId", "40280382-610b-e7a4-0161-9a6155603811");
+		qualityMeasureId.putValue("measureId", "40280382-68d3-a5fe-0169-0c78bec911bb");
 		executeInternalEncode();
 		JsonWrapper childValues = getChildValues();
 
@@ -203,8 +203,8 @@ class QualityMeasureIdEncoderTest {
 
 	@Test
 	void testEncodeSingleToMultiDefault() {
-		qualityMeasureId.putValue("measureId", "40280382-6258-7581-0162-626f31a0009e");
-		numeratorNode.putValue(MeasureDataDecoder.MEASURE_POPULATION,"F4580E7F-EB6C-42AB-93A8-9AF1A4FD46EE");
+		qualityMeasureId.putValue("measureId", "40280382-6963-bf5e-016a-03dca9e446e0");
+		numeratorNode.putValue(MeasureDataDecoder.MEASURE_POPULATION,"A5976BE6-7F1C-419D-898D-7AFEB141A355");
 		executeInternalEncode();
 		JsonWrapper childValues = getChildValues();
 		List<?> strata = JsonHelper.readJsonAtJsonPath(childValues.toString(), "$.strata", new TypeRef<List<?>>() {});
