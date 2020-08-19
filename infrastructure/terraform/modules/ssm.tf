@@ -7,7 +7,7 @@ resource "aws_ssm_parameter" "app_env" {
   description = "APP_ENV"
   type        = "String"
   value       = "dev"
-  overwrite   = true
+  overwrite   = false
 
   lifecycle {
     ignore_changes = [
@@ -32,7 +32,7 @@ resource "aws_ssm_parameter" "ar_api_base_url" {
   description = "AR_API_BASE_URL"
   type        = "String"
   value       = "https://dev.ar.qpp.internal/api/v1/fms/file/qpp_data/qppct/testCpcPlusValidationFile.json"
-  overwrite   = true
+  overwrite   = false
 
   lifecycle {
     ignore_changes = [
@@ -56,7 +56,7 @@ resource "aws_ssm_parameter" "bucket_name" {
   description = "BUCKET_NAME"
   type        = "String"
   value       = "aws-hhs-cms-ccsq-qpp-navadevops-pii-convrtr-audt-dev-us-east-1"
-  overwrite   = true
+  overwrite   = false
 
   lifecycle {
     ignore_changes = [
@@ -80,7 +80,7 @@ resource "aws_ssm_parameter" "cpc_end_date" {
   description = "CPC_END_DATE"
   type        = "String"
   value       = "2020-03-13 - 20:00:00"
-  overwrite   = true
+  overwrite   = false
 
   lifecycle {
     ignore_changes = [
@@ -104,7 +104,7 @@ resource "aws_ssm_parameter" "cpc_plus_bucket_name" {
   description = "CPC_PLUS_BUCKET_NAME"
   type        = "String"
   value       = "aws-hhs-cms-ccsq-qpp-navadevops-pii-cnvrt-npicpc-dev-us-east-1"
-  overwrite   = true
+  overwrite   = false
 
   lifecycle {
     ignore_changes = [
@@ -128,7 +128,7 @@ resource "aws_ssm_parameter" "cpc_plus_unprocessed_filter_start_date" {
   description = "CPC_PLUS_UNPROCESSED_FILTER_START_DATE"
   type        = "String"
   value       = "2020-01-02T04:59:59.999Z"
-  overwrite   = true
+  overwrite   = false
 
   lifecycle {
     ignore_changes = [
@@ -152,7 +152,7 @@ resource "aws_ssm_parameter" "cpc_plus_validation_file" {
   description = "CPC_PLUS_VALIDATION_FILE"
   type        = "String"
   value       = "testCpcPlusValidationFile.json"
-  overwrite   = true
+  overwrite   = false
 
   lifecycle {
     ignore_changes = [
@@ -176,7 +176,7 @@ resource "aws_ssm_parameter" "db_app_password" {
   description = "DB_APP_PASSWORD"
   type        = "SecureString"
   value       = "secret"
-  overwrite   = true
+  overwrite   = false
 
   lifecycle {
     ignore_changes = [
@@ -200,7 +200,7 @@ resource "aws_ssm_parameter" "db_app_username" {
   description = "DB_APP_USERNAME"
   type        = "String"
   value       = "app"
-  overwrite   = true
+  overwrite   = false
 
   lifecycle {
     ignore_changes = [
@@ -224,7 +224,7 @@ resource "aws_ssm_parameter" "db_master_password" {
   description = "DB_MASTER_PASSWORD"
   type        = "SecureString"
   value       = "secret"
-  overwrite   = true
+  overwrite   = false
 
   lifecycle {
     ignore_changes = [
@@ -248,7 +248,7 @@ resource "aws_ssm_parameter" "db_master_username" {
   description = "DB_MASTER_USERNAME"
   type        = "String"
   value       = "supersuit"
-  overwrite   = true
+  overwrite   = false
 
   lifecycle {
     ignore_changes = [
@@ -272,7 +272,7 @@ resource "aws_ssm_parameter" "deploy0a_public-i-p" {
   description = "DEPLOY0A_PUBLIC-I-P"
   type        = "String"
   value       = "34.198.65.93"
-  overwrite   = true
+  overwrite   = false
 
   lifecycle {
     ignore_changes = [
@@ -296,7 +296,7 @@ resource "aws_ssm_parameter" "dynamo_table_name" {
   description = "DYNAMO_TABLE_NAME"
   type        = "String"
   value       = "qpp-qrda3converter-dev-metadata"
-  overwrite   = true
+  overwrite   = false
 
   lifecycle {
     ignore_changes = [
@@ -320,7 +320,7 @@ resource "aws_ssm_parameter" "fms_token" {
   description = "FMS_TOKEN"
   type        = "SecureString"
   value       = "secret"
-  overwrite   = true
+  overwrite   = false
 
   lifecycle {
     ignore_changes = [
@@ -344,7 +344,7 @@ resource "aws_ssm_parameter" "gdit_nessus_pub_key" {
   description = "GDIT_NESSUS_PUB_KEY"
   type        = "String"
   value       = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDLu1Q+kvJSbTD7cKHPwZ9aW3qb0SISHDt3EzEvBTUhGGYYLzG2FFUIkjTd1cc8OyJ9DNlrujIGTNmLjbdQ//F8CtH5990oWN7MtcM0BToTgJ9yhEvhZ7iq2YYxANTBNL6wiTWkS70a6bjsqHGWYJ9jvduGftzHVMYkkapl/oVysRJaNu+38B0Z0FXNmoorlO74/Rt7XK5MhcGbN0z4/1urEWlSl9ygHA4umWw2OM17F6NAEY9fM9W+hcZsK0SzQsFYNI0g1JADKgnXBYOmuPeg/M/6wKctHSiZBporprZ8h7sgK8Sts8Gc/loBVp8DkmnC/eZzi0MnZ4esy6mldW5"
-  overwrite   = true
+  overwrite   = false
 
   lifecycle {
     ignore_changes = [
@@ -368,7 +368,7 @@ resource "aws_ssm_parameter" "java_opts" {
   description = "JAVA_OPTS"
   type        = "String"
   value       = "-Xms6G -Xmx6G -Xmn5G -XX:+UseStringDeduplication -XX:-AggressiveOpts"
-  overwrite   = true
+  overwrite   = false
 
   lifecycle {
     ignore_changes = [
@@ -392,7 +392,7 @@ resource "aws_ssm_parameter" "kms_key" {
   description = "KMS_KEY"
   type        = "String"
   value       = "arn:aws:kms:us-east-1:003384571330:alias/qpp-qrda3converter-dev-kms_alias"
-  overwrite   = true
+  overwrite   = false
 
   lifecycle {
     ignore_changes = [
@@ -416,7 +416,7 @@ resource "aws_ssm_parameter" "newrelic_api_key" {
   description = "NEWRELIC_API_KEY"
   type        = "SecureString"
   value       = "secret"
-  overwrite   = true
+  overwrite   = false
 
   lifecycle {
     ignore_changes = [
@@ -440,7 +440,7 @@ resource "aws_ssm_parameter" "nexus_creds" {
   description = "NEXUS_CREDS"
   type        = "SecureString"
   value       = "secret"
-  overwrite   = true
+  overwrite   = false
 
   lifecycle {
     ignore_changes = [
@@ -464,7 +464,7 @@ resource "aws_ssm_parameter" "nexus_host" {
   description = "NEXUS_HOST"
   type        = "String"
   value       = "ec2-52-201-239-45.compute-1.amazonaws.com"
-  overwrite   = true
+  overwrite   = false
 
   lifecycle {
     ignore_changes = [
@@ -488,7 +488,7 @@ resource "aws_ssm_parameter" "org_name" {
   description = "ORG_NAME"
   type        = "String"
   value       = "cpc-plus-conversion-tool"
-  overwrite   = true
+  overwrite   = false
 
   lifecycle {
     ignore_changes = [
@@ -512,7 +512,7 @@ resource "aws_ssm_parameter" "splunk_token" {
   description = "SPLUNK_TOKEN"
   type        = "SecureString"
   value       = "secret"
-  overwrite   = true
+  overwrite   = false
 
   lifecycle {
     ignore_changes = [
@@ -536,7 +536,7 @@ resource "aws_ssm_parameter" "validation_url" {
   description = "VALIDATION_URL"
   type        = "String"
   value       = "https://preview.qpp.cms.gov/api/submissions/public/validate-submission"
-  overwrite   = true
+  overwrite   = false
 
   lifecycle {
     ignore_changes = [

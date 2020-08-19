@@ -50,7 +50,7 @@ resource "aws_ecs_service" "conversion-tool-service" {
 
   network_configuration {
     subnets          = [var.app_subnet1, var.app_subnet2, var.app_subnet3]
-    security_groups  = [aws_security_group.ct_app.id, var.vpn_security_group]
+    security_groups  = [aws_security_group.ct_app.id, var.vpn_security_group, var.lb_security_group, aws_security_group.conversion-tool_alb.id]
     assign_public_ip = "false"
   }
 
@@ -74,7 +74,7 @@ resource "aws_ecs_service" "conversion-tool-service" {
 }
 
 resource "aws_cloudwatch_log_group" "conversion-tool" {
-  name              = "/qppsf/conversion-tool"
+  name              = "/qppsf/conversion-tool-${var.environment}"
   retention_in_days = 30
 }
 
