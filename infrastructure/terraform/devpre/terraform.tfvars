@@ -1,4 +1,3 @@
-#Currently will build in dev if not overwritten
 project_name       = "qppsf-ct"
 region             = "us-east-1"
 vpc_id             = "vpc-0c315d14e8fe5482a"
