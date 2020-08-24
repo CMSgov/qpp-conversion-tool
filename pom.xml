@@ -365,6 +365,18 @@
 				<groupId>com.amazonaws</groupId>
 				<artifactId>aws-java-sdk-s3</artifactId>
 				<version>${aws.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-codec</groupId>
+						<artifactId>commons-codec</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>1.14</version>
 			</dependency>
 
 			<dependency>
