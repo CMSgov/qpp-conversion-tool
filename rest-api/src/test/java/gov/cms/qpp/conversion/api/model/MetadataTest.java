@@ -20,6 +20,7 @@ class MetadataTest {
 	@Test
 	void equalsContract() {
 		EqualsVerifier.forClass(Metadata.class)
+				.withIgnoredFields("rtiProcessed")
 				.usingGetClass()
 				.suppress(Warning.NONFINAL_FIELDS)
 				.verify();

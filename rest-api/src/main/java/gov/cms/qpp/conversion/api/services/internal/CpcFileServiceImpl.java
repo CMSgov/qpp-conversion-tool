@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.api.services.internal;
 
 import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
 import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
+import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
 import gov.cms.qpp.conversion.api.services.CpcFileService;
@@ -46,8 +47,8 @@ public class CpcFileServiceImpl implements CpcFileService {
 	 * @return List of {@link UnprocessedCpcFileData}
 	 */
 	@Override
-	public List<UnprocessedCpcFileData> getUnprocessedCpcPlusFiles() {
-		List<Metadata> metadata = dbService.getUnprocessedCpcPlusMetaData();
+	public List<UnprocessedCpcFileData> getUnprocessedCpcPlusFiles(String orgAttribute) {
+		List<Metadata> metadata = dbService.getUnprocessedCpcPlusMetaData(orgAttribute);
 
 		return transformMetaDataToUnprocessedCpcFileData(metadata);
 	}
@@ -86,15 +87,20 @@ public class CpcFileServiceImpl implements CpcFileService {
 	 * @return Success or failure message.
 	 */
 	@Override
-	public String processFileById(String fileId) {
+	public String processFileById(String fileId, String orgName) {
 		Metadata metadata = getMetadataById(fileId);
-		if (metadata.getCpcProcessed()) {
-			return FILE_FOUND_PROCESSED;
-		} else {
+		if(Constants.CPC_ORG.equalsIgnoreCase(orgName)) {
 			metadata.setCpcProcessed(true);
 			CompletableFuture<Metadata> metadataFuture = dbService.write(metadata);
 			metadataFuture.join();
 			return FILE_FOUND_PROCESSED;
+		} else if (Constants.RTI_ORG.equalsIgnoreCase(orgName)) {
+			metadata.setRtiProcessed(true);
+			CompletableFuture<Metadata> metadataFuture = dbService.write(metadata);
+			metadataFuture.join();
+			return FILE_FOUND_PROCESSED;
+		} else {
+			return FILE_NOT_FOUND;
 		}
 	}
 
@@ -102,18 +108,24 @@ public class CpcFileServiceImpl implements CpcFileService {
 	 * Process to ensure the file is a processed cpc+ file and marks the file as unprocessed
 	 *
 	 * @param fileId Identifier of the CPC+ file
+	 * @param orgName Idenifier of which organization to process files for.
 	 * @return Success or failure message.
 	 */
 	@Override
-	public String unprocessFileById(String fileId) {
+	public String unprocessFileById(String fileId, String orgName) {
 		Metadata metadata = getMetadataById(fileId);
-		if (!metadata.getCpcProcessed()) {
-			return FILE_FOUND_UNPROCESSED;
-		} else {
+		if (Constants.CPC_ORG.equalsIgnoreCase(orgName)) {
 			metadata.setCpcProcessed(false);
 			CompletableFuture<Metadata> metadataFuture = dbService.write(metadata);
 			metadataFuture.join();
 			return FILE_FOUND_UNPROCESSED;
+		} else if (Constants.RTI_ORG.equalsIgnoreCase(orgName)) {
+			metadata.setRtiProcessed(false);
+			CompletableFuture<Metadata> metadataFuture = dbService.write(metadata);
+			metadataFuture.join();
+			return FILE_FOUND_UNPROCESSED;
+		} else {
+			return FILE_NOT_FOUND;
 		}
 	}
 
@@ -145,7 +157,7 @@ public class CpcFileServiceImpl implements CpcFileService {
 	 * @return result of the check
 	 */
 	private boolean isAnUnprocessedCpcFile(Metadata metadata) {
-		return isCpcFile(metadata) && !metadata.getCpcProcessed();
+		return isCpcFile(metadata) && (!metadata.getCpcProcessed() || !metadata.getRtiProcessed());
 	}
 
 	/**

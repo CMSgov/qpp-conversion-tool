@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.api.model;
 
+import java.util.HashMap;
+
 /**
  * Constants library for use within the ReST API.
  */
@@ -22,6 +24,16 @@ public class Constants {
 	public static final String CPC_PLUS_BUCKET_NAME_VARIABLE = "CPC_PLUS_BUCKET_NAME";
 	public static final String CPC_PLUS_FILENAME_VARIABLE = "CPC_PLUS_VALIDATION_FILE";
 	public static final String CPC_PLUS_UNPROCESSED_FILE_SEARCH_DATE_VARIABLE = "CPC_PLUS_UNPROCESSED_FILTER_START_DATE";
+	public static final HashMap<String, String> ORG_ATTRIBUTE_MAP;
+	public static final String CPC_ORG = "cpcplus";
+	public static final String RTI_ORG = "rti";
+
+	static {
+		HashMap<String, String> mapBuilder = new HashMap<>();
+		mapBuilder.put(CPC_ORG, DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE);
+		mapBuilder.put(RTI_ORG,DYNAMO_RTI_PROCESSED_CREATE_DATE_ATTRIBUTE);
+		ORG_ATTRIBUTE_MAP = mapBuilder;
+	}
 
 	/**
 	 * Library utility class so the constructor is private and empty.

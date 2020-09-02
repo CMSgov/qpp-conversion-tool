@@ -55,17 +55,20 @@ public class CpcFileControllerV1 {
 	 *
 	 * @return Valid json or error json content
 	 */
-	@GetMapping(value = "/unprocessed-files",
+	@GetMapping(value = "/unprocessed-files/{org}",
 			headers = {"Accept=" + Constants.V1_API_ACCEPT})
-	public ResponseEntity<List<UnprocessedCpcFileData>> getUnprocessedCpcPlusFiles() {
+	public ResponseEntity<List<UnprocessedCpcFileData>> getUnprocessedCpcPlusFiles(@PathVariable("org") String organization) {
 		API_LOG.info("CPC+ unprocessed files request received");
+
+		String orgAttribute = Constants.ORG_ATTRIBUTE_MAP.get(organization);
 
 		if (blockCpcPlusApi()) {
 			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
 
-		List<UnprocessedCpcFileData> unprocessedCpcFileDataList = cpcFileService.getUnprocessedCpcPlusFiles();
+		List<UnprocessedCpcFileData> unprocessedCpcFileDataList =
+			cpcFileService.getUnprocessedCpcPlusFiles(orgAttribute);
 
 		API_LOG.info("CPC+ unprocessed files request succeeded");
 
@@ -129,9 +132,9 @@ public class CpcFileControllerV1 {
 	 * @param request The new state of the file being updated
 	 * @return Message if the file was updated or not
 	 */
-	@PutMapping(value = "/file/{fileId}",
+	@PutMapping(value = "/file/{fileId}/{org}",
 			headers = {"Accept=" + Constants.V1_API_ACCEPT})
-	public ResponseEntity<String> updateFile(@PathVariable("fileId") String fileId,
+	public ResponseEntity<String> updateFile(@PathVariable("fileId") String fileId, @PathVariable("org") String org,
 			@RequestBody(required = false) CpcFileStatusUpdateRequest request) {
 		if (blockCpcPlusApi()) {
 			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
@@ -142,9 +145,9 @@ public class CpcFileControllerV1 {
 
 		String message;
 		if (request != null && request.getProcessed() != null && !request.getProcessed()) {
-			message = cpcFileService.unprocessFileById(fileId);
+			message = cpcFileService.unprocessFileById(fileId, org);
 		} else {
-			message = cpcFileService.processFileById(fileId);
+			message = cpcFileService.processFileById(fileId, org);
 		}
 
 		API_LOG.info("CPC+ update file request succeeded for fileId {} with message: {}", fileId, message);
