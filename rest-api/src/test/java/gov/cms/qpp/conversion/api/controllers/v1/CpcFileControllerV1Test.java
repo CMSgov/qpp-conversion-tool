@@ -160,6 +160,14 @@ class CpcFileControllerV1Test {
 	}
 
 	@Test
+	void testEndpoint1WithInvalidOrganization() {
+		ResponseEntity<List<UnprocessedCpcFileData>> cpcResponse = cpcFileControllerV1.getUnprocessedCpcPlusFiles("meep");
+
+		assertThat(cpcResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+		assertThat(cpcResponse.getBody()).isNull();
+	}
+
+	@Test
 	void testEndpoint2WithFeatureFlagDisabled() throws IOException {
 		System.setProperty(Constants.NO_CPC_PLUS_API_ENV_VARIABLE, "trueOrWhatever");
 

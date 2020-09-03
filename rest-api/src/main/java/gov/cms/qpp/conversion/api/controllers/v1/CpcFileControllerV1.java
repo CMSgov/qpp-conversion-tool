@@ -1,6 +1,9 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.apache.commons.lang3.BooleanUtils;
@@ -10,6 +13,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,7 +40,7 @@ import gov.cms.qpp.conversion.util.EnvironmentHelper;
 public class CpcFileControllerV1 {
 
 	private static final String BLOCKED_BY_FEATURE_FLAG =
-			"CPC+ unprocessed files request blocked by feature flag";
+			"CPC+ request blocked by feature flag or that have an invalid organization";
 	private static final Logger API_LOG = LoggerFactory.getLogger(CpcFileControllerV1.class);
 
 	private CpcFileService cpcFileService;
@@ -62,9 +66,11 @@ public class CpcFileControllerV1 {
 
 		String orgAttribute = Constants.ORG_ATTRIBUTE_MAP.get(organization);
 
-		if (blockCpcPlusApi()) {
+		if (blockCpcPlusApi() || StringUtils.isEmpty(orgAttribute)) {
 			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
-			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
+			return ResponseEntity
+				.status(HttpStatus.FORBIDDEN)
+				.body(null);
 		}
 
 		List<UnprocessedCpcFileData> unprocessedCpcFileDataList =
@@ -89,7 +95,7 @@ public class CpcFileControllerV1 {
 		API_LOG.info("CPC+ file retrieval request received for fileId {}", fileId);
 
 		if (blockCpcPlusApi()) {
-			API_LOG.info("CPC+ file request blocked by feature flag");
+			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
 
@@ -114,7 +120,7 @@ public class CpcFileControllerV1 {
 		API_LOG.info("CPC+ QPP retrieval request received for fileId {}", fileId);
 
 		if (blockCpcPlusApi()) {
-			API_LOG.info("CPC+ QPP request blocked by feature flag");
+			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
 
