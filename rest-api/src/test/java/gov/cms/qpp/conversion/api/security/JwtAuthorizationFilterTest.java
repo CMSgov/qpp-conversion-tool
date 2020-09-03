@@ -2,6 +2,8 @@ package gov.cms.qpp.conversion.api.security;
 
 import gov.cms.qpp.conversion.api.helper.JwtPayloadHelper;
 import gov.cms.qpp.conversion.api.helper.JwtTestHelper;
+
+import com.google.common.collect.ImmutableSet;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -20,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -148,13 +151,13 @@ public class JwtAuthorizationFilterTest {
 
 	@Test
 	public void testDefaultOrgName() {
-		JwtAuthorizationFilter testJwtAuthFilter = new JwtAuthorizationFilter(authenticationManager, JwtAuthorizationFilter.DEFAULT_ORG_NAME);
-		Truth.assertThat(testJwtAuthFilter.orgName).isEqualTo(JwtAuthorizationFilter.DEFAULT_ORG_NAME);
+		JwtAuthorizationFilter testJwtAuthFilter = new JwtAuthorizationFilter(authenticationManager, JwtAuthorizationFilter.DEFAULT_ORG_SET);
+		Truth.assertThat(testJwtAuthFilter.orgName).contains(JwtAuthorizationFilter.DEFAULT_ORG_NAME);
 	}
 
 	@Test
 	public void testGivenOrgName() {
-		String expected = "some org name";
+		Set<String> expected = ImmutableSet.of("some org name");
 		JwtAuthorizationFilter testJwtAuthFilter = new JwtAuthorizationFilter(authenticationManager, expected);
 		Truth.assertThat(testJwtAuthFilter.orgName).isEqualTo(expected);
 	}
