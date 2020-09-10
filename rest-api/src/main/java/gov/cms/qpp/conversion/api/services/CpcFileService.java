@@ -15,7 +15,7 @@ public interface CpcFileService {
 	 *
 	 * @return {@link Metadata} extracted as {@link UnprocessedCpcFileData}.
 	 */
-	List<UnprocessedCpcFileData> getUnprocessedCpcPlusFiles();
+	List<UnprocessedCpcFileData> getUnprocessedCpcPlusFiles(String orgAttribute);
 
 	Metadata getMetadataById(String fileId);
 
@@ -43,7 +43,7 @@ public interface CpcFileService {
 	 * @param fileId Identifier of the CPC+ file
 	 * @return Success or failure message
 	 */
-	String processFileById(String fileId);
+	String processFileById(String fileId, String orgName);
 
 	/**
 	 * Marks a CPC File as unprocessed by id
@@ -51,5 +51,5 @@ public interface CpcFileService {
 	 * @param fileId Identifier of the CPC+ file
 	 * @return Success or failure message
 	 */
-	String unprocessFileById(String fileId);
+	String unprocessFileById(String fileId, String orgName);
 }

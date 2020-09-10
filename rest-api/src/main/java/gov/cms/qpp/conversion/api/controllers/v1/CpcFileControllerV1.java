@@ -1,8 +1,5 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
-import java.io.IOException;
-import java.util.List;
-
 import org.apache.commons.lang3.BooleanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +7,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +25,9 @@ import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
 import gov.cms.qpp.conversion.api.services.CpcFileService;
 import gov.cms.qpp.conversion.util.EnvironmentHelper;
 
+import java.io.IOException;
+import java.util.List;
+
 /**
  * Controller to handle cpc file data
  */
@@ -36,7 +37,7 @@ import gov.cms.qpp.conversion.util.EnvironmentHelper;
 public class CpcFileControllerV1 {
 
 	private static final String BLOCKED_BY_FEATURE_FLAG =
-			"CPC+ unprocessed files request blocked by feature flag";
+			"CPC+ request blocked by feature flag or that have an invalid organization";
 	private static final Logger API_LOG = LoggerFactory.getLogger(CpcFileControllerV1.class);
 
 	private CpcFileService cpcFileService;
@@ -55,17 +56,22 @@ public class CpcFileControllerV1 {
 	 *
 	 * @return Valid json or error json content
 	 */
-	@GetMapping(value = "/unprocessed-files",
+	@GetMapping(value = "/unprocessed-files/{org}",
 			headers = {"Accept=" + Constants.V1_API_ACCEPT})
-	public ResponseEntity<List<UnprocessedCpcFileData>> getUnprocessedCpcPlusFiles() {
+	public ResponseEntity<List<UnprocessedCpcFileData>> getUnprocessedCpcPlusFiles(@PathVariable("org") String organization) {
 		API_LOG.info("CPC+ unprocessed files request received");
 
-		if (blockCpcPlusApi()) {
+		String orgAttribute = Constants.ORG_ATTRIBUTE_MAP.get(organization);
+
+		if (blockCpcPlusApi() || StringUtils.isEmpty(orgAttribute)) {
 			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
-			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
+			return ResponseEntity
+				.status(HttpStatus.FORBIDDEN)
+				.body(null);
 		}
 
-		List<UnprocessedCpcFileData> unprocessedCpcFileDataList = cpcFileService.getUnprocessedCpcPlusFiles();
+		List<UnprocessedCpcFileData> unprocessedCpcFileDataList =
+			cpcFileService.getUnprocessedCpcPlusFiles(orgAttribute);
 
 		API_LOG.info("CPC+ unprocessed files request succeeded");
 
@@ -86,7 +92,7 @@ public class CpcFileControllerV1 {
 		API_LOG.info("CPC+ file retrieval request received for fileId {}", fileId);
 
 		if (blockCpcPlusApi()) {
-			API_LOG.info("CPC+ file request blocked by feature flag");
+			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
 
@@ -111,7 +117,7 @@ public class CpcFileControllerV1 {
 		API_LOG.info("CPC+ QPP retrieval request received for fileId {}", fileId);
 
 		if (blockCpcPlusApi()) {
-			API_LOG.info("CPC+ QPP request blocked by feature flag");
+			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
 
@@ -129,9 +135,9 @@ public class CpcFileControllerV1 {
 	 * @param request The new state of the file being updated
 	 * @return Message if the file was updated or not
 	 */
-	@PutMapping(value = "/file/{fileId}",
+	@PutMapping(value = "/file/{fileId}/{org}",
 			headers = {"Accept=" + Constants.V1_API_ACCEPT})
-	public ResponseEntity<String> updateFile(@PathVariable("fileId") String fileId,
+	public ResponseEntity<String> updateFile(@PathVariable("fileId") String fileId, @PathVariable("org") String org,
 			@RequestBody(required = false) CpcFileStatusUpdateRequest request) {
 		if (blockCpcPlusApi()) {
 			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
@@ -142,9 +148,9 @@ public class CpcFileControllerV1 {
 
 		String message;
 		if (request != null && request.getProcessed() != null && !request.getProcessed()) {
-			message = cpcFileService.unprocessFileById(fileId);
+			message = cpcFileService.unprocessFileById(fileId, org);
 		} else {
-			message = cpcFileService.processFileById(fileId);
+			message = cpcFileService.processFileById(fileId, org);
 		}
 
 		API_LOG.info("CPC+ update file request succeeded for fileId {} with message: {}", fileId, message);

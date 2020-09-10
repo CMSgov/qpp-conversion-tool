@@ -41,6 +41,7 @@ import java.util.concurrent.CompletableFuture;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -223,8 +224,8 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 				.build();
 		AmazonServiceException exception = new AmazonServiceException("some message");
 		exception.setStatusCode(404);
-		Mockito.when(mock.getUnprocessedCpcPlusFiles()).thenThrow(exception);
-		MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/cpc/unprocessed-files")).andReturn();
+		Mockito.when(mock.getUnprocessedCpcPlusFiles(anyString())).thenThrow(exception);
+		MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/cpc/unprocessed-files/cpcplus")).andReturn();
 		Truth.assertThat(result.getResponse().getStatus()).isEqualTo(404);
 		//mvc.perform(RequestBuilder("/cpc/unprocessed-files"));
 	}

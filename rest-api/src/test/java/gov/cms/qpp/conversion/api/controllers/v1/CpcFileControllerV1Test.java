@@ -58,17 +58,17 @@ class CpcFileControllerV1Test {
 
 	@Test
 	void testUpdateFileWithNullBodyMarksAsProcessed() {
-		cpcFileControllerV1.updateFile("mock", null);
-		verify(cpcFileService).processFileById("mock");
+		cpcFileControllerV1.updateFile("mock", Constants.CPC_ORG,null);
+		verify(cpcFileService).processFileById("mock", Constants.CPC_ORG);
 	}
 
 	@Test
 	void testGetUnprocessedFileList() {
-		when(cpcFileService.getUnprocessedCpcPlusFiles()).thenReturn(expectedUnprocessedCpcFileDataList);
+		when(cpcFileService.getUnprocessedCpcPlusFiles(anyString())).thenReturn(expectedUnprocessedCpcFileDataList);
 
-		ResponseEntity<List<UnprocessedCpcFileData>> qppResponse = cpcFileControllerV1.getUnprocessedCpcPlusFiles();
+		ResponseEntity<List<UnprocessedCpcFileData>> qppResponse = cpcFileControllerV1.getUnprocessedCpcPlusFiles(Constants.CPC_ORG);
 
-		verify(cpcFileService).getUnprocessedCpcPlusFiles();
+		verify(cpcFileService).getUnprocessedCpcPlusFiles(Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE);
 
 		assertThat(qppResponse.getBody()).isEqualTo(expectedUnprocessedCpcFileDataList);
 	}
@@ -107,44 +107,44 @@ class CpcFileControllerV1Test {
 
 	@Test
 	void testMarkFileAsProcessedReturnsSuccess() {
-		when(cpcFileService.processFileById(anyString())).thenReturn("success!");
+		when(cpcFileService.processFileById(anyString(), anyString())).thenReturn("success!");
 
 		ResponseEntity<String> response = markProcessed();
 
-		verify(cpcFileService, times(1)).processFileById("meep");
+		verify(cpcFileService, times(1)).processFileById("meep", Constants.CPC_ORG);
 
 		assertThat(response.getBody()).isEqualTo("success!");
 	}
 
 	@Test
 	void testMarkFileAsProcessedHttpStatusOk() {
-		when(cpcFileService.processFileById(anyString())).thenReturn("success!");
+		when(cpcFileService.processFileById(anyString(), anyString())).thenReturn("success!");
 
 		ResponseEntity<String> response = markProcessed();
 
-		verify(cpcFileService, times(1)).processFileById("meep");
+		verify(cpcFileService, times(1)).processFileById("meep", Constants.CPC_ORG);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 
 	@Test
 	void testMarkFileAsUnprocessedReturnsSuccess() {
-		when(cpcFileService.unprocessFileById(anyString())).thenReturn("success!");
+		when(cpcFileService.unprocessFileById(anyString(), anyString())).thenReturn("success!");
 
 		ResponseEntity<String> response = markUnprocessed();
 
-		verify(cpcFileService, times(1)).unprocessFileById("meep");
+		verify(cpcFileService, times(1)).unprocessFileById("meep", Constants.RTI_ORG);
 
 		assertThat(response.getBody()).isEqualTo("success!");
 	}
 
 	@Test
 	void testMarkFileAsUnprocessedHttpStatusOk() {
-		when(cpcFileService.unprocessFileById(anyString())).thenReturn("success!");
+		when(cpcFileService.unprocessFileById(anyString(), anyString())).thenReturn("success!");
 
 		ResponseEntity<String> response = markUnprocessed();
 
-		verify(cpcFileService, times(1)).unprocessFileById("meep");
+		verify(cpcFileService, times(1)).unprocessFileById("meep", Constants.RTI_ORG);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
@@ -153,7 +153,15 @@ class CpcFileControllerV1Test {
 	void testEndpoint1WithFeatureFlagDisabled() {
 		System.setProperty(Constants.NO_CPC_PLUS_API_ENV_VARIABLE, "trueOrWhatever");
 
-		ResponseEntity<List<UnprocessedCpcFileData>> cpcResponse = cpcFileControllerV1.getUnprocessedCpcPlusFiles();
+		ResponseEntity<List<UnprocessedCpcFileData>> cpcResponse = cpcFileControllerV1.getUnprocessedCpcPlusFiles(Constants.CPC_ORG);
+
+		assertThat(cpcResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+		assertThat(cpcResponse.getBody()).isNull();
+	}
+
+	@Test
+	void testEndpoint1WithInvalidOrganization() {
+		ResponseEntity<List<UnprocessedCpcFileData>> cpcResponse = cpcFileControllerV1.getUnprocessedCpcPlusFiles("meep");
 
 		assertThat(cpcResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
 		assertThat(cpcResponse.getBody()).isNull();
@@ -263,13 +271,13 @@ class CpcFileControllerV1Test {
 	private ResponseEntity<String> markProcessed() {
 		CpcFileStatusUpdateRequest request = new CpcFileStatusUpdateRequest();
 		request.setProcessed(true);
-		return cpcFileControllerV1.updateFile("meep", request);
+		return cpcFileControllerV1.updateFile("meep", Constants.CPC_ORG, request);
 	}
 
 	private ResponseEntity<String> markUnprocessed() {
 		CpcFileStatusUpdateRequest request = new CpcFileStatusUpdateRequest();
 		request.setProcessed(false);
-		return cpcFileControllerV1.updateFile("meep", request);
+		return cpcFileControllerV1.updateFile("meep", Constants.RTI_ORG, request);
 	}
 
 	List<UnprocessedCpcFileData> createMockedUnprocessedDataList() {
