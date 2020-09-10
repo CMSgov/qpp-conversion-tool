@@ -1,11 +1,5 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-
 import org.apache.commons.lang3.BooleanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +24,9 @@ import gov.cms.qpp.conversion.api.model.Status;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
 import gov.cms.qpp.conversion.api.services.CpcFileService;
 import gov.cms.qpp.conversion.util.EnvironmentHelper;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Controller to handle cpc file data
