@@ -34,4 +34,13 @@ public interface StorageService {
 	 * @return file used for cpc+ validation.
 	 */
 	InputStream getCpcPlusValidationFile();
+
+	/**
+	 * Retrieve the APM entity list.
+	 * The purpose is for easier manipulation of the apm entity list in all live environments.
+	 * The static list will still be present with default testing data.
+	 *
+	 * @return file used for apm entity validation
+	 */
+	InputStream getApmValidationFile();
 }
