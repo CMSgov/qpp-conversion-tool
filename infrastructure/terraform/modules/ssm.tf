@@ -507,6 +507,30 @@ resource "aws_ssm_parameter" "org_name" {
   }
 }
 
+resource "aws_ssm_parameter" "rti_org_name" {
+  name        = "/qppar-sf/${var.environment}/conversion_tool/RTI_ORG_NAME"
+  description = "RTI_ORG_NAME"
+  type        = "String"
+  value       = "rti-conversion-tool"
+  overwrite   = false
+
+  lifecycle {
+    ignore_changes = [
+      value
+    ]
+  }
+  tags = {
+    Name            = "${var.project_name}-ssm-${var.environment}",
+    owner           = var.owner,
+    project         = var.project_name
+    terraform       = "true"
+    pagerduty-email = var.pagerduty_email
+    application     = var.application
+    sensitivity     = var.sensitivity
+    git-origin      = var.git-origin
+  }
+}
+
 resource "aws_ssm_parameter" "splunk_token" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/SPLUNK_TOKEN"
   description = "SPLUNK_TOKEN"
