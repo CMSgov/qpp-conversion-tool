@@ -28,17 +28,6 @@ public class ApmEntityIds {
 	}
 
 	/**
-	 * Sets the file to use as a data source for the set of valid APM Entity IDs.
-	 *
-	 * @param fileName The file name to use.
-	 */
-	public void setApmDataFile(String fileName) {
-		TypeReference<Set<String>> setOfStringsType = new TypeReference<Set<String>>() {};
-		InputStream apmEntityIdsInput = ClasspathHelper.contextClassLoader().getResourceAsStream(fileName);
-		validApmEntityIds = JsonHelper.readJson(apmEntityIdsInput, setOfStringsType);
-	}
-
-	/**
 	 * Returns a boolean for whether the provided APM Entity ID exists in the set of valid APM Entity IDs.
 	 *
 	 * @param apmEntityId The APM Entity ID to check.
