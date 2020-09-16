@@ -1,39 +1,35 @@
 package gov.cms.qpp.conversion.model.validation;
 
-import static com.google.common.truth.Truth.assertThat;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import static com.google.common.truth.Truth.assertThat;
 
 class ApmEntityIdsTest {
 
 	private static final String APM_ID_THAT_EXISTS = "DogCow";
+	private ApmEntityIds apmEntityIds;
 
-	@BeforeAll
-	static void setUp() {
-		ApmEntityIds.setApmDataFile("test_apm_entity_ids.json");
-	}
 
-	@AfterAll
-	static void tearDown() {
-		ApmEntityIds.setApmDataFile(ApmEntityIds.DEFAULT_APM_ENTITY_FILE_NAME);
+	@BeforeEach
+	void setUp() {
+		apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json");
 	}
 
 	@Test
 	void testIdExists() {
-		assertThat(ApmEntityIds.idExists(APM_ID_THAT_EXISTS)).isTrue();
+		assertThat(apmEntityIds.idExists(APM_ID_THAT_EXISTS)).isTrue();
 	}
 
 	@Test
 	void testIdDoesNotExistDueToCapitalization() {
-		assertThat(ApmEntityIds.idExists(APM_ID_THAT_EXISTS.toUpperCase(Locale.ENGLISH))).isFalse();
+		assertThat(apmEntityIds.idExists(APM_ID_THAT_EXISTS.toUpperCase(Locale.ENGLISH))).isFalse();
 	}
 
 	@Test
 	void testIdDoesNotExists() {
-		assertThat(ApmEntityIds.idExists("PropertyTaxes")).isFalse();
+		assertThat(apmEntityIds.idExists("PropertyTaxes")).isFalse();
 	}
 }

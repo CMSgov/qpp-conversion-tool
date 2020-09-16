@@ -1,8 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,20 +24,12 @@ import static com.google.common.truth.Truth.assertWithMessage;
 class CpcClinicalDocumentValidatorTest {
 
 	private CpcClinicalDocumentValidator cpcValidator;
-
-	@BeforeAll
-	static void initApmIds() {
-		ApmEntityIds.setApmDataFile("test_apm_entity_ids.json");
-	}
-
-	@AfterAll
-	static void defaultApmIds() {
-		ApmEntityIds.setApmDataFile(ApmEntityIds.DEFAULT_APM_ENTITY_FILE_NAME);
-	}
+	private ApmEntityIds apmEntityIds;
 
 	@BeforeEach
-	void createNewValidator() {
-		cpcValidator = new CpcClinicalDocumentValidator(new Context());
+	void setUp() {
+		apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json");
+		cpcValidator = new CpcClinicalDocumentValidator(new Context(apmEntityIds));
 	}
 
 	@AfterEach

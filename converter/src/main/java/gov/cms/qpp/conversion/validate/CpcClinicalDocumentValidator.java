@@ -113,7 +113,7 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 			return;
 		}
 
-		if (!ApmEntityIds.idExists(apmEntityId)) {
+		if (!context.getApmEntityIds().idExists(apmEntityId)) {
 			addError(Detail.forProblemAndNode(ProblemCode.CPC_CLINICAL_DOCUMENT_INVALID_APM, node));
 		}
 	}

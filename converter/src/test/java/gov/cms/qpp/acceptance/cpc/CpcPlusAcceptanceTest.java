@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.model.error.AllErrors;
@@ -39,18 +40,13 @@ class CpcPlusAcceptanceTest {
 	private static final Path FAILURE_2020 = BASE.resolve("failure/2020");
 	private static final Path FAILURE_FIXTURE = FAILURE.resolve("fixture.json");
 	private static Map<String, CPCAcceptanceFixture> fixtureValues;
+	private ApmEntityIds apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json");
 
 	@BeforeAll
 	static void setUp() throws IOException {
-		ApmEntityIds.setApmDataFile("test_apm_entity_ids.json");
 		TypeReference<Map<String, CPCAcceptanceFixture>> ref =
 				new TypeReference<Map<String, CPCAcceptanceFixture>>() { };
 		fixtureValues = JsonHelper.readJson(FAILURE_FIXTURE, ref);
-	}
-
-	@AfterAll
-	static void teardown() {
-		ApmEntityIds.setApmDataFile(ApmEntityIds.DEFAULT_APM_ENTITY_FILE_NAME);
 	}
 
 	@BeforeEach
@@ -97,7 +93,7 @@ class CpcPlusAcceptanceTest {
 		AllErrors errors = null;
 		List<Detail> warnings = null;
 
-		Converter converter = new Converter(new PathSource(entry));
+		Converter converter = new Converter(new PathSource(entry), new Context(apmEntityIds));
 
 		try {
 			converter.transform();
@@ -116,7 +112,7 @@ class CpcPlusAcceptanceTest {
 		String fileName = entry.getFileName().toString();
 		assertWithMessage("No associated entry in fixture.json for the file %s", fileName).that(fixtureValues).containsKey(fileName);
 
-		Converter converter = new Converter(new PathSource(entry));
+		Converter converter = new Converter(new PathSource(entry), new Context(apmEntityIds));
 
 		TransformException expected = Assertions.assertThrows(TransformException.class, converter::transform);
 		//running conversions on individual files
