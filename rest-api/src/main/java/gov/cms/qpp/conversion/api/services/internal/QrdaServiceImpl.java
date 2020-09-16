@@ -86,12 +86,6 @@ public class QrdaServiceImpl implements QrdaService {
 	private ApmEntityIds retrieveApmEntityValidationFile() {
 		API_LOG.info("Trying to fetch the APM Validation file");
 		ApmEntityIds apmEntityIds = new ApmEntityIds(retrieveApmValidationFile());
-		if (apmEntityIds != null) {
-			API_LOG.info("Fetched APM Validation file");
-		} else {
-			API_LOG.info("Could not fetch the apm validation file");
-			apmEntityIds = null;
-		}
 		return apmEntityIds;
 	}
 
