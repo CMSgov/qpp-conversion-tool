@@ -49,7 +49,7 @@ class QualityMeasureIdRoundTripTest {
 
 	@BeforeEach
 	void setup() {
-		apmEntityIds.setApmDataFile("test_apm_entity_ids.json");
+		apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json");
 		MeasureConfigs.initMeasureConfigs(MeasureConfigs.TEST_MEASURE_DATA);
 	}
 

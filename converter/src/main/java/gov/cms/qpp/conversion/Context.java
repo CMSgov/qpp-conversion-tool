@@ -37,7 +37,7 @@ public class Context {
 	 * @param apmEntityIds
 	 */
 	public Context(ApmEntityIds apmEntityIds) {
-		apmEntityIds = apmEntityIds;
+		this.apmEntityIds = apmEntityIds;
 	}
 
 	/**

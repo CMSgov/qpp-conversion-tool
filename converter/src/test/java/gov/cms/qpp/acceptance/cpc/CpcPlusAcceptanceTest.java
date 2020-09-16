@@ -127,7 +127,7 @@ class CpcPlusAcceptanceTest {
 		AllErrors errors = null;
 		List<Detail> warnings = null;
 
-		Converter converter = new Converter(new PathSource(entry));
+		Converter converter = new Converter(new PathSource(entry), new Context(apmEntityIds));
 
 		try {
 			converter.transform();
@@ -148,7 +148,7 @@ class CpcPlusAcceptanceTest {
 		String fileName = entry.getFileName().toString();
 		assertWithMessage("No associated entry in fixture.json for the file %s", fileName).that(fixtureValues).containsKey(fileName);
 
-		Converter converter = new Converter(new PathSource(entry));
+		Converter converter = new Converter(new PathSource(entry), new Context(apmEntityIds));
 
 		TransformException expected = Assertions.assertThrows(TransformException.class, converter::transform);
 		//running conversions on individual files
