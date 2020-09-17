@@ -79,7 +79,7 @@ resource "aws_ssm_parameter" "cpc_end_date" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/CPC_END_DATE"
   description = "CPC_END_DATE"
   type        = "String"
-  value       = "2020-03-13 - 20:00:00"
+  value       = "2021-03-13 - 20:00:00"
   overwrite   = true
 
   lifecycle {
@@ -127,7 +127,7 @@ resource "aws_ssm_parameter" "cpc_plus_unprocessed_filter_start_date" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/CPC_PLUS_UNPROCESSED_FILTER_START_DATE"
   description = "CPC_PLUS_UNPROCESSED_FILTER_START_DATE"
   type        = "String"
-  value       = "2020-01-02T04:59:59.999Z"
+  value       = "2021-01-02T04:59:59.999Z"
   overwrite   = true
 
   lifecycle {
