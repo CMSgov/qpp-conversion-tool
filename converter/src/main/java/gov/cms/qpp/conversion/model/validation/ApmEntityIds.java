@@ -27,6 +27,12 @@ public class ApmEntityIds {
 		validApmEntityIds = JsonHelper.readJson(apmEntityIdsInput, setOfStringsType);
 	}
 
+	public ApmEntityIds() {
+		TypeReference<Set<String>> setOfStringsType = new TypeReference<Set<String>>() {};
+		InputStream apmEntityIdsInput = ClasspathHelper.contextClassLoader().getResourceAsStream(DEFAULT_APM_ENTITY_FILE_NAME);
+		validApmEntityIds = JsonHelper.readJson(apmEntityIdsInput, setOfStringsType);
+	}
+
 	/**
 	 * Returns a boolean for whether the provided APM Entity ID exists in the set of valid APM Entity IDs.
 	 *

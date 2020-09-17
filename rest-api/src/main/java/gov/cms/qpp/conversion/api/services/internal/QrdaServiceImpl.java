@@ -85,7 +85,8 @@ public class QrdaServiceImpl implements QrdaService {
 
 	private ApmEntityIds retrieveApmEntityValidationFile() {
 		API_LOG.info("Trying to fetch the APM Validation file");
-		ApmEntityIds apmEntityIds = new ApmEntityIds(retrieveApmValidationFile());
+		InputStream apmInputStream = retrieveApmValidationFile();
+		ApmEntityIds apmEntityIds = apmInputStream != null ? new ApmEntityIds(apmInputStream) : new ApmEntityIds();
 		return apmEntityIds;
 	}
 
@@ -110,7 +111,7 @@ public class QrdaServiceImpl implements QrdaService {
 	 * @return converter instance
 	 */
 	Converter initConverter(Source source) {
-		Context context = (apmData != null) ? new Context(apmData.get()) : new Context();
+		Context context = new Context(apmData.get());
 		CpcValidationInfoMap apmToNpiValidationFile = cpcValidationData.get();
 		if (apmToNpiValidationFile != null && apmToNpiValidationFile.getApmTinNpiCombinationMap() != null) {
 			context.setPiiValidator(new SpecPiiValidator(apmToNpiValidationFile));

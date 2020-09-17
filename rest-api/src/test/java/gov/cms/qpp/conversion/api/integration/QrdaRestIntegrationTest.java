@@ -58,7 +58,7 @@ public class QrdaRestIntegrationTest {
 	void testInvalidQpp() throws Exception {
 		MockMultipartFile qrda3File = new MockMultipartFile("file", Files.newInputStream(Paths.get("../qrda-files/not-a-QDRA-III-file.xml")));
 		mockMvc.perform(MockMvcRequestBuilders
-			.multipart("/").file(qrda3File))
+			.multipart("/").file(qrda3File).accept(Constants.V1_API_ACCEPT))
 			.andExpect(status().is(422))
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(jsonPath("$.errors").exists());
