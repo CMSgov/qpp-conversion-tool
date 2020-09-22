@@ -14,23 +14,22 @@ public class ApmEntityIds {
 
 	public static final String DEFAULT_APM_ENTITY_FILE_NAME = "apm_entity_ids.json";
 
+	private static TypeReference<Set<String>> SET_OF_STRINGS_TYPE = new TypeReference<Set<String>>() {};
+
 	private Set<String> validApmEntityIds;
 
 	public ApmEntityIds(InputStream fileStream) {
-		TypeReference<Set<String>> setOfStringsType = new TypeReference<Set<String>>() {};
-		validApmEntityIds = JsonHelper.readJson(fileStream, setOfStringsType);
+		validApmEntityIds = JsonHelper.readJson(fileStream, SET_OF_STRINGS_TYPE);
 	}
 
 	public ApmEntityIds(String fileName) {
-		TypeReference<Set<String>> setOfStringsType = new TypeReference<Set<String>>() {};
 		InputStream apmEntityIdsInput = ClasspathHelper.contextClassLoader().getResourceAsStream(fileName);
-		validApmEntityIds = JsonHelper.readJson(apmEntityIdsInput, setOfStringsType);
+		validApmEntityIds = JsonHelper.readJson(apmEntityIdsInput, SET_OF_STRINGS_TYPE);
 	}
 
 	public ApmEntityIds() {
-		TypeReference<Set<String>> setOfStringsType = new TypeReference<Set<String>>() {};
 		InputStream apmEntityIdsInput = ClasspathHelper.contextClassLoader().getResourceAsStream(DEFAULT_APM_ENTITY_FILE_NAME);
-		validApmEntityIds = JsonHelper.readJson(apmEntityIdsInput, setOfStringsType);
+		validApmEntityIds = JsonHelper.readJson(apmEntityIdsInput, SET_OF_STRINGS_TYPE);
 	}
 
 	/**
