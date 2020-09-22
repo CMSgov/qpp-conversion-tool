@@ -103,7 +103,7 @@
         "logConfiguration": {
             "logDriver": "awslogs",
             "options": {
-                "awslogs-group": "/qppsf/conversion-tool",
+                "awslogs-group": "/qppsf/conversion-tool-${env}",
                 "awslogs-region": "us-east-1",
                 "awslogs-stream-prefix": "${env}"
             }
