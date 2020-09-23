@@ -4,7 +4,7 @@
 terraform {
   backend "s3" {
     bucket  = "qppsf-conversion-tool-tf-state"
-    key     = "qppsf/conversion-tool.tfstate"
+    key     = "qppsf/conversion-tool-dev.tfstate"
     region  = "us-east-1"
     encrypt = "true"
   }

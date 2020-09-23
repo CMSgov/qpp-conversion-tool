@@ -24,6 +24,9 @@ resource "aws_s3_bucket" "log_bucket" {
     }
   }
 
+  lifecycle {
+    prevent_destroy = true
+  }
   # Require encryption at rest
   server_side_encryption_configuration {
     rule {
@@ -33,7 +36,7 @@ resource "aws_s3_bucket" "log_bucket" {
     }
   }
   tags = {
-    Name            = "${var.project_name}-s3-${var.environment}",
+    Name            = "${var.project_name}-s3",
     owner           = var.owner,
     project         = var.project_name
     terraform       = "true"
