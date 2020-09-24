@@ -1,11 +1,13 @@
 package gov.cms.qpp.conversion;
 
+import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.Registry;
+import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 import gov.cms.qpp.conversion.validate.pii.MissingPiiValidator;
 import gov.cms.qpp.conversion.validate.pii.PiiValidator;
 
@@ -20,6 +22,23 @@ public class Context {
 	private boolean historical;
 	private boolean doValidation = true;
 	private PiiValidator piiValidator = MissingPiiValidator.INSTANCE;
+	private ApmEntityIds apmEntityIds;
+
+	/**
+	 * Initialize a context with the default APM entity id file
+	 */
+	public Context() {
+		apmEntityIds = new ApmEntityIds(ApmEntityIds.DEFAULT_APM_ENTITY_FILE_NAME);
+	}
+
+	/**
+	 * Initialize a context with a pre-set APM entity id file
+	 *
+	 * @param apmEntityIds
+	 */
+	public Context(ApmEntityIds apmEntityIds) {
+		this.apmEntityIds = apmEntityIds;
+	}
 
 	/**
 	 * Gets the current contextual {@link Program}
@@ -81,6 +100,14 @@ public class Context {
 
 	public void setPiiValidator(PiiValidator piiValidator) {
 		this.piiValidator = piiValidator;
+	}
+
+	public ApmEntityIds getApmEntityIds() {
+		return apmEntityIds;
+	}
+
+	public void setApmEntityIds(final ApmEntityIds apmEntityIds) {
+		this.apmEntityIds = apmEntityIds;
 	}
 
 	/**
