@@ -3,8 +3,6 @@ package gov.cms.qpp.conversion.api.security;
 import com.google.common.collect.ImmutableSet;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,7 +25,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 	public static final Set<String> DEFAULT_ORG_SET = ImmutableSet.of(DEFAULT_ORG_NAME);
 	private static final String HEADER_STRING = "Authorization";
 	private static final String TOKEN_PREFIX = "Bearer ";
-	private static final Logger AUTH_LOG = LoggerFactory.getLogger(JwtAuthorizationFilter.class);
 
 	protected final Set<String> orgName;
 
@@ -115,7 +112,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 	 */
 	private boolean isValidCpcPlusOrg(Map<String, String> payloadMap) {
 		String payloadOrgName = payloadMap.get("name");
-		AUTH_LOG.info("Attempting to validate org name: " + payloadOrgName);
 		return (payloadOrgName != null && payloadMap.containsKey("orgType") && orgName.contains(payloadOrgName));
 	}
 }
