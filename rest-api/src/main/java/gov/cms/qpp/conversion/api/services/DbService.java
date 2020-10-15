@@ -17,7 +17,7 @@ public interface DbService {
 	 */
 	CompletableFuture<Metadata> write(Metadata meta);
 
-	List<Metadata> getUnprocessedCpcPlusMetaData();
+	List<Metadata> getUnprocessedCpcPlusMetaData(String orgAttribute);
 
 	/**
 	 * Retrieves the metadata from the database by uuid

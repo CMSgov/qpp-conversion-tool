@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.api.security;
 
+import com.google.common.collect.ImmutableSet;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,16 +15,18 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Filter for checking the Json Web Token (JWT) for the correct Authorization
  */
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 	public static final String DEFAULT_ORG_NAME = "cpc-test";
+	public static final Set<String> DEFAULT_ORG_SET = ImmutableSet.of(DEFAULT_ORG_NAME);
 	private static final String HEADER_STRING = "Authorization";
 	private static final String TOKEN_PREFIX = "Bearer ";
 
-	protected final String orgName;
+	protected final Set<String> orgName;
 
 	/**
 	 * JWT Constructor with Authentication manager
@@ -31,7 +34,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 	 * @param authManager Object to be passed to it's parent constructor
 	 */
 	public JwtAuthorizationFilter(AuthenticationManager authManager) {
-		this(authManager, DEFAULT_ORG_NAME);
+		this(authManager, DEFAULT_ORG_SET);
 	}
 
 	/**
@@ -40,7 +43,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 	 * @param authManager Object to be passed to it's parent constructor
 	 * @param orgName The organization name
 	 */
-	public JwtAuthorizationFilter(AuthenticationManager authManager, String orgName) {
+	public JwtAuthorizationFilter(AuthenticationManager authManager, Set<String> orgName) {
 		super(authManager);
 		this.orgName = orgName;
 	}
@@ -109,6 +112,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 	 */
 	private boolean isValidCpcPlusOrg(Map<String, String> payloadMap) {
 		String payloadOrgName = payloadMap.get("name");
-		return (payloadOrgName != null && payloadMap.containsKey("orgType") && orgName.equals(payloadOrgName));
+		return (payloadOrgName != null && payloadMap.containsKey("orgType") && orgName.contains(payloadOrgName));
 	}
 }

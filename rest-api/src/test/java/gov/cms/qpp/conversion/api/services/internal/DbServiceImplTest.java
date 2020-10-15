@@ -62,7 +62,7 @@ class DbServiceImplTest {
 	@Test
 	void testGetUnprocessedCpcPlusMetaDataWithMissingDynamoDbMapper() {
 		underTest = new DbServiceImpl(taskExecutor, Optional.empty(), environment);
-		assertThat(underTest.getUnprocessedCpcPlusMetaData()).isEmpty();
+		assertThat(underTest.getUnprocessedCpcPlusMetaData(Constants.CPC_ORG)).isEmpty();
 	}
 
 	@Test
@@ -119,7 +119,7 @@ class DbServiceImplTest {
 		when(dbMapper.query(eq(Metadata.class), any(DynamoDBQueryExpression.class)))
 			.thenReturn(mockMetadataPage);
 
-		List<Metadata> metaDataList = underTest.getUnprocessedCpcPlusMetaData();
+		List<Metadata> metaDataList = underTest.getUnprocessedCpcPlusMetaData(Constants.CPC_ORG);
 
 		verify(dbMapper, times(Constants.CPC_DYNAMO_PARTITIONS)).query(eq(Metadata.class), any(DynamoDBQueryExpression.class));
 		assertThat(metaDataList).hasSize(itemsPerPartition * Constants.CPC_DYNAMO_PARTITIONS);

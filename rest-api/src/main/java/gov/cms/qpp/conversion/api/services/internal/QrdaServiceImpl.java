@@ -20,6 +20,7 @@ import gov.cms.qpp.conversion.api.internal.pii.SpecPiiValidator;
 import gov.cms.qpp.conversion.api.model.CpcValidationInfoMap;
 import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.api.services.StorageService;
+import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 
 /**
@@ -32,6 +33,8 @@ public class QrdaServiceImpl implements QrdaService {
 
 	private final StorageService storageService;
 	private Supplier<CpcValidationInfoMap> cpcValidationData = () -> null;
+	private Supplier<ApmEntityIds> apmData = () -> null;
+
 
 	QrdaServiceImpl(StorageService storageService) {
 		this.storageService = storageService;
@@ -47,7 +50,12 @@ public class QrdaServiceImpl implements QrdaService {
 
 	@PostConstruct
 	public void loadCpcValidationData() {
-		cpcValidationData = Suppliers.memoizeWithExpiration(this::retreiveCpcValidationInfoMap, 2, TimeUnit.HOURS);
+		cpcValidationData = Suppliers.memoizeWithExpiration(this::retrieveCpcValidationInfoMap, 2, TimeUnit.HOURS);
+	}
+
+	@PostConstruct
+	public void loadApmData() {
+		apmData = Suppliers.memoizeWithExpiration(this::retrieveApmEntityValidationFile, 2, TimeUnit.HOURS);
 	}
 
 	/**
@@ -64,17 +72,7 @@ public class QrdaServiceImpl implements QrdaService {
 		return converter.getReport();
 	}
 
-	/**
-	 * Opens a stream to retrieve the CPC+ Validation file for the QPP Service
-	 *
-	 * @return cpc+ validation file.
-	 */
-	@Override
-	public InputStream retrieveCpcPlusValidationFile() {
-		return storageService.getCpcPlusValidationFile();
-	}
-
-	private CpcValidationInfoMap retreiveCpcValidationInfoMap() {
+	private CpcValidationInfoMap retrieveCpcValidationInfoMap() {
 		API_LOG.info("Fetching CPC+ validations APM/NPI/TIN file");
 		CpcValidationInfoMap file = new CpcValidationInfoMap(retrieveCpcPlusValidationFile());
 		if (file.getApmTinNpiCombinationMap() != null) {
@@ -85,6 +83,26 @@ public class QrdaServiceImpl implements QrdaService {
 		return file;
 	}
 
+	private ApmEntityIds retrieveApmEntityValidationFile() {
+		API_LOG.info("Trying to fetch the APM Validation file");
+		InputStream apmInputStream = retrieveApmValidationFile();
+		return apmInputStream != null ? new ApmEntityIds(apmInputStream) : new ApmEntityIds();
+	}
+
+	/**
+	 * Opens a stream to retrieve the CPC+ Validation file for the QPP Service
+	 *
+	 * @return cpc+ validation file.
+	 */
+	@Override
+	public InputStream retrieveCpcPlusValidationFile() {
+		return storageService.getCpcPlusValidationFile();
+	}
+
+	protected InputStream retrieveApmValidationFile() {
+		return storageService.getApmValidationFile();
+	}
+
 	/**
 	 * Instantiate a {@link Converter} with a given {@link Source}
 	 *
@@ -92,7 +110,7 @@ public class QrdaServiceImpl implements QrdaService {
 	 * @return converter instance
 	 */
 	Converter initConverter(Source source) {
-		Context context = new Context();
+		Context context = new Context(apmData.get());
 		CpcValidationInfoMap apmToNpiValidationFile = cpcValidationData.get();
 		if (apmToNpiValidationFile != null && apmToNpiValidationFile.getApmTinNpiCombinationMap() != null) {
 			context.setPiiValidator(new SpecPiiValidator(apmToNpiValidationFile));

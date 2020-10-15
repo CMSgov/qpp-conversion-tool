@@ -53,6 +53,7 @@ public final class Metadata {
 	private String rawValidationErrorLocator;
 	private Instant createdDate;
 	private Boolean cpcProcessed;
+	private Boolean rtiProcessed;
 	private String purpose;
 	private Details errors;
 	private Details warnings;
@@ -467,6 +468,27 @@ public final class Metadata {
 	}
 
 	/**
+	 * Whether the file was processed by the RTI+ team
+	 *
+	 * Ignored when writing to DynamoDB because {@code RtiProcessed_CreateDate} holds the pertinent information.
+	 *
+	 * @return Whether the file was processed.
+	 */
+	@DynamoDBIgnore
+	public Boolean getRtiProcessed() {
+		return rtiProcessed;
+	}
+
+	/**
+	 * Sets whether the file was processed by the Rti+ team
+	 *
+	 * @param rtiProcessed
+	 */
+	public void setRtiProcessed(Boolean rtiProcessed) {
+		this.rtiProcessed = rtiProcessed;
+	}
+
+	/**
 	 * Returns an attribute that combines the CPC+ processed state and the date of creation.
 	 *
 	 * This is mostly useful in the CPC+ global secondary index.
@@ -481,6 +503,26 @@ public final class Metadata {
 		if (cpcProcessed != null) {
 			DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
 			combination = cpcProcessed.toString() + "#" + formatter.format(createdDate);
+		}
+
+		return combination;
+	}
+
+	/**
+	 * Returns an attribute that combines the RTI+ processed state and the date of creation.
+	 *
+	 * This is mostly useful in the RTI+ global secondary index.
+	 *
+	 * @return The combined attribute.
+	 */
+	@DoNotEncrypt
+	@DynamoDBAttribute(attributeName = Constants.DYNAMO_RTI_PROCESSED_CREATE_DATE_ATTRIBUTE)
+	public String getRtiProcessedCreateDate() {
+		String combination = null;
+
+		if (rtiProcessed != null) {
+			DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
+			combination = rtiProcessed.toString() + "#" + formatter.format(createdDate);
 		}
 
 		return combination;
@@ -552,6 +594,31 @@ public final class Metadata {
 		Instant instant = Instant.parse(creationDate);
 
 		setCpcProcessed(Boolean.valueOf(isProcessed));
+		setCreatedDate(instant);
+	}
+
+	/**
+	 * Sets the separate RTI+ processed flag and created date based on the argument
+	 *
+	 * Splits the the processed flag from the date by a {@code #} character.
+	 * The first field must be {@code true} or {@code false} which represents the RTI+ processed boolean.
+	 * The second field must be an ISO 8601 timestamp string.  For example, {@code 2018-12-08T18:32:54.846Z}.
+	 *
+	 * @param combination The combined attribute.
+	 */
+	public void setRtiProcessedCreateDate(String combination) {
+
+		String[] split = combination.split("#");
+
+		if (split.length < CPC_PROCESSED_CREATE_DATE_NUM_FIELDS) {
+			return;
+		}
+
+		String isProcessed = split[CPC_PROCESSED_INDEX];
+		String creationDate = split[CPC_CREATE_DATE_INDEX];
+		Instant instant = Instant.parse(creationDate);
+
+		setRtiProcessed(Boolean.valueOf(isProcessed));
 		setCreatedDate(instant);
 	}
 

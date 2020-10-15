@@ -10,56 +10,26 @@ import java.util.Set;
 /**
  * Represents all the valid APM Entity IDs
  */
-public final class ApmEntityIds {
+public class ApmEntityIds {
 
 	public static final String DEFAULT_APM_ENTITY_FILE_NAME = "apm_entity_ids.json";
 
-	private static String apmEntityIdsFileName = DEFAULT_APM_ENTITY_FILE_NAME;
-	private static Set<String> validApmEntityIds;
+	private static TypeReference<Set<String>> SET_OF_STRINGS_TYPE = new TypeReference<Set<String>>() {};
 
-	/**
-	 * Static initialization
-	 */
-	static {
-		initApmEntityIds();
+	private Set<String> validApmEntityIds;
+
+	public ApmEntityIds(InputStream fileStream) {
+		validApmEntityIds = JsonHelper.readJson(fileStream, SET_OF_STRINGS_TYPE);
 	}
 
-	/**
-	 * Empty private constructor for singleton
-	 */
-	private ApmEntityIds() {
-		//empty and private constructor because this is a singleton
-	}
-
-	/**
-	 * Populates the set of APM Entity IDs.
-	 */
-	private static void initApmEntityIds() {
-		validApmEntityIds = grabConfiguration(apmEntityIdsFileName);
-	}
-
-	/**
-	 * Given the file name, returns a {@link Set} of {@link String}s from the file.
-	 *
-	 * @param fileName The file to parse.
-	 * @return Set of Strings.
-	 */
-	private static Set<String> grabConfiguration(String fileName) {
-		TypeReference<Set<String>> setOfStringsType = new TypeReference<Set<String>>() {};
-
+	public ApmEntityIds(String fileName) {
 		InputStream apmEntityIdsInput = ClasspathHelper.contextClassLoader().getResourceAsStream(fileName);
-
-		return JsonHelper.readJson(apmEntityIdsInput, setOfStringsType);
+		validApmEntityIds = JsonHelper.readJson(apmEntityIdsInput, SET_OF_STRINGS_TYPE);
 	}
 
-	/**
-	 * Sets the file to use as a data source for the set of valid APM Entity IDs.
-	 *
-	 * @param fileName The file name to use.
-	 */
-	public static void setApmDataFile(String fileName) {
-		apmEntityIdsFileName = fileName;
-		initApmEntityIds();
+	public ApmEntityIds() {
+		InputStream apmEntityIdsInput = ClasspathHelper.contextClassLoader().getResourceAsStream(DEFAULT_APM_ENTITY_FILE_NAME);
+		validApmEntityIds = JsonHelper.readJson(apmEntityIdsInput, SET_OF_STRINGS_TYPE);
 	}
 
 	/**
@@ -68,7 +38,7 @@ public final class ApmEntityIds {
 	 * @param apmEntityId The APM Entity ID to check.
 	 * @return Whether or not the APM Entity ID exists.
 	 */
-	public static boolean idExists(String apmEntityId) {
+	public boolean idExists(String apmEntityId) {
 		return validApmEntityIds.contains(apmEntityId);
 	}
 }

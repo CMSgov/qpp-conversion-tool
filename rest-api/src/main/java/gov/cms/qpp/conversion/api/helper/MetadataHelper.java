@@ -46,6 +46,7 @@ public class MetadataHelper {
 			metadata.setProgramName(findProgramName(node));
 			metadata.setCpc(deriveCpcHash(node));
 			metadata.setCpcProcessed(false);
+			metadata.setRtiProcessed(false);
 		}
 
 		outcome.setStatus(metadata);

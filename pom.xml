@@ -6,7 +6,7 @@
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-conversion-tool-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>4.0.0-RELEASE</version>
+	<version>4.1.0-RELEASE</version>
 	<name>QPP Conversion Tool</name>
 
 	<!--
@@ -365,18 +365,54 @@
 				<groupId>com.amazonaws</groupId>
 				<artifactId>aws-java-sdk-s3</artifactId>
 				<version>${aws.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-codec</groupId>
+						<artifactId>commons-codec</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 
 			<dependency>
 				<groupId>com.amazonaws</groupId>
 				<artifactId>aws-java-sdk-kms</artifactId>
 				<version>${aws.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-codec</groupId>
+						<artifactId>commons-codec</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 
 			<dependency>
 				<groupId>com.amazonaws</groupId>
 				<artifactId>aws-java-sdk-dynamodb</artifactId>
 				<version>${aws.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-codec</groupId>
+						<artifactId>commons-codec</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>com.amazonaws</groupId>
+				<artifactId>aws-java-sdk-core</artifactId>
+				<version>${aws.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.amazonaws</groupId>
+				<artifactId>aws-dynamodb-encryption-java</artifactId>
+				<version>1.14.1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>1.14</version>
 			</dependency>
 
 			<dependency>
@@ -452,12 +488,6 @@
 			</dependency>
 
 			<dependency>
-				<groupId>ch.qos.logback</groupId>
-				<artifactId>logback-classic</artifactId>
-				<version>1.2.3</version>
-			</dependency>
-
-			<dependency>
 				<groupId>net.logstash.logback</groupId>
 				<artifactId>logstash-logback-encoder</artifactId>
 				<version>6.3</version>
@@ -473,36 +503,6 @@
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter-api</artifactId>
 				<version>${junit.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.amazonaws</groupId>
-				<artifactId>aws-java-sdk-core</artifactId>
-				<version>${aws.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.amazonaws</groupId>
-				<artifactId>aws-java-sdk-s3</artifactId>
-				<version>${aws.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.amazonaws</groupId>
-				<artifactId>aws-java-sdk-kms</artifactId>
-				<version>${aws.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.amazonaws</groupId>
-				<artifactId>aws-java-sdk-dynamodb</artifactId>
-				<version>${aws.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.amazonaws</groupId>
-				<artifactId>aws-dynamodb-encryption-java</artifactId>
-				<version>1.14.1</version>
 			</dependency>
 
 			<dependency>
@@ -563,12 +563,6 @@
 				<groupId>uk.com.robust-it</groupId>
 				<artifactId>cloning</artifactId>
 				<version>1.9.12</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.junit.jupiter</groupId>
-				<artifactId>junit-jupiter-api</artifactId>
-				<version>${junit.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

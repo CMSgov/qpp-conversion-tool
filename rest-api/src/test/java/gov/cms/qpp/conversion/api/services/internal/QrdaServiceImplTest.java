@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.api.services.internal;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,7 +43,9 @@ class QrdaServiceImplTest {
 	private static final String MOCK_SUCCESS_QPP_STRING = "Good Qpp";
 	private static final String MOCK_ERROR_SOURCE_IDENTIFIER = "Error Identifier";
 	private static final Path VALIDATION_JSON_FILE_PATH = Paths.get("src/test/resources/testCpcPlusValidationFile.json");
+	private static final Path VALIDATION_APM_FILE_PATH = Paths.get("src/test/resources/test_apm_entity_ids.json");
 	private InputStream MOCK_INPUT_STREAM;
+	private InputStream MOCK_APM_INPUT_STREAM;
 
 	@Spy
 	@InjectMocks
@@ -54,6 +57,7 @@ class QrdaServiceImplTest {
 	@BeforeEach
 	void mockConverter() throws IOException {
 		MOCK_INPUT_STREAM = Files.newInputStream(VALIDATION_JSON_FILE_PATH);
+		MOCK_APM_INPUT_STREAM = Files.newInputStream(VALIDATION_APM_FILE_PATH);
 		Converter success = successConverter();
 		when(objectUnderTest.initConverter(MOCK_SUCCESS_QRDA_SOURCE))
 				.thenReturn(success);
@@ -61,9 +65,18 @@ class QrdaServiceImplTest {
 		when(objectUnderTest.retrieveCpcPlusValidationFile())
 				.thenReturn(MOCK_INPUT_STREAM);
 
+		when(objectUnderTest.retrieveApmValidationFile())
+			.thenReturn(MOCK_APM_INPUT_STREAM);
+
 		Converter error = errorConverter();
 		when(objectUnderTest.initConverter(MOCK_ERROR_QRDA_SOURCE))
 				.thenReturn(error);
+	}
+
+	@AfterEach
+	void tearDown() throws IOException {
+		MOCK_APM_INPUT_STREAM.close();
+		MOCK_APM_INPUT_STREAM.close();
 	}
 
 	@Test

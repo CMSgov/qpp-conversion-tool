@@ -93,6 +93,10 @@
                 {
                     "valueFrom": "arn:aws:ssm:us-east-1:003384571330:parameter/qppar-sf/${env}/conversion_tool/VALIDATION_URL",
                     "name": "VALIDATION_URL"
+                },
+                {
+                    "valueFrom": "arn:aws:ssm:us-east-1:003384571330:parameter/qppar-sf/${env}/conversion_tool/RTI_ORG_NAME",
+                    "name": "RTI_ORG_NAME"
                 }
         ],
         "command": [
@@ -103,7 +107,7 @@
         "logConfiguration": {
             "logDriver": "awslogs",
             "options": {
-                "awslogs-group": "/qppsf/conversion-tool",
+                "awslogs-group": "/qppsf/conversion-tool-${env}",
                 "awslogs-region": "us-east-1",
                 "awslogs-stream-prefix": "${env}"
             }
