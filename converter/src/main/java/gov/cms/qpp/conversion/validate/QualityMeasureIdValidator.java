@@ -8,8 +8,8 @@ import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.LocalizedProblem;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
@@ -96,7 +96,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 			return;
 		}
 
-		if (MeasureConfigHelper.SINGLE_TO_MULTIPLE_SUP_POPULATION.equalsIgnoreCase(measureConfig.getElectronicMeasureId())) {
+		if (MeasureConfigHelper.SINGLE_TO_MULTI_PERF_RATE_MEASURE_ID.equalsIgnoreCase(measureConfig.getMeasureId())) {
 			List<SubPopulation> replacementList = new ArrayList<>();
 			for (SubPopulation subPopulation: subPopulations) {
 				if (null != subPopulation) {
