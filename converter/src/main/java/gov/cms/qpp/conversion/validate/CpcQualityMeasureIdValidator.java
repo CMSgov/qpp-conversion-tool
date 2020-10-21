@@ -10,8 +10,8 @@ import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.LocalizedProblem;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
@@ -47,7 +47,7 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 		MeasureConfig measureConfig = MeasureConfigHelper.getMeasureConfig(node);
 		if (measureConfig != null && measureConfig.getStrata() != null) {
 			int requiredPerformanceRateCount = measureConfig.getStrata().size();
-			if (MeasureConfigHelper.SINGLE_TO_MULTIPLE_SUP_POPULATION.equalsIgnoreCase(measureConfig.getElectronicMeasureId())) {
+			if (MeasureConfigHelper.SINGLE_TO_MULTI_PERF_RATE_MEASURE_ID.equalsIgnoreCase(measureConfig.getMeasureId())) {
 				requiredPerformanceRateCount = 1;
 			}
 
