@@ -56,19 +56,6 @@ public class SpecPiiValidatorTest {
 	}
 
 	@Test
-	void testNullSpec() throws  Exception {
-		SpecPiiValidator validator = validator("Valid_DogCow_APM", "Valid_DogCow_NPI");
-		Node node = node("invalid", "Invalid_Entered_DogCow_NPI", "DogCow");
-		NodeValidator nodeValidator = new NodeValidator() {
-			@Override
-			protected void performValidation(Node node) {
-			}
-		};
-		validator.validateApmTinNpiCombination(node, nodeValidator);
-		Truth.assertThat(nodeValidator.viewWarnings()).isNotEmpty();
-	}
-
-	@Test
 	void testMasking() throws Exception {
 		SpecPiiValidator validator = validator("DogCow_APM", "DogCow_NPI");
 		Node node = node("DogCow_APM", "DogCow_NPI", "_____INVALID");
