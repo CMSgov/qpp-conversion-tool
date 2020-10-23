@@ -41,7 +41,7 @@ public class SpecPiiValidator implements PiiValidator {
 				String maskedTin = "*****" + currentTin.substring(5);
 				LocalizedProblem error = ProblemCode.INCORRECT_API_NPI_COMBINATION
 					.format(currentNpi, maskedTin, apm);
-				if (tinNpisMap.get(currentTin) == null || !(tinNpisMap.get(currentTin).indexOf(currentNpi) > -1)) {
+				if (tinNpisMap == null || !(tinNpisMap.get(currentTin).indexOf(currentNpi) > -1)) {
 					validator.addWarning(Detail.forProblemAndNode(error, node));
 				}
 			}
