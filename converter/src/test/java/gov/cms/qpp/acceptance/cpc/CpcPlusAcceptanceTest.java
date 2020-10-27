@@ -36,6 +36,7 @@ class CpcPlusAcceptanceTest {
 	private static final Path BASE = Paths.get("src/test/resources/cpc_plus/");
 	private static final Path SUCCESS = BASE.resolve("success");
 	private static final Path SUCCESS_2020 = BASE.resolve("success/2020");
+	private static final Path SUCCESS_2020_WARNINGS = BASE.resolve("success/2020/warnings");
 	private static final Path FAILURE = BASE.resolve("failure");
 	private static final Path FAILURE_2020 = BASE.resolve("failure/2020");
 	private static final Path FAILURE_FIXTURE = FAILURE.resolve("fixture.json");
@@ -69,6 +70,10 @@ class CpcPlusAcceptanceTest {
 
 	static Stream<Path> success2020Data() {
 		return getXml(SUCCESS_2020);
+	}
+
+	static Stream<Path> success2020DataWithWarnings() {
+		return getXml(SUCCESS_2020_WARNINGS);
 	}
 
 	static Stream<Path> failure2020Data() {
@@ -138,6 +143,26 @@ class CpcPlusAcceptanceTest {
 
 		assertThat(errors).isNull();
 		assertThat(warnings).isNull();
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
+	}
+
+	@ParameterizedTest
+	@MethodSource("success2020DataWithWarnings")
+	void test2020CpcPlusWarningFiles(Path entry) {
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
+		AllErrors errors = null;
+
+		Converter converter = new Converter(new PathSource(entry), new Context(apmEntityIds));
+
+		try {
+			converter.transform();
+		} catch (TransformException failure) {
+			errors = failure.getDetails();
+		}
+
+		assertThat(errors).isNull();
+		assertThat(converter.getReport().getWarnings()).isNotNull();
+		assertThat(converter.getReport().getWarnings()).isNotEmpty();
 		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 	}
 
