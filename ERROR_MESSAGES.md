@@ -66,7 +66,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 72 : CT - The Performance Rate is missing
 * 78 : CT - The Program 'Mips Virtual Group' was found. The required entity id for this program name was missing. Please provide a virtual group identifier with the 'Mips Virtual Group' program name.
 * 79 : CT - There is no TIN validator present, so NPI/Alternative Payment Model (APM) combinations cannot be verified
-* 80 : CT - The given National Provider Identifier `(npi)`, Taxpayer Identification Number `(tin)`, and Alternative Payment Model `(apm)` are not a valid combination
+* 80 : CT - NPI `(npi)` and TIN `(tin)` are not reported as expected. This NPI/TIN combination is missing from the QRDA III file or is not in the CPC+ Practitioner Roster for `(apm)`. Please ensure your submission contains all required NPI/TIN combinations and your CPC+ Practitioner Roster is up-to-date.
 * 81 : CT - At least one measure is required in a measure section
 * 82 : CT - There are too many errors associated with this QRDA-III file. Showing 100 out of `(Error amount)` errors. Please fix the given errors and re-submit
 * 84 : CT - CPC+ QRDA-III Submissions require at least one TIN to be present.
