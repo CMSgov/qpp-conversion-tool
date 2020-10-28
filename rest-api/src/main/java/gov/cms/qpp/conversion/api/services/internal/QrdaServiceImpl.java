@@ -78,7 +78,7 @@ public class QrdaServiceImpl implements QrdaService {
 		if (file.getApmTinNpiCombinationMap() != null) {
 			API_LOG.info("Fetched CPC+ validations APM/NPI/TIN file");
 		} else {
-			API_LOG.info("Could not fetching CPC+ validations APM/NPI/TIN file");
+			API_LOG.info("Could not fetch CPC+ validations APM/NPI/TIN file");
 		}
 		return file;
 	}
