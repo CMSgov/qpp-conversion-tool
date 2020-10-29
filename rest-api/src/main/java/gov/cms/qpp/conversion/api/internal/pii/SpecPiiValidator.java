@@ -29,10 +29,11 @@ public class SpecPiiValidator implements PiiValidator {
 		List<String> tinList = Arrays.asList(
 			node.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER).split(","));
 
-		Map<String, List<String>> tinNpisMap = file.getApmTinNpiCombinationMap().get(apm);
-		if (tinNpisMap == null) {
+		Map<String, Map<String, List<String>>> apmToTinNpiMap = file.getApmTinNpiCombinationMap();
+		if (apmToTinNpiMap == null) {
 			validator.addWarning(Detail.forProblemAndNode(ProblemCode.MISSING_API_TIN_NPI_FILE, node));
 		} else {
+			Map<String, List<String>> tinNpisMap = apmToTinNpiMap.get(apm);
 			int npiSize = npiList.size();
 			for (int index = 0; index < npiSize; index++) {
 				String currentTin = tinList.get(index).trim();
@@ -40,7 +41,8 @@ public class SpecPiiValidator implements PiiValidator {
 				String maskedTin = "*****" + currentTin.substring(5);
 				LocalizedProblem error = ProblemCode.INCORRECT_API_NPI_COMBINATION
 					.format(currentNpi, maskedTin, apm);
-				if (tinNpisMap.get(currentTin) == null || !(tinNpisMap.get(currentTin).indexOf(currentNpi) > -1)) {
+				if (tinNpisMap == null || tinNpisMap.get(currentTin) == null
+					|| !(tinNpisMap.get(currentTin).indexOf(currentNpi) > -1)) {
 					validator.addWarning(Detail.forProblemAndNode(error, node));
 				}
 			}

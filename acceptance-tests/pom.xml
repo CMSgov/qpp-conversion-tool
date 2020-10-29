@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 	<artifactId>acceptance-tests</artifactId>
 	<groupId>gov.cms.qpp.conversion</groupId>
-	<version>4.1.0-RELEASE</version>
+	<version>4.2.0-RELEASE</version>
 	<name>conversion-tests</name>
 	<packaging>jar</packaging>
 	<properties>
@@ -36,7 +36,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>4.13.1</version>
             <scope>test</scope>
         </dependency>
 

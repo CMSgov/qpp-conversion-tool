@@ -157,8 +157,9 @@ public enum ProblemCode implements LocalizedProblem {
 		+ "program name was missing. Please provide a virtual group identifier with the 'Mips Virtual Group' program name."),
 	MISSING_PII_VALIDATOR(79, "There is no TIN validator present, so NPI/Alternative Payment Model (APM) "
 		+ "combinations cannot be verified"),
-	INCORRECT_API_NPI_COMBINATION(80, "The given National Provider Identifier `(npi)`, Taxpayer Identification Number `(tin)`, "
-		+ "and Alternative Payment Model `(apm)` are not a valid combination", true),
+	INCORRECT_API_NPI_COMBINATION(80, "NPI `(npi)` and TIN `(tin)` are not reported as expected. "
+		+ "This NPI/TIN combination is missing from the QRDA III file or is not in the CPC+ Practitioner Roster for `(apm)`."
+		+ " Please ensure your submission contains all required NPI/TIN combinations and your CPC+ Practitioner Roster is up-to-date.", true),
 	MEASURE_SECTION_MISSING_MEASURE(81, "At least one measure is required in a measure section"),
 	TOO_MANY_ERRORS(82, "There are too many errors associated with this QRDA-III file. Showing 100 out of `(Error amount)` errors."
 		+ " Please fix the given errors and re-submit", true),
