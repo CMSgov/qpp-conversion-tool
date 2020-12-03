@@ -29,7 +29,7 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<aws.version>1.11.710</aws.version>
+		<aws.version>1.11.893</aws.version>
 		<junit.version>5.5.2</junit.version>
 		<jjwt.version>0.10.7</jjwt.version>
 
@@ -37,7 +37,7 @@
 		<verificationsPhase>verify</verificationsPhase>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<junit.excludes>integration, acceptance</junit.excludes>
-		<junit.includes></junit.includes>
+		<junit.includes/>
 		<maven.generate.phase>generate-sources</maven.generate.phase>
 	</properties>
 
@@ -574,7 +574,7 @@
 			<properties>
 				<jacoco.skip>true</jacoco.skip>
 				<junit.includes>integration, acceptance</junit.includes>
-				<junit.excludes></junit.excludes>
+				<junit.excludes/>
 			</properties>
 		</profile>
 
