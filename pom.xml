@@ -29,7 +29,7 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<aws.version>1.11.893</aws.version>
+		<aws.version>1.11.924</aws.version>
 		<junit.version>5.5.2</junit.version>
 		<jjwt.version>0.10.7</jjwt.version>
 
