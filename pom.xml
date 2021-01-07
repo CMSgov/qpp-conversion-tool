@@ -37,7 +37,7 @@
 		<verificationsPhase>verify</verificationsPhase>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<junit.excludes>integration, acceptance</junit.excludes>
-		<junit.includes></junit.includes>
+		<junit.includes/>
 		<maven.generate.phase>generate-sources</maven.generate.phase>
 	</properties>
 
@@ -274,7 +274,7 @@
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-databind</artifactId>
-				<version>2.10.1</version>
+				<version>2.10.5.1</version>
 			</dependency>
 
 			<dependency>
@@ -472,7 +472,7 @@
 			<dependency>
 				<groupId>com.fasterxml.jackson.module</groupId>
 				<artifactId>jackson-module-jaxb-annotations</artifactId>
-				<version>2.10.1</version>
+				<version>2.11.0</version>
 			</dependency>
 
 			<dependency>
@@ -490,7 +490,7 @@
 			<dependency>
 				<groupId>net.logstash.logback</groupId>
 				<artifactId>logstash-logback-encoder</artifactId>
-				<version>6.3</version>
+				<version>6.4</version>
 			</dependency>
 
 			<dependency>
@@ -574,7 +574,7 @@
 			<properties>
 				<jacoco.skip>true</jacoco.skip>
 				<junit.includes>integration, acceptance</junit.includes>
-				<junit.excludes></junit.excludes>
+				<junit.excludes/>
 			</properties>
 		</profile>
 
