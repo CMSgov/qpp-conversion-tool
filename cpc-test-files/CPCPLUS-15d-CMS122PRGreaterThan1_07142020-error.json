@@ -1,0 +1,24 @@
+{
+  "errors" : [ {
+    "sourceIdentifier" : "CPCPLUS-15d-CMS122PRGreaterThan1_07142020.xml",
+    "details" : [ {
+      "errorCode" : 63,
+      "message" : "CT - The Alternative Payment Model (APM) Entity Identifier is not valid.  Here is a link to the IG section on identifiers: https://ecqi.healthit.gov/sites/default/files/2020-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-v1.1-508.pdf#page=15",
+      "location" : {
+        "location" : "Clinical Document",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 11,
+        "column" : 78
+      }
+    }, {
+      "errorCode" : 33,
+      "message" : "CT - The Performance Rate 88.888889 is invalid. It must be a decimal between 0 and 1.",
+      "location" : {
+        "location" : "Quality Measure 40280382-6963-bf5e-0169-da3833273869 (CMS122v8)",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'organizer' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3'][1]/*[local-name() = 'observation' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 532,
+        "column" : 103
+      }
+    } ]
+  } ]
+}

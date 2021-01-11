@@ -1,0 +1,15 @@
+{
+  "errors" : [ {
+    "sourceIdentifier" : "CPCPLUS-22f-CMS165NUMERReportedTwice_07102020.xml",
+    "details" : [ {
+      "errorCode" : 14,
+      "message" : "CT - The electronic measure id: CMS165v8 requires 1 NUMER(s) but there are 2",
+      "location" : {
+        "location" : "Quality Measure 40280382-6963-bf5e-0169-da5e74be38bf (CMS165v8)",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3'][3]/*[local-name() = 'organizer' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 2589,
+        "column" : 97
+      }
+    } ]
+  } ]
+}

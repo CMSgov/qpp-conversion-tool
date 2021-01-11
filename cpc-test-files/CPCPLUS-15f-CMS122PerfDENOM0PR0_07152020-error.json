@@ -1,0 +1,15 @@
+{
+  "errors" : [ {
+    "sourceIdentifier" : "CPCPLUS-15f-CMS122PerfDENOM0PR0_07152020.xml",
+    "details" : [ {
+      "errorCode" : 63,
+      "message" : "CT - The Alternative Payment Model (APM) Entity Identifier is not valid.  Here is a link to the IG section on identifiers: https://ecqi.healthit.gov/sites/default/files/2020-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-v1.1-508.pdf#page=15",
+      "location" : {
+        "location" : "Clinical Document",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 11,
+        "column" : 78
+      }
+    } ]
+  } ]
+}

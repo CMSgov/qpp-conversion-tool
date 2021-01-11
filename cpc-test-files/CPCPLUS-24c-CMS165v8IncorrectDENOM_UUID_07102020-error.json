@@ -1,0 +1,15 @@
+{
+  "errors" : [ {
+    "sourceIdentifier" : "CPCPLUS-24c-CMS165v8IncorrectDENOM_UUID_07102020.xml",
+    "details" : [ {
+      "errorCode" : 59,
+      "message" : "CT - The electronic measure id: CMS165v8 requires a DENOM with the correct UUID of E822DECB-5DD1-421D-BFCE-F5DA550EE238. Here is a link to the IG containing all the valid measure ids: https://ecqi.healthit.gov/sites/default/files/2020-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-v1.1-508.pdf#page=40",
+      "location" : {
+        "location" : "Quality Measure 40280382-6963-bf5e-0169-da5e74be38bf (CMS165v8)",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3'][3]/*[local-name() = 'organizer' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 2589,
+        "column" : 97
+      }
+    } ]
+  } ]
+}

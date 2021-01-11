@@ -1,0 +1,12 @@
+{
+  "errors" : [ {
+    "sourceIdentifier" : "CPCPLUS-1c-IncorrectProgramName_07012020.xml",
+    "details" : [ {
+      "errorCode" : 2,
+      "message" : "CT - The file is not a valid XML document. The file you are submitting is not a properly formatted XML document. Please check your document to ensure proper formatting.",
+      "location" : {
+        "path" : ""
+      }
+    } ]
+  } ]
+}

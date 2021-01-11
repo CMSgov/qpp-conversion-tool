@@ -1,0 +1,24 @@
+{
+  "errors" : [ {
+    "sourceIdentifier" : "CPCPLUS-5d-PracticeSiteAddressNullFlavor_0714020.xml",
+    "details" : [ {
+      "errorCode" : 34,
+      "message" : "CT - CPC+ submissions must contain a practice site address. Please refer to the 2020 IG for more details https://ecqi.healthit.gov/sites/default/files/2020-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-v1.1-508.pdf#page=25 regarding practice site addresses.",
+      "location" : {
+        "location" : "Clinical Document",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 11,
+        "column" : 78
+      }
+    }, {
+      "errorCode" : 63,
+      "message" : "CT - The Alternative Payment Model (APM) Entity Identifier is not valid.  Here is a link to the IG section on identifiers: https://ecqi.healthit.gov/sites/default/files/2020-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-v1.1-508.pdf#page=15",
+      "location" : {
+        "location" : "Clinical Document",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 11,
+        "column" : 78
+      }
+    } ]
+  } ]
+}

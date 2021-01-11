@@ -1,0 +1,15 @@
+{
+  "errors" : [ {
+    "sourceIdentifier" : "CPCPLUS-22h-CMS122DENOMCountReportedTwice_07102020.xml",
+    "details" : [ {
+      "errorCode" : 52,
+      "message" : "CT - The measure data with population id 'AE3CD839-EC29-4826-B4F9-B2305474402C' must have exactly one Aggregate Count.",
+      "location" : {
+        "location" : "Quality Measure 40280382-6963-bf5e-0169-da3833273869 (CMS122v8)",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'organizer' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3'][3]/*[local-name() = 'observation' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 1062,
+        "column" : 103
+      }
+    } ]
+  } ]
+}

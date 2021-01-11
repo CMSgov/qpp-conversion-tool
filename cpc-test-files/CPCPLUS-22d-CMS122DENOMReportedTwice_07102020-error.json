@@ -1,0 +1,15 @@
+{
+  "errors" : [ {
+    "sourceIdentifier" : "CPCPLUS-22d-CMS122DENOMReportedTwice_07102020.xml",
+    "details" : [ {
+      "errorCode" : 14,
+      "message" : "CT - The electronic measure id: CMS122v8 requires 1 DENOM(s) but there are 2",
+      "location" : {
+        "location" : "Quality Measure 40280382-6963-bf5e-0169-da3833273869 (CMS122v8)",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'organizer' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 512,
+        "column" : 97
+      }
+    } ]
+  } ]
+}

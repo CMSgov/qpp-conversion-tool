@@ -1,0 +1,132 @@
+{
+  "errors" : [ {
+    "sourceIdentifier" : "CPCPLUS-21a-CMS122IPOPNoSDE_07142020.xml",
+    "details" : [ {
+      "errorCode" : 66,
+      "message" : "CT - Missing the RACE - ALASKAN_NATIVE_AMERICAN_INDIAN supplemental data for code 1002-5 for the measure id CMS122v8's Sub-population IPOP",
+      "location" : {
+        "location" : "Quality Measure 40280382-6963-bf5e-0169-da3833273869 (CMS122v8)",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'organizer' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'observation' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 555,
+        "column" : 103
+      }
+    }, {
+      "errorCode" : 66,
+      "message" : "CT - Missing the RACE - ASIAN supplemental data for code 2028-9 for the measure id CMS122v8's Sub-population IPOP",
+      "location" : {
+        "location" : "Quality Measure 40280382-6963-bf5e-0169-da3833273869 (CMS122v8)",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'organizer' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'observation' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 555,
+        "column" : 103
+      }
+    }, {
+      "errorCode" : 66,
+      "message" : "CT - Missing the RACE - AFRICAN_AMERICAN supplemental data for code 2054-5 for the measure id CMS122v8's Sub-population IPOP",
+      "location" : {
+        "location" : "Quality Measure 40280382-6963-bf5e-0169-da3833273869 (CMS122v8)",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'organizer' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'observation' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 555,
+        "column" : 103
+      }
+    }, {
+      "errorCode" : 66,
+      "message" : "CT - Missing the RACE - HAWAIIAN_PACIFIC_ISLANDER supplemental data for code 2076-8 for the measure id CMS122v8's Sub-population IPOP",
+      "location" : {
+        "location" : "Quality Measure 40280382-6963-bf5e-0169-da3833273869 (CMS122v8)",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'organizer' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'observation' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 555,
+        "column" : 103
+      }
+    }, {
+      "errorCode" : 66,
+      "message" : "CT - Missing the RACE - WHITE supplemental data for code 2106-3 for the measure id CMS122v8's Sub-population IPOP",
+      "location" : {
+        "location" : "Quality Measure 40280382-6963-bf5e-0169-da3833273869 (CMS122v8)",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'organizer' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'observation' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 555,
+        "column" : 103
+      }
+    }, {
+      "errorCode" : 66,
+      "message" : "CT - Missing the RACE - OTHER_RACE supplemental data for code 2131-1 for the measure id CMS122v8's Sub-population IPOP",
+      "location" : {
+        "location" : "Quality Measure 40280382-6963-bf5e-0169-da3833273869 (CMS122v8)",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'organizer' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'observation' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 555,
+        "column" : 103
+      }
+    }, {
+      "errorCode" : 66,
+      "message" : "CT - Missing the SEX - MALE supplemental data for code M for the measure id CMS122v8's Sub-population IPOP",
+      "location" : {
+        "location" : "Quality Measure 40280382-6963-bf5e-0169-da3833273869 (CMS122v8)",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'organizer' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'observation' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 555,
+        "column" : 103
+      }
+    }, {
+      "errorCode" : 66,
+      "message" : "CT - Missing the SEX - FEMALE supplemental data for code F for the measure id CMS122v8's Sub-population IPOP",
+      "location" : {
+        "location" : "Quality Measure 40280382-6963-bf5e-0169-da3833273869 (CMS122v8)",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'organizer' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'observation' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 555,
+        "column" : 103
+      }
+    }, {
+      "errorCode" : 66,
+      "message" : "CT - Missing the ETHNICITY - HISPANIC_LATINO supplemental data for code 2135-2 for the measure id CMS122v8's Sub-population IPOP",
+      "location" : {
+        "location" : "Quality Measure 40280382-6963-bf5e-0169-da3833273869 (CMS122v8)",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'organizer' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'observation' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 555,
+        "column" : 103
+      }
+    }, {
+      "errorCode" : 66,
+      "message" : "CT - Missing the ETHNICITY - NOT_HISPANIC_LATINO supplemental data for code 2186-5 for the measure id CMS122v8's Sub-population IPOP",
+      "location" : {
+        "location" : "Quality Measure 40280382-6963-bf5e-0169-da3833273869 (CMS122v8)",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'organizer' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'observation' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 555,
+        "column" : 103
+      }
+    }, {
+      "errorCode" : 66,
+      "message" : "CT - Missing the PAYER - MEDICARE supplemental data for code A for the measure id CMS122v8's Sub-population IPOP",
+      "location" : {
+        "location" : "Quality Measure 40280382-6963-bf5e-0169-da3833273869 (CMS122v8)",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'organizer' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'observation' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 555,
+        "column" : 103
+      }
+    }, {
+      "errorCode" : 66,
+      "message" : "CT - Missing the PAYER - MEDICAID supplemental data for code B for the measure id CMS122v8's Sub-population IPOP",
+      "location" : {
+        "location" : "Quality Measure 40280382-6963-bf5e-0169-da3833273869 (CMS122v8)",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'organizer' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'observation' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 555,
+        "column" : 103
+      }
+    }, {
+      "errorCode" : 66,
+      "message" : "CT - Missing the PAYER - PRIVATE_HEALTH_INSURANCE supplemental data for code C for the measure id CMS122v8's Sub-population IPOP",
+      "location" : {
+        "location" : "Quality Measure 40280382-6963-bf5e-0169-da3833273869 (CMS122v8)",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'organizer' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'observation' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 555,
+        "column" : 103
+      }
+    }, {
+      "errorCode" : 66,
+      "message" : "CT - Missing the PAYER - OTHER_PAYER supplemental data for code D for the measure id CMS122v8's Sub-population IPOP",
+      "location" : {
+        "location" : "Quality Measure 40280382-6963-bf5e-0169-da3833273869 (CMS122v8)",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'organizer' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'observation' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 555,
+        "column" : 103
+      }
+    } ]
+  } ]
+}

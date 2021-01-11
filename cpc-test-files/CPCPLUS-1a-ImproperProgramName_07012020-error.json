@@ -1,0 +1,15 @@
+{
+  "errors" : [ {
+    "sourceIdentifier" : "CPCPLUS-1a-ImproperProgramName_07012020.xml",
+    "details" : [ {
+      "errorCode" : 25,
+      "message" : "CT - The Clinical Document program name apm_cpc+ is not recognized. Valid program names are MIPSAPM, MIPS_VIRTUALGROUP, MIPS_GROUP, CPCPLUS, MIPS, or MIPS_INDIV.",
+      "location" : {
+        "location" : "Clinical Document",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 11,
+        "column" : 78
+      }
+    } ]
+  } ]
+}

@@ -1,0 +1,15 @@
+{
+  "errors" : [ {
+    "sourceIdentifier" : "CPCPLUS-23a-CMS122Missing_07102020.xml",
+    "details" : [ {
+      "errorCode" : 64,
+      "message" : "CT - CPC+ Submissions must have at least 2 of the following outcome measures: 40280382-6963-bf5e-0169-da3833273869,40280382-6963-bf5e-0169-da5e74be38bf",
+      "location" : {
+        "location" : "Measure Section",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 188,
+        "column" : 90
+      }
+    } ]
+  } ]
+}

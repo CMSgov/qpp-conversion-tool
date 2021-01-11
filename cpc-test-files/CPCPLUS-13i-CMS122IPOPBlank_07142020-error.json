@@ -1,0 +1,12 @@
+{
+  "errors" : [ {
+    "sourceIdentifier" : "CPCPLUS-13i-CMS122IPOPBlank_07142020.xml",
+    "details" : [ {
+      "errorCode" : 3,
+      "message" : "CT - Unexpected exception occurred during conversion. Please contact the Service Center for assistance via phone at 1-866-288-8292 or TTY: 1-877-715-6222, or by emailing QPP@cms.hhs.gov",
+      "location" : {
+        "path" : ""
+      }
+    } ]
+  } ]
+}
