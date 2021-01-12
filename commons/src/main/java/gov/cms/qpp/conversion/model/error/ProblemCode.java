@@ -183,7 +183,8 @@ public enum ProblemCode implements LocalizedProblem {
 		+ "denominator. The Denominator exclusion cannot be a greater value than the denominator.", true),
 	MEASURE_SECTION_V4_REQUIRED(95, "The Clinical Document must contain one Measure Section v4 with the extension 2017-06-01"),
 	MISSING_API_TIN_NPI_FILE(96, "The APM to TIN/NPI Combination file is missing."),
-	CPC_MISSING_CEHRT_ID(97, "CPC+ QRDA-III Submissions require a valid Cehrt ID (Valid Format: XX15EXXXXXXXXXX)");
+	CPC_MISSING_CEHRT_ID(97, "CPC+ QRDA-III Submissions require a valid Cehrt ID (Valid Format: XX15EXXXXXXXXXX)"),
+	CPC_PLUS_ZERO_PERFORMANCE_RATE(98, "The performance rate cannot have a value of 0 and must be of value Null Attribute (NA).");
 
 	private static final Map<Integer, ProblemCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ProblemCode::getCode, Function.identity()));
