@@ -33,7 +33,7 @@
 		<junit.version>5.5.2</junit.version>
 		<jjwt.version>0.10.7</jjwt.version>
 
-		<requiredCodeCoverage>0.95</requiredCodeCoverage>
+		<requiredCodeCoverage>0.90</requiredCodeCoverage>
 		<verificationsPhase>verify</verificationsPhase>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<junit.excludes>integration, acceptance</junit.excludes>
