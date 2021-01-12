@@ -84,3 +84,4 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 96 : CT - The APM to TIN/NPI Combination file is missing.
 * 97 : CT - CPC+ QRDA-III Submissions require a valid Cehrt ID (Valid Format: XX15EXXXXXXXXXX)
 * 98 : CT - The performance rate cannot have a value of 0 and must be of value Null Attribute (NA).
+* 99 : CT - The measure id `(Measure Id)` has an a duplicate & invalid supplemental data of type `(Supplemental Type)`

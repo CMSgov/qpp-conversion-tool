@@ -111,7 +111,7 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 										.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID)), node));
 						}
 					} else if (performanceRateValue != null && NumberHelper.isNumeric(performanceRateValue)
-						&& Double.valueOf(performanceRateValue) == 0 && denominatorValue == 0) {
+						&& Double.valueOf(performanceRateValue) == 0 && (denominatorValue == 0 || performanceDenominator == 0)) {
 						addError(Detail.forProblemAndNode(ProblemCode.CPC_PLUS_ZERO_PERFORMANCE_RATE, node));
 					}
 				}
