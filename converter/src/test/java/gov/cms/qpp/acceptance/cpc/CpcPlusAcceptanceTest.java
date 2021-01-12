@@ -122,7 +122,6 @@ class CpcPlusAcceptanceTest {
 		TransformException expected = Assertions.assertThrows(TransformException.class, converter::transform);
 		//running conversions on individual files
 		List<Detail> details = expected.getDetails().getErrors().get(0).getDetails();
-		System.out.println(details);
 		verifyOutcome(fileName, details);
 	}
 
