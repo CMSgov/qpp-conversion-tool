@@ -213,6 +213,17 @@ class CpcClinicalDocumentValidatorTest {
 			.contains(ProblemCode.CPC_PLUS_NO_IA_OR_PI);
 	}
 
+	@Test
+	void testCpcPlusDuplicateCehrt() {
+		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.CEHRT, "XX15EXXXXXXXXXX", false);
+		List<Detail> errors = cpcValidator.validateSingleNode(clinicalDocumentNode).getErrors();
+
+		assertWithMessage("Must validate with the correct error")
+			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ProblemCode.CPC_PLUS_DUPLICATE_CEHRT);
+	}
+
 	private Node createValidCpcPlusClinicalDocument() {
 		Node clinicalDocumentNode = createCpcPlusClinicalDocument();
 		addMeasureSectionNode(clinicalDocumentNode);
