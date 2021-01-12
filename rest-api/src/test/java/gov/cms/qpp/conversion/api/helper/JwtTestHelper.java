@@ -49,7 +49,7 @@ public class JwtTestHelper {
 		SecretKey signingKey = Keys.secretKeyFor(SIGNATURE_ALGORITHM); // TEST KEY
 
 		LocalDate now = LocalDate.now();
-		LocalDate expirationDate = LocalDate.of(2020, 12, 31);
+		LocalDate expirationDate = LocalDate.of(2025, 12, 31);
 		return Jwts.builder()
 				.setIssuedAt(valueOf(now))
 				.setClaims(claimMap)
