@@ -39,7 +39,7 @@ public enum ProblemCode implements LocalizedProblem {
 		+ "Measure Performed child"),
 	PI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR(12, "This PI Measure Performed Reference and Results requires "
 		+ "a single Measure ID"),
-	DENOMINATOR_COUNT_INVALID(13, "Denominator count must be less than or equal to Initial Population count "
+	DENOMINATOR_COUNT_INVALID(13, "Denominator count must be equal to Initial Population count "
 			+ "for a measure that is a proportion measure"),
 	POPULATION_CRITERIA_COUNT_INCORRECT(14,
 			"The electronic measure id: `(Current eMeasure ID)` requires `(Number of Subpopulations required)` "
@@ -182,7 +182,12 @@ public enum ProblemCode implements LocalizedProblem {
 	CPC_PLUS_DENEX_GREATER_THAN_DENOMINATOR(94, "The denominator exclusion id `(denexUuid)` has a count value that is greater than the "
 		+ "denominator. The Denominator exclusion cannot be a greater value than the denominator.", true),
 	MEASURE_SECTION_V4_REQUIRED(95, "The Clinical Document must contain one Measure Section v4 with the extension 2017-06-01"),
-	MISSING_API_TIN_NPI_FILE(96, "The APM to TIN/NPI Combination file is missing.");
+	MISSING_API_TIN_NPI_FILE(96, "The APM to TIN/NPI Combination file is missing."),
+	CPC_MISSING_CEHRT_ID(97, "CPC+ QRDA-III Submissions require a valid Cehrt ID (Valid Format: XX15EXXXXXXXXXX)"),
+	CPC_PLUS_ZERO_PERFORMANCE_RATE(98, "The performance rate cannot have a value of 0 and must be of value Null Attribute (NA)."),
+	CPC_PLUS_EXTRA_SUPPLEMENTAL_DATA(99, "The measure id `(Measure Id)` has a duplicate & invalid supplemental data of type `(Supplemental Type)`", true),
+	CPC_PLUS_DUPLICATE_CEHRT(100, "More than one Cehrt ID was found. Please submit with only one Cehrt id.");
+
 
 	private static final Map<Integer, ProblemCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ProblemCode::getCode, Function.identity()));

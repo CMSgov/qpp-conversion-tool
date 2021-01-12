@@ -18,6 +18,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -97,6 +98,7 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 			validateNumberOfTinsAndNpis(node);
 			validateApmNpiCombination(node);
 		}
+		validateCehrtId(node);
 	}
 
 	/**
@@ -148,6 +150,21 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 
 	private void validateApmNpiCombination(Node node) {
 		context.getPiiValidator().validateApmTinNpiCombination(node, this);
+	}
+
+	private void validateCehrtId(Node node) {
+		String cehrtId = node.getValue(ClinicalDocumentDecoder.CEHRT);
+		if(cehrtId == null || cehrtId.length() != 15 || !cehrtFormat(cehrtId.substring(2, 5))) {
+			addError(Detail.forProblemAndNode(ProblemCode.CPC_MISSING_CEHRT_ID, node));
+		}
+		List<String> duplicateCehrts = node.getDuplicateValues(ClinicalDocumentDecoder.CEHRT);
+		if (duplicateCehrts != null && duplicateCehrts.size() > 0) {
+			addError(Detail.forProblemAndNode(ProblemCode.CPC_PLUS_DUPLICATE_CEHRT, node));
+		}
+	}
+
+	private boolean cehrtFormat(String requiredSubstring) {
+		return requiredSubstring.equalsIgnoreCase("15E");
 	}
 
 	/**

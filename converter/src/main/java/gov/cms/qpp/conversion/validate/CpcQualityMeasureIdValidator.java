@@ -100,6 +100,8 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 				}
 				//skip if performance rate is missing
 				if (null != performanceRateNode) {
+					String performanceRateValue =
+						performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE);
 					if (PerformanceRateValidator.NULL_ATTRIBUTE.equals(
 						performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE))) {
 						if (performanceDenominator != 0) {
@@ -108,6 +110,9 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 									.format(performanceRateNode
 										.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID)), node));
 						}
+					} else if (performanceRateValue != null && NumberHelper.isNumeric(performanceRateValue)
+						&& Double.valueOf(performanceRateValue) == 0 && (denominatorValue == 0 || performanceDenominator == 0)) {
+						addError(Detail.forProblemAndNode(ProblemCode.CPC_PLUS_ZERO_PERFORMANCE_RATE, node));
 					}
 				}
 
