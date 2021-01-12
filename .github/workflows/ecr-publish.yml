@@ -33,37 +33,6 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-
-      - name: Temp - Build and deploy to Amazon ECR #Reminder to remove this block after the project is completed
-        if: github.ref == 'refs/heads/ecr-deploy'
-        id: build-image
-        env:
-          ECR_REPOSITORY: new-qpp-conversion-tool
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build -t $ECR_REPOSITORY:latest .
-          docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
-          docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
-          docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-
-      - name: Temp - Notify slack success
-        if: github.ref == 'refs/heads/ecr-deploy' && success()
-        uses: voxmedia/github-action-slack-notify-build@v1
-        with:
-          channel: p-qpp-sub-alerts
-          status: Conversion tools - Successful Docker build and AWS ECR deployment  
-          color: good
-
-      - name: Temp - Notify slack fail
-        if: github.ref == 'refs/heads/ecr-deploy' && failure()
-        uses: voxmedia/github-action-slack-notify-build@v1
-        with:
-          channel: p-qpp-sub-alerts
-          status: Conversion tools - Failed Docker build or AWS ECR deployment
-          color: danger             
       
       - name: Dev - Build and deploy to Amazon ECR
         if: github.ref == 'refs/heads/develop'
@@ -153,7 +122,37 @@ jobs:
         with:
           channel: p-qpp-sub-alerts
           status: Conversion tools - Failed Docker build or AWS ECR deployment
-          color: danger 
+          color: danger
+
+      - name: DevPre - Build and deploy to Amazon ECR
+        if: github.ref == 'refs/heads/master'
+        env:
+          ECR_REPOSITORY: qppsf/conversion-tool/devpre
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REPOSITORY:latest .
+          docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
+          docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: DevPre - Notify slack success
+        if: github.ref == 'refs/heads/master' && success()
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel: p-qpp-sub-alerts
+          status: Conversion tools - Successful Docker build and AWS ECR deployment
+          color: good
+
+      - name: DevPre - Notify slack fail
+        if: github.ref == 'refs/heads/master' && failure()
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel: p-qpp-sub-alerts
+          status: Conversion tools - Failed Docker build or AWS ECR deployment
+          color: danger
 
       - name: Logout of Amazon ECR
         if: always()
