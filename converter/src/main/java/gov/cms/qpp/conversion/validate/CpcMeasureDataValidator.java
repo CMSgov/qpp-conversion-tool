@@ -6,8 +6,8 @@ import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.LocalizedProblem;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.SupplementalData;
 import gov.cms.qpp.conversion.model.validation.SupplementalData.SupplementalType;
@@ -67,6 +67,11 @@ public class CpcMeasureDataValidator extends NodeValidator {
 		MeasureConfig measureConfig = MeasureConfigHelper.getMeasureConfig(node.getParent());
 		if (measureConfig != null) {
 			String electronicMeasureId = measureConfig.getElectronicMeasureId();
+			if (supplementalDataNodes.size() > codes.size()) {
+				LocalizedProblem error =
+					ProblemCode.CPC_PLUS_EXTRA_SUPPLEMENTAL_DATA.format(electronicMeasureId, supplementalDataType);
+				addError(Detail.forProblemAndNode(error, node));
+			}
 			for (SupplementalData supplementalData : codes) {
 				Node validatedSupplementalNode = filterCorrectNode(supplementalDataNodes, supplementalData);
 

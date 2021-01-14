@@ -44,6 +44,8 @@ class QualityMeasureIdRoundTripTest {
 		Paths.get("src/test/resources/negative/wrongSubPopulationsMeasure135.xml");
 	static final Path MISSING_COUNT_FOR_PERF_DENOM =
 		Paths.get("src/test/resources/negative/perfDenomAggCountMissing.xml");
+	static final Path ZERO_COUNT_FOR_PERF_DENOM =
+		Paths.get("src/test/resources/negative/perfRateDenomZero.xml");
 	static final Path MIPS_APM_FILE = Paths.get("src/test/resources/CpcMipsApm-2020.xml");
 	ApmEntityIds apmEntityIds;
 
@@ -205,6 +207,23 @@ class QualityMeasureIdRoundTripTest {
 		String populationId = "F50E5334-415D-482F-A30D-0623C082B602";
 
 		LocalizedProblem error = ProblemCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(populationId);
+		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.contains(error);
+	}
+
+	@Test
+	void testZeroPerfRateDenom() {
+		Converter converter = new Converter(new PathSource(ZERO_COUNT_FOR_PERF_DENOM), new Context(apmEntityIds));
+		List<Detail> details = new ArrayList<>();
+
+		try {
+			converter.transform();
+		} catch (TransformException exception) {
+			AllErrors errors = exception.getDetails();
+			details.addAll(errors.getErrors().get(0).getDetails());
+		}
+
+		LocalizedProblem error = ProblemCode.CPC_PLUS_ZERO_PERFORMANCE_RATE;
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 			.contains(error);
 	}

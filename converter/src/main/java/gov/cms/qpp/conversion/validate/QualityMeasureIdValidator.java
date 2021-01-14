@@ -225,8 +225,8 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 				.incompleteValidation()
 				.intValue(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
 						AggregateCountDecoder.AGGREGATE_COUNT)
-				.lessThanOrEqualTo(ProblemCode.DENOMINATOR_COUNT_INVALID,
-						Integer.parseInt(ipopCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT)));
+				.valueIn(ProblemCode.DENOMINATOR_COUNT_INVALID, AggregateCountDecoder.AGGREGATE_COUNT,
+						ipopCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT));
 	}
 
 	/**

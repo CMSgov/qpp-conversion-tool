@@ -6,7 +6,7 @@
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-conversion-tool-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>4.2.0-RELEASE</version>
+	<version>4.3.0-RELEASE</version>
 	<name>QPP Conversion Tool</name>
 
 	<!--
@@ -33,7 +33,7 @@
 		<junit.version>5.5.2</junit.version>
 		<jjwt.version>0.10.7</jjwt.version>
 
-		<requiredCodeCoverage>0.95</requiredCodeCoverage>
+		<requiredCodeCoverage>0.90</requiredCodeCoverage>
 		<verificationsPhase>verify</verificationsPhase>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<junit.excludes>integration, acceptance</junit.excludes>

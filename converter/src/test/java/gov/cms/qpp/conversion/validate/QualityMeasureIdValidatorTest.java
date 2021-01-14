@@ -287,7 +287,9 @@ class QualityMeasureIdValidatorTest {
 
 		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 		assertWithMessage("There must not be any validation errors.")
-				.that(details).isEmpty();
+			.that(details)
+			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.contains(ProblemCode.DENOMINATOR_COUNT_INVALID);
 	}
 
 	@Test
