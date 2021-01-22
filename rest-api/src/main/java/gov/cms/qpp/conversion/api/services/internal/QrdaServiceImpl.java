@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Supplier;
@@ -36,6 +37,7 @@ public class QrdaServiceImpl implements QrdaService {
 	private Supplier<ApmEntityIds> apmData = () -> null;
 
 
+	@Autowired
 	QrdaServiceImpl(StorageService storageService) {
 		this.storageService = storageService;
 	}
