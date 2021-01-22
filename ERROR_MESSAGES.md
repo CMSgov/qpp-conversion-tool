@@ -14,7 +14,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 9 : CT - Aggregate count value must be an integer
 * 11 : CT - This PI Reference and Results is missing a required Measure Performed child
 * 12 : CT - This PI Measure Performed Reference and Results requires a single Measure ID
-* 13 : CT - Denominator count must be equal to Initial Population count for a measure that is a proportion measure
+* 13 : CT - Denominator count must be less than equal to Initial Population count for the measure population `(measure population id)`
 * 14 : CT - The electronic measure id: `(Current eMeasure ID)` requires `(Number of Subpopulations required)` `(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`
 * 15 : CT - PI Numerator Denominator element should have a PI Section element as a parent
 * 16 : CT - PI Numerator Denominator element does not contain a measure name ID
@@ -86,3 +86,4 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 98 : CT - The performance rate cannot have a value of 0 and must be of value Null Attribute (NA).
 * 99 : CT - The measure id `(Measure Id)` has a duplicate & invalid supplemental data of type `(Supplemental Type)`
 * 100 : CT - More than one Cehrt ID was found. Please submit with only one Cehrt id.
+* 101 : CT - Denominator count must be equal to Initial Population count for CPC Plus measure population `(measure population id)`.

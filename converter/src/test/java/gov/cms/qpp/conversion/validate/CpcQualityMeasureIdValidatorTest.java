@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
+import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -23,12 +24,17 @@ class CpcQualityMeasureIdValidatorTest {
 
 	private CpcQualityMeasureIdValidator validator;
 	private Node testNode;
+	private Node clinicalDoc;
+	private Node measureSection;
 
 	@BeforeEach
 	void setUp() {
 		validator = new CpcQualityMeasureIdValidator();
 
-		testNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4);
+		clinicalDoc = new Node(TemplateId.CLINICAL_DOCUMENT);
+		clinicalDoc.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
+		measureSection = new Node(TemplateId.MEASURE_SECTION_V4, clinicalDoc);
+		testNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4, measureSection);
 		testNode.putValue(MeasureConfigHelper.MEASURE_ID, MEASURE_ID);
 	}
 
