@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
+import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
@@ -173,16 +174,20 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param node The current parent node
 	 * @param subPopulation the current sub population
 	 */
-	private void validateDenomCountToIpopCount(Node node, SubPopulation subPopulation) {
+	protected void validateDenomCountToIpopCount(Node node, SubPopulation subPopulation) {
 		Node denomNode = getDenominatorNodeFromCurrentSubPopulation(node, subPopulation);
-
 		Node ipopNode = getIpopNodeFromCurrentSubPopulation(node, subPopulation);
+		String program = node.getParent().getParent().getValue(ClinicalDocumentDecoder.PROGRAM_NAME);
 
 		if (denomNode != null && ipopNode != null) {
 			Node denomCount = denomNode.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
 			Node ipopCount = ipopNode.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
 
-			validateDenominatorCount(denomCount, ipopCount);
+			if (ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME.equalsIgnoreCase(program)) {
+				validateCpcDenominatorCount(denomCount, ipopCount, subPopulation.getDenominatorUuid());
+			} else {
+				validateDenominatorCount(denomCount, ipopCount, subPopulation.getDenominatorUuid());
+			}
 		}
 	}
 
@@ -220,13 +225,28 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param denomCount Aggregate Count node of denominator
 	 * @param ipopCount Aggregate Count node of initial population
 	 */
-	private void validateDenominatorCount(Node denomCount, Node ipopCount) {
+	private void validateDenominatorCount(Node denomCount, Node ipopCount, String denominatorUuid) {
 		forceCheckErrors(denomCount)
 				.incompleteValidation()
 				.intValue(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
 						AggregateCountDecoder.AGGREGATE_COUNT)
-				.valueIn(ProblemCode.DENOMINATOR_COUNT_INVALID, AggregateCountDecoder.AGGREGATE_COUNT,
-						ipopCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT));
+				.lessThanOrEqualTo(ProblemCode.DENOMINATOR_COUNT_INVALID.format(denominatorUuid),
+					Integer.parseInt(ipopCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT)));
+	}
+
+	/**
+	 * Performs a validation on a CPC Denominator node's aggregate count to the Initial Population node's aggregate count
+	 *
+	 * @param denomCount Aggregate Count node of denominator
+	 * @param ipopCount Aggregate Count node of initial population
+	 */
+	private void validateCpcDenominatorCount(Node denomCount, Node ipopCount, String denominatorUuid) {
+		forceCheckErrors(denomCount)
+			.incompleteValidation()
+			.intValue(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
+				AggregateCountDecoder.AGGREGATE_COUNT)
+			.valueIn(ProblemCode.DENOMINATOR_COUNT_INVALID.format(denominatorUuid), AggregateCountDecoder.AGGREGATE_COUNT,
+				ipopCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT));
 	}
 
 	/**

@@ -158,7 +158,7 @@ class QualityMeasureIdMultiRoundTripTest {
 		}
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(ProblemCode.DENOMINATOR_COUNT_INVALID);
+				.contains(ProblemCode.DENOMINATOR_COUNT_INVALID.format("D4D2DEE7-385A-4C28-A09C-884A062A97AA"));
 	}
 
 	@Test
