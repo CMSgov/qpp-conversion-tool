@@ -1,12 +1,10 @@
 package gov.cms.qpp.acceptance;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.jayway.jsonpath.TypeRef;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import gov.cms.qpp.acceptance.cpc.CPCAcceptanceFixture;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;

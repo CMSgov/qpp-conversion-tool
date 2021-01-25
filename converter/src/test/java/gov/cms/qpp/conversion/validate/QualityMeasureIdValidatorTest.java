@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import com.google.common.collect.Lists;
 
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
+import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
@@ -287,9 +288,7 @@ class QualityMeasureIdValidatorTest {
 
 		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 		assertWithMessage("There must not be any validation errors.")
-			.that(details)
-			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(ProblemCode.DENOMINATOR_COUNT_INVALID);
+			.that(details).isEmpty();
 	}
 
 	@Test
@@ -312,7 +311,7 @@ class QualityMeasureIdValidatorTest {
 		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 		assertWithMessage("Must contain the correct error message.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ProblemCode.DENOMINATOR_COUNT_INVALID);
+				.containsExactly(ProblemCode.DENOMINATOR_COUNT_INVALID.format("375D0559-C749-4BB9-9267-81EDF447650B"));
 	}
 
 	@Test
@@ -422,9 +421,12 @@ class QualityMeasureIdValidatorTest {
 
 	private static class MeasureReferenceBuilder {
 		Node measureReferenceResultsNode;
+		Node clinicalDoc = new Node(TemplateId.CLINICAL_DOCUMENT);
+		Node measureSection = new Node(TemplateId.MEASURE_SECTION_V4, clinicalDoc);
 
 		MeasureReferenceBuilder() {
-			measureReferenceResultsNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4);
+			clinicalDoc.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS_PROGRAM_NAME);
+			measureReferenceResultsNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4, measureSection);
 		}
 
 		MeasureReferenceBuilder addMeasureId(String measureId) {
