@@ -39,7 +39,7 @@ public enum ProblemCode implements LocalizedProblem {
 		+ "Measure Performed child"),
 	PI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR(12, "This PI Measure Performed Reference and Results requires "
 		+ "a single Measure ID"),
-	DENOMINATOR_COUNT_INVALID(13, "Denominator count must be less than equal to Initial Population count "
+	DENOMINATOR_COUNT_INVALID(13, "Denominator count must be less than or equal to Initial Population count "
 			+ "for the measure population `(measure population id)`", true),
 	POPULATION_CRITERIA_COUNT_INCORRECT(14,
 			"The electronic measure id: `(Current eMeasure ID)` requires `(Number of Subpopulations required)` "
