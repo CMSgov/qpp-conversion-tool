@@ -14,7 +14,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 9 : CT - Aggregate count value must be an integer
 * 11 : CT - This PI Reference and Results is missing a required Measure Performed child
 * 12 : CT - This PI Measure Performed Reference and Results requires a single Measure ID
-* 13 : CT - Denominator count must be less than equal to Initial Population count for the measure population `(measure population id)`
+* 13 : CT - Denominator count must be less than or equal to Initial Population count for the measure population `(measure population id)`
 * 14 : CT - The electronic measure id: `(Current eMeasure ID)` requires `(Number of Subpopulations required)` `(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`
 * 15 : CT - PI Numerator Denominator element should have a PI Section element as a parent
 * 16 : CT - PI Numerator Denominator element does not contain a measure name ID
