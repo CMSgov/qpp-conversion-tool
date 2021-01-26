@@ -109,10 +109,6 @@
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
 					<version>0.8.5</version>
-					<configuration>
-						<destFile>${basedir}/target/coverage/jacoco.exec</destFile>
-						<dataFile>${basedir}/target/coverage/jacoco.exec</dataFile>
-					</configuration>
 					<executions>
 						<execution>
 							<id>jacoco-initialize</id>
