@@ -14,6 +14,10 @@
 	<name>Converter</name>
 	<packaging>jar</packaging>
 
+	<properties>
+		<sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${sonar.jacoco.reportPath}</sonar.coverage.jacoco.xmlReportPaths>
+	</properties>
+
 	<build>
 		<plugins>
 			<plugin>

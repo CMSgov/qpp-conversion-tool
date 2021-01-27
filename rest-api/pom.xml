@@ -18,6 +18,7 @@
 	<properties>
 		<requiredCodeCoverage>0.90</requiredCodeCoverage>
 		<tomcat.version>9.0.40</tomcat.version>
+		<sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${sonar.jacoco.reportPath}</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 
 	<build>
