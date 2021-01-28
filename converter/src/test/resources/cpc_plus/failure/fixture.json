@@ -358,7 +358,7 @@
 		"strict": true,
 		"errorData": [
 			{
-				"errorCode": 101,
+				"errorCode": 13,
 				"subs" : [
 					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
 				],
