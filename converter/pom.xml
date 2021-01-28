@@ -14,24 +14,11 @@
 	<name>Converter</name>
 	<packaging>jar</packaging>
 
-	<properties>
-		<sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${jacoco.report.path}</sonar.coverage.jacoco.xmlReportPaths>
-	</properties>
-
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>report</id>
-						<goals>
-							<goal>report-aggregate</goal>
-						</goals>
-						<phase>verify</phase>
-					</execution>
-				</executions>
 			</plugin>
 
 			<plugin>
