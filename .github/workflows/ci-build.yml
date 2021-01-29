@@ -33,7 +33,7 @@ jobs:
     - name: Run Unit tests & Sonar Scan
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: mvn --batch-mode verify -Psonar -Dsonar.organization=cmsgov -Dsonar.projectKey=gov.cms.qpp.conversion:qpp-conversion-new  -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.coverage.jacoco.xmlReportPaths=target/jacoco.xml
+      run: mvn --batch-mode verify -Psonar -Dsonar.organization=cmsgov -Dsonar.projectKey=gov.cms.qpp.conversion:qpp-conversion-new  -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.coverage.jacoco.xmlReportPaths=/test-coverage/target/site/jacoco-aggregate/jacoco.xml
 
     - name: Run integration tests
       run: mvn --batch-mode test -Pintegration
