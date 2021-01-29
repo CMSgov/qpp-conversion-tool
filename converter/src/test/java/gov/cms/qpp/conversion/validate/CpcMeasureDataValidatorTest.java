@@ -66,21 +66,6 @@ class CpcMeasureDataValidatorTest {
 			.contains(expectedError);
 	}
 
-	@Test
-	void validateFailureExtraSupplementalDataTest() throws Exception {
-		String failurePayerFile = TestHelper.getFixture("failureExtraSupplementalDataFile.xml");
-		Node placeholder = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(failurePayerFile));
-		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
-		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V4);
-		List<Detail> errors = validator.validateSingleNode(underTest).getErrors();
-
-		LocalizedProblem expectedError = ProblemCode.CPC_PLUS_EXTRA_SUPPLEMENTAL_DATA.format(MEASURE_ID,
-			SupplementalData.SupplementalType.SEX);
-
-		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(expectedError);
-	}
-
 	@DisplayName("Should fail on absent supplemental race data")
 	@ParameterizedTest(name = "{index} => Supplemental data=''{0}''")
 	@EnumSource(value = SupplementalData.class, mode = EnumSource.Mode.INCLUDE,

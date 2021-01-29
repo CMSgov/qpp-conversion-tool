@@ -67,11 +67,6 @@ public class CpcMeasureDataValidator extends NodeValidator {
 		MeasureConfig measureConfig = MeasureConfigHelper.getMeasureConfig(node.getParent());
 		if (measureConfig != null) {
 			String electronicMeasureId = measureConfig.getElectronicMeasureId();
-			if (supplementalDataNodes.size() > codes.size()) {
-				LocalizedProblem error =
-					ProblemCode.CPC_PLUS_EXTRA_SUPPLEMENTAL_DATA.format(electronicMeasureId, supplementalDataType);
-				addError(Detail.forProblemAndNode(error, node));
-			}
 			for (SupplementalData supplementalData : codes) {
 				Node validatedSupplementalNode = filterCorrectNode(supplementalDataNodes, supplementalData);
 
