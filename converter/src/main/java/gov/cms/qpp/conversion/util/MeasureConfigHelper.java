@@ -25,6 +25,7 @@ public class MeasureConfigHelper {
 	public static final String NO_MEASURE = "No given measure id";
 	private static Set<String> MULTI_TO_SINGLE_PERF_RATE_MEASURE_ID = ImmutableSet.of("005", "007", "008", "143", "438");
 	public final static String SINGLE_TO_MULTI_PERF_RATE_MEASURE_ID = "370";
+	public static final Set<String> CPC_PLUS_MEASURES = ImmutableSet.of("001", "236");
 
 	private MeasureConfigHelper() {
 		// private for this helper class
