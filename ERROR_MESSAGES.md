@@ -87,4 +87,3 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 99 : CT - The measure id `(Measure Id)` has a duplicate & invalid supplemental data of type `(Supplemental Type)`
 * 100 : CT - More than one Cehrt ID was found. Please submit with only one Cehrt id.
 * 101 : CT - Denominator count must be equal to Initial Population count for CPC Plus measure population `(measure population id)`.
-
