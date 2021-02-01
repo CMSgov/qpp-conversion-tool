@@ -22,6 +22,7 @@
 		<junit.includes/>
 		<maven.generate.phase>generate-sources</maven.generate.phase>
 		<jacoco.report.path>/target/jacoco.xml</jacoco.report.path>
+		<argLine></argLine>
 	</properties>
 
 	<modules>
@@ -90,45 +91,6 @@
 				</plugin>
 
 				<plugin>
-					<groupId>org.jacoco</groupId>
-					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.8.6</version>
-					<executions>
-						<execution>
-							<id>jacoco-initialize</id>
-							<goals>
-								<goal>prepare-agent</goal>
-							</goals>
-						</execution>
-						<execution>
-							<id>jacoco-check</id>
-							<phase>${verificationsPhase}</phase>
-							<goals>
-								<goal>check</goal>
-							</goals>
-							<configuration>
-								<rules>
-									<rule>
-										<limits>
-											<limit>
-												<counter>LINE</counter>
-												<value>COVEREDRATIO</value>
-												<minimum>${requiredCodeCoverage}</minimum>
-											</limit>
-											<limit>
-												<counter>BRANCH</counter>
-												<value>COVEREDRATIO</value>
-												<minimum>${requiredCodeCoverage}</minimum>
-											</limit>
-										</limits>
-									</rule>
-								</rules>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-
-				<plugin>
 					<groupId>com.github.spotbugs</groupId>
 					<artifactId>spotbugs-maven-plugin</artifactId>
 					<version>3.1.6</version>
@@ -146,21 +108,6 @@
 							</goals>
 						</execution>
 					</executions>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>3.0.0-M4</version>
-					<configuration>
-						<useSystemClassLoader>false</useSystemClassLoader>
-						<trimStackTrace>false</trimStackTrace>
-						<useFile>false</useFile>
-						<properties>
-							<excludeGroups>${junit.excludes}</excludeGroups>
-							<groups>${junit.includes}</groups>
-						</properties>
-					</configuration>
 				</plugin>
 
 				<plugin>
@@ -201,6 +148,22 @@
 				</plugin>
 
 				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>3.0.0-M4</version>
+					<configuration>
+						<useSystemClassLoader>false</useSystemClassLoader>
+						<trimStackTrace>false</trimStackTrace>
+						<useFile>false</useFile>
+						<properties>
+							<excludeGroups>${junit.excludes}</excludeGroups>
+							<groups>${junit.includes}</groups>
+						</properties>
+						<argLine>${argLine}</argLine>
+					</configuration>
+				</plugin>
+
+				<plugin>
 					<groupId>org.sonarsource.scanner.maven</groupId>
 					<artifactId>sonar-maven-plugin</artifactId>
 					<version>3.7.0.1746</version>
@@ -216,6 +179,21 @@
 
 			</plugins>
 		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.5</version>
+				<executions>
+					<execution>
+						<id>jacoco-initialize</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 
 	<dependencyManagement>
