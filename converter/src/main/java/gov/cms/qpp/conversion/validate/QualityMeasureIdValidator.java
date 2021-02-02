@@ -112,7 +112,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 				.forEach(subPopulationLabel -> validateChildTypeCount(finalSubPopulationList, subPopulationLabel, node));
 
 		for (SubPopulation subPopulation : finalSubPopulationList) {
-			validateSubPopulation(node, subPopulation);
+			validateSubPopulation(node, subPopulation, measureConfig.getMeasureId());
 		}
 	}
 
@@ -149,11 +149,11 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param node          to validate
 	 * @param subPopulation a grouping of measures
 	 */
-	private void validateSubPopulation(Node node, SubPopulation subPopulation) {
+	private void validateSubPopulation(Node node, SubPopulation subPopulation, String measureId) {
 		List<Consumer<Node>> validations = prepValidations(subPopulation);
 		validations.forEach(validate -> validate.accept(node));
 
-		validateDenomCountToIpopCount(node, subPopulation);
+		validateDenomCountToIpopCount(node, subPopulation, measureId);
 	}
 
 
@@ -174,7 +174,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param node The current parent node
 	 * @param subPopulation the current sub population
 	 */
-	protected void validateDenomCountToIpopCount(Node node, SubPopulation subPopulation) {
+	protected void validateDenomCountToIpopCount(Node node, SubPopulation subPopulation, String measureId) {
 		Node denomNode = getDenominatorNodeFromCurrentSubPopulation(node, subPopulation);
 		Node ipopNode = getIpopNodeFromCurrentSubPopulation(node, subPopulation);
 		String program = node.getParent().getParent().getValue(ClinicalDocumentDecoder.PROGRAM_NAME);
@@ -183,7 +183,8 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 			Node denomCount = denomNode.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
 			Node ipopCount = ipopNode.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
 
-			if (ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME.equalsIgnoreCase(program)) {
+			if (ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME.equalsIgnoreCase(program)
+				&& MeasureConfigHelper.CPC_PLUS_MEASURES.contains(measureId)) {
 				validateCpcDenominatorCount(denomCount, ipopCount, subPopulation.getDenominatorUuid());
 			} else {
 				validateDenominatorCount(denomCount, ipopCount, subPopulation.getDenominatorUuid());
