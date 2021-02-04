@@ -131,7 +131,7 @@ public class QrdaGenerator {
 		transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-		transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");git 
+		transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 		return transformer;
 	}
 
