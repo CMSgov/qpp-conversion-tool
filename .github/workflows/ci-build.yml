@@ -19,7 +19,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Check PII & Credentiail leaks
-      uses: zricethezav/gitleaks-action@58dc69eef21e5798a163aa10a467bdf2e0749f4b # pin@master
+      uses: zricethezav/gitleaks-action@6e41781c235feb424ecc3435610dce20ad349a70 # pin@master
 
 
     - name: Set up JDK 11
