@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.util;
 
-import com.google.common.collect.ImmutableSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -18,7 +17,7 @@ public class MeasureConfigHelperTest {
 	private static final String THE_UUID = "40280382-6963-bf5e-0169-da3833273869";
 	private static final String THE_E_MEASURE_ID = "CMS122v8";
 	private static final String THE_MEASURE_ID = "001";
-	private static Set<String> MULTI_TO_SINGLE_MEASURES = ImmutableSet.of("001", "008", "143", "438");
+	private static Set<String> MULTI_TO_SINGLE_MEASURES = Set.of("001", "008", "143", "438");
 
 	@Test
 	void testGetMeasureConfigSuccess() {

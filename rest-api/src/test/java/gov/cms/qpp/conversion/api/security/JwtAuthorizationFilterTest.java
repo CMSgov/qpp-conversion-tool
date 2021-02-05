@@ -1,9 +1,6 @@
 package gov.cms.qpp.conversion.api.security;
 
-import gov.cms.qpp.conversion.api.helper.JwtPayloadHelper;
-import gov.cms.qpp.conversion.api.helper.JwtTestHelper;
-
-import com.google.common.collect.ImmutableSet;
+import com.google.common.truth.Truth;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -19,6 +16,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import gov.cms.qpp.conversion.api.helper.JwtPayloadHelper;
+import gov.cms.qpp.conversion.api.helper.JwtTestHelper;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import java.io.IOException;
@@ -29,12 +29,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import com.google.common.truth.Truth;
-
 //Using jUnit 4 for power mock
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({SecurityContextHolder.class})
-@PowerMockIgnore("javax.crypto.*")
+@PowerMockIgnore({"org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*", "com.sun.org.apache.xerces.*", "javax.crypto.*"})
+
 public class JwtAuthorizationFilterTest {
 
 	private static final String ORG_TYPE = "registry";
@@ -157,7 +156,7 @@ public class JwtAuthorizationFilterTest {
 
 	@Test
 	public void testGivenOrgName() {
-		Set<String> expected = ImmutableSet.of("some org name");
+		Set<String> expected = Set.of("some org name");
 		JwtAuthorizationFilter testJwtAuthFilter = new JwtAuthorizationFilter(authenticationManager, expected);
 		Truth.assertThat(testJwtAuthFilter.orgName).isEqualTo(expected);
 	}

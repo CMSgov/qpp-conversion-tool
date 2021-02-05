@@ -6,11 +6,11 @@
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-conversion-tool-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>4.3.1-RELEASE</version>
+	<version>4.3.2-RELEASE</version>
 	<name>QPP Conversion Tool</name>
 
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>11</java.version>
 		<aws.version>1.11.893</aws.version>
 		<junit.version>5.5.2</junit.version>
 		<jjwt.version>0.10.7</jjwt.version>
@@ -21,8 +21,9 @@
 		<junit.excludes>integration, acceptance</junit.excludes>
 		<junit.includes/>
 		<maven.generate.phase>generate-sources</maven.generate.phase>
-		<jacoco.report.path>/target/jacoco.xml</jacoco.report.path>
-		<argLine></argLine>
+
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
 	</properties>
 
 	<modules>
@@ -46,24 +47,11 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.8.1</version>
 					<configuration>
-						<compilerId>javac-with-errorprone</compilerId>
 						<forceJavacCompilerUse>true</forceJavacCompilerUse>
 						<source>${java.version}</source>
 						<target>${java.version}</target>
 					</configuration>
 					<dependencies>
-						<dependency>
-							<groupId>org.codehaus.plexus</groupId>
-							<artifactId>plexus-compiler-javac-errorprone</artifactId>
-							<version>2.8.5</version>
-						</dependency>
-
-						<dependency>
-							<groupId>com.google.errorprone</groupId>
-							<artifactId>error_prone_core</artifactId>
-							<version>2.3.3</version>
-						</dependency>
-
 						<dependency>
 							<groupId>org.reflections</groupId>
 							<artifactId>reflections</artifactId>
@@ -77,7 +65,7 @@
 					<artifactId>modernizer-maven-plugin</artifactId>
 					<version>2.0.0</version>
 					<configuration>
-						<javaVersion>1.8</javaVersion>
+						<javaVersion>${java.version}</javaVersion>
 					</configuration>
 					<executions>
 						<execution>
@@ -93,7 +81,7 @@
 				<plugin>
 					<groupId>com.github.spotbugs</groupId>
 					<artifactId>spotbugs-maven-plugin</artifactId>
-					<version>3.1.6</version>
+					<version>4.1.3</version>
 					<configuration>
 						<effort>Max</effort>
 						<threshold>Low</threshold>
@@ -301,6 +289,12 @@
 			</dependency>
 
 			<dependency>
+				<groupId>org.javassist</groupId>
+				<artifactId>javassist</artifactId>
+				<version>3.24.1-GA</version>
+			</dependency>
+
+			<dependency>
 				<groupId>nl.jqno.equalsverifier</groupId>
 				<artifactId>equalsverifier</artifactId>
 				<version>3.1.10</version>
@@ -376,6 +370,18 @@
 				<groupId>com.jayway.jsonpath</groupId>
 				<artifactId>json-path</artifactId>
 				<version>2.4.0</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.ow2.asm</groupId>
+						<artifactId>asm</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>org.ow2.asm</groupId>
+				<artifactId>asm</artifactId>
+				<version>6.2</version> <!-- Use newer version of ASM -->
 			</dependency>
 
 			<dependency>

@@ -6,8 +6,8 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>4.3.1-RELEASE</version>
-		<relativePath>../</relativePath>
+		<version>4.3.2-RELEASE</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>test-commons</artifactId>

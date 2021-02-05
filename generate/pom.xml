@@ -5,7 +5,7 @@
     <parent>
         <artifactId>qpp-conversion-tool-parent</artifactId>
         <groupId>gov.cms.qpp.conversion</groupId>
-        <version>4.3.1-RELEASE</version>
+        <version>4.3.2-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -17,7 +17,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-plugin</artifactId>
-            	<version>3.5.2</version> <!-- 3.5.3 is not available -->
+            	<version>3.6.0</version>
                 <configuration>
                     <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
                 </configuration>

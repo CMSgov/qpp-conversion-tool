@@ -217,14 +217,17 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 			case MIPS_GROUP:
 				pair = new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_GROUP);
 				break;
-			// Fall through for the same Immutable pair with MIPS_APM program
-			case MIPS_APM:
-			case CPCPLUS:
+
+ 			case CPCPLUS:
 				pair = new ImmutablePair<>(CPCPLUS_PROGRAM_NAME, ENTITY_APM);
 				break;
 
 			case MIPS_VIRTUAL_GROUP:
 				pair = new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_VIRTUAL_GROUP);
+				break;
+
+			case MIPS_APM:
+				pair = new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_APM);
 				break;
 
 			default:
