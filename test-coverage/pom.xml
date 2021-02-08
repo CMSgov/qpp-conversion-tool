@@ -33,7 +33,7 @@
 		<dependency>
 			<groupId>gov.cms.qpp.conversion</groupId>
 			<artifactId>commons</artifactId>
-			<version>4.3.1-RELEASE</version>
+			<version>4.3.2-RELEASE</version>
 		</dependency>
 	</dependencies>
 
