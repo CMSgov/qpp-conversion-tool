@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>4.3.1-RELEASE</version>
+		<version>4.3.2-RELEASE</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -14,30 +14,28 @@
 	<packaging>pom</packaging>
 	<name>QPP Conversion Tool Test Coverage</name>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>gov.cms.qpp.conversion</groupId>
-				<artifactId>converter</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>gov.cms.qpp.conversion</groupId>
-				<artifactId>commandline</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>gov.cms.qpp.conversion</groupId>
-				<artifactId>rest-api</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>gov.cms.qpp.conversion</groupId>
-				<artifactId>commons</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+	<dependencies>
+		<dependency>
+			<groupId>gov.cms.qpp.conversion</groupId>
+			<artifactId>converter</artifactId>
+			<version>4.3.2-RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>gov.cms.qpp.conversion</groupId>
+			<artifactId>commandline</artifactId>
+			<version>4.3.2-RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>gov.cms.qpp.conversion</groupId>
+			<artifactId>rest-api</artifactId>
+			<version>4.3.2-RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>gov.cms.qpp.conversion</groupId>
+			<artifactId>commons</artifactId>
+			<version>4.3.1-RELEASE</version>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>
