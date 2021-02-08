@@ -3,14 +3,15 @@ package gov.cms.qpp.generator;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
-import gov.cms.qpp.conversion.model.validation.MeasureConfig;
-import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
-import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import gov.cms.qpp.conversion.model.validation.MeasureConfig;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
+import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -33,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
@@ -135,7 +137,7 @@ public class QrdaGenerator {
 
 	private Result getDestination() throws IOException {
 		Instant instant = Instant.now();
-		Writer writer = new FileWriter("./sample-files/generated" + instant.getEpochSecond() + ".xml");
+		Writer writer = new FileWriter("./sample-files/generated" + instant.getEpochSecond() + ".xml", StandardCharsets.UTF_8);
 		return new StreamResult(writer);
 	}
 

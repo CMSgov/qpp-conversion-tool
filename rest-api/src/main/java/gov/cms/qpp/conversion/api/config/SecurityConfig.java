@@ -1,14 +1,15 @@
 package gov.cms.qpp.conversion.api.config;
 
-import gov.cms.qpp.conversion.api.security.JwtAuthorizationFilter;
-
-import com.google.common.collect.ImmutableSet;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+
+import gov.cms.qpp.conversion.api.security.JwtAuthorizationFilter;
+
+import java.util.Set;
 
 /**
  * Web Security Configuration
@@ -22,7 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Value("${ORG_NAME:" + JwtAuthorizationFilter.DEFAULT_ORG_NAME + "}")
 	protected String orgName;
 
-	@Value("${RTI_ORG_NAME:" + JwtAuthorizationFilter.DEFAULT_ORG_NAME + "}")
+	@Value("${RTI_ORG_NAME:" + JwtAuthorizationFilter.DEFAULT_RTI_ORG + "}")
 	protected String rtiOrgName;
 
 	/**
@@ -36,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.antMatcher(CPC_WILDCARD).authorizeRequests()
 				.anyRequest().authenticated()
 				.and()
-				.addFilter(new JwtAuthorizationFilter(authenticationManager(), ImmutableSet.of(orgName, rtiOrgName)))
+				.addFilter(new JwtAuthorizationFilter(authenticationManager(), Set.of(orgName, rtiOrgName)))
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and().cors()
 				.and().csrf().disable();
