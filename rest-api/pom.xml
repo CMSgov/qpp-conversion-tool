@@ -18,7 +18,6 @@
 	<properties>
 		<requiredCodeCoverage>0.90</requiredCodeCoverage>
 		<tomcat.version>9.0.40</tomcat.version>
-		<sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${jacoco.report.path}</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 
 	<build>
@@ -226,13 +225,6 @@
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-jackson</artifactId>
 			<scope>runtime</scope>
-		</dependency>
-
-
-		<dependency>
-			<groupId>gov.cms.qpp.conversion</groupId>
-			<artifactId>converter</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>
