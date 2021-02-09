@@ -16,6 +16,7 @@
 
 	<properties>
 		<requiredCodeCoverage>0.80</requiredCodeCoverage>
+		<sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/../test-coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 
 	<build>
@@ -37,10 +38,10 @@
 				</configuration>
 			</plugin>
 
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>org.jacoco</groupId>-->
+<!--				<artifactId>jacoco-maven-plugin</artifactId>-->
+<!--			</plugin>-->
 
 			<plugin>
 				<groupId>org.gaul</groupId>
