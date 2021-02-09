@@ -39,6 +39,16 @@
 			<artifactId>commons</artifactId>
 			<version>4.3.2-RELEASE</version>
 		</dependency>
+		<dependency>
+			<groupId>gov.cms.qpp.conversion</groupId>
+			<artifactId>test-commons</artifactId>
+			<version>4.3.2-RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>gov.cms.qpp.conversion</groupId>
+			<artifactId>generate-maven-plugin</artifactId>
+			<version>4.3.2-RELEASE</version>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -17,6 +17,7 @@
 
 	<properties>
 		<requiredCodeCoverage>0.00</requiredCodeCoverage>
+		<sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/../test-coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 
 	<build>
