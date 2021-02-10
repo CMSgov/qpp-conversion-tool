@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>gov.cms.qpp.conversion</groupId>
+		<artifactId>qpp-conversion-tool-parent</artifactId>
+		<version>4.3.2-RELEASE</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<artifactId>test-coverage</artifactId>
+	<packaging>pom</packaging>
+	<name>QPP Conversion Tool Test Coverage</name>
+
+	<properties>
+		<sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/../test-coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>gov.cms.qpp.conversion</groupId>
+			<artifactId>converter</artifactId>
+			<version>4.3.2-RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>gov.cms.qpp.conversion</groupId>
+			<artifactId>commandline</artifactId>
+			<version>4.3.2-RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>gov.cms.qpp.conversion</groupId>
+			<artifactId>rest-api</artifactId>
+			<version>4.3.2-RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>gov.cms.qpp.conversion</groupId>
+			<artifactId>commons</artifactId>
+			<version>4.3.2-RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>gov.cms.qpp.conversion</groupId>
+			<artifactId>test-commons</artifactId>
+			<version>4.3.2-RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>gov.cms.qpp.conversion</groupId>
+			<artifactId>generate-maven-plugin</artifactId>
+			<version>4.3.2-RELEASE</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.5</version>
+				<executions>
+					<execution>
+						<id>report-aggregate</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>report-aggregate</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-check</id>
+						<phase>${verificationsPhase}</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<rule>
+									<limits>
+										<limit>
+											<counter>LINE</counter>
+											<value>COVEREDRATIO</value>
+											<minimum>${requiredCodeCoverage}</minimum>
+										</limit>
+										<limit>
+											<counter>BRANCH</counter>
+											<value>COVEREDRATIO</value>
+											<minimum>${requiredCodeCoverage}</minimum>
+										</limit>
+									</limits>
+								</rule>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
