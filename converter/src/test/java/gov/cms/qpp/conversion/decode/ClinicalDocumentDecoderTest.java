@@ -311,6 +311,7 @@ class ClinicalDocumentDecoderTest {
 	@Test
 	void decodeMipsApmTest() {
 		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.MIPS_APM);
+		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace()));
 		Node testParentNode = new Node();
 
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
@@ -320,7 +321,7 @@ class ClinicalDocumentDecoderTest {
 		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE))
 			.isEqualTo(ClinicalDocumentDecoder.ENTITY_APM);
 		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_ID))
-			.isEqualTo("x12345");
+			.isEqualTo("AR000000");
 	}
 
 	private Element makeClinicalDocument(String programName) {
