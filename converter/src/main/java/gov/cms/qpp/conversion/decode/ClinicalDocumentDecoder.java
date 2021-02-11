@@ -72,7 +72,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 				setNationalProviderIdOnNode(element, thisNode);
 			}
 			if (ENTITY_VIRTUAL_GROUP.equals(entityType)) {
-				setApmEntityIdOnNode(element, thisNode);
+				setApmEntityIdOnNode(element, thisNode, ClinicalDocumentDecoder.ENTITY_ID);
 			}
 		}
 
@@ -92,7 +92,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 				thisNode.putValue(PRACTICE_ID, id.getValue(), false);
 			setOnNode(element, getXpath(PRACTICE_ID), consumer, Filters.attribute(), false);
 		} else {
-			setApmEntityIdOnNode(element, thisNode);
+			setApmEntityIdOnNode(element, thisNode, ClinicalDocumentDecoder.PRACTICE_ID);
 		}
 	}
 
@@ -195,11 +195,11 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 			consumer, Filters.attribute());
 	}
 
-	private void setApmEntityIdOnNode(Element element, Node thisNode) {
+	private void setApmEntityIdOnNode(Element element, Node thisNode, String entityLocationId) {
 		Consumer<? super Attribute> consumer = p ->
 			thisNode.putValue(ENTITY_ID,
 				p.getValue());
-		setOnNode(element, getXpath(ENTITY_ID),
+		setOnNode(element, getXpath(entityLocationId),
 			consumer, Filters.attribute(), true);
 	}
 
