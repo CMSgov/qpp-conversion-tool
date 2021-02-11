@@ -308,6 +308,21 @@ class ClinicalDocumentDecoderTest {
 			.isEqualTo("x12345");
 	}
 
+	@Test
+	void decodeMipsApmTest() {
+		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.MIPS_APM);
+		Node testParentNode = new Node();
+
+		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
+		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
+		objectUnderTest.decode(clinicalDocument, testParentNode);
+
+		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE))
+			.isEqualTo(ClinicalDocumentDecoder.ENTITY_APM);
+		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_ID))
+			.isEqualTo("x12345");
+	}
+
 	private Element makeClinicalDocument(String programName) {
 		Namespace rootns = Namespace.getNamespace("urn:hl7-org:v3");
 		Namespace ns = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
