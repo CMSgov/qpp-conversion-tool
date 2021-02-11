@@ -8,6 +8,7 @@ import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 
 import java.util.LinkedHashMap;
@@ -64,14 +65,13 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 				thisNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER));
 		}
 
-		if (ClinicalDocumentDecoder.ENTITY_APM.equals(entityType)) {
-			wrapper.put(ClinicalDocumentDecoder.ENTITY_ID,
-				thisNode.getValue(ClinicalDocumentDecoder.PRACTICE_ID));
+		if (Program.isCpc(thisNode)) {
+			wrapper.put(ClinicalDocumentDecoder.ENTITY_ID, thisNode.getValue(ClinicalDocumentDecoder.PRACTICE_ID));
 		}
 
-		if (ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP.equals(entityType)) {
-			wrapper.put(ClinicalDocumentDecoder.ENTITY_ID,
-				thisNode.getValue(ClinicalDocumentDecoder.ENTITY_ID));
+		if (ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP.equals(entityType) ||
+			(!Program.isCpc(thisNode) && ClinicalDocumentDecoder.ENTITY_APM.equalsIgnoreCase(entityType))) {
+			wrapper.put(ClinicalDocumentDecoder.ENTITY_ID, thisNode.getValue(ClinicalDocumentDecoder.ENTITY_ID));
 		}
 	}
 
