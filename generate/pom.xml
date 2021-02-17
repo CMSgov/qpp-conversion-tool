@@ -12,6 +12,10 @@
     <artifactId>generate-maven-plugin</artifactId>
     <packaging>maven-plugin</packaging>
 
+	<properties>
+		<sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/../test-coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+	</properties>
+
     <build>
         <plugins>
             <plugin>
