@@ -18,6 +18,7 @@ import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 import gov.cms.qpp.conversion.util.NumberHelper;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
@@ -111,7 +112,7 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 										.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID)), node));
 						}
 					} else if (performanceRateValue != null && NumberHelper.isNumeric(performanceRateValue)
-						&& Double.valueOf(performanceRateValue) == 0 && (denominatorValue == 0 || performanceDenominator == 0)) {
+						&& NumberHelper.isZero(performanceRateValue) && (denominatorValue == 0 || performanceDenominator == 0)) {
 						addError(Detail.forProblemAndNode(ProblemCode.CPC_PLUS_ZERO_PERFORMANCE_RATE, node));
 					}
 				}
