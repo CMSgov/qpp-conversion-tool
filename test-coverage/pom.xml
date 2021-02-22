@@ -22,7 +22,7 @@
 		<dependency>
 			<groupId>gov.cms.qpp.conversion</groupId>
 			<artifactId>converter</artifactId>
-			<version></version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>gov.cms.qpp.conversion</groupId>
