@@ -22,32 +22,32 @@
 		<dependency>
 			<groupId>gov.cms.qpp.conversion</groupId>
 			<artifactId>converter</artifactId>
-			<version>4.3.2-RELEASE</version>
+			<version></version>
 		</dependency>
 		<dependency>
 			<groupId>gov.cms.qpp.conversion</groupId>
 			<artifactId>commandline</artifactId>
-			<version>4.3.2-RELEASE</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>gov.cms.qpp.conversion</groupId>
 			<artifactId>rest-api</artifactId>
-			<version>4.3.2-RELEASE</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>gov.cms.qpp.conversion</groupId>
 			<artifactId>commons</artifactId>
-			<version>4.3.2-RELEASE</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>gov.cms.qpp.conversion</groupId>
 			<artifactId>test-commons</artifactId>
-			<version>4.3.2-RELEASE</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>gov.cms.qpp.conversion</groupId>
 			<artifactId>generate-maven-plugin</artifactId>
-			<version>4.3.2-RELEASE</version>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 
