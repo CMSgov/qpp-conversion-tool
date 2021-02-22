@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.api.security;
 
-import com.google.common.collect.ImmutableSet;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,7 +21,8 @@ import java.util.Set;
  */
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 	public static final String DEFAULT_ORG_NAME = "cpc-test";
-	public static final Set<String> DEFAULT_ORG_SET = ImmutableSet.of(DEFAULT_ORG_NAME);
+	public static final String DEFAULT_RTI_ORG = "rti-test";
+	public static final Set<String> DEFAULT_ORG_SET = Set.of(DEFAULT_ORG_NAME);
 	private static final String HEADER_STRING = "Authorization";
 	private static final String TOKEN_PREFIX = "Bearer ";
 

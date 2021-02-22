@@ -6,8 +6,8 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>4.3.2-RELEASE</version>
-		<relativePath>../</relativePath>
+		<version>4.3.3-RELEASE</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>test-commons</artifactId>
@@ -17,6 +17,7 @@
 
 	<properties>
 		<requiredCodeCoverage>0.00</requiredCodeCoverage>
+		<sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/../test-coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 
 	<build>

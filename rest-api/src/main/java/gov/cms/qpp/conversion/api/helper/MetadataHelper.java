@@ -184,7 +184,7 @@ public class MetadataHelper {
 		 *
 		 * @param metadata to update
 		 */
-		private void setStatus(Metadata metadata) {
+		protected void setStatus(Metadata metadata) {
 			metadata.setOverallStatus(overall);
 			metadata.setConversionStatus(conversion);
 			metadata.setValidationStatus(validation);

@@ -6,8 +6,8 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>4.3.2-RELEASE</version>
-		<relativePath>../</relativePath>
+		<version>4.3.3-RELEASE</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>rest-api</artifactId>
@@ -38,11 +38,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-			</plugin>
-
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
 			</plugin>
 
 			<plugin>
@@ -225,13 +220,6 @@
 			<scope>runtime</scope>
 		</dependency>
 
-
-		<dependency>
-			<groupId>gov.cms.qpp.conversion</groupId>
-			<artifactId>converter</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
 		<dependency>
 			<groupId>net.jodah</groupId>
 			<artifactId>concurrentunit</artifactId>
@@ -298,6 +286,13 @@
 		<dependency>
 			<groupId>com.jcabi</groupId>
 			<artifactId>jcabi-manifests</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>gov.cms.qpp.conversion</groupId>
+			<artifactId>converter</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
