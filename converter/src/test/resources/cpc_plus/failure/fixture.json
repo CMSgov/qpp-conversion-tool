@@ -466,18 +466,6 @@
 			}
 		]
 	},
-	"CPCPlus_WithQuality_CMS138_AlphCharInPerfRate_SampleQRDA-III.xml": {
-		"strict": true,
-		"errorData": [
-			{
-				"errorCode": 33,
-				"subs": [
-					"true"
-				],
-				"occurrences": 1
-			}
-		]
-	},
 	"CPCPlus_WithQuality_ExtraPopulationForCMS149_SampleQRDA-III.xml": {
 		"strict": true,
 		"errorData": [
@@ -852,6 +840,18 @@
 			},
 			{
 				"errorCode" : 55,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_2020-Alpha-Performance-Rate.xml" : {
+		"strict" : false,
+		"errorData" : [
+			{
+				"errorCode": 33,
+				"subs": [
+					"true"
+				],
 				"occurrences": 1
 			}
 		]

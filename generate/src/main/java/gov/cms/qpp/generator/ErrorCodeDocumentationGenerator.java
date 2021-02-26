@@ -3,16 +3,17 @@ package gov.cms.qpp.generator;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
-import gov.cms.qpp.conversion.model.error.ProblemCode;
-
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.project.MavenProject;
 
+import gov.cms.qpp.conversion.model.error.ProblemCode;
+
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,7 @@ public class ErrorCodeDocumentationGenerator extends AbstractMojo {
 		Mustache mdTemplate = mf.compile("error-code/error-code-tempate.md");
 
 		String offsetPath = args[0];
-		try (FileWriter fw = new FileWriter(offsetPath + "ERROR_MESSAGES.md")) {
+		try (FileWriter fw = new FileWriter(offsetPath + "ERROR_MESSAGES.md", StandardCharsets.UTF_8)) {
 			List<ProblemCode> errorCodes = Arrays.asList(ProblemCode.values());
 			mdTemplate.execute(fw, errorCodes).flush();
 			fw.flush();

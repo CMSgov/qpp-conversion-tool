@@ -6,8 +6,8 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>4.3.2-RELEASE</version>
-		<relativePath>../</relativePath>
+		<version>4.3.3-RELEASE</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>commons</artifactId>
@@ -16,15 +16,11 @@
 
 	<properties>
 		<requiredCodeCoverage>0.05</requiredCodeCoverage>
+		<sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/../test-coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-			</plugin>
-
 			<plugin>
 				<groupId>org.gaul</groupId>
 				<artifactId>modernizer-maven-plugin</artifactId>

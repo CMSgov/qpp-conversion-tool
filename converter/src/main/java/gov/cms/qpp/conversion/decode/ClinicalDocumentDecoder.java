@@ -59,11 +59,11 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	@Override
 	protected DecodeResult decode(Element element, Node thisNode) {
 		setProgramNameOnNode(element, thisNode);
-		setEntityIdOnNode(element, thisNode);
 		setPracticeSiteAddress(element, thisNode);
 		setCehrtOnNode(element, thisNode);
 		String entityType = thisNode.getValue(ENTITY_TYPE);
-		if (ENTITY_APM.equalsIgnoreCase(entityType)){
+		if (ENTITY_APM.equalsIgnoreCase(entityType)) {
+			setEntityIdOnNode(element, thisNode);
 			setMultipleNationalProviderIdsOnNode(element, thisNode);
 			setMultipleTaxProviderTaxIdsOnNode(element, thisNode);
 		} else {
@@ -72,7 +72,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 				setNationalProviderIdOnNode(element, thisNode);
 			}
 			if (ENTITY_VIRTUAL_GROUP.equals(entityType)) {
-				setVirtualGroupOnNode(element, thisNode);
+				setEntityIdOnNode(element, thisNode, ClinicalDocumentDecoder.ENTITY_ID);
 			}
 		}
 
@@ -91,6 +91,8 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 			Consumer<Attribute> consumer = id ->
 				thisNode.putValue(PRACTICE_ID, id.getValue(), false);
 			setOnNode(element, getXpath(PRACTICE_ID), consumer, Filters.attribute(), false);
+		} else {
+			setEntityIdOnNode(element, thisNode, ClinicalDocumentDecoder.PRACTICE_ID);
 		}
 	}
 
@@ -193,12 +195,9 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 			consumer, Filters.attribute());
 	}
 
-	private void setVirtualGroupOnNode(Element element, Node thisNode) {
-		Consumer<? super Attribute> consumer = p ->
-			thisNode.putValue(ENTITY_ID,
-				p.getValue());
-		setOnNode(element, getXpath(ENTITY_ID),
-			consumer, Filters.attribute(), true);
+	private void setEntityIdOnNode(Element element, Node thisNode, String entityLocationId) {
+		Consumer<? super Attribute> consumer = p -> thisNode.putValue(ENTITY_ID, p.getValue());
+		setOnNode(element, getXpath(entityLocationId), consumer, Filters.attribute(), true);
 	}
 
 	/**

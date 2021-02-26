@@ -235,7 +235,7 @@ CDA Body
 									<code code="72510-1" codeSystem="2.16.840.1.113883.6.1"
 										  codeSystemName="LOINC" displayName="Performance Rate"/>
 									<statusCode code="completed"/>
-									<value xsi:type="REAL" value="0"/>
+									<value xsi:type="REAL" value="0.000000"/>
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
 											<id root="BD70E166-D478-41A4-B8C8-041CE9F75850"/>

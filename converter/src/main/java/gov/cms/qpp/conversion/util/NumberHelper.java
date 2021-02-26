@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.util;
 
+import java.math.BigDecimal;
+
 public class NumberHelper {
 	//
 	private NumberHelper() {}
@@ -11,6 +13,15 @@ public class NumberHelper {
 	 * @return
 	 */
 	public static boolean isNumeric(String value) {
-		return value.matches("-?\\d+");
+		try {
+			Double.parseDouble(value);
+			return true;
+		} catch (NumberFormatException exc) {
+			return false;
+		}
+	}
+
+	public static boolean isZero(String value) {
+		return BigDecimal.ZERO.compareTo(BigDecimal.valueOf(Double.parseDouble(value))) == 0;
 	}
 }
