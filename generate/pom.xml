@@ -5,19 +5,24 @@
     <parent>
         <artifactId>qpp-conversion-tool-parent</artifactId>
         <groupId>gov.cms.qpp.conversion</groupId>
-        <version>4.1.0-RELEASE</version>
+        <version>4.3.3-RELEASE</version>
+		<relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>generate-maven-plugin</artifactId>
     <packaging>maven-plugin</packaging>
 
+	<properties>
+		<sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/../test-coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+	</properties>
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-plugin</artifactId>
-            	<version>3.5.2</version> <!-- 3.5.3 is not available -->
+            	<version>3.6.0</version>
                 <configuration>
                     <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
                 </configuration>

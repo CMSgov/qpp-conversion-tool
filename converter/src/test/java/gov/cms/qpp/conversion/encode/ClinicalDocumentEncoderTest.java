@@ -239,6 +239,23 @@ class ClinicalDocumentEncoderTest {
 	}
 
 	@Test
+	void testApmIncludesEntityID() throws EncodeException {
+		JsonWrapper testJsonWrapper = new JsonWrapper();
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "apm");
+
+		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
+		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
+
+		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.toObject());
+
+		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+			.isNull();
+
+		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID))
+			.isNotNull();
+	}
+
+	@Test
 	void testMeasurementSetIncludesSource() throws EncodeException {
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 

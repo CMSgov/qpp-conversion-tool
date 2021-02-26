@@ -9,5 +9,6 @@
 !pom.xml
 !rest-api
 !test-commons
+!test-coverage
 !tools
 !infrastructure

@@ -1,12 +1,10 @@
 package gov.cms.qpp.acceptance;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.jayway.jsonpath.TypeRef;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import gov.cms.qpp.acceptance.cpc.CPCAcceptanceFixture;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
@@ -44,6 +42,10 @@ class QualityMeasureIdRoundTripTest {
 		Paths.get("src/test/resources/negative/wrongSubPopulationsMeasure135.xml");
 	static final Path MISSING_COUNT_FOR_PERF_DENOM =
 		Paths.get("src/test/resources/negative/perfDenomAggCountMissing.xml");
+	static final Path ZERO_COUNT_FOR_PERF_DENOM =
+		Paths.get("src/test/resources/negative/perfRateDenomZero.xml");
+	static final Path DECIMAL_ZERO_COUNT_FOR_PERF_DENOM =
+		Paths.get("src/test/resources/negative/decimalPerfRateDenomZero.xml");
 	static final Path MIPS_APM_FILE = Paths.get("src/test/resources/CpcMipsApm-2020.xml");
 	ApmEntityIds apmEntityIds;
 
@@ -210,6 +212,23 @@ class QualityMeasureIdRoundTripTest {
 	}
 
 	@Test
+	void testZeroPerfRateDenom() {
+		Converter converter = new Converter(new PathSource(ZERO_COUNT_FOR_PERF_DENOM), new Context(apmEntityIds));
+		List<Detail> details = new ArrayList<>();
+
+		try {
+			converter.transform();
+		} catch (TransformException exception) {
+			AllErrors errors = exception.getDetails();
+			details.addAll(errors.getErrors().get(0).getDetails());
+		}
+
+		LocalizedProblem error = ProblemCode.CPC_PLUS_ZERO_PERFORMANCE_RATE;
+		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.contains(error);
+	}
+
+	@Test
 	void test2020TopLevelMipsApmSampleFile() {
 		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 		Converter converter = new Converter(new PathSource(MIPS_APM_FILE), new Context(apmEntityIds));
@@ -235,5 +254,22 @@ class QualityMeasureIdRoundTripTest {
 		assertThat(practiceId).isEmpty();
 		assertThat(source).contains("qrda3");
 		assertThat(measurements).hasSize(1);
+	}
+
+	@Test
+	void testDecimalZeroPerfRateDenom() {
+		Converter converter = new Converter(new PathSource(DECIMAL_ZERO_COUNT_FOR_PERF_DENOM), new Context(apmEntityIds));
+		List<Detail> details = new ArrayList<>();
+
+		try {
+			converter.transform();
+		} catch (TransformException exception) {
+			AllErrors errors = exception.getDetails();
+			details.addAll(errors.getErrors().get(0).getDetails());
+		}
+
+		LocalizedProblem error = ProblemCode.CPC_PLUS_ZERO_PERFORMANCE_RATE;
+		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.contains(error);
 	}
 }

@@ -179,6 +179,17 @@ class CpcClinicalDocumentValidatorTest {
 	}
 
 	@Test
+	void testCpcPlusMissingCehrt() {
+		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
+		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.CEHRT);
+		List<Detail> errors = cpcValidator.validateSingleNode(clinicalDocumentNode).getErrors();
+
+		assertWithMessage("Must validate with the correct error")
+			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ProblemCode.CPC_MISSING_CEHRT_ID);
+	}
+
+	@Test
 	void testWarnWhenContainsIa() {
 		Node clinicalDocumentNode = createCpcPlusClinicalDocument();
 		Node iaSection = new Node(TemplateId.IA_SECTION);
@@ -202,6 +213,17 @@ class CpcClinicalDocumentValidatorTest {
 			.contains(ProblemCode.CPC_PLUS_NO_IA_OR_PI);
 	}
 
+	@Test
+	void testCpcPlusDuplicateCehrt() {
+		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.CEHRT, "XX15EXXXXXXXXXX", false);
+		List<Detail> errors = cpcValidator.validateSingleNode(clinicalDocumentNode).getErrors();
+
+		assertWithMessage("Must validate with the correct error")
+			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ProblemCode.CPC_PLUS_DUPLICATE_CEHRT);
+	}
+
 	private Node createValidCpcPlusClinicalDocument() {
 		Node clinicalDocumentNode = createCpcPlusClinicalDocument();
 		addMeasureSectionNode(clinicalDocumentNode);
@@ -216,7 +238,7 @@ class CpcClinicalDocumentValidatorTest {
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID, "DogCow");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, "123456789");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, "9900000099");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.CEHRT, "1234567890x");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.CEHRT, "XX15EXXXXXXXXXX");
 
 		return clinicalDocumentNode;
 	}
