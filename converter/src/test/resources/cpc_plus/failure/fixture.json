@@ -346,7 +346,10 @@
 		"strict": true,
 		"errorData": [
 			{
-				"errorCode": 13,
+				"errorCode": 101,
+				"subs" : [
+					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+				],
 				"occurrences": 1
 			}
 		]
@@ -356,6 +359,9 @@
 		"errorData": [
 			{
 				"errorCode": 13,
+				"subs" : [
+					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+				],
 				"occurrences": 1
 			}
 		]
@@ -455,18 +461,6 @@
 				"errorCode": 33,
 				"subs": [
 					"-.888889"
-				],
-				"occurrences": 1
-			}
-		]
-	},
-	"CPCPlus_WithQuality_CMS138_AlphCharInPerfRate_SampleQRDA-III.xml": {
-		"strict": true,
-		"errorData": [
-			{
-				"errorCode": 33,
-				"subs": [
-					"true"
 				],
 				"occurrences": 1
 			}
@@ -846,6 +840,18 @@
 			},
 			{
 				"errorCode" : 55,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_2020-Alpha-Performance-Rate.xml" : {
+		"strict" : false,
+		"errorData" : [
+			{
+				"errorCode": 33,
+				"subs": [
+					"true"
+				],
 				"occurrences": 1
 			}
 		]

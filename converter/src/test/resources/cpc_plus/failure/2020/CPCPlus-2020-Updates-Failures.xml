@@ -76,7 +76,7 @@
 	</legalAuthenticator>
 	<participant typeCode="DEV">
 		<associatedEntity classCode="RGPR">
-			<id root="2.16.840.1.113883.3.2074.1" extension="0014ABC1D1EFG1H" />
+			<id root="2.16.840.1.113883.3.2074.1" extension="XX15EXXXXXXXXXX" />
 			<code code="129465004" displayName="medical record, device" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" />
 		</associatedEntity>
 	</participant>
