@@ -1,25 +1,38 @@
 package gov.cms.qpp.acceptance;
 
 import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.decode.QrdaDecoderEngine;
 import gov.cms.qpp.conversion.encode.EncodeException;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
+import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.io.BufferedWriter;
 import java.io.StringWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 
-class AciSectionRoundTripTest {
+class PiSectionRoundTripTest {
+
+	private static final Path PI_RESTRICTED_MEASURES =
+		Paths.get("src/test/resources/negative/mipsInvalidPIMeasureIds.xml");
 
 	@Test
-	void parseSparseAciSectionAsNode() throws XmlException {
+	void parseSparsePiSectionAsNode() throws XmlException {
 		//set-up
 		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 							 + "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
@@ -58,7 +71,7 @@ class AciSectionRoundTripTest {
 	}
 
 	@Test
-	void parseGarbageAciSectionAsNode() throws XmlException {
+	void parseGarbagePiSectionAsNode() throws XmlException {
 		//set-up
 		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 							+ "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
@@ -99,7 +112,7 @@ class AciSectionRoundTripTest {
 	}
 
 	@Test
-	void parseAciSectionAsJson() throws EncodeException, XmlException {
+	void parsePiSectionAsJson() throws EncodeException, XmlException {
 		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 				+ "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
 				+ "	<section>\n" + "		<!-- Measure Section -->\n"
@@ -145,6 +158,21 @@ class AciSectionRoundTripTest {
 
 		//Test
 		assertThat(sw.toString()).isEqualTo(expected);
+	}
+
+	@Test
+	void testPiSectionRestrictedMeasures() {
+		Converter converter = new Converter(new PathSource(PI_RESTRICTED_MEASURES));
+
+		List<Detail> details = new ArrayList<>();
+		try {
+			converter.transform();
+		} catch (TransformException exception) {
+			AllErrors errors = exception.getDetails();
+			details.addAll(errors.getErrors().get(0).getDetails());
+		}
+		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.contains(ProblemCode.PI_RESTRICTED_MEASURES);
 	}
 
 	private void assertAciSectionHasSingleQedNode(Node aciSectionNode) {
