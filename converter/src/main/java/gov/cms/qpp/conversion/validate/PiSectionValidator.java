@@ -9,6 +9,7 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
 
+import java.util.Collections;
 import java.util.Set;
 
 import static gov.cms.qpp.conversion.decode.PiNumeratorDenominatorDecoder.MEASURE_ID;
@@ -19,7 +20,7 @@ import static gov.cms.qpp.conversion.decode.PiNumeratorDenominatorDecoder.MEASUR
 @Validator(TemplateId.PI_SECTION_V2)
 public class PiSectionValidator extends NodeValidator {
 
-	protected static final Set<String> RESTRICTED_PI_MEASURES = Sets.newHashSet("PI_HIE_1", "PI_LVOTC_1", "PI_HIE_4", "PI_LVITC_2");
+	protected static final Set<String> RESTRICTED_PI_MEASURES = Collections.unmodifiableSet(Sets.newHashSet("PI_HIE_1", "PI_LVOTC_1", "PI_HIE_4", "PI_LVITC_2"));
 
 	/**
 	 * Validates the PI Section.
