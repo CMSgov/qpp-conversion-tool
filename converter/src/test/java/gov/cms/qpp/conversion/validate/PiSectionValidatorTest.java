@@ -16,7 +16,7 @@ import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 class PiSectionValidatorTest {
 
-	private static final String VALID_ACI_MEASURE = "ACI_EP_1";
+	private static final String VALID_PI_MEASURE = "PI_EP_1";
 	private Node reportingParamNode;
 	private Node piNumeratorDenominatorNode;
 	private Node measureNode;
@@ -27,7 +27,7 @@ class PiSectionValidatorTest {
 		reportingParamNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		piNumeratorDenominatorNode = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR);
 		measureNode = new Node(TemplateId.MEASURE_PERFORMED);
-		measureNode.putValue("measureId", VALID_ACI_MEASURE);
+		measureNode.putValue("measureId", VALID_PI_MEASURE);
 
 		piSectionNode = new Node(TemplateId.PI_SECTION_V2);
 		piSectionNode.putValue("category", "pi");
