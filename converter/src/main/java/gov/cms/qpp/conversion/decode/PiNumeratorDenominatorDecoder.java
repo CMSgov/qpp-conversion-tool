@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 @Decoder(TemplateId.PI_NUMERATOR_DENOMINATOR)
 public class PiNumeratorDenominatorDecoder extends QrdaDecoder {
 
-	private static final String MEASURE_ID = "measureId";
+	public static final String MEASURE_ID = "measureId";
 
 	public PiNumeratorDenominatorDecoder(Context context) {
 		super(context);
