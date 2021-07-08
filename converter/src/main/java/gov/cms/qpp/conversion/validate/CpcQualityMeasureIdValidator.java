@@ -32,7 +32,7 @@ import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDeco
 /**
  * Validates a Measure Reference Results for CPC Plus requirements
  */
-@Validator(value = TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4, program = Program.CPC)
+@Validator(value = TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4, program = Program.Y5_AAPMS)
 public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 
 	/**

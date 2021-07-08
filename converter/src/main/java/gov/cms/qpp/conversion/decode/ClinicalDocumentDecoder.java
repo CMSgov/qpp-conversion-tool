@@ -30,6 +30,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	public static final String ENTITY_TYPE = "entityType";
 	public static final String MIPS_PROGRAM_NAME = "mips";
 	public static final String CPCPLUS_PROGRAM_NAME = "cpcPlus";
+	public static final String PCF = "PCF";
 	public static final String PRACTICE_ID = "practiceId";
 	public static final String PRACTICE_SITE_ADDR = "practiceSiteAddr";
 	public static final String CEHRT = "cehrtId";
@@ -87,7 +88,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	 * @param thisNode The output internal representation of the document
 	 */
 	private void setEntityIdOnNode(Element element, Node thisNode) {
-		if (Program.isCpc(thisNode)) {
+		if (Program.isCpc(thisNode) || Program.isPcf(thisNode)) {
 			Consumer<Attribute> consumer = id ->
 				thisNode.putValue(PRACTICE_ID, id.getValue(), false);
 			setOnNode(element, getXpath(PRACTICE_ID), consumer, Filters.attribute(), false);
@@ -103,7 +104,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	 * @param thisNode The output internal representation of the document
 	 */
 	private void setPracticeSiteAddress(Element element, Node thisNode) {
-		if (Program.isCpc(thisNode)) {
+		if (Program.isCpc(thisNode) || Program.isPcf(thisNode)) {
 			Consumer<Element> consumer = p ->
 					thisNode.putValue(PRACTICE_SITE_ADDR, p.getValue().trim(), false);
 			setOnNode(element, getXpath(PRACTICE_SITE_ADDR), consumer, Filters.element(), false);
@@ -227,6 +228,10 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 
 			case MIPS_APM:
 				pair = new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_APM);
+				break;
+
+			case PCF:
+				pair = new ImmutablePair<>(PCF, ENTITY_APM);
 				break;
 
 			default:
