@@ -12,7 +12,7 @@ import gov.cms.qpp.conversion.model.error.ProblemCode;
  * Validates the QRDA Category III Report Node's national provider identifier/taxpayer identification number combinations
  * for the CPC+ program.
  */
-@Validator(value = TemplateId.REPORTING_PARAMETERS_ACT, program = Program.Y5_AAPMS)
+@Validator(value = TemplateId.REPORTING_PARAMETERS_ACT, program = Program.CPC)
 public class CpcPerformancePeriodValidation extends NodeValidator {
 	private static final String REPORTING_PERIOD_START = Context.REPORTING_YEAR + "0101";
 	private static final String REPORTING_PERIOD_END = Context.REPORTING_YEAR + "1231";

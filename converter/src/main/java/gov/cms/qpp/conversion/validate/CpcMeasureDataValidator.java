@@ -24,7 +24,7 @@ import static gov.cms.qpp.conversion.decode.SkeletalSupplementalDataDecoder.SUPP
 /**
  * Validates a Sub Population's Measure Data for the CPC Plus program entity
  */
-@Validator(value = TemplateId.MEASURE_DATA_CMS_V4, program = Program.Y5_AAPMS)
+@Validator(value = TemplateId.MEASURE_DATA_CMS_V4, program = Program.CPC)
 public class CpcMeasureDataValidator extends NodeValidator {
 
 	/**

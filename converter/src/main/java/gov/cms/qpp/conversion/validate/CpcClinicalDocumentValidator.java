@@ -25,7 +25,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * Validates the Clinical Document level node for the given program: CPC+
  */
-@Validator(value = TemplateId.CLINICAL_DOCUMENT, program = Program.Y5_AAPMS)
+@Validator(value = TemplateId.CLINICAL_DOCUMENT, program = Program.CPC)
 public class CpcClinicalDocumentValidator extends NodeValidator {
 
 	/**

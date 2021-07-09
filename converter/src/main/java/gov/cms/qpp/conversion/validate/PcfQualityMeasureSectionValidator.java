@@ -6,6 +6,8 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
+import gov.cms.qpp.conversion.validate.Checker;
+import gov.cms.qpp.conversion.validate.NodeValidator;
 
 /**
  * Validates a measure groupings for a CPC+ Quality Measure Section node.
@@ -37,7 +39,7 @@ public class PcfQualityMeasureSectionValidator extends NodeValidator {
 	 * @param checker node validator helper
 	 */
 	void checkGroupMinimum(Checker checker) {
-		checker.hasMeasures(makeError(PCF_REQUIRED_MEASURES), PCF_REQUIRED_MEASURES);
+ 		checker.hasMeasures(makeError(PCF_REQUIRED_MEASURES), PCF_REQUIRED_MEASURES);
 	}
 
 	LocalizedProblem makeError(String... measureIds) {
