@@ -42,7 +42,7 @@ class CpcPerformancePeriodValidationTest {
 
 		assertWithMessage("Should result in a performance start error")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ProblemCode.CPC_PERFORMANCE_PERIOD_START);
+				.containsExactly(ProblemCode.CPC_PCF_PERFORMANCE_PERIOD_START);
 	}
 
 	@Test
@@ -51,6 +51,6 @@ class CpcPerformancePeriodValidationTest {
 		List<Detail> details = cpcValidator.validateSingleNode(node).getErrors();
 		assertWithMessage("Should result in a performance end error")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ProblemCode.CPC_PERFORMANCE_PERIOD_END);
+				.containsExactly(ProblemCode.CPC_PCF_PERFORMANCE_PERIOD_END);
 	}
 }

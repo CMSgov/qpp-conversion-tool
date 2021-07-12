@@ -59,7 +59,7 @@ class CpcMeasureDataValidatorTest {
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V4);
 		List<Detail> errors = validator.validateSingleNode(underTest).getErrors();
 
-		LocalizedProblem expectedError = ProblemCode.CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT.format(
+		LocalizedProblem expectedError = ProblemCode.CPC_PCF_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT.format(
 			SupplementalData.MALE.getCode(), SubPopulationLabel.IPOP.name(), MEASURE_ID);
 
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -116,7 +116,7 @@ class CpcMeasureDataValidatorTest {
 				Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V4);
 				List<Detail> errors = validator.validateSingleNode(underTest).getErrors();
 
-				LocalizedProblem expectedError = ProblemCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE
+				LocalizedProblem expectedError = ProblemCode.CPC_PCF_PLUS_MISSING_SUPPLEMENTAL_CODE
 					.format(supplementalData.getType(), supplementalData, supplementalData.getCode(),
 						MEASURE_ID, SubPopulationLabel.IPOP.name());
 

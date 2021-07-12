@@ -6,8 +6,6 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
-import gov.cms.qpp.conversion.validate.Checker;
-import gov.cms.qpp.conversion.validate.NodeValidator;
 
 /**
  * Validates a measure groupings for a CPC+ Quality Measure Section node.
@@ -43,7 +41,7 @@ public class PcfQualityMeasureSectionValidator extends NodeValidator {
 	}
 
 	LocalizedProblem makeError(String... measureIds) {
-		return ProblemCode.CPC_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY
+		return ProblemCode.CPC_PCF_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY
 			.format(3, "PCF", String.join(",", measureIds));
 	}
 }
