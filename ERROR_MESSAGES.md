@@ -48,8 +48,8 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 51 : CT - A single measure performed value is required and must be either a Y or an N.
 * 52 : CT - The measure data with population id '`(population id)`' must have exactly one Aggregate Count.
 * 53 : CT - Measure data with population id '`(population id)`' must be a whole number greater than or equal to 0
-* 55 : CT - A CPC Plus or PCF Performance period start must be 01/01/2020. Please refer to the IG for more information here: https://ecqi.healthit.gov/sites/default/files/2020-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-v1.1-508.pdf#page=14
-* 56 : CT - A CPC Plus or PCF Performance period end must be 12/31/2020. Please refer to the IG for more information here: https://ecqi.healthit.gov/sites/default/files/2020-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-v1.1-508.pdf#page=14
+* 55 : CT - A CPC Plus or PCF Performance period start must be 01/01/2021. Please refer to the IG for more information here: https://ecqi.healthit.gov/sites/default/files/2020-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-v1.1-508.pdf#page=14
+* 56 : CT - A CPC Plus or PCF Performance period end must be 12/31/2021. Please refer to the IG for more information here: https://ecqi.healthit.gov/sites/default/files/2020-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-v1.1-508.pdf#page=14
 * 57 : CT - The measure reference results must have a single measure population
 * 58 : CT - The measure reference results must have a single measure type
 * 59 : CT - The electronic measure id: `(Current eMeasure ID)` requires a `(Subpopulation type)` with the correct UUID of `(Correct uuid required)`. Here is a link to the IG containing all the valid measure ids: https://ecqi.healthit.gov/sites/default/files/2020-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-v1.1-508.pdf#page=40
