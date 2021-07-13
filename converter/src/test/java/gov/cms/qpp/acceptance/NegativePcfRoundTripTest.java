@@ -15,7 +15,6 @@ import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
-import gov.cms.qpp.conversion.validate.PcfQualityMeasureSectionValidator;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,6 +26,12 @@ import static com.google.common.truth.Truth.assertThat;
 public class NegativePcfRoundTripTest {
 	static final Path Y5_NEGATIVE_PCF = Paths.get("src/test/resources/pcf/failure/2021/Y5_Negative_PCF_Sample_QRDA-III.xml");
 	ApmEntityIds apmEntityIds;
+	
+	private static final String[] EXPECTED_PCF_REQUIRED_MEASURES = {
+		"40280382-6963-bf5e-0169-da3833273869",
+		"40280382-6963-bf5e-0169-da566ea338a5",
+		"40280382-6963-bf5e-0169-da5e74be38bf"
+	};
 
 	@BeforeEach
 	void setup() {
@@ -42,7 +47,7 @@ public class NegativePcfRoundTripTest {
 	void testPcfMissingRequiredMeasureId() {
 		List<Detail> details = conversionError(Y5_NEGATIVE_PCF);
 		LocalizedProblem error = ProblemCode.CPC_PCF_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY.format(3, "PCF",
-			String.join(",", PcfQualityMeasureSectionValidator.PCF_REQUIRED_MEASURES));
+			String.join(",", EXPECTED_PCF_REQUIRED_MEASURES));
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 			.contains(error);
