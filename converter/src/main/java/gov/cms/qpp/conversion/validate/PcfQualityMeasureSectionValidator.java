@@ -14,7 +14,7 @@ import gov.cms.qpp.conversion.model.error.ProblemCode;
 public class PcfQualityMeasureSectionValidator extends NodeValidator {
 
 	// To Do: update when Measures data gets updated
-	protected static final String[] PCF_REQUIRED_MEASURES = {
+	static final String[] PCF_REQUIRED_MEASURES = {
 		"40280382-6963-bf5e-0169-da3833273869", // 122v8
 		"40280382-6963-bf5e-0169-da566ea338a5", // 130v8
 		"40280382-6963-bf5e-0169-da5e74be38bf"  // 165v8
