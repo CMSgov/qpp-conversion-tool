@@ -26,7 +26,7 @@ import static com.google.common.truth.Truth.assertThat;
 public class NegativePcfRoundTripTest {
 	static final Path Y5_NEGATIVE_PCF = Paths.get("src/test/resources/pcf/failure/2021/Y5_Negative_PCF_Sample_QRDA-III.xml");
 	ApmEntityIds apmEntityIds;
-	
+
 	private static final String[] EXPECTED_PCF_REQUIRED_MEASURES = {
 		"40280382-6963-bf5e-0169-da3833273869",
 		"40280382-6963-bf5e-0169-da566ea338a5",
