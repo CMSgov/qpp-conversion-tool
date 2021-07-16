@@ -9,7 +9,6 @@ import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.LocalizedProblem;
-import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 import gov.cms.qpp.conversion.util.EnvironmentHelper;
 
 import java.time.Clock;
@@ -73,25 +72,25 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	protected void performValidation(Node node) {
 		validateSubmissionDate(node);
 
-		LocalizedProblem addressError = ProblemCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
+		LocalizedProblem addressError = ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
 			.format(Context.REPORTING_YEAR);
 
 		checkErrors(node)
-			.valueIsNotEmpty(ProblemCode.CPC_PLUS_TIN_REQUIRED, ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER)
+			.valueIsNotEmpty(ProblemCode.CPC_PCF_PLUS_TIN_REQUIRED, ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER)
 			.listValuesAreValid(
-				ProblemCode.CPC_PLUS_INVALID_TIN, ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, 9)
-			.valueIsNotEmpty(ProblemCode.CPC_PLUS_NPI_REQUIRED, ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER)
+				ProblemCode.CPC_PCF_PLUS_INVALID_TIN, ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, 9)
+			.valueIsNotEmpty(ProblemCode.CPC_PCF_PLUS_NPI_REQUIRED, ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER)
 			.listValuesAreValid(
-				ProblemCode.CPC_PLUS_INVALID_NPI, ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, 10)
+				ProblemCode.CPC_PCF_PLUS_INVALID_NPI, ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, 10)
 			.valueIsNotEmpty(addressError, ClinicalDocumentDecoder.PRACTICE_SITE_ADDR)
-			.singleValue(ProblemCode.CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED,
+			.singleValue(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED,
 					ClinicalDocumentDecoder.PRACTICE_ID)
-			.valueIsNotEmpty(ProblemCode.CPC_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.PRACTICE_ID)
-			.childMinimum(ProblemCode.CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED,
+			.valueIsNotEmpty(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.PRACTICE_ID)
+			.childMinimum(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED,
 					1, TemplateId.MEASURE_SECTION_V4);
 
 		checkWarnings(node)
-			.doesNotHaveChildren(ProblemCode.CPC_PLUS_NO_IA_OR_PI, TemplateId.IA_SECTION, TemplateId.PI_SECTION_V2);
+			.doesNotHaveChildren(ProblemCode.CPC_PCF_PLUS_NO_IA_OR_PI, TemplateId.IA_SECTION, TemplateId.PI_SECTION_V2);
 
 		validateApmEntityId(node);
 		if (hasTinAndNpi(node)) {
@@ -116,7 +115,7 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 		}
 
 		if (!context.getApmEntityIds().idExists(apmEntityId)) {
-			addError(Detail.forProblemAndNode(ProblemCode.CPC_CLINICAL_DOCUMENT_INVALID_APM, node));
+			addError(Detail.forProblemAndNode(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_INVALID_APM, node));
 		}
 	}
 
@@ -142,9 +141,9 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 		int numOfNpis = Arrays.asList(
 			node.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER).split(",")).size();
 		if (numOfTins > numOfNpis) {
-			addError(Detail.forProblemAndNode(ProblemCode.CPC_PLUS_MISSING_NPI, node));
+			addError(Detail.forProblemAndNode(ProblemCode.CPC_PCF_PLUS_MISSING_NPI, node));
 		} else if (numOfNpis > numOfTins) {
-			addError(Detail.forProblemAndNode(ProblemCode.CPC_PLUS_MISSING_TIN, node));
+			addError(Detail.forProblemAndNode(ProblemCode.CPC_PCF_PLUS_MISSING_TIN, node));
 		}
 	}
 
@@ -155,11 +154,11 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	private void validateCehrtId(Node node) {
 		String cehrtId = node.getValue(ClinicalDocumentDecoder.CEHRT);
 		if(cehrtId == null || cehrtId.length() != 15 || !cehrtFormat(cehrtId.substring(2, 5))) {
-			addError(Detail.forProblemAndNode(ProblemCode.CPC_MISSING_CEHRT_ID, node));
+			addError(Detail.forProblemAndNode(ProblemCode.CPC_PCF_MISSING_CEHRT_ID, node));
 		}
 		List<String> duplicateCehrts = node.getDuplicateValues(ClinicalDocumentDecoder.CEHRT);
 		if (duplicateCehrts != null && duplicateCehrts.size() > 0) {
-			addError(Detail.forProblemAndNode(ProblemCode.CPC_PLUS_DUPLICATE_CEHRT, node));
+			addError(Detail.forProblemAndNode(ProblemCode.CPC_PCF_PLUS_DUPLICATE_CEHRT, node));
 		}
 	}
 
@@ -177,7 +176,7 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 		if (now().isAfter(endDate)) {
 			String formatted = endDate.format(OUTPUT_END_DATE_FORMAT);
 			addError(Detail.forProblemAndNode(
-				ProblemCode.CPC_PLUS_SUBMISSION_ENDED.format(formatted,
+				ProblemCode.CPC_PCF_PLUS_SUBMISSION_ENDED.format(formatted,
 					EnvironmentHelper.getOrDefault(CPC_PLUS_CONTACT_EMAIL, DEFAULT_CPC_PLUS_CONTACT_EMAIL)),
 				node));
 		}

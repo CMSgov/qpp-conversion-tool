@@ -110,13 +110,13 @@ Description:
    <documentationOf typeCode="DOC">
       <serviceEvent classCode="PCPR">
          <effectiveTime>
-            <low value="20200101" />
-            <high value="20201231" />
+            <low value="20210101" />
+            <high value="20211231" />
          </effectiveTime>
          <performer typeCode="PRF">
             <time>
-               <low value="20200101" />
-               <high value="20201231" />
+               <low value="20210101" />
+               <high value="20211231" />
             </time>
             <assignedEntity>
                <id root="2.16.840.1.113883.4.6" extension="2567891421"/>
@@ -128,8 +128,8 @@ Description:
          </performer>
          <performer typeCode="PRF">
             <time>
-               <low value="20200101" />
-               <high value="20201231" />
+               <low value="20210101" />
+               <high value="20211231" />
             </time>
             <assignedEntity>
               <!-- Alpha added to NPI -->
@@ -142,8 +142,8 @@ Description:
          </performer>
          <performer typeCode="PRF">
             <time>
-               <low value="20200101" />
-               <high value="20201231" />
+               <low value="20210101" />
+               <high value="20211231" />
             </time>
             <assignedEntity>
                <id root="2.16.840.1.113883.4.6" extension="2345872354"/>
@@ -155,8 +155,8 @@ Description:
          </performer>
          <performer typeCode="PRF">
             <time>
-               <low value="20200101" />
-               <high value="20201231" />
+               <low value="20210101" />
+               <high value="20211231" />
             </time>
             <assignedEntity>
                <id root="2.16.840.1.113883.4.6" extension="2365987421"/>
@@ -168,8 +168,8 @@ Description:
          </performer>
          <performer typeCode="PRF">
             <time>
-               <low value="20200101" />
-               <high value="20201231" />
+               <low value="20210101" />
+               <high value="20211231" />
             </time>
             <assignedEntity>
                <id root="2.16.840.1.113883.4.6" extension="2357943549"/>
@@ -568,8 +568,8 @@ QRDA Category III Measure Section (CMS EP)
                      <code code="252116004" codeSystem="2.16.840.1.113883.6.96"
                         displayName="Observation Parameters"/>
                      <effectiveTime>
-                        <low value="20200101" />
-                        <high value="20201231" />
+                        <low value="20210101" />
+                        <high value="20211231" />
                      </effectiveTime>
                   </act>
                </entry>

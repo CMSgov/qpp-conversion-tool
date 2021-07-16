@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
-import gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
@@ -45,7 +44,7 @@ class CpcQualityMeasureIdValidatorTest {
 
 		assertWithMessage("Must contain 0 invalid performance rate count errors")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.doesNotContain(ProblemCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
+				.doesNotContain(ProblemCode.CPC_PCF_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
 					.format(2, E_MEASURE_ID));
 	}
 
@@ -56,7 +55,7 @@ class CpcQualityMeasureIdValidatorTest {
 
 		assertWithMessage("Must contain 2 invalid performance rate count errors")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(ProblemCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
+				.contains(ProblemCode.CPC_PCF_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
 					.format(2, E_MEASURE_ID));
 	}
 
@@ -67,7 +66,7 @@ class CpcQualityMeasureIdValidatorTest {
 
 		assertWithMessage("Must contain 2 invalid performance rate count errors")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(ProblemCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
+				.contains(ProblemCode.CPC_PCF_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
 					.format(2, E_MEASURE_ID));
 	}
 
@@ -78,7 +77,7 @@ class CpcQualityMeasureIdValidatorTest {
 
 		assertThat(details)
 			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.doesNotContain(ProblemCode.CPC_PLUS_PERFORMANCE_DENOM_LESS_THAN_ZERO);
+			.doesNotContain(ProblemCode.CPC_PCF_PLUS_PERFORMANCE_DENOM_LESS_THAN_ZERO);
 	}
 
 	@Test
@@ -88,7 +87,7 @@ class CpcQualityMeasureIdValidatorTest {
 
 		assertThat(details)
 			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.doesNotContain(ProblemCode.CPC_PLUS_PERFORMANCE_DENOM_LESS_THAN_ZERO);
+			.doesNotContain(ProblemCode.CPC_PCF_PLUS_PERFORMANCE_DENOM_LESS_THAN_ZERO);
 	}
 
 	private void addAnyNumberOfChildren(int size) {

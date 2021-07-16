@@ -18,7 +18,6 @@ import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 import gov.cms.qpp.conversion.util.NumberHelper;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
@@ -54,7 +53,7 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 
 			forceCheckErrors(node)
 					.childExact(
-						ProblemCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
+						ProblemCode.CPC_PCF_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
 							.format(requiredPerformanceRateCount, MeasureConfigHelper.getPrioritizedId(node)),
 						requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
 		}
@@ -87,16 +86,16 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 					calculatePerformanceDenom(denominatorValue, denexValue, denexcepValue);
 
 				if (performanceDenominator < 0) {
-					addError(Detail.forProblemAndNode(ProblemCode.CPC_PLUS_PERFORMANCE_DENOM_LESS_THAN_ZERO
+					addError(Detail.forProblemAndNode(ProblemCode.CPC_PCF_PLUS_PERFORMANCE_DENOM_LESS_THAN_ZERO
 						.format(MeasureConfigHelper.getPrioritizedId(node)), node));
 				}
 				if (numeratorValue > performanceDenominator || numeratorValue > denominatorValue) {
-					addError(Detail.forProblemAndNode(ProblemCode.CPC_PLUS_NUMERATOR_GREATER_THAN_EITHER_DENOMINATORS
+					addError(Detail.forProblemAndNode(ProblemCode.CPC_PCF_PLUS_NUMERATOR_GREATER_THAN_EITHER_DENOMINATORS
 						.format(numeratorNode
 							.getValue(MEASURE_POPULATION)), node));
 				}
 				if (denexValue > denominatorValue) {
-					addError(Detail.forProblemAndNode(ProblemCode.CPC_PLUS_DENEX_GREATER_THAN_DENOMINATOR
+					addError(Detail.forProblemAndNode(ProblemCode.CPC_PCF_PLUS_DENEX_GREATER_THAN_DENOMINATOR
 						.format(denomExclusionNode.getValue(MEASURE_POPULATION)), node));
 				}
 				//skip if performance rate is missing
@@ -107,13 +106,13 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 						performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE))) {
 						if (performanceDenominator != 0) {
 							addError(Detail.forProblemAndNode(
-								ProblemCode.CPC_PLUS_INVALID_NULL_PERFORMANCE_RATE
+								ProblemCode.CPC_PCF_PLUS_INVALID_NULL_PERFORMANCE_RATE
 									.format(performanceRateNode
 										.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID)), node));
 						}
 					} else if (performanceRateValue != null && NumberHelper.isNumeric(performanceRateValue)
 						&& NumberHelper.isZero(performanceRateValue) && (denominatorValue == 0 || performanceDenominator == 0)) {
-						addError(Detail.forProblemAndNode(ProblemCode.CPC_PLUS_ZERO_PERFORMANCE_RATE, node));
+						addError(Detail.forProblemAndNode(ProblemCode.CPC_PCF_PLUS_ZERO_PERFORMANCE_RATE, node));
 					}
 				}
 
@@ -175,7 +174,7 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 				.collect(Collectors.toList());
 
 		if (strataNodes.size() != sub.getStrata().size()) {
-			LocalizedProblem error = ProblemCode.CPC_QUALITY_MEASURE_ID_STRATA_MISMATCH.format(strataNodes.size(),
+			LocalizedProblem error = ProblemCode.CPC_PCF_QUALITY_MEASURE_ID_STRATA_MISMATCH.format(strataNodes.size(),
 					sub.getStrata().size(),
 					node.getValue(MeasureDataDecoder.MEASURE_TYPE),
 					node.getValue(MEASURE_POPULATION),
@@ -188,7 +187,7 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 					child.getValue(StratifierDecoder.STRATIFIER_ID).equalsIgnoreCase(stratum);
 
 			if (strataNodes.stream().noneMatch(seek)) {
-				LocalizedProblem error = ProblemCode.CPC_QUALITY_MEASURE_ID_MISSING_STRATA.format(stratum,
+				LocalizedProblem error = ProblemCode.CPC_PCF_QUALITY_MEASURE_ID_MISSING_STRATA.format(stratum,
 						node.getValue(MeasureDataDecoder.MEASURE_TYPE),
 						node.getValue(MEASURE_POPULATION));
 				addError(Detail.forProblemAndNode(error, node));

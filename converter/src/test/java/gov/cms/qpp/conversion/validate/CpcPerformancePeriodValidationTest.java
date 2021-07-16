@@ -23,9 +23,9 @@ class CpcPerformancePeriodValidationTest {
 	void setup() {
 		cpcValidator = new CpcPerformancePeriodValidation();
 		node = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
-		node.putValue(ReportingParametersActDecoder.PERFORMANCE_YEAR, "2020");
-		node.putValue(ReportingParametersActDecoder.PERFORMANCE_START, "20200101");
-		node.putValue(ReportingParametersActDecoder.PERFORMANCE_END, "20201231");
+		node.putValue(ReportingParametersActDecoder.PERFORMANCE_YEAR, "2021");
+		node.putValue(ReportingParametersActDecoder.PERFORMANCE_START, "20210101");
+		node.putValue(ReportingParametersActDecoder.PERFORMANCE_END, "20211231");
 	}
 
 	@Test
@@ -42,7 +42,7 @@ class CpcPerformancePeriodValidationTest {
 
 		assertWithMessage("Should result in a performance start error")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ProblemCode.CPC_PERFORMANCE_PERIOD_START);
+				.containsExactly(ProblemCode.CPC_PCF_PERFORMANCE_PERIOD_START);
 	}
 
 	@Test
@@ -51,6 +51,6 @@ class CpcPerformancePeriodValidationTest {
 		List<Detail> details = cpcValidator.validateSingleNode(node).getErrors();
 		assertWithMessage("Should result in a performance end error")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ProblemCode.CPC_PERFORMANCE_PERIOD_END);
+				.containsExactly(ProblemCode.CPC_PCF_PERFORMANCE_PERIOD_END);
 	}
 }

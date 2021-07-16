@@ -25,9 +25,9 @@ public class CpcPerformancePeriodValidation extends NodeValidator {
 	@Override
 	protected void performValidation(Node node) {
 		checkErrors(node)
-			.valueIs(ProblemCode.CPC_PERFORMANCE_PERIOD_START,
+			.valueIs(ProblemCode.CPC_PCF_PERFORMANCE_PERIOD_START,
 					ReportingParametersActDecoder.PERFORMANCE_START, REPORTING_PERIOD_START)
-			.valueIs(ProblemCode.CPC_PERFORMANCE_PERIOD_END,
+			.valueIs(ProblemCode.CPC_PCF_PERFORMANCE_PERIOD_END,
 					ReportingParametersActDecoder.PERFORMANCE_END, REPORTING_PERIOD_END);
 	}
 }

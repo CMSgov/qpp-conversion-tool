@@ -30,6 +30,12 @@ class ProgramTest implements EnumContract {
 	}
 
 	@Test
+	void instanceRetrievalPcf() {
+		assertWithMessage("Program other than %s was returned", Program.PCF)
+			.that(Program.getInstance("PCF")).isSameInstanceAs(Program.PCF);
+	}
+
+	@Test
 	void instanceRetrievalDefault() {
 		assertWithMessage("Program other than %s was returned", Program.ALL)
 				.that(Program.getInstance("meep")).isSameInstanceAs(Program.ALL);
@@ -79,6 +85,27 @@ class ProgramTest implements EnumContract {
 		Node node = new Node();
 		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "cpcplus");
 		assertThat(Program.isCpc(node)).isTrue();
+	}
+
+	@Test
+	void testIsPcfForMixedCaseIsTrue() {
+		Node node = new Node();
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "pCf");
+		assertThat(Program.isPcf(node)).isTrue();
+	}
+
+	@Test
+	void testIsPcfUppercaseIsTrue() {
+		Node node = new Node();
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "PCF");
+		assertThat(Program.isPcf(node)).isTrue();
+	}
+
+	@Test
+	void testIsPcfLowercaseIsTrue() {
+		Node node = new Node();
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "pcf");
+		assertThat(Program.isPcf(node)).isTrue();
 	}
 
 	@Test
