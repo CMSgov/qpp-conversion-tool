@@ -23,6 +23,12 @@ import java.util.List;
 
 import static com.google.common.truth.Truth.assertThat;
 
+
+/**
+ * Negative Testing Scenarios to check PCF for invalid top level attributes and validations
+ * Ensures:
+ * - Errors caught for invalid apm entity, cehrt id, performance period, missing required measure ids
+ */
 public class NegativePcfRoundTripTest {
 	static final Path Y5_NEGATIVE_PCF = Paths.get("src/test/resources/pcf/failure/2021/Y5_Negative_PCF_Sample_QRDA-III.xml");
 	ApmEntityIds apmEntityIds;
