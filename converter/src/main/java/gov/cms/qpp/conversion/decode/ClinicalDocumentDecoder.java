@@ -30,7 +30,8 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	public static final String ENTITY_TYPE = "entityType";
 	public static final String MIPS_PROGRAM_NAME = "mips";
 	public static final String CPCPLUS_PROGRAM_NAME = "cpcPlus";
-	public static final String PCF = "pcf";
+	public static final String PCF = "PCF";
+	public static final String PCF_PROGRAM_NAME = "pcf";
 	public static final String PRACTICE_ID = "practiceId";
 	public static final String PRACTICE_SITE_ADDR = "practiceSiteAddr";
 	public static final String CEHRT = "cehrtId";
@@ -231,7 +232,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 				break;
 
 			case PCF:
-				pair = new ImmutablePair<>(PCF, ENTITY_APM);
+				pair = new ImmutablePair<>(PCF_PROGRAM_NAME, ENTITY_APM);
 				break;
 
 			default:

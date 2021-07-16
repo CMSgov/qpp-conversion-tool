@@ -38,8 +38,8 @@ public class PcfQualityMeasureSectionValidatorTest {
 	@Test
 	void testMissingPcfExpectedMeasureIds() {
 		Node node = new Node();
-		LocalizedProblem message = ProblemCode.CPC_PCF_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY
-			.format(3, "PCF", String.join(",", EXPECTED_PCF_MEASURE_IDS));
+		LocalizedProblem message = ProblemCode.PCF_TOO_FEW_QUALITY_MEASURE_CATEGORY
+			.format(3, String.join(",", EXPECTED_PCF_MEASURE_IDS));
 		List<Detail> details = validator.validateSingleNode(node).getErrors();
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 			.contains(message);

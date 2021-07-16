@@ -52,7 +52,7 @@ public class NegativePcfRoundTripTest {
 	@Test
 	void testPcfMissingRequiredMeasureId() {
 		List<Detail> details = conversionError(Y5_NEGATIVE_PCF);
-		LocalizedProblem error = ProblemCode.CPC_PCF_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY.format(3, "PCF",
+		LocalizedProblem error = ProblemCode.PCF_TOO_FEW_QUALITY_MEASURE_CATEGORY.format(3,
 			String.join(",", EXPECTED_PCF_REQUIRED_MEASURES));
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)

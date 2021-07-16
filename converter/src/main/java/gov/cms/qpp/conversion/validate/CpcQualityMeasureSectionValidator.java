@@ -84,7 +84,7 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 		}
 
 		LocalizedProblem makeError(String... measureIds) {
-			return ProblemCode.CPC_PCF_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY
+			return ProblemCode.CPC_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY
 					.format(minimum, label, String.join(",", measureIds));
 		}
 	}

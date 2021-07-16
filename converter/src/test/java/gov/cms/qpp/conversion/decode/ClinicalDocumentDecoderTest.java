@@ -287,7 +287,7 @@ class ClinicalDocumentDecoderTest {
 
 		assertWithMessage("Clinical Document doesn't contain program name")
 			.that(testParentNode.getValue(ClinicalDocumentDecoder.PROGRAM_NAME))
-			.isEqualTo(ClinicalDocumentDecoder.PCF);
+			.isEqualTo(ClinicalDocumentDecoder.PCF_PROGRAM_NAME);
 		assertWithMessage("Clinical Document doesn't contain entity type")
 			.that(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE))
 			.isEqualTo(ClinicalDocumentDecoder.ENTITY_APM);

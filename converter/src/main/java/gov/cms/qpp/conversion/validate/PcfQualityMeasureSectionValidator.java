@@ -41,7 +41,7 @@ public class PcfQualityMeasureSectionValidator extends NodeValidator {
 	}
 
 	LocalizedProblem makeError(String... measureIds) {
-		return ProblemCode.CPC_PCF_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY
-			.format(3, "PCF", String.join(",", measureIds));
+		return ProblemCode.PCF_TOO_FEW_QUALITY_MEASURE_CATEGORY
+			.format(3, String.join(",", measureIds));
 	}
 }
