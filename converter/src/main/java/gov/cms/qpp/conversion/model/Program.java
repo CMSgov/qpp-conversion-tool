@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 public enum Program {
 	MIPS("MIPS_GROUP", "MIPS_INDIV", "MIPS_VIRTUALGROUP", "MIPS", "MIPSAPM"),
 	CPC("CPCPLUS"),
+	PCF("PCF"),
 	ALL;
 
 	private final Set<String> aliases;
@@ -36,6 +37,16 @@ public enum Program {
 	 */
 	public static boolean isCpc(Node node) {
 		return extractProgram(node) == Program.CPC;
+	}
+
+	/**
+	 * Checks if a node is using the PCF program
+	 *
+	 * @param node to check
+	 * @return result of check
+	 */
+	public static boolean isPcf(Node node) {
+		return extractProgram(node) == Program.PCF;
 	}
 
 	/**
