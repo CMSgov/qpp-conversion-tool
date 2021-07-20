@@ -120,7 +120,6 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 					&& ClinicalDocumentDecoder.MIPS_APM.equalsIgnoreCase(
 						currentNode.getValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME))) {
 					childWrapper.put(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS.toLowerCase(Locale.getDefault()));
-					childWrapper.remove(ClinicalDocumentDecoder.PRACTICE_ID);
 				}
 
 				measurementSetsWrapper.put(childWrapper);
