@@ -49,6 +49,15 @@ class MetadataHelperTest implements HelperContract {
 	}
 
 	@Test
+	void testExtractsPcfProgramType() {
+		Node node = new Node();
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "PCF");
+
+		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
+		assertThat(metadata.getPcf()).startsWith(Constants.PCF_DYNAMO_PARTITION_START);
+	}
+
+	@Test
 	void testExtractsCpcProgramTypeFromChild() {
 		Node node = new Node();
 		Node child = new Node();
