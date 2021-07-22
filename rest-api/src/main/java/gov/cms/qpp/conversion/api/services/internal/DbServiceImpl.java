@@ -104,6 +104,37 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 		}
 	}
 
+	public List<Metadata> getUnprocessedPcfMetaData(String orgAttribute) {
+		if (mapper.isPresent()) {
+			API_LOG.info("Getting list of unprocessed Pcf metadata...");
+
+			String cpcConversionStartDate = Optional.ofNullable(
+				environment.getProperty(Constants.CPC_PLUS_UNPROCESSED_FILE_SEARCH_DATE_VARIABLE)).orElse("");
+			String year = cpcConversionStartDate.substring(0, 4);
+			String indexName = Constants.DYNAMO_PCF_ATTRIBUTE + "-" + orgAttribute + "-index";
+
+			return IntStream.range(0, Constants.CPC_DYNAMO_PARTITIONS).mapToObj(partition -> {
+				Map<String, AttributeValue> valueMap = new HashMap<>();
+				valueMap.put(":pcfValue", new AttributeValue().withS(Constants.CPC_DYNAMO_PARTITION_START + partition));
+				valueMap.put(":pcfProcessedValue", new AttributeValue().withS("false#"+year));
+				valueMap.put(":createDate", new AttributeValue().withS(cpcConversionStartDate));
+
+				DynamoDBQueryExpression<Metadata> metadataQuery = new DynamoDBQueryExpression<Metadata>()
+					.withIndexName(indexName)
+					.withKeyConditionExpression(Constants.DYNAMO_CPC_ATTRIBUTE + " = :pcfValue and begins_with("
+						+ orgAttribute + ", :pcfProcessedValue)")
+					.withFilterExpression(Constants.DYNAMO_CREATE_DATE_ATTRIBUTE + " > :createDate")
+					.withExpressionAttributeValues(valueMap)
+					.withConsistentRead(false);
+
+				return mapper.get().queryPage(Metadata.class, metadataQuery).getResults().stream();
+			}).flatMap(Function.identity()).collect(Collectors.toList());
+		} else {
+			API_LOG.warn("Could not get unprocessed PCF metadata because the dynamodb mapper is absent");
+			return Collections.emptyList();
+		}
+	}
+
 	/**
 	 * Queries the database table for a {@link Metadata} with a specific uuid
 	 *

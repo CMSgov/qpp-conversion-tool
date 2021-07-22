@@ -10,8 +10,19 @@ import java.util.List;
 
 public interface PcfFileService {
 
-	List<UnprocessedCpcFileData> getUnprocessedPcfPlusFiles();
+	/**
+	 * Retrieves all unprocessed pcf metadata
+	 *
+	 * @return {@link Metadata} extracted as {@link UnprocessedCpcFileData}.
+	 */
+	List<UnprocessedCpcFileData> getUnprocessedPcfPlusFiles(String org);
 
+	/**
+	 * Retrieves specific metadata by fileId provided
+	 *
+	 * @param fileId
+	 * @return
+	 */
 	Metadata getMetadataById(String fileId);
 
 	/**
@@ -33,7 +44,7 @@ public interface PcfFileService {
 	InputStreamResource getQppById(String fileId) throws IOException;
 
 	/**
-	 * Marks a CPC File as processed by id
+	 * Marks a PCF File as processed by id
 	 *
 	 * @param fileId Identifier of the PCF file
 	 * @return Success or failure message
@@ -41,7 +52,7 @@ public interface PcfFileService {
 	String processFileById(String fileId, String orgName);
 
 	/**
-	 * Marks a CPC File as unprocessed by id
+	 * Marks a PCF File as unprocessed by id
 	 *
 	 * @param fileId Identifier of the PCF file
 	 * @return Success or failure message

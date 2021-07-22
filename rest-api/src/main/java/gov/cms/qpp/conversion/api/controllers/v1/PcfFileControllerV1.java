@@ -7,6 +7,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,12 +48,14 @@ public class PcfFileControllerV1 {
 	 *
 	 * @return Valid json or error json content
 	 */
-	@GetMapping(value = "/unprocessed-files",
+	@GetMapping(value = "/unprocessed-files/{org}",
 		headers = {"Accept=" + Constants.V1_API_ACCEPT})
-	public ResponseEntity<List<UnprocessedCpcFileData>> getUnprocessedPcfPlusFiles() {
+	public ResponseEntity<List<UnprocessedCpcFileData>> getUnprocessedPcfPlusFiles(@PathVariable("org") String organization) {
 		API_LOG.info("PCF unprocessed files request received");
 
-		if (blockApi()) {
+		String orgAttribute = Constants.ORG_ATTRIBUTE_MAP.get(organization);
+
+		if (blockApi() || StringUtils.isEmpty(orgAttribute)) {
 			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
 			return ResponseEntity
 				.status(HttpStatus.FORBIDDEN)
@@ -60,7 +63,7 @@ public class PcfFileControllerV1 {
 		}
 
 		List<UnprocessedCpcFileData> unprocessedPcfFileDataList =
-			pcfFileService.getUnprocessedPcfPlusFiles();
+			pcfFileService.getUnprocessedPcfPlusFiles(orgAttribute);
 
 		API_LOG.info("PCF unprocessed files request succeeded");
 

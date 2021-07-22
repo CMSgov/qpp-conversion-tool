@@ -48,6 +48,7 @@ public final class Metadata {
 	private Boolean conversionStatus;
 	private Boolean validationStatus;
 	private String cpc;
+	private String pcf;
 	private String conversionErrorLocator;
 	private String validationErrorLocator;
 	private String rawValidationErrorLocator;
@@ -378,6 +379,16 @@ public final class Metadata {
 	 */
 	public void setCpc(String cpc) {
 		this.cpc = cpc;
+	}
+
+	@DoNotEncrypt
+	@DynamoDBAttribute(attributeName = Constants.DYNAMO_PCF_ATTRIBUTE)
+	public String getPcf() {
+		return pcf;
+	}
+
+	public void setPcf(final String pcf) {
+		this.pcf = pcf;
 	}
 
 	/**
