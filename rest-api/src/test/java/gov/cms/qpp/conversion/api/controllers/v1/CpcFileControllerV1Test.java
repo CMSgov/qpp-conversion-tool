@@ -26,11 +26,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.api.model.CpcFileStatusUpdateRequest;
+import gov.cms.qpp.conversion.api.model.FileStatusUpdateRequest;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.Report;
 import gov.cms.qpp.conversion.api.model.Status;
-import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
+import gov.cms.qpp.conversion.api.model.UnprocessedFileData;
 import gov.cms.qpp.conversion.api.services.CpcFileService;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.test.MockitoExtension;
@@ -38,7 +38,7 @@ import gov.cms.qpp.test.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class CpcFileControllerV1Test {
 
-	private List<UnprocessedCpcFileData> expectedUnprocessedCpcFileDataList;
+	private List<UnprocessedFileData> expectedUnprocessedFileDataList;
 
 	@InjectMocks
 	CpcFileControllerV1 cpcFileControllerV1;
@@ -48,7 +48,7 @@ class CpcFileControllerV1Test {
 
 	@BeforeEach
 	void setUp() {
-		expectedUnprocessedCpcFileDataList = createMockedUnprocessedDataList();
+		expectedUnprocessedFileDataList = createMockedUnprocessedDataList();
 	}
 
 	@AfterEach
@@ -64,13 +64,13 @@ class CpcFileControllerV1Test {
 
 	@Test
 	void testGetUnprocessedFileList() {
-		when(cpcFileService.getUnprocessedCpcPlusFiles(anyString())).thenReturn(expectedUnprocessedCpcFileDataList);
+		when(cpcFileService.getUnprocessedCpcPlusFiles(anyString())).thenReturn(expectedUnprocessedFileDataList);
 
-		ResponseEntity<List<UnprocessedCpcFileData>> qppResponse = cpcFileControllerV1.getUnprocessedCpcPlusFiles(Constants.CPC_ORG);
+		ResponseEntity<List<UnprocessedFileData>> qppResponse = cpcFileControllerV1.getUnprocessedCpcPlusFiles(Constants.CPC_ORG);
 
 		verify(cpcFileService).getUnprocessedCpcPlusFiles(Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE);
 
-		assertThat(qppResponse.getBody()).isEqualTo(expectedUnprocessedCpcFileDataList);
+		assertThat(qppResponse.getBody()).isEqualTo(expectedUnprocessedFileDataList);
 	}
 
 	@Test
@@ -153,7 +153,7 @@ class CpcFileControllerV1Test {
 	void testEndpoint1WithFeatureFlagDisabled() {
 		System.setProperty(Constants.NO_CPC_PLUS_API_ENV_VARIABLE, "trueOrWhatever");
 
-		ResponseEntity<List<UnprocessedCpcFileData>> cpcResponse = cpcFileControllerV1.getUnprocessedCpcPlusFiles(Constants.CPC_ORG);
+		ResponseEntity<List<UnprocessedFileData>> cpcResponse = cpcFileControllerV1.getUnprocessedCpcPlusFiles(Constants.CPC_ORG);
 
 		assertThat(cpcResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
 		assertThat(cpcResponse.getBody()).isNull();
@@ -161,7 +161,7 @@ class CpcFileControllerV1Test {
 
 	@Test
 	void testEndpoint1WithInvalidOrganization() {
-		ResponseEntity<List<UnprocessedCpcFileData>> cpcResponse = cpcFileControllerV1.getUnprocessedCpcPlusFiles("meep");
+		ResponseEntity<List<UnprocessedFileData>> cpcResponse = cpcFileControllerV1.getUnprocessedCpcPlusFiles("meep");
 
 		assertThat(cpcResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
 		assertThat(cpcResponse.getBody()).isNull();
@@ -269,18 +269,18 @@ class CpcFileControllerV1Test {
 	}
 
 	private ResponseEntity<String> markProcessed() {
-		CpcFileStatusUpdateRequest request = new CpcFileStatusUpdateRequest();
+		FileStatusUpdateRequest request = new FileStatusUpdateRequest();
 		request.setProcessed(true);
 		return cpcFileControllerV1.updateFile("meep", Constants.CPC_ORG, request);
 	}
 
 	private ResponseEntity<String> markUnprocessed() {
-		CpcFileStatusUpdateRequest request = new CpcFileStatusUpdateRequest();
+		FileStatusUpdateRequest request = new FileStatusUpdateRequest();
 		request.setProcessed(false);
 		return cpcFileControllerV1.updateFile("meep", Constants.RTI_ORG, request);
 	}
 
-	List<UnprocessedCpcFileData> createMockedUnprocessedDataList() {
+	List<UnprocessedFileData> createMockedUnprocessedDataList() {
 		Metadata metadata = Metadata.create();
 		metadata.setSubmissionLocator("Test");
 		metadata.setFileName("TestFile.xml");
@@ -288,10 +288,10 @@ class CpcFileControllerV1Test {
 		metadata.setCreatedDate(Instant.now());
 		metadata.setOverallStatus(true);
 
-		UnprocessedCpcFileData unprocessedCpcFileData = new UnprocessedCpcFileData(metadata);
-		List<UnprocessedCpcFileData> unprocessedCpcFileDataList = new ArrayList<>();
-		unprocessedCpcFileDataList.add(unprocessedCpcFileData);
+		UnprocessedFileData unprocessedFileData = new UnprocessedFileData(metadata);
+		List<UnprocessedFileData> unprocessedFileDataList = new ArrayList<>();
+		unprocessedFileDataList.add(unprocessedFileData);
 
-		return unprocessedCpcFileDataList;
+		return unprocessedFileDataList;
 	}
 }

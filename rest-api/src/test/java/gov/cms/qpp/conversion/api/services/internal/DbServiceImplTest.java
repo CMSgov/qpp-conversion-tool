@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.api.services.internal;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
+import com.amazonaws.services.dynamodbv2.datamodeling.QueryResultPage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +18,7 @@ import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.services.internal.DbServiceImpl;
 import gov.cms.qpp.test.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -63,6 +65,12 @@ class DbServiceImplTest {
 	void testGetUnprocessedCpcPlusMetaDataWithMissingDynamoDbMapper() {
 		underTest = new DbServiceImpl(taskExecutor, Optional.empty(), environment);
 		assertThat(underTest.getUnprocessedCpcPlusMetaData(Constants.CPC_ORG)).isEmpty();
+	}
+
+	@Test
+	void testGetUnprocessedPcfMetaDataWithMissingDynamoDbMapper() {
+		underTest = new DbServiceImpl(taskExecutor, Optional.empty(), environment);
+		assertThat(underTest.getUnprocessedPcfMetaData(Constants.CPC_ORG)).isEmpty();
 	}
 
 	@Test
@@ -120,6 +128,26 @@ class DbServiceImplTest {
 			.thenReturn(mockMetadataPage);
 
 		List<Metadata> metaDataList = underTest.getUnprocessedCpcPlusMetaData(Constants.CPC_ORG);
+
+		verify(dbMapper, times(Constants.CPC_DYNAMO_PARTITIONS)).query(eq(Metadata.class), any(DynamoDBQueryExpression.class));
+		assertThat(metaDataList).hasSize(itemsPerPartition * Constants.CPC_DYNAMO_PARTITIONS);
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	void testGetUnprocessedPcfMetaData() {
+		when(environment.getProperty(Constants.CPC_PLUS_UNPROCESSED_FILE_SEARCH_DATE_VARIABLE)).thenReturn("2020-01-01");
+
+		int itemsPerPartition = 2;
+
+		PaginatedQueryList<Metadata> mockMetadataPage = mock(PaginatedQueryList.class);
+		Answer<Stream<Metadata>> answer = (InvocationOnMock invocation) -> Stream.generate(Metadata::new).limit(itemsPerPartition);
+
+		when(mockMetadataPage.stream()).thenAnswer(answer);
+		when(dbMapper.query(eq(Metadata.class), any(DynamoDBQueryExpression.class)))
+			.thenReturn(mockMetadataPage);
+
+		List<Metadata> metaDataList = underTest.getUnprocessedPcfMetaData(Constants.CPC_ORG);
 
 		verify(dbMapper, times(Constants.CPC_DYNAMO_PARTITIONS)).query(eq(Metadata.class), any(DynamoDBQueryExpression.class));
 		assertThat(metaDataList).hasSize(itemsPerPartition * Constants.CPC_DYNAMO_PARTITIONS);
