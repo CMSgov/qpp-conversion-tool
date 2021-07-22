@@ -4,7 +4,7 @@ import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
 import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
-import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
+import gov.cms.qpp.conversion.api.model.UnprocessedFileData;
 import gov.cms.qpp.conversion.api.services.CpcFileService;
 import gov.cms.qpp.conversion.api.services.DbService;
 import gov.cms.qpp.conversion.api.services.StorageService;
@@ -44,10 +44,10 @@ public class CpcFileServiceImpl implements CpcFileService {
 	/**
 	 * Calls the DbService for unprocessed metadata to transform into UnprocessedCpcFileData
 	 *
-	 * @return List of {@link UnprocessedCpcFileData}
+	 * @return List of {@link UnprocessedFileData}
 	 */
 	@Override
-	public List<UnprocessedCpcFileData> getUnprocessedCpcPlusFiles(String orgAttribute) {
+	public List<UnprocessedFileData> getUnprocessedCpcPlusFiles(String orgAttribute) {
 		List<Metadata> metadata = dbService.getUnprocessedCpcPlusMetaData(orgAttribute);
 
 		return transformMetaDataToUnprocessedCpcFileData(metadata);
@@ -141,13 +141,13 @@ public class CpcFileServiceImpl implements CpcFileService {
 	}
 
 	/**
-	 * Service to transform a {@link Metadata} list into the {@link UnprocessedCpcFileData}
+	 * Service to transform a {@link Metadata} list into the {@link UnprocessedFileData}
 	 *
 	 * @param metadataList object to hold the list of {@link Metadata} from DynamoDb
-	 * @return transformed list of {@link UnprocessedCpcFileData}
+	 * @return transformed list of {@link UnprocessedFileData}
 	 */
-	private List<UnprocessedCpcFileData> transformMetaDataToUnprocessedCpcFileData(List<Metadata> metadataList) {
-		return metadataList.stream().map(UnprocessedCpcFileData::new).collect(Collectors.toList());
+	private List<UnprocessedFileData> transformMetaDataToUnprocessedCpcFileData(List<Metadata> metadataList) {
+		return metadataList.stream().map(UnprocessedFileData::new).collect(Collectors.toList());
 	}
 
 	/**

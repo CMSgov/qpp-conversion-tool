@@ -6,7 +6,7 @@ import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
 import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
-import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
+import gov.cms.qpp.conversion.api.model.UnprocessedFileData;
 import gov.cms.qpp.conversion.api.services.DbService;
 import gov.cms.qpp.conversion.api.services.PcfFileService;
 import gov.cms.qpp.conversion.api.services.StorageService;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 public class PcfFileServiceImpl implements PcfFileService {
 	public static final String FILE_NOT_FOUND = "File not found!";
-	protected static final String INVALID_FILE = "The file was not a CPC+ file.";
+	protected static final String INVALID_FILE = "The file was not a PCF file.";
 	protected static final String FILE_FOUND_PROCESSED = "The file was found and will be updated as processed.";
 	protected static final String FILE_FOUND_UNPROCESSED = "The file was found and will be updated as unprocessed.";
 
@@ -38,11 +38,11 @@ public class PcfFileServiceImpl implements PcfFileService {
 	/**
 	 * Calls the DbService for unprocessed metadata to transform into UnprocessedCpcFileData
 	 *
-	 * @return List of {@link UnprocessedCpcFileData}
+	 * @return List of {@link UnprocessedFileData}
 	 */
 	@Override
-	public List<UnprocessedCpcFileData> getUnprocessedPcfPlusFiles(String orgAttribute) {
-	List<Metadata> metadata = dbService.getUnprocessedCpcPlusMetaData(orgAttribute);
+	public List<UnprocessedFileData> getUnprocessedPcfFiles(String orgAttribute) {
+	List<Metadata> metadata = dbService.getUnprocessedPcfMetaData(orgAttribute);
 
 	return transformMetaDataToUnprocessedCpcFileData(metadata);
 	}
@@ -56,7 +56,7 @@ public class PcfFileServiceImpl implements PcfFileService {
 	@Override
 	public InputStreamResource getFileById(String fileId) {
 	Metadata metadata = getMetadataById(fileId);
-	if (isAnUnprocessedCpcFile(metadata)) {
+	if (isAValidUnprocessedFile(metadata)) {
 		return new InputStreamResource(storageService.getFileByLocationId(metadata.getSubmissionLocator()));
 	}
 		throw new NoFileInDatabaseException(FILE_NOT_FOUND);
@@ -74,14 +74,14 @@ public class PcfFileServiceImpl implements PcfFileService {
 		return new InputStreamResource(storageService.getFileByLocationId(metadata.getQppLocator()));
 	}
 
-		/**
-		 * Process to ensure the file is an unprocessed cpc+ file and marks the file as processed
-		 *
-		 * @param fileId Identifier of the CPC+ file
-		 * @return Success or failure message.
-		 */
-		@Override
-		public String processFileById(String fileId, String orgName) {
+	/**
+	 * Process to ensure the file is an unprocessed cpc+ file and marks the file as processed
+	 *
+	 * @param fileId Identifier of the CPC+ file
+	 * @return Success or failure message.
+	 */
+	@Override
+	public String processFileById(String fileId, String orgName) {
 		Metadata metadata = getMetadataById(fileId);
 		if(Constants.CPC_ORG.equalsIgnoreCase(orgName)) {
 			metadata.setCpcProcessed(true);
@@ -98,16 +98,16 @@ public class PcfFileServiceImpl implements PcfFileService {
 		}
 	}
 
-		/**
-		 * Process to ensure the file is a processed cpc+ file and marks the file as unprocessed
-		 *
-		 * @param fileId Identifier of the CPC+ file
-		 * @param orgName Idenifier of which organization to process files for.
-		 * @return Success or failure message.
-		 */
-		@Override
-		public String unprocessFileById(String fileId, String orgName) {
-			Metadata metadata = getMetadataById(fileId);
+	/**
+	 * Process to ensure the file is a processed cpc+ file and marks the file as unprocessed
+	 *
+	 * @param fileId Identifier of the CPC+ file
+	 * @param orgName Idenifier of which organization to process files for.
+	 * @return Success or failure message.
+	 */
+	@Override
+	public String unprocessFileById(String fileId, String orgName) {
+		Metadata metadata = getMetadataById(fileId);
 		if (Constants.CPC_ORG.equalsIgnoreCase(orgName)) {
 			metadata.setCpcProcessed(false);
 			CompletableFuture<Metadata> metadataFuture = dbService.write(metadata);
@@ -123,44 +123,44 @@ public class PcfFileServiceImpl implements PcfFileService {
 		}
 	}
 
-		@Override
-		public Metadata getMetadataById(String fileId) {
-			Metadata metadata = dbService.getMetadataById(fileId);
+	@Override
+	public Metadata getMetadataById(String fileId) {
+		Metadata metadata = dbService.getMetadataById(fileId);
 		if (metadata == null) {
 			throw new NoFileInDatabaseException(FILE_NOT_FOUND);
-		} else if (!isCpcFile(metadata)) {
+		} else if (!isPcfFile(metadata)) {
 			throw new InvalidFileTypeException(INVALID_FILE);
 		}
 		return metadata;
 	}
 
-		/**
-		 * Service to transform a {@link Metadata} list into the {@link UnprocessedCpcFileData}
-		 *
-		 * @param metadataList object to hold the list of {@link Metadata} from DynamoDb
-		 * @return transformed list of {@link UnprocessedCpcFileData}
-		 */
-		private List<UnprocessedCpcFileData> transformMetaDataToUnprocessedCpcFileData(List<Metadata> metadataList) {
-		return metadataList.stream().map(UnprocessedCpcFileData::new).collect(Collectors.toList());
+	/**
+	 * Service to transform a {@link Metadata} list into the {@link UnprocessedFileData}
+	 *
+	 * @param metadataList object to hold the list of {@link Metadata} from DynamoDb
+	 * @return transformed list of {@link UnprocessedFileData}
+	 */
+	private List<UnprocessedFileData> transformMetaDataToUnprocessedCpcFileData(List<Metadata> metadataList) {
+		return metadataList.stream().map(UnprocessedFileData::new).collect(Collectors.toList());
 	}
 
-		/**
-		 * Determines if the file is unprocessed and is CPC+
-		 *
-		 * @param metadata Data to be determined valid or invalid
-		 * @return result of the check
-		 */
-		private boolean isAnUnprocessedCpcFile(Metadata metadata) {
-		return isCpcFile(metadata) && (!metadata.getCpcProcessed() || !metadata.getRtiProcessed());
+	/**
+	 * Determines if the file is unprocessed and is CPC+
+	 *
+	 * @param metadata Data to be determined valid or invalid
+	 * @return result of the check
+	 */
+	private boolean isAValidUnprocessedFile(Metadata metadata) {
+		return (isPcfFile(metadata)) && (!metadata.getCpcProcessed() || !metadata.getRtiProcessed());
 	}
 
-		/**
-		 * Determines if the file is a PCF submission
-		 *
-		 * @param metadata Data to be determined valid or invalid
-		 * @return result of the check
-		 */
-		private boolean isCpcFile(Metadata metadata) {
-			return metadata != null && metadata.getCpc() != null;
+	/**
+	 * Determines if the file is a PCF submission
+	 *
+	 * @param metadata Data to be determined valid or invalid
+	 * @return result of the check
+	 */
+	private boolean isPcfFile(Metadata metadata) {
+		return metadata != null && metadata.getPcf() != null;
 	}
 }

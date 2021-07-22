@@ -3,7 +3,7 @@ package gov.cms.qpp.conversion.api.services;
 import org.springframework.core.io.InputStreamResource;
 
 import gov.cms.qpp.conversion.api.model.Metadata;
-import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
+import gov.cms.qpp.conversion.api.model.UnprocessedFileData;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,9 +13,9 @@ public interface PcfFileService {
 	/**
 	 * Retrieves all unprocessed pcf metadata
 	 *
-	 * @return {@link Metadata} extracted as {@link UnprocessedCpcFileData}.
+	 * @return {@link Metadata} extracted as {@link UnprocessedFileData}.
 	 */
-	List<UnprocessedCpcFileData> getUnprocessedPcfPlusFiles(String org);
+	List<UnprocessedFileData> getUnprocessedPcfFiles(String org);
 
 	/**
 	 * Retrieves specific metadata by fileId provided

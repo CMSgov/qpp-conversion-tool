@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.api.services;
 
 import gov.cms.qpp.conversion.api.model.Metadata;
-import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
+import gov.cms.qpp.conversion.api.model.UnprocessedFileData;
 import java.io.IOException;
 import java.util.List;
 import org.springframework.core.io.InputStreamResource;
@@ -13,9 +13,9 @@ public interface CpcFileService {
 	/**
 	 * Retrieves all unprocessed cpc+ metadata
 	 *
-	 * @return {@link Metadata} extracted as {@link UnprocessedCpcFileData}.
+	 * @return {@link Metadata} extracted as {@link UnprocessedFileData}.
 	 */
-	List<UnprocessedCpcFileData> getUnprocessedCpcPlusFiles(String orgAttribute);
+	List<UnprocessedFileData> getUnprocessedCpcPlusFiles(String orgAttribute);
 
 	Metadata getMetadataById(String fileId);
 

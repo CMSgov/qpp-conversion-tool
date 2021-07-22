@@ -104,6 +104,12 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 		}
 	}
 
+	/**
+	 * Paginated Query of DynamoDb to limit items received as to remove issues with slowness/timeouts
+	 *
+	 * @param orgAttribute controls organizational choice when retrieving data
+	 * @return
+	 */
 	public List<Metadata> getUnprocessedPcfMetaData(String orgAttribute) {
 		if (mapper.isPresent()) {
 			API_LOG.info("Getting list of unprocessed Pcf metadata...");
@@ -115,19 +121,19 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 
 			return IntStream.range(0, Constants.CPC_DYNAMO_PARTITIONS).mapToObj(partition -> {
 				Map<String, AttributeValue> valueMap = new HashMap<>();
-				valueMap.put(":pcfValue", new AttributeValue().withS(Constants.CPC_DYNAMO_PARTITION_START + partition));
+				valueMap.put(":pcfValue", new AttributeValue().withS(Constants.PCF_DYNAMO_PARTITION_START + partition));
 				valueMap.put(":pcfProcessedValue", new AttributeValue().withS("false#"+year));
 				valueMap.put(":createDate", new AttributeValue().withS(cpcConversionStartDate));
 
 				DynamoDBQueryExpression<Metadata> metadataQuery = new DynamoDBQueryExpression<Metadata>()
 					.withIndexName(indexName)
-					.withKeyConditionExpression(Constants.DYNAMO_CPC_ATTRIBUTE + " = :pcfValue and begins_with("
+					.withKeyConditionExpression(Constants.DYNAMO_PCF_ATTRIBUTE + " = :pcfValue and begins_with("
 						+ orgAttribute + ", :pcfProcessedValue)")
 					.withFilterExpression(Constants.DYNAMO_CREATE_DATE_ATTRIBUTE + " > :createDate")
 					.withExpressionAttributeValues(valueMap)
 					.withConsistentRead(false);
 
-				return mapper.get().queryPage(Metadata.class, metadataQuery).getResults().stream();
+				return mapper.get().query(Metadata.class, metadataQuery).stream();
 			}).flatMap(Function.identity()).collect(Collectors.toList());
 		} else {
 			API_LOG.warn("Could not get unprocessed PCF metadata because the dynamodb mapper is absent");
