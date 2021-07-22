@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.api.model.CpcFileStatusUpdateRequest;
+import gov.cms.qpp.conversion.api.model.FileStatusUpdateRequest;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.Report;
 import gov.cms.qpp.conversion.api.model.Status;
-import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
+import gov.cms.qpp.conversion.api.model.UnprocessedFileData;
 import gov.cms.qpp.conversion.api.services.CpcFileService;
 import gov.cms.qpp.conversion.util.EnvironmentHelper;
 
@@ -58,7 +58,7 @@ public class CpcFileControllerV1 {
 	 */
 	@GetMapping(value = "/unprocessed-files/{org}",
 		headers = {"Accept=" + Constants.V1_API_ACCEPT})
-	public ResponseEntity<List<UnprocessedCpcFileData>> getUnprocessedCpcPlusFiles(@PathVariable("org") String organization) {
+	public ResponseEntity<List<UnprocessedFileData>> getUnprocessedCpcPlusFiles(@PathVariable("org") String organization) {
 		API_LOG.info("CPC+ unprocessed files request received");
 
 		String orgAttribute = Constants.ORG_ATTRIBUTE_MAP.get(organization);
@@ -70,12 +70,12 @@ public class CpcFileControllerV1 {
 				.body(null);
 		}
 
-		List<UnprocessedCpcFileData> unprocessedCpcFileDataList =
+		List<UnprocessedFileData> unprocessedFileDataList =
 			cpcFileService.getUnprocessedCpcPlusFiles(orgAttribute);
 
 		API_LOG.info("CPC+ unprocessed files request succeeded");
 
-		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(unprocessedCpcFileDataList);
+		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(unprocessedFileDataList);
 	}
 
 	/**
@@ -139,7 +139,7 @@ public class CpcFileControllerV1 {
 		headers = {"Accept=" +
 			Constants.V1_API_ACCEPT})
 	public ResponseEntity<String> updateFile(@PathVariable("fileId") String fileId, @PathVariable("org") String org,
-		@RequestBody(required = false) CpcFileStatusUpdateRequest request) {
+		@RequestBody(required = false) FileStatusUpdateRequest request) {
 		if (blockCpcPlusApi()) {
 			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);

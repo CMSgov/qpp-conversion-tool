@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.api.model.CpcFileStatusUpdateRequest;
+import gov.cms.qpp.conversion.api.model.FileStatusUpdateRequest;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.Report;
 import gov.cms.qpp.conversion.api.model.Status;
-import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
+import gov.cms.qpp.conversion.api.model.UnprocessedFileData;
 import gov.cms.qpp.conversion.api.services.PcfFileService;
 import gov.cms.qpp.conversion.util.EnvironmentHelper;
 
@@ -50,7 +50,7 @@ public class PcfFileControllerV1 {
 	 */
 	@GetMapping(value = "/unprocessed-files/{org}",
 		headers = {"Accept=" + Constants.V1_API_ACCEPT})
-	public ResponseEntity<List<UnprocessedCpcFileData>> getUnprocessedPcfPlusFiles(@PathVariable("org") String organization) {
+	public ResponseEntity<List<UnprocessedFileData>> getUnprocessedPcfPlusFiles(@PathVariable("org") String organization) {
 		API_LOG.info("PCF unprocessed files request received");
 
 		String orgAttribute = Constants.ORG_ATTRIBUTE_MAP.get(organization);
@@ -62,8 +62,8 @@ public class PcfFileControllerV1 {
 				.body(null);
 		}
 
-		List<UnprocessedCpcFileData> unprocessedPcfFileDataList =
-			pcfFileService.getUnprocessedPcfPlusFiles(orgAttribute);
+		List<UnprocessedFileData> unprocessedPcfFileDataList =
+			pcfFileService.getUnprocessedPcfFiles(orgAttribute);
 
 		API_LOG.info("PCF unprocessed files request succeeded");
 
@@ -131,7 +131,7 @@ public class PcfFileControllerV1 {
 		headers = {"Accept=" +
 			Constants.V1_API_ACCEPT})
 	public ResponseEntity<String> updateFile(@PathVariable("fileId") String fileId, @PathVariable("org") String org,
-		@RequestBody(required = false) CpcFileStatusUpdateRequest request) {
+		@RequestBody(required = false) FileStatusUpdateRequest request) {
 		if (blockApi()) {
 			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
