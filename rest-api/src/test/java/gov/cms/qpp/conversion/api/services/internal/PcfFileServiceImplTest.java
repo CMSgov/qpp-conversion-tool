@@ -57,7 +57,7 @@ public class PcfFileServiceImplTest {
 
 		List<Metadata> metadataList = Stream.generate(Metadata::new).limit(numberOfMetadata).collect(Collectors.toList());
 
-		when(dbService.getUnprocessedCpcPlusMetaData(anyString())).thenReturn(metadataList);
+		when(dbService.getUnprocessedPcfMetaData(anyString())).thenReturn(metadataList);
 
 		assertThat(objectUnderTest.getUnprocessedPcfFiles(Constants.CPC_ORG)).hasSize(numberOfMetadata);
 	}
@@ -101,7 +101,7 @@ public class PcfFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(key);
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.INVALID_FILE);
+		assertThat(expectedException).hasMessageThat().isEqualTo(PcfFileServiceImpl.INVALID_FILE);
 	}
 
 	@Test
@@ -115,7 +115,7 @@ public class PcfFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(key);
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(expectedException).hasMessageThat().isEqualTo(PcfFileServiceImpl.FILE_NOT_FOUND);
 	}
 
 	@Test
@@ -141,7 +141,7 @@ public class PcfFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.INVALID_FILE);
+		assertThat(expectedException).hasMessageThat().isEqualTo(PcfFileServiceImpl.INVALID_FILE);
 	}
 
 	@Test
@@ -154,7 +154,7 @@ public class PcfFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(expectedException).hasMessageThat().isEqualTo(PcfFileServiceImpl.FILE_NOT_FOUND);
 	}
 
 	@Test
@@ -167,7 +167,7 @@ public class PcfFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(expectedException).hasMessageThat().isEqualTo(PcfFileServiceImpl.FILE_NOT_FOUND);
 	}
 
 	@Test
@@ -181,7 +181,7 @@ public class PcfFileServiceImplTest {
 		verify(dbService, times(1)).getMetadataById(test);
 		verify(dbService, times(1)).write(returnedData);
 
-		assertThat(message).isEqualTo(CpcFileServiceImpl.FILE_FOUND_PROCESSED);
+		assertThat(message).isEqualTo(PcfFileServiceImpl.FILE_FOUND_PROCESSED);
 	}
 
 	@Test
@@ -195,7 +195,7 @@ public class PcfFileServiceImplTest {
 		verify(dbService, times(1)).getMetadataById(test);
 		verify(dbService, times(1)).write(returnedData);
 
-		assertThat(message).isEqualTo(CpcFileServiceImpl.FILE_FOUND_PROCESSED);
+		assertThat(message).isEqualTo(PcfFileServiceImpl.FILE_FOUND_PROCESSED);
 	}
 
 	@Test
@@ -207,7 +207,7 @@ public class PcfFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(test);
 
-		assertThat(message).isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(message).isEqualTo(PcfFileServiceImpl.FILE_NOT_FOUND);
 	}
 
 	@Test
@@ -219,7 +219,7 @@ public class PcfFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(expectedException).hasMessageThat().isEqualTo(PcfFileServiceImpl.FILE_NOT_FOUND);
 	}
 
 	@Test
@@ -231,7 +231,7 @@ public class PcfFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.INVALID_FILE);
+		assertThat(expectedException).hasMessageThat().isEqualTo(PcfFileServiceImpl.INVALID_FILE);
 	}
 
 	@Test
@@ -244,7 +244,7 @@ public class PcfFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(response).isEqualTo(CpcFileServiceImpl.FILE_FOUND_PROCESSED);
+		assertThat(response).isEqualTo(PcfFileServiceImpl.FILE_FOUND_PROCESSED);
 	}
 
 	@Test
@@ -258,7 +258,7 @@ public class PcfFileServiceImplTest {
 		verify(dbService, times(1)).getMetadataById(test);
 		verify(dbService, times(1)).write(returnedData);
 
-		assertThat(message).isEqualTo(CpcFileServiceImpl.FILE_FOUND_UNPROCESSED);
+		assertThat(message).isEqualTo(PcfFileServiceImpl.FILE_FOUND_UNPROCESSED);
 	}
 
 	@Test
@@ -270,7 +270,7 @@ public class PcfFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(expectedException).hasMessageThat().isEqualTo(PcfFileServiceImpl.FILE_NOT_FOUND);
 	}
 
 	@Test
@@ -284,7 +284,7 @@ public class PcfFileServiceImplTest {
 		verify(dbService, times(1)).getMetadataById(test);
 		verify(dbService, times(1)).write(returnedData);
 
-		assertThat(message).isEqualTo(CpcFileServiceImpl.FILE_FOUND_UNPROCESSED);
+		assertThat(message).isEqualTo(PcfFileServiceImpl.FILE_FOUND_UNPROCESSED);
 	}
 
 	@Test
@@ -296,7 +296,7 @@ public class PcfFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(test);
 
-		assertThat(message).isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(message).isEqualTo(PcfFileServiceImpl.FILE_NOT_FOUND);
 	}
 
 	@Test
@@ -308,7 +308,7 @@ public class PcfFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.INVALID_FILE);
+		assertThat(expectedException).hasMessageThat().isEqualTo(PcfFileServiceImpl.INVALID_FILE);
 	}
 
 	@Test
@@ -321,7 +321,7 @@ public class PcfFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(response).isEqualTo(CpcFileServiceImpl.FILE_FOUND_UNPROCESSED);
+		assertThat(response).isEqualTo(PcfFileServiceImpl.FILE_FOUND_UNPROCESSED);
 	}
 
 	Metadata buildFakeMetadata(boolean isPcf, boolean isCpcProcessed, boolean isRtiProcessed) {

@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.api.services.internal;
 
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.stereotype.Service;
 
 import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
 import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
+@Service
 public class PcfFileServiceImpl implements PcfFileService {
 	public static final String FILE_NOT_FOUND = "File not found!";
 	protected static final String INVALID_FILE = "The file was not a PCF file.";
