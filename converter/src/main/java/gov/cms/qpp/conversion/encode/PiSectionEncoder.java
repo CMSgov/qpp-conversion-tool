@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.encode;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -104,7 +103,7 @@ public class PiSectionEncoder extends QppOutputEncoder {
 	 */
 	private void encodeEntityId(JsonWrapper wrapper, Node parent) {
 		String entityId = parent.getValue(ClinicalDocumentDecoder.PRACTICE_ID);
-		if (!StringUtils.isEmpty(entityId)) {
+		if (Program.isCpc(parent)) {
 			wrapper.put(ClinicalDocumentDecoder.PRACTICE_ID, entityId);
 		}
 	}
