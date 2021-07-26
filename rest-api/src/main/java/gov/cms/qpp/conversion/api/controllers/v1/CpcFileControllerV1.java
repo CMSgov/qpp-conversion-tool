@@ -22,7 +22,7 @@ import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.Report;
 import gov.cms.qpp.conversion.api.model.Status;
 import gov.cms.qpp.conversion.api.model.UnprocessedFileData;
-import gov.cms.qpp.conversion.api.services.CpcFileService;
+import gov.cms.qpp.conversion.api.services.AdvancedApmFileService;
 import gov.cms.qpp.conversion.util.EnvironmentHelper;
 
 import java.io.IOException;
@@ -40,15 +40,15 @@ public class CpcFileControllerV1 {
 		"CPC+ request blocked by feature flag or that have an invalid organization";
 	private static final Logger API_LOG = LoggerFactory.getLogger(CpcFileControllerV1.class);
 
-	private CpcFileService cpcFileService;
+	private AdvancedApmFileService advancedApmFileService;
 
 	/**
 	 * init instance
 	 *
-	 * @param cpcFileService service for processing cpc+ files
+	 * @param advancedApmFileService service for processing cpc+ files
 	 */
-	public CpcFileControllerV1(CpcFileService cpcFileService) {
-		this.cpcFileService = cpcFileService;
+	public CpcFileControllerV1(AdvancedApmFileService advancedApmFileService) {
+		this.advancedApmFileService = advancedApmFileService;
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class CpcFileControllerV1 {
 		}
 
 		List<UnprocessedFileData> unprocessedFileDataList =
-			cpcFileService.getUnprocessedCpcPlusFiles(orgAttribute);
+			advancedApmFileService.getUnprocessedCpcPlusFiles(orgAttribute);
 
 		API_LOG.info("CPC+ unprocessed files request succeeded");
 
@@ -96,7 +96,7 @@ public class CpcFileControllerV1 {
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
 
-		InputStreamResource content = cpcFileService.getFileById(fileId);
+		InputStreamResource content = advancedApmFileService.getCpcFileById(fileId);
 
 		API_LOG.info("CPC+ file retrieval request succeeded");
 
@@ -121,7 +121,7 @@ public class CpcFileControllerV1 {
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
 
-		InputStreamResource content = cpcFileService.getQppById(fileId);
+		InputStreamResource content = advancedApmFileService.getQppById(fileId);
 
 		API_LOG.info("CPC+ QPP retrieval request succeeded for fileId {}", fileId);
 
@@ -149,9 +149,9 @@ public class CpcFileControllerV1 {
 
 		String message;
 		if (request != null && request.getProcessed() != null && !request.getProcessed()) {
-			message = cpcFileService.unprocessFileById(fileId, org);
+			message = advancedApmFileService.unprocessFileById(fileId, org);
 		} else {
-			message = cpcFileService.processFileById(fileId, org);
+			message = advancedApmFileService.processFileById(fileId, org);
 		}
 
 		API_LOG.info("CPC+ update file request succeeded for fileId {} with message: {}", fileId, message);
@@ -169,7 +169,7 @@ public class CpcFileControllerV1 {
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
 
-		Metadata metadata = cpcFileService.getMetadataById(fileId);
+		Metadata metadata = advancedApmFileService.getMetadataById(fileId);
 
 		// If the Metadata object was created before a certain version, it will
 		// not contain error information, so a report would be inaccurate

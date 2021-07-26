@@ -14,11 +14,8 @@ import org.springframework.http.ResponseEntity;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.FileStatusUpdateRequest;
 import gov.cms.qpp.conversion.api.model.Metadata;
-import gov.cms.qpp.conversion.api.model.Report;
-import gov.cms.qpp.conversion.api.model.Status;
 import gov.cms.qpp.conversion.api.model.UnprocessedFileData;
-import gov.cms.qpp.conversion.api.services.PcfFileService;
-import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.api.services.AdvancedApmFileService;
 import gov.cms.qpp.test.MockitoExtension;
 
 import java.io.ByteArrayInputStream;
@@ -27,7 +24,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -43,7 +39,7 @@ public class PcfFileControllerV1Test {
 	PcfFileControllerV1 pcfFileControllerV1;
 
 	@Mock
-	PcfFileService pcfFileService;
+	AdvancedApmFileService advancedApmFileService;
 
 	@BeforeEach
 	void setUp() {
@@ -58,16 +54,16 @@ public class PcfFileControllerV1Test {
 	@Test
 	void testUpdateFileWithNullBodyMarksAsProcessed() {
 		pcfFileControllerV1.updateFile("mock", Constants.CPC_ORG,null);
-		verify(pcfFileService).processFileById("mock", Constants.CPC_ORG);
+		verify(advancedApmFileService).processFileById("mock", Constants.CPC_ORG);
 	}
 
 	@Test
 	void testGetUnprocessedFileList() {
-		when(pcfFileService.getUnprocessedPcfFiles(anyString())).thenReturn(expectedUnprocessedPcfFileDataList);
+		when(advancedApmFileService.getUnprocessedPcfFiles(anyString())).thenReturn(expectedUnprocessedPcfFileDataList);
 
 		ResponseEntity<List<UnprocessedFileData>> qppResponse = pcfFileControllerV1.getUnprocessedPcfPlusFiles(Constants.CPC_ORG);
 
-		verify(pcfFileService).getUnprocessedPcfFiles(Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE);
+		verify(advancedApmFileService).getUnprocessedPcfFiles(Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE);
 
 		assertThat(qppResponse.getBody()).isEqualTo(expectedUnprocessedPcfFileDataList);
 	}
@@ -75,7 +71,7 @@ public class PcfFileControllerV1Test {
 	@Test
 	void testGetFileById() throws IOException {
 		InputStreamResource valid = new InputStreamResource(new ByteArrayInputStream("1234".getBytes()));
-		when(pcfFileService.getFileById(anyString())).thenReturn(valid);
+		when(advancedApmFileService.getPcfFileById(anyString())).thenReturn(valid);
 
 		ResponseEntity<InputStreamResource> response = pcfFileControllerV1.getFileById("meep");
 
@@ -86,7 +82,7 @@ public class PcfFileControllerV1Test {
 	@Test
 	void testGetQppById() throws IOException {
 		InputStreamResource valid = new InputStreamResource(new ByteArrayInputStream("1234".getBytes()));
-		when(pcfFileService.getQppById(anyString())).thenReturn(valid);
+		when(advancedApmFileService.getQppById(anyString())).thenReturn(valid);
 
 		ResponseEntity<InputStreamResource> response = pcfFileControllerV1.getQppById("meep");
 
@@ -106,44 +102,44 @@ public class PcfFileControllerV1Test {
 
 	@Test
 	void testMarkFileAsProcessedReturnsSuccess() {
-		when(pcfFileService.processFileById(anyString(), anyString())).thenReturn("success!");
+		when(advancedApmFileService.processFileById(anyString(), anyString())).thenReturn("success!");
 
 		ResponseEntity<String> response = markProcessed();
 
-		verify(pcfFileService, times(1)).processFileById("meep", Constants.CPC_ORG);
+		verify(advancedApmFileService, times(1)).processFileById("meep", Constants.CPC_ORG);
 
 		assertThat(response.getBody()).isEqualTo("success!");
 	}
 
 	@Test
 	void testMarkFileAsProcessedHttpStatusOk() {
-		when(pcfFileService.processFileById(anyString(), anyString())).thenReturn("success!");
+		when(advancedApmFileService.processFileById(anyString(), anyString())).thenReturn("success!");
 
 		ResponseEntity<String> response = markProcessed();
 
-		verify(pcfFileService, times(1)).processFileById("meep", Constants.CPC_ORG);
+		verify(advancedApmFileService, times(1)).processFileById("meep", Constants.CPC_ORG);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 
 	@Test
 	void testMarkFileAsUnprocessedReturnsSuccess() {
-		when(pcfFileService.unprocessFileById(anyString(), anyString())).thenReturn("success!");
+		when(advancedApmFileService.unprocessFileById(anyString(), anyString())).thenReturn("success!");
 
 		ResponseEntity<String> response = markUnprocessed();
 
-		verify(pcfFileService, times(1)).unprocessFileById("meep", Constants.RTI_ORG);
+		verify(advancedApmFileService, times(1)).unprocessFileById("meep", Constants.RTI_ORG);
 
 		assertThat(response.getBody()).isEqualTo("success!");
 	}
 
 	@Test
 	void testMarkFileAsUnprocessedHttpStatusOk() {
-		when(pcfFileService.unprocessFileById(anyString(), anyString())).thenReturn("success!");
+		when(advancedApmFileService.unprocessFileById(anyString(), anyString())).thenReturn("success!");
 
 		ResponseEntity<String> response = markUnprocessed();
 
-		verify(pcfFileService, times(1)).unprocessFileById("meep", Constants.RTI_ORG);
+		verify(advancedApmFileService, times(1)).unprocessFileById("meep", Constants.RTI_ORG);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
@@ -184,87 +180,6 @@ public class PcfFileControllerV1Test {
 
 		assertThat(cpcResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
 		assertThat(cpcResponse.getBody()).isNull();
-	}
-
-	@Test
-	void testReportWithFeatureFlagDisabled() {
-		System.setProperty(Constants.NO_CPC_PLUS_API_ENV_VARIABLE, "trueOrWhatever");
-
-		ResponseEntity<Report> cpcResponse = report("test");
-
-		assertThat(cpcResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
-		assertThat(cpcResponse.getBody()).isNull();
-	}
-
-	@Test
-	void testReportWithEarlierMetadataVersion() {
-		Metadata testMetadata = Metadata.create();
-		testMetadata.setConversionStatus(true);
-		testMetadata.setProgramName(UUID.randomUUID().toString());
-		testMetadata.setMetadataVersion(-1);
-		when(pcfFileService.getMetadataById("test")).thenReturn(testMetadata);
-
-		ResponseEntity<Report> cpcResponse = report("test");
-
-		assertThat(cpcResponse.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
-		assertThat(cpcResponse.getBody()).isNull();
-	}
-
-	@Test
-	void testReport() {
-		Metadata testMetadata = Metadata.create();
-		testMetadata.setConversionStatus(true);
-		testMetadata.setProgramName(UUID.randomUUID().toString());
-		when(pcfFileService.getMetadataById("test")).thenReturn(testMetadata);
-
-		Report cpcResponse = report("test").getBody();
-
-		assertThat(cpcResponse.getProgramName()).isEqualTo(testMetadata.getProgramName());
-		assertThat(cpcResponse.getStatus()).isEqualTo(Status.ACCEPTED);
-	}
-
-	@Test
-	void testReportWithWarnings() {
-		Metadata testMetadata = Metadata.create();
-		testMetadata.setConversionStatus(true);
-		List<Detail> testDetails = new ArrayList<>();
-		testDetails.add(new Detail());
-		testMetadata.setWarnings(testDetails);
-		when(pcfFileService.getMetadataById("test")).thenReturn(testMetadata);
-
-		Report cpcResponse = report("test").getBody();
-
-		assertThat(cpcResponse.getStatus()).isEqualTo(Status.ACCEPTED_WITH_WARNINGS);
-	}
-
-	@Test
-	void testReportWithEmptyWarnings() {
-		Metadata testMetadata = Metadata.create();
-		testMetadata.setConversionStatus(true);
-		List<Detail> testDetails = new ArrayList<>();
-		testMetadata.setWarnings(testDetails);
-		when(pcfFileService.getMetadataById("test")).thenReturn(testMetadata);
-
-		Report cpcResponse = report("test").getBody();
-
-		assertThat(cpcResponse.getStatus()).isEqualTo(Status.ACCEPTED);
-	}
-
-	@Test
-	void testReportWithErrors() {
-		Metadata testMetadata = Metadata.create();
-		testMetadata.setConversionStatus(false);
-		List<Detail> testDetails = new ArrayList<>();
-		testMetadata.setErrors(testDetails);
-		when(pcfFileService.getMetadataById("test")).thenReturn(testMetadata);
-
-		Report cpcResponse = report("test").getBody();
-
-		assertThat(cpcResponse.getStatus()).isEqualTo(Status.REJECTED);
-	}
-
-	private ResponseEntity<Report> report(String fileId) {
-		return pcfFileControllerV1.getReportByFileId(fileId);
 	}
 
 	private ResponseEntity<String> markProcessed() {

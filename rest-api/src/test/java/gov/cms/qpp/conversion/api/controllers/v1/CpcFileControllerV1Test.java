@@ -31,7 +31,7 @@ import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.Report;
 import gov.cms.qpp.conversion.api.model.Status;
 import gov.cms.qpp.conversion.api.model.UnprocessedFileData;
-import gov.cms.qpp.conversion.api.services.CpcFileService;
+import gov.cms.qpp.conversion.api.services.AdvancedApmFileService;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.test.MockitoExtension;
 
@@ -44,7 +44,7 @@ class CpcFileControllerV1Test {
 	CpcFileControllerV1 cpcFileControllerV1;
 
 	@Mock
-	CpcFileService cpcFileService;
+	AdvancedApmFileService advancedApmFileService;
 
 	@BeforeEach
 	void setUp() {
@@ -59,16 +59,16 @@ class CpcFileControllerV1Test {
 	@Test
 	void testUpdateFileWithNullBodyMarksAsProcessed() {
 		cpcFileControllerV1.updateFile("mock", Constants.CPC_ORG,null);
-		verify(cpcFileService).processFileById("mock", Constants.CPC_ORG);
+		verify(advancedApmFileService).processFileById("mock", Constants.CPC_ORG);
 	}
 
 	@Test
 	void testGetUnprocessedFileList() {
-		when(cpcFileService.getUnprocessedCpcPlusFiles(anyString())).thenReturn(expectedUnprocessedFileDataList);
+		when(advancedApmFileService.getUnprocessedCpcPlusFiles(anyString())).thenReturn(expectedUnprocessedFileDataList);
 
 		ResponseEntity<List<UnprocessedFileData>> qppResponse = cpcFileControllerV1.getUnprocessedCpcPlusFiles(Constants.CPC_ORG);
 
-		verify(cpcFileService).getUnprocessedCpcPlusFiles(Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE);
+		verify(advancedApmFileService).getUnprocessedCpcPlusFiles(Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE);
 
 		assertThat(qppResponse.getBody()).isEqualTo(expectedUnprocessedFileDataList);
 	}
@@ -76,7 +76,7 @@ class CpcFileControllerV1Test {
 	@Test
 	void testGetFileById() throws IOException {
 		InputStreamResource valid = new InputStreamResource(new ByteArrayInputStream("1234".getBytes()));
-		when(cpcFileService.getFileById(anyString())).thenReturn(valid);
+		when(advancedApmFileService.getCpcFileById(anyString())).thenReturn(valid);
 
 		ResponseEntity<InputStreamResource> response = cpcFileControllerV1.getFileById("meep");
 
@@ -87,7 +87,7 @@ class CpcFileControllerV1Test {
 	@Test
 	void testGetQppById() throws IOException {
 		InputStreamResource valid = new InputStreamResource(new ByteArrayInputStream("1234".getBytes()));
-		when(cpcFileService.getQppById(anyString())).thenReturn(valid);
+		when(advancedApmFileService.getQppById(anyString())).thenReturn(valid);
 
 		ResponseEntity<InputStreamResource> response = cpcFileControllerV1.getQppById("meep");
 
@@ -107,44 +107,44 @@ class CpcFileControllerV1Test {
 
 	@Test
 	void testMarkFileAsProcessedReturnsSuccess() {
-		when(cpcFileService.processFileById(anyString(), anyString())).thenReturn("success!");
+		when(advancedApmFileService.processFileById(anyString(), anyString())).thenReturn("success!");
 
 		ResponseEntity<String> response = markProcessed();
 
-		verify(cpcFileService, times(1)).processFileById("meep", Constants.CPC_ORG);
+		verify(advancedApmFileService, times(1)).processFileById("meep", Constants.CPC_ORG);
 
 		assertThat(response.getBody()).isEqualTo("success!");
 	}
 
 	@Test
 	void testMarkFileAsProcessedHttpStatusOk() {
-		when(cpcFileService.processFileById(anyString(), anyString())).thenReturn("success!");
+		when(advancedApmFileService.processFileById(anyString(), anyString())).thenReturn("success!");
 
 		ResponseEntity<String> response = markProcessed();
 
-		verify(cpcFileService, times(1)).processFileById("meep", Constants.CPC_ORG);
+		verify(advancedApmFileService, times(1)).processFileById("meep", Constants.CPC_ORG);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 
 	@Test
 	void testMarkFileAsUnprocessedReturnsSuccess() {
-		when(cpcFileService.unprocessFileById(anyString(), anyString())).thenReturn("success!");
+		when(advancedApmFileService.unprocessFileById(anyString(), anyString())).thenReturn("success!");
 
 		ResponseEntity<String> response = markUnprocessed();
 
-		verify(cpcFileService, times(1)).unprocessFileById("meep", Constants.RTI_ORG);
+		verify(advancedApmFileService, times(1)).unprocessFileById("meep", Constants.RTI_ORG);
 
 		assertThat(response.getBody()).isEqualTo("success!");
 	}
 
 	@Test
 	void testMarkFileAsUnprocessedHttpStatusOk() {
-		when(cpcFileService.unprocessFileById(anyString(), anyString())).thenReturn("success!");
+		when(advancedApmFileService.unprocessFileById(anyString(), anyString())).thenReturn("success!");
 
 		ResponseEntity<String> response = markUnprocessed();
 
-		verify(cpcFileService, times(1)).unprocessFileById("meep", Constants.RTI_ORG);
+		verify(advancedApmFileService, times(1)).unprocessFileById("meep", Constants.RTI_ORG);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
@@ -203,7 +203,7 @@ class CpcFileControllerV1Test {
 		testMetadata.setConversionStatus(true);
 		testMetadata.setProgramName(UUID.randomUUID().toString());
 		testMetadata.setMetadataVersion(-1);
-		when(cpcFileService.getMetadataById("test")).thenReturn(testMetadata);
+		when(advancedApmFileService.getMetadataById("test")).thenReturn(testMetadata);
 
 		ResponseEntity<Report> cpcResponse = report("test");
 
@@ -216,7 +216,7 @@ class CpcFileControllerV1Test {
 		Metadata testMetadata = Metadata.create();
 		testMetadata.setConversionStatus(true);
 		testMetadata.setProgramName(UUID.randomUUID().toString());
-		when(cpcFileService.getMetadataById("test")).thenReturn(testMetadata);
+		when(advancedApmFileService.getMetadataById("test")).thenReturn(testMetadata);
 
 		Report cpcResponse = report("test").getBody();
 
@@ -231,7 +231,7 @@ class CpcFileControllerV1Test {
 		List<Detail> testDetails = new ArrayList<>();
 		testDetails.add(new Detail());
 		testMetadata.setWarnings(testDetails);
-		when(cpcFileService.getMetadataById("test")).thenReturn(testMetadata);
+		when(advancedApmFileService.getMetadataById("test")).thenReturn(testMetadata);
 
 		Report cpcResponse = report("test").getBody();
 
@@ -244,7 +244,7 @@ class CpcFileControllerV1Test {
 		testMetadata.setConversionStatus(true);
 		List<Detail> testDetails = new ArrayList<>();
 		testMetadata.setWarnings(testDetails);
-		when(cpcFileService.getMetadataById("test")).thenReturn(testMetadata);
+		when(advancedApmFileService.getMetadataById("test")).thenReturn(testMetadata);
 
 		Report cpcResponse = report("test").getBody();
 
@@ -257,7 +257,7 @@ class CpcFileControllerV1Test {
 		testMetadata.setConversionStatus(false);
 		List<Detail> testDetails = new ArrayList<>();
 		testMetadata.setErrors(testDetails);
-		when(cpcFileService.getMetadataById("test")).thenReturn(testMetadata);
+		when(advancedApmFileService.getMetadataById("test")).thenReturn(testMetadata);
 
 		Report cpcResponse = report("test").getBody();
 

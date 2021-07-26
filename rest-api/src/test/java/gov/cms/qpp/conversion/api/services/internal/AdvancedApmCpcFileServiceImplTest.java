@@ -1,20 +1,5 @@
 package gov.cms.qpp.conversion.api.services.internal;
 
-import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
-import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
-import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.api.model.Metadata;
-import gov.cms.qpp.conversion.api.services.DbService;
-import gov.cms.qpp.conversion.api.services.StorageService;
-import gov.cms.qpp.conversion.api.services.internal.CpcFileServiceImpl;
-import gov.cms.qpp.test.MockitoExtension;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,25 +7,40 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
 import org.springframework.core.io.InputStreamResource;
+
+import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
+import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
+import gov.cms.qpp.conversion.api.helper.AdvancedApmHelper;
+import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.model.Metadata;
+import gov.cms.qpp.conversion.api.services.DbService;
+import gov.cms.qpp.conversion.api.services.StorageService;
+import gov.cms.qpp.test.MockitoExtension;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class CpcFileServiceImplTest {
+class AdvancedApmCpcFileServiceImplTest {
 
 	private static final String MEEP = "meep";
 
 	@InjectMocks
-	private CpcFileServiceImpl objectUnderTest;
+	private AdvancedApmFileServiceImpl objectUnderTest;
 
 	@Mock
 	private DbService dbService;
@@ -102,7 +102,7 @@ class CpcFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(key);
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.INVALID_FILE);
+		assertThat(expectedException).hasMessageThat().isEqualTo(AdvancedApmHelper.INVALID_FILE);
 	}
 
 	@Test
@@ -112,11 +112,11 @@ class CpcFileServiceImplTest {
 		when(storageService.getFileByLocationId(key)).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
 		NoFileInDatabaseException expectedException = assertThrows(NoFileInDatabaseException.class, ()
-			-> objectUnderTest.getFileById(key));
+			-> objectUnderTest.getCpcFileById(key));
 
 		verify(dbService, times(1)).getMetadataById(key);
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(expectedException).hasMessageThat().isEqualTo(AdvancedApmHelper.FILE_NOT_FOUND);
 	}
 
 	@Test
@@ -124,7 +124,7 @@ class CpcFileServiceImplTest {
 		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(true, false, false));
 		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
-		InputStreamResource outcome = objectUnderTest.getFileById("test");
+		InputStreamResource outcome = objectUnderTest.getCpcFileById("test");
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 		verify(storageService, times(1)).getFileByLocationId(anyString());
@@ -138,11 +138,11 @@ class CpcFileServiceImplTest {
 		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
 		InvalidFileTypeException expectedException = assertThrows(InvalidFileTypeException.class, ()
-				-> objectUnderTest.getFileById("test"));
+				-> objectUnderTest.getCpcFileById("test"));
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.INVALID_FILE);
+		assertThat(expectedException).hasMessageThat().isEqualTo(AdvancedApmHelper.INVALID_FILE);
 	}
 
 	@Test
@@ -151,11 +151,11 @@ class CpcFileServiceImplTest {
 		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
 		NoFileInDatabaseException expectedException = assertThrows(NoFileInDatabaseException.class, ()
-				-> objectUnderTest.getFileById("test"));
+				-> objectUnderTest.getCpcFileById("test"));
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(expectedException).hasMessageThat().isEqualTo(AdvancedApmHelper.FILE_NOT_FOUND);
 	}
 
 	@Test
@@ -164,11 +164,11 @@ class CpcFileServiceImplTest {
 		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
 		NoFileInDatabaseException expectedException = assertThrows(NoFileInDatabaseException.class, ()
-				-> objectUnderTest.getFileById("test"));
+				-> objectUnderTest.getCpcFileById("test"));
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(expectedException).hasMessageThat().isEqualTo(AdvancedApmHelper.FILE_NOT_FOUND);
 	}
 
 	@Test
@@ -182,7 +182,7 @@ class CpcFileServiceImplTest {
 		verify(dbService, times(1)).getMetadataById(MEEP);
 		verify(dbService, times(1)).write(returnedData);
 
-		assertThat(message).isEqualTo(CpcFileServiceImpl.FILE_FOUND_PROCESSED);
+		assertThat(message).isEqualTo(AdvancedApmHelper.FILE_FOUND_PROCESSED);
 	}
 
 	@Test
@@ -196,7 +196,7 @@ class CpcFileServiceImplTest {
 		verify(dbService, times(1)).getMetadataById(MEEP);
 		verify(dbService, times(1)).write(returnedData);
 
-		assertThat(message).isEqualTo(CpcFileServiceImpl.FILE_FOUND_PROCESSED);
+		assertThat(message).isEqualTo(AdvancedApmHelper.FILE_FOUND_PROCESSED);
 	}
 
 	@Test
@@ -208,7 +208,7 @@ class CpcFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(MEEP);
 
-		assertThat(message).isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(message).isEqualTo(AdvancedApmHelper.FILE_NOT_FOUND);
 	}
 
 	@Test
@@ -220,7 +220,7 @@ class CpcFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(expectedException).hasMessageThat().isEqualTo(AdvancedApmHelper.FILE_NOT_FOUND);
 	}
 
 	@Test
@@ -232,7 +232,7 @@ class CpcFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.INVALID_FILE);
+		assertThat(expectedException).hasMessageThat().isEqualTo(AdvancedApmHelper.INVALID_FILE);
 	}
 
 	@Test
@@ -245,7 +245,7 @@ class CpcFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(response).isEqualTo(CpcFileServiceImpl.FILE_FOUND_PROCESSED);
+		assertThat(response).isEqualTo(AdvancedApmHelper.FILE_FOUND_PROCESSED);
 	}
 
 	@Test
@@ -259,7 +259,7 @@ class CpcFileServiceImplTest {
 		verify(dbService, times(1)).getMetadataById(MEEP);
 		verify(dbService, times(1)).write(returnedData);
 
-		assertThat(message).isEqualTo(CpcFileServiceImpl.FILE_FOUND_UNPROCESSED);
+		assertThat(message).isEqualTo(AdvancedApmHelper.FILE_FOUND_UNPROCESSED);
 	}
 
 	@Test
@@ -271,7 +271,7 @@ class CpcFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(expectedException).hasMessageThat().isEqualTo(AdvancedApmHelper.FILE_NOT_FOUND);
 	}
 
 	@Test
@@ -285,7 +285,7 @@ class CpcFileServiceImplTest {
 		verify(dbService, times(1)).getMetadataById(MEEP);
 		verify(dbService, times(1)).write(returnedData);
 
-		assertThat(message).isEqualTo(CpcFileServiceImpl.FILE_FOUND_UNPROCESSED);
+		assertThat(message).isEqualTo(AdvancedApmHelper.FILE_FOUND_UNPROCESSED);
 	}
 
 	@Test
@@ -297,7 +297,7 @@ class CpcFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(MEEP);
 
-		assertThat(message).isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(message).isEqualTo(AdvancedApmHelper.FILE_NOT_FOUND);
 	}
 
 	@Test
@@ -309,7 +309,7 @@ class CpcFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.INVALID_FILE);
+		assertThat(expectedException).hasMessageThat().isEqualTo(AdvancedApmHelper.INVALID_FILE);
 	}
 
 	@Test
@@ -322,7 +322,7 @@ class CpcFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(response).isEqualTo(CpcFileServiceImpl.FILE_FOUND_UNPROCESSED);
+		assertThat(response).isEqualTo(AdvancedApmHelper.FILE_FOUND_UNPROCESSED);
 	}
 
 	Metadata buildFakeMetadata(boolean isCpc, boolean isCpcProcessed, boolean isRtiProcessed) {

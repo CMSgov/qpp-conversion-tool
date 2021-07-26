@@ -11,6 +11,7 @@ import org.springframework.core.io.InputStreamResource;
 
 import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
 import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
+import gov.cms.qpp.conversion.api.helper.AdvancedApmHelper;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.services.DbService;
@@ -34,12 +35,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class PcfFileServiceImplTest {
+public class AdvancedApmPcfFileServiceImplTest {
 
 	private static final String test = "test";
 
 	@InjectMocks
-	private PcfFileServiceImpl objectUnderTest;
+	private AdvancedApmFileServiceImpl objectUnderTest;
 
 	@Mock
 	private DbService dbService;
@@ -101,7 +102,7 @@ public class PcfFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(key);
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(PcfFileServiceImpl.INVALID_FILE);
+		assertThat(expectedException).hasMessageThat().isEqualTo(AdvancedApmHelper.INVALID_FILE);
 	}
 
 	@Test
@@ -111,11 +112,11 @@ public class PcfFileServiceImplTest {
 		when(storageService.getFileByLocationId(key)).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
 		NoFileInDatabaseException expectedException = assertThrows(NoFileInDatabaseException.class, ()
-			-> objectUnderTest.getFileById(key));
+			-> objectUnderTest.getPcfFileById(key));
 
 		verify(dbService, times(1)).getMetadataById(key);
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(PcfFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(expectedException).hasMessageThat().isEqualTo(AdvancedApmHelper.FILE_NOT_FOUND);
 	}
 
 	@Test
@@ -123,7 +124,7 @@ public class PcfFileServiceImplTest {
 		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(true, false, false));
 		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
-		InputStreamResource outcome = objectUnderTest.getFileById("test");
+		InputStreamResource outcome = objectUnderTest.getPcfFileById("test");
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 		verify(storageService, times(1)).getFileByLocationId(anyString());
@@ -137,11 +138,11 @@ public class PcfFileServiceImplTest {
 		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
 		InvalidFileTypeException expectedException = assertThrows(InvalidFileTypeException.class, ()
-			-> objectUnderTest.getFileById("test"));
+			-> objectUnderTest.getPcfFileById("test"));
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(PcfFileServiceImpl.INVALID_FILE);
+		assertThat(expectedException).hasMessageThat().isEqualTo(AdvancedApmHelper.INVALID_FILE);
 	}
 
 	@Test
@@ -150,11 +151,11 @@ public class PcfFileServiceImplTest {
 		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
 		NoFileInDatabaseException expectedException = assertThrows(NoFileInDatabaseException.class, ()
-			-> objectUnderTest.getFileById("test"));
+			-> objectUnderTest.getPcfFileById("test"));
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(PcfFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(expectedException).hasMessageThat().isEqualTo(AdvancedApmHelper.FILE_NOT_FOUND);
 	}
 
 	@Test
@@ -163,11 +164,11 @@ public class PcfFileServiceImplTest {
 		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
 		NoFileInDatabaseException expectedException = assertThrows(NoFileInDatabaseException.class, ()
-			-> objectUnderTest.getFileById("test"));
+			-> objectUnderTest.getPcfFileById("test"));
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(PcfFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(expectedException).hasMessageThat().isEqualTo(AdvancedApmHelper.FILE_NOT_FOUND);
 	}
 
 	@Test
@@ -181,7 +182,7 @@ public class PcfFileServiceImplTest {
 		verify(dbService, times(1)).getMetadataById(test);
 		verify(dbService, times(1)).write(returnedData);
 
-		assertThat(message).isEqualTo(PcfFileServiceImpl.FILE_FOUND_PROCESSED);
+		assertThat(message).isEqualTo(AdvancedApmHelper.FILE_FOUND_PROCESSED);
 	}
 
 	@Test
@@ -195,7 +196,7 @@ public class PcfFileServiceImplTest {
 		verify(dbService, times(1)).getMetadataById(test);
 		verify(dbService, times(1)).write(returnedData);
 
-		assertThat(message).isEqualTo(PcfFileServiceImpl.FILE_FOUND_PROCESSED);
+		assertThat(message).isEqualTo(AdvancedApmHelper.FILE_FOUND_PROCESSED);
 	}
 
 	@Test
@@ -207,7 +208,7 @@ public class PcfFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(test);
 
-		assertThat(message).isEqualTo(PcfFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(message).isEqualTo(AdvancedApmHelper.FILE_NOT_FOUND);
 	}
 
 	@Test
@@ -219,7 +220,7 @@ public class PcfFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(PcfFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(expectedException).hasMessageThat().isEqualTo(AdvancedApmHelper.FILE_NOT_FOUND);
 	}
 
 	@Test
@@ -231,7 +232,7 @@ public class PcfFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(PcfFileServiceImpl.INVALID_FILE);
+		assertThat(expectedException).hasMessageThat().isEqualTo(AdvancedApmHelper.INVALID_FILE);
 	}
 
 	@Test
@@ -244,7 +245,7 @@ public class PcfFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(response).isEqualTo(PcfFileServiceImpl.FILE_FOUND_PROCESSED);
+		assertThat(response).isEqualTo(AdvancedApmHelper.FILE_FOUND_PROCESSED);
 	}
 
 	@Test
@@ -258,7 +259,7 @@ public class PcfFileServiceImplTest {
 		verify(dbService, times(1)).getMetadataById(test);
 		verify(dbService, times(1)).write(returnedData);
 
-		assertThat(message).isEqualTo(PcfFileServiceImpl.FILE_FOUND_UNPROCESSED);
+		assertThat(message).isEqualTo(AdvancedApmHelper.FILE_FOUND_UNPROCESSED);
 	}
 
 	@Test
@@ -270,7 +271,7 @@ public class PcfFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(PcfFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(expectedException).hasMessageThat().isEqualTo(AdvancedApmHelper.FILE_NOT_FOUND);
 	}
 
 	@Test
@@ -284,7 +285,7 @@ public class PcfFileServiceImplTest {
 		verify(dbService, times(1)).getMetadataById(test);
 		verify(dbService, times(1)).write(returnedData);
 
-		assertThat(message).isEqualTo(PcfFileServiceImpl.FILE_FOUND_UNPROCESSED);
+		assertThat(message).isEqualTo(AdvancedApmHelper.FILE_FOUND_UNPROCESSED);
 	}
 
 	@Test
@@ -296,7 +297,7 @@ public class PcfFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(test);
 
-		assertThat(message).isEqualTo(PcfFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(message).isEqualTo(AdvancedApmHelper.FILE_NOT_FOUND);
 	}
 
 	@Test
@@ -308,7 +309,7 @@ public class PcfFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(PcfFileServiceImpl.INVALID_FILE);
+		assertThat(expectedException).hasMessageThat().isEqualTo(AdvancedApmHelper.INVALID_FILE);
 	}
 
 	@Test
@@ -321,7 +322,7 @@ public class PcfFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(response).isEqualTo(PcfFileServiceImpl.FILE_FOUND_UNPROCESSED);
+		assertThat(response).isEqualTo(AdvancedApmHelper.FILE_FOUND_UNPROCESSED);
 	}
 
 	Metadata buildFakeMetadata(boolean isPcf, boolean isCpcProcessed, boolean isRtiProcessed) {

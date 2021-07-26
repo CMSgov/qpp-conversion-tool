@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
-import org.apache.commons.lang3.BooleanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.InputStreamResource;
@@ -18,11 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.FileStatusUpdateRequest;
-import gov.cms.qpp.conversion.api.model.Metadata;
-import gov.cms.qpp.conversion.api.model.Report;
-import gov.cms.qpp.conversion.api.model.Status;
 import gov.cms.qpp.conversion.api.model.UnprocessedFileData;
-import gov.cms.qpp.conversion.api.services.PcfFileService;
+import gov.cms.qpp.conversion.api.services.AdvancedApmFileService;
 import gov.cms.qpp.conversion.util.EnvironmentHelper;
 
 import java.io.IOException;
@@ -37,10 +33,10 @@ public class PcfFileControllerV1 {
 		"PCF request blocked by feature flag or that have an invalid organization";
 	private static final Logger API_LOG = LoggerFactory.getLogger(PcfFileControllerV1.class);
 
-	private PcfFileService pcfFileService;
+	private AdvancedApmFileService advancedApmFileService;
 
-	public PcfFileControllerV1(PcfFileService pcfFileService) {
-		this.pcfFileService = pcfFileService;
+	public PcfFileControllerV1(AdvancedApmFileService advancedApmFileService) {
+		this.advancedApmFileService = advancedApmFileService;
 	}
 
 	/**
@@ -63,7 +59,7 @@ public class PcfFileControllerV1 {
 		}
 
 		List<UnprocessedFileData> unprocessedPcfFileDataList =
-			pcfFileService.getUnprocessedPcfFiles(orgAttribute);
+			advancedApmFileService.getUnprocessedPcfFiles(orgAttribute);
 
 		API_LOG.info("PCF unprocessed files request succeeded");
 
@@ -88,7 +84,7 @@ public class PcfFileControllerV1 {
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
 
-		InputStreamResource content = pcfFileService.getFileById(fileId);
+		InputStreamResource content = advancedApmFileService.getPcfFileById(fileId);
 
 		API_LOG.info("Pcf file retrieval request succeeded");
 
@@ -113,7 +109,7 @@ public class PcfFileControllerV1 {
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
 
-		InputStreamResource content = pcfFileService.getQppById(fileId);
+		InputStreamResource content = advancedApmFileService.getQppById(fileId);
 
 		API_LOG.info("PCF QPP retrieval request succeeded for fileId {}", fileId);
 
@@ -141,47 +137,15 @@ public class PcfFileControllerV1 {
 
 		String message;
 		if (request != null && request.getProcessed() != null && !request.getProcessed()) {
-			message = pcfFileService.unprocessFileById(fileId, org);
+			message = advancedApmFileService.unprocessFileById(fileId, org);
 		}
 		else {
-			message = pcfFileService.processFileById(fileId, org);
+			message = advancedApmFileService.processFileById(fileId, org);
 		}
 
 		API_LOG.info("PCF update file request succeeded for fileId {} with message: {}", fileId, message);
 
 		return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(message);
-	}
-
-	@GetMapping(value = "/report/{fileId}",
-		headers = {"Accept=" + Constants.V1_API_ACCEPT})
-	public ResponseEntity<Report> getReportByFileId(@PathVariable("fileId") String fileId) {
-		API_LOG.info("PCF report request received for fileId {}", fileId);
-
-		if (blockApi()) {
-			API_LOG.info("PCF report request blocked by feature flag");
-			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
-		}
-
-		Metadata metadata = pcfFileService.getMetadataById(fileId);
-
-		// If the Metadata object was created before a certain version, it will
-		// not contain error information, so a report would be inaccurate
-		if (metadata.getMetadataVersion() == null || metadata.getMetadataVersion() < 2) {
-			return new ResponseEntity<>(null, null, HttpStatus.UNPROCESSABLE_ENTITY);
-		}
-
-		Report report = new Report();
-		report.setErrors(metadata.getErrors() == null ? null : metadata.getErrors().getDetails());
-		report.setPracticeSiteId(metadata.getApm());
-		report.setProgramName(metadata.getProgramName());
-		report.setTimestamp(metadata.getCreatedDate().toEpochMilli());
-		report.setWarnings(metadata.getWarnings() == null ? null : metadata.getWarnings().getDetails());
-		boolean hasWarnings = report.getWarnings() != null && !report.getWarnings().isEmpty();
-		report.setStatus(BooleanUtils.isTrue(metadata.getConversionStatus())
-			? (hasWarnings ? Status.ACCEPTED_WITH_WARNINGS : Status.ACCEPTED) : Status.REJECTED);
-		API_LOG.info("PCF report request succeeded");
-
-		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(report);
 	}
 
 	/**
