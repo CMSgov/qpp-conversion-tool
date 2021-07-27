@@ -20,6 +20,14 @@ public interface DbService {
 	List<Metadata> getUnprocessedCpcPlusMetaData(String orgAttribute);
 
 	/**
+	 * Retrieves a limited list of unprocessed Pcf Metadata
+	 *
+	 * @param orgAttribute
+	 * @return
+	 */
+	List<Metadata> getUnprocessedPcfMetaData(String orgAttribute);
+
+	/**
 	 * Retrieves the metadata from the database by uuid
 	 *
 	 * @param uuid Id of the Metadata holding the FileLocationId

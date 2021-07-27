@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-class UnprocessedCpcFileDataTest {
+class UnprocessedFileDataTest {
 
 	private static Stream<String> uuidProvider() {
 		return Stream.of("000099f2-1f9e-4261-8d60-e4bc294386d7", "006ce223-cbf2-4509-9159-a93524662985");
@@ -55,7 +55,7 @@ class UnprocessedCpcFileDataTest {
 	@MethodSource("metadataProvider")
 	void testConstructor(Metadata metadata) {
 
-		UnprocessedCpcFileData cpcFileData = new UnprocessedCpcFileData(metadata);
+		UnprocessedFileData cpcFileData = new UnprocessedFileData(metadata);
 
 		assertThat(cpcFileData.getFileId()).isEqualTo(metadata.getUuid());
 		assertThat(cpcFileData.getFilename()).isEqualTo(metadata.getFileName());
@@ -67,7 +67,7 @@ class UnprocessedCpcFileDataTest {
 	@Test
 	@DisplayName("should give a string representation of its state")
 	void testToString() {
-		UnprocessedCpcFileData data = new UnprocessedCpcFileData(Metadata.create());
+		UnprocessedFileData data = new UnprocessedFileData(Metadata.create());
 		String strung = data.toString();
 		assertThat(strung).matches(".*fileId.*filename.*apm.*conversionDate.*validationSuccess.*purpose.*");
 	}

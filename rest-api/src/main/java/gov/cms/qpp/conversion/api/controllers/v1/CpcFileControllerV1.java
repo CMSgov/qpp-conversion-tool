@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import gov.cms.qpp.conversion.api.helper.AdvancedApmHelper;
 import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.api.model.CpcFileStatusUpdateRequest;
+import gov.cms.qpp.conversion.api.model.FileStatusUpdateRequest;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.Report;
 import gov.cms.qpp.conversion.api.model.Status;
-import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
-import gov.cms.qpp.conversion.api.services.CpcFileService;
-import gov.cms.qpp.conversion.util.EnvironmentHelper;
+import gov.cms.qpp.conversion.api.model.UnprocessedFileData;
+import gov.cms.qpp.conversion.api.services.AdvancedApmFileService;
 
 import java.io.IOException;
 import java.util.List;
@@ -37,18 +37,18 @@ import java.util.List;
 public class CpcFileControllerV1 {
 
 	private static final String BLOCKED_BY_FEATURE_FLAG =
-			"CPC+ request blocked by feature flag or that have an invalid organization";
+		"CPC+ request blocked by feature flag or that have an invalid organization";
 	private static final Logger API_LOG = LoggerFactory.getLogger(CpcFileControllerV1.class);
 
-	private CpcFileService cpcFileService;
+	private AdvancedApmFileService advancedApmFileService;
 
 	/**
 	 * init instance
 	 *
-	 * @param cpcFileService service for processing cpc+ files
+	 * @param advancedApmFileService service for processing cpc+ files
 	 */
-	public CpcFileControllerV1(CpcFileService cpcFileService) {
-		this.cpcFileService = cpcFileService;
+	public CpcFileControllerV1(AdvancedApmFileService advancedApmFileService) {
+		this.advancedApmFileService = advancedApmFileService;
 	}
 
 	/**
@@ -57,25 +57,25 @@ public class CpcFileControllerV1 {
 	 * @return Valid json or error json content
 	 */
 	@GetMapping(value = "/unprocessed-files/{org}",
-			headers = {"Accept=" + Constants.V1_API_ACCEPT})
-	public ResponseEntity<List<UnprocessedCpcFileData>> getUnprocessedCpcPlusFiles(@PathVariable("org") String organization) {
+		headers = {"Accept=" + Constants.V1_API_ACCEPT})
+	public ResponseEntity<List<UnprocessedFileData>> getUnprocessedCpcPlusFiles(@PathVariable("org") String organization) {
 		API_LOG.info("CPC+ unprocessed files request received");
 
 		String orgAttribute = Constants.ORG_ATTRIBUTE_MAP.get(organization);
 
-		if (blockCpcPlusApi() || StringUtils.isEmpty(orgAttribute)) {
+		if (AdvancedApmHelper.blockAdvancedApmApis() || StringUtils.isEmpty(orgAttribute)) {
 			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
 			return ResponseEntity
 				.status(HttpStatus.FORBIDDEN)
 				.body(null);
 		}
 
-		List<UnprocessedCpcFileData> unprocessedCpcFileDataList =
-			cpcFileService.getUnprocessedCpcPlusFiles(orgAttribute);
+		List<UnprocessedFileData> unprocessedFileDataList =
+			advancedApmFileService.getUnprocessedCpcPlusFiles(orgAttribute);
 
 		API_LOG.info("CPC+ unprocessed files request succeeded");
 
-		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(unprocessedCpcFileDataList);
+		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(unprocessedFileDataList);
 	}
 
 	/**
@@ -86,17 +86,17 @@ public class CpcFileControllerV1 {
 	 * @throws IOException if S3Object content stream is invalid
 	 */
 	@GetMapping(value = "/file/{fileId}",
-			headers = {"Accept=" + Constants.V1_API_ACCEPT})
+		headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<InputStreamResource> getFileById(@PathVariable("fileId") String fileId)
-			throws IOException {
+		throws IOException {
 		API_LOG.info("CPC+ file retrieval request received for fileId {}", fileId);
 
-		if (blockCpcPlusApi()) {
+		if (AdvancedApmHelper.blockAdvancedApmApis()) {
 			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
 
-		InputStreamResource content = cpcFileService.getFileById(fileId);
+		InputStreamResource content = advancedApmFileService.getCpcFileById(fileId);
 
 		API_LOG.info("CPC+ file retrieval request succeeded");
 
@@ -116,12 +116,12 @@ public class CpcFileControllerV1 {
 		throws IOException {
 		API_LOG.info("CPC+ QPP retrieval request received for fileId {}", fileId);
 
-		if (blockCpcPlusApi()) {
+		if (AdvancedApmHelper.blockAdvancedApmApis()) {
 			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
 
-		InputStreamResource content = cpcFileService.getQppById(fileId);
+		InputStreamResource content = advancedApmFileService.getQppById(fileId);
 
 		API_LOG.info("CPC+ QPP retrieval request succeeded for fileId {}", fileId);
 
@@ -136,39 +136,32 @@ public class CpcFileControllerV1 {
 	 * @return Message if the file was updated or not
 	 */
 	@PutMapping(value = "/file/{fileId}/{org}",
-			headers = {"Accept=" + Constants.V1_API_ACCEPT})
+		headers = {"Accept=" +
+			Constants.V1_API_ACCEPT})
 	public ResponseEntity<String> updateFile(@PathVariable("fileId") String fileId, @PathVariable("org") String org,
-			@RequestBody(required = false) CpcFileStatusUpdateRequest request) {
-		if (blockCpcPlusApi()) {
+		@RequestBody(required = false) FileStatusUpdateRequest request) {
+		if (AdvancedApmHelper.blockAdvancedApmApis()) {
 			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
-
 		API_LOG.info("CPC+ update file request received for fileId {}", fileId);
-
-		String message;
-		if (request != null && request.getProcessed() != null && !request.getProcessed()) {
-			message = cpcFileService.unprocessFileById(fileId, org);
-		} else {
-			message = cpcFileService.processFileById(fileId, org);
-		}
-
+		String message = advancedApmFileService.updateFileStatus(fileId, org, request);
 		API_LOG.info("CPC+ update file request succeeded for fileId {} with message: {}", fileId, message);
 
 		return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(message);
 	}
 
 	@GetMapping(value = "/report/{fileId}",
-			headers = {"Accept=" + Constants.V1_API_ACCEPT})
+		headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<Report> getReportByFileId(@PathVariable("fileId") String fileId) {
 		API_LOG.info("CPC+ report request received for fileId {}", fileId);
 
-		if (blockCpcPlusApi()) {
+		if (AdvancedApmHelper.blockAdvancedApmApis()) {
 			API_LOG.info("CPC+ report request blocked by feature flag");
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
 
-		Metadata metadata = cpcFileService.getMetadataById(fileId);
+		Metadata metadata = advancedApmFileService.getMetadataById(fileId);
 
 		// If the Metadata object was created before a certain version, it will
 		// not contain error information, so a report would be inaccurate
@@ -184,19 +177,10 @@ public class CpcFileControllerV1 {
 		report.setWarnings(metadata.getWarnings() == null ? null : metadata.getWarnings().getDetails());
 		boolean hasWarnings = report.getWarnings() != null && !report.getWarnings().isEmpty();
 		report.setStatus(BooleanUtils.isTrue(metadata.getConversionStatus())
-				? (hasWarnings ? Status.ACCEPTED_WITH_WARNINGS : Status.ACCEPTED) : Status.REJECTED);
+			? (hasWarnings ? Status.ACCEPTED_WITH_WARNINGS : Status.ACCEPTED) : Status.REJECTED);
 		API_LOG.info("CPC+ report request succeeded");
 
 		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(report);
 	}
-
-	/**
-	 * Checks whether the the CPC+ APIs should not be allowed to execute.
-	 *
-	 * @return Whether the CPC+ APIs should be blocked.
-	 */
-	private boolean blockCpcPlusApi() {
-		return EnvironmentHelper.isPresent(Constants.NO_CPC_PLUS_API_ENV_VARIABLE);
-
-	}
 }
+
