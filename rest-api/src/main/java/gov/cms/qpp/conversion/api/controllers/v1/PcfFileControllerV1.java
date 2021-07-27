@@ -132,18 +132,11 @@ public class PcfFileControllerV1 {
 			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
+		API_LOG.info("Update PCF file request received for fileId {}", fileId);
 
-		API_LOG.info("PCF update file request received for fileId {}", fileId);
+		String message = advancedApmFileService.updateFileStatus(fileId, org, request);
 
-		String message;
-		if (request != null && request.getProcessed() != null && !request.getProcessed()) {
-			message = advancedApmFileService.unprocessFileById(fileId, org);
-		}
-		else {
-			message = advancedApmFileService.processFileById(fileId, org);
-		}
-
-		API_LOG.info("PCF update file request succeeded for fileId {} with message: {}", fileId, message);
+		API_LOG.info("Update PCF file request succeeded for fileId {} with message: {}", fileId, message);
 
 		return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(message);
 	}

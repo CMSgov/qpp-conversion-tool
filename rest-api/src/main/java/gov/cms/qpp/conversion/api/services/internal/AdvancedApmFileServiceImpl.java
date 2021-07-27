@@ -7,6 +7,7 @@ import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
 import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
 import gov.cms.qpp.conversion.api.helper.AdvancedApmHelper;
 import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.model.FileStatusUpdateRequest;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.UnprocessedFileData;
 import gov.cms.qpp.conversion.api.services.AdvancedApmFileService;
@@ -64,7 +65,18 @@ public class AdvancedApmFileServiceImpl implements AdvancedApmFileService {
 	}
 
 	@Override
-	public String processFileById(String fileId, String orgName) {
+	public String updateFileStatus(final String fileId, final String org, final FileStatusUpdateRequest request) {
+		String message;
+		if (request != null && request.getProcessed() != null && !request.getProcessed()) {
+			message = unprocessFileById(fileId, org);
+		}
+		else {
+			message = processFileById(fileId, org);
+		}
+		return message;
+	}
+
+	private String processFileById(String fileId, String orgName) {
 		Metadata metadata = getMetadataById(fileId);
 		if(Constants.CPC_ORG.equalsIgnoreCase(orgName)) {
 			metadata.setCpcProcessed(true);
@@ -81,8 +93,7 @@ public class AdvancedApmFileServiceImpl implements AdvancedApmFileService {
 		}
 	}
 
-	@Override
-	public String unprocessFileById(String fileId, String orgName) {
+	private String unprocessFileById(String fileId, String orgName) {
 		Metadata metadata = getMetadataById(fileId);
 		if (Constants.CPC_ORG.equalsIgnoreCase(orgName)) {
 			metadata.setCpcProcessed(false);

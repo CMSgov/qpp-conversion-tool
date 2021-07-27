@@ -145,12 +145,7 @@ public class CpcFileControllerV1 {
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
 		API_LOG.info("CPC+ update file request received for fileId {}", fileId);
-		String message;
-		if (request != null && request.getProcessed() != null && !request.getProcessed()) {
-			message = advancedApmFileService.unprocessFileById(fileId, org);
-		} else {
-			message = advancedApmFileService.processFileById(fileId, org);
-		}
+		String message = advancedApmFileService.updateFileStatus(fileId, org, request);
 		API_LOG.info("CPC+ update file request succeeded for fileId {} with message: {}", fileId, message);
 
 		return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(message);

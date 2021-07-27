@@ -80,6 +80,5 @@ public class AdvancedApmHelper {
 	 */
 	public static boolean blockAdvancedApmApis() {
 		return EnvironmentHelper.isPresent(Constants.NO_CPC_PLUS_API_ENV_VARIABLE);
-
 	}
 }

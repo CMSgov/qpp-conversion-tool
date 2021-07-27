@@ -1,19 +1,5 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
-import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,6 +21,21 @@ import gov.cms.qpp.conversion.api.services.AdvancedApmFileService;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.test.MockitoExtension;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
 class CpcFileControllerV1Test {
 
@@ -46,9 +47,12 @@ class CpcFileControllerV1Test {
 	@Mock
 	AdvancedApmFileService advancedApmFileService;
 
+	FileStatusUpdateRequest fileStatusUpdateRequest;
+
 	@BeforeEach
 	void setUp() {
 		expectedUnprocessedFileDataList = createMockedUnprocessedDataList();
+		fileStatusUpdateRequest = new FileStatusUpdateRequest();
 	}
 
 	@AfterEach
@@ -59,7 +63,8 @@ class CpcFileControllerV1Test {
 	@Test
 	void testUpdateFileWithNullBodyMarksAsProcessed() {
 		cpcFileControllerV1.updateFile("mock", Constants.CPC_ORG,null);
-		verify(advancedApmFileService).processFileById("mock", Constants.CPC_ORG);
+		fileStatusUpdateRequest.setProcessed(true);
+		verify(advancedApmFileService).updateFileStatus("mock", Constants.CPC_ORG, fileStatusUpdateRequest);
 	}
 
 	@Test
@@ -107,44 +112,24 @@ class CpcFileControllerV1Test {
 
 	@Test
 	void testMarkFileAsProcessedReturnsSuccess() {
-		when(advancedApmFileService.processFileById(anyString(), anyString())).thenReturn("success!");
+		when(advancedApmFileService.updateFileStatus(anyString(), anyString(), any(FileStatusUpdateRequest.class))).thenReturn("success!");
 
+		fileStatusUpdateRequest.setProcessed(true);
 		ResponseEntity<String> response = markProcessed();
 
-		verify(advancedApmFileService, times(1)).processFileById("meep", Constants.CPC_ORG);
+		verify(advancedApmFileService, times(1)).updateFileStatus("meep", Constants.CPC_ORG, fileStatusUpdateRequest);
 
 		assertThat(response.getBody()).isEqualTo("success!");
 	}
 
 	@Test
 	void testMarkFileAsProcessedHttpStatusOk() {
-		when(advancedApmFileService.processFileById(anyString(), anyString())).thenReturn("success!");
+		when(advancedApmFileService.updateFileStatus(anyString(), anyString(), any(FileStatusUpdateRequest.class))).thenReturn("success!");
 
+		fileStatusUpdateRequest.setProcessed(true);
 		ResponseEntity<String> response = markProcessed();
 
-		verify(advancedApmFileService, times(1)).processFileById("meep", Constants.CPC_ORG);
-
-		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-	}
-
-	@Test
-	void testMarkFileAsUnprocessedReturnsSuccess() {
-		when(advancedApmFileService.unprocessFileById(anyString(), anyString())).thenReturn("success!");
-
-		ResponseEntity<String> response = markUnprocessed();
-
-		verify(advancedApmFileService, times(1)).unprocessFileById("meep", Constants.RTI_ORG);
-
-		assertThat(response.getBody()).isEqualTo("success!");
-	}
-
-	@Test
-	void testMarkFileAsUnprocessedHttpStatusOk() {
-		when(advancedApmFileService.unprocessFileById(anyString(), anyString())).thenReturn("success!");
-
-		ResponseEntity<String> response = markUnprocessed();
-
-		verify(advancedApmFileService, times(1)).unprocessFileById("meep", Constants.RTI_ORG);
+		verify(advancedApmFileService, times(1)).updateFileStatus("meep", Constants.CPC_ORG, fileStatusUpdateRequest);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}

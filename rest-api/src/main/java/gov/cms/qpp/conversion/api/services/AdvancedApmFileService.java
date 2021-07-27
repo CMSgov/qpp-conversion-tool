@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.api.services;
 
 import org.springframework.core.io.InputStreamResource;
 
+import gov.cms.qpp.conversion.api.model.FileStatusUpdateRequest;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.UnprocessedFileData;
 
@@ -52,20 +53,14 @@ public interface AdvancedApmFileService {
 	InputStreamResource getQppById(String fileId) throws IOException;
 
 	/**
-	 * Marks an Advanced Apm (CPC+ or PCF) File as processed by id
+ 	 * Updates the file status as processed or unprocessed.
 	 *
-	 * @param fileId Identifier of the PCF file
-	 * @return Success or failure message
+	 * @param fileId
+	 * @param org
+	 * @param request
+	 * @return
 	 */
-	String processFileById(String fileId, String orgName);
-
-	/**
-	 * Marks an Advanced APM (CPC+ or PCF) File as unprocessed by id
-	 *
-	 * @param fileId Identifier of the PCF file
-	 * @return Success or failure message
-	 */
-	String unprocessFileById(String fileId, String orgName);
+	String updateFileStatus(final String fileId, final String org, final FileStatusUpdateRequest request);
 
 	/**
 	 * Retrieve metadata based on file id

@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -41,9 +42,12 @@ public class PcfFileControllerV1Test {
 	@Mock
 	AdvancedApmFileService advancedApmFileService;
 
+	FileStatusUpdateRequest fileStatusUpdateRequest;
+
 	@BeforeEach
 	void setUp() {
 		expectedUnprocessedPcfFileDataList = createMockedUnprocessedDataList();
+		fileStatusUpdateRequest = new FileStatusUpdateRequest();
 	}
 
 	@AfterEach
@@ -54,7 +58,8 @@ public class PcfFileControllerV1Test {
 	@Test
 	void testUpdateFileWithNullBodyMarksAsProcessed() {
 		pcfFileControllerV1.updateFile("mock", Constants.CPC_ORG,null);
-		verify(advancedApmFileService).processFileById("mock", Constants.CPC_ORG);
+		fileStatusUpdateRequest.setProcessed(true);
+		verify(advancedApmFileService).updateFileStatus("mock", Constants.CPC_ORG, fileStatusUpdateRequest);
 	}
 
 	@Test
@@ -102,44 +107,24 @@ public class PcfFileControllerV1Test {
 
 	@Test
 	void testMarkFileAsProcessedReturnsSuccess() {
-		when(advancedApmFileService.processFileById(anyString(), anyString())).thenReturn("success!");
+		when(advancedApmFileService.updateFileStatus(anyString(), anyString(), any(FileStatusUpdateRequest.class))).thenReturn("success!");
 
+		fileStatusUpdateRequest.setProcessed(true);
 		ResponseEntity<String> response = markProcessed();
 
-		verify(advancedApmFileService, times(1)).processFileById("meep", Constants.CPC_ORG);
+		verify(advancedApmFileService, times(1)).updateFileStatus("meep", Constants.CPC_ORG, fileStatusUpdateRequest);
 
 		assertThat(response.getBody()).isEqualTo("success!");
 	}
 
 	@Test
 	void testMarkFileAsProcessedHttpStatusOk() {
-		when(advancedApmFileService.processFileById(anyString(), anyString())).thenReturn("success!");
+		when(advancedApmFileService.updateFileStatus(anyString(), anyString(), any(FileStatusUpdateRequest.class))).thenReturn("success!");
 
+		fileStatusUpdateRequest.setProcessed(true);
 		ResponseEntity<String> response = markProcessed();
 
-		verify(advancedApmFileService, times(1)).processFileById("meep", Constants.CPC_ORG);
-
-		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-	}
-
-	@Test
-	void testMarkFileAsUnprocessedReturnsSuccess() {
-		when(advancedApmFileService.unprocessFileById(anyString(), anyString())).thenReturn("success!");
-
-		ResponseEntity<String> response = markUnprocessed();
-
-		verify(advancedApmFileService, times(1)).unprocessFileById("meep", Constants.RTI_ORG);
-
-		assertThat(response.getBody()).isEqualTo("success!");
-	}
-
-	@Test
-	void testMarkFileAsUnprocessedHttpStatusOk() {
-		when(advancedApmFileService.unprocessFileById(anyString(), anyString())).thenReturn("success!");
-
-		ResponseEntity<String> response = markUnprocessed();
-
-		verify(advancedApmFileService, times(1)).unprocessFileById("meep", Constants.RTI_ORG);
+		verify(advancedApmFileService, times(1)).updateFileStatus("meep", Constants.CPC_ORG, fileStatusUpdateRequest);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
