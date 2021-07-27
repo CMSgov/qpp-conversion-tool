@@ -60,7 +60,7 @@ public class ValidationServiceImpl implements ValidationService {
 	@PostConstruct
 	public void checkForValidationUrlVariable() {
 		String validationUrl = environment.getProperty(Constants.VALIDATION_URL_ENV_VARIABLE);
-		if (!StringUtils.isEmpty(validationUrl)) {
+		if (!StringUtils.isEmpty(validationUrl) || !Constants.VALIDATION_DISABLE_VARIABLE.equalsIgnoreCase(validationUrl)) {
 			apiLog(Constants.VALIDATION_URL_ENV_VARIABLE + " is set to " + validationUrl);
 		} else {
 			apiLog(Constants.VALIDATION_URL_ENV_VARIABLE + " is unset");

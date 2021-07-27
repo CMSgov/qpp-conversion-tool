@@ -1,8 +1,11 @@
 package gov.cms.qpp.conversion.api.helper;
 
+import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.UnprocessedFileData;
+import gov.cms.qpp.conversion.util.EnvironmentHelper;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,7 +69,17 @@ public class AdvancedApmHelper {
 	 * @param metadataList object to hold the list of {@link Metadata} from DynamoDb
 	 * @return transformed list of {@link UnprocessedFileData}
 	 */
-	public static List<UnprocessedFileData> transformMetaDataToUnprocessedFileData(List<Metadata> metadataList) {
+	public static List<UnprocessedFileData> transformMetaDataToUnprocessedFileData(Collection<Metadata> metadataList) {
 		return metadataList.stream().map(UnprocessedFileData::new).collect(Collectors.toList());
+	}
+
+	/**
+	 * Blocks all private apis for CPC+ and PCF submissions
+	 *
+	 * @return result of check
+	 */
+	public static boolean blockAdvancedApmApis() {
+		return EnvironmentHelper.isPresent(Constants.NO_CPC_PLUS_API_ENV_VARIABLE);
+
 	}
 }

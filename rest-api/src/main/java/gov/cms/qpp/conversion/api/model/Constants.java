@@ -30,6 +30,7 @@ public class Constants {
 	public static final String CPC_ORG = "cpcplus";
 	public static final String RTI_ORG = "rti";
 	public static final String APM_FILE_NAME_KEY = "apm_entity_ids.json";
+	public static final String VALIDATION_DISABLE_VARIABLE = "disabled";
 
 	static {
 		HashMap<String, String> mapBuilder = new HashMap<>();

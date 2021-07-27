@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import gov.cms.qpp.conversion.api.helper.AdvancedApmHelper;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.FileStatusUpdateRequest;
 import gov.cms.qpp.conversion.api.model.UnprocessedFileData;
 import gov.cms.qpp.conversion.api.services.AdvancedApmFileService;
-import gov.cms.qpp.conversion.util.EnvironmentHelper;
 
 import java.io.IOException;
 import java.util.List;
@@ -51,7 +51,7 @@ public class PcfFileControllerV1 {
 
 		String orgAttribute = Constants.ORG_ATTRIBUTE_MAP.get(organization);
 
-		if (blockApi() || StringUtils.isEmpty(orgAttribute)) {
+		if (AdvancedApmHelper.blockAdvancedApmApis() || StringUtils.isEmpty(orgAttribute)) {
 			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
 			return ResponseEntity
 				.status(HttpStatus.FORBIDDEN)
@@ -79,7 +79,7 @@ public class PcfFileControllerV1 {
 		throws IOException {
 		API_LOG.info("PCf file retrieval request received for file id {}", fileId);
 
-		if (blockApi()) {
+		if (AdvancedApmHelper.blockAdvancedApmApis()) {
 			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
@@ -104,7 +104,7 @@ public class PcfFileControllerV1 {
 		throws IOException {
 		API_LOG.info("PCF QPP retrieval request received for fileId {}", fileId);
 
-		if (blockApi()) {
+		if (AdvancedApmHelper.blockAdvancedApmApis()) {
 			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
@@ -128,7 +128,7 @@ public class PcfFileControllerV1 {
 			Constants.V1_API_ACCEPT})
 	public ResponseEntity<String> updateFile(@PathVariable("fileId") String fileId, @PathVariable("org") String org,
 		@RequestBody(required = false) FileStatusUpdateRequest request) {
-		if (blockApi()) {
+		if (AdvancedApmHelper.blockAdvancedApmApis()) {
 			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
@@ -148,13 +148,4 @@ public class PcfFileControllerV1 {
 		return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(message);
 	}
 
-	/**
-	 * Checks whether the the PCF APIs should not be allowed to execute.
-	 *
-	 * @return Whether the PCF APIs should be blocked.
-	 */
-	private boolean blockApi() {
-		return EnvironmentHelper.isPresent(Constants.NO_CPC_PLUS_API_ENV_VARIABLE);
-
-	}
 }
