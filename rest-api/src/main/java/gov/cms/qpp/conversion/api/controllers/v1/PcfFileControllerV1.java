@@ -67,31 +67,6 @@ public class PcfFileControllerV1 {
 	}
 
 	/**
-	 * Retrieve a stored S3 submission object.
-	 *
-	 * @param fileId id for the stored object
-	 * @return object json or xml content
-	 * @throws IOException if S3Object content stream is invalid
-	 */
-	@GetMapping(value = "/file/{fileId}",
-		headers = {"Accept=" + Constants.V1_API_ACCEPT})
-	public ResponseEntity<InputStreamResource> getFileById(@PathVariable("fileId") String fileId)
-		throws IOException {
-		API_LOG.info("PCf file retrieval request received for file id {}", fileId);
-
-		if (AdvancedApmHelper.blockAdvancedApmApis()) {
-			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
-			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
-		}
-
-		InputStreamResource content = advancedApmFileService.getPcfFileById(fileId);
-
-		API_LOG.info("Pcf file retrieval request succeeded");
-
-		return ResponseEntity.ok().contentType(MediaType.APPLICATION_XML).body(content);
-	}
-
-	/**
 	 * Retrieve a stored S3 QPP object.
 	 *
 	 * @param fileId id for the stored object
@@ -114,6 +89,32 @@ public class PcfFileControllerV1 {
 		API_LOG.info("PCF QPP retrieval request succeeded for fileId {}", fileId);
 
 		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(content);
+	}
+
+	/**
+	 * Retrieve a stored S3 submission object.
+	 *
+	 * @param fileId id for the stored object
+	 * @return object json or xml content
+	 * @throws IOException if S3Object content stream is invalid
+	 */
+	@GetMapping(value = "/file/{fileId}",
+		headers = {"Accept=" + Constants.V1_API_ACCEPT})
+	@SuppressWarnings()
+	public ResponseEntity<InputStreamResource> getFileById(@PathVariable("fileId") String fileId)
+		throws IOException {
+		API_LOG.info("PCf file retrieval request received for file id {}", fileId);
+
+		if (AdvancedApmHelper.blockAdvancedApmApis()) {
+			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
+			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
+		}
+
+		InputStreamResource content = advancedApmFileService.getPcfFileById(fileId);
+
+		API_LOG.info("Pcf file retrieval request succeeded");
+
+		return ResponseEntity.ok().contentType(MediaType.APPLICATION_XML).body(content);
 	}
 
 	/**

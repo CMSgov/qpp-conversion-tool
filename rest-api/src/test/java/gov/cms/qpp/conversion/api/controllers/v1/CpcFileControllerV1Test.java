@@ -63,8 +63,7 @@ class CpcFileControllerV1Test {
 	@Test
 	void testUpdateFileWithNullBodyMarksAsProcessed() {
 		cpcFileControllerV1.updateFile("mock", Constants.CPC_ORG,null);
-		fileStatusUpdateRequest.setProcessed(true);
-		verify(advancedApmFileService).updateFileStatus("mock", Constants.CPC_ORG, fileStatusUpdateRequest);
+		verify(advancedApmFileService).updateFileStatus("mock", Constants.CPC_ORG, null);
 	}
 
 	@Test
@@ -124,9 +123,10 @@ class CpcFileControllerV1Test {
 
 	@Test
 	void testMarkFileAsProcessedHttpStatusOk() {
+		fileStatusUpdateRequest.setProcessed(true);
+
 		when(advancedApmFileService.updateFileStatus(anyString(), anyString(), any(FileStatusUpdateRequest.class))).thenReturn("success!");
 
-		fileStatusUpdateRequest.setProcessed(true);
 		ResponseEntity<String> response = markProcessed();
 
 		verify(advancedApmFileService, times(1)).updateFileStatus("meep", Constants.CPC_ORG, fileStatusUpdateRequest);
@@ -254,15 +254,13 @@ class CpcFileControllerV1Test {
 	}
 
 	private ResponseEntity<String> markProcessed() {
-		FileStatusUpdateRequest request = new FileStatusUpdateRequest();
-		request.setProcessed(true);
-		return cpcFileControllerV1.updateFile("meep", Constants.CPC_ORG, request);
+		fileStatusUpdateRequest.setProcessed(true);
+		return cpcFileControllerV1.updateFile("meep", Constants.CPC_ORG, fileStatusUpdateRequest);
 	}
 
 	private ResponseEntity<String> markUnprocessed() {
-		FileStatusUpdateRequest request = new FileStatusUpdateRequest();
-		request.setProcessed(false);
-		return cpcFileControllerV1.updateFile("meep", Constants.RTI_ORG, request);
+		fileStatusUpdateRequest.setProcessed(false);
+		return cpcFileControllerV1.updateFile("meep", Constants.RTI_ORG, fileStatusUpdateRequest);
 	}
 
 	List<UnprocessedFileData> createMockedUnprocessedDataList() {
