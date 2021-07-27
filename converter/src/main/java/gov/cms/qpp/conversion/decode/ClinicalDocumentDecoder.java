@@ -46,6 +46,11 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	public static final String ENTITY_VIRTUAL_GROUP = "virtualGroup";
 	public static final String ENTITY_ID = "entityId";
 	public static final String CPCPLUS = "CPCPLUS";
+	public static final String APP = "APP";
+	public static final String APP_PROGRAM_NAME = "app1";
+	private static final String APP_GROUP = "MIPS_APP1_GROUP";
+	private static final String APP_INDIVIDUAL = "MIPS_APP1_INDIV";
+	public static final String APP_APM = "MIPS_APP1_APMENTITY";
 
 	public ClinicalDocumentDecoder(Context context) {
 		super(context);
@@ -215,8 +220,16 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 				pair = new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_INDIVIDUAL);
 				break;
 
+			case APP_INDIVIDUAL:
+				pair = new ImmutablePair<>(APP_PROGRAM_NAME, ENTITY_INDIVIDUAL);
+				break;
+
 			case MIPS_GROUP:
 				pair = new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_GROUP);
+				break;
+
+			case APP_GROUP:
+				pair = new ImmutablePair<>(APP_PROGRAM_NAME, ENTITY_GROUP);
 				break;
 
  			case CPCPLUS:
@@ -229,6 +242,10 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 
 			case MIPS_APM:
 				pair = new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_APM);
+				break;
+
+			case APP_APM:
+				pair = new ImmutablePair<>(APP_PROGRAM_NAME, ENTITY_APM);
 				break;
 
 			case PCF:
