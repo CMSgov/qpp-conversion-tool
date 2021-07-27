@@ -100,7 +100,6 @@ public class PcfFileControllerV1 {
 	 */
 	@GetMapping(value = "/file/{fileId}",
 		headers = {"Accept=" + Constants.V1_API_ACCEPT})
-	@SuppressWarnings()
 	public ResponseEntity<InputStreamResource> getFileById(@PathVariable("fileId") String fileId)
 		throws IOException {
 		API_LOG.info("PCf file retrieval request received for file id {}", fileId);
