@@ -17,7 +17,9 @@ public class Constants {
 	public static final String V2_API_ACCEPT = "application/vnd.qpp.cms.gov.v2+json";
 	public static final Integer CPC_DYNAMO_PARTITIONS = 32;
 	public static final String CPC_DYNAMO_PARTITION_START = "CPC_";
+	public static final String PCF_DYNAMO_PARTITION_START = "PCF_";
 	public static final String DYNAMO_CPC_ATTRIBUTE = "Cpc";
+	public static final String DYNAMO_PCF_ATTRIBUTE = "Pcf";
 	public static final String DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE = "CpcProcessed_CreateDate";
 	public static final String DYNAMO_RTI_PROCESSED_CREATE_DATE_ATTRIBUTE = "RtiProcessed_CreateDate";
 	public static final String DYNAMO_CREATE_DATE_ATTRIBUTE = "CreateDate";
@@ -28,6 +30,7 @@ public class Constants {
 	public static final String CPC_ORG = "cpcplus";
 	public static final String RTI_ORG = "rti";
 	public static final String APM_FILE_NAME_KEY = "apm_entity_ids.json";
+	public static final String VALIDATION_DISABLE_VARIABLE = "disabled";
 
 	static {
 		HashMap<String, String> mapBuilder = new HashMap<>();

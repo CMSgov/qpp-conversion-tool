@@ -19,6 +19,7 @@ import java.util.Set;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String CPC_WILDCARD = "/cpc/**";
+	private static final String PCF_WILDCARD = "/pcf/**";
 
 	@Value("${ORG_NAME:" + JwtAuthorizationFilter.DEFAULT_ORG_NAME + "}")
 	protected String orgName;
@@ -34,13 +35,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.antMatcher(CPC_WILDCARD).authorizeRequests()
-				.anyRequest().authenticated()
-				.and()
-				.addFilter(new JwtAuthorizationFilter(authenticationManager(), Set.of(orgName, rtiOrgName)))
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-				.and().cors()
-				.and().csrf().disable();
+		http.requestMatchers().antMatchers(CPC_WILDCARD, PCF_WILDCARD)
+			.and()
+			.authorizeRequests()
+			.anyRequest().authenticated()
+			.and()
+			.addFilter(new JwtAuthorizationFilter(authenticationManager(), Set.of(orgName, rtiOrgName)))
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.and().cors()
+			.and().csrf().disable();
 	}
 
 }

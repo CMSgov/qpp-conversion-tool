@@ -11,7 +11,7 @@ import gov.cms.qpp.conversion.api.config.DynamoDbConfigFactory;
 import gov.cms.qpp.conversion.api.helper.JwtPayloadHelper;
 import gov.cms.qpp.conversion.api.helper.JwtTestHelper;
 import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.api.model.CpcFileStatusUpdateRequest;
+import gov.cms.qpp.conversion.api.model.FileStatusUpdateRequest;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.util.EnvironmentHelper;
 import gov.cms.qpp.test.annotations.AcceptanceTest;
@@ -233,7 +233,7 @@ class CpcApiAcceptance {
 	}
 
 	private String markFile(String fileId, boolean processed, int expectedResponseCode) {
-		CpcFileStatusUpdateRequest status = new CpcFileStatusUpdateRequest();
+		FileStatusUpdateRequest status = new FileStatusUpdateRequest();
 		status.setProcessed(processed);
 
 		return given()
