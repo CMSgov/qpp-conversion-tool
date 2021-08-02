@@ -44,7 +44,12 @@ public class MetadataHelper {
 			metadata.setTin(findTin(node));
 			metadata.setNpi(findNpi(node));
 			metadata.setProgramName(findProgramName(node));
-			metadata.setCpc(deriveCpcHash(node));
+			if (isCpc(node)) {
+				metadata.setCpc(deriveHash(Constants.CPC_DYNAMO_PARTITION_START));
+			}
+			if (isPcf(node)) {
+				metadata.setPcf(deriveHash(Constants.PCF_DYNAMO_PARTITION_START));
+			}
 			metadata.setCpcProcessed(false);
 			metadata.setRtiProcessed(false);
 		}
@@ -55,19 +60,13 @@ public class MetadataHelper {
 	}
 
 	/**
-	 * Retrieves the random hash for the Cpc field if this is a CPC+ conversion.
+	 * Retrieves the random hash for the CPC/PCF field if this is a CPC+ or PCF conversion respectively.
 	 *
-	 * @param node to ensure it's a CPC+ node
-	 * @return Cpc field randomly hashed or null if this isn't a CPC+ conversion
+	 * @param partitionStart partition type to use
+	 * @return Cpc field randomly hashed or null if this isn't a CPC+ or PCF conversion
 	 */
-	private static String deriveCpcHash(Node node) {
-		String cpcHash = null;
-
-		if (isCpc(node)) {
-			cpcHash = Constants.CPC_DYNAMO_PARTITION_START + RANDOM_HASH.nextInt(Constants.CPC_DYNAMO_PARTITIONS);
-		}
-
-		return cpcHash;
+	private static String deriveHash(String partitionStart) {
+		return partitionStart + RANDOM_HASH.nextInt(Constants.CPC_DYNAMO_PARTITIONS);
 	}
 
 	/**
@@ -122,6 +121,17 @@ public class MetadataHelper {
 						TemplateId.CLINICAL_DOCUMENT);
 
 		return found != null && Program.isCpc(found);
+	}
+
+	private static boolean isPcf(Node node) {
+		if (Program.isPcf(node)) {
+			return true;
+		}
+
+		Node found = findPossibleChildNode(node, ClinicalDocumentDecoder.RAW_PROGRAM_NAME,
+			TemplateId.CLINICAL_DOCUMENT);
+
+		return found != null && Program.isPcf(found);
 	}
 
 	/**

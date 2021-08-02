@@ -6,7 +6,7 @@ import java.time.Instant;
 /**
  * Model to hold converted metadata to Unprocessed Cpc file data.
  */
-public class UnprocessedCpcFileData {
+public class UnprocessedFileData {
 
 	private final String fileId;
 	private final String filename;
@@ -20,7 +20,7 @@ public class UnprocessedCpcFileData {
 	 *
 	 * @param metadata object to be transformed
 	 */
-	public UnprocessedCpcFileData(Metadata metadata) {
+	public UnprocessedFileData(Metadata metadata) {
 		this.fileId = metadata.getUuid();
 		this.filename = metadata.getFileName();
 		this.apm = metadata.getApm();

@@ -48,6 +48,7 @@ public final class Metadata {
 	private Boolean conversionStatus;
 	private Boolean validationStatus;
 	private String cpc;
+	private String pcf;
 	private String conversionErrorLocator;
 	private String validationErrorLocator;
 	private String rawValidationErrorLocator;
@@ -185,7 +186,7 @@ public final class Metadata {
 	/**
 	 * Sets the Program Name associated with the the conversion, such as MIPPS or CPC+.
 	 *
-	 * @param apm The Program Name.
+	 * @param programName The Program Name.
 	 */
 	public void setProgramName(String programName) {
 		this.programName = programName;
@@ -378,6 +379,25 @@ public final class Metadata {
 	 */
 	public void setCpc(String cpc) {
 		this.cpc = cpc;
+	}
+
+	/**
+	 * Determines if conversion was for PCF program
+	 *
+	 * @return
+	 */
+	@DoNotEncrypt
+	@DynamoDBAttribute(attributeName = Constants.DYNAMO_PCF_ATTRIBUTE)
+	public String getPcf() {
+		return pcf;
+	}
+
+	/**
+	 * Manage if program is PCF
+	 * @param pcf
+	 */
+	public void setPcf(final String pcf) {
+		this.pcf = pcf;
 	}
 
 	/**
@@ -665,6 +685,7 @@ public final class Metadata {
 		equals &= Objects.equals(conversionStatus, that.conversionStatus);
 		equals &= Objects.equals(validationStatus, that.validationStatus);
 		equals &= Objects.equals(cpc, that.cpc);
+		equals &= Objects.equals(pcf, that.pcf);
 		equals &= Objects.equals(uuid, that.uuid);
 		equals &= Objects.equals(tin, that.tin);
 		equals &= Objects.equals(npi, that.npi);
@@ -677,6 +698,7 @@ public final class Metadata {
 		equals &= Objects.equals(validationErrorLocator, that.validationErrorLocator);
 		equals &= Objects.equals(rawValidationErrorLocator, that.rawValidationErrorLocator);
 		equals &= Objects.equals(cpcProcessed, that.cpcProcessed);
+		equals &= Objects.equals(rtiProcessed, that.rtiProcessed);
 		equals &= Objects.equals(purpose, that.purpose);
 		equals &= Objects.equals(programName, that.programName);
 		equals &= Objects.equals(errors, that.errors);
@@ -692,8 +714,8 @@ public final class Metadata {
 	@Override
 	public int hashCode() {
 		return Objects.hash(uuid, tin, npi, createdDate, apm, submissionYear, submissionLocator, qppLocator, fileName,
-				overallStatus, conversionStatus, validationStatus, cpc, conversionErrorLocator, validationErrorLocator,
-				rawValidationErrorLocator, cpcProcessed, purpose, programName, errors, warnings, metadataVersion);
+				overallStatus, conversionStatus, validationStatus, cpc, pcf, conversionErrorLocator, validationErrorLocator,
+				rawValidationErrorLocator, cpcProcessed, rtiProcessed, purpose, programName, errors, warnings, metadataVersion);
 	}
 
 	/**
