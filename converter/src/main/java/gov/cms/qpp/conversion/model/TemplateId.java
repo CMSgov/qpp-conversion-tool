@@ -56,7 +56,7 @@ public enum TemplateId {
 		NOVEMBER_2016("2016-11-01"),
 		MAY_2018("2018-05-01"),
 		MAY_2019("2019-05-01"),
-		MAY_2020("2019-05-01");
+		MAY_2020("2020-05-01");
 
 		static final String STRICT_EXTENSION = "STRICT_EXTENSION";
 
