@@ -175,7 +175,7 @@
 				"errorCode": 25,
 				"subs": [
 					"cpci",
-					"[a-zA-Z, _]*"
+					"[a-zA-Z, _,1-9]*"
 				],
 				"occurrences": 1
 			}
