@@ -35,7 +35,7 @@ class TemplateIdTest implements EnumContract {
 
 	@Test
 	void testExtension() {
-		assertThat(TemplateId.CLINICAL_DOCUMENT.getExtension()).isEqualTo("2019-05-01");
+		assertThat(TemplateId.CLINICAL_DOCUMENT.getExtension()).isEqualTo("2020-05-01");
 	}
 
 	@Test
