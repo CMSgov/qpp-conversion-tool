@@ -24,6 +24,14 @@ class ProgramTest implements EnumContract {
 	}
 
 	@Test
+	void instanceRetrievalMipsApp() {
+		Stream.of("MIPS_APP1_GROUP", "MIPS_APP1_INDIV").forEach(mip ->
+				assertWithMessage("Program other than %s was returned", Program.APP)
+						.that(Program.getInstance(mip)).isSameInstanceAs(Program.APP)
+		);
+	}
+
+	@Test
 	void instanceRetrievalCpcPlus() {
 		assertWithMessage("Program other than %s was returned", Program.CPC)
 				.that(Program.getInstance("CPCPLUS")).isSameInstanceAs(Program.CPC);
@@ -113,6 +121,20 @@ class ProgramTest implements EnumContract {
 		Node node = new Node();
 		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "cPcPlUs");
 		assertThat(Program.isCpc(node)).isTrue();
+	}
+
+	@Test
+	void testIsAppIndividualIsTrue() {
+		Node node = new Node();
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_APP1_INDIV");
+		assertThat(Program.isApp(node)).isTrue();
+	}
+
+	@Test
+	void testIsMipsNonAppIndividualFalse() {
+		Node node = new Node();
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_INDIV");
+		assertThat(Program.isApp(node)).isFalse();
 	}
 
 	@Test
