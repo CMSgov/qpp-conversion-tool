@@ -4,6 +4,7 @@ FROM python:3.7.11-alpine
 ENV GLIBC_VER=2.31-r0
 
 # install glibc compatibility for alpine
+RUN apk add --update coreutils && rm -rf /var/cache/apk/*
 RUN apk --no-cache add \
         binutils \
         bash  \
