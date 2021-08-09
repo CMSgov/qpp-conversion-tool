@@ -1,7 +1,7 @@
 package gov.cms.qpp.acceptance.cpc;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import org.junit.jupiter.api.AfterAll;
+import gov.cms.qpp.acceptance.Util;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -20,8 +20,6 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.util.JsonHelper;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -30,6 +28,7 @@ import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
+import static gov.cms.qpp.acceptance.Util.getXml;
 
 class CpcPlusAcceptanceTest {
 
@@ -41,7 +40,7 @@ class CpcPlusAcceptanceTest {
 	private static final Path FAILURE_2020 = BASE.resolve("failure/2020");
 	private static final Path FAILURE_FIXTURE = FAILURE.resolve("fixture.json");
 	private static Map<String, CPCAcceptanceFixture> fixtureValues;
-	private ApmEntityIds apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json");
+	private final ApmEntityIds apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json");
 
 	@BeforeAll
 	static void setUp() throws IOException {
@@ -78,18 +77,6 @@ class CpcPlusAcceptanceTest {
 
 	static Stream<Path> failure2020Data() {
 		return getXml(FAILURE_2020);
-	}
-
-	private static Stream<Path> getXml(Path directory) {
-		try {
-			return Files.list(directory).filter(CpcPlusAcceptanceTest::isXml);
-		} catch (IOException e) {
-			throw new UncheckedIOException(e);
-		}
-	}
-
-	private static boolean isXml(Path path) {
-		return path.toString().endsWith(".xml");
 	}
 
 	@ParameterizedTest
