@@ -26,6 +26,8 @@ import static com.google.common.truth.Truth.assertWithMessage;
 class ClinicalDocumentDecoderTest {
 
 	private static final String ENTITY_ID_VALUE = "AR000000";
+	public static final String PCF_PRACTICE_ROOT = "2.16.840.1.113883.3.249.5.3";
+	public static final String CPC_PRACTICE_ROOT = "2.16.840.1.113883.3.249.5.1";
 	private static String xmlFragment;
 	private Node clinicalDocument;
 	private static final String TEST_TIN = "123456789";
@@ -294,7 +296,7 @@ class ClinicalDocumentDecoderTest {
 	@Test
 	void decodeCpcPlusEntityIdTest() {
 		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
-		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace()));
+		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), CPC_PRACTICE_ROOT));
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
@@ -307,7 +309,7 @@ class ClinicalDocumentDecoderTest {
 	@Test
 	void decodeCpcPracticeSiteAddressTest() {
 		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
-		clinicalDocument.addContent( prepareParticipant( clinicalDocument.getNamespace()) );
+		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), CPC_PRACTICE_ROOT));
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
@@ -320,7 +322,7 @@ class ClinicalDocumentDecoderTest {
 	@Test
 	void decodeCpcTinTest() {
 		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
-		clinicalDocument.addContent( prepareParticipant(clinicalDocument.getNamespace()) );
+		clinicalDocument.addContent( prepareParticipant(clinicalDocument.getNamespace(), CPC_PRACTICE_ROOT) );
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
@@ -333,7 +335,7 @@ class ClinicalDocumentDecoderTest {
 	@Test
 	void decodeCpcNpiTest() {
 		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
-		clinicalDocument.addContent( prepareParticipant( clinicalDocument.getNamespace()) );
+		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), CPC_PRACTICE_ROOT));
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
@@ -362,7 +364,7 @@ class ClinicalDocumentDecoderTest {
 	@Test
 	void testClinicalDocumentDecodePcfTin() {
 		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.PCF);
-		clinicalDocument.addContent( prepareParticipant(clinicalDocument.getNamespace()) );
+		clinicalDocument.addContent( prepareParticipant(clinicalDocument.getNamespace(), CPC_PRACTICE_ROOT) );
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
@@ -375,7 +377,7 @@ class ClinicalDocumentDecoderTest {
 	@Test
 	void testClinicalDocumentDecodePcfNpi() {
 		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.PCF);
-		clinicalDocument.addContent( prepareParticipant( clinicalDocument.getNamespace()) );
+		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), PCF_PRACTICE_ROOT));
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
@@ -388,20 +390,20 @@ class ClinicalDocumentDecoderTest {
 	@Test
 	void testClinicalDocumentDecodePcfEntityId() {
 		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.PCF);
-		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace()));
+		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), PCF_PRACTICE_ROOT));
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
 		objectUnderTest.decode(clinicalDocument, testParentNode);
 		assertWithMessage("Clinical Document contains the Entity Id")
-			.that(testParentNode.getValue(ClinicalDocumentDecoder.PRACTICE_ID))
+			.that(testParentNode.getValue(ClinicalDocumentDecoder.PCF_ENTITY_ID))
 			.isEqualTo(ENTITY_ID_VALUE);
 	}
 
 	@Test
 	void testClinicalDocumentDecodePcfPracticeSiteAddress() {
 		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.PCF);
-		clinicalDocument.addContent( prepareParticipant( clinicalDocument.getNamespace()) );
+		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), PCF_PRACTICE_ROOT));
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
@@ -429,7 +431,7 @@ class ClinicalDocumentDecoderTest {
 	@Test
 	void decodeMipsApmTest() {
 		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.MIPS_APM);
-		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace()));
+		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), CPC_PRACTICE_ROOT));
 		Node testParentNode = new Node();
 
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
@@ -445,7 +447,7 @@ class ClinicalDocumentDecoderTest {
 	@Test
 	void decodeMipsAppApmTest() {
 		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.APP_APM);
-		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace()));
+		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), CPC_PRACTICE_ROOT));
 		Node testParentNode = new Node();
 
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
@@ -502,12 +504,12 @@ class ClinicalDocumentDecoderTest {
 	}
 
 	// This is the Entity Id for CPCPlus program name
-	private Element prepareParticipant(Namespace rootns) {
+	private Element prepareParticipant(Namespace rootns, String root) {
 		Element participant = new Element("participant", rootns);
 		Element associatedEntity = new Element("associatedEntity", rootns);
 
 		Element entityId = new Element("id", rootns)
-			.setAttribute("root", "2.16.840.1.113883.3.249.5.1")
+			.setAttribute("root", root)
 			.setAttribute("extension", ENTITY_ID_VALUE)
 			.setAttribute("assigningAuthorityName", "CMS-CMMI");
 		Element addr = new Element("addr", rootns)
