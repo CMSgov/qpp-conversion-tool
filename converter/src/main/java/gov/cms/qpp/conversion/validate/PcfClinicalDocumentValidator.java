@@ -1,10 +1,12 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
+import gov.cms.qpp.conversion.model.error.ProblemCode;
 
 
 /**
@@ -21,5 +23,11 @@ public class PcfClinicalDocumentValidator extends CpcClinicalDocumentValidator {
 	@Override
 	protected void performValidation(final Node node) {
 		super.performValidation(node);
+
+		checkErrors(node)
+			.singleValue(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED, ClinicalDocumentDecoder.PCF_ENTITY_ID)
+			.valueIsNotEmpty(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.PCF_ENTITY_ID);
+
+		validateApmEntityId(node, ClinicalDocumentDecoder.PCF_ENTITY_ID);
 	}
 }
