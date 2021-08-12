@@ -891,7 +891,7 @@ CDA Header
 									<value xsi:type="REAL" value=".888889"/>
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="9306E83B-3C3B-4CDF-B3EA-F99AEFC55F87"/>
+											<id root="63DAFD4E-CBD5-4BEE-BE19-E64337356748"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
 												  displayName="Numerator"/>
 										</externalObservation>
@@ -2808,7 +2808,7 @@ CDA Header
 									<value xsi:type="REAL" value=".888889"/>
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="2CC2A289-445C-4F15-AFC4-80B934AF5E1E"/>
+											<id root="44E72F3A-B3EC-42E6-85DB-928A9515255C"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
 												  codeSystemName="ActCode" displayName="Numerator"/>
 										</externalObservation>
