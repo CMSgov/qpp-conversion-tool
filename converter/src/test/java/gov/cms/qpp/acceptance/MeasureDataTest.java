@@ -23,6 +23,7 @@ class MeasureDataTest {
 	static void setup() {
 		glossaryMap = MeasureConfigs.grabConfiguration("measureGlossary.json");
 		configMap = MeasureConfigs.getConfigurationMap();
+
 	}
 
 	@Test
