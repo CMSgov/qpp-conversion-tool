@@ -111,7 +111,7 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 	public InputStream getCpcPlusValidationFile() {
 		String bucketName = environment.getProperty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE);
 		String key = environment.getProperty(Constants.CPC_PLUS_FILENAME_VARIABLE);
-		if (StringUtils.isEmpty(bucketName) || StringUtils.isEmpty(key)) {
+		if (StringUtils.isEmpty(bucketName) || StringUtils.isEmpty(key) || Constants.VALIDATION_DISABLE_VARIABLE.equalsIgnoreCase(key)) {
 			API_LOG.warn("No CPC+ bucket name and/or CPC+ key specified");
 			return null;
 		}
