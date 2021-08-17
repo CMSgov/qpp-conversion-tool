@@ -18,8 +18,8 @@ import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 
 class CpcQualityMeasureIdValidatorTest {
-	private static final String MEASURE_ID = "40280382-6963-bf5e-0169-e4d266793da0";
-	private static final String E_MEASURE_ID = "CMS128v8";
+	private static final String MEASURE_ID = "2c928085-7198-38ee-0171-9d7f304f06ee";
+	private static final String E_MEASURE_ID = "CMS128v9";
 
 	private CpcQualityMeasureIdValidator validator;
 	private Node testNode;
