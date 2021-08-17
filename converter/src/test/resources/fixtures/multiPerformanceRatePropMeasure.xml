@@ -647,7 +647,7 @@
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<id root="2.16.840.1.113883.4.738"
-										extension="40280382-6963-bf5e-0169-e4d266793da0"/>
+										extension="2c928085-7198-38ee-0171-9d7f304f06ee"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
 										codeSystemName="LOINC"
 										displayName="Health Quality Measure Document"/>
@@ -667,7 +667,7 @@
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
 											<!-- The root contains the UUID for the Numerator population -->
-											<id root="44D71D80-B43C-4AC4-964A-6AABB3DAC342"/>
+											<id root="73BEC504-0B7D-4EA1-BD42-F1F29BFBBE36"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
 												codeSystemName="ActCode"
 												displayName="Numerator"/>
@@ -688,7 +688,7 @@
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
 											<!-- The root contains the UUID for the Numerator population -->
-											<id root="57B3291B-3C4E-4AD4-A6BB-53D9D9E4B91B"/>
+											<id root="F3B54143-CDFC-4563-B4CA-19169A12252D"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
 												codeSystemName="ActCode"
 												displayName="Numerator"/>
@@ -727,7 +727,7 @@
 									<!--IPOP Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="10AA5F2F-0D06-4DE5-ACCC-43235FE0F8D8"/>
+											<id root="57D85599-15C7-41DB-AA2B-A822DFA3D590"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -762,7 +762,7 @@
 									<!--DENOM Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="C83C6F65-F50D-4545-83DD-A0EABED91538"/>
+											<id root="F8DA7718-407C-4506-A0AC-EAA244583AA3"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -797,7 +797,7 @@
 									<!--DENEX Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="4E226FB8-3240-48E1-8DEA-F7324732C75A"/>
+											<id root="11AB50E5-468A-47EA-87F6-7365A68A2695"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -832,7 +832,7 @@
 									<!--NUMER Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="44D71D80-B43C-4AC4-964A-6AABB3DAC342"/>
+											<id root="73BEC504-0B7D-4EA1-BD42-F1F29BFBBE36"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -869,7 +869,7 @@
 									<!--IPOP Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="D545D66C-ADAC-4543-AB1B-BDD36B282A84"/>
+											<id root="867C82CD-4C9C-4366-87C6-2295EF09B1AB"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -904,7 +904,7 @@
 									<!--DENOM Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="5561C63B-E35B-46F5-89AE-8D54B52160F9"/>
+											<id root="77F157BE-AF09-478E-ADEB-9F66CE228BC5"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -939,7 +939,7 @@
 									<!--DENEX Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="0E3A329A-0BCF-4AFD-92F4-14FB80CAE0DE"/>
+											<id root="56391018-F5C8-4D4C-886C-71C36085610C"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -974,7 +974,7 @@
 									<!--NUMER Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="57B3291B-3C4E-4AD4-A6BB-53D9D9E4B91B"/>
+											<id root="F3B54143-CDFC-4563-B4CA-19169A12252D"/>
 										</externalObservation>
 									</reference>
 								</observation>

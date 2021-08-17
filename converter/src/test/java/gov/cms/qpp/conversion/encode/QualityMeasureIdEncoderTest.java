@@ -144,7 +144,7 @@ class QualityMeasureIdEncoderTest {
 
 	@Test
 	void testMeasureMultiToSingleEncodingEligiblePopulation() {
-		qualityMeasureId.putValue("measureId", "40280382-68d3-a5fe-0169-0c78bec911bb");
+		qualityMeasureId.putValue("measureId", "2c928085-7198-38ee-0171-989a534a0146");
 		executeInternalEncode();
 		JsonWrapper childValues = getChildValues();
 
@@ -203,8 +203,8 @@ class QualityMeasureIdEncoderTest {
 
 	@Test
 	void testEncodeSingleToMultiDefault() {
-		qualityMeasureId.putValue("measureId", "40280382-6963-bf5e-016a-03dca9e446e0");
-		numeratorNode.putValue(MeasureDataDecoder.MEASURE_POPULATION,"A5976BE6-7F1C-419D-898D-7AFEB141A355");
+		qualityMeasureId.putValue("measureId", "2c928085-7198-38ee-0171-9e951ae1097e");
+		numeratorNode.putValue(MeasureDataDecoder.MEASURE_POPULATION,"BBB0D5FB-58B3-4F52-B34B-FE1FA70FA37A");
 		executeInternalEncode();
 		JsonWrapper childValues = getChildValues();
 		List<?> strata = JsonHelper.readJsonAtJsonPath(childValues.toString(), "$.strata", new TypeRef<List<?>>() {});
