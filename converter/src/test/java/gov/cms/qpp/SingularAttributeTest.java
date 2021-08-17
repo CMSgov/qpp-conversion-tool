@@ -52,6 +52,8 @@ class SingularAttributeTest{
 						//There are no validations currently for entity type
 						ClinicalDocumentDecoder.PRACTICE_ID,
 						ClinicalDocumentDecoder.PRACTICE_SITE_ADDR,
+						//We have validations implemented
+						ClinicalDocumentDecoder.PCF_ENTITY_ID,
 						PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE,
 						PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE,
 						//There are no validations for performanceYear

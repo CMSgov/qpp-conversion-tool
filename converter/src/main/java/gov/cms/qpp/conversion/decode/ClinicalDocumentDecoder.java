@@ -23,31 +23,37 @@ import java.util.function.Consumer;
 public class ClinicalDocumentDecoder extends QrdaDecoder {
 
 	/*  Constants for lookups and tests */
+	// Identifier constants for: Node(Identifier, Value) and xpathlocation
 	public static final String NATIONAL_PROVIDER_IDENTIFIER = "nationalProviderIdentifier";
 	public static final String TAX_PAYER_IDENTIFICATION_NUMBER = "taxpayerIdentificationNumber";
 	public static final String PROGRAM_NAME = "programName";
-	public static final String RAW_PROGRAM_NAME = "rawProgramName";
 	public static final String ENTITY_TYPE = "entityType";
-	public static final String MIPS_PROGRAM_NAME = "mips";
-	public static final String CPCPLUS_PROGRAM_NAME = "cpcPlus";
-	public static final String PCF = "PCF";
-	public static final String PCF_PROGRAM_NAME = "pcf";
-	public static final String PRACTICE_ID = "practiceId";
+	public static final String RAW_PROGRAM_NAME = "rawProgramName";
 	public static final String PRACTICE_SITE_ADDR = "practiceSiteAddr";
+	public static final String PRACTICE_ID = "practiceId";
+	public static final String ENTITY_ID = "entityId";
+	public static final String PCF_ENTITY_ID = "pcfEntityId";
 	public static final String CEHRT = "cehrtId";
-	public static final String MIPS = "MIPS";
-	private static final String MIPS_GROUP = "MIPS_GROUP";
-	private static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
-	public static final String MIPS_VIRTUAL_GROUP = "MIPS_VIRTUALGROUP";
-	public static final String MIPS_APM = "MIPSAPM";
+
+	//QPP Json value constants for: Node(Identifier, value)
+	public static final String MIPS_PROGRAM_NAME = "mips";
+	public static final String PCF_PROGRAM_NAME = "pcf";
+	public static final String CPCPLUS_PROGRAM_NAME = "cpcPlus";
 	public static final String ENTITY_APM = "apm";
 	static final String ENTITY_GROUP = "group";
 	static final String ENTITY_INDIVIDUAL = "individual";
 	public static final String ENTITY_VIRTUAL_GROUP = "virtualGroup";
-	public static final String ENTITY_ID = "entityId";
-	public static final String CPCPLUS = "CPCPLUS";
-	public static final String APP = "APP";
 	public static final String APP_PROGRAM_NAME = "app1";
+	public static final String MIPS = "MIPS";
+
+	// Program names in XML format
+	public static final String PCF = "PCF";
+	public static final String APP = "APP";
+	public static final String CPCPLUS = "CPCPLUS";
+	private static final String MIPS_GROUP = "MIPS_GROUP";
+	private static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
+	public static final String MIPS_APM = "MIPSAPM";
+	public static final String MIPS_VIRTUAL_GROUP = "MIPS_VIRTUALGROUP";
 	private static final String APP_GROUP = "MIPS_APP1_GROUP";
 	private static final String APP_INDIVIDUAL = "MIPS_APP1_INDIV";
 	public static final String APP_APM = "MIPS_APP1_APMENTITY";
@@ -94,13 +100,22 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	 * @param thisNode The output internal representation of the document
 	 */
 	private void setEntityIdOnNode(Element element, Node thisNode) {
-		if (Program.isCpc(thisNode) || Program.isPcf(thisNode)) {
+		if (Program.isCpc(thisNode)) {
 			Consumer<Attribute> consumer = id ->
 				thisNode.putValue(PRACTICE_ID, id.getValue(), false);
 			setOnNode(element, getXpath(PRACTICE_ID), consumer, Filters.attribute(), false);
+		} else if (Program.isPcf(thisNode)) {
+			Consumer<Attribute> consumer = id ->
+				thisNode.putValue(PCF_ENTITY_ID, id.getValue(), false);
+			setOnNode(element, getXpath(PCF_ENTITY_ID), consumer, Filters.attribute(), false);
 		} else {
 			setEntityIdOnNode(element, thisNode, ClinicalDocumentDecoder.PRACTICE_ID);
 		}
+	}
+
+	private void setEntityIdOnNode(Element element, Node thisNode, String entityLocationId) {
+		Consumer<? super Attribute> consumer = p -> thisNode.putValue(ENTITY_ID, p.getValue());
+		setOnNode(element, getXpath(entityLocationId), consumer, Filters.attribute(), true);
 	}
 
 	/**
@@ -200,11 +215,6 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 				p.toString().substring(1, p.toString().length() - 1).trim());
 		setMultipleAttributesOnNode(element, getXpath(TAX_PAYER_IDENTIFICATION_NUMBER),
 			consumer, Filters.attribute());
-	}
-
-	private void setEntityIdOnNode(Element element, Node thisNode, String entityLocationId) {
-		Consumer<? super Attribute> consumer = p -> thisNode.putValue(ENTITY_ID, p.getValue());
-		setOnNode(element, getXpath(entityLocationId), consumer, Filters.attribute(), true);
 	}
 
 	/**
