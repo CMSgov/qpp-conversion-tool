@@ -21,7 +21,7 @@ import gov.cms.qpp.test.enums.EnumContract;
 class CpcQualityMeasureSectionValidatorTest {
 
 	private CpcQualityMeasureSectionValidator validator;
-	private String[] groupAmeasures = {"40280382-6963-bf5e-0169-da3833273869", "40280382-6963-bf5e-0169-da5e74be38bf"};
+	private String[] groupAmeasures = {"2c928085-7198-38ee-0171-9d78a0d406b3", "2c928085-7198-38ee-0171-9da6456007ab"};
 	private String[] groupBmeasures = {};
 
 	@BeforeAll
