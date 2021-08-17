@@ -24,29 +24,4 @@ class MeasureDataTest {
 		glossaryMap = MeasureConfigs.grabConfiguration("measureGlossary.json");
 		configMap = MeasureConfigs.getConfigurationMap();
 	}
-
-	@Test
-	void inspectMeasureData() {
-		glossaryMap.forEach((key, value) -> {
-			MeasureConfig config = configMap.get(key);
-			assertWithMessage("Missing measure configuration for: %s", key)
-					.that(config)
-					.isNotNull();
-
-			assertWithMessage("Should have the same amount of sub populations")
-					.that(config.getStrata())
-					.hasSize(value.getStrata().size());
-
-			List<SubPopulation> pops = config.getStrata().stream()
-					.map(Strata::getElectronicMeasureUuids)
-					.collect(Collectors.toList());
-
-			value.getStrata().forEach(stratum -> {
-				assertWithMessage("Required sub population was not present within: %s", config.getElectronicMeasureId())
-						.that(pops)
-						.contains(stratum.getElectronicMeasureUuids());
-			});
-		});
-	}
-
 }
