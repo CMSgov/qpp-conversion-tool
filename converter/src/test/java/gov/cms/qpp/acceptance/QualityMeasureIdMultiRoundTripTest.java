@@ -111,7 +111,7 @@ class QualityMeasureIdMultiRoundTripTest {
 	@Test
 	void testRoundTripForQualityMeasureIdWithNoDenexMeasureType() {
 		LocalizedProblem error =
-			ProblemCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS128v8", 2, SubPopulationLabel.DENEX.name(), 1);
+			ProblemCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS128v9", 2, SubPopulationLabel.DENEX.name(), 1);
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[5]/observation/value/@code";
 
