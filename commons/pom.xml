@@ -55,7 +55,7 @@
 					<plugin>
 						<groupId>com.googlecode.maven-download-plugin</groupId>
 						<artifactId>download-maven-plugin</artifactId>
-						<version>1.3.0</version>
+						<version>1.6.6</version>
 						<executions>
 							<execution>
 								<id>get-measure-data</id>
@@ -64,7 +64,7 @@
 									<goal>wget</goal>
 								</goals>
 								<configuration>
-									<url>https://raw.githubusercontent.com/CMSgov/qpp-measures-data/master/measures/measures-data.json</url>
+									<url>https://raw.githubusercontent.com/CMSgov/qpp-measures-data/develop/measures/2021/measures-data.json</url>
 									<skipCache>true</skipCache>
 									<overwrite>true</overwrite>
 									<outputDirectory>${basedir}/src/main/resources</outputDirectory>

@@ -18,8 +18,8 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 public class PcfQualityMeasureIdValidatorTest {
-	private static final String MEASURE_ID = "40280382-6963-bf5e-0169-e4d266793da0";
-	private static final String E_MEASURE_ID = "CMS128v8";
+	private static final String MEASURE_ID = "2c928085-7198-38ee-0171-9d7f304f06ee";
+	private static final String E_MEASURE_ID = "CMS128v9";
 
 	private PcfQualityMeasureIdValidator validator;
 	private Node testNode;

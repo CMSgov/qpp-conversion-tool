@@ -70,7 +70,7 @@ public class PcfClinicalDocumentValidatorTest {
 		Node clinicalDocumentNode = createPcfClinicalDocumentNodeWithMeasureSection();
 
 		// extra APM
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID, "1234567", false);
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PCF_ENTITY_ID, "1234567", false);
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -80,7 +80,7 @@ public class PcfClinicalDocumentValidatorTest {
 	@Test
 	void testPcfNoApm() {
 		Node clinicalDocumentNode = createPcfClinicalDocumentNodeWithMeasureSection();
-		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.PRACTICE_ID);
+		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.PCF_ENTITY_ID);
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -90,7 +90,7 @@ public class PcfClinicalDocumentValidatorTest {
 	@Test
 	void testPcfEmptyApm() {
 		Node clinicalDocumentNode = createPcfClinicalDocumentNodeWithMeasureSection();
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID, "");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PCF_ENTITY_ID, "");
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 			.containsExactly(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_EMPTY_APM);
@@ -99,7 +99,7 @@ public class PcfClinicalDocumentValidatorTest {
 	@Test
 	void testPcfInvalidApm() {
 		Node clinicalDocumentNode = createPcfClinicalDocumentNodeWithMeasureSection();
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID, "PropertyTaxes");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PCF_ENTITY_ID, "PropertyTaxes");
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 			.containsExactly(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_INVALID_APM);
@@ -137,7 +137,7 @@ public class PcfClinicalDocumentValidatorTest {
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.PCF);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR, "test");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID, "DogCow");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PCF_ENTITY_ID, "DogCow");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, "123456789");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, "9900000099");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.CEHRT, "XX15EXXXXXXXXXX");

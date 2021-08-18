@@ -93,7 +93,7 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertWithMessage("Must validate with the correct error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED);
+				.contains(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED);
 	}
 
 	@Test
@@ -233,6 +233,7 @@ class CpcClinicalDocumentValidatorTest {
 	private Node createCpcPlusClinicalDocument() {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR, "test");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID, "DogCow");

@@ -150,7 +150,6 @@ class CpcPlusAcceptanceTest {
 		assertThat(errors).isNull();
 		assertThat(converter.getReport().getWarnings()).isNotNull();
 		assertThat(converter.getReport().getWarnings()).isNotEmpty();
-		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 	}
 
 	@ParameterizedTest

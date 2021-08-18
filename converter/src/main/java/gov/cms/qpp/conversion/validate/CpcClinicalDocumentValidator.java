@@ -83,16 +83,19 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 			.listValuesAreValid(
 				ProblemCode.CPC_PCF_PLUS_INVALID_NPI, ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, 10)
 			.valueIsNotEmpty(addressError, ClinicalDocumentDecoder.PRACTICE_SITE_ADDR)
-			.singleValue(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED,
-					ClinicalDocumentDecoder.PRACTICE_ID)
-			.valueIsNotEmpty(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.PRACTICE_ID)
 			.childMinimum(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED,
 					1, TemplateId.MEASURE_SECTION_V4);
 
+
+		if (Program.isCpc(node)) {
+			checkErrors(node)
+				.singleValue(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED, ClinicalDocumentDecoder.PRACTICE_ID)
+				.valueIsNotEmpty(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.PRACTICE_ID);
+			validateApmEntityId(node, ClinicalDocumentDecoder.PRACTICE_ID);
+		}
 		checkWarnings(node)
 			.doesNotHaveChildren(ProblemCode.CPC_PCF_PLUS_NO_IA_OR_PI, TemplateId.IA_SECTION, TemplateId.PI_SECTION_V2);
 
-		validateApmEntityId(node);
 		if (hasTinAndNpi(node)) {
 			validateNumberOfTinsAndNpis(node);
 			validateApmNpiCombination(node);
@@ -106,9 +109,10 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	 * A validation error is created if the APM Entity ID is invalid.
 	 *
 	 * @param node The node to validate
+	 * @param key  Identifier of the apm entity id value map
 	 */
-	private void validateApmEntityId(Node node) {
-		String apmEntityId = node.getValue(ClinicalDocumentDecoder.PRACTICE_ID);
+	protected void validateApmEntityId(Node node, String key) {
+		String apmEntityId = node.getValue(key);
 
 		if (StringUtils.isEmpty(apmEntityId)) {
 			return;
