@@ -7,10 +7,7 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
-import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -37,18 +34,8 @@ public class Pcf2021AcceptanceTest {
         return getXml(FAILURE);
     }
 
-    static Stream<Path> successDataWithWarnings() {
+    static Stream<Path> successWithWarningsData() {
         return getXml(SUCCESS_WARNING);
-    }
-
-    @BeforeEach
-    void measureConfigSetup() {
-        MeasureConfigs.initMeasureConfigs(MeasureConfigs.TEST_MEASURE_DATA);
-    }
-
-    @AfterEach
-    void measureConfigTeardown() {
-        MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
     }
 
     @ParameterizedTest
@@ -78,7 +65,7 @@ public class Pcf2021AcceptanceTest {
     }
 
     @ParameterizedTest
-    @MethodSource("successDataWithWarnings")
+    @MethodSource("successWithWarningsData")
     void testWarningFiles(Path entry) {
         AllErrors errors = null;
 
