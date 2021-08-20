@@ -145,12 +145,4 @@ resource "aws_lambda_function" "ddb-notification-alerts" {
   handler       = "dynamo-db-bckup-notifier.lambda_handler"
   timeout       = "120"
   runtime       = "python3.7"
-  environment {
-    variables = {
-      "channel_id" = "GA20H9QJW"
-      "slack_channel_webhook" = "https://hooks.slack.com/services/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"
-    }
-  }
-
-
 }
