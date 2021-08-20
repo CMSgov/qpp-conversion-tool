@@ -21,6 +21,9 @@ terraform {
   }
 }
 
+data "aws_caller_identity" "current" {}
+
+
 # Event bridge rule to Monitor ECS Cluster Tasks State
 resource "aws_cloudwatch_event_rule" "ecs-task-monitor" {
   name        = "ecsct-task-monitor-${var.project_name}-${var.environment}"

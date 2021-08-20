@@ -21,6 +21,8 @@ terraform {
   }
 }
 
+data "aws_caller_identity" "current" {}
+
 # Event bridge rule to Invoke Lambda Function on a Schedule
 resource "aws_cloudwatch_event_rule" "invoke-lambda-on-schedule" {
   name        = "invoke-lambda-scheduler-${var.project_name}-${var.environment}"
