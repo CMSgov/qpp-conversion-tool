@@ -202,15 +202,15 @@ class CpcClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	void testWarnWhenContainsPi() {
+	void testErrorWhenContainsPi() {
 		Node clinicalDocumentNode = createCpcPlusClinicalDocument();
 		Node piSection = new Node(TemplateId.PI_SECTION_V2);
 		clinicalDocumentNode.addChildNode(piSection);
-		List<Detail> warnings = cpcValidator.validateSingleNode(clinicalDocumentNode).getWarnings();
+		List<Detail> errors = cpcValidator.validateSingleNode(clinicalDocumentNode).getErrors();
 
-		assertThat(warnings)
+		assertThat(errors)
 			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(ProblemCode.CPC_PCF_PLUS_NO_IA_OR_PI);
+			.contains(ProblemCode.CPC_PLUS_NO_PI);
 	}
 
 	@Test

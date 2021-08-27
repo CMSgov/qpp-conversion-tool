@@ -8,7 +8,7 @@ import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
 
 /**
- * Validates a measure groupings for a CPC+ Quality Measure Section node.
+ * Validates a measure groupings for a PCF Quality Measure Section node.
  */
 @Validator(value = TemplateId.MEASURE_SECTION_V4, program = Program.PCF)
 public class PcfQualityMeasureSectionValidator extends NodeValidator {
@@ -33,7 +33,7 @@ public class PcfQualityMeasureSectionValidator extends NodeValidator {
 	}
 
 	/**
-	 * Verify that CPC+ measurement group minimums are met.
+	 * Verify that PCF measurement group minimums are met.
 	 * @param checker node validator helper
 	 */
 	void checkGroupMinimum(Checker checker) {
