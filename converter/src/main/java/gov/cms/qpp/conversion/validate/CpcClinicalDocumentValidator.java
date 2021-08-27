@@ -88,13 +88,17 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 
 
 		if (Program.isCpc(node)) {
-			checkErrors(node)
+			forceCheckErrors(node)
 				.singleValue(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED, ClinicalDocumentDecoder.PRACTICE_ID)
-				.valueIsNotEmpty(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.PRACTICE_ID);
+				.valueIsNotEmpty(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.PRACTICE_ID)
+				.doesNotHaveChildren(ProblemCode.CPC_PLUS_NO_PI, TemplateId.PI_SECTION_V2);
+			checkWarnings(node)
+				.doesNotHaveChildren(ProblemCode.CPC_PCF_PLUS_NO_IA_OR_PI, TemplateId.IA_SECTION);
 			validateApmEntityId(node, ClinicalDocumentDecoder.PRACTICE_ID);
+		} else {
+			checkWarnings(node)
+				.doesNotHaveChildren(ProblemCode.CPC_PCF_PLUS_NO_IA_OR_PI, TemplateId.IA_SECTION, TemplateId.PI_SECTION_V2);
 		}
-		checkWarnings(node)
-			.doesNotHaveChildren(ProblemCode.CPC_PCF_PLUS_NO_IA_OR_PI, TemplateId.IA_SECTION, TemplateId.PI_SECTION_V2);
 
 		if (hasTinAndNpi(node)) {
 			validateNumberOfTinsAndNpis(node);
