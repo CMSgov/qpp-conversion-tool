@@ -55,9 +55,6 @@ public class ClinicalDocumentValidator extends NodeValidator {
 				ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS_PROGRAM_NAME,
 				ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME, ClinicalDocumentDecoder.PCF, ClinicalDocumentDecoder.APP_PROGRAM_NAME);
 
-			if (ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP.equals(entityType)) {
-				forceCheckErrors(node).value(ProblemCode.VIRTUAL_GROUP_ID_REQUIRED, ClinicalDocumentDecoder.ENTITY_ID);
-			}
 		}
 	}
 }
