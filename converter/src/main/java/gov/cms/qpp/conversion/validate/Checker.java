@@ -127,6 +127,20 @@ class Checker {
 		return this;
 	}
 
+	Checker listValuesAreInts(LocalizedProblem code, String name) {
+		lastAppraised = node.getValue(name);
+		if (!shouldShortcut()) {
+			List<String> values = Arrays.asList(((String)lastAppraised).split(","));
+			values.forEach(value -> {
+				String trimmedValue = value.trim();
+				if (!trimmedValue.matches("\\d+")) {
+					details.add(detail(code));
+				}
+			});
+		}
+		return this;
+	}
+
 	/**
 	 * checks target node for the existence of a single value with the given name key
 	 *

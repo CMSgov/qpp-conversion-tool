@@ -28,7 +28,7 @@ public class PcfClinicalDocumentValidator extends CpcClinicalDocumentValidator {
 			.singleValue(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED, ClinicalDocumentDecoder.PCF_ENTITY_ID)
 			.valueIsNotEmpty(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.PCF_ENTITY_ID)
 			.childExact(ProblemCode.PCF_NO_PI, 0, TemplateId.PI_SECTION_V2)
-			.intValue(ProblemCode.CPC_PCF_PLUS_INVALID_NPI, ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER);
+			.listValuesAreInts(ProblemCode.CPC_PCF_PLUS_INVALID_NPI, ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER);
 
 		validateApmEntityId(node, ClinicalDocumentDecoder.PCF_ENTITY_ID);
 	}
