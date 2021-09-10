@@ -55,7 +55,7 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertWithMessage("Must contain error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ProblemCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
+				.containsExactly(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
 					.format(Context.REPORTING_YEAR));
 	}
 
@@ -68,7 +68,7 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertWithMessage("Must contain error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ProblemCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
+				.containsExactly(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
 					.format(Context.REPORTING_YEAR));
 	}
 
@@ -82,7 +82,7 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertWithMessage("Must validate with the correct error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ProblemCode.CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED);
+				.containsExactly(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED);
 	}
 
 	@Test
@@ -93,7 +93,7 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertWithMessage("Must validate with the correct error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ProblemCode.CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED);
+				.contains(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED);
 	}
 
 	@Test
@@ -103,7 +103,7 @@ class CpcClinicalDocumentValidatorTest {
 		List<Detail> errors = cpcValidator.validateSingleNode(clinicalDocumentNode).getErrors();
 		assertWithMessage("Must validate with the correct error")
 			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_CLINICAL_DOCUMENT_EMPTY_APM);
+			.containsExactly(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_EMPTY_APM);
 	}
 
 	@Test
@@ -113,7 +113,7 @@ class CpcClinicalDocumentValidatorTest {
 		List<Detail> errors = cpcValidator.validateSingleNode(clinicalDocumentNode).getErrors();
 		assertWithMessage("Must validate with the correct error")
 			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_CLINICAL_DOCUMENT_INVALID_APM);
+			.containsExactly(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_INVALID_APM);
 	}
 
 	@Test
@@ -123,7 +123,7 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertWithMessage("Must validate with the correct error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ProblemCode.CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED);
+				.containsExactly(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED);
 	}
 
 	@Test
@@ -153,7 +153,7 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertThat(errors)
 			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_PLUS_SUBMISSION_ENDED.format(formattedDate, expected));
+			.containsExactly(ProblemCode.CPC_PCF_PLUS_SUBMISSION_ENDED.format(formattedDate, expected));
 	}
 
 	@Test
@@ -164,7 +164,7 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertWithMessage("Must validate with the correct error")
 			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_PLUS_TIN_REQUIRED);
+			.containsExactly(ProblemCode.CPC_PCF_PLUS_TIN_REQUIRED);
 	}
 
 	@Test
@@ -175,7 +175,7 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertWithMessage("Must validate with the correct error")
 			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_PLUS_NPI_REQUIRED);
+			.containsExactly(ProblemCode.CPC_PCF_PLUS_NPI_REQUIRED);
 	}
 
 	@Test
@@ -186,7 +186,7 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertWithMessage("Must validate with the correct error")
 			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_MISSING_CEHRT_ID);
+			.containsExactly(ProblemCode.CPC_PCF_MISSING_CEHRT_ID);
 	}
 
 	@Test
@@ -198,19 +198,19 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertThat(warnings)
 			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(ProblemCode.CPC_PLUS_NO_IA_OR_PI);
+			.contains(ProblemCode.CPC_PCF_PLUS_NO_IA_OR_PI);
 	}
 
 	@Test
-	void testWarnWhenContainsPi() {
+	void testErrorWhenContainsPi() {
 		Node clinicalDocumentNode = createCpcPlusClinicalDocument();
 		Node piSection = new Node(TemplateId.PI_SECTION_V2);
 		clinicalDocumentNode.addChildNode(piSection);
-		List<Detail> warnings = cpcValidator.validateSingleNode(clinicalDocumentNode).getWarnings();
+		List<Detail> errors = cpcValidator.validateSingleNode(clinicalDocumentNode).getErrors();
 
-		assertThat(warnings)
+		assertThat(errors)
 			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(ProblemCode.CPC_PLUS_NO_IA_OR_PI);
+			.contains(ProblemCode.CPC_PLUS_NO_PI);
 	}
 
 	@Test
@@ -221,7 +221,7 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertWithMessage("Must validate with the correct error")
 			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_PLUS_DUPLICATE_CEHRT);
+			.containsExactly(ProblemCode.CPC_PCF_PLUS_DUPLICATE_CEHRT);
 	}
 
 	private Node createValidCpcPlusClinicalDocument() {
@@ -233,6 +233,7 @@ class CpcClinicalDocumentValidatorTest {
 	private Node createCpcPlusClinicalDocument() {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR, "test");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID, "DogCow");

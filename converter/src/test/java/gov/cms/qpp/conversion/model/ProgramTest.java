@@ -24,9 +24,23 @@ class ProgramTest implements EnumContract {
 	}
 
 	@Test
+	void instanceRetrievalMipsApp() {
+		Stream.of("MIPS_APP1_GROUP", "MIPS_APP1_INDIV").forEach(mip ->
+				assertWithMessage("Program other than %s was returned", Program.APP)
+						.that(Program.getInstance(mip)).isSameInstanceAs(Program.APP)
+		);
+	}
+
+	@Test
 	void instanceRetrievalCpcPlus() {
 		assertWithMessage("Program other than %s was returned", Program.CPC)
 				.that(Program.getInstance("CPCPLUS")).isSameInstanceAs(Program.CPC);
+	}
+
+	@Test
+	void instanceRetrievalPcf() {
+		assertWithMessage("Program other than %s was returned", Program.PCF)
+			.that(Program.getInstance("PCF")).isSameInstanceAs(Program.PCF);
 	}
 
 	@Test
@@ -82,10 +96,45 @@ class ProgramTest implements EnumContract {
 	}
 
 	@Test
+	void testIsPcfForMixedCaseIsTrue() {
+		Node node = new Node();
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "pCf");
+		assertThat(Program.isPcf(node)).isTrue();
+	}
+
+	@Test
+	void testIsPcfUppercaseIsTrue() {
+		Node node = new Node();
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "PCF");
+		assertThat(Program.isPcf(node)).isTrue();
+	}
+
+	@Test
+	void testIsPcfLowercaseIsTrue() {
+		Node node = new Node();
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "pcf");
+		assertThat(Program.isPcf(node)).isTrue();
+	}
+
+	@Test
 	void testIsCpcPlusForCpcplusMixedCaseIsTrue() {
 		Node node = new Node();
 		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "cPcPlUs");
 		assertThat(Program.isCpc(node)).isTrue();
+	}
+
+	@Test
+	void testIsAppIndividualIsTrue() {
+		Node node = new Node();
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_APP1_INDIV");
+		assertThat(Program.isApp(node)).isTrue();
+	}
+
+	@Test
+	void testIsMipsNonAppIndividualFalse() {
+		Node node = new Node();
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_INDIV");
+		assertThat(Program.isApp(node)).isFalse();
 	}
 
 	@Test

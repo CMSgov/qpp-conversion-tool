@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>4.3.3-RELEASE</version>
+		<version>14.5.0-RELEASE</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -17,7 +17,7 @@
 
 	<properties>
 		<requiredCodeCoverage>0.90</requiredCodeCoverage>
-		<tomcat.version>9.0.40</tomcat.version>
+		<tomcat.version>9.0.43</tomcat.version>
 	</properties>
 
 	<build>
@@ -253,7 +253,7 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
-			<version>5.2.4.RELEASE</version>
+			<version>5.2.11.RELEASE</version>
 		</dependency>
 
 		<dependency>

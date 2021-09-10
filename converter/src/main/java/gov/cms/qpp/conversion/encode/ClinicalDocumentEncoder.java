@@ -8,6 +8,7 @@ import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 
 import java.util.LinkedHashMap;
@@ -64,14 +65,17 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 				thisNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER));
 		}
 
-		if (ClinicalDocumentDecoder.ENTITY_APM.equals(entityType)) {
-			wrapper.put(ClinicalDocumentDecoder.ENTITY_ID,
-				thisNode.getValue(ClinicalDocumentDecoder.PRACTICE_ID));
+		if (Program.isCpc(thisNode)) {
+			wrapper.put(ClinicalDocumentDecoder.ENTITY_ID, thisNode.getValue(ClinicalDocumentDecoder.PRACTICE_ID));
 		}
 
-		if (ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP.equals(entityType)) {
-			wrapper.put(ClinicalDocumentDecoder.ENTITY_ID,
-				thisNode.getValue(ClinicalDocumentDecoder.ENTITY_ID));
+		if(Program.isPcf(thisNode)) {
+			wrapper.put(ClinicalDocumentDecoder.ENTITY_ID, thisNode.getValue(ClinicalDocumentDecoder.PCF_ENTITY_ID));
+		}
+
+		if (ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP.equals(entityType) ||
+			(!Program.isCpc(thisNode) || !Program.isPcf(thisNode) && ClinicalDocumentDecoder.ENTITY_APM.equalsIgnoreCase(entityType))) {
+			wrapper.put(ClinicalDocumentDecoder.ENTITY_ID, thisNode.getValue(ClinicalDocumentDecoder.ENTITY_ID));
 		}
 	}
 
@@ -120,7 +124,10 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 					&& ClinicalDocumentDecoder.MIPS_APM.equalsIgnoreCase(
 						currentNode.getValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME))) {
 					childWrapper.put(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS.toLowerCase(Locale.getDefault()));
-					childWrapper.remove(ClinicalDocumentDecoder.PRACTICE_ID);
+				} else if (TemplateId.MEASURE_SECTION_V4.getRoot().equalsIgnoreCase(childType.getRoot())
+						&& ClinicalDocumentDecoder.APP_APM.equalsIgnoreCase(
+						currentNode.getValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME))) {
+					childWrapper.put(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.APP.toLowerCase(Locale.getDefault()));
 				}
 
 				measurementSetsWrapper.put(childWrapper);

@@ -2,19 +2,6 @@ package gov.cms.qpp.conversion.api.controllers.v1;
 
 import com.amazonaws.AmazonServiceException;
 import com.google.common.truth.Truth;
-import gov.cms.qpp.conversion.ConversionReport;
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathSource;
-import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
-import gov.cms.qpp.conversion.api.exceptions.InvalidPurposeException;
-import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
-import gov.cms.qpp.conversion.api.services.AuditService;
-import gov.cms.qpp.conversion.api.services.internal.CpcFileServiceImpl;
-import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.QppValidationException;
-import gov.cms.qpp.conversion.model.error.TransformException;
-import gov.cms.qpp.test.MockitoExtension;
-import gov.cms.qpp.test.logging.LoggerContract;
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,6 +19,20 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import gov.cms.qpp.conversion.ConversionReport;
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathSource;
+import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
+import gov.cms.qpp.conversion.api.exceptions.InvalidPurposeException;
+import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
+import gov.cms.qpp.conversion.api.helper.AdvancedApmHelper;
+import gov.cms.qpp.conversion.api.services.AuditService;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.QppValidationException;
+import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.test.MockitoExtension;
+import gov.cms.qpp.test.logging.LoggerContract;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -136,7 +137,7 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 	@Test
 	void testFileNotFoundExceptionStatusCode() {
 		NoFileInDatabaseException exception =
-				new NoFileInDatabaseException(CpcFileServiceImpl.FILE_NOT_FOUND);
+				new NoFileInDatabaseException(AdvancedApmHelper.FILE_NOT_FOUND);
 
 		ResponseEntity<String> responseEntity = objectUnderTest.handleFileNotFoundException(exception);
 
@@ -148,7 +149,7 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 	@Test
 	void testFileNotFoundExceptionHeaderContentType() {
 		NoFileInDatabaseException exception =
-				new NoFileInDatabaseException(CpcFileServiceImpl.FILE_NOT_FOUND);
+				new NoFileInDatabaseException(AdvancedApmHelper.FILE_NOT_FOUND);
 
 		ResponseEntity<String> responseEntity = objectUnderTest.handleFileNotFoundException(exception);
 
@@ -159,16 +160,16 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 	@Test
 	void testFileNotFoundExceptionBody() {
 		NoFileInDatabaseException exception =
-				new NoFileInDatabaseException(CpcFileServiceImpl.FILE_NOT_FOUND);
+				new NoFileInDatabaseException(AdvancedApmHelper.FILE_NOT_FOUND);
 
 		ResponseEntity<String> responseEntity = objectUnderTest.handleFileNotFoundException(exception);
-		assertThat(responseEntity.getBody()).isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(responseEntity.getBody()).isEqualTo(AdvancedApmHelper.FILE_NOT_FOUND);
 	}
 
 	@Test
 	void testInvalidFileTypeExceptionStatusCode() {
 		InvalidFileTypeException exception =
-				new InvalidFileTypeException(CpcFileServiceImpl.FILE_NOT_FOUND);
+				new InvalidFileTypeException(AdvancedApmHelper.FILE_NOT_FOUND);
 
 		ResponseEntity<String> responseEntity = objectUnderTest.handleInvalidFileTypeException(exception);
 
@@ -180,7 +181,7 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 	@Test
 	void testInvalidFileTypeExceptionHeaderContentType() {
 		InvalidFileTypeException exception =
-				new InvalidFileTypeException(CpcFileServiceImpl.FILE_NOT_FOUND);
+				new InvalidFileTypeException(AdvancedApmHelper.FILE_NOT_FOUND);
 
 		ResponseEntity<String> responseEntity = objectUnderTest.handleInvalidFileTypeException(exception);
 
@@ -191,10 +192,10 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 	@Test
 	void testInvalidFileTypeExceptionBody() {
 		InvalidFileTypeException exception =
-				new InvalidFileTypeException(CpcFileServiceImpl.FILE_NOT_FOUND);
+				new InvalidFileTypeException(AdvancedApmHelper.FILE_NOT_FOUND);
 
 		ResponseEntity<String> responseEntity = objectUnderTest.handleInvalidFileTypeException(exception);
-		assertThat(responseEntity.getBody()).isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(responseEntity.getBody()).isEqualTo(AdvancedApmHelper.FILE_NOT_FOUND);
 	}
 
 	@Test

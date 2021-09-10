@@ -115,7 +115,7 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	 */
 	private void addSupplementalValidationError(Node node, SupplementalData supplementalData, String measureId) {
 		LocalizedProblem error =
-				ProblemCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(
+				ProblemCode.CPC_PCF_PLUS_MISSING_SUPPLEMENTAL_CODE.format(
 					supplementalData.getType(), supplementalData, supplementalData.getCode(),
 						measureId, node.getValue(MeasureDataDecoder.MEASURE_TYPE));
 		addError(Detail.forProblemAndNode(error, node));
@@ -130,7 +130,7 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	 * @return initialized {@link LocalizedProblem}
 	 */
 	private LocalizedProblem makeIncorrectCountSizeLocalizedError(Node node, String supplementalCode, String measureId) {
-		return ProblemCode.CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT.format(
+		return ProblemCode.CPC_PCF_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT.format(
 			supplementalCode, node.getValue(MeasureDataDecoder.MEASURE_TYPE),
 				measureId);
 	}
