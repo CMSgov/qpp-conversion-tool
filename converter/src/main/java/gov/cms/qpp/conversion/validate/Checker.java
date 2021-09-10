@@ -495,6 +495,20 @@ class Checker {
 	}
 
 	/**
+	 * General check for an arbitrary boolean condition.
+	 *
+	 * @param code Identifies the error.
+	 * @param predicate Any boolean expression. The error code will be added if this is false.
+	 * @return The checker, for chaining method calls.
+	 */
+	Checker predicate(LocalizedProblem code, boolean predicate) {
+		if (!predicate) {
+			details.add(detail(code));
+		}
+		return this;
+	}
+
+	/**
 	 * Marks the checked node as being incompletely validated.
 	 *
 	 * @return The checker, for chaining method calls.
