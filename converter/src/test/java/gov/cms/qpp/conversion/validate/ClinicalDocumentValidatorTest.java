@@ -256,6 +256,19 @@ class ClinicalDocumentValidatorTest {
 	}
 
 	@Test
+	void testMissingVirtualGroupId() {
+		Node clinicalDocumentNode = createValidClinicalDocumentNode();
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP);
+		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
+		clinicalDocumentNode.addChildNode(aciSectionNode);
+		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
+		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
+
+		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ProblemCode.VIRTUAL_GROUP_ID_REQUIRED);
+	}
+
+	@Test
 	void testSuccessVirtualGroupId() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP);
