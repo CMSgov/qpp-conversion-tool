@@ -152,7 +152,7 @@ jobs:
 
       - name: Get okr-metrics properties
         if: github.ref == 'refs/heads/master'
-        id: read_properties
+        id: read_properties_start
         run: |
           source isg-okr.properties
           echo "conf_pg_id=${confluenceReleasePageId}" >> $GITHUB_ENV
@@ -229,7 +229,7 @@ jobs:
 
       - name: Get okr-metrics properties
         if: github.ref == 'refs/heads/master' && success()
-        id: read_properties
+        id: read_properties_finish
         run: |
           source isg-okr.properties
           echo "conf_pg_id=${confluenceReleasePageId}" >> $GITHUB_ENV
