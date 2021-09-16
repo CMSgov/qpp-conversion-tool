@@ -63,7 +63,8 @@ class SingularAttributeTest{
 						QualitySectionDecoder.CATEGORY_SECTION_V4,
 						//stratum is not currently mapped
 						"stratum",
-						"cehrtId")
+						"cehrtId",
+						"performer")
 		);
 
 		corrMap.keySet().forEach(key -> {
