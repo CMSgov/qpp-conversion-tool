@@ -1,4 +1,4 @@
-name: Deploy to Amazon ECR
+name: Deploy to Amazon ECS
 
 on:
   push:
@@ -35,6 +35,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
       
       - name: Dev - Build and deploy to Amazon ECR
+        id: build-image-dev
         if: github.ref == 'refs/heads/develop'
         env:
           ECR_REPOSITORY: qppsf/conversion-tool/dev
@@ -47,13 +48,37 @@ jobs:
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image-dev::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+      - name: Get task definition for dev
+        if: github.ref == 'refs/heads/develop' && success()
+        run: |
+          aws ecs describe-task-definition --task-definition qppsf-conversion-tool-td-dev --query taskDefinition > task-definition.json
+
+      - name: Fill in image ID for ECS task-definition
+        id: task-def-dev
+        if: github.ref == 'refs/heads/develop' && success()
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: conversion-tool
+          image: ${{ steps.build-image-dev.outputs.image-dev }}
+
+      - name: Deploy Amazon ECS task definition
+        if: github.ref == 'refs/heads/develop' && success()
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def-dev.outputs.task-definition }}
+          service: conversion-tool-service-dev
+          cluster: qppsf-conversion-tool-dev
+          wait-for-service-stability: true
 
       - name: Dev - Notify slack success
         if: github.ref == 'refs/heads/develop' && success()
         uses: voxmedia/github-action-slack-notify-build@v1
         with:
           channel: p-qpp-sub-alerts
-          status: Conversion tools - Successful Docker build and AWS ECR deployment
+          status: Conversion tools - Successful Docker build and AWS ECS deployment
           color: good
 
       - name: Dev - Notify slack fail
@@ -61,10 +86,11 @@ jobs:
         uses: voxmedia/github-action-slack-notify-build@v1
         with:
           channel: p-qpp-sub-alerts
-          status: Conversion tools - Failed Docker build or AWS ECR deployment
+          status: Conversion tools - Failed Docker build or AWS ECS deployment
           color: danger 
 
-      - name: Impl - Build and deploy to Amazon ECR 
+      - name: Impl - Build and deploy to Amazon ECR
+        id: build-image-impl
         if: startsWith(github.ref,'refs/heads/release/')
         env:
           ECR_REPOSITORY: qppsf/conversion-tool/impl
@@ -77,13 +103,37 @@ jobs:
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image-impl::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+      - name: Get task definition for Impl
+        if: startsWith(github.ref,'refs/heads/release/') && success()
+        run: |
+          aws ecs describe-task-definition --task-definition qppsf-conversion-tool-td-impl --query taskDefinition > task-definition.json
+
+      - name: Fill in image ID for ECS task-definition
+        id: task-def-impl
+        if: startsWith(github.ref,'refs/heads/release/') && success()
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: conversion-tool
+          image: ${{ steps.build-image-impl.outputs.image-impl }}
+
+      - name: Deploy Amazon ECS task definition
+        if: startsWith(github.ref,'refs/heads/release/') && success()
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def-impl.outputs.task-definition }}
+          service: conversion-tool-service-impl
+          cluster: qppsf-conversion-tool-impl
+          wait-for-service-stability: true
 
       - name: Impl - Notify slack success
         if: startsWith(github.ref,'refs/heads/release/') && success()
         uses: voxmedia/github-action-slack-notify-build@v1
         with:
           channel: p-qpp-sub-alerts
-          status: Conversion tools - Successful Docker build and AWS ECR deployment
+          status: Conversion tools - Successful Docker build and AWS ECS deployment
           color: good
 
       - name: Impl - Notify slack fail
@@ -91,10 +141,33 @@ jobs:
         uses: voxmedia/github-action-slack-notify-build@v1
         with:
           channel: p-qpp-sub-alerts
-          status: Conversion tools - Failed Docker build or AWS ECR deployment
+          status: Conversion tools - Failed Docker build or AWS ECS deployment
           color: danger 
 
+#OKR Metrics Publish - start
+      - name: Get OKR Event Start-Date
+        if: github.ref == 'refs/heads/master'
+        run: |
+          echo "event_start_dt=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
+
+      - name: Get okr-metrics properties
+        if: github.ref == 'refs/heads/master'
+        id: read_properties_start
+        run: |
+          source isg-okr.properties
+          echo "conf_pg_id=${confluenceReleasePageId}" >> $GITHUB_ENV
+          echo "deployment_type=${deploy_type}" >> $GITHUB_ENV
+
+      - name: Deployment Pipeline Start - Publish to OKR
+        if: github.ref == 'refs/heads/master'
+        run: |
+          curl -v --location --request POST 'https://api.github.com/repos/cmsGov/qpp-okr/issues' \
+          --header 'Authorization: Token ${{ secrets.OKR_AUTH_TOKEN }}'' \
+          --header 'Content-Type: application/json' \
+          --data-raw '{ "title": "QPPSF Deployment - Conversion Tool", "body": "\r\n```json\r\n{\r\n  \"program\": \"QPP\",\r\n  \"team\": \"QPPSF\",\r\n  \"component\": \"Conversion-Tool\",\r\n  \"tier\": \"PROD\",\r\n  \"eventTime\": \"${{ env.event_start_dt }}\" ,\r\n  \"eventType\": \"start\",\r\n  \"confluenceReleasePageId\": \"${{ env.conf_pg_id }}\",\r\n  \"releaseType\": \"${{ env.deployment_type }}\",\r\n  \"correlationId\": \"GITWORKFLOW\"\r\n}\r\n```\r\nThis issue is created by Github Action","labels": ["deploy"]}'
+
       - name: Prod - Build and deploy to Amazon ECR
+        id: build-image-prod
         if: github.ref == 'refs/heads/master'
         env:
           ECR_REPOSITORY: qppsf/conversion-tool/prod
@@ -107,13 +180,37 @@ jobs:
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image-prod::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+      - name: Get task definition for Prod
+        if: github.ref == 'refs/heads/master' && success()
+        run: |
+          aws ecs describe-task-definition --task-definition qppsf-conversion-tool-td-prod --query taskDefinition > task-definition.json
+
+      - name: Fill in image ID for ECS task-definition
+        id: task-def-prod
+        if: github.ref == 'refs/heads/master' && success()
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: conversion-tool
+          image: ${{ steps.build-image-prod.outputs.image-prod }}
+
+      - name: Deploy Amazon ECS task definition
+        if: github.ref == 'refs/heads/master' && success()
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def-prod.outputs.task-definition }}
+          service: conversion-tool-service-prod
+          cluster: qppsf-conversion-tool-prod
+          wait-for-service-stability: true
 
       - name: Prod - Notify slack success
         if: github.ref == 'refs/heads/master' && success()
         uses: voxmedia/github-action-slack-notify-build@v1
         with:
           channel: p-qpp-sub-alerts
-          status: Conversion tools - Successful Docker build and AWS ECR deployment
+          status: Conversion tools - Successful Docker build and AWS ECS deployment
           color: good
 
       - name: Prod - Notify slack fail
@@ -121,10 +218,33 @@ jobs:
         uses: voxmedia/github-action-slack-notify-build@v1
         with:
           channel: p-qpp-sub-alerts
-          status: Conversion tools - Failed Docker build or AWS ECR deployment
+          status: Conversion tools - Failed Docker build or AWS ECS deployment
           color: danger
 
+#OKR Metrics Publish - Finish
+      - name: Get OKR Event Finish-Date
+        if: github.ref == 'refs/heads/master' && success()
+        run: |
+          echo "event_finish_dt=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
+
+      - name: Get okr-metrics properties
+        if: github.ref == 'refs/heads/master' && success()
+        id: read_properties_finish
+        run: |
+          source isg-okr.properties
+          echo "conf_pg_id=${confluenceReleasePageId}" >> $GITHUB_ENV
+          echo "deployment_type=${deploy_type}" >> $GITHUB_ENV
+
+      - name: Deployment Pipeline Finish - Publish to OKR
+        if: github.ref == 'refs/heads/master' && success()
+        run: |
+          curl -v --location --request POST 'https://api.github.com/repos/cmsGov/qpp-okr/issues' \
+          --header 'Authorization: Token ${{ secrets.OKR_AUTH_TOKEN }}'' \
+          --header 'Content-Type: application/json' \
+          --data-raw '{ "title": "QPPSF Deployment - Conversion Tool", "body": "\r\n```json\r\n{\r\n  \"program\": \"QPP\",\r\n  \"team\": \"QPPSF\",\r\n  \"component\": \"Conversion-Tool\",\r\n  \"tier\": \"PROD\",\r\n  \"eventTime\": \"${{ env.event_finish_dt }}\" ,\r\n  \"eventType\": \"finish\",\r\n  \"confluenceReleasePageId\": \"${{ env.conf_pg_id }}\",\r\n  \"releaseType\": \"${{ env.deployment_type }}\",\r\n  \"correlationId\": \"GITWORKFLOW\"\r\n}\r\n```\r\nThis issue is created by Github Action","labels": ["deploy"]}'
+
       - name: DevPre - Build and deploy to Amazon ECR
+        id: build-image-devpre
         if: github.ref == 'refs/heads/master'
         env:
           ECR_REPOSITORY: qppsf/conversion-tool/devpre
@@ -137,13 +257,37 @@ jobs:
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image-devpre::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+      - name: Get task definition for DevPre
+        if: github.ref == 'refs/heads/master' && success()
+        run: |
+          aws ecs describe-task-definition --task-definition qppsf-conversion-tool-td-devpre --query taskDefinition > task-definition.json
+
+      - name: Fill in image ID for ECS task-definition
+        id: task-def-devpre
+        if: github.ref == 'refs/heads/master' && success()
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: conversion-tool
+          image: ${{ steps.build-image-devpre.outputs.image-devpre }}
+
+      - name: Deploy Amazon ECS task definition
+        if: github.ref == 'refs/heads/master' && success()
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def-devpre.outputs.task-definition }}
+          service: conversion-tool-service-devpre
+          cluster: qppsf-conversion-tool-devpre
+          wait-for-service-stability: true
 
       - name: DevPre - Notify slack success
         if: github.ref == 'refs/heads/master' && success()
         uses: voxmedia/github-action-slack-notify-build@v1
         with:
           channel: p-qpp-sub-alerts
-          status: Conversion tools - Successful Docker build and AWS ECR deployment
+          status: Conversion tools - Successful Docker build and AWS ECS deployment
           color: good
 
       - name: DevPre - Notify slack fail
@@ -151,7 +295,7 @@ jobs:
         uses: voxmedia/github-action-slack-notify-build@v1
         with:
           channel: p-qpp-sub-alerts
-          status: Conversion tools - Failed Docker build or AWS ECR deployment
+          status: Conversion tools - Failed Docker build or AWS ECS deployment
           color: danger
 
       - name: Logout of Amazon ECR

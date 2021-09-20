@@ -82,7 +82,7 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 			.valueIsNotEmpty(ProblemCode.CPC_PCF_PLUS_NPI_REQUIRED, ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER)
 			.listValuesAreValid(
 				ProblemCode.CPC_PCF_PLUS_INVALID_NPI, ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, 10)
-			.valueIsNotEmpty(addressError, ClinicalDocumentDecoder.PRACTICE_SITE_ADDR)
+			.value(addressError, ClinicalDocumentDecoder.PRACTICE_SITE_ADDR)
 			.childMinimum(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED,
 					1, TemplateId.MEASURE_SECTION_V4);
 
