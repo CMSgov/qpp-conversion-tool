@@ -86,18 +86,17 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 				Map<String, AttributeValue> valueMap = new HashMap<>();
 				valueMap.put(":cpcValue", new AttributeValue().withS(Constants.CPC_DYNAMO_PARTITION_START + partition));
 				valueMap.put(":cpcProcessedValue", new AttributeValue().withS("false#"+year));
-				valueMap.put(":createDate", new AttributeValue().withS(cpcConversionStartDate));
 
 				DynamoDBQueryExpression<Metadata> metadataQuery = new DynamoDBQueryExpression<Metadata>()
 					.withIndexName(indexName)
 					.withKeyConditionExpression(Constants.DYNAMO_CPC_ATTRIBUTE + " = :cpcValue and begins_with("
 							+ orgAttribute + ", :cpcProcessedValue)")
-					.withFilterExpression(Constants.DYNAMO_CREATE_DATE_ATTRIBUTE + " > :createDate")
 					.withExpressionAttributeValues(valueMap)
 					.withConsistentRead(false);
 
-				return mapper.get().query(Metadata.class, metadataQuery).stream();
-			}).flatMap(Function.identity()).collect(Collectors.toList());
+				return mapper.get().query(Metadata.class, metadataQuery).stream().limit(10);
+			})
+				.flatMap(Function.identity()).collect(Collectors.toList());
 		} else {
 			API_LOG.warn("Could not get unprocessed CPC+ metadata because the dynamodb mapper is absent");
 			return Collections.emptyList();
@@ -123,17 +122,15 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 				Map<String, AttributeValue> valueMap = new HashMap<>();
 				valueMap.put(":pcfValue", new AttributeValue().withS(Constants.PCF_DYNAMO_PARTITION_START + partition));
 				valueMap.put(":pcfProcessedValue", new AttributeValue().withS("false#"+year));
-				valueMap.put(":createDate", new AttributeValue().withS(cpcConversionStartDate));
 
 				DynamoDBQueryExpression<Metadata> metadataQuery = new DynamoDBQueryExpression<Metadata>()
 					.withIndexName(indexName)
 					.withKeyConditionExpression(Constants.DYNAMO_PCF_ATTRIBUTE + " = :pcfValue and begins_with("
 						+ orgAttribute + ", :pcfProcessedValue)")
-					.withFilterExpression(Constants.DYNAMO_CREATE_DATE_ATTRIBUTE + " > :createDate")
 					.withExpressionAttributeValues(valueMap)
 					.withConsistentRead(false);
 
-				return mapper.get().query(Metadata.class, metadataQuery).stream();
+				return mapper.get().query(Metadata.class, metadataQuery).stream().limit(10);
 			}).flatMap(Function.identity()).collect(Collectors.toList());
 		} else {
 			API_LOG.warn("Could not get unprocessed PCF metadata because the dynamodb mapper is absent");

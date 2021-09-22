@@ -5,7 +5,7 @@
         xmlns="urn:hl7-org:v3"
         xmlns:voc="urn:hl7-org:v3/voc">
     <!-- QRDA Category III Report - CMS EP -->
-    <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2019-05-01"/>
+    <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2020-05-01"/>
     <component>
     <structuredBody>
     <!--

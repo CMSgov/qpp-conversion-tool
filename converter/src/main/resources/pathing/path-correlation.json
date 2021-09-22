@@ -108,6 +108,16 @@
 					}
 				},
 				{
+					"decodeLabel": "pcfEntityId",
+					"encodeLabels": [
+						"pcfEntityId"
+					],
+					"goods": {
+						"relativeXPath": "./*[local-name() = 'participant' and namespace-uri() = '<nsuri>']/*[local-name() = 'associatedEntity' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.3.249.5.3']/@extension",
+						"xmltype": "attribute"
+					}
+				},
+				{
 					"decodeLabel": "cehrtId",
 					"encodeLabels": [
 						"cehrtId"
@@ -142,6 +152,13 @@
 					"goods": {
 						"relativeXPath": "./*[local-name() = 'documentationOf' and namespace-uri() = '<nsuri>']/*[local-name() = 'serviceEvent' and namespace-uri() = '<nsuri>']/*[local-name() = 'performer' and namespace-uri() = '<nsuri>']/*[local-name() = 'assignedEntity' and namespace-uri() = '<nsuri>']/*[local-name() = 'representedOrganization' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.3.249.5.2']/@extension",
 						"xmltype": "attribute"
+					}
+				},
+				{
+					"decodeLabel": "performer",
+					"goods": {
+						"relativeXPath": "./*[local-name() = 'documentationOf']/*[local-name() = 'serviceEvent']/*[local-name() = 'performer']",
+						"xmltype": "element"
 					}
 				}
 			]
