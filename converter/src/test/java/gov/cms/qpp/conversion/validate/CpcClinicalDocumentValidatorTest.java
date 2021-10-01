@@ -60,19 +60,6 @@ class CpcClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	void emptyPracticeSiteAddress() {
-		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
-		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR, "");
-		List<Detail> errors = cpcValidator.validateSingleNode(clinicalDocumentNode).getErrors();
-
-		assertWithMessage("Must contain error")
-				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
-					.format(Context.REPORTING_YEAR));
-	}
-
-	@Test
 	void testCpcPlusMultipleApm() {
 		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
 

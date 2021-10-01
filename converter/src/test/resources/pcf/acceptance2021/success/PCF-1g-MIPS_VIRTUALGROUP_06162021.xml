@@ -32,6 +32,7 @@
             <softwareName>Some Data Aggregator Tool AS00016dev</softwareName>
          </assignedAuthoringDevice>
          <representedOrganization>
+            <id root="2.16.840.1.113883.3.249.5.2" extension="x12345"/>
             <id root="2.16.840.1.113883.19.5" extension="223344"/>
             <name>Good Healthcare Practice</name>
          </representedOrganization>
@@ -51,6 +52,7 @@
             </name>
          </assignedPerson>
          <representedOrganization>
+            <id root="2.16.840.1.113883.3.249.5.2" extension="x12345"/>
             <id root="2.16.840.1.113883.19.5" extension="223344"/>
             <name>Good Healthcare Practice</name>
          </representedOrganization>
@@ -59,6 +61,7 @@
    <custodian>
       <assignedCustodian>
          <representedCustodianOrganization>
+            <id root="2.16.840.1.113883.3.249.5.2" extension="x12345"/>
             <id root="2.16.840.1.113883.19.5" extension="223344"/>
             <name>Good Healthcare Practice</name>
          </representedCustodianOrganization>
@@ -76,6 +79,7 @@
       <assignedEntity>
          <id root="21a82137-22a2-4c09-99f6-38e9a7d41967"/>
          <representedOrganization>
+            <id root="2.16.840.1.113883.3.249.5.2" extension="x12345"/>
             <id root="2.16.840.1.113883.19.5" extension="223344"/>
             <name>Good Healthcare Practice</name>
          </representedOrganization>
@@ -124,6 +128,7 @@
             <assignedEntity>
                <id root="2.16.840.1.113883.4.6" extension="2567891421"/>
                <representedOrganization>
+                  <id root="2.16.840.1.113883.3.249.5.2" extension="x12345"/>
                   <id root="2.16.840.1.113883.4.2" extension="990000099"/>
                   <name>Good Healthcare Practice</name>
                </representedOrganization>
@@ -137,6 +142,7 @@
             <assignedEntity>
                <id root="2.16.840.1.113883.4.6" extension="2589654740"/>
                <representedOrganization>
+                  <id root="2.16.840.1.113883.3.249.5.2" extension="x12345"/>
                   <id root="2.16.840.1.113883.4.2" extension="990000099"/>
                   <name>Good Healthcare Practice</name>
                </representedOrganization>
@@ -150,6 +156,7 @@
             <assignedEntity>
                <id root="2.16.840.1.113883.4.6" extension="2345872354"/>
                <representedOrganization>
+                  <id root="2.16.840.1.113883.3.249.5.2" extension="x12345"/>
                   <id root="2.16.840.1.113883.4.2" extension="990000099"/>
                   <name>Good Healthcare Practice</name>
                </representedOrganization>
@@ -163,6 +170,7 @@
             <assignedEntity>
                <id root="2.16.840.1.113883.4.6" extension="2365987421"/>
                <representedOrganization>
+                  <id root="2.16.840.1.113883.3.249.5.2" extension="x12345"/>
                   <id root="2.16.840.1.113883.4.2" extension="990000099"/>
                   <name>Good Healthcare Practice</name>
                </representedOrganization>
@@ -176,6 +184,7 @@
             <assignedEntity>
                <id root="2.16.840.1.113883.4.6" extension="2357943549"/>
                <representedOrganization>
+                  <id root="2.16.840.1.113883.3.249.5.2" extension="x12345"/>
                   <id root="2.16.840.1.113883.4.2" extension="990000099"/>
                   <name>Good Healthcare Practice</name>
                </representedOrganization>
