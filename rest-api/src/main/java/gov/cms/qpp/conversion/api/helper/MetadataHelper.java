@@ -43,7 +43,7 @@ public class MetadataHelper {
 			metadata.setTin(findTin(node));
 			metadata.setNpi(findNpi(node));
 			metadata.setProgramName(findProgramName(node));
-			metadata.setApm(findApm(node, metadata.getProgramName()));
+			metadata.setApm(findApm(node));
 			if (isCpc(node)) {
 				metadata.setCpc(deriveHash(Constants.CPC_DYNAMO_PARTITION_START));
 			}
@@ -75,8 +75,8 @@ public class MetadataHelper {
 	 * @param node to interrogate
 	 * @return Apm Entity ID value
 	 */
-	private static String findApm(Node node, String program) {
-		if (ClinicalDocumentDecoder.PCF_PROGRAM_NAME.equalsIgnoreCase(program)) {
+	private static String findApm(Node node) {
+		if (isPcf(node)) {
 			return findValue(node, ClinicalDocumentDecoder.PCF_ENTITY_ID, TemplateId.CLINICAL_DOCUMENT);
 		} else {
 			return findValue(node, ClinicalDocumentDecoder.PRACTICE_ID, TemplateId.CLINICAL_DOCUMENT);
