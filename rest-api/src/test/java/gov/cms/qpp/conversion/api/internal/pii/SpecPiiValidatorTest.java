@@ -19,7 +19,7 @@ public class SpecPiiValidatorTest {
 	@Test
 	void testValidCombination() throws Exception {
 		SpecPiiValidator validator = validator("DogCow_APM", "DogCow_NPI");
-		Node node = node("DogCow_APM", "DogCow_NPI,DogCow_NPI2", "DogCow,DogCow");
+		Node node = node("DogCow_APM", "DogCow_NPI,DogCow_NPI2", "DogCow,DogCow", ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		NodeValidator nodeValidator = new NodeValidator() {
 			@Override
 			protected void performValidation(Node node) {
@@ -32,7 +32,7 @@ public class SpecPiiValidatorTest {
 	@Test
 	void testDuplicateSpecStillValid() throws Exception {
 		SpecPiiValidator validator = validatorWithDupeSpec("DogCow_APM", "DogCow_NPI");
-		Node node = node("DogCow_APM", "DogCow_NPI", "DogCow");
+		Node node = node("DogCow_APM", "DogCow_NPI", "DogCow", ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		NodeValidator nodeValidator = new NodeValidator() {
 			@Override
 			protected void performValidation(Node node) {
@@ -45,7 +45,7 @@ public class SpecPiiValidatorTest {
 	@Test
 	void testInvalidCombination() throws Exception {
 		SpecPiiValidator validator = validator("Valid_DogCow_APM", "Valid_DogCow_NPI");
-		Node node = node("Valid_DogCow_APM", "Invalid_Entered_DogCow_NPI", "DogCow");
+		Node node = node("Valid_DogCow_APM", "Invalid_Entered_DogCow_NPI", "DogCow", ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		NodeValidator nodeValidator = new NodeValidator() {
 			@Override
 			protected void performValidation(Node node) {
@@ -58,7 +58,7 @@ public class SpecPiiValidatorTest {
 	@Test
 	void testNullSpec() throws  Exception {
 		SpecPiiValidator validator = validator("Valid_DogCow_APM", "Valid_DogCow_NPI");
-		Node node = node("invalid", "Invalid_Entered_DogCow_NPI", "DogCow");
+		Node node = node("invalid", "Invalid_Entered_DogCow_NPI", "DogCow", ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		NodeValidator nodeValidator = new NodeValidator() {
 			@Override
 			protected void performValidation(Node node) {
@@ -71,7 +71,7 @@ public class SpecPiiValidatorTest {
 	@Test
 	void testMasking() throws Exception {
 		SpecPiiValidator validator = validator("DogCow_APM", "DogCow_NPI");
-		Node node = node("DogCow_APM", "DogCow_NPI", "_____INVALID");
+		Node node = node("DogCow_APM", "DogCow_NPI", "_____INVALID", ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		NodeValidator nodeValidator = new NodeValidator() {
 			@Override
 			protected void performValidation(Node node) {
@@ -79,6 +79,19 @@ public class SpecPiiValidatorTest {
 		};
 		validator.validateApmTinNpiCombination(node, nodeValidator);
 		Truth.assertThat(nodeValidator.viewWarnings().get(0).getMessage()).contains("*****INVALID");
+	}
+
+	@Test
+	void testValidPcfCombination() throws Exception {
+		SpecPiiValidator validator = validator("DogCow_APM", "DogCow_NPI");
+		Node node = node("DogCow_APM", "DogCow_NPI,DogCow_NPI2", "DogCow,DogCow", ClinicalDocumentDecoder.PCF_PROGRAM_NAME);
+		NodeValidator nodeValidator = new NodeValidator() {
+			@Override
+			protected void performValidation(Node node) {
+			}
+		};
+		validator.validateApmTinNpiCombination(node, nodeValidator);
+		Truth.assertThat(nodeValidator.viewWarnings()).isEmpty();
 	}
 
 	private SpecPiiValidator validator(String apm, String npi) throws Exception {
@@ -127,12 +140,13 @@ public class SpecPiiValidatorTest {
 		return file;
 	}
 
-	private Node node(String apm, String npi, String tin) {
+	private Node node(String apm, String npi, String tin, String programName) {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID, apm);
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PCF_ENTITY_ID, apm);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, npi);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, tin);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, programName);
 		return clinicalDocumentNode;
 	}
 
