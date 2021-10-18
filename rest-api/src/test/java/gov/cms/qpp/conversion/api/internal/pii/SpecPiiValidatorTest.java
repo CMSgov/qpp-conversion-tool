@@ -132,6 +132,7 @@ public class SpecPiiValidatorTest {
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID, apm);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, npi);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, tin);
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		return clinicalDocumentNode;
 	}
 
