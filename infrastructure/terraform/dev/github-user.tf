@@ -15,6 +15,11 @@ resource "aws_iam_user_policy" "ecsgithub" {
         "Sid" : "githubecs",
         Action = [
           "ecs:DescribeTaskDefinition",
+          "ecs:RegisterTaskDefinition",
+          "ecs:DescribeServices",
+          "ecs:UpdateService",
+          "iam:GetRole",
+          "iam:PassRole"
         ]
         Effect   = "Allow"
         Resource = "*"
