@@ -118,11 +118,12 @@ class DbServiceImplTest {
 	void testGetUnprocessedCpcPlusMetaData() {
 		when(environment.getProperty(Constants.CPC_PLUS_UNPROCESSED_FILE_SEARCH_DATE_VARIABLE)).thenReturn("2020-01-01");
 
-		int itemsPerPartition = 2;
+		int itemsPerPartition = 11;
+		int itemLimitPerpartition = 10;
 
 		PaginatedQueryList<Metadata> mockMetadataPage = mock(PaginatedQueryList.class);
 		Answer<Stream<Metadata>> answer = (InvocationOnMock invocation) -> Stream.generate(Metadata::new).limit(itemsPerPartition);
-
+		
 		when(mockMetadataPage.stream()).thenAnswer(answer);
 		when(dbMapper.query(eq(Metadata.class), any(DynamoDBQueryExpression.class)))
 			.thenReturn(mockMetadataPage);
@@ -130,7 +131,7 @@ class DbServiceImplTest {
 		List<Metadata> metaDataList = underTest.getUnprocessedCpcPlusMetaData(Constants.CPC_ORG);
 
 		verify(dbMapper, times(Constants.CPC_DYNAMO_PARTITIONS)).query(eq(Metadata.class), any(DynamoDBQueryExpression.class));
-		assertThat(metaDataList).hasSize(itemsPerPartition * Constants.CPC_DYNAMO_PARTITIONS);
+		assertThat(metaDataList).hasSize(itemLimitPerpartition * Constants.CPC_DYNAMO_PARTITIONS);
 	}
 
 	@Test
@@ -138,7 +139,8 @@ class DbServiceImplTest {
 	void testGetUnprocessedPcfMetaData() {
 		when(environment.getProperty(Constants.CPC_PLUS_UNPROCESSED_FILE_SEARCH_DATE_VARIABLE)).thenReturn("2020-01-01");
 
-		int itemsPerPartition = 2;
+		int itemsPerPartition = 11;
+		int itemLimitPerpartition = 10;
 
 		PaginatedQueryList<Metadata> mockMetadataPage = mock(PaginatedQueryList.class);
 		Answer<Stream<Metadata>> answer = (InvocationOnMock invocation) -> Stream.generate(Metadata::new).limit(itemsPerPartition);
@@ -150,7 +152,7 @@ class DbServiceImplTest {
 		List<Metadata> metaDataList = underTest.getUnprocessedPcfMetaData(Constants.CPC_ORG);
 
 		verify(dbMapper, times(Constants.CPC_DYNAMO_PARTITIONS)).query(eq(Metadata.class), any(DynamoDBQueryExpression.class));
-		assertThat(metaDataList).hasSize(itemsPerPartition * Constants.CPC_DYNAMO_PARTITIONS);
+		assertThat(metaDataList).hasSize(itemLimitPerpartition * Constants.CPC_DYNAMO_PARTITIONS);
 	}
 
 	@Test

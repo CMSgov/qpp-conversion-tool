@@ -189,8 +189,11 @@ public enum ProblemCode implements LocalizedProblem {
 	CPC_PCF_PLUS_DENOMINATOR_COUNT_INVALID(101, "Denominator count must be equal to Initial Population count for CPC Plus measure population `(measure population id)`.", true),
 	PI_RESTRICTED_MEASURES(102, "A PI section cannot contain PI_HIE_5 with PI_HIE_1, PI_LVOTC_1, PI_HIE_4, or PI_LVITC_2", false),
 	PCF_TOO_FEW_QUALITY_MEASURE_CATEGORY(103, "PCF Submissions must have at least `(PCF Measure minimum)` "
-		+ "of the following measures: `(Listing of valid measure ids)`", true);
-
+		+ "of the following measures: `(Listing of valid measure ids)`", true),
+	CPC_PLUS_NO_PI(104, "The file contains Promoting Interoperability (PI) data; PI data must not be reported for CPC+"),
+	PCF_MULTI_TIN_NPI_SINGLE_PERFORMER(105, "If multiple TINs/NPIs are submitted, each must be reported within a separate performer"),
+	PCF_NO_PI(106, "PI submissions are not allowed within PCF")
+	;
 
 	private static final Map<Integer, ProblemCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ProblemCode::getCode, Function.identity()));
