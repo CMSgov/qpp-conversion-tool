@@ -127,6 +127,20 @@ class Checker {
 		return this;
 	}
 
+	Checker listValuesAreInts(LocalizedProblem code, String name) {
+		lastAppraised = node.getValue(name);
+		if (!shouldShortcut()) {
+			List<String> values = Arrays.asList(((String)lastAppraised).split(","));
+			values.forEach(value -> {
+				String trimmedValue = value.trim();
+				if (!trimmedValue.matches("\\d+")) {
+					details.add(detail(code));
+				}
+			});
+		}
+		return this;
+	}
+
 	/**
 	 * checks target node for the existence of a single value with the given name key
 	 *
@@ -475,6 +489,20 @@ class Checker {
 						Collectors.toMap(dedup, Function.identity(), (pre, current) -> pre));
 
 		if (distinct.size() < nodes.size()) {
+			details.add(detail(code));
+		}
+		return this;
+	}
+
+	/**
+	 * General check for an arbitrary boolean condition.
+	 *
+	 * @param code Identifies the error.
+	 * @param predicate Any boolean expression. The error code will be added if this is false.
+	 * @return The checker, for chaining method calls.
+	 */
+	Checker predicate(LocalizedProblem code, boolean predicate) {
+		if (!predicate) {
 			details.add(detail(code));
 		}
 		return this;

@@ -3,7 +3,7 @@
   <realmCode code="US" />
   <typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040" />
   <templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01" />
-  <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2019-05-01"/>
+  <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2020-05-01"/>
   <id root="D5E68223-5760-11E7-1256-09173F13E4C5" />
   <code code="55184-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Quality Reporting Document Architecture Calculated Summary Report" />
   <title>Comprehensive Primary Care Plus (CPC+) Sample QRDA-III Report</title>
@@ -82,7 +82,7 @@
   <!--Practice Site-->
   <participant typeCode="LOC">
     <associatedEntity classCode="SDLOC">
-      <id root="2.16.840.1.113883.3.249.5.1" extension="WrongApmEntityId" assigningAuthorityName="CMS-CMMI" />
+      <id root="2.16.840.1.113883.3.249.5.3" extension="WrongApmEntityId" assigningAuthorityName="CMS-CMMI" />
       <code code="394730007" displayName="healthcare related organization" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" />
       <addr>
         <streetAddressLine>123 Healthcare St</streetAddressLine>
