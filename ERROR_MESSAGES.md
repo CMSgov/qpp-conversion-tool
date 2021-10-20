@@ -89,3 +89,5 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 102 : CT - A PI section cannot contain PI_HIE_5 with PI_HIE_1, PI_LVOTC_1, PI_HIE_4, or PI_LVITC_2
 * 103 : CT - PCF Submissions must have at least `(PCF Measure minimum)` of the following measures: `(Listing of valid measure ids)`
 * 104 : CT - The file contains Promoting Interoperability (PI) data; PI data must not be reported for CPC+
+* 105 : CT - If multiple TINs/NPIs are submitted, each must be reported within a separate performer
+* 106 : CT - PI submissions are not allowed within PCF

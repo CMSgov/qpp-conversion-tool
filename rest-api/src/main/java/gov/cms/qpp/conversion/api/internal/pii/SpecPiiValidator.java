@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.api.internal.pii;
 
+import org.springframework.util.StringUtils;
+
 import gov.cms.qpp.conversion.api.model.CpcValidationInfoMap;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -23,14 +25,15 @@ public class SpecPiiValidator implements PiiValidator {
 
 	@Override
 	public void validateApmTinNpiCombination(Node node, NodeValidator validator) {
-		String apm = node.getValue(ClinicalDocumentDecoder.PRACTICE_ID);
+		String program = node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME);
+		String apm = getApmEntityId(node, program);
 		List<String> npiList = Arrays.asList(
 			node.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER).split(","));
 		List<String> tinList = Arrays.asList(
 			node.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER).split(","));
 
 		Map<String, Map<String, List<String>>> apmToTinNpiMap = file.getApmTinNpiCombinationMap();
-		if (apmToTinNpiMap == null) {
+		if (apmToTinNpiMap == null || StringUtils.isEmpty(apm)) {
 			validator.addWarning(Detail.forProblemAndNode(ProblemCode.MISSING_API_TIN_NPI_FILE, node));
 		} else {
 			Map<String, List<String>> tinNpisMap = apmToTinNpiMap.get(apm);
@@ -47,6 +50,18 @@ public class SpecPiiValidator implements PiiValidator {
 				}
 			}
 		}
+	}
+
+	private String getApmEntityId(final Node node, final String program) {
+		String apm;
+		if (ClinicalDocumentDecoder.PCF_PROGRAM_NAME.equalsIgnoreCase(program)) {
+			apm = node.getValue(ClinicalDocumentDecoder.PCF_ENTITY_ID);
+		} else if (ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME.equalsIgnoreCase(program)) {
+			apm = node.getValue(ClinicalDocumentDecoder.PRACTICE_ID);
+		} else {
+			apm = "";
+		}
+		return apm;
 	}
 
 }
