@@ -52,6 +52,8 @@ class SingularAttributeTest{
 						//There are no validations currently for entity type
 						ClinicalDocumentDecoder.PRACTICE_ID,
 						ClinicalDocumentDecoder.PRACTICE_SITE_ADDR,
+						//We have validations implemented
+						ClinicalDocumentDecoder.PCF_ENTITY_ID,
 						PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE,
 						PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE,
 						//There are no validations for performanceYear
@@ -61,7 +63,8 @@ class SingularAttributeTest{
 						QualitySectionDecoder.CATEGORY_SECTION_V4,
 						//stratum is not currently mapped
 						"stratum",
-						"cehrtId")
+						"cehrtId",
+						"performer")
 		);
 
 		corrMap.keySet().forEach(key -> {

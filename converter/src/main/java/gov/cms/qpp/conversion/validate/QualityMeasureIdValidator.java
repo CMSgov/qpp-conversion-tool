@@ -183,8 +183,9 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 			Node denomCount = denomNode.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
 			Node ipopCount = ipopNode.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
 
-			if (ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME.equalsIgnoreCase(program)
-				&& MeasureConfigHelper.CPC_PLUS_MEASURES.contains(measureId)) {
+			if ((ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME.equalsIgnoreCase(program)
+				&& MeasureConfigHelper.CPC_PLUS_MEASURES.contains(measureId))
+					|| ClinicalDocumentDecoder.PCF_PROGRAM_NAME.equalsIgnoreCase(program)) {
 				validateCpcDenominatorCount(denomCount, ipopCount, subPopulation.getDenominatorUuid());
 			} else {
 				validateDenominatorCount(denomCount, ipopCount, subPopulation.getDenominatorUuid());

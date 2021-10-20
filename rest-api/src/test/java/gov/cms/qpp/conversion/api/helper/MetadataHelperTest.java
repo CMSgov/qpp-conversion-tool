@@ -90,6 +90,16 @@ class MetadataHelperTest implements HelperContract {
 	}
 
 	@Test
+	void testExtractsPcfApm() {
+		Node node = new Node();
+		node.putValue(ClinicalDocumentDecoder.PCF_ENTITY_ID, MOCK_STRING);
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, ClinicalDocumentDecoder.PCF_PROGRAM_NAME);
+
+		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
+		assertThat(metadata.getApm()).isEqualTo(MOCK_STRING);
+	}
+
+	@Test
 	void testExtractsApmFromChild() {
 		Node node = new Node();
 		Node child = new Node();

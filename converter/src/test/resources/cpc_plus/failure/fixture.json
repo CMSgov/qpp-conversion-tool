@@ -175,7 +175,7 @@
 				"errorCode": 25,
 				"subs": [
 					"cpci",
-					"[a-zA-Z, _]*"
+					"[a-zA-Z, _,1-9]*"
 				],
 				"occurrences": 1
 			}
@@ -303,6 +303,10 @@
 			{
 				"errorCode": 36,
 				"occurrences": 1
+			},
+			{
+				"errorCode": 104,
+				"occurrences": 1
 			}
 		]
 	},
@@ -311,6 +315,10 @@
 		"errorData": [
 			{
 				"errorCode": 36,
+				"occurrences": 1
+			},
+			{
+				"errorCode": 104,
 				"occurrences": 1
 			}
 		]
@@ -852,6 +860,15 @@
 				"subs": [
 					"true"
 				],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_2020-Error-PI-Section.xml" : {
+		"strict" : false,
+		"errorData" : [
+			{
+				"errorCode": 104,
 				"occurrences": 1
 			}
 		]

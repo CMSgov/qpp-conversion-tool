@@ -16,6 +16,7 @@ public enum Program {
 	MIPS("MIPS_GROUP", "MIPS_INDIV", "MIPS_VIRTUALGROUP", "MIPS", "MIPSAPM"),
 	CPC("CPCPLUS"),
 	PCF("PCF"),
+	APP("MIPS_APP1_INDIV", "MIPS_APP1_GROUP", "MIPS_APP1_APMENTITY"),
 	ALL;
 
 	private final Set<String> aliases;
@@ -57,6 +58,16 @@ public enum Program {
 	 */
 	public static boolean isMips(Node node) {
 		return extractProgram(node) == Program.MIPS;
+	}
+
+	/**
+	 * Checks if a node is using the APP program
+	 *
+	 * @param node
+	 * @return
+	 */
+	public static boolean isApp(Node node) {
+		return extractProgram(node) == Program.APP;
 	}
 
 	/**
