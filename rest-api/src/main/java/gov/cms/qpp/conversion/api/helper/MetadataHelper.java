@@ -40,10 +40,10 @@ public class MetadataHelper {
 		Metadata metadata = Metadata.create();
 
 		if (node != null) {
-			metadata.setApm(findApm(node));
 			metadata.setTin(findTin(node));
 			metadata.setNpi(findNpi(node));
 			metadata.setProgramName(findProgramName(node));
+			metadata.setApm(findApm(node));
 			if (isCpc(node)) {
 				metadata.setCpc(deriveHash(Constants.CPC_DYNAMO_PARTITION_START));
 			}
@@ -76,7 +76,11 @@ public class MetadataHelper {
 	 * @return Apm Entity ID value
 	 */
 	private static String findApm(Node node) {
-		return findValue(node, ClinicalDocumentDecoder.PRACTICE_ID, TemplateId.CLINICAL_DOCUMENT);
+		if (isPcf(node)) {
+			return findValue(node, ClinicalDocumentDecoder.PCF_ENTITY_ID, TemplateId.CLINICAL_DOCUMENT);
+		} else {
+			return findValue(node, ClinicalDocumentDecoder.PRACTICE_ID, TemplateId.CLINICAL_DOCUMENT);
+		}
 	}
 
 	/**
