@@ -41,26 +41,6 @@ public class PcfClinicalDocumentValidator extends CpcClinicalDocumentValidator {
 			.childExact(ProblemCode.PCF_NO_PI, 0, TemplateId.PI_SECTION_V2)
 			.listValuesAreInts(ProblemCode.CPC_PCF_PLUS_INVALID_NPI, ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER);
 
-		validateSingleTinNpiPerPerformer(node);
 		validateApmEntityId(node, ClinicalDocumentDecoder.PCF_ENTITY_ID);
-	}
-
-	private Predicate<Element> filterTinNpi(String name) {
-		 return (Element child) -> (child.getContent().stream()
-				 .filter(c -> c.getClass().equals(LocatedElement.class) && ((LocatedElement) c).getName().equals(name))
-				 .toArray().length >= 1);
-	}
-
-	private void validateSingleTinNpiPerPerformer(Node node) {
-		String performersXpath = PathCorrelator.getXpath(TemplateId.CLINICAL_DOCUMENT.toString(), "performer", Namespace.NO_NAMESPACE.getURI());
-		XPathExpression<Element> expression = XPathFactory.instance().compile(performersXpath, Filters.element(), null,  Namespace.NO_NAMESPACE);
-		List<Element> performers = expression.evaluate(node.getElementForLocation());
-		// Should be maximum of one TIN and one NPI per performer.
-		for (Element performer : performers) {
-			List<Element> tins = performer.getChildren().stream().filter(filterTinNpi("representedOrganization")).collect(Collectors.toList());
-			List<Element> npis = performer.getChildren().stream().filter(filterTinNpi("id")).collect(Collectors.toList());
-			forceCheckErrors(node).predicate(ProblemCode.PCF_MULTI_TIN_NPI_SINGLE_PERFORMER, tins.size() <= 1);
-			forceCheckErrors(node).predicate(ProblemCode.PCF_MULTI_TIN_NPI_SINGLE_PERFORMER, npis.size() <= 1);
-		}
 	}
 }
