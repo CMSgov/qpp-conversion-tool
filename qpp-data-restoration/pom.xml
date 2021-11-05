@@ -5,7 +5,7 @@
 
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-data-restoration</artifactId>
-	<version>14.5.0-RELEASE</version>
+	<version>15.3.0-RELEASE</version>
 	<packaging>jar</packaging>
 
 	<name>qpp-data-restoration</name>
