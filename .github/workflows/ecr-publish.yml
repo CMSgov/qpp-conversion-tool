@@ -33,6 +33,12 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Get certificates for Dev
+        env:
+           ENV_CT: dev
+        if: github.ref == 'refs/heads/develop'
+        run: bash ./qppsfct-copy-certs.sh ${{ env.ENV_CT }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_REGION }}
       
       - name: Dev - Build and deploy to Amazon ECR
         id: build-image-dev
@@ -87,7 +93,13 @@ jobs:
         with:
           channel: p-qpp-sub-alerts
           status: Conversion tools - Failed Docker build or AWS ECS deployment
-          color: danger 
+          color: danger
+      
+      - name: Get certificates for Impl
+        env:
+           ENV_CT: impl
+        if: github.ref == 'refs/heads/release'
+        run: bash ./qppsfct-copy-certs.sh ${{ env.ENV_CT }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_REGION }}
 
       - name: Impl - Build and deploy to Amazon ECR
         id: build-image-impl
@@ -164,7 +176,13 @@ jobs:
           curl -v --location --request POST 'https://api.github.com/repos/cmsGov/qpp-okr/issues' \
           --header 'Authorization: Token ${{ secrets.OKR_AUTH_TOKEN }}' \
           --header 'Content-Type: application/json' \
-          --data-raw '{ "title": "QPPSF Deployment - Conversion Tool", "body": "\r\n```json\r\n{\r\n  \"program\": \"QPP\",\r\n  \"team\": \"QPPSF\",\r\n  \"component\": \"Conversion-Tool\",\r\n  \"tier\": \"PROD\",\r\n  \"eventTime\": \"${{ env.event_start_dt }}\" ,\r\n  \"eventType\": \"start\",\r\n  \"confluenceReleasePageId\": \"${{ env.conf_pg_id }}\",\r\n  \"releaseType\": \"${{ env.deployment_type }}\",\r\n  \"correlationId\": \"GITWORKFLOW\"\r\n}\r\n```\r\nThis issue is created by Github Action","labels": ["deploy"]}'
+          --data-raw '{ "title": "QPPSF Deployment - Conversion Tool", "body": "\r\n```json\r\n{\r\n  \"program\": \"QPP\",\r\n  \"team\": \"QPPSF-Scoring'\",\r\n  \"component\": \"Conversion-Tool\",\r\n  \"tier\": \"PROD\",\r\n  \"eventTime\": \"${{ env.event_start_dt }}\" ,\r\n  \"eventType\": \"start\",\r\n  \"confluenceReleasePageId\": \"${{ env.conf_pg_id }}\",\r\n  \"releaseType\": \"${{ env.deployment_type }}\",\r\n  \"correlationId\": \"GITWORKFLOW\"\r\n}\r\n```\r\nThis issue is created by Github Action","labels": ["deploy"]}'
+
+      - name: Get certificates for Prod
+        env:
+           ENV_CT: prod
+        if: github.ref == 'refs/heads/main'
+        run: bash ./qppsfct-copy-certs.sh ${{ env.ENV_CT }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_REGION }}
 
       - name: Prod - Build and deploy to Amazon ECR
         id: build-image-prod
@@ -241,7 +259,13 @@ jobs:
           curl -v --location --request POST 'https://api.github.com/repos/cmsGov/qpp-okr/issues' \
           --header 'Authorization: Token ${{ secrets.OKR_AUTH_TOKEN }}' \
           --header 'Content-Type: application/json' \
-          --data-raw '{ "title": "QPPSF Deployment - Conversion Tool", "body": "\r\n```json\r\n{\r\n  \"program\": \"QPP\",\r\n  \"team\": \"QPPSF\",\r\n  \"component\": \"Conversion-Tool\",\r\n  \"tier\": \"PROD\",\r\n  \"eventTime\": \"${{ env.event_finish_dt }}\" ,\r\n  \"eventType\": \"finish\",\r\n  \"confluenceReleasePageId\": \"${{ env.conf_pg_id }}\",\r\n  \"releaseType\": \"${{ env.deployment_type }}\",\r\n  \"correlationId\": \"GITWORKFLOW\"\r\n}\r\n```\r\nThis issue is created by Github Action","labels": ["deploy"]}'
+          --data-raw '{ "title": "QPPSF Deployment - Conversion Tool", "body": "\r\n```json\r\n{\r\n  \"program\": \"QPP\",\r\n  \"team\": \"QPPSF-Scoring'\",\r\n  \"component\": \"Conversion-Tool\",\r\n  \"tier\": \"PROD\",\r\n  \"eventTime\": \"${{ env.event_finish_dt }}\" ,\r\n  \"eventType\": \"finish\",\r\n  \"confluenceReleasePageId\": \"${{ env.conf_pg_id }}\",\r\n  \"releaseType\": \"${{ env.deployment_type }}\",\r\n  \"correlationId\": \"GITWORKFLOW\"\r\n}\r\n```\r\nThis issue is created by Github Action","labels": ["deploy"]}'
+
+      - name: Get certificates for Devpre
+        env:
+           ENV_CT: devpre
+        if: github.ref == 'refs/heads/main' && ${{ env.ENV_CT }} == 'devpre'
+        run: bash ./qppsfct-copy-certs.sh ${{ env.ENV_CT }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_REGION }}
 
       - name: DevPre - Build and deploy to Amazon ECR
         id: build-image-devpre

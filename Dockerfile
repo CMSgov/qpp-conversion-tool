@@ -13,5 +13,5 @@ RUN cp ./rest-api/target/rest-api.jar /usr/src/run/
 
 WORKDIR /usr/src/run/
 
-EXPOSE 8080
+EXPOSE 8443
 CMD ["/usr/src/run/qppConverter.sh"]
