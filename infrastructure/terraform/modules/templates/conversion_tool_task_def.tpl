@@ -118,6 +118,11 @@
         "protocol": "tcp",
         "containerPort": 8443,
         "hostport": 8443
+      },
+      {
+        "protocol": "tcp",
+        "containerPort": 8080,
+        "hostport": 8080
       }
     ],
         "name": "conversion-tool",
