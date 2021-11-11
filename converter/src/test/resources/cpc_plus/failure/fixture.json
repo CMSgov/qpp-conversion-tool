@@ -1,3 +1,4 @@
+
 {
 	"CPCPlus_CMS122v7IncUUID_SampleQRDA-III.xml": {
 		"strict": false,
@@ -698,6 +699,9 @@
 		"errorData": [
 			{
 				"errorCode": 86,
+				"subs": [
+					".*"
+				],
 				"occurrences": 1
 			}
 		]
@@ -707,42 +711,57 @@
 		"errorData": [
 			{
 				"errorCode": 85,
+				"subs": [
+					".*"
+				],
 				"occurrences": 1
 			}
 		]
 	},
 	"CPCPLUS-7a-ImproperNPIFormat_04152019.xml": {
-		"strict": true,
+		"strict": false,
 		"errorData": [
 			{
 				"errorCode": 88,
+				"subs": [
+					".*"
+				],
 				"occurrences": 1
 			}
 		]
 	},
 	"CPCPLUS-2f-MissingNpi_03282019.xml": {
-		"strict": true,
+		"strict": false,
 		"errorData": [
 			{
 				"errorCode": 89,
+				"subs": [
+					".*"
+				],
 				"occurrences": 1
 			}
 		]
 	},
 	"CPCPlus_InvalidAlphaNpi.xml": {
-		"strict": true,
+		"strict": false,
 		"errorData": [
 			{
 				"errorCode": 88,
+				"subs": [
+					".*"
+				],
 				"occurrences": 1
 			}
 		]
 	},
 	"CPCPlus_InvalidAlphaTin.xml": {
-		"strict": true,
+		"strict": false,
 		"errorData": [
 			{
 				"errorCode": 85,
+				"subs": [
+					".*"
+				],
 				"occurrences": 1
 			}
 		]
