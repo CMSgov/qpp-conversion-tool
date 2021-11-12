@@ -21,6 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -82,10 +83,10 @@ public class NegativePcfRoundTripTest {
 		List<Detail> details = conversionError(Y5_NEGATIVE_PCF);
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(ProblemCode.CPC_PCF_PERFORMANCE_PERIOD_START.getProblemCode());
+			.contains(ProblemCode.CPC_PCF_PERFORMANCE_PERIOD_START.format(ClinicalDocumentDecoder.PCF_PROGRAM_NAME.toUpperCase(Locale.ROOT)));
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(ProblemCode.CPC_PCF_PERFORMANCE_PERIOD_END.getProblemCode());
+			.contains(ProblemCode.CPC_PCF_PERFORMANCE_PERIOD_END.format(ClinicalDocumentDecoder.PCF_PROGRAM_NAME.toUpperCase(Locale.ROOT)));
 	}
 
 	List<Detail> conversionError(Path path) {
