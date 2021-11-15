@@ -134,7 +134,7 @@ public class PcfClinicalDocumentValidatorTest {
 
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ProblemCode.CPC_PCF_PLUS_INVALID_NPI);
+				.containsExactly(ProblemCode.CPC_PCF_PLUS_INVALID_NPI.format(ClinicalDocumentDecoder.PCF_PROGRAM_NAME.toUpperCase()));
 	}
 
 	private Node createPcfClinicalDocumentNodeWithMeasureSection() {
