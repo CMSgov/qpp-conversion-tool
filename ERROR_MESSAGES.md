@@ -56,10 +56,10 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 61 : CT - A Performance Rate must contain a single Numerator UUID reference.
 * 62 : CT - The Alternative Payment Model (APM) Entity Identifier must not be empty. Here is a link to the IG section on identifiers: https://ecqi.healthit.gov/sites/default/files/2021-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-v1.3.pdf#page=15
 * 63 : CT - The Alternative Payment Model (APM) Entity Identifier is not valid.  Here is a link to the IG section on identifiers: https://ecqi.healthit.gov/sites/default/files/2021-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-v1.3.pdf#page=15
-* 64 : CT - CPC+ or PCF Submissions must have at least `(CPC+ measure group minimum)` of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`
+* 64 : CT - CPC+ Submissions must have at least `(CPC+ measure group minimum)` of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`
 * 66 : CT - Missing the `(Supplemental Type)` - `(Type Qualification)` supplemental data for code `(Supplemental Data Code)` for the measure id `(Measure Id)`'s Sub-population `(Sub Population)`
 * 67 : CT - Must have one count for Supplemental Data `(Supplemental Data Code)` on Sub-population `(Sub Population)` for the measure id `(Measure Id)`
-* 68 : CT - Your CPC+ or PCF submission was made after the CPC+/PCF Measure section submission deadline of `(Submission end date)`. Your CPC+ QRDA III file has not been processed. Please contact CPC+ Support at `(CPC+ contact email)` for assistance.
+* 68 : CT - Your `(Program name)` submission was made after the CPC+/PCF Measure section submission deadline of `(Submission end date)`. Your CPC+ QRDA III file has not been processed. Please contact CPC+ Support at `(CPC+ contact email)` for assistance.
 * 69 : CT - `(Performance period start or end date)` is an invalid date format. Please use a standard ISO date format. Example valid values are 2019-02-26, 2019/02/26T01:45:23, or 2019-02-26T01:45:23.123. Please see the Implementation Guide for information on the performance period here: https://ecqi.healthit.gov/sites/default/files/2021-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-v1.3.pdf#page=17
 * 70 : CT - The measure section measure reference and results has an incorrect number of measure GUID supplied. Please ensure that only one measure GUID is provided per measure.
 * 71 : CT - Two or more different measure section measure reference and results have the same measure GUID. Please ensure that each measure section measure reference and results do not have the same measure GUID.
@@ -69,20 +69,20 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 80 : CT - NPI `(npi)` and TIN `(tin)` are not reported as expected. This NPI/TIN combination is missing from the QRDA III file or is not in the CPC+ Practitioner Roster for `(apm)`. Please ensure your submission contains all required NPI/TIN combinations and your CPC+ Practitioner Roster is up-to-date.
 * 81 : CT - At least one measure is required in a measure section
 * 82 : CT - There are too many errors associated with this QRDA-III file. Showing 100 out of `(Error amount)` errors. Please fix the given errors and re-submit
-* 84 : CT - CPC+ or PCF QRDA-III Submissions require at least one TIN to be present.
-* 85 : CT - CPC+ or PCF QRDA-III Submission TINs require a 9 digit numerical value
-* 86 : CT - This CPC+ or PCF QRDA-III submission is missing a TIN. Please ensure there is a TIN associated with every NPI submitted
-* 87 : CT - CPC+ or PCF QRDA-III Submissions require at least one NPI to be present
-* 88 : CT - CPC+ or PCF QRDA-III Submission NPIs require a 10 digit numerical value
-* 89 : CT - This CPC+ or PCF QRDA-III submission is missing a NPI. Please ensure there is an NPI associated with every TIN submitted
-* 90 : CT - CPC+ or PCF QRDA-III submissions must not contain an IA or PI section
+* 84 : CT - `(Program name)` QRDA-III Submissions require at least one TIN to be present.
+* 85 : CT - `(Program name)` QRDA-III Submission TINs require a 9 digit numerical value
+* 86 : CT - This `(Program name)` QRDA-III submission is missing a TIN. Please ensure there is a TIN associated with every NPI submitted
+* 87 : CT - `(Program name)` QRDA-III Submissions require at least one NPI to be present
+* 88 : CT - `(Program name)` QRDA-III Submission NPIs require a 10 digit numerical value
+* 89 : CT - This `(Program name)` QRDA-III submission is missing a NPI. Please ensure there is an NPI associated with every TIN submitted
+* 90 : CT - `(Program name)` QRDA-III submissions must not contain an IA or PI section
 * 91 : CT - The performance rate `(performanceRateUuid)` has an invalid null value. A performance rate cannot be null unless the performance denominator is 0
 * 92 : CT - The performance denominator for measure `(measureId)` was less than 0. A performance rate cannot be null unless the performance denominator is 0
 * 93 : CT - The numerator id `(numeratorUuid)` has a count value that is greater than the denominator and/or the performance denominator (Denominator count - Denominator exclusion count - Denominator Exception count)
 * 94 : CT - The denominator exclusion id `(denexUuid)` has a count value that is greater than the denominator. The Denominator exclusion cannot be a greater value than the denominator.
 * 95 : CT - The Clinical Document must contain one Measure Section v4 with the extension 2017-06-01
 * 96 : CT - The APM to TIN/NPI Combination file is missing.
-* 97 : CT - CPC+ or PCF QRDA-III Submissions require a valid Cehrt ID (Valid Format: XX15EXXXXXXXXXX)
+* 97 : CT - `(Program name)` QRDA-III Submissions require a valid Cehrt ID (Valid Format: XX15EXXXXXXXXXX)
 * 98 : CT - The performance rate cannot have a value of 0 and must be of value Null Attribute (NA).
 * 100 : CT - More than one Cehrt ID was found. Please submit with only one Cehrt id.
 * 101 : CT - Denominator count must be equal to Initial Population count for CPC Plus measure population `(measure population id)`.
