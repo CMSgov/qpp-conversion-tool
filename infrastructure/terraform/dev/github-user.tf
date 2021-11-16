@@ -45,8 +45,8 @@ policy = jsonencode({
         ]
         Effect   = "Allow"
         Resource = [
-          "arn:aws:s3:::qppsf-conversion-tool-artifacts",
-          "arn:aws:s3:::qppsf-conversion-tool-artifacts/*"
+          "arn:aws:s3:::qppsf-conversion-tool-artifacts-ssl-bucket",
+          "arn:aws:s3:::qppsf-conversion-tool-artifacts-ssl-bucket/*"
         ]
       },
     ]
