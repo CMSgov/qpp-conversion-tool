@@ -6,7 +6,7 @@ AWS_SECRET=$3
 AWS_REGION=$4
 CERT_CP_PATH="rest-api/src/main/resources/"
 CERT="qppsfct-${ENV_CERT}-keystore.p12"
-S3BUCKET="qppsf-conversion-tool-artifacts/certs"
+S3BUCKET="qppsf-conversion-tool-artifacts-ssl-bucket/certs"
 
 #Export AWS credentials
 export AWS_ACCESS_KEY_ID=${AWS_KEY}
@@ -17,7 +17,7 @@ export AWS_REGION=${AWS_REGION}
 cd ./${CERT_CP_PATH}
 
 #Get SSM Secret
-export SSL_PASS=$(aws ssm get-parameters --name /qppar-sf/${ENV_CERT}/conversion_tool/SSL_KEY_PASS --with-decryption --query "Parameters[0].Value" | tr -d '"')
+export SSL_PASS=$(aws ssm get-parameters --name /qppar-sf/${ENV_CERT}/conversion_tool/SSL_SECRET --with-decryption --query "Parameters[0].Value" | tr -d '"')
 
 if [ ${ENV_CERT} == "devpre" ]; then
     echo "Removing exsisting cert in the current directory"

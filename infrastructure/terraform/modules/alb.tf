@@ -60,11 +60,16 @@ resource "aws_lb_target_group" "conversion-tg-ssl" {
   vpc_id      = var.vpc_id
   target_type = "ip"
 
+  depends_on = [aws_lb.qppsf]
+
   health_check {
     protocol = "HTTPS"
     path     = "/health"
     matcher  = "200-499"
   }
+
+ 
+
   tags = {
     Name            = "${var.project_name}-ecr-${var.environment}",
     owner           = var.owner,

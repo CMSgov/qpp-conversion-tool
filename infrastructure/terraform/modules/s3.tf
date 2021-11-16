@@ -127,7 +127,7 @@ POLICY
 # S3 Bucket to securely store certificates for Conversion-Tool
 
 resource "aws_s3_bucket" "certs_bucket" {
-  bucket = "qppsf-conversion-tool-artifacts"
+  bucket = "qppsf-conversion-tool-artifacts-ssl-bucket"
   acl    = "private"
 
   versioning {
