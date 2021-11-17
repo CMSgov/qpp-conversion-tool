@@ -183,14 +183,20 @@
 		]
 	},
 	"CPCPlus_InvalidPerformancePeriod_SampleQRDA-III.xml": {
-		"strict": true,
+		"strict": false,
 		"errorData": [
 			{
 				"errorCode": 55,
+				"subs": [
+					".*"
+				],
 				"occurrences": 1
 			},
 			{
 				"errorCode": 56,
+				"subs": [
+					".*"
+				],
 				"occurrences": 1
 			}
 		]
@@ -338,6 +344,9 @@
 		"errorData": [
 			{
 				"errorCode": 56,
+				"subs": [
+					".*"
+				],
 				"occurrences": 1
 			}
 		]
@@ -347,6 +356,9 @@
 		"errorData": [
 			{
 				"errorCode": 55,
+				"subs": [
+					".*"
+				],
 				"occurrences": 1
 			}
 		]
@@ -863,10 +875,16 @@
 		"errorData" : [
 			{
 				"errorCode" : 56,
+				"subs": [
+					".*"
+				],
 				"occurrences": 1
 			},
 			{
 				"errorCode" : 55,
+				"subs": [
+					".*"
+				],
 				"occurrences": 1
 			}
 		]

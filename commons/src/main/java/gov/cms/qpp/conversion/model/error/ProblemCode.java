@@ -116,10 +116,10 @@ public enum ProblemCode implements LocalizedProblem {
 			+ "Aggregate Count.", true),
 	MEASURE_DATA_VALUE_NOT_INTEGER(53, "Measure data with population id '`(population id)`' "
 			+ "must be a whole number greater than or equal to 0", true),
-	CPC_PCF_PERFORMANCE_PERIOD_START(55, "A CPC Plus or PCF Performance period start must be 01/01/2021. "
-			+ "Please refer to the IG for more information here: " + DocumentationReference.CPC_PLUS_SUBMISSIONS),
-	CPC_PCF_PERFORMANCE_PERIOD_END(56, "A CPC Plus or PCF Performance period end must be 12/31/2021. "
-			+ "Please refer to the IG for more information here: " + DocumentationReference.CPC_PLUS_SUBMISSIONS),
+	CPC_PCF_PERFORMANCE_PERIOD_START(55, "A `(Program name)` Performance period start must be 01/01/2021. "
+			+ "Please refer to the IG for more information here: " + DocumentationReference.CPC_PLUS_SUBMISSIONS, true),
+	CPC_PCF_PERFORMANCE_PERIOD_END(56, "A `(Program name)` Performance period end must be 12/31/2021. "
+			+ "Please refer to the IG for more information here: " + DocumentationReference.CPC_PLUS_SUBMISSIONS, true),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION(57, "The measure reference results must have a single "
 			+ "measure population"),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_TYPE(58, "The measure reference results must have a single "
