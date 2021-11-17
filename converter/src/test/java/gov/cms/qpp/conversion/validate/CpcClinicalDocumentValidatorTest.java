@@ -140,7 +140,7 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertThat(errors)
 			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_PCF_PLUS_SUBMISSION_ENDED.format(formattedDate, expected));
+			.containsExactly(ProblemCode.CPC_PCF_PLUS_SUBMISSION_ENDED.format(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME, formattedDate, expected));
 	}
 
 	@Test
@@ -151,7 +151,8 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertWithMessage("Must validate with the correct error")
 			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_PCF_PLUS_TIN_REQUIRED);
+			.containsExactly(ProblemCode.CPC_PCF_PLUS_TIN_REQUIRED
+				.format(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME.toUpperCase()));
 	}
 
 	@Test
@@ -162,7 +163,8 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertWithMessage("Must validate with the correct error")
 			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_PCF_PLUS_NPI_REQUIRED);
+			.containsExactly(ProblemCode.CPC_PCF_PLUS_NPI_REQUIRED
+				.format(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME.toUpperCase()));
 	}
 
 	@Test
@@ -173,7 +175,7 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertWithMessage("Must validate with the correct error")
 			.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_PCF_MISSING_CEHRT_ID);
+			.containsExactly(ProblemCode.CPC_PCF_MISSING_CEHRT_ID.format(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME.toUpperCase()));
 	}
 
 	@Test
@@ -185,7 +187,7 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertThat(warnings)
 			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(ProblemCode.CPC_PCF_PLUS_NO_IA_OR_PI);
+			.contains(ProblemCode.CPC_PCF_PLUS_NO_IA_OR_PI.format(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME.toUpperCase()));
 	}
 
 	@Test

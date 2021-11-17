@@ -1,12 +1,16 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
+import gov.cms.qpp.conversion.util.NodeHelper;
+
+import java.util.Locale;
 
 /**
  * Validates the QRDA Category III Report Node's national provider identifier/taxpayer identification number combinations
@@ -24,10 +28,13 @@ public class CpcPerformancePeriodValidation extends NodeValidator {
 	 */
 	@Override
 	protected void performValidation(Node node) {
+		Node clinicalDocument = NodeHelper.findParent(node, TemplateId.CLINICAL_DOCUMENT);
+		String programName = clinicalDocument.getValue(ClinicalDocumentDecoder.PROGRAM_NAME).toUpperCase(Locale.ROOT);
+
 		checkErrors(node)
-			.valueIs(ProblemCode.CPC_PCF_PERFORMANCE_PERIOD_START,
+			.valueIs(ProblemCode.CPC_PCF_PERFORMANCE_PERIOD_START.format(programName),
 					ReportingParametersActDecoder.PERFORMANCE_START, REPORTING_PERIOD_START)
-			.valueIs(ProblemCode.CPC_PCF_PERFORMANCE_PERIOD_END,
+			.valueIs(ProblemCode.CPC_PCF_PERFORMANCE_PERIOD_END.format(programName),
 					ReportingParametersActDecoder.PERFORMANCE_END, REPORTING_PERIOD_END);
 	}
 }
