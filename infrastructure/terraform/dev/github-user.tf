@@ -27,3 +27,54 @@ resource "aws_iam_user_policy" "ecsgithub" {
     ]
   })
 }
+
+# Added policy permissions on S3 artifacts bucket
+resource "aws_iam_user_policy" "es3permissonsforgh" {
+  name = "ecs-s3-bucket"
+  user = aws_iam_user.github-actions-ecr.name
+
+policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        "Sid": "s3ecsiam",
+        Action = [
+          "s3:ListBucket",
+          "s3:GetObject"
+          
+        ]
+        Effect   = "Allow"
+        Resource = [
+          "arn:aws:s3:::qppsf-conversion-tool-artifacts-ssl-bucket",
+          "arn:aws:s3:::qppsf-conversion-tool-artifacts-ssl-bucket/*"
+        ]
+      },
+    ]
+  })
+}
+
+# Added policy permissions to retrieve parameter from SSM
+resource "aws_iam_user_policy" "ssmpermissionsforgh" {
+  name = "ecs-ssm"
+  user = aws_iam_user.github-actions-ecr.name
+
+policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        "Sid": "s3ecsiam",
+        Action = [
+          "ssm:GetParameters",
+          "ssm:PutParameter",
+          "ssm:GetParameterHistory",
+          "ssm:GetParametersByPath",
+          "ssm:GetParameter",
+          "ssm:DescribeParameters"
+          
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+}
