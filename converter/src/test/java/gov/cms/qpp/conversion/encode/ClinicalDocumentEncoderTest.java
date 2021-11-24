@@ -115,6 +115,7 @@ class ClinicalDocumentEncoderTest {
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, "2567891421");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID,  "AR000000" );
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID,  "x12345" );
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.VG_ID,  "x12345" );
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.CEHRT, "xxxxxxxxxx12345");
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
@@ -241,7 +242,10 @@ class ClinicalDocumentEncoderTest {
 	@Test
 	void testApmIncludesEntityID() throws EncodeException {
 		JsonWrapper testJsonWrapper = new JsonWrapper();
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.APM_ENTITY_ID, "apm");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "apm");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_APP1_APMENTITY");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "app1");
 
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
@@ -273,7 +277,9 @@ class ClinicalDocumentEncoderTest {
 	@Test
 	void testAppApmIncludesEntityID() throws EncodeException {
 		JsonWrapper testJsonWrapper = new JsonWrapper();
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.APM_ENTITY_ID, "apm");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "apm");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_APP1_APMENTITY");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "app1");
 
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());

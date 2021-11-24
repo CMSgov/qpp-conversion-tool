@@ -59,7 +59,7 @@
   <!--Program for which data is being submitted-->
   <informationRecipient>
     <intendedRecipient>
-      <id root="2.16.840.1.113883.3.249.7" extension="MIPSAPM" />
+      <id root="2.16.840.1.113883.3.249.7" extension="MIPS_APMENTITY" />
     </intendedRecipient>
   </informationRecipient>
   <legalAuthenticator>
@@ -68,7 +68,7 @@
     <assignedEntity>
       <id root="D5E68226-5760-11E7-1256-09173F13E4C5" />
       <representedOrganization>
-        <id root="2.16.840.1.113883.19.5" extension="223344" />
+        <id root="2.16.840.1.113883.19.4" extension="223344" />
         <name>Good Health Clinic</name>
       </representedOrganization>
     </assignedEntity>
@@ -105,61 +105,8 @@
           <high value="20171231" />
         </time>
         <assignedEntity>
-          <id root="2.16.840.1.113883.4.6" extension="2567891421" />
           <representedOrganization>
-            <id root="2.16.840.1.113883.4.2" extension="990000099" />
-            <name>Good Health Clinic</name>
-          </representedOrganization>
-        </assignedEntity>
-      </performer>
-      <performer typeCode="PRF">
-        <time>
-          <low value="20170101" />
-          <high value="20171231" />
-        </time>
-        <assignedEntity>
-          <id root="2.16.840.1.113883.4.6" extension="2589654740" />
-          <representedOrganization>
-            <id root="2.16.840.1.113883.4.2" extension="990000099" />
-            <name>Good Health Clinic</name>
-          </representedOrganization>
-        </assignedEntity>
-      </performer>
-      <performer typeCode="PRF">
-        <time>
-          <low value="20170101" />
-          <high value="20171231" />
-        </time>
-        <assignedEntity>
-          <id root="2.16.840.1.113883.4.6" extension="2345872354" />
-          <representedOrganization>
-            <id root="2.16.840.1.113883.4.2" extension="990000099" />
-            <name>Good Health Clinic</name>
-          </representedOrganization>
-        </assignedEntity>
-      </performer>
-      <performer typeCode="PRF">
-        <time>
-          <low value="20170101" />
-          <high value="20171231" />
-        </time>
-        <assignedEntity>
-          <id root="2.16.840.1.113883.4.6" extension="2365987421" />
-          <representedOrganization>
-            <id root="2.16.840.1.113883.4.2" extension="990000099" />
-            <name>Good Health Clinic</name>
-          </representedOrganization>
-        </assignedEntity>
-      </performer>
-      <performer typeCode="PRF">
-        <time>
-          <low value="20170101" />
-          <high value="20171231" />
-        </time>
-        <assignedEntity>
-          <id root="2.16.840.1.113883.4.6" extension="2357943549" />
-          <representedOrganization>
-            <id root="2.16.840.1.113883.4.2" extension="990000099" />
+            <id root="2.16.840.1.113883.3.249.5.4" extension="TEST_APM" />
             <name>Good Health Clinic</name>
           </representedOrganization>
         </assignedEntity>
