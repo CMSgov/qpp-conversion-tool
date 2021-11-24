@@ -48,6 +48,7 @@ resource "aws_s3_bucket" "log_bucket" {
 
 }
 
+
 # No public access
 resource "aws_s3_bucket_public_access_block" "log_bucket-public-access-block" {
   bucket = aws_s3_bucket.log_bucket.id
@@ -123,7 +124,7 @@ POLICY
 
 }
 
-
+/*
 # S3 Bucket to securely store certificates for Conversion-Tool
 
 resource "aws_s3_bucket" "certs_bucket" {
@@ -203,4 +204,4 @@ resource "aws_s3_bucket_policy" "certs_bucket" {
 POLICY
 
 }
-
+*/
