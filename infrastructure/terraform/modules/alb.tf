@@ -25,7 +25,7 @@ resource "aws_lb" "qppsf" {
 }
 
 # ALB Target group for HTTP
-
+/*
 resource "aws_lb_target_group" "conversion-tg" {
   name        = "conversion-tg-${var.environment}"
   port        = 8080
@@ -49,7 +49,7 @@ resource "aws_lb_target_group" "conversion-tg" {
     git-origin      = var.git-origin
   }
 }
-
+*/
 
 
 #ALB Target group for HTTPS
@@ -83,7 +83,7 @@ resource "aws_lb_target_group" "conversion-tg-ssl" {
 }
 
 #ALB Listener for HTTP
-
+/*
 resource "aws_lb_listener" "conversion-tool" {
   load_balancer_arn = aws_lb.qppsf.arn
   port              = "80"
@@ -94,6 +94,7 @@ resource "aws_lb_listener" "conversion-tool" {
     target_group_arn = aws_lb_target_group.conversion-tg.arn
   }
 }
+*/
 
 #ALB Listener for HTTPS
 
@@ -110,6 +111,7 @@ resource "aws_lb_listener" "conversion-tool-ssl" {
   }
 }
 
+/*
 resource "aws_security_group_rule" "ct-ingress-from-http-elb-to-ui" {
   from_port                = 80
   to_port                  = 8080
@@ -118,6 +120,7 @@ resource "aws_security_group_rule" "ct-ingress-from-http-elb-to-ui" {
   source_security_group_id = aws_security_group.conversion-tool_alb.id
   type                     = "ingress"
 }
+*/
 
 resource "aws_security_group_rule" "ct-ingress-from-https-elb-to-ui" {
   from_port                = 443
