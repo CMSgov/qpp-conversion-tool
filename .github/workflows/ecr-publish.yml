@@ -98,7 +98,7 @@ jobs:
       - name: Get certificates for Impl
         env:
            ENV_CT: impl
-        if: github.ref == 'refs/heads/release'
+        if: startsWith(github.ref,'refs/heads/release/')
         run: bash ./qppsfct-copy-certs.sh ${{ env.ENV_CT }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_REGION }}
 
       - name: Impl - Build and deploy to Amazon ECR
