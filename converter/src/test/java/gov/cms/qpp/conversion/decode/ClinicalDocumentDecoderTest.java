@@ -441,13 +441,12 @@ class ClinicalDocumentDecoderTest {
 		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE))
 			.isEqualTo(ClinicalDocumentDecoder.ENTITY_APM);
 		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_ID))
-			.isEqualTo("AR000000");
+			.isEqualTo("TEST_APM");
 	}
 
 	@Test
 	void decodeMipsAppApmTest() {
 		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.APP_APM);
-		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), CPC_PRACTICE_ROOT));
 		Node testParentNode = new Node();
 
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
@@ -457,7 +456,7 @@ class ClinicalDocumentDecoderTest {
 		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE))
 				.isEqualTo(ClinicalDocumentDecoder.ENTITY_APM);
 		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_ID))
-				.isEqualTo("AR000000");
+				.isEqualTo("TEST_APM");
 	}
 
 	@Test
@@ -539,9 +538,13 @@ class ClinicalDocumentDecoderTest {
 		Element virtualGroup2 = new Element("id", rootns)
 			.setAttribute("root", "2.16.840.1.113883.3.249.5.2")
 			.setAttribute("extension", "x12345");
+		Element apmEntity = new Element("id", rootns)
+			.setAttribute("root", "2.16.840.1.113883.3.249.5.4")
+			.setAttribute("extension", "TEST_APM");
 
 		Element representedOrganization = prepareRepOrgWithTaxPayerId(rootns, "123456789");
 		representedOrganization.addContent(virtualGroup);
+		representedOrganization.addContent(apmEntity);
 		assignedEntity.addContent(representedOrganization);
 		assignedEntity.addContent(nationalProviderIdentifier);
 		performer.addContent(assignedEntity);

@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * Construct that helps categorize submissions by program name.
  */
 public enum Program {
-	MIPS("MIPS_GROUP", "MIPS_INDIV", "MIPS_VIRTUALGROUP", "MIPS", "MIPSAPM"),
+	MIPS("MIPS_GROUP", "MIPS_INDIV", "MIPS_VIRTUALGROUP", "MIPS", "MIPS_APMENTITY"),
 	CPC("CPCPLUS"),
 	PCF("PCF"),
 	APP("MIPS_APP1_INDIV", "MIPS_APP1_GROUP", "MIPS_APP1_APMENTITY"),

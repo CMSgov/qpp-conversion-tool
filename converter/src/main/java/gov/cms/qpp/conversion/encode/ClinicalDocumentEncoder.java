@@ -73,8 +73,12 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 			wrapper.put(ClinicalDocumentDecoder.ENTITY_ID, thisNode.getValue(ClinicalDocumentDecoder.PCF_ENTITY_ID));
 		}
 
-		if (ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP.equals(entityType) ||
-			(!Program.isCpc(thisNode) || !Program.isPcf(thisNode) && ClinicalDocumentDecoder.ENTITY_APM.equalsIgnoreCase(entityType))) {
+		if (ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP.equals(entityType)) {
+			wrapper.put(ClinicalDocumentDecoder.ENTITY_ID, thisNode.getValue(ClinicalDocumentDecoder.VG_ID));
+		}
+
+		if ((Program.isApp(thisNode) || Program.isMips(thisNode) &&
+			ClinicalDocumentDecoder.ENTITY_APM.equalsIgnoreCase(entityType))) {
 			wrapper.put(ClinicalDocumentDecoder.ENTITY_ID, thisNode.getValue(ClinicalDocumentDecoder.ENTITY_ID));
 		}
 	}
@@ -127,7 +131,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 				} else if (TemplateId.MEASURE_SECTION_V4.getRoot().equalsIgnoreCase(childType.getRoot())
 						&& ClinicalDocumentDecoder.APP_APM.equalsIgnoreCase(
 						currentNode.getValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME))) {
-					childWrapper.put(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.APP.toLowerCase(Locale.getDefault()));
+					childWrapper.put(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.APP_PROGRAM_NAME.toLowerCase(Locale.getDefault()));
 				}
 
 				measurementSetsWrapper.put(childWrapper);
