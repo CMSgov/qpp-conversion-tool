@@ -14,10 +14,6 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class RestApiApplication {
 
-	//HTTP port
-	@Value("${http.port}")
-	private int httpPort;
-
 	/**
 	 * Main method to run the application
 	 *
@@ -26,18 +22,4 @@ public class RestApiApplication {
 	public static void main(String... args) {
 		SpringApplication.run(RestApiApplication.class, args);
 	}
-
-	@Bean
-	public ServletWebServerFactory servletContainer() {
-		TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
-		tomcat.addAdditionalTomcatConnectors(createStandardConnector());
-		return tomcat;
-	}
-
-	private Connector createStandardConnector() {
-		Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
-		connector.setPort(httpPort);
-		return connector;
-	}
-
 }

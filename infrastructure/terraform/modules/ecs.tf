@@ -54,11 +54,13 @@ resource "aws_ecs_service" "conversion-tool-service" {
     assign_public_ip = "false"
   }
 
+/*
   load_balancer {
     target_group_arn = aws_lb_target_group.conversion-tg.arn
     container_name   = "conversion-tool"
     container_port   = "8080"
   }
+*/
 
   load_balancer {
     target_group_arn = aws_lb_target_group.conversion-tg-ssl.arn
@@ -88,12 +90,14 @@ resource "aws_security_group" "ct_app" {
   name        = "conversion-tool-app-${var.environment}"
   description = "Allow inbound traffic"
   vpc_id      = var.vpc_id
+  /*
   ingress {
     from_port       = 8080
     to_port         = 8080
     protocol        = "tcp"
     security_groups = [aws_security_group.conversion-tool_alb.id]
   }
+  */
   ingress {
     from_port       = 8443
     to_port         = 8443
@@ -119,7 +123,7 @@ resource "aws_security_group" "conversion-tool_alb" {
     Name = "${var.project_name}_${var.environment}conversion-tool_alb"
   }
 }
-
+/*
 resource "aws_security_group_rule" "allow_http" {
   type              = "ingress"
   from_port         = 80
@@ -128,6 +132,7 @@ resource "aws_security_group_rule" "allow_http" {
   cidr_blocks       = var.vpc_cidr
   security_group_id = aws_security_group.conversion-tool_alb.id
 }
+*/
 
 resource "aws_security_group_rule" "allow_https" {
   type              = "ingress"
