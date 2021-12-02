@@ -43,7 +43,7 @@ public class SpecPiiValidatorTest {
 	}
 
 	@Test
-	void testInvalidCombination() throws Exception {
+	void testMissingAndInvalidCombination() throws Exception {
 		SpecPiiValidator validator = validator("Valid_DogCow_APM", "Valid_DogCow_NPI");
 		Node node = node("Valid_DogCow_APM", "Invalid_Entered_DogCow_NPI", "DogCow", ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		NodeValidator nodeValidator = new NodeValidator() {
@@ -53,12 +53,13 @@ public class SpecPiiValidatorTest {
 		};
 		validator.validateApmTinNpiCombination(node, nodeValidator);
 		Truth.assertThat(nodeValidator.viewWarnings()).isNotEmpty();
+		Truth.assertThat(nodeValidator.viewWarnings()).hasSize(2);
 	}
 
 	@Test
 	void testNullSpec() throws  Exception {
 		SpecPiiValidator validator = validator("Valid_DogCow_APM", "Valid_DogCow_NPI");
-		Node node = node("invalid", "Invalid_Entered_DogCow_NPI", "DogCow", ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
+		Node node = node("DogCow_APM", "Invalid_Entered_DogCow_NPI", "DogCow", ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		NodeValidator nodeValidator = new NodeValidator() {
 			@Override
 			protected void performValidation(Node node) {
@@ -79,6 +80,7 @@ public class SpecPiiValidatorTest {
 		};
 		validator.validateApmTinNpiCombination(node, nodeValidator);
 		Truth.assertThat(nodeValidator.viewWarnings().get(0).getMessage()).contains("*****INVALID");
+		Truth.assertThat(nodeValidator.viewWarnings().get(1).getMessage()).contains("*****w");
 	}
 
 	@Test
