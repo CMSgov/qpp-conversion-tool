@@ -46,7 +46,7 @@ class QualityMeasureIdRoundTripTest {
 		Paths.get("src/test/resources/negative/perfRateDenomZero.xml");
 	static final Path DECIMAL_ZERO_COUNT_FOR_PERF_DENOM =
 		Paths.get("src/test/resources/negative/decimalPerfRateDenomZero.xml");
-	static final Path MIPS_APM_FILE = Paths.get("src/test/resources/CpcMipsApm-2020.xml");
+	static final Path MIPS_APM_FILE = Paths.get("src/test/resources/Mips-Apm-Entity-2021.xml");
 	ApmEntityIds apmEntityIds;
 
 	@BeforeEach
@@ -229,7 +229,7 @@ class QualityMeasureIdRoundTripTest {
 	}
 
 	@Test
-	void test2020TopLevelMipsApmSampleFile() {
+	void testTopLevelMipsApmSampleFile() {
 		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 		Converter converter = new Converter(new PathSource(MIPS_APM_FILE), new Context(apmEntityIds));
 		JsonWrapper qpp = converter.transform();
@@ -240,8 +240,7 @@ class QualityMeasureIdRoundTripTest {
 			"$.measurementSets[?(@.category=='quality' && @.programName=='mips')].category", new TypeRef<List<String>>() { });
 		List<String> submissionMethod = JsonHelper.readJsonAtJsonPath(qpp.toString(),
 			"$.measurementSets[?(@.category=='quality' && @.programName=='mips')].submissionMethod", new TypeRef<List<String>>() { });
-		List<String> practiceId = JsonHelper.readJsonAtJsonPath(qpp.toString(),
-			"$.measurementSets[?(@.category=='quality' && @.programName=='mips')].practiceId", new TypeRef<List<String>>() { });
+		String entityId = JsonHelper.readJsonAtJsonPath(qpp.toString(), "$.entityId", new TypeRef<String>() { });
 		List<String> source = JsonHelper.readJsonAtJsonPath(qpp.toString(),
 			"$.measurementSets[?(@.category=='quality' && @.programName=='mips')].source", new TypeRef<List<String>>() { });
 		List<LinkedHashMap<String, Object>> measurements = JsonHelper.readJsonAtJsonPath(qpp.toString(),
@@ -251,7 +250,7 @@ class QualityMeasureIdRoundTripTest {
 		assertThat(programName).contains("mips");
 		assertThat(category).contains("quality");
 		assertThat(submissionMethod).contains("electronicHealthRecord");
-		assertThat(practiceId).isEmpty();
+		assertThat(entityId).isEqualTo("TEST_APM");
 		assertThat(source).contains("qrda3");
 		assertThat(measurements).hasSize(1);
 	}

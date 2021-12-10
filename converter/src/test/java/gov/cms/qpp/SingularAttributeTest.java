@@ -54,6 +54,8 @@ class SingularAttributeTest{
 						ClinicalDocumentDecoder.PRACTICE_SITE_ADDR,
 						//We have validations implemented
 						ClinicalDocumentDecoder.PCF_ENTITY_ID,
+						ClinicalDocumentDecoder.VG_ID,
+						ClinicalDocumentDecoder.APM_ENTITY_ID,
 						PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE,
 						PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE,
 						//There are no validations for performanceYear
