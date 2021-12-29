@@ -1,4 +1,4 @@
-FROM maven:3.6.3-jdk-11
+FROM maven:3.8.4-jdk-11
 
 RUN mkdir -p /usr/src/app/
 RUN mkdir -p /usr/src/run/
