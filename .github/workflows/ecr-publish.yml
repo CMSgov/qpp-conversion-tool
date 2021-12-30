@@ -176,7 +176,7 @@ jobs:
           curl -v --location --request POST 'https://api.github.com/repos/cmsGov/qpp-okr/issues' \
           --header 'Authorization: Token ${{ secrets.OKR_AUTH_TOKEN }}' \
           --header 'Content-Type: application/json' \
-          --data-raw '{ "title": "QPPSF Deployment - Conversion Tool", "body": "\r\n```json\r\n{\r\n  \"program\": \"QPP\",\r\n  \"team\": \"QPPSF-Scoring'\",\r\n  \"component\": \"Conversion-Tool\",\r\n  \"tier\": \"PROD\",\r\n  \"eventTime\": \"${{ env.event_start_dt }}\" ,\r\n  \"eventType\": \"start\",\r\n  \"confluenceReleasePageId\": \"${{ env.conf_pg_id }}\",\r\n  \"releaseType\": \"${{ env.deployment_type }}\",\r\n  \"correlationId\": \"GITWORKFLOW\"\r\n}\r\n```\r\nThis issue is created by Github Action","labels": ["deploy"]}'
+          --data-raw '{ "title": "QPPSF Deployment - Conversion Tool", "body": "\r\n```json\r\n{\r\n  \"program\": \"QPP\",\r\n  \"team\": \"QPPSF-Scoring\",\r\n  \"component\": \"Conversion-Tool\",\r\n  \"tier\": \"PROD\",\r\n  \"eventTime\": \"${{ env.event_start_dt }}\" ,\r\n  \"eventType\": \"start\",\r\n  \"confluenceReleasePageId\": \"${{ env.conf_pg_id }}\",\r\n  \"releaseType\": \"${{ env.deployment_type }}\",\r\n  \"correlationId\": \"GITWORKFLOW\"\r\n}\r\n```\r\nThis issue is created by Github Action","labels": ["deploy"]}'
 
       - name: Get certificates for Prod
         env:
@@ -259,7 +259,7 @@ jobs:
           curl -v --location --request POST 'https://api.github.com/repos/cmsGov/qpp-okr/issues' \
           --header 'Authorization: Token ${{ secrets.OKR_AUTH_TOKEN }}' \
           --header 'Content-Type: application/json' \
-          --data-raw '{ "title": "QPPSF Deployment - Conversion Tool", "body": "\r\n```json\r\n{\r\n  \"program\": \"QPP\",\r\n  \"team\": \"QPPSF-Scoring'\",\r\n  \"component\": \"Conversion-Tool\",\r\n  \"tier\": \"PROD\",\r\n  \"eventTime\": \"${{ env.event_finish_dt }}\" ,\r\n  \"eventType\": \"finish\",\r\n  \"confluenceReleasePageId\": \"${{ env.conf_pg_id }}\",\r\n  \"releaseType\": \"${{ env.deployment_type }}\",\r\n  \"correlationId\": \"GITWORKFLOW\"\r\n}\r\n```\r\nThis issue is created by Github Action","labels": ["deploy"]}'
+          --data-raw '{ "title": "QPPSF Deployment - Conversion Tool", "body": "\r\n```json\r\n{\r\n  \"program\": \"QPP\",\r\n  \"team\": \"QPPSF-Scoring\",\r\n  \"component\": \"Conversion-Tool\",\r\n  \"tier\": \"PROD\",\r\n  \"eventTime\": \"${{ env.event_finish_dt }}\" ,\r\n  \"eventType\": \"finish\",\r\n  \"confluenceReleasePageId\": \"${{ env.conf_pg_id }}\",\r\n  \"releaseType\": \"${{ env.deployment_type }}\",\r\n  \"correlationId\": \"GITWORKFLOW\"\r\n}\r\n```\r\nThis issue is created by Github Action","labels": ["deploy"]}'
 
       - name: Get certificates for Devpre
         env:
