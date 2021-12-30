@@ -434,31 +434,3 @@ resource "aws_ssm_parameter" "validation_url" {
     git-origin      = var.git-origin
   }
 }
-
-
-resource "aws_ssm_parameter" "ssl_secret" {
-  name        = "/qppar-sf/${var.environment}/conversion_tool/SSL_SECRET"
-  description = "SSL KeyStore Password"
-  type        = "SecureString"
-  value       = var.ssm_secret
-  overwrite   = true
-  
-
-  lifecycle {
-    ignore_changes = [
-      value
-    ]
-  }
-  
-
-  tags = {
-    Name            = "${var.project_name}-ssm-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
-  }
-}
