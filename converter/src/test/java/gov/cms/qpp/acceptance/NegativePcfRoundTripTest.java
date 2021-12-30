@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
+import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.LocalizedProblem;
@@ -20,6 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -72,7 +74,8 @@ public class NegativePcfRoundTripTest {
 		List<Detail> details = conversionError(Y5_NEGATIVE_PCF);
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(ProblemCode.CPC_PCF_MISSING_CEHRT_ID.getProblemCode());
+			.contains(ProblemCode.CPC_PCF_MISSING_CEHRT_ID.
+				format(ClinicalDocumentDecoder.PCF_PROGRAM_NAME.toUpperCase()));
 	}
 
 	@Test
@@ -80,10 +83,10 @@ public class NegativePcfRoundTripTest {
 		List<Detail> details = conversionError(Y5_NEGATIVE_PCF);
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(ProblemCode.CPC_PCF_PERFORMANCE_PERIOD_START.getProblemCode());
+			.contains(ProblemCode.CPC_PCF_PERFORMANCE_PERIOD_START.format(ClinicalDocumentDecoder.PCF_PROGRAM_NAME.toUpperCase(Locale.ROOT)));
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(ProblemCode.CPC_PCF_PERFORMANCE_PERIOD_END.getProblemCode());
+			.contains(ProblemCode.CPC_PCF_PERFORMANCE_PERIOD_END.format(ClinicalDocumentDecoder.PCF_PROGRAM_NAME.toUpperCase(Locale.ROOT)));
 	}
 
 	List<Detail> conversionError(Path path) {

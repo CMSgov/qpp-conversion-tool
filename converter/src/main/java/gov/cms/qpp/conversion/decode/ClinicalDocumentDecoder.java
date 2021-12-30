@@ -33,6 +33,8 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	public static final String PRACTICE_ID = "practiceId";
 	public static final String ENTITY_ID = "entityId";
 	public static final String PCF_ENTITY_ID = "pcfEntityId";
+	public static final String APM_ENTITY_ID = "apmEntityId";
+	public static final String VG_ID = "virtualGroupId";
 	public static final String CEHRT = "cehrtId";
 
 	//QPP Json value constants for: Node(Identifier, value)
@@ -52,7 +54,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	public static final String CPCPLUS = "CPCPLUS";
 	private static final String MIPS_GROUP = "MIPS_GROUP";
 	private static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
-	public static final String MIPS_APM = "MIPSAPM";
+	public static final String MIPS_APM = "MIPS_APMENTITY";
 	public static final String MIPS_VIRTUAL_GROUP = "MIPS_VIRTUALGROUP";
 	private static final String APP_GROUP = "MIPS_APP1_GROUP";
 	private static final String APP_INDIVIDUAL = "MIPS_APP1_INDIV";
@@ -85,7 +87,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 				setNationalProviderIdOnNode(element, thisNode);
 			}
 			if (ENTITY_VIRTUAL_GROUP.equals(entityType)) {
-				setEntityIdOnNode(element, thisNode, ClinicalDocumentDecoder.ENTITY_ID);
+				setEntityIdOnNode(element, thisNode, ClinicalDocumentDecoder.VG_ID);
 			}
 		}
 
@@ -109,7 +111,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 				thisNode.putValue(PCF_ENTITY_ID, id.getValue(), false);
 			setOnNode(element, getXpath(PCF_ENTITY_ID), consumer, Filters.attribute(), false);
 		} else {
-			setEntityIdOnNode(element, thisNode, ClinicalDocumentDecoder.PRACTICE_ID);
+			setEntityIdOnNode(element, thisNode, ClinicalDocumentDecoder.APM_ENTITY_ID);
 		}
 	}
 

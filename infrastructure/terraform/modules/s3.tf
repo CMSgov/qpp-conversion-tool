@@ -48,6 +48,7 @@ resource "aws_s3_bucket" "log_bucket" {
 
 }
 
+
 # No public access
 resource "aws_s3_bucket_public_access_block" "log_bucket-public-access-block" {
   bucket = aws_s3_bucket.log_bucket.id
@@ -122,4 +123,3 @@ resource "aws_s3_bucket_policy" "log_bucket" {
 POLICY
 
 }
-
