@@ -24,24 +24,18 @@ resource "aws_lb" "qppsf" {
   }
 }
 
-#ALB Target group for HTTPS
-resource "aws_lb_target_group" "conversion-tg-ssl" {
-  name        = "conversion-tg-${var.environment}-ssl"
-  port        = 8443
-  protocol    = "HTTPS"
+resource "aws_lb_target_group" "conversion-tg" {
+  name        = "conversion-tg-${var.environment}"
+  port        = 8080
+  protocol    = "HTTP"
   vpc_id      = var.vpc_id
   target_type = "ip"
 
-  depends_on = [aws_lb.qppsf]
-
   health_check {
-    protocol = "HTTPS"
+    protocol = "HTTP"
     path     = "/health"
     matcher  = "200-499"
   }
-
- 
-
   tags = {
     Name            = "${var.project_name}-ecr-${var.environment}",
     owner           = var.owner,
@@ -54,23 +48,20 @@ resource "aws_lb_target_group" "conversion-tg-ssl" {
   }
 }
 
-#ALB Listener for HTTPS
-resource "aws_lb_listener" "conversion-tool-ssl" {
+resource "aws_lb_listener" "conversion-tool" {
   load_balancer_arn = aws_lb.qppsf.arn
-  port              = "443"
-  protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = var.certificate_arn
+  port              = "80"
+  protocol          = "HTTP"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.conversion-tg-ssl.arn
+    target_group_arn = aws_lb_target_group.conversion-tg.arn
   }
 }
 
-resource "aws_security_group_rule" "ct-ingress-from-https-elb-to-ui" {
-  from_port                = 443
-  to_port                  = 8443
+resource "aws_security_group_rule" "ct-ingress-from-http-elb-to-ui" {
+  from_port                = 80
+  to_port                  = 8080
   protocol                 = "tcp"
   security_group_id        = aws_security_group.ct_app.id
   source_security_group_id = aws_security_group.conversion-tool_alb.id
