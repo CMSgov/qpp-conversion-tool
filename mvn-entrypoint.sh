@@ -1,4 +1,4 @@
-:#! /bin/sh -eu
+#!/bin/bash
 
 # Copy files from /usr/share/maven/ref into ${MAVEN_CONFIG}
 # So the initial ~/.m2 is set with expected content.
