@@ -59,3 +59,13 @@ variable "sensitivity" {
 variable "git-origin" {
   type = string
 }
+
+variable "certificate_arn" {
+  description = "SSL Certificate arn for the environment"
+  type        = string
+}
+
+variable "ssm_secret" {
+  description = "SSM Certificate secret for the environment"
+  type = string
+}
