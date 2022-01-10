@@ -38,5 +38,3 @@ EOF
 )
 
 echo "${APP_PROPERTIES}" >> application.properties
-
-
