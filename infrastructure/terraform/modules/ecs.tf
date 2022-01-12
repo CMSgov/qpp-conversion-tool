@@ -6,6 +6,7 @@ resource "aws_ecs_cluster" "conversion-tool-ecs-cluster" {
     value = "enabled"
   }
 
+
   tags = {
     Name            = "${var.project_name}-ecr-${var.environment}",
     owner           = var.owner,
@@ -47,7 +48,11 @@ resource "aws_ecs_service" "conversion-tool-service" {
   deployment_maximum_percent         = "100"
   deployment_minimum_healthy_percent = "0"
   platform_version                   = "1.4.0"
-
+  
+  lifecycle {
+    ignore_changes = [task_definition]
+  }
+  
   network_configuration {
     subnets          = [var.app_subnet1, var.app_subnet2, var.app_subnet3]
     security_groups  = [aws_security_group.ct_app.id, var.vpn_security_group, var.lb_security_group, aws_security_group.conversion-tool_alb.id]
