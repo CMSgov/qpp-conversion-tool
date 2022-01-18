@@ -20,16 +20,16 @@ class ApmEntityIdsTest {
 
 	@Test
 	void testIdExists() {
-		assertThat(apmEntityIds.idExists(APM_ID_THAT_EXISTS)).isTrue();
+		assertThat(apmEntityIds.cpcIdExists(APM_ID_THAT_EXISTS)).isTrue();
 	}
 
 	@Test
 	void testIdDoesNotExistDueToCapitalization() {
-		assertThat(apmEntityIds.idExists(APM_ID_THAT_EXISTS.toUpperCase(Locale.ENGLISH))).isFalse();
+		assertThat(apmEntityIds.cpcIdExists(APM_ID_THAT_EXISTS.toUpperCase(Locale.ENGLISH))).isFalse();
 	}
 
 	@Test
 	void testIdDoesNotExists() {
-		assertThat(apmEntityIds.idExists("PropertyTaxes")).isFalse();
+		assertThat(apmEntityIds.cpcIdExists("PropertyTaxes")).isFalse();
 	}
 }

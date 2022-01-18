@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion;
 
-import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.util.IdentityHashMap;
 import java.util.Map;

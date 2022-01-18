@@ -12,11 +12,15 @@ import java.util.Set;
  */
 public class ApmEntityIds {
 
-	public static final String DEFAULT_APM_ENTITY_FILE_NAME = "apm_entity_ids.json";
+	public static final String DEFAULT_CPC_PLUS_APM_ENTITY_FILE_NAME = "apm_entity_ids.json";
+
+	public static final String DEFAULT_PCF_APM_ENTITY_FILE_NAME = "pcf_apm_entity_ids.json";
 
 	private static TypeReference<Set<String>> SET_OF_STRINGS_TYPE = new TypeReference<Set<String>>() {};
 
-	private Set<String> validApmEntityIds;
+	private Set<String> validCpcPlusApmEntityIds;
+
+	private Set<String> validPcfApmEntityIds;
 
 	public ApmEntityIds(InputStream cpcPlusFileStream, InputStream pcfFilestream) {
 		validCpcPlusApmEntityIds = JsonHelper.readJson(cpcPlusFileStream, SET_OF_STRINGS_TYPE);
@@ -25,12 +29,22 @@ public class ApmEntityIds {
 
 	public ApmEntityIds(String fileName) {
 		InputStream apmEntityIdsInput = ClasspathHelper.contextClassLoader().getResourceAsStream(fileName);
-		validApmEntityIds = JsonHelper.readJson(apmEntityIdsInput, SET_OF_STRINGS_TYPE);
+		validCpcPlusApmEntityIds = JsonHelper.readJson(apmEntityIdsInput, SET_OF_STRINGS_TYPE);
+	}
+
+	public ApmEntityIds(String cpcFileName, String pcfFileName) {
+		InputStream cpcPlusApmEntityIdsInput = ClasspathHelper.contextClassLoader().getResourceAsStream(cpcFileName);
+		InputStream pcfApmEntityIdsInput = ClasspathHelper.contextClassLoader().getResourceAsStream(pcfFileName);
+		validCpcPlusApmEntityIds = JsonHelper.readJson(cpcPlusApmEntityIdsInput, SET_OF_STRINGS_TYPE);
+		validPcfApmEntityIds = JsonHelper.readJson(pcfApmEntityIdsInput, SET_OF_STRINGS_TYPE);
 	}
 
 	public ApmEntityIds() {
-		InputStream apmEntityIdsInput = ClasspathHelper.contextClassLoader().getResourceAsStream(DEFAULT_APM_ENTITY_FILE_NAME);
-		validApmEntityIds = JsonHelper.readJson(apmEntityIdsInput, SET_OF_STRINGS_TYPE);
+		InputStream cpcPlusApmEntityIdsInput = ClasspathHelper.contextClassLoader().getResourceAsStream(DEFAULT_CPC_PLUS_APM_ENTITY_FILE_NAME);
+		InputStream pcfApmEntityIdsInput = ClasspathHelper.contextClassLoader().getResourceAsStream(DEFAULT_PCF_APM_ENTITY_FILE_NAME);
+
+		validCpcPlusApmEntityIds = JsonHelper.readJson(cpcPlusApmEntityIdsInput, SET_OF_STRINGS_TYPE);
+		validPcfApmEntityIds = JsonHelper.readJson(pcfApmEntityIdsInput, SET_OF_STRINGS_TYPE);
 	}
 
 	/**
@@ -39,7 +53,17 @@ public class ApmEntityIds {
 	 * @param apmEntityId The APM Entity ID to check.
 	 * @return Whether or not the APM Entity ID exists.
 	 */
-	public boolean idExists(String apmEntityId) {
-		return validApmEntityIds.contains(apmEntityId);
+	public boolean cpcIdExists(String apmEntityId) {
+		return validCpcPlusApmEntityIds.contains(apmEntityId);
+	}
+
+	/**
+	 * Returns a boolean for whether the provided PCF APM Entity ID exists in the set of valid PCF APM Entity IDs.
+	 *
+	 * @param apmEntityId
+	 * @return
+	 */
+	public boolean pcfIdExists(String apmEntityId) {
+		return validPcfApmEntityIds.contains(apmEntityId);
 	}
 }
