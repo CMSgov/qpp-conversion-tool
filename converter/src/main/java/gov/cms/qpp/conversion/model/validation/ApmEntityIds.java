@@ -12,7 +12,7 @@ import java.util.Set;
  */
 public class ApmEntityIds {
 
-	public static final String DEFAULT_CPC_PLUS_APM_ENTITY_FILE_NAME = "apm_entity_ids.json";
+	public static final String DEFAULT_CPC_PLUS_APM_ENTITY_FILE_NAME = "cpc_plus_apm_entity_ids.json";
 
 	public static final String DEFAULT_PCF_APM_ENTITY_FILE_NAME = "pcf_apm_entity_ids.json";
 
