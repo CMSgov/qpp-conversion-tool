@@ -40,7 +40,7 @@ class CpcPlusAcceptanceTest {
 	private static final Path FAILURE_2020 = BASE.resolve("failure/2020");
 	private static final Path FAILURE_FIXTURE = FAILURE.resolve("fixture.json");
 	private static Map<String, CPCAcceptanceFixture> fixtureValues;
-	private final ApmEntityIds apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json");
+	private final ApmEntityIds apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json", "test_apm_entity_ids.json");
 
 	@BeforeAll
 	static void setUp() throws IOException {

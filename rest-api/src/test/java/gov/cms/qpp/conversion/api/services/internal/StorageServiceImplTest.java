@@ -222,7 +222,7 @@ class StorageServiceImplTest {
 		Mockito.when(environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE)).thenReturn("Mock_Bucket");
 		Mockito.when(amazonS3Client.getObject( any(GetObjectRequest.class) )).thenReturn(mockS3Obj);
 
-		InputStream actual = underTest.getApmValidationFile();
+		InputStream actual = underTest.getApmValidationFile(Constants.CPC_PLUS_APM_FILE_NAME_KEY);
 
 		assertThat(actual).isEqualTo(expected);
 	}
