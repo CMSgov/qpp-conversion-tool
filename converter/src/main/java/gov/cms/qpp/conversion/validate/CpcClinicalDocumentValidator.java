@@ -109,7 +109,7 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 				.doesNotHaveChildren(ProblemCode.CPC_PLUS_NO_PI, TemplateId.PI_SECTION_V2);
 			checkWarnings(node)
 				.doesNotHaveChildren(ProblemCode.CPC_PCF_PLUS_NO_IA_OR_PI.format(programName), TemplateId.IA_SECTION);
-			validateApmEntityId(node, ClinicalDocumentDecoder.PRACTICE_ID);
+			validateApmEntityId(node, ClinicalDocumentDecoder.PRACTICE_ID, true);
 		} else {
 			checkWarnings(node)
 				.doesNotHaveChildren(ProblemCode.CPC_PCF_PLUS_NO_IA_OR_PI.format(programName), TemplateId.IA_SECTION, TemplateId.PI_SECTION_V2);
@@ -131,15 +131,21 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	 * @param node The node to validate
 	 * @param key  Identifier of the apm entity id value map
 	 */
-	protected void validateApmEntityId(Node node, String key) {
+	protected void validateApmEntityId(Node node, String key, boolean cpcPlus) {
 		String apmEntityId = node.getValue(key);
 
 		if (StringUtils.isEmpty(apmEntityId)) {
 			return;
 		}
 
-		if (!context.getApmEntityIds().idExists(apmEntityId)) {
-			addError(Detail.forProblemAndNode(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_INVALID_APM, node));
+		if (cpcPlus) {
+			if (!context.getApmEntityIds().cpcIdExists(apmEntityId)) {
+				addError(Detail.forProblemAndNode(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_INVALID_APM, node));
+			}
+		} else {
+			if (!context.getApmEntityIds().pcfIdExists(apmEntityId)) {
+				addError(Detail.forProblemAndNode(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_INVALID_APM, node));
+			}
 		}
 	}
 

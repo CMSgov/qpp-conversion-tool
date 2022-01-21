@@ -42,5 +42,5 @@ public interface StorageService {
 	 *
 	 * @return file used for apm entity validation
 	 */
-	InputStream getApmValidationFile();
+	InputStream getApmValidationFile(String fileName);
 }

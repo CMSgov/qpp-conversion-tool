@@ -24,7 +24,7 @@ public class Pcf2021AcceptanceTest {
     private static final Path SUCCESS = BASE.resolve("success");
     private static final Path SUCCESS_WARNING = BASE.resolve("warning");
     private static final Path FAILURE = BASE.resolve("failure");
-    private final ApmEntityIds apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json");
+    private final ApmEntityIds apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json","test_apm_entity_ids.json");
 
     static Stream<Path> successData() {
         return getXml(SUCCESS);
