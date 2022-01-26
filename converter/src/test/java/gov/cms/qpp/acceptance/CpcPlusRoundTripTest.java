@@ -32,7 +32,7 @@ class CpcPlusRoundTripTest {
 	@SuppressWarnings("unchecked")
 	@BeforeAll
 	static void setup() throws URISyntaxException, IOException {
-		ApmEntityIds apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json");
+		ApmEntityIds apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json", "test_apm_entity_ids.json");
 		URL sample = CpcPlusRoundTripTest.class.getClassLoader()
 				.getResource("cpc_plus/success/2020/CPCPlus_2020-Guid-Updates.xml");
 		Path path = Paths.get(sample.toURI());

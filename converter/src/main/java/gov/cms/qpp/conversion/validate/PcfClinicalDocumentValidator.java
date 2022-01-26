@@ -42,6 +42,6 @@ public class PcfClinicalDocumentValidator extends CpcClinicalDocumentValidator {
 			.listValuesAreInts(ProblemCode.CPC_PCF_PLUS_INVALID_NPI.format(node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME)),
 				ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER);
 
-		validateApmEntityId(node, ClinicalDocumentDecoder.PCF_ENTITY_ID);
+		validateApmEntityId(node, ClinicalDocumentDecoder.PCF_ENTITY_ID, false);
 	}
 }

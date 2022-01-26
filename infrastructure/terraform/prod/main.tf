@@ -8,11 +8,18 @@ terraform {
     region  = "us-east-1"
     encrypt = "true"
   }
+
+    required_providers {
+        aws = {
+            source = "hashicorp/aws"
+            version = "=3.65.0"
+        }
+    }
+    required_version = "0.14.11"
 }
 
 provider "aws" {
   region  = var.region
-  version = "~> 2.70"
 }
 
 module "conversion-tool" {
