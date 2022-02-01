@@ -24,7 +24,7 @@ public class PcfClinicalDocumentValidatorTest {
 
 	@BeforeEach
 	void setUp() {
-		apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json");
+		apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json", "test_apm_entity_ids.json");
 		validator = new PcfClinicalDocumentValidator(new Context(apmEntityIds));
 	}
 

@@ -12,6 +12,7 @@ import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
 import gov.cms.qpp.conversion.Source;
+import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.services.StorageService;
 import gov.cms.qpp.conversion.api.services.internal.QrdaServiceImpl;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
@@ -65,7 +66,7 @@ class QrdaServiceImplTest {
 		when(objectUnderTest.retrieveCpcPlusValidationFile())
 				.thenReturn(MOCK_INPUT_STREAM);
 
-		when(objectUnderTest.retrieveApmValidationFile())
+		when(objectUnderTest.retrieveApmValidationFile(Constants.CPC_PLUS_APM_FILE_NAME_KEY))
 			.thenReturn(MOCK_APM_INPUT_STREAM);
 
 		Converter error = errorConverter();

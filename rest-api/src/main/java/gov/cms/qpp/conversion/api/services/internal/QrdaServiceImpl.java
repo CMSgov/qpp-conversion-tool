@@ -18,6 +18,7 @@ import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.Source;
 import gov.cms.qpp.conversion.api.internal.pii.SpecPiiValidator;
+import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.CpcValidationInfoMap;
 import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.api.services.StorageService;
@@ -86,9 +87,13 @@ public class QrdaServiceImpl implements QrdaService {
 	}
 
 	private ApmEntityIds retrieveApmEntityValidationFile() {
-		API_LOG.info("Trying to fetch the APM Validation file");
-		InputStream apmInputStream = retrieveApmValidationFile();
-		return apmInputStream != null ? new ApmEntityIds(apmInputStream) : new ApmEntityIds();
+		API_LOG.info("Trying to fetch the Cpc Plus APM Validation file");
+		InputStream cpcPlusApmInputStream = retrieveApmValidationFile(Constants.CPC_PLUS_APM_FILE_NAME_KEY);
+
+		API_LOG.info("Trying to fetch the Pcf APM Validation file");
+		InputStream pcfApmInputStream = retrieveApmValidationFile(Constants.PCF_APM_FILE_NAME_KEY);
+
+		return cpcPlusApmInputStream != null ? new ApmEntityIds(cpcPlusApmInputStream, pcfApmInputStream) : new ApmEntityIds();
 	}
 
 	/**
@@ -101,8 +106,8 @@ public class QrdaServiceImpl implements QrdaService {
 		return storageService.getCpcPlusValidationFile();
 	}
 
-	protected InputStream retrieveApmValidationFile() {
-		return storageService.getApmValidationFile();
+	protected InputStream retrieveApmValidationFile(String fileName) {
+		return storageService.getApmValidationFile(fileName);
 	}
 
 	/**

@@ -34,7 +34,7 @@ public class PcfRoundTripTest {
 	@SuppressWarnings("unchecked")
 	@BeforeAll
 	static void setup() throws URISyntaxException, IOException {
-		ApmEntityIds apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json");
+		ApmEntityIds apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json", "test_pcf_apm_entity_ids.json");
 		URL sample = CpcPlusRoundTripTest.class.getClassLoader()
 			.getResource("pcf/success/2021/Y5_PCF_Sample_QRDA-III.xml");
 		Path path = Paths.get(sample.toURI());
@@ -57,7 +57,7 @@ public class PcfRoundTripTest {
 	@Test
 	void testEntityId() {
 		String entityId = (String) json.get("entityId");
-		assertThat(entityId).isEqualTo("TestApmEntityId");
+		assertThat(entityId).isEqualTo("PcfTestApmEntityId");
 	}
 
 	@Test

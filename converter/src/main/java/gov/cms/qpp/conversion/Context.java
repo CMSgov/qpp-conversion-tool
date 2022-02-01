@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion;
 
-import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -28,7 +27,7 @@ public class Context {
 	 * Initialize a context with the default APM entity id file
 	 */
 	public Context() {
-		apmEntityIds = new ApmEntityIds(ApmEntityIds.DEFAULT_APM_ENTITY_FILE_NAME);
+		apmEntityIds = new ApmEntityIds(ApmEntityIds.DEFAULT_CPC_PLUS_APM_ENTITY_FILE_NAME, ApmEntityIds.DEFAULT_PCF_APM_ENTITY_FILE_NAME);
 	}
 
 	/**

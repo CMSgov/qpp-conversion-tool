@@ -64,7 +64,7 @@ class ClinicalDocumentExtensionTest {
 	}
 
 	private JsonWrapper convert(Path location) throws IOException {
-		ApmEntityIds apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json");
+		ApmEntityIds apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json", "test_apm_entity_ids.json");
 		Converter converter = new Converter(new PathSource(location), new Context(apmEntityIds));
 		return converter.transform();
 	}
