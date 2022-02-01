@@ -28,7 +28,7 @@ class CpcClinicalDocumentValidatorTest {
 
 	@BeforeEach
 	void setUp() {
-		apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json");
+		apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json", "test_apm_entity_ids.json");
 		cpcValidator = new CpcClinicalDocumentValidator(new Context(apmEntityIds));
 	}
 
