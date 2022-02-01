@@ -434,8 +434,6 @@ resource "aws_ssm_parameter" "validation_url" {
     git-origin      = var.git-origin
   }
 }
-
-
 resource "aws_ssm_parameter" "ssl_secret" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/SSL_SECRET"
   description = "SSL KeyStore Password"

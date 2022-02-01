@@ -156,32 +156,10 @@ jobs:
           status: Conversion tools - Failed Docker build or AWS ECS deployment
           color: danger 
 
-#OKR Metrics Publish - start
-      - name: Get OKR Event Start-Date
-        if: github.ref == 'refs/heads/master'
-        run: |
-          echo "event_start_dt=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
-
-      - name: Get okr-metrics properties
-        if: github.ref == 'refs/heads/master'
-        id: read_properties_start
-        run: |
-          source isg-okr.properties
-          echo "conf_pg_id=${confluenceReleasePageId}" >> $GITHUB_ENV
-          echo "deployment_type=${deploy_type}" >> $GITHUB_ENV
-
-      - name: Deployment Pipeline Start - Publish to OKR
-        if: github.ref == 'refs/heads/master'
-        run: |
-          curl -v --location --request POST 'https://api.github.com/repos/cmsGov/qpp-okr/issues' \
-          --header 'Authorization: Token ${{ secrets.OKR_AUTH_TOKEN }}' \
-          --header 'Content-Type: application/json' \
-          --data-raw '{ "title": "QPPSF Deployment - Conversion Tool", "body": "\r\n```json\r\n{\r\n  \"program\": \"QPP\",\r\n  \"team\": \"QPPSF-Scoring'\",\r\n  \"component\": \"Conversion-Tool\",\r\n  \"tier\": \"PROD\",\r\n  \"eventTime\": \"${{ env.event_start_dt }}\" ,\r\n  \"eventType\": \"start\",\r\n  \"confluenceReleasePageId\": \"${{ env.conf_pg_id }}\",\r\n  \"releaseType\": \"${{ env.deployment_type }}\",\r\n  \"correlationId\": \"GITWORKFLOW\"\r\n}\r\n```\r\nThis issue is created by Github Action","labels": ["deploy"]}'
-
       - name: Get certificates for Prod
         env:
            ENV_CT: prod
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/master'
         run: bash ./qppsfct-copy-certs.sh ${{ env.ENV_CT }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_REGION }}
 
       - name: Prod - Build and deploy to Amazon ECR
@@ -238,33 +216,11 @@ jobs:
           channel: p-qpp-sub-alerts
           status: Conversion tools - Failed Docker build or AWS ECS deployment
           color: danger
-
-#OKR Metrics Publish - Finish
-      - name: Get OKR Event Finish-Date
-        if: github.ref == 'refs/heads/master' && success()
-        run: |
-          echo "event_finish_dt=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
-
-      - name: Get okr-metrics properties
-        if: github.ref == 'refs/heads/master' && success()
-        id: read_properties_finish
-        run: |
-          source isg-okr.properties
-          echo "conf_pg_id=${confluenceReleasePageId}" >> $GITHUB_ENV
-          echo "deployment_type=${deploy_type}" >> $GITHUB_ENV
-
-      - name: Deployment Pipeline Finish - Publish to OKR
-        if: github.ref == 'refs/heads/master' && success()
-        run: |
-          curl -v --location --request POST 'https://api.github.com/repos/cmsGov/qpp-okr/issues' \
-          --header 'Authorization: Token ${{ secrets.OKR_AUTH_TOKEN }}' \
-          --header 'Content-Type: application/json' \
-          --data-raw '{ "title": "QPPSF Deployment - Conversion Tool", "body": "\r\n```json\r\n{\r\n  \"program\": \"QPP\",\r\n  \"team\": \"QPPSF-Scoring'\",\r\n  \"component\": \"Conversion-Tool\",\r\n  \"tier\": \"PROD\",\r\n  \"eventTime\": \"${{ env.event_finish_dt }}\" ,\r\n  \"eventType\": \"finish\",\r\n  \"confluenceReleasePageId\": \"${{ env.conf_pg_id }}\",\r\n  \"releaseType\": \"${{ env.deployment_type }}\",\r\n  \"correlationId\": \"GITWORKFLOW\"\r\n}\r\n```\r\nThis issue is created by Github Action","labels": ["deploy"]}'
-
+      
       - name: Get certificates for Devpre
         env:
            ENV_CT: devpre
-        if: github.ref == 'refs/heads/main' && ${{ env.ENV_CT }} == 'devpre'
+        if: github.ref == 'refs/heads/master' && ${{ env.ENV_CT }} == 'devpre'
         run: bash ./qppsfct-copy-certs.sh ${{ env.ENV_CT }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_REGION }}
 
       - name: DevPre - Build and deploy to Amazon ECR
