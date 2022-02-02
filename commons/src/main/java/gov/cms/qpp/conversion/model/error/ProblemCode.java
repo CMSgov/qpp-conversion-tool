@@ -139,8 +139,8 @@ public enum ProblemCode implements LocalizedProblem {
 		+ "`(Supplemental Data Code)` for the measure id `(Measure Id)`'s Sub-population `(Sub Population)`", true),
 	CPC_PCF_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT(67, "Must have one count for Supplemental Data `(Supplemental Data Code)` "
 		+ "on Sub-population `(Sub Population)` for the measure id `(Measure Id)`", true),
-	CPC_PCF_PLUS_SUBMISSION_ENDED(68, "Your `(Program name)` submission was made after the CPC+/PCF Measure section submission deadline of "
-		+ "`(Submission end date)`. Your CPC+ QRDA III file has not been processed. Please contact CPC+ Support at "
+	CPC_PCF_PLUS_SUBMISSION_ENDED(68, "Your `(Program name)` submission was made after the `(Program name)` Measure section submission deadline of "
+		+ "`(Submission end date)`. Your `(Program name)` QRDA III file has not been processed. Please contact `(Program name)` Support at "
 		+ "`(CPC+ contact email)` for assistance.", true),
 	INVALID_PERFORMANCE_PERIOD_FORMAT(69, "`(Performance period start or end date)` is an invalid date format. "
 		+ "Please use a standard ISO date format. "
