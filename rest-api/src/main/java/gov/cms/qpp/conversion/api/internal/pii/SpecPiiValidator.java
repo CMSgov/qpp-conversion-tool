@@ -49,7 +49,7 @@ public class SpecPiiValidator implements PiiValidator {
 				String currentTin = tinList.get(index).trim();
 				String currentNpi = npiList.get(index).trim();
 				LocalizedProblem error = ProblemCode.INCORRECT_API_NPI_COMBINATION
-					.format(currentNpi, getMaskedTin(currentTin), apm);
+					.format(currentNpi, getMaskedTin(currentTin), program,apm);
 				if (tinNpisMap == null || tinNpisMap.get(currentTin) == null
 					|| !(tinNpisMap.get(currentTin).indexOf(currentNpi) > -1)) {
 					validator.addWarning(Detail.forProblemAndNode(error, node));
@@ -73,23 +73,24 @@ public class SpecPiiValidator implements PiiValidator {
 			validator.addWarning(Detail.forProblemAndNode(ProblemCode.MISSING_API_TIN_NPI_FILE, node));
 		} else {
 			Map<String, List<String>> tinNpisMap = apmToTinNpiMap.get(apm);
-			for(final Map.Entry<String, List<String>> currentEntry: tinNpisMap.entrySet()) {
-				for (final String currentNpi : currentEntry.getValue()) {
-					boolean combinationExists = false;
-					for(TinNpiCombination currentCombination: tinNpiCombinations) {
-						if (currentEntry.getKey().equalsIgnoreCase((currentCombination.getTin())) &&
-							currentNpi.equalsIgnoreCase(currentCombination.getNpi())) {
-							combinationExists = true;
-							break;
+			if (tinNpisMap != null) {
+				for(final Map.Entry<String, List<String>> currentEntry: tinNpisMap.entrySet()) {
+					for (final String currentNpi : currentEntry.getValue()) {
+						boolean combinationExists = false;
+						for (TinNpiCombination currentCombination : tinNpiCombinations) {
+							if (currentEntry.getKey().equalsIgnoreCase((currentCombination.getTin())) &&
+								currentNpi.equalsIgnoreCase(currentCombination.getNpi())) {
+								combinationExists = true;
+								break;
+							}
+						}
+						if (!combinationExists) {
+							LocalizedProblem error = ProblemCode.INCORRECT_API_NPI_COMBINATION
+								.format(currentNpi, getMaskedTin(currentEntry.getKey()), program, apm, program);
+							validator.addWarning(Detail.forProblemAndNode(error, node));
 						}
 					}
-					if (!combinationExists) {
-						LocalizedProblem error = ProblemCode.INCORRECT_API_NPI_COMBINATION
-							.format(currentNpi,getMaskedTin(currentEntry.getKey()) , apm);
-						validator.addWarning(Detail.forProblemAndNode(error, node));
-					}
 				}
-
 			}
 		}
 	}
