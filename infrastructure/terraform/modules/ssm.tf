@@ -5,7 +5,7 @@
 resource "aws_ssm_parameter" "app_env" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/APP_ENV"
   description = "APP_ENV"
-  type        = "String"
+  type        = "SecureString"
   value       = "dev"
   overwrite   = true
 
@@ -30,7 +30,7 @@ resource "aws_ssm_parameter" "app_env" {
 resource "aws_ssm_parameter" "ar_api_base_url" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/AR_API_BASE_URL"
   description = "AR_API_BASE_URL"
-  type        = "String"
+  type        = "SecureString"
   value       = "https://dev.ar.qpp.internal/api/v1/fms/file/qpp_data/qppct/testCpcPlusValidationFile.json"
   overwrite   = true
 
@@ -54,7 +54,7 @@ resource "aws_ssm_parameter" "ar_api_base_url" {
 resource "aws_ssm_parameter" "bucket_name" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/BUCKET_NAME"
   description = "BUCKET_NAME"
-  type        = "String"
+  type        = "SecureString"
   value       = "aws-hhs-cms-ccsq-qpp-navadevops-pii-convrtr-audt-dev-us-east-1"
   overwrite   = true
 
@@ -78,7 +78,7 @@ resource "aws_ssm_parameter" "bucket_name" {
 resource "aws_ssm_parameter" "cpc_end_date" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/CPC_END_DATE"
   description = "CPC_END_DATE"
-  type        = "String"
+  type        = "SecureString"
   value       = "2021-03-13 - 20:00:00"
   overwrite   = true
 
@@ -102,7 +102,7 @@ resource "aws_ssm_parameter" "cpc_end_date" {
 resource "aws_ssm_parameter" "cpc_plus_bucket_name" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/CPC_PLUS_BUCKET_NAME"
   description = "CPC_PLUS_BUCKET_NAME"
-  type        = "String"
+  type        = "SecureString"
   value       = "aws-hhs-cms-ccsq-qpp-navadevops-pii-cnvrt-npicpc-dev-us-east-1"
   overwrite   = true
 
@@ -126,7 +126,7 @@ resource "aws_ssm_parameter" "cpc_plus_bucket_name" {
 resource "aws_ssm_parameter" "cpc_plus_unprocessed_filter_start_date" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/CPC_PLUS_UNPROCESSED_FILTER_START_DATE"
   description = "CPC_PLUS_UNPROCESSED_FILTER_START_DATE"
-  type        = "String"
+  type        = "SecureString"
   value       = "2020-01-02T04:59:59.999Z"
   overwrite   = true
 
@@ -150,7 +150,7 @@ resource "aws_ssm_parameter" "cpc_plus_unprocessed_filter_start_date" {
 resource "aws_ssm_parameter" "cpc_plus_validation_file" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/CPC_PLUS_VALIDATION_FILE"
   description = "CPC_PLUS_VALIDATION_FILE"
-  type        = "String"
+  type        = "SecureString"
   value       = "testCpcPlusValidationFile.json"
   overwrite   = true
 
@@ -174,7 +174,7 @@ resource "aws_ssm_parameter" "cpc_plus_validation_file" {
 resource "aws_ssm_parameter" "db_app_username" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/DB_APP_USERNAME"
   description = "DB_APP_USERNAME"
-  type        = "String"
+  type        = "SecureString"
   value       = "app"
   overwrite   = true
 
@@ -198,7 +198,7 @@ resource "aws_ssm_parameter" "db_app_username" {
 resource "aws_ssm_parameter" "db_master_username" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/DB_MASTER_USERNAME"
   description = "DB_MASTER_USERNAME"
-  type        = "String"
+  type        = "SecureString"
   value       = "supersuit"
   overwrite   = true
 
@@ -222,7 +222,7 @@ resource "aws_ssm_parameter" "db_master_username" {
 resource "aws_ssm_parameter" "deploy0a_public-i-p" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/DEPLOY0A_PUBLIC-I-P"
   description = "DEPLOY0A_PUBLIC-I-P"
-  type        = "String"
+  type        = "SecureString"
   value       = "34.198.65.93"
   overwrite   = true
 
@@ -246,7 +246,7 @@ resource "aws_ssm_parameter" "deploy0a_public-i-p" {
 resource "aws_ssm_parameter" "dynamo_table_name" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/DYNAMO_TABLE_NAME"
   description = "DYNAMO_TABLE_NAME"
-  type        = "String"
+  type        = "SecureString"
   value       = "qpp-qrda3converter-dev-metadata"
   overwrite   = true
 
@@ -270,7 +270,7 @@ resource "aws_ssm_parameter" "dynamo_table_name" {
 resource "aws_ssm_parameter" "gdit_nessus_pub_key" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/GDIT_NESSUS_PUB_KEY"
   description = "GDIT_NESSUS_PUB_KEY"
-  type        = "String"
+  type        = "SecureString"
   value       = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDLu1Q+kvJSbTD7cKHPwZ9aW3qb0SISHDt3EzEvBTUhGGYYLzG2FFUIkjTd1cc8OyJ9DNlrujIGTNmLjbdQ//F8CtH5990oWN7MtcM0BToTgJ9yhEvhZ7iq2YYxANTBNL6wiTWkS70a6bjsqHGWYJ9jvduGftzHVMYkkapl/oVysRJaNu+38B0Z0FXNmoorlO74/Rt7XK5MhcGbN0z4/1urEWlSl9ygHA4umWw2OM17F6NAEY9fM9W+hcZsK0SzQsFYNI0g1JADKgnXBYOmuPeg/M/6wKctHSiZBporprZ8h7sgK8Sts8Gc/loBVp8DkmnC/eZzi0MnZ4esy6mldW5"
   overwrite   = true
 
@@ -294,7 +294,7 @@ resource "aws_ssm_parameter" "gdit_nessus_pub_key" {
 resource "aws_ssm_parameter" "java_opts" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/JAVA_OPTS"
   description = "JAVA_OPTS"
-  type        = "String"
+  type        = "SecureString"
   value       = "-Xms6G -Xmx6G -Xmn5G -XX:+UseStringDeduplication -XX:-AggressiveOpts"
   overwrite   = true
 
@@ -318,7 +318,7 @@ resource "aws_ssm_parameter" "java_opts" {
 resource "aws_ssm_parameter" "kms_key" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/KMS_KEY"
   description = "KMS_KEY"
-  type        = "String"
+  type        = "SecureString"
   value       = "arn:aws:kms:us-east-1:003384571330:alias/qpp-qrda3converter-dev-kms_alias"
   overwrite   = true
 
@@ -342,7 +342,7 @@ resource "aws_ssm_parameter" "kms_key" {
 resource "aws_ssm_parameter" "nexus_host" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/NEXUS_HOST"
   description = "NEXUS_HOST"
-  type        = "String"
+  type        = "SecureString"
   value       = "ec2-52-201-239-45.compute-1.amazonaws.com"
   overwrite   = true
 
@@ -366,7 +366,7 @@ resource "aws_ssm_parameter" "nexus_host" {
 resource "aws_ssm_parameter" "org_name" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/ORG_NAME"
   description = "ORG_NAME"
-  type        = "String"
+  type        = "SecureString"
   value       = "cpc-plus-conversion-tool"
   overwrite   = true
 
@@ -390,7 +390,7 @@ resource "aws_ssm_parameter" "org_name" {
 resource "aws_ssm_parameter" "rti_org_name" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/RTI_ORG_NAME"
   description = "RTI_ORG_NAME"
-  type        = "String"
+  type        = "SecureString"
   value       = "rti-conversion-tool"
   overwrite   = true
 
@@ -414,7 +414,7 @@ resource "aws_ssm_parameter" "rti_org_name" {
 resource "aws_ssm_parameter" "validation_url" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/VALIDATION_URL"
   description = "VALIDATION_URL"
-  type        = "String"
+  type        = "SecureString"
   value       = "https://preview.qpp.cms.gov/api/submissions/public/validate-submission"
   overwrite   = true
 
