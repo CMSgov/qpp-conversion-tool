@@ -19,5 +19,5 @@ jobs:
         uses: bridgecrewio/checkov-action@master
         with:
           directory: infrastructure
-          skip_check: CKV_AWS_18,CKV_AWS_23,CKV_AWS_115,CKV_AWS_116,CKV_AWS_117,CKV_AWS_40,CKV_AWS_50,CKV_AWS_144,CKV_AWS_145,CKV_AWS_131,CKV_AWS_103,CKV_AWS_51,CKV_AWS_136,CKV_AWS_158
+          skip_check: CKV_AWS_18,CKV_AWS_23,CKV_AWS_115,CKV_AWS_116,CKV_AWS_117,CKV_AWS_40,CKV_AWS_50,CKV_AWS_144,CKV_AWS_145,CKV_AWS_131,CKV_AWS_103,CKV_AWS_51,CKV_AWS_136,CKV_AWS_158,CKV_AWS_173,CKV_AWS_32
           framework: terraform
