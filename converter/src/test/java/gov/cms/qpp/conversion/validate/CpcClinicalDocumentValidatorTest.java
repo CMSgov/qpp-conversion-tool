@@ -140,7 +140,7 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertThat(errors)
 			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_PCF_PLUS_SUBMISSION_ENDED.format(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME, formattedDate, expected));
+			.containsExactly(ProblemCode.CPC_PCF_PLUS_SUBMISSION_ENDED.format(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME, ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME, formattedDate, ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME, ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME, expected));
 	}
 
 	@Test

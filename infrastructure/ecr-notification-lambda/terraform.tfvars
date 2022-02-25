@@ -1,0 +1,5 @@
+environment= "dev"
+owner="qppsf-scoring"
+application="Conversion-Tool"
+region="us-east-1"
+project_name="qppsf-ct"

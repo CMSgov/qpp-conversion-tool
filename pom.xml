@@ -6,12 +6,12 @@
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-conversion-tool-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>16.2.0-RELEASE</version>
+	<version>16.4.0-RELEASE</version>
 	<name>QPP Conversion Tool</name>
 
 	<properties>
 		<java.version>11</java.version>
-		<aws.version>1.12.137</aws.version>
+		<aws.version>1.12.165</aws.version>
 		<junit.version>5.5.2</junit.version>
 		<jjwt.version>0.10.7</jjwt.version>
 

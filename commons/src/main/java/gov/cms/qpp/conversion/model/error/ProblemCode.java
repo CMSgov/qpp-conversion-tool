@@ -139,8 +139,8 @@ public enum ProblemCode implements LocalizedProblem {
 		+ "`(Supplemental Data Code)` for the measure id `(Measure Id)`'s Sub-population `(Sub Population)`", true),
 	CPC_PCF_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT(67, "Must have one count for Supplemental Data `(Supplemental Data Code)` "
 		+ "on Sub-population `(Sub Population)` for the measure id `(Measure Id)`", true),
-	CPC_PCF_PLUS_SUBMISSION_ENDED(68, "Your `(Program name)` submission was made after the CPC+/PCF Measure section submission deadline of "
-		+ "`(Submission end date)`. Your CPC+ QRDA III file has not been processed. Please contact CPC+ Support at "
+	CPC_PCF_PLUS_SUBMISSION_ENDED(68, "Your `(Program name)` submission was made after the `(Program name)` Measure section submission deadline of "
+		+ "`(Submission end date)`. Your `(Program name)` QRDA III file has not been processed. Please contact `(Program name)` Support at "
 		+ "`(CPC+ contact email)` for assistance.", true),
 	INVALID_PERFORMANCE_PERIOD_FORMAT(69, "`(Performance period start or end date)` is an invalid date format. "
 		+ "Please use a standard ISO date format. "
@@ -158,8 +158,8 @@ public enum ProblemCode implements LocalizedProblem {
 	MISSING_PII_VALIDATOR(79, "There is no TIN validator present, so NPI/Alternative Payment Model (APM) "
 		+ "combinations cannot be verified"),
 	INCORRECT_API_NPI_COMBINATION(80, "NPI `(npi)` and TIN `(tin)` are not reported as expected. "
-		+ "This NPI/TIN combination is missing from the QRDA III file or is not in the CPC+ Practitioner Roster for `(apm)`."
-		+ " Please ensure your submission contains all required NPI/TIN combinations and your CPC+ Practitioner Roster is up-to-date.", true),
+		+ "This NPI/TIN combination is missing from the QRDA III file or is not in the `(program)` Practitioner Roster for `(apm)`."
+		+ " Please ensure your submission contains all required NPI/TIN combinations and your `(program)` Practitioner Roster is up-to-date.", true),
 	MEASURE_SECTION_MISSING_MEASURE(81, "At least one measure is required in a measure section"),
 	TOO_MANY_ERRORS(82, "There are too many errors associated with this QRDA-III file. Showing 100 out of `(Error amount)` errors."
 		+ " Please fix the given errors and re-submit", true),
@@ -192,8 +192,7 @@ public enum ProblemCode implements LocalizedProblem {
 		+ "of the following measures: `(Listing of valid measure ids)`", true),
 	CPC_PLUS_NO_PI(104, "The file contains Promoting Interoperability (PI) data; PI data must not be reported for CPC+"),
 	PCF_CPC_MULTI_TIN_NPI_SINGLE_PERFORMER(105, "If multiple TINs/NPIs are submitted, each must be reported within a separate performer"),
-	PCF_NO_PI(106, "PI submissions are not allowed within PCF")
-	;
+	PCF_NO_PI(106, "PI submissions are not allowed within PCF");
 
 	private static final Map<Integer, ProblemCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ProblemCode::getCode, Function.identity()));

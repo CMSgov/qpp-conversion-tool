@@ -208,7 +208,7 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 			String formatted = endDate.format(OUTPUT_END_DATE_FORMAT);
 			String program = node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME);
 			addError(Detail.forProblemAndNode(
-				ProblemCode.CPC_PCF_PLUS_SUBMISSION_ENDED.format(program, formatted,
+				ProblemCode.CPC_PCF_PLUS_SUBMISSION_ENDED.format(program, program, formatted, program, program,
 					EnvironmentHelper.getOrDefault(CPC_PLUS_CONTACT_EMAIL, DEFAULT_CPC_PLUS_CONTACT_EMAIL)),
 				node));
 		}
