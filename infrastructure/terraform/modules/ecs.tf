@@ -83,6 +83,15 @@ resource "aws_cloudwatch_log_group" "conversion-tool" {
   retention_in_days = 30
 }
 
+resource "aws_cloudwatch_log_subscription_filter" "cw-kinesis-subscription-filter" {
+  name            = "cwlogs-subscription-to-kinesis"
+  role_arn        = aws_iam_role.cwlogs_to_kinesis.arn
+  distribution    = "Random"
+  log_group_name  = aws_cloudwatch_log_group.conversion-tool.name
+  filter_pattern  = ""
+  destination_arn = aws_kinesis_stream.kinesis-stream-cw-logs.arn
+}
+
 resource "aws_security_group" "ct_app" {
   name        = "conversion-tool-app-${var.environment}"
   description = "Allow inbound traffic"
