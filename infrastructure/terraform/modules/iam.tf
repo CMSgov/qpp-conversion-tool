@@ -25,7 +25,7 @@ EOF
 
 # IAM Role permissions to allow Cloudwatch logs to write to Kinesis Stream
 resource "aws_iam_role" "cwlogs_to_kinesis" {
-  name = "cloudwatch-to-kinesis-${var.environment}"
+  name = "${var.project_name}-cloudwatch-to-kinesis-${var.environment}"
   path = "/delegatedadmin/developer/"
   permissions_boundary = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/cms-cloud-admin/developer-boundary-policy"
 
@@ -75,7 +75,7 @@ EOF
 }
 
 resource "aws_iam_role" "kinesis_lambda_role" {
-  name = "conversiontool_kinesis_lambda_role"
+  name = "${var.project_name}-kinesis_lambda_role-${var.environment}"
   path = "/delegatedadmin/developer/"
   permissions_boundary = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/cms-cloud-admin/developer-boundary-policy"
   assume_role_policy = <<EOF
@@ -95,8 +95,8 @@ resource "aws_iam_role" "kinesis_lambda_role" {
 EOF
 }
 
-resource "aws_iam_policy" "kinesis_lambda_role" {
-  name = "conversiontool_kinesis_lambda_role_policy"
+resource "aws_iam_policy" "kinesis_lambda_policy_role" {
+  name = "conversiontool_kinesis_lambda_role_policy-${var.environment}"
   path = "/delegatedadmin/developer/"
   policy = <<EOF
 {
@@ -135,7 +135,7 @@ EOF
 
 resource "aws_iam_role_policy_attachment" "kinesis_lambda_policy" {
   role       = aws_iam_role.kinesis_lambda_role.name
-  policy_arn = aws_iam_policy.kinesis_lambda_role.arn
+  policy_arn = aws_iam_policy.kinesis_lambda_policy_role.arn
 }
 
 resource "aws_iam_role_policy_attachment" "cwlogs_to_kinesis_policy" {
