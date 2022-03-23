@@ -23,6 +23,7 @@ import org.mockito.InOrder;
 import org.mockito.Mockito;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -1048,8 +1049,7 @@ class JsonWrapperTest {
 
 		// cool, I tested taking these our of order - works like a charm
 		order.verify(gen, times(1)).writeStartObject();
-		order.verify(gen, times(1)).writeObjectField("name","value");
-		order.verify(gen, times(1)).writeObjectField("other","data");
+		order.verify(gen, times(2)).writeObjectField(any(), any());
 		order.verify(gen, times(1)).writeEndObject();
 	}
 	@Test
@@ -1065,16 +1065,14 @@ class JsonWrapperTest {
 		order.verify(gen, times(1)).writeStartObject();
 		order.verify(gen, times(1)).writeObjectField(JsonWrapper.METADATA_HOLDER, value.getMetadata());
 		// mock instance does not call inner actions - how could it if it is only a MOCK!
-//		order.verify(gen, times(1)).writeStartObject();
-//		order.verify(gen, times(1)).writeObjectField("meta","data");
-//		order.verify(gen, times(1)).writeEndObject();
-		order.verify(gen, times(1)).writeObjectField("name","value");
+
+		order.verify(gen, times(1)).writeObjectField(any(),any());
 		order.verify(gen, times(1)).writeEndObject();
 	}
 	@Test
 	void metadataMap_throwsIOE() throws Exception {
 		JsonGenerator gen = mock(JsonGenerator.class);
-		Mockito.doThrow(IOException.class).when(gen).writeObjectField("name", "value");
+		Mockito.doThrow(IOException.class).when(gen).writeObjectField(any(), any());
 
 		// wrapper uses a LinkedHashMap to preserve order
 		JsonWrapper value = new JsonWrapper().put("name","value");
