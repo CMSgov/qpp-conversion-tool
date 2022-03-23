@@ -11,7 +11,7 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<aws.version>1.12.181</aws.version>
+		<aws.version>1.12.182</aws.version>
 		<junit.version>5.5.2</junit.version>
 		<jjwt.version>0.10.7</jjwt.version>
 
@@ -201,25 +201,25 @@
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-core</artifactId>
-				<version>2.10.1</version>
+				<version>2.13.2</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-annotations</artifactId>
-				<version>2.12.4</version>
+				<version>2.13.2</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-databind</artifactId>
-				<version>2.10.5.1</version>
+				<version>2.13.2</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.fasterxml.jackson.dataformat</groupId>
 				<artifactId>jackson-dataformat-xml</artifactId>
-				<version>2.10.1</version>
+				<version>2.13.2</version>
 			</dependency>
 
 			<dependency>
