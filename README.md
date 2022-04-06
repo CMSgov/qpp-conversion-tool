@@ -16,14 +16,14 @@ Before you can use the qpp-conversion-tool application, you must install and con
 
   [GitHub's Guide to Installing Git](https://help.github.com/articles/set-up-git) is a good source of information.
 
-* [Java Runtime](https://java.com/download) (version `>= 1.8`).
+* [Java Runtime](https://java.com/download) (version `>= 11`).
 
   It is important that you have the right version of `java` on your path.
 
   ```shell
-  # When you run 'java -version', you should get 1.8.XXXXX. For example:
+  # When you run 'java -version', you should get 11. For example:
   java -version
-  java version "1.8.0_144"
+  java version "11"
   ...
   ```
 
@@ -31,15 +31,15 @@ Before you can use the qpp-conversion-tool application, you must install and con
   the [Java Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (version `>= 1.8`). The JDK is
   better at updating your path.
 
-* [Maven](https://maven.apache.org) (version `>= 3.3`).
+* [Maven](https://maven.apache.org) (version `>= 3.8.4`).
 
   Maven is used to build the application, manage dependencies, and run tests. After you unzip the Maven archive, you need to add
   the `bin` directory to your path, as described the [Maven installation instructions](https://maven.apache.org/install.html).
 
   ```shell
-  # When you run 'mvn -v', you should get 3.3.X. For example:
+  # When you run 'mvn -v', you should get 3.8.4. For example:
   mvn -v
-  Apache Maven 3.3.9
+  Apache Maven 3.8.4
   ...
   ```
 * [Docker](https://www.docker.com).
