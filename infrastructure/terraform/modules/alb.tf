@@ -22,6 +22,7 @@ resource "aws_lb" "qppsf" {
     prefix  = "conversion-tool/${var.environment}"
     enabled = true
   }
+  drop_invalid_header_fields = true
 }
 
 #ALB Target group for HTTPS
