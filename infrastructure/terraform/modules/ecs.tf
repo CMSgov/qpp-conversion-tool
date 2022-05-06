@@ -8,14 +8,16 @@ resource "aws_ecs_cluster" "conversion-tool-ecs-cluster" {
 
 
   tags = {
-    Name            = "${var.project_name}-ecr-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
+    "Name"                = "${var.project_name}-ecs-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = var.sensitivity
+    "qpp:description"     = "ECS Cluster for Conversiontool"
+    "qpp:iac-repo-url"    = var.git-origin
   }
 }
 
@@ -66,14 +68,16 @@ resource "aws_ecs_service" "conversion-tool-service" {
   }
 
   tags = {
-    Name            = "${var.project_name}-ecr-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
+    "Name"                = "${var.project_name}-ecs-svc-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = var.sensitivity
+    "qpp:description"     = "ECS Service for Conversiontool"
+    "qpp:iac-repo-url"    = var.git-origin
   }
 
 }
