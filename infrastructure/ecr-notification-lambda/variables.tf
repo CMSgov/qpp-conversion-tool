@@ -26,3 +26,15 @@ variable "owner" {
 variable "application" {
   type = string
 }
+
+variable "pagerduty_email" {
+  type = string
+}
+
+variable "sensitivity" {
+  type = string
+}
+
+variable "git-origin" {
+  type = string
+}

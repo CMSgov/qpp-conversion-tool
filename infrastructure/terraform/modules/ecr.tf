@@ -7,14 +7,16 @@ resource "aws_ecr_repository" "qpp-final-scoring-ct" {
   }
 
   tags = {
-    Name            = "${var.project_name}-ecr-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
+    "Name"                = "${var.project_name}-ecr-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = var.sensitivity
+    "qpp:description"     = "ECR Repo for Conversiontool"
+    "qpp:iac-repo-url"    = var.git-origin
   }
 }
 

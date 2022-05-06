@@ -1,24 +1,22 @@
 terraform {
-    required_version = "0.13.7"
-    required_providers {
-        aws = {
-            source = "hashicorp/aws"
-            version = "=3.52.0"
-        }
-    }
-}
-
-provider "aws" {
-    region = "us-east-1"
-}
-
-terraform {
   backend "s3" {
     bucket  = "qppsf-conversion-tool-tf-state"
     key     = "qppsf/qppsf-ddb-backup-notifier-tf-state"
     region  = "us-east-1"
     encrypt = "true"
   }
+
+    required_providers {
+        aws = {
+            source = "hashicorp/aws"
+            version = "=3.70.0"
+        }
+    }
+    required_version = "1.0.0"
+}
+
+provider "aws" {
+  region  = var.region
 }
 
 data "aws_caller_identity" "current" {}
@@ -145,4 +143,17 @@ resource "aws_lambda_function" "ddb-notification-alerts" {
   handler       = "dynamo-db-bckup-notifier.lambda_handler"
   timeout       = "120"
   runtime       = "python3.7"
+
+  tags = {
+    "Name"                = "${var.project_name}-lambda-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = var.sensitivity
+    "qpp:description"     = "Dynamo DB backup checker lambda for Conversiontool"
+    "qpp:iac-repo-url"    = var.git-origin
+  }
 }
