@@ -36,14 +36,16 @@ resource "aws_s3_bucket" "log_bucket" {
     }
   }
   tags = {
-    Name            = "${var.project_name}-s3",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
+    "Name"                = "${var.project_name}-s3-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = var.sensitivity
+    "qpp:description"     = "Conversiontool Logs S3 Bucket"
+    "qpp:iac-repo-url"    = var.git-origin
   }
 
 }

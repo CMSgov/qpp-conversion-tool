@@ -8,20 +8,23 @@ resource "aws_lb" "qppsf" {
   enable_deletion_protection = true
 
   tags = {
-    Name            = "${var.project_name}-ecr-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
+    "Name"                = "${var.project_name}-alb-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = var.sensitivity
+    "qpp:description"     = "Application Load Balancer for Conversiontool"
+    "qpp:iac-repo-url"    = var.git-origin
   }
   access_logs {
     bucket  = aws_s3_bucket.log_bucket.id
     prefix  = "conversion-tool/${var.environment}"
     enabled = true
   }
+  drop_invalid_header_fields = true
 }
 
 #ALB Target group for HTTPS
@@ -40,17 +43,17 @@ resource "aws_lb_target_group" "conversion-tg-ssl" {
     matcher  = "200-499"
   }
 
- 
-
   tags = {
-    Name            = "${var.project_name}-ecr-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
+    "Name"                = "${var.project_name}-alb-targetgrp-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = var.sensitivity
+    "qpp:description"     = "Application Load Balancer Target Group for Conversiontool"
+    "qpp:iac-repo-url"    = var.git-origin
   }
 }
 

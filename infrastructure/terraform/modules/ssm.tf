@@ -15,14 +15,16 @@ resource "aws_ssm_parameter" "app_env" {
     ]
   }
   tags = {
-    Name            = "${var.project_name}-ssm-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
+    "Name"                = "${var.project_name}-ssm-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = "Confidential"
+    "qpp:description"     = "Env for Conversiontool"
+    "qpp:iac-repo-url"    = var.git-origin
   }
 
 }
@@ -40,14 +42,16 @@ resource "aws_ssm_parameter" "ar_api_base_url" {
     ]
   }
   tags = {
-    Name            = "${var.project_name}-ssm-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
+    "Name"                = "${var.project_name}-ssm-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = "Confidential"
+    "qpp:description"     = "AR API URL for Conversiontool"
+    "qpp:iac-repo-url"    = var.git-origin
   }
 }
 
@@ -64,14 +68,16 @@ resource "aws_ssm_parameter" "bucket_name" {
     ]
   }
   tags = {
-    Name            = "${var.project_name}-ssm-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
+    "Name"                = "${var.project_name}-ssm-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = "Confidential"
+    "qpp:description"     = "navadevops Bucket"
+    "qpp:iac-repo-url"    = var.git-origin
   }
 }
 
@@ -88,14 +94,16 @@ resource "aws_ssm_parameter" "cpc_end_date" {
     ]
   }
   tags = {
-    Name            = "${var.project_name}-ssm-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
+    "Name"                = "${var.project_name}-ssm-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = "Confidential"
+    "qpp:description"     = "CPC End Date for Conversiontool"
+    "qpp:iac-repo-url"    = var.git-origin
   }
 }
 
@@ -112,14 +120,16 @@ resource "aws_ssm_parameter" "cpc_plus_bucket_name" {
     ]
   }
   tags = {
-    Name            = "${var.project_name}-ssm-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
+    "Name"                = "${var.project_name}-ssm-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = "Confidential"
+    "qpp:description"     = "SSM Param for Conversiontool"
+    "qpp:iac-repo-url"    = var.git-origin
   }
 }
 
@@ -136,14 +146,16 @@ resource "aws_ssm_parameter" "cpc_plus_unprocessed_filter_start_date" {
     ]
   }
   tags = {
-    Name            = "${var.project_name}-ssm-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
+    "Name"                = "${var.project_name}-ssm-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = "Confidential"
+    "qpp:description"     = "SSM Param for Conversiontool"
+    "qpp:iac-repo-url"    = var.git-origin
   }
 }
 
@@ -160,14 +172,16 @@ resource "aws_ssm_parameter" "cpc_plus_validation_file" {
     ]
   }
   tags = {
-    Name            = "${var.project_name}-ssm-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
+    "Name"                = "${var.project_name}-ssm-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = "Confidential"
+    "qpp:description"     = "SSM Param for Conversiontool"
+    "qpp:iac-repo-url"    = var.git-origin
   }
 }
 
@@ -184,14 +198,16 @@ resource "aws_ssm_parameter" "db_app_username" {
     ]
   }
   tags = {
-    Name            = "${var.project_name}-ssm-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
+    "Name"                = "${var.project_name}-ssm-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = "Confidential"
+    "qpp:description"     = "SSM Param for Conversiontool"
+    "qpp:iac-repo-url"    = var.git-origin
   }
 }
 
@@ -208,14 +224,16 @@ resource "aws_ssm_parameter" "db_master_username" {
     ]
   }
   tags = {
-    Name            = "${var.project_name}-ssm-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
+    "Name"                = "${var.project_name}-ssm-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = "Confidential"
+    "qpp:description"     = "SSM Param for Conversiontool"
+    "qpp:iac-repo-url"    = var.git-origin
   }
 }
 
@@ -232,14 +250,16 @@ resource "aws_ssm_parameter" "deploy0a_public-i-p" {
     ]
   }
   tags = {
-    Name            = "${var.project_name}-ssm-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
+    "Name"                = "${var.project_name}-ssm-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = "Confidential"
+    "qpp:description"     = "SSM Param for Conversiontool"
+    "qpp:iac-repo-url"    = var.git-origin
   }
 }
 
@@ -256,14 +276,16 @@ resource "aws_ssm_parameter" "dynamo_table_name" {
     ]
   }
   tags = {
-    Name            = "${var.project_name}-ssm-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
+    "Name"                = "${var.project_name}-ssm-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = "Confidential"
+    "qpp:description"     = "SSM Param for Conversiontool"
+    "qpp:iac-repo-url"    = var.git-origin
   }
 }
 
@@ -280,14 +302,16 @@ resource "aws_ssm_parameter" "gdit_nessus_pub_key" {
     ]
   }
   tags = {
-    Name            = "${var.project_name}-ssm-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
+    "Name"                = "${var.project_name}-ssm-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = "Confidential"
+    "qpp:description"     = "SSM Param for Conversiontool"
+    "qpp:iac-repo-url"    = var.git-origin
   }
 }
 
@@ -304,14 +328,16 @@ resource "aws_ssm_parameter" "java_opts" {
     ]
   }
   tags = {
-    Name            = "${var.project_name}-ssm-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
+    "Name"                = "${var.project_name}-ssm-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = "Confidential"
+    "qpp:description"     = "SSM Param for Conversiontool"
+    "qpp:iac-repo-url"    = var.git-origin
   }
 }
 
@@ -328,14 +354,16 @@ resource "aws_ssm_parameter" "kms_key" {
     ]
   }
   tags = {
-    Name            = "${var.project_name}-ssm-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
+    "Name"                = "${var.project_name}-ssm-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = "Confidential"
+    "qpp:description"     = "SSM Param for Conversiontool"
+    "qpp:iac-repo-url"    = var.git-origin
   }
 }
 
@@ -352,14 +380,16 @@ resource "aws_ssm_parameter" "nexus_host" {
     ]
   }
   tags = {
-    Name            = "${var.project_name}-ssm-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
+    "Name"                = "${var.project_name}-ssm-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = "Confidential"
+    "qpp:description"     = "SSM Param for Conversiontool"
+    "qpp:iac-repo-url"    = var.git-origin
   }
 }
 
@@ -376,14 +406,16 @@ resource "aws_ssm_parameter" "org_name" {
     ]
   }
   tags = {
-    Name            = "${var.project_name}-ssm-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
+    "Name"                = "${var.project_name}-ssm-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = "Confidential"
+    "qpp:description"     = "SSM Param for Conversiontool"
+    "qpp:iac-repo-url"    = var.git-origin
   }
 }
 
@@ -400,14 +432,16 @@ resource "aws_ssm_parameter" "rti_org_name" {
     ]
   }
   tags = {
-    Name            = "${var.project_name}-ssm-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
+    "Name"                = "${var.project_name}-ssm-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = "Confidential"
+    "qpp:description"     = "SSM Param for Conversiontool"
+    "qpp:iac-repo-url"    = var.git-origin
   }
 }
 
@@ -424,14 +458,16 @@ resource "aws_ssm_parameter" "validation_url" {
     ]
   }
   tags = {
-    Name            = "${var.project_name}-ssm-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
+    "Name"                = "${var.project_name}-ssm-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = "Confidential"
+    "qpp:description"     = "SSM Param for Conversiontool"
+    "qpp:iac-repo-url"    = var.git-origin
   }
 }
 resource "aws_ssm_parameter" "ssl_secret" {
@@ -450,13 +486,15 @@ resource "aws_ssm_parameter" "ssl_secret" {
   
 
   tags = {
-    Name            = "${var.project_name}-ssm-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
+    "Name"                = "${var.project_name}-ssm-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = "Confidential"
+    "qpp:description"     = "SSM Param for Conversiontool"
+    "qpp:iac-repo-url"    = var.git-origin
   }
 }

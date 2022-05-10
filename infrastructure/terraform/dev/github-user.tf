@@ -3,10 +3,14 @@ resource "aws_iam_user" "github-actions-ecr" {
   name = "github-actions-ecr"
 }
 
-#IAM policy to describe task definition
-resource "aws_iam_user_policy" "ecsgithub" {
+resource "aws_iam_group" "github-actions-push" {
+  name = "github-actions-push"
+}
+
+#IAM user Group Policy
+resource "aws_iam_group_policy" "ecsgithub" {
   name = "ecs-github-describetask"
-  user = aws_iam_user.github-actions-ecr.name
+  group = aws_iam_group.github-actions-push.name
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -24,20 +28,8 @@ resource "aws_iam_user_policy" "ecsgithub" {
         Effect   = "Allow"
         Resource = "*"
       },
-    ]
-  })
-}
-
-# Added policy permissions on S3 artifacts bucket
-resource "aws_iam_user_policy" "es3permissonsforgh" {
-  name = "ecs-s3-bucket"
-  user = aws_iam_user.github-actions-ecr.name
-
-policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
       {
-        "Sid": "s3ecsiam",
+        "Sid": "S3SSLBUCKETPermissions",
         Action = [
           "s3:ListBucket",
           "s3:GetObject"
@@ -49,20 +41,8 @@ policy = jsonencode({
           "arn:aws:s3:::qppsf-conversion-tool-artifacts-ssl-bucket/*"
         ]
       },
-    ]
-  })
-}
-
-# Added policy permissions to retrieve parameter from SSM
-resource "aws_iam_user_policy" "ssmpermissionsforgh" {
-  name = "ecs-ssm"
-  user = aws_iam_user.github-actions-ecr.name
-
-policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
       {
-        "Sid": "s3ecsiam",
+        "Sid": "SSMPermissions",
         Action = [
           "ssm:GetParameters",
           "ssm:PutParameter",
