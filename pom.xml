@@ -247,6 +247,12 @@
 			</dependency>
 
 			<dependency>
+				<groupId>com.google.code.gson</groupId>
+				<artifactId>gson</artifactId>
+				<version>2.9.0</version>
+			</dependency>
+
+			<dependency>
 				<groupId>org.junit.vintage</groupId>
 				<artifactId>junit-vintage-engine</artifactId>
 				<version>${junit.version}</version>
@@ -417,7 +423,7 @@
 			<dependency>
 				<groupId>io.springfox</groupId>
 				<artifactId>springfox-swagger-ui</artifactId>
-				<version>2.10.0</version>
+				<version>2.9.2</version>
 			</dependency>
 
 			<dependency>

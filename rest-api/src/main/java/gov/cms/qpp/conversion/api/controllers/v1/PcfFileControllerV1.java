@@ -26,7 +26,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/pcf")
-@CrossOrigin(allowCredentials = "true")
+@CrossOrigin
 public class PcfFileControllerV1 {
 
 	private static final String BLOCKED_BY_FEATURE_FLAG =

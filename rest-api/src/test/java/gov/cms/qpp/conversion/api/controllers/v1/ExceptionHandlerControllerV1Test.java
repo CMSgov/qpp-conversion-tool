@@ -220,13 +220,14 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 	@Test
 	void testHandleAmazonExceptionResponseBodyDoesInterception() throws Exception {
 		CpcFileControllerV1 mock = Mockito.mock(CpcFileControllerV1.class);
+
 		MockMvc mvc = MockMvcBuilders.standaloneSetup(mock)
 				.setControllerAdvice(new ExceptionHandlerControllerV1(auditService))
 				.build();
 		AmazonServiceException exception = new AmazonServiceException("some message");
 		exception.setStatusCode(404);
 		Mockito.when(mock.getUnprocessedCpcPlusFiles(anyString())).thenThrow(exception);
-		MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/cpc/unprocessed-files/cpcplus")).andReturn();
+		MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/cpc/unprocessed-files/cpcplus").header("Origin","*")).andReturn();
 		Truth.assertThat(result.getResponse().getStatus()).isEqualTo(404);
 		//mvc.perform(RequestBuilder("/cpc/unprocessed-files"));
 	}

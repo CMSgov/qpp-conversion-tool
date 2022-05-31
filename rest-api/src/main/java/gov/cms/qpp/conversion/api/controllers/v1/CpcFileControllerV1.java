@@ -33,7 +33,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/cpc")
-@CrossOrigin(allowCredentials = "true")
+@CrossOrigin
 public class CpcFileControllerV1 {
 
 	private static final String BLOCKED_BY_FEATURE_FLAG =

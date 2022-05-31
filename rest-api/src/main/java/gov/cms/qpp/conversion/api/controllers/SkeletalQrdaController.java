@@ -33,7 +33,7 @@ import gov.cms.qpp.conversion.api.services.ValidationService;
  * Controller to handle uploading files for QRDA-III Conversion
  */
 @RestController
-@CrossOrigin(allowCredentials = "true")
+@CrossOrigin
 public abstract class SkeletalQrdaController<T> {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(SkeletalQrdaController.class);
