@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +34,7 @@ import gov.cms.qpp.conversion.api.services.ValidationService;
  * Controller to handle uploading files for QRDA-III Conversion
  */
 @RestController
-@CrossOrigin(allowCredentials = "true")
+@CrossOrigin
 public abstract class SkeletalQrdaController<T> {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(SkeletalQrdaController.class);
@@ -70,7 +71,7 @@ public abstract class SkeletalQrdaController<T> {
 		@RequestParam(name = "file") MultipartFile file,
 		@RequestHeader(required = false, name = "Purpose") String purpose) {
 
-		if (!StringUtils.isEmpty(purpose)) {
+		if (!ObjectUtils.isEmpty(purpose)) {
 			if (purpose.length() > MAX_PURPOSE_LENGTH) {
 				throw new InvalidPurposeException("Given Purpose (header) is too large. Max length is "
 						+ MAX_PURPOSE_LENGTH + ", yours was " + purpose.length());
