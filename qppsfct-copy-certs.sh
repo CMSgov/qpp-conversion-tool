@@ -33,12 +33,12 @@ echo -n ${SSL_PASS}|base64 > ./passphrase.txt
 #Export Certificate Chain from ACM
 aws acm export-certificate --certificate-arn ${CERT_ARN} --passphrase file://passphrase.txt --output text > ./fullcert.pem
 
-awk '{$1=$1};1'<./fullcert.pem | tee ./certificate.pem
+awk '{$1=$1};1'<./fullcert.pem | tee ./certificate.pem > /dev/null
 
 #Separate Private Key from fullchain certificate
 awk '/-----BEGIN ENCRYPTED PRIVATE KEY-----/ {f=1} /-----END ENCRYPTED PRIVATE KEY-----/ {print; f=0} f' ./certificate.pem > ./privatekey.pem
 
-awk '{$1=$1};1'<./privatekey.pem | tee ./encryptedkey.pem
+awk '{$1=$1};1'<./privatekey.pem | tee ./encryptedkey.pem > /dev/null
 
 #Decrypt Private Key
 openssl rsa -in ./encryptedkey.pem -out ./decryptedkey.pem -passin pass:${SSL_PASS}
