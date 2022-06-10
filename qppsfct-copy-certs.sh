@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -xe
-
 ENV_CERT=$1
 AWS_KEY=$2
 AWS_SECRET=$3
@@ -48,14 +46,7 @@ openssl rsa -in ./encryptedkey.pem -out ./decryptedkey.pem -passin pass:${SSL_PA
 #Export PEM to P12 Format
 openssl pkcs12 -export -out ./${ENV_CERT}_cert.p12 -in ./certificate.pem -inkey ./decryptedkey.pem -password pass:${SSL_PASS}
 
-APP_PROPERTIES=$(cat <<EOF
-server.ssl.key-store=classpath:${ENV_CERT}_cert.p12
-server.ssl.key-store-password=${SSL_PASS}
-server.ssl.key-password=${SSL_PASS}
-EOF
-)
-
-echo "${APP_PROPERTIES}" >> application.properties
+printf "%s\n" "server.ssl.key-store=classpath:${ENV_CERT}_cert.p12" "server.ssl.key-store-password=${SSL_PASS}" "server.ssl.key-password=${SSL_PASS}" >> application.properties
 
 #Clean-up certificate files
 rm -f ./passphrase.txt
