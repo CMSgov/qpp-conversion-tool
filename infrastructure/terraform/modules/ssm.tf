@@ -474,8 +474,37 @@ resource "aws_ssm_parameter" "ssl_secret" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/SSL_SECRET"
   description = "SSL KeyStore Password"
   type        = "SecureString"
-  value       = var.ssm_secret
-  overwrite   = true
+  value       = "secret"
+  overwrite   = false
+  
+
+  lifecycle {
+    ignore_changes = [
+      value
+    ]
+  }
+  
+
+  tags = {
+    "Name"                = "${var.project_name}-ssm-${var.environment}"
+    "qpp:owner"           = var.owner
+    "qpp:pagerduty-email" = var.pagerduty_email
+    "qpp:application"     = var.application
+    "qpp:project"         = var.project_name
+    "qpp:environment"     = var.environment
+    "qpp:layer"           = "Application"
+    "qpp:sensitivity"     = "Confidential"
+    "qpp:description"     = "SSM Param for Conversiontool"
+    "qpp:iac-repo-url"    = var.git-origin
+  }
+}
+
+resource "aws_ssm_parameter" "cert_arn" {
+  name        = "/qppar-sf/${var.environment}/conversion_tool/CERT_ARN"
+  description = "SSL Certificate ARN"
+  type        = "SecureString"
+  value       = "secret"
+  overwrite   = false
   
 
   lifecycle {
