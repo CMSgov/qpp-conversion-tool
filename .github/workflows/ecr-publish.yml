@@ -220,7 +220,7 @@ jobs:
       - name: Get certificates for Devpre
         env:
            ENV_CT: devpre
-        if: github.ref == 'refs/heads/master' && ${{ env.ENV_CT }} == 'devpre'
+        if: github.ref == 'refs/heads/master'
         run: bash ./qppsfct-copy-certs.sh ${{ env.ENV_CT }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_REGION }}
 
       - name: DevPre - Build and deploy to Amazon ECR

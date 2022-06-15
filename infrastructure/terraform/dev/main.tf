@@ -40,6 +40,5 @@ module "conversion-tool" {
   application        = var.application
   git-origin         = var.git-origin
   certificate_arn    = var.certificate_arn
-  ssm_secret         = var.ssm_secret
 
 }
