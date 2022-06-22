@@ -17,6 +17,7 @@ import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
@@ -181,6 +182,7 @@ public class JsonWrapper {
 	 */
 	static {
 		jsonMapper = new ObjectMapper();
+		jsonMapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
 		SimpleModule module = new SimpleModule();
 		module.addSerializer(JsonWrapper.class, new JsonWrapperSerilizer());
 		jsonMapper.registerModule(module);
