@@ -28,7 +28,7 @@ jobs:
         java-version: 11
 
     - name: Delete old dependencies (may trigger Snyk vulnerability otherwise)
-      run: rm -rf ~/.m2
+      run: rm -vrf ~/.m2
 
     - name: Maven build
       run: mvn package -Dmaven.test.skip -Djacoco.skip=true
