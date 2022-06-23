@@ -27,6 +27,9 @@ jobs:
       with:
         java-version: 11
 
+    - name: Test
+      run: ls
+
     - name: Maven build
       run: mvn package -Dmaven.test.skip -Djacoco.skip=true
 
