@@ -1,5 +1,23 @@
 package gov.cms.qpp.conversion.encode;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.util.DefaultIndenter;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.jayway.jsonpath.JsonPath;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import gov.cms.qpp.conversion.InputStreamSupplierSource;
+import gov.cms.qpp.conversion.Source;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.util.CloneHelper;
+import gov.cms.qpp.conversion.util.FormatHelper;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -10,25 +28,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
-
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.util.DefaultIndenter;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.jayway.jsonpath.JsonPath;
-
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import gov.cms.qpp.conversion.InputStreamSupplierSource;
-import gov.cms.qpp.conversion.Source;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.util.CloneHelper;
-import gov.cms.qpp.conversion.util.FormatHelper;
 
 /**
  * Manages building an object container for JSON conversion.
@@ -182,7 +181,6 @@ public class JsonWrapper {
 	 */
 	static {
 		jsonMapper = new ObjectMapper();
-		jsonMapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
 		SimpleModule module = new SimpleModule();
 		module.addSerializer(JsonWrapper.class, new JsonWrapperSerilizer());
 		jsonMapper.registerModule(module);
