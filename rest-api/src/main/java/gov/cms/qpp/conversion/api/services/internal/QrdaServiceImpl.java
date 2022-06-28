@@ -34,7 +34,11 @@ public class QrdaServiceImpl implements QrdaService {
 	private static final Logger API_LOG = LoggerFactory.getLogger(QrdaServiceImpl.class);
 
 	private final StorageService storageService;
+
+	@Autowired
 	private Supplier<CpcValidationInfoMap> cpcValidationData = () -> null;
+
+	@Autowired
 	private Supplier<ApmEntityIds> apmData = () -> null;
 
 
