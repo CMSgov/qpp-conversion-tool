@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,16 +36,15 @@ public class QrdaServiceImpl implements QrdaService {
 
 	private final StorageService storageService;
 
-	@Autowired
-	private Supplier<CpcValidationInfoMap> cpcValidationData = () -> null;
+	private Supplier<CpcValidationInfoMap> cpcValidationData;
 
-	@Autowired
-	private Supplier<ApmEntityIds> apmData = () -> null;
-
+	private Supplier<ApmEntityIds> apmData;
 
 	@Autowired
 	QrdaServiceImpl(StorageService storageService) {
 		this.storageService = storageService;
+		this.cpcValidationData = () -> null;
+		this.apmData = () -> null;
 	}
 
 	/**
