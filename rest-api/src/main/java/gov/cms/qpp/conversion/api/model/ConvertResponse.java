@@ -1,14 +1,20 @@
 package gov.cms.qpp.conversion.api.model;
 
+import com.fasterxml.jackson.annotation.JsonRawValue;
+
 import java.util.List;
 import java.util.Objects;
 
 import gov.cms.qpp.conversion.model.error.Detail;
 
+
 public class ConvertResponse {
 
 	private String location;
-	private Object qpp;
+
+	@JsonRawValue
+	private String qpp;
+
 	private List<Detail> warnings;
 
 	public String getLocation() {
@@ -23,7 +29,7 @@ public class ConvertResponse {
 		return qpp;
 	}
 
-	public void setQpp(Object qpp) {
+	public void setQpp(String qpp) {
 		this.qpp = qpp;
 	}
 
