@@ -1,17 +1,11 @@
 package gov.cms.qpp.conversion.api.services.internal;
 
-import java.io.InputStream;
-import java.util.concurrent.TimeUnit;
-
-import javax.annotation.PostConstruct;
-
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
 
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.ConversionReport;
@@ -25,6 +19,10 @@ import gov.cms.qpp.conversion.api.services.StorageService;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 
+import javax.annotation.PostConstruct;
+import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
+
 /**
  * Implementation of the QRDA-III to QPP conversion service
  */
@@ -34,13 +32,16 @@ public class QrdaServiceImpl implements QrdaService {
 	private static final Logger API_LOG = LoggerFactory.getLogger(QrdaServiceImpl.class);
 
 	private final StorageService storageService;
-	private Supplier<CpcValidationInfoMap> cpcValidationData = () -> null;
-	private Supplier<ApmEntityIds> apmData = () -> null;
 
+	private Supplier<CpcValidationInfoMap> cpcValidationData;
+
+	private Supplier<ApmEntityIds> apmData;
 
 	@Autowired
 	QrdaServiceImpl(StorageService storageService) {
 		this.storageService = storageService;
+		this.cpcValidationData = () -> null;
+		this.apmData = () -> null;
 	}
 
 	/**
