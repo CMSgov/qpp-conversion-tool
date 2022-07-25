@@ -141,7 +141,7 @@ resource "aws_lambda_function" "ecr-lambda-notification" {
   role          = aws_iam_role.lambda_executionrole.arn
   handler       = "ecr-lambda-notification.lambda_handler"
   timeout       =  "120"
-  runtime = "python3.7"
+  runtime = "python3.9"
 
   tags = {
     "Name"                = "${var.project_name}-lambda-${var.environment}"
