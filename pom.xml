@@ -11,8 +11,8 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<aws.version>1.12.191</aws.version>
-		<junit.version>5.5.2</junit.version>
+		<aws.version>1.12.272</aws.version>
+		<junit.version>5.8.0</junit.version>
 		<jjwt.version>0.10.7</jjwt.version>
 
 		<requiredCodeCoverage>0.90</requiredCodeCoverage>
