@@ -7,8 +7,8 @@ import requests
 
 dynamo = boto3.client('dynamodb', region_name='us-east-1')
 
-SLACK_WEBHOOK_URL= os.environ.get[slack_channel_webhook]
-SLACK_CHANNEL = os.environ.get[channel_id]
+SLACK_WEBHOOK_URL = os.environ['slack_channel_webhook']
+SLACK_CHANNEL = os.environ['channel']
 
 def lambda_handler(event,context):
 	response = dynamo.list_backups(
