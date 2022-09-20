@@ -63,6 +63,7 @@ EOF
 # IAM policy for Lambda to submit to Cloudwatch Logs
 resource "aws_iam_policy" "lambda_cloudwatch_logging" {
   name         = "ddbackup_lambda_cloudwatch_policy"
+  path         = "/delegatedadmin/developer/"
   description = "IAM permissions for Lambda to Create Log Group"
   policy = <<EOF
 {
@@ -85,6 +86,7 @@ EOF
 # IAM policy for permissions on Dynamo DB Backups
 resource "aws_iam_policy" "lambda_ddb_backups" {
   name         = "dynamodb_backup_lambda_policy"
+  path         = "/delegatedadmin/developer/"
   description = "IAM permission to list dynamo Db Backups"
   policy = <<EOF
 {
@@ -142,7 +144,13 @@ resource "aws_lambda_function" "ddb-notification-alerts" {
   role          = aws_iam_role.lambda_executionrole.arn
   handler       = "dynamo-db-bckup-notifier.lambda_handler"
   timeout       = "120"
-  runtime       = "python3.7"
+  runtime       = "python3.9"
+  environment {
+    variables = {
+      "channel" = "p-qpp-sub-alerts"
+      "slack_channel_webhook" = ""
+    }
+  }
 
   tags = {
     "Name"                = "${var.project_name}-lambda-${var.environment}"
