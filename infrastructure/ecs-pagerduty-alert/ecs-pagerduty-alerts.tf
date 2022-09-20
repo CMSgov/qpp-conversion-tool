@@ -146,7 +146,7 @@ resource "aws_lambda_function" "ecs-pagerduty-alerts" {
   role          = aws_iam_role.lambda_executionrole.arn
   handler       = "ecs-pgduty-alerts.lambda_handler"
   timeout       =  "120"
-  runtime = "python3.7"
+  runtime = "python3.9"
 
   tags = {
     "Name"                = "${var.project_name}-lambda-${var.environment}"
