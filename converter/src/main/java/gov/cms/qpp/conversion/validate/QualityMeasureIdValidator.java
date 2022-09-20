@@ -186,7 +186,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 			if ((ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME.equalsIgnoreCase(program)
 				&& MeasureConfigHelper.CPC_PLUS_MEASURES.contains(measureId))
 					|| ClinicalDocumentDecoder.PCF_PROGRAM_NAME.equalsIgnoreCase(program)) {
-				validateCpcDenominatorCount(denomCount, ipopCount, subPopulation.getDenominatorUuid());
+				validateCpcDenominatorCount(denomCount, ipopCount, subPopulation.getDenominatorUuid(), program);
 			} else {
 				validateDenominatorCount(denomCount, ipopCount, subPopulation.getDenominatorUuid());
 			}
@@ -242,12 +242,12 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param denomCount Aggregate Count node of denominator
 	 * @param ipopCount Aggregate Count node of initial population
 	 */
-	private void validateCpcDenominatorCount(Node denomCount, Node ipopCount, String denominatorUuid) {
+	private void validateCpcDenominatorCount(Node denomCount, Node ipopCount, String denominatorUuid, String program) {
 		forceCheckErrors(denomCount)
 			.incompleteValidation()
 			.intValue(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
 				AggregateCountDecoder.AGGREGATE_COUNT)
-			.valueIn(ProblemCode.CPC_PCF_PLUS_DENOMINATOR_COUNT_INVALID.format(denominatorUuid), AggregateCountDecoder.AGGREGATE_COUNT,
+			.valueIn(ProblemCode.CPC_PCF_PLUS_DENOMINATOR_COUNT_INVALID.format(program, denominatorUuid), AggregateCountDecoder.AGGREGATE_COUNT,
 				ipopCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT));
 	}
 
