@@ -41,7 +41,7 @@ public class QrdaControllerV2 extends SkeletalQrdaController<ConvertResponse> {
 	protected ConvertResponse respond(MultipartFile file, String checkedPurpose, HttpHeaders httpHeaders) {
 		ConversionReport conversionReport = buildReport(file.getOriginalFilename(), inputStream(file), checkedPurpose);
 		ConvertResponse response = new ConvertResponse();
-		response.setQpp(conversionReport.getEncodedWithMetadata().copyWithoutMetadata().toObject());
+		response.setQpp(conversionReport.getEncodedWithMetadata().copyWithoutMetadata().toString());
 		response.setWarnings(conversionReport.getWarnings());
 		Metadata metadata = audit(conversionReport);
 		if (null != metadata) {

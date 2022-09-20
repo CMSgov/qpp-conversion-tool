@@ -6,6 +6,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/pcf")
-@CrossOrigin(allowCredentials = "true")
+@CrossOrigin
 public class PcfFileControllerV1 {
 
 	private static final String BLOCKED_BY_FEATURE_FLAG =
@@ -51,7 +52,7 @@ public class PcfFileControllerV1 {
 
 		String orgAttribute = Constants.ORG_ATTRIBUTE_MAP.get(organization);
 
-		if (AdvancedApmHelper.blockAdvancedApmApis() || StringUtils.isEmpty(orgAttribute)) {
+		if (AdvancedApmHelper.blockAdvancedApmApis() || ObjectUtils.isEmpty(orgAttribute)) {
 			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
 			return ResponseEntity
 				.status(HttpStatus.FORBIDDEN)

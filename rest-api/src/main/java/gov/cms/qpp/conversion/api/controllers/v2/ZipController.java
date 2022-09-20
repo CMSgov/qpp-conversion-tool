@@ -72,7 +72,7 @@ public class ZipController extends SkeletalQrdaController<List<ConvertResponse>>
 			InputStream inputStream = zipFile.getInputStream(entry);
 			ConversionReport conversionReport = buildReport(entry.getName(), inputStream, purpose);
 			ConvertResponse response = new ConvertResponse();
-			response.setQpp(conversionReport.getEncodedWithMetadata().copyWithoutMetadata().toObject());
+			response.setQpp(conversionReport.getEncodedWithMetadata().copyWithoutMetadata().toString());
 			response.setWarnings(conversionReport.getWarnings());
 			Metadata metadata = audit(conversionReport);
 			if (null != metadata) {

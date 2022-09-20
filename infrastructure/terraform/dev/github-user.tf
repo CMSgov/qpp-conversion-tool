@@ -33,13 +33,23 @@ resource "aws_iam_group_policy" "ecsgithub" {
         Action = [
           "s3:ListBucket",
           "s3:GetObject"
-          
         ]
         Effect   = "Allow"
         Resource = [
           "arn:aws:s3:::qppsf-conversion-tool-artifacts-ssl-bucket",
           "arn:aws:s3:::qppsf-conversion-tool-artifacts-ssl-bucket/*"
         ]
+      },
+      {
+        "Sid" : "ACMPermissions",
+        Action = [
+          "acm:ListCertificates",
+          "acm:ExportCertificate",
+          "acm:GetCertificate",
+          "acm:DescribeCertificate"
+        ]
+        Effect = "Allow"
+        Resource = "*"
       },
       {
         "Sid": "SSMPermissions",
