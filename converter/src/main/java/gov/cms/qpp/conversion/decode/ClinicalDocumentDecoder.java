@@ -102,11 +102,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	 * @param thisNode The output internal representation of the document
 	 */
 	private void setEntityIdOnNode(Element element, Node thisNode) {
-		if (Program.isCpc(thisNode)) {
-			Consumer<Attribute> consumer = id ->
-				thisNode.putValue(PRACTICE_ID, id.getValue(), false);
-			setOnNode(element, getXpath(PRACTICE_ID), consumer, Filters.attribute(), false);
-		} else if (Program.isPcf(thisNode)) {
+		if (Program.isPcf(thisNode)) {
 			Consumer<Attribute> consumer = id ->
 				thisNode.putValue(PCF_ENTITY_ID, id.getValue(), false);
 			setOnNode(element, getXpath(PCF_ENTITY_ID), consumer, Filters.attribute(), false);
@@ -127,7 +123,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	 * @param thisNode The output internal representation of the document
 	 */
 	private void setPracticeSiteAddress(Element element, Node thisNode) {
-		if (Program.isCpc(thisNode) || Program.isPcf(thisNode)) {
+		if (Program.isPcf(thisNode)) {
 			Consumer<Element> consumer = p ->
 					thisNode.putValue(PRACTICE_SITE_ADDR, p.getValue().trim(), false);
 			setOnNode(element, getXpath(PRACTICE_SITE_ADDR), consumer, Filters.element(), false);
