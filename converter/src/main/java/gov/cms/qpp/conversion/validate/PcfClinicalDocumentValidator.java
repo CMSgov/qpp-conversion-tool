@@ -170,7 +170,7 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 		if (numOfTins > numOfNpis) {
 			addError(Detail.forProblemAndNode(ProblemCode.PCF_MISSING_NPI.format(programName), node));
 		} else if (numOfNpis > numOfTins) {
-			addError(Detail.forProblemAndNode(ProblemCode.CPC_PCF_PLUS_MISSING_TIN
+			addError(Detail.forProblemAndNode(ProblemCode.PCF_MISSING_TIN
 				.format(node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME)), node));
 		}
 	}
