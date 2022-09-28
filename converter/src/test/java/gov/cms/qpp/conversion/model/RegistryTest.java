@@ -39,7 +39,7 @@ class RegistryTest {
 
 	@Test
 	void testRegistryGetDefaultConverterHandler() {
-		context.setProgram(Program.CPC);
+		context.setProgram(Program.MIPS);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		QrdaDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
 
@@ -49,9 +49,9 @@ class RegistryTest {
 
 	@Test
 	void testRegistryGetProgramSpecificConverterHandler() {
-		context.setProgram(Program.CPC);
+		context.setProgram(Program.MIPS);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
-		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.CPC), AnotherPlaceholder.class);
+		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.MIPS), AnotherPlaceholder.class);
 		QrdaDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
 
 		assertWithMessage("Registry should return %s instance.", AnotherPlaceholder.class.getName())
@@ -60,7 +60,7 @@ class RegistryTest {
 
 	@Test
 	void testRegistryInclusiveGetDefaultConverterHandler() {
-		context.setProgram(Program.CPC);
+		context.setProgram(Program.MIPS);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		Set<QrdaDecoder> decoders = registry.inclusiveGet(TemplateId.PLACEHOLDER);
 
@@ -70,9 +70,9 @@ class RegistryTest {
 
 	@Test
 	void testRegistryInclusiveGetProgramSpecificConverterHandler() {
-		context.setProgram(Program.CPC);
+		context.setProgram(Program.MIPS);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
-		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.CPC), AnotherPlaceholder.class);
+		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.MIPS), AnotherPlaceholder.class);
 		Set<QrdaDecoder> decoders = registry.inclusiveGet(TemplateId.PLACEHOLDER);
 
 		assertWithMessage("Should return two decoders")
@@ -81,8 +81,8 @@ class RegistryTest {
 
 	@Test
 	void testRegistryInclusiveGetPrioritizesGeneral() {
-		context.setProgram(Program.CPC);
-		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.CPC), AnotherPlaceholder.class);
+		context.setProgram(Program.MIPS);
+		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.MIPS), AnotherPlaceholder.class);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		Set<QrdaDecoder> decoders = registry.inclusiveGet(TemplateId.PLACEHOLDER);
 		Iterator<QrdaDecoder> iterator = decoders.iterator();
