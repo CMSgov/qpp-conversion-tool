@@ -106,8 +106,7 @@ public class PcfClinicalDocumentValidatorTest {
 	void testCpcPlusSubmissionBeforeEndDate() {
 		System.setProperty(PcfClinicalDocumentValidator.END_DATE_VARIABLE,
 			ZonedDateTime.now(PcfClinicalDocumentValidator.EASTERN_TIME_ZONE).plusYears(3)
-				.format(PcfClinicalDocumentValidatorconverter/src/test/java/gov/cms/qpp/conversion/validate/PcfClinicalDocumentValidatorTest.java
-					.INPUT_END_DATE_FORMAT));
+				.format(PcfClinicalDocumentValidator.INPUT_END_DATE_FORMAT));
 		Node clinicalDocument = createPcfClinicalDocumentNodeWithMeasureSection();
 		List<Detail> errors = validator.validateSingleNode(clinicalDocument).getErrors();
 
