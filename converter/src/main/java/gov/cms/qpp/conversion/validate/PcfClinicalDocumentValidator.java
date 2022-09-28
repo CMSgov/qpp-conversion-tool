@@ -89,15 +89,15 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 			.format(Context.REPORTING_YEAR);
 
 		checkErrors(node)
-			.valueIsNotEmpty(ProblemCode.CPC_PCF_PLUS_TIN_REQUIRED.format(programName),
+			.valueIsNotEmpty(ProblemCode.PCF_TIN_REQUIRED.format(programName),
 				ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER)
 			.listValuesAreValid(
-				ProblemCode.CPC_PCF_PLUS_INVALID_TIN.format(programName),
+				ProblemCode.PCF_INVALID_TIN.format(programName),
 				ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, 9)
-			.valueIsNotEmpty(ProblemCode.CPC_PCF_PLUS_NPI_REQUIRED.format(programName),
+			.valueIsNotEmpty(ProblemCode.PCF_NPI_REQUIRED.format(programName),
 				ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER)
 			.listValuesAreValid(
-				ProblemCode.CPC_PCF_PLUS_INVALID_NPI.format(programName),
+				ProblemCode.PCF_INVALID_NPI.format(programName),
 				ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, 10)
 			.value(addressError, ClinicalDocumentDecoder.PRACTICE_SITE_ADDR)
 			.childMinimum(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED,
@@ -105,12 +105,12 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 			.singleValue(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED, ClinicalDocumentDecoder.PCF_ENTITY_ID)
 			.valueIsNotEmpty(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.PCF_ENTITY_ID)
 			.childExact(ProblemCode.PCF_NO_PI, 0, TemplateId.PI_SECTION_V2)
-			.listValuesAreInts(ProblemCode.CPC_PCF_PLUS_INVALID_NPI.format(node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME)),
+			.listValuesAreInts(ProblemCode.PCF_INVALID_NPI.format(node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME)),
 				ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER);
 
 		validateApmEntityId(node, ClinicalDocumentDecoder.PCF_ENTITY_ID, false);
 		checkWarnings(node)
-			.doesNotHaveChildren(ProblemCode.CPC_PCF_PLUS_NO_IA_OR_PI.format(programName), TemplateId.IA_SECTION, TemplateId.PI_SECTION_V2);
+			.doesNotHaveChildren(ProblemCode.PCF_NO_IA_OR_PI.format(programName), TemplateId.IA_SECTION, TemplateId.PI_SECTION_V2);
 
 		if (hasTinAndNpi(node)) {
 			validateNumberOfTinsAndNpis(node, programName);
@@ -168,7 +168,7 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 		int numOfNpis = Arrays.asList(
 			node.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER).split(",")).size();
 		if (numOfTins > numOfNpis) {
-			addError(Detail.forProblemAndNode(ProblemCode.CPC_PCF_PLUS_MISSING_NPI.format(programName), node));
+			addError(Detail.forProblemAndNode(ProblemCode.PCF_MISSING_NPI.format(programName), node));
 		} else if (numOfNpis > numOfTins) {
 			addError(Detail.forProblemAndNode(ProblemCode.CPC_PCF_PLUS_MISSING_TIN
 				.format(node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME)), node));
@@ -182,11 +182,11 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 	private void validateCehrtId(Node node, String programName) {
 		String cehrtId = node.getValue(ClinicalDocumentDecoder.CEHRT);
 		if(cehrtId == null || cehrtId.length() != 15 || !cehrtFormat(cehrtId.substring(2, 5))) {
-			addError(Detail.forProblemAndNode(ProblemCode.CPC_PCF_MISSING_CEHRT_ID.format(programName), node));
+			addError(Detail.forProblemAndNode(ProblemCode.PCF_MISSING_CEHRT_ID.format(programName), node));
 		}
 		List<String> duplicateCehrts = node.getDuplicateValues(ClinicalDocumentDecoder.CEHRT);
 		if (duplicateCehrts != null && duplicateCehrts.size() > 0) {
-			addError(Detail.forProblemAndNode(ProblemCode.CPC_PCF_PLUS_DUPLICATE_CEHRT, node));
+			addError(Detail.forProblemAndNode(ProblemCode.PCF_DUPLICATE_CEHRT, node));
 		}
 	}
 
@@ -239,8 +239,8 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 		for (Element performer : performers) {
 			List<Element> tins = performer.getChildren().stream().filter(filterTinNpi("representedOrganization")).collect(Collectors.toList());
 			List<Element> npis = performer.getChildren().stream().filter(filterTinNpi("id")).collect(Collectors.toList());
-			forceCheckErrors(node).predicate(ProblemCode.PCF_CPC_MULTI_TIN_NPI_SINGLE_PERFORMER, tins.size() <= 1);
-			forceCheckErrors(node).predicate(ProblemCode.PCF_CPC_MULTI_TIN_NPI_SINGLE_PERFORMER, npis.size() <= 1);
+			forceCheckErrors(node).predicate(ProblemCode.PCF_MULTI_TIN_NPI_SINGLE_PERFORMER, tins.size() <= 1);
+			forceCheckErrors(node).predicate(ProblemCode.PCF_MULTI_TIN_NPI_SINGLE_PERFORMER, npis.size() <= 1);
 		}
 	}
 
