@@ -17,7 +17,7 @@ import com.amazonaws.util.StringInputStream;
 import gov.cms.qpp.test.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class CpcValidationInfoMapTest {
+class PcfValidationInfoMapTest {
 
 	@Mock
 	private InputStream mockIns;
@@ -38,7 +38,7 @@ class CpcValidationInfoMapTest {
 				"]\r\n";
 		InputStream jsonStream = new StringInputStream(json);
 		
-		CpcValidationInfoMap cpc = new CpcValidationInfoMap(jsonStream);
+		PcfValidationInfoMap cpc = new PcfValidationInfoMap(jsonStream);
 		Map<String, Map<String, List<String>>> map = cpc.getApmTinNpiCombinationMap();
 		
 		assertThat(map).isNotNull();
@@ -49,7 +49,7 @@ class CpcValidationInfoMapTest {
 
 	@Test
 	void test_loadNullStream() throws Exception {
-		CpcValidationInfoMap cpc = new CpcValidationInfoMap(null);
+		PcfValidationInfoMap cpc = new PcfValidationInfoMap(null);
 		Map<String, Map<String, List<String>>> map = cpc.getApmTinNpiCombinationMap();
 
 		assertThat(map).isNull();
@@ -59,7 +59,7 @@ class CpcValidationInfoMapTest {
 	void test_loadNullStream_throwsIOE() throws Exception {
 		Mockito.when(mockIns.read()).thenThrow(new IOException());
 		
-		CpcValidationInfoMap cpc = new CpcValidationInfoMap(mockIns);
+		PcfValidationInfoMap cpc = new PcfValidationInfoMap(mockIns);
 		Map<String, Map<String, List<String>>> map = cpc.getApmTinNpiCombinationMap();
 		
 		assertThat(map).isNotNull();
