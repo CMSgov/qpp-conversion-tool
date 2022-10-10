@@ -186,7 +186,7 @@ public enum ProblemCode implements LocalizedProblem {
 	CPC_PCF_MISSING_CEHRT_ID(97, "`(Program name)` QRDA-III Submissions require a valid Cehrt ID (Valid Format: XX15EXXXXXXXXXX)", true),
 	CPC_PCF_PLUS_ZERO_PERFORMANCE_RATE(98, "The performance rate cannot have a value of 0 and must be of value Null Attribute (NA)."),
 	CPC_PCF_PLUS_DUPLICATE_CEHRT(100, "More than one Cehrt ID was found. Please submit with only one Cehrt id."),
-	CPC_PCF_PLUS_DENOMINATOR_COUNT_INVALID(101, "Denominator count must be equal to Initial Population count for CPC Plus measure population `(measure population id)`.", true),
+	CPC_PCF_PLUS_DENOMINATOR_COUNT_INVALID(101, "Denominator count must be equal to Initial Population count for `(Program name)` measure population `(measure population id)`.", true),
 	PI_RESTRICTED_MEASURES(102, "A PI section cannot contain PI_HIE_5 with PI_HIE_1, PI_LVOTC_1, PI_HIE_4, or PI_LVITC_2", false),
 	PCF_TOO_FEW_QUALITY_MEASURE_CATEGORY(103, "PCF Submissions must have at least `(PCF Measure minimum)` "
 		+ "of the following measures: `(Listing of valid measure ids)`", true),
