@@ -85,7 +85,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 97 : CT - `(Program name)` QRDA-III Submissions require a valid Cehrt ID (Valid Format: XX15EXXXXXXXXXX)
 * 98 : CT - The performance rate cannot have a value of 0 and must be of value Null Attribute (NA).
 * 100 : CT - More than one Cehrt ID was found. Please submit with only one Cehrt id.
-* 101 : CT - Denominator count must be equal to Initial Population count for `(Program name)` Plus measure population `(measure population id)`.
+* 101 : CT - Denominator count must be equal to Initial Population count for `(Program name)` measure population `(measure population id)`.
 * 102 : CT - A PI section cannot contain PI_HIE_5 with PI_HIE_1, PI_LVOTC_1, PI_HIE_4, or PI_LVITC_2
 * 103 : CT - PCF Submissions must have at least `(PCF Measure minimum)` of the following measures: `(Listing of valid measure ids)`
 * 105 : CT - If multiple TINs/NPIs are submitted, each must be reported within a separate performer
