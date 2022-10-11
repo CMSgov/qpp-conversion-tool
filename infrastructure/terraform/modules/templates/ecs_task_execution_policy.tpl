@@ -61,7 +61,11 @@
               "kms:GenerateDataKey*",
               "kms:ReEncrypt*"
         ],
-            "Resource": "arn:aws:kms:*:*:key/*"
+            "Resource": [
+                "arn:aws:kms:us-east-1:003384571330:alias/qpp-qrda3converter-dev-kms_alias",
+                "arn:aws:kms:us-east-1:003384571330:alias/qpp-qrda3converter-val-kms_alias",
+                "arn:aws:kms:us-east-1:003384571330:alias/qpp-qrda3converter-prod-kms_alias"
+            ]
         },
         {
             "Sid": "S3Access",
