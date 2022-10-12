@@ -74,7 +74,7 @@ public class NegativePcfRoundTripTest {
 		List<Detail> details = conversionError(Y5_NEGATIVE_PCF);
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(ProblemCode.CPC_PCF_MISSING_CEHRT_ID.
+			.contains(ProblemCode.PCF_MISSING_CEHRT_ID.
 				format(ClinicalDocumentDecoder.PCF_PROGRAM_NAME.toUpperCase()));
 	}
 

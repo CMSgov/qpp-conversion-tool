@@ -13,7 +13,7 @@ import gov.cms.qpp.conversion.model.error.ProblemCode;
 @Validator(value = TemplateId.MEASURE_SECTION_V4, program = Program.PCF)
 public class PcfQualityMeasureSectionValidator extends NodeValidator {
 
-	// To Do: update when Measures data gets updated
+	// To Do: Update to Y6 Measure UUID(s) when Measures data gets updated
 	static final String[] PCF_REQUIRED_MEASURES = {
 		"2c928085-7198-38ee-0171-9d78a0d406b3", // 122v9
 		"2c928085-7198-38ee-0171-9d6e026b066b", // 130v9

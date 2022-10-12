@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
  */
 public enum Program {
 	MIPS("MIPS_GROUP", "MIPS_INDIV", "MIPS_VIRTUALGROUP", "MIPS", "MIPS_APMENTITY"),
-	CPC("CPCPLUS"),
 	PCF("PCF"),
 	APP("MIPS_APP1_INDIV", "MIPS_APP1_GROUP", "MIPS_APP1_APMENTITY"),
 	ALL;
@@ -28,16 +27,6 @@ public enum Program {
 	 */
 	Program(String... value) {
 		this.aliases = Arrays.stream(value).collect(Collectors.toSet());
-	}
-
-	/**
-	 * Checks if a node is using the CPC program
-	 *
-	 * @param node to check
-	 * @return result of check
-	 */
-	public static boolean isCpc(Node node) {
-		return extractProgram(node) == Program.CPC;
 	}
 
 	/**
