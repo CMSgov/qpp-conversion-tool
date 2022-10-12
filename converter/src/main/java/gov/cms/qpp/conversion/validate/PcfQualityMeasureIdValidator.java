@@ -203,9 +203,11 @@ public class PcfQualityMeasureIdValidator extends QualityMeasureIdValidator {
 		if (null != node) {
 			Node aggregate =
 				node.getChildNodes(n -> TemplateId.PI_AGGREGATE_COUNT.equals(n.getType())).findFirst().orElse(null);
-			String value = aggregate.getValue(AggregateCountDecoder.AGGREGATE_COUNT);
-			if (NumberHelper.isNumeric(value)) {
-				extractedValue = Integer.valueOf(value);
+			if (null != aggregate) {
+				String value = aggregate.getValue(AggregateCountDecoder.AGGREGATE_COUNT);
+				if (NumberHelper.isNumeric(value)){
+					extractedValue = Integer.valueOf(value);
+				}
 			}
 
 		}
