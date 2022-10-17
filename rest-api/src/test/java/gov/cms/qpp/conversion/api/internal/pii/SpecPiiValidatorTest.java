@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import com.amazonaws.util.StringInputStream;
 import com.google.common.truth.Truth;
 
-import gov.cms.qpp.conversion.api.model.CpcValidationInfoMap;
+import gov.cms.qpp.conversion.api.model.PcfValidationInfoMap;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -117,7 +117,7 @@ public class SpecPiiValidatorTest {
 		return new SpecPiiValidator(createDuplicatedSpecFile(apm, npi));
 	}
 
-	private CpcValidationInfoMap createSpecFile(String apm, String npi) throws Exception {
+	private PcfValidationInfoMap createSpecFile(String apm, String npi) throws Exception {
 		String json = ("[\r\n" +
 			    "   {\r\n" + 
 				"		\"apm_entity_id\": \"{apm}\",\r\n" +
@@ -131,12 +131,12 @@ public class SpecPiiValidatorTest {
 				"	}\r\n" +
 				"]\r\n").replace("{apm}", apm).replace("{npi}", npi);
 		InputStream jsonStream = new StringInputStream(json);
-		CpcValidationInfoMap file = new CpcValidationInfoMap(jsonStream);
+		PcfValidationInfoMap file = new PcfValidationInfoMap(jsonStream);
 		Assumptions.assumeFalse(file.getApmTinNpiCombinationMap() == null);
 		return file;
 	}
 
-	private CpcValidationInfoMap createDuplicatedSpecFile(String apm, String npi) throws Exception {
+	private PcfValidationInfoMap createDuplicatedSpecFile(String apm, String npi) throws Exception {
 		String json = ("[\r\n" +
 			"   {\r\n" +
 			"		\"apm_entity_id\": \"{apm}\",\r\n" +
@@ -150,7 +150,7 @@ public class SpecPiiValidatorTest {
 			"	}\r\n" +
 			"]\r\n").replace("{apm}", apm).replace("{npi}", npi);
 		InputStream jsonStream = new StringInputStream(json);
-		CpcValidationInfoMap file = new CpcValidationInfoMap(jsonStream);
+		PcfValidationInfoMap file = new PcfValidationInfoMap(jsonStream);
 		Assumptions.assumeFalse(file.getApmTinNpiCombinationMap() == null);
 		return file;
 	}

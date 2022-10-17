@@ -24,26 +24,6 @@ public class AdvancedApmHelper {
 	}
 
 	/**
-	 * Determines if the file is unprocessed and is CPC+
-	 *
-	 * @param metadata Data to be determined valid or invalid
-	 * @return result of the check
-	 */
-	public static boolean isAnUnprocessedCpcFile(Metadata metadata) {
-		return isCpcFile(metadata) && (!metadata.getCpcProcessed() || !metadata.getRtiProcessed());
-	}
-
-	/**
-	 * Determines if the file is a CPC+ submission
-	 *
-	 * @param metadata Data to be determined valid or invalid
-	 * @return result of the check
-	 */
-	public static boolean isCpcFile(Metadata metadata) {
-		return metadata != null && metadata.getCpc() != null;
-	}
-
-	/**
 	 * Determines if the file is a unprocessed PCF submission
 	 *
 	 * @param metadata Data to be determined valid or invalid

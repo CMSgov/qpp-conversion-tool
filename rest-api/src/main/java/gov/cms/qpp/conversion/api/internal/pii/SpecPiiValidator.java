@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.api.internal.pii;
 
 import org.springframework.util.StringUtils;
 
-import gov.cms.qpp.conversion.api.model.CpcValidationInfoMap;
+import gov.cms.qpp.conversion.api.model.PcfValidationInfoMap;
 import gov.cms.qpp.conversion.api.model.TinNpiCombination;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -19,9 +19,9 @@ import java.util.Map;
 
 public class SpecPiiValidator implements PiiValidator {
 
-	private final CpcValidationInfoMap file;
+	private final PcfValidationInfoMap file;
 
-	public SpecPiiValidator(CpcValidationInfoMap file) {
+	public SpecPiiValidator(PcfValidationInfoMap file) {
 		this.file = file;
 	}
 
