@@ -294,21 +294,8 @@ class ClinicalDocumentDecoderTest {
 	}
 
 	@Test
-	void decodeCpcPlusEntityIdTest() {
-		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
-		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), CPC_PRACTICE_ROOT));
-		Node testParentNode = new Node();
-		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
-		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
-		objectUnderTest.decode(clinicalDocument, testParentNode);
-		assertWithMessage("Clinical Document contains the Entity Id")
-				.that(testParentNode.getValue(ClinicalDocumentDecoder.PRACTICE_ID))
-				.isEqualTo(ENTITY_ID_VALUE);
-	}
-
-	@Test
-	void decodeCpcPracticeSiteAddressTest() {
-		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
+	void decodePcfPracticeSiteAddressTest() {
+		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.PCF_PROGRAM_NAME);
 		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), CPC_PRACTICE_ROOT));
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
@@ -320,7 +307,7 @@ class ClinicalDocumentDecoderTest {
 	}
 
 	@Test
-	void decodeCpcTinTest() {
+	void decodePcfTinTest() {
 		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		clinicalDocument.addContent( prepareParticipant(clinicalDocument.getNamespace(), CPC_PRACTICE_ROOT) );
 		Node testParentNode = new Node();
@@ -330,19 +317,6 @@ class ClinicalDocumentDecoderTest {
 		List<String> tinNumbers =
 			Arrays.asList(testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER).split(","));
 		tinNumbers.forEach(tinNumber -> assertThat(tinNumber).isNotEmpty());
-	}
-
-	@Test
-	void decodeCpcNpiTest() {
-		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
-		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), CPC_PRACTICE_ROOT));
-		Node testParentNode = new Node();
-		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
-		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
-		objectUnderTest.decode(clinicalDocument, testParentNode);
-		List<String> npiNumbers =
-			Arrays.asList(testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER).split(","));
-		npiNumbers.forEach(npiNumber -> assertThat(npiNumber).isNotEmpty());
 	}
 
 	@Test
@@ -457,22 +431,6 @@ class ClinicalDocumentDecoderTest {
 				.isEqualTo(ClinicalDocumentDecoder.ENTITY_APM);
 		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_ID))
 				.isEqualTo("TEST_APM");
-	}
-
-	@Test
-	void decodeClinicalDocumentInternalDecodeCPCPlus() {
-		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS);
-		Node testParentNode = new Node();
-		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
-		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
-		objectUnderTest.decode(clinicalDocument, testParentNode);
-
-		assertWithMessage("Clinical Document doesn't contain program name")
-			.that(testParentNode.getValue(ClinicalDocumentDecoder.PROGRAM_NAME))
-			.isEqualTo(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
-		assertWithMessage("Clinical Document doesn't contain entity type")
-			.that(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE))
-			.isEqualTo(ClinicalDocumentDecoder.ENTITY_APM);
 	}
 
 	private Element makeClinicalDocument(String programName) {

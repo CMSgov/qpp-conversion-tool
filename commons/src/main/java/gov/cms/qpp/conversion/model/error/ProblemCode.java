@@ -163,35 +163,34 @@ public enum ProblemCode implements LocalizedProblem {
 	MEASURE_SECTION_MISSING_MEASURE(81, "At least one measure is required in a measure section"),
 	TOO_MANY_ERRORS(82, "There are too many errors associated with this QRDA-III file. Showing 100 out of `(Error amount)` errors."
 		+ " Please fix the given errors and re-submit", true),
-	CPC_PCF_PLUS_TIN_REQUIRED(84, "`(Program name)` QRDA-III Submissions require at least one TIN to be present.", true),
-	CPC_PCF_PLUS_INVALID_TIN(85, "`(Program name)` QRDA-III Submission TINs require a 9 digit numerical value", true),
-	CPC_PCF_PLUS_MISSING_TIN(86, "This `(Program name)` QRDA-III submission is missing a TIN. Please ensure there is a TIN associated with every "
+	PCF_TIN_REQUIRED(84, "`(Program name)` QRDA-III Submissions require at least one TIN to be present.", true),
+	PCF_INVALID_TIN(85, "`(Program name)` QRDA-III Submission TINs require a 9 digit numerical value", true),
+	PCF_MISSING_TIN(86, "This `(Program name)` QRDA-III submission is missing a TIN. Please ensure there is a TIN associated with every "
 		+ "NPI submitted", true),
-	CPC_PCF_PLUS_NPI_REQUIRED(87, "`(Program name)` QRDA-III Submissions require at least one NPI to be present", true),
-	CPC_PCF_PLUS_INVALID_NPI(88, "`(Program name)` QRDA-III Submission NPIs require a 10 digit numerical value",true ),
-	CPC_PCF_PLUS_MISSING_NPI(89, "This `(Program name)` QRDA-III submission is missing a NPI. Please ensure there is an NPI associated with "
+	PCF_NPI_REQUIRED(87, "`(Program name)` QRDA-III Submissions require at least one NPI to be present", true),
+	PCF_INVALID_NPI(88, "`(Program name)` QRDA-III Submission NPIs require a 10 digit numerical value",true ),
+	PCF_MISSING_NPI(89, "This `(Program name)` QRDA-III submission is missing a NPI. Please ensure there is an NPI associated with "
 		+ "every TIN submitted", true),
-	CPC_PCF_PLUS_NO_IA_OR_PI(90, "`(Program name)` QRDA-III submissions must not contain an IA or PI section", true),
-	CPC_PCF_PLUS_INVALID_NULL_PERFORMANCE_RATE(91, "The performance rate `(performanceRateUuid)` has an invalid null value. "
+	PCF_NO_IA_OR_PI(90, "`(Program name)` QRDA-III submissions must not contain an IA or PI section", true),
+	PCF_INVALID_NULL_PERFORMANCE_RATE(91, "The performance rate `(performanceRateUuid)` has an invalid null value. "
 		+ "A performance rate cannot be null unless the performance denominator is 0", true),
-	CPC_PCF_PLUS_PERFORMANCE_DENOM_LESS_THAN_ZERO(92, "The performance denominator for measure `(measureId)` was less than 0. "
+	PCF_PERFORMANCE_DENOM_LESS_THAN_ZERO(92, "The performance denominator for measure `(measureId)` was less than 0. "
 		+ "A performance rate cannot be null unless the performance denominator is 0", true),
-	CPC_PCF_PLUS_NUMERATOR_GREATER_THAN_EITHER_DENOMINATORS(93, "The numerator id `(numeratorUuid)` has a count value that is "
+	PCF_NUMERATOR_GREATER_THAN_EITHER_DENOMINATORS(93, "The numerator id `(numeratorUuid)` has a count value that is "
 		+ "greater than the denominator and/or the performance denominator "
 		+ "(Denominator count - Denominator exclusion count - Denominator Exception count)", true),
-	CPC_PCF_PLUS_DENEX_GREATER_THAN_DENOMINATOR(94, "The denominator exclusion id `(denexUuid)` has a count value that is greater than the "
+	PCF_DENEX_GREATER_THAN_DENOMINATOR(94, "The denominator exclusion id `(denexUuid)` has a count value that is greater than the "
 		+ "denominator. The Denominator exclusion cannot be a greater value than the denominator.", true),
 	MEASURE_SECTION_V4_REQUIRED(95, "The Clinical Document must contain one Measure Section v4 with the extension 2017-06-01"),
 	MISSING_API_TIN_NPI_FILE(96, "The APM to TIN/NPI Combination file is missing."),
-	CPC_PCF_MISSING_CEHRT_ID(97, "`(Program name)` QRDA-III Submissions require a valid Cehrt ID (Valid Format: XX15EXXXXXXXXXX)", true),
-	CPC_PCF_PLUS_ZERO_PERFORMANCE_RATE(98, "The performance rate cannot have a value of 0 and must be of value Null Attribute (NA)."),
-	CPC_PCF_PLUS_DUPLICATE_CEHRT(100, "More than one Cehrt ID was found. Please submit with only one Cehrt id."),
-	CPC_PCF_PLUS_DENOMINATOR_COUNT_INVALID(101, "Denominator count must be equal to Initial Population count for CPC Plus measure population `(measure population id)`.", true),
+	PCF_MISSING_CEHRT_ID(97, "`(Program name)` QRDA-III Submissions require a valid Cehrt ID (Valid Format: XX15EXXXXXXXXXX)", true),
+	PCF_ZERO_PERFORMANCE_RATE(98, "The performance rate cannot have a value of 0 and must be of value Null Attribute (NA)."),
+	PCF_DUPLICATE_CEHRT(100, "More than one Cehrt ID was found. Please submit with only one Cehrt id."),
+	PCF_DENOMINATOR_COUNT_INVALID(101, "Denominator count must be equal to Initial Population count for `(Program name)` measure population `(measure population id)`.", true),
 	PI_RESTRICTED_MEASURES(102, "A PI section cannot contain PI_HIE_5 with PI_HIE_1, PI_LVOTC_1, PI_HIE_4, or PI_LVITC_2", false),
 	PCF_TOO_FEW_QUALITY_MEASURE_CATEGORY(103, "PCF Submissions must have at least `(PCF Measure minimum)` "
 		+ "of the following measures: `(Listing of valid measure ids)`", true),
-	CPC_PLUS_NO_PI(104, "The file contains Promoting Interoperability (PI) data; PI data must not be reported for CPC+"),
-	PCF_CPC_MULTI_TIN_NPI_SINGLE_PERFORMER(105, "If multiple TINs/NPIs are submitted, each must be reported within a separate performer"),
+	PCF_MULTI_TIN_NPI_SINGLE_PERFORMER(105, "If multiple TINs/NPIs are submitted, each must be reported within a separate performer"),
 	PCF_NO_PI(106, "PI submissions are not allowed within PCF");
 
 	private static final Map<Integer, ProblemCode> CODE_TO_VALUE = Arrays.stream(values())

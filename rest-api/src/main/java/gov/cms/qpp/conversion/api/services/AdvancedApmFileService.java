@@ -28,22 +28,6 @@ public interface AdvancedApmFileService {
 	InputStreamResource getPcfFileById(String fileId) throws IOException;
 
 	/**
-	 * Retrieves all unprocessed cpc+ metadata
-	 *
-	 * @return {@link Metadata} extracted as {@link UnprocessedFileData}.
-	 */
-	List<UnprocessedFileData> getUnprocessedCpcPlusFiles(String orgAttribute);
-
-	/**
-	 * Retrieves the file location id by metadata id and uses it to retrieve the file
-	 *
-	 * @param fileId {@link Metadata} identifier
-	 * @return file contents parsed as a {@link String}
-	 * @throws IOException for invalid IOUtils usage
-	 */
-	InputStreamResource getCpcFileById(String fileId) throws IOException;
-
-	/**
 	 * Retrieves the file location id by metadata id and uses it to retrieve the submission's QPP
 	 *
 	 * @param fileId {@link Metadata} identifier
