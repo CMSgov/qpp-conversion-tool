@@ -29,7 +29,7 @@ class SubPopulationsTest {
  		assertWithMessage("Non excluded keys should be present")
 				.that(keys)
 				.containsExactly(SubPopulationLabel.DENEXCEP, SubPopulationLabel.DENOM,
-					SubPopulationLabel.NUMER, SubPopulationLabel.IPOP);
+					SubPopulationLabel.NUMER, SubPopulationLabel.NUMEX, SubPopulationLabel.IPOP);
 	}
 
 	@Test
