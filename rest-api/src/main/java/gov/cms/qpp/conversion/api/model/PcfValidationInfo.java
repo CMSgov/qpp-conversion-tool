@@ -2,16 +2,16 @@ package gov.cms.qpp.conversion.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class CpcValidationInfo {
+public class PcfValidationInfo {
 	private String npi;
 	private String tin;
 	private String apm;
 
-	CpcValidationInfo() {
+	PcfValidationInfo() {
 		// Empty Constructor for Jackson
 	}
 
-	CpcValidationInfo(String npi, String tin, String apm) {
+	PcfValidationInfo(String npi, String tin, String apm) {
 		this.npi = npi;
 		this.tin = tin;
 		this.apm = apm;

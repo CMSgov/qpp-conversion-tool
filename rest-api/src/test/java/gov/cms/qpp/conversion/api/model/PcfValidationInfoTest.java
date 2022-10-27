@@ -8,7 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import gov.cms.qpp.test.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class CpcValidationInfoTest {
+class PcfValidationInfoTest {
 
 	@Test
 	void test_constructor() throws Exception {
@@ -16,7 +16,7 @@ class CpcValidationInfoTest {
 		String npi = "npi";
 		String tin = "tin";
 		String apm = "apm";
-		CpcValidationInfo cpc = new CpcValidationInfo(npi, tin, apm);
+		PcfValidationInfo cpc = new PcfValidationInfo(npi, tin, apm);
 		
 		assertThat(cpc.getNpi()).isEqualTo(npi);
 		assertThat(cpc.getTin()).isEqualTo(tin);
@@ -26,7 +26,7 @@ class CpcValidationInfoTest {
 	@Test
 	void test_noArgsConstructor() throws Exception {
 		
-		CpcValidationInfo cpc = new CpcValidationInfo();
+		PcfValidationInfo cpc = new PcfValidationInfo();
 		
 		assertThat(cpc.getNpi()).isNull();
 		assertThat(cpc.getTin()).isNull();
@@ -35,7 +35,7 @@ class CpcValidationInfoTest {
 
 	@Test
 	void test_setters() throws Exception {
-		CpcValidationInfo cpc = new CpcValidationInfo();
+		PcfValidationInfo cpc = new PcfValidationInfo();
 		
 		String npi = "npi";
 		String tin = "tin";

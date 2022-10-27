@@ -62,12 +62,6 @@ class DbServiceImplTest {
 	}
 
 	@Test
-	void testGetUnprocessedCpcPlusMetaDataWithMissingDynamoDbMapper() {
-		underTest = new DbServiceImpl(taskExecutor, Optional.empty(), environment);
-		assertThat(underTest.getUnprocessedCpcPlusMetaData(Constants.CPC_ORG)).isEmpty();
-	}
-
-	@Test
 	void testGetUnprocessedPcfMetaDataWithMissingDynamoDbMapper() {
 		underTest = new DbServiceImpl(taskExecutor, Optional.empty(), environment);
 		assertThat(underTest.getUnprocessedPcfMetaData(Constants.CPC_ORG)).isEmpty();
@@ -111,27 +105,6 @@ class DbServiceImplTest {
 		verifyNoInteractions(dbMapper);
 		assertWithMessage("The returned metadata must be an empty metadata.")
 				.that(metadataOut.getUuid()).isNull();
-	}
-
-	@Test
-	@SuppressWarnings("unchecked")
-	void testGetUnprocessedCpcPlusMetaData() {
-		when(environment.getProperty(Constants.CPC_PLUS_UNPROCESSED_FILE_SEARCH_DATE_VARIABLE)).thenReturn("2020-01-01");
-
-		int itemsPerPartition = 11;
-		int itemLimitPerpartition = 10;
-
-		PaginatedQueryList<Metadata> mockMetadataPage = mock(PaginatedQueryList.class);
-		Answer<Stream<Metadata>> answer = (InvocationOnMock invocation) -> Stream.generate(Metadata::new).limit(itemsPerPartition);
-		
-		when(mockMetadataPage.stream()).thenAnswer(answer);
-		when(dbMapper.query(eq(Metadata.class), any(DynamoDBQueryExpression.class)))
-			.thenReturn(mockMetadataPage);
-
-		List<Metadata> metaDataList = underTest.getUnprocessedCpcPlusMetaData(Constants.CPC_ORG);
-
-		verify(dbMapper, times(Constants.CPC_DYNAMO_PARTITIONS)).query(eq(Metadata.class), any(DynamoDBQueryExpression.class));
-		assertThat(metaDataList).hasSize(itemLimitPerpartition * Constants.CPC_DYNAMO_PARTITIONS);
 	}
 
 	@Test

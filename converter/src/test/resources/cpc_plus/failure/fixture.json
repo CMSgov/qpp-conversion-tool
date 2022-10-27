@@ -369,6 +369,7 @@
 			{
 				"errorCode": 101,
 				"subs" : [
+					".*",
 					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
 				],
 				"occurrences": 1

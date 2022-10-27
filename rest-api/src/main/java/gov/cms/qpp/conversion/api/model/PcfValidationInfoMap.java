@@ -14,43 +14,43 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CpcValidationInfoMap {
-	private static final Logger DEV_LOG = LoggerFactory.getLogger(CpcValidationInfoMap.class);
+public class PcfValidationInfoMap {
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(PcfValidationInfoMap.class);
 	private Map<String, Map<String, List<String>>> apmTinNpiCombinationMap;
 
-	public CpcValidationInfoMap(InputStream cpcNpiToApmJson) {
-		convertJsonToMapOfLists(cpcNpiToApmJson);
+	public PcfValidationInfoMap(InputStream pcfNpiToApmJson) {
+		convertJsonToMapOfLists(pcfNpiToApmJson);
 	}
 
-	private void convertJsonToMapOfLists(InputStream cpcApmNpiTinJson) {
-		if (cpcApmNpiTinJson == null) {
+	private void convertJsonToMapOfLists(InputStream pcfApmNpiTinJson) {
+		if (pcfApmNpiTinJson == null) {
 			apmTinNpiCombinationMap = null;
 			return;
 		}
 
 		apmTinNpiCombinationMap = new HashMap<>();
 
-		List<CpcValidationInfo> cpcValidationInfoList = new ArrayList<>();
+		List<PcfValidationInfo> pcfValidationInfoList = new ArrayList<>();
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
-			cpcValidationInfoList =
-				Arrays.asList(objectMapper.readValue(new InputStreamReader(cpcApmNpiTinJson, StandardCharsets.UTF_8),
-					CpcValidationInfo[].class));
+			pcfValidationInfoList =
+				Arrays.asList(objectMapper.readValue(new InputStreamReader(pcfApmNpiTinJson, StandardCharsets.UTF_8),
+					PcfValidationInfo[].class));
 		} catch (IOException | NullPointerException exc){
-			DEV_LOG.info("Failed to parse the cpc+ validation npi to apm list...");
+			DEV_LOG.info("Failed to parse the pcf validation npi to apm list...");
 		}
 
-		for (CpcValidationInfo cpcValidationInfo: cpcValidationInfoList) {
-			String currentApm = cpcValidationInfo.getApm();
-			String currentTin = cpcValidationInfo.getTin();
-			String currentNpi = cpcValidationInfo.getNpi();
+		for (PcfValidationInfo pcfValidationInfo : pcfValidationInfoList) {
+			String currentApm = pcfValidationInfo.getApm();
+			String currentTin = pcfValidationInfo.getTin();
+			String currentNpi = pcfValidationInfo.getNpi();
 
 			if(apmTinNpiCombinationMap.containsKey(currentApm)) {
 				if (!hasTinKey(currentApm, currentTin)) {
 					List<String> npiList = new ArrayList<>();
 					npiList.add(currentNpi);
 					apmTinNpiCombinationMap.get(currentApm).put(currentTin, npiList);
-				} else if(!isExistingCombination(currentApm, currentTin, cpcValidationInfo.getNpi())) {
+				} else if(!isExistingCombination(currentApm, currentTin, pcfValidationInfo.getNpi())) {
 					apmTinNpiCombinationMap.get(currentApm).get(currentTin).add(currentNpi);
 				}
 			} else {

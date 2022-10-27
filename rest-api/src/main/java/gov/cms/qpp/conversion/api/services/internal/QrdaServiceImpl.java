@@ -13,7 +13,7 @@ import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.Source;
 import gov.cms.qpp.conversion.api.internal.pii.SpecPiiValidator;
 import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.api.model.CpcValidationInfoMap;
+import gov.cms.qpp.conversion.api.model.PcfValidationInfoMap;
 import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.api.services.StorageService;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
@@ -33,7 +33,7 @@ public class QrdaServiceImpl implements QrdaService {
 
 	private final StorageService storageService;
 
-	private Supplier<CpcValidationInfoMap> cpcValidationData;
+	private Supplier<PcfValidationInfoMap> cpcValidationData;
 
 	private Supplier<ApmEntityIds> apmData;
 
@@ -76,9 +76,9 @@ public class QrdaServiceImpl implements QrdaService {
 		return converter.getReport();
 	}
 
-	private CpcValidationInfoMap retrieveCpcValidationInfoMap() {
+	private PcfValidationInfoMap retrieveCpcValidationInfoMap() {
 		API_LOG.info("Fetching CPC+ validations APM/NPI/TIN file");
-		CpcValidationInfoMap file = new CpcValidationInfoMap(retrieveCpcPlusValidationFile());
+		PcfValidationInfoMap file = new PcfValidationInfoMap(retrieveCpcPlusValidationFile());
 		if (file.getApmTinNpiCombinationMap() != null) {
 			API_LOG.info("Fetched CPC+ validations APM/NPI/TIN file");
 		} else {
@@ -119,7 +119,7 @@ public class QrdaServiceImpl implements QrdaService {
 	 */
 	Converter initConverter(Source source) {
 		Context context = new Context(apmData.get());
-		CpcValidationInfoMap apmToNpiValidationFile = cpcValidationData.get();
+		PcfValidationInfoMap apmToNpiValidationFile = cpcValidationData.get();
 		if (apmToNpiValidationFile != null && apmToNpiValidationFile.getApmTinNpiCombinationMap() != null) {
 			context.setPiiValidator(new SpecPiiValidator(apmToNpiValidationFile));
 		}

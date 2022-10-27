@@ -77,7 +77,7 @@ public class PcfQualityMeasureIdValidatorTest {
 
 		assertThat(details)
 			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.doesNotContain(ProblemCode.CPC_PCF_PLUS_PERFORMANCE_DENOM_LESS_THAN_ZERO);
+			.doesNotContain(ProblemCode.PCF_PERFORMANCE_DENOM_LESS_THAN_ZERO);
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class PcfQualityMeasureIdValidatorTest {
 
 		assertThat(details)
 			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.doesNotContain(ProblemCode.CPC_PCF_PLUS_PERFORMANCE_DENOM_LESS_THAN_ZERO);
+			.doesNotContain(ProblemCode.PCF_PERFORMANCE_DENOM_LESS_THAN_ZERO);
 	}
 
 	private void addAnyNumberOfChildren(int size) {

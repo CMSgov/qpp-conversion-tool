@@ -252,7 +252,7 @@ public class ConverterTest {
 
 	@Test
 	public void testTooManyErrorsInQrdaIIIFile() {
-		LocalizedProblem expectedError = ProblemCode.TOO_MANY_ERRORS.format(108);
+		LocalizedProblem expectedError = ProblemCode.TOO_MANY_ERRORS.format(110);
 
 		Path path = Paths.get(TOO_MANY_ERRORS);
 		Converter converter = new Converter(new PathSource(path));

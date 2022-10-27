@@ -44,9 +44,6 @@ public class MetadataHelper {
 			metadata.setNpi(findNpi(node));
 			metadata.setProgramName(findProgramName(node));
 			metadata.setApm(findApm(node));
-			if (isCpc(node)) {
-				metadata.setCpc(deriveHash(Constants.CPC_DYNAMO_PARTITION_START));
-			}
 			if (isPcf(node)) {
 				metadata.setPcf(deriveHash(Constants.PCF_DYNAMO_PARTITION_START));
 			}
@@ -108,23 +105,6 @@ public class MetadataHelper {
 	private static String findProgramName(Node node) {
 		return findValue(node, ClinicalDocumentDecoder.PROGRAM_NAME,
 				TemplateId.CLINICAL_DOCUMENT);
-	}
-
-	/**
-	 * Retrieves the random hash for CPC Field
-	 *
-	 * @param node to interrogate
-	 * @return Cpc field randomly hashed
-	 */
-	private static boolean isCpc(Node node) {
-		if (Program.isCpc(node)) {
-			return true;
-		}
-
-		Node found = findPossibleChildNode(node, ClinicalDocumentDecoder.RAW_PROGRAM_NAME,
-						TemplateId.CLINICAL_DOCUMENT);
-
-		return found != null && Program.isCpc(found);
 	}
 
 	private static boolean isPcf(Node node) {

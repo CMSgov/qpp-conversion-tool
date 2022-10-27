@@ -59,7 +59,7 @@
   <!--Program for which data is being submitted-->
   <informationRecipient>
     <intendedRecipient>
-      <id root="2.16.840.1.113883.3.249.7" extension="CPCPLUS" />
+      <id root="2.16.840.1.113883.3.249.7" extension="MIPS_APMENTITY" />
     </intendedRecipient>
   </informationRecipient>
   <legalAuthenticator>
@@ -79,19 +79,6 @@
       <code code="129465004" displayName="medical record, device" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" />
     </associatedEntity>
   </participant>
-  <!--Practice Site-->
-  <participant typeCode="LOC">
-    <associatedEntity classCode="SDLOC">
-      <id root="2.16.840.1.113883.3.249.5.1" extension="TestApmEntityId" assigningAuthorityName="CMS-CMMI" />
-      <code code="394730007" displayName="healthcare related organization" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" />
-      <addr>
-        <streetAddressLine>123 Healthcare St</streetAddressLine>
-        <city>Norman</city>
-        <state>OK</state>
-        <postalCode>73019</postalCode>
-      </addr>
-    </associatedEntity>
-  </participant>
   <!--Providers in Practice Site for which data is being submitted-->
   <documentationOf typeCode="DOC">
     <serviceEvent classCode="PCPR">
@@ -107,59 +94,7 @@
         <assignedEntity>
           <id root="2.16.840.1.113883.4.6" extension="2567891421" />
           <representedOrganization>
-            <id root="2.16.840.1.113883.4.2" extension="990000099" />
-            <name>Good Health Clinic</name>
-          </representedOrganization>
-        </assignedEntity>
-      </performer>
-      <performer typeCode="PRF">
-        <time>
-          <low value="20180101" />
-          <high value="20181231" />
-        </time>
-        <assignedEntity>
-          <id root="2.16.840.1.113883.4.6" extension="2589654740" />
-          <representedOrganization>
-            <id root="2.16.840.1.113883.4.2" extension="990000099" />
-            <name>Good Health Clinic</name>
-          </representedOrganization>
-        </assignedEntity>
-      </performer>
-      <performer typeCode="PRF">
-        <time>
-          <low value="20180101" />
-          <high value="20181231" />
-        </time>
-        <assignedEntity>
-          <id root="2.16.840.1.113883.4.6" extension="2345872354" />
-          <representedOrganization>
-            <id root="2.16.840.1.113883.4.2" extension="990000099" />
-            <name>Good Health Clinic</name>
-          </representedOrganization>
-        </assignedEntity>
-      </performer>
-      <performer typeCode="PRF">
-        <time>
-          <low value="20180101" />
-          <high value="20181231" />
-        </time>
-        <assignedEntity>
-          <id root="2.16.840.1.113883.4.6" extension="2365987421" />
-          <representedOrganization>
-            <id root="2.16.840.1.113883.4.2" extension="990000099" />
-            <name>Good Health Clinic</name>
-          </representedOrganization>
-        </assignedEntity>
-      </performer>
-      <performer typeCode="PRF">
-        <time>
-          <low value="20180101" />
-          <high value="20181231" />
-        </time>
-        <assignedEntity>
-          <id root="2.16.840.1.113883.4.6" extension="2357943549" />
-          <representedOrganization>
-            <id root="2.16.840.1.113883.4.2" extension="990000099" />
+            <id root="2.16.840.1.113883.3.249.5.4" extension="X12345" />
             <name>Good Health Clinic</name>
           </representedOrganization>
         </assignedEntity>
@@ -3774,8 +3709,8 @@
               <id root="D5E68228-5760-11E7-1256-09173F13E4C5" />
               <code code="252116004" codeSystem="2.16.840.1.113883.6.96" displayName="Observation Parameters" />
               <effectiveTime>
-                <low value="20210101" />
-                <high value="20211231" />
+                <low value="20220101" />
+                <high value="20221231" />
               </effectiveTime>
             </act>
           </entry>
