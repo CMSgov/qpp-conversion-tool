@@ -34,8 +34,8 @@ public class PcfPerformancePeriodValidationTest {
 
 		node = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		node.putValue(ReportingParametersActDecoder.PERFORMANCE_YEAR, "2021");
-		node.putValue(ReportingParametersActDecoder.PERFORMANCE_START, "20210101");
-		node.putValue(ReportingParametersActDecoder.PERFORMANCE_END, "20211231");
+		node.putValue(ReportingParametersActDecoder.PERFORMANCE_START, "20220101");
+		node.putValue(ReportingParametersActDecoder.PERFORMANCE_END, "20221231");
 		node.setParent(measureSection);
 	}
 
