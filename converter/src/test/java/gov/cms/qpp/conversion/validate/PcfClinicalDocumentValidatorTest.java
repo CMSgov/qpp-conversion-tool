@@ -30,8 +30,8 @@ public class PcfClinicalDocumentValidatorTest {
 
 	@AfterEach
 	void cleanUp() {
-		System.clearProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE);
-		System.clearProperty(CpcClinicalDocumentValidator.CPC_PLUS_CONTACT_EMAIL);
+		System.clearProperty(PcfClinicalDocumentValidator.END_DATE_VARIABLE);
+		System.clearProperty(PcfClinicalDocumentValidator.CPC_PLUS_CONTACT_EMAIL);
 	}
 
 	@Test
@@ -104,9 +104,9 @@ public class PcfClinicalDocumentValidatorTest {
 
 	@Test
 	void testCpcPlusSubmissionBeforeEndDate() {
-		System.setProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE,
-			ZonedDateTime.now(CpcClinicalDocumentValidator.EASTERN_TIME_ZONE).plusYears(3)
-				.format(CpcClinicalDocumentValidator.INPUT_END_DATE_FORMAT));
+		System.setProperty(PcfClinicalDocumentValidator.END_DATE_VARIABLE,
+			ZonedDateTime.now(PcfClinicalDocumentValidator.EASTERN_TIME_ZONE).plusYears(3)
+				.format(PcfClinicalDocumentValidator.INPUT_END_DATE_FORMAT));
 		Node clinicalDocument = createPcfClinicalDocumentNodeWithMeasureSection();
 		List<Detail> errors = validator.validateSingleNode(clinicalDocument).getErrors();
 
@@ -134,7 +134,7 @@ public class PcfClinicalDocumentValidatorTest {
 
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ProblemCode.CPC_PCF_PLUS_INVALID_NPI.format(ClinicalDocumentDecoder.PCF_PROGRAM_NAME.toUpperCase()));
+				.containsExactly(ProblemCode.PCF_INVALID_NPI.format(ClinicalDocumentDecoder.PCF_PROGRAM_NAME.toUpperCase()));
 	}
 
 	private Node createPcfClinicalDocumentNodeWithMeasureSection() {

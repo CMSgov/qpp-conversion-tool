@@ -223,7 +223,7 @@ class QualityMeasureIdRoundTripTest {
 			details.addAll(errors.getErrors().get(0).getDetails());
 		}
 
-		LocalizedProblem error = ProblemCode.CPC_PCF_PLUS_ZERO_PERFORMANCE_RATE;
+		LocalizedProblem error = ProblemCode.PCF_ZERO_PERFORMANCE_RATE;
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 			.contains(error);
 	}
@@ -267,7 +267,7 @@ class QualityMeasureIdRoundTripTest {
 			details.addAll(errors.getErrors().get(0).getDetails());
 		}
 
-		LocalizedProblem error = ProblemCode.CPC_PCF_PLUS_ZERO_PERFORMANCE_RATE;
+		LocalizedProblem error = ProblemCode.PCF_ZERO_PERFORMANCE_RATE;
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 			.contains(error);
 	}
