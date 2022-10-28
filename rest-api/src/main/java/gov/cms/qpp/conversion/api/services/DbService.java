@@ -17,8 +17,6 @@ public interface DbService {
 	 */
 	CompletableFuture<Metadata> write(Metadata meta);
 
-	List<Metadata> getUnprocessedCpcPlusMetaData(String orgAttribute);
-
 	/**
 	 * Retrieves a limited list of unprocessed Pcf Metadata
 	 *

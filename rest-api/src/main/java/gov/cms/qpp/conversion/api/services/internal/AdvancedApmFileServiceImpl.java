@@ -29,12 +29,6 @@ public class AdvancedApmFileServiceImpl implements AdvancedApmFileService {
 	}
 
 	@Override
-	public List<UnprocessedFileData> getUnprocessedCpcPlusFiles(String orgAttribute) {
-		List<Metadata> metadata = dbService.getUnprocessedCpcPlusMetaData(orgAttribute);
-		return AdvancedApmHelper.transformMetaDataToUnprocessedFileData(metadata);
-	}
-
-	@Override
 	public List<UnprocessedFileData> getUnprocessedPcfFiles(String orgAttribute) {
 		List<Metadata> metadata = dbService.getUnprocessedPcfMetaData(orgAttribute);
 		return AdvancedApmHelper.transformMetaDataToUnprocessedFileData(metadata);
@@ -44,15 +38,6 @@ public class AdvancedApmFileServiceImpl implements AdvancedApmFileService {
 	public InputStreamResource getPcfFileById(String fileId) {
 		Metadata metadata = getMetadataById(fileId);
 		if (AdvancedApmHelper.isAValidUnprocessedFile(metadata)) {
-			return new InputStreamResource(storageService.getFileByLocationId(metadata.getSubmissionLocator()));
-		}
-		throw new NoFileInDatabaseException(AdvancedApmHelper.FILE_NOT_FOUND);
-	}
-
-	@Override
-	public InputStreamResource getCpcFileById(String fileId) {
-		Metadata metadata = getMetadataById(fileId);
-		if (AdvancedApmHelper.isAnUnprocessedCpcFile(metadata)) {
 			return new InputStreamResource(storageService.getFileByLocationId(metadata.getSubmissionLocator()));
 		}
 		throw new NoFileInDatabaseException(AdvancedApmHelper.FILE_NOT_FOUND);
@@ -115,7 +100,7 @@ public class AdvancedApmFileServiceImpl implements AdvancedApmFileService {
 		Metadata metadata = dbService.getMetadataById(fileId);
 		if (metadata == null) {
 			throw new NoFileInDatabaseException(AdvancedApmHelper.FILE_NOT_FOUND);
-		} else if (!AdvancedApmHelper.isCpcFile(metadata) && (!AdvancedApmHelper.isPcfFile(metadata))) {
+		} else if (!AdvancedApmHelper.isPcfFile(metadata)) {
 			throw new InvalidFileTypeException(AdvancedApmHelper.INVALID_FILE);
 		}
 		return metadata;
