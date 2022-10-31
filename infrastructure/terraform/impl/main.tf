@@ -41,3 +41,11 @@ module "conversion-tool" {
   git-origin         = var.git-origin
   certificate_arn    = var.certificate_arn
 }
+
+module "conversion-tool-newrelic" {
+  source = "../modules/newrelic/"
+
+  environment        = var.environment
+  application        = var.application
+
+}
