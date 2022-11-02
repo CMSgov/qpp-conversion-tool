@@ -12,7 +12,7 @@
   <!-- QRDA Category III template ID (this template ID differs from QRDA III comment only template ID). -->
   <templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01"/>
   <!-- QRDA Category III Report - CMS V2 -->
-  <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2020-05-01"/>
+  <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2021-07-01"/>
   <id root='a0b51520-23d3-0137-59c4-000d3a380e5a'  />
 
 
