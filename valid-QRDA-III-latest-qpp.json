@@ -1,0 +1,62 @@
+{
+  "performanceYear" : 2022,
+  "entityType" : "individual",
+  "nationalProviderIdentifier" : "0777777777",
+  "taxpayerIdentificationNumber" : "000777777",
+  "measurementSets" : [ {
+    "category" : "quality",
+    "submissionMethod" : "electronicHealthRecord",
+    "measurements" : [ {
+      "measureId" : "236",
+      "value" : {
+        "isEndToEndReported" : true,
+        "performanceMet" : 800,
+        "eligiblePopulationExclusion" : 100,
+        "performanceNotMet" : 100,
+        "eligiblePopulation" : 1000
+      }
+    }, {
+      "measureId" : "001",
+      "value" : {
+        "isEndToEndReported" : true,
+        "performanceMet" : 800,
+        "eligiblePopulationExclusion" : 100,
+        "performanceNotMet" : 100,
+        "eligiblePopulation" : 1000
+      }
+    } ],
+    "programName" : "mips",
+    "performanceStart" : "2022-01-01",
+    "performanceEnd" : "2022-12-31",
+    "source" : "qrda3"
+  }, {
+    "category" : "pi",
+    "submissionMethod" : "electronicHealthRecord",
+    "cehrtId" : "XX15EXXXXXXXXXX",
+    "measurements" : [ {
+      "measureId" : "PI_PEA_1",
+      "value" : {
+        "numerator" : 600,
+        "denominator" : 800
+      }
+    } ],
+    "programName" : "mips",
+    "performanceStart" : "2022-02-01",
+    "performanceEnd" : "2022-05-31",
+    "source" : "qrda3"
+  }, {
+    "category" : "ia",
+    "submissionMethod" : "electronicHealthRecord",
+    "measurements" : [ {
+      "measureId" : "IA_EPA_3",
+      "value" : true
+    }, {
+      "measureId" : "IA_CC_10",
+      "value" : true
+    } ],
+    "programName" : "mips",
+    "performanceStart" : "2022-01-01",
+    "performanceEnd" : "2022-04-30",
+    "source" : "qrda3"
+  } ]
+}
