@@ -37,7 +37,7 @@ class MeasureDataRoundTripTest {
 	}
 
 	@ParameterizedTest
-	@EnumSource(value = SubPopulationLabel.class, mode = EnumSource.Mode.EXCLUDE, names = {"IPOP"})
+	@EnumSource(value = SubPopulationLabel.class, mode = EnumSource.Mode.EXCLUDE, names = {"IPOP", "NUMEX"})
 	void decodeMeasureDataAsNode(SubPopulationLabel label) throws Exception {
 		test(label);
 	}
