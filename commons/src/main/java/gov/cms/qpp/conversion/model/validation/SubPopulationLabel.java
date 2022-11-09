@@ -15,6 +15,7 @@ public enum SubPopulationLabel {
 	DENEXCEP(SubPopulation::getDenominatorExceptionsUuid, "DENEXCEP"),
 	DENEX(SubPopulation::getDenominatorExclusionsUuid, "DENEX"),
 	NUMER(SubPopulation::getNumeratorUuid, "NUMER"),
+	NUMEX(SubPopulation::getNumeratorExclusionUuid, "NUMEX"),
 	DENOM(SubPopulation::getDenominatorUuid, "DENOM"),
 	IPOP(SubPopulation::getNumeratorUuid, "IPOP", "IPP");
 

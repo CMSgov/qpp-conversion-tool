@@ -29,7 +29,7 @@ class SubPopulationsTest {
  		assertWithMessage("Non excluded keys should be present")
 				.that(keys)
 				.containsExactly(SubPopulationLabel.DENEXCEP, SubPopulationLabel.DENOM,
-					SubPopulationLabel.NUMER, SubPopulationLabel.IPOP);
+					SubPopulationLabel.NUMER, SubPopulationLabel.NUMEX, SubPopulationLabel.IPOP);
 	}
 
 	@Test
@@ -62,6 +62,7 @@ class SubPopulationsTest {
 		subPopulation.setDenominatorExclusionsUuid(expected.get(SubPopulationLabel.DENEX.name()));
 		subPopulation.setDenominatorUuid(expected.get(SubPopulationLabel.DENOM.name()));
 		subPopulation.setNumeratorUuid(expected.get(SubPopulationLabel.NUMER.name()));
+		subPopulation.setNumeratorExclusionUuid(expected.get(SubPopulationLabel.NUMEX.name()));
 
 		for (SubPopulationLabel key : SubPopulations.getExclusiveKeys(Sets.newHashSet(SubPopulationLabel.IPOP))) {
 			assertThat(SubPopulations.getUniqueIdForKey(key.name(), subPopulation))

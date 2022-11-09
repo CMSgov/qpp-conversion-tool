@@ -42,6 +42,12 @@ class QualityMeasureIdValidatorTest {
 	private static final String REQUIRES_DENOM_EXCEPTION_DENOM_GUID = "375D0559-C749-4BB9-9267-81EDF447650B";
 	private static final String REQUIRES_DENOM_EXCEPTION_NUMER_GUID = "EFFE261C-0D57-423E-992C-7141B132768C";
 
+	private static final String REQUIRES_NUMER_EXCLUSION_GUID = "requiresNumeratorExclusionGuid";
+	private static final String REQUIRES_NUMER_EXCLUSION_NUMEX_GUID = "16F9E2DB-C09F-4E06-AFBD-C1E5E178D921";
+	private static final String REQUIRES_NUMER_EXCLUSION_NUMER_GUID = "14F9E2DB-C09F-4E06-AFBD-C1E5E178D920";
+	private static final String REQUIRES_NUMER_EXCLUSION_IPOP_GUID = "3E177A28-30DE-4381-8C7A-B42CD914DA33";
+	private static final String REQUIRES_NUMER_EXCLUSION_DENOM_GUID = "E7E1C3BB-730F-4020-9BF3-3AA508B914FC";
+
 	private static final String MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID = "multiplePopulationDenominatorExceptionGuid";
 	private static final String MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP1_GUID = "E681DBF8-F827-4586-B3E0-178FF19EC3A2";
 	private static final String MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM1_GUID = "04BF53CE-6993-4EA2-BFE5-66E36172B388";
@@ -140,6 +146,21 @@ class QualityMeasureIdValidatorTest {
 		assertWithMessage("Incorrect validation error.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(incorrectCount, incorrectUuid);
+	}
+
+	@Test
+	void testNumeratorExclusionMissing() {
+		LocalizedProblem incorrectCount = ProblemCode.POPULATION_CRITERIA_COUNT_INCORRECT.format(
+			"CMS156v9", 1, SubPopulationLabel.NUMEX.name(), 0);
+
+		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_NUMER_EXCLUSION_GUID)
+			.removeSubPopulationMeasureData(SubPopulationLabel.NUMEX.name(), REQUIRES_NUMER_EXCLUSION_NUMEX_GUID)
+			.build();
+
+		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
+		assertWithMessage("Incorrect validation error.")
+			.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(incorrectCount);
 	}
 
 	@Test
@@ -399,6 +420,13 @@ class QualityMeasureIdValidatorTest {
 					.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.NUMER.name(), REQUIRES_DENOM_EXCLUSION_NUMER_GUID, ONE_HUNDRED)
 					.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.DENEX.name(), REQUIRES_DENOM_EXCLUSION_DENEX_GUID, ONE_HUNDRED)
 					.addSubPopulationPerformanceRate(REQUIRES_DENOM_EXCLUSION_NUMER_GUID);
+		} else if (REQUIRES_NUMER_EXCLUSION_GUID.equalsIgnoreCase(measureId)) {
+			measureReferenceResultsNode
+				.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.IPOP.name(), REQUIRES_NUMER_EXCLUSION_IPOP_GUID,
+					ONE_HUNDRED)
+				.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.DENOM.name(), REQUIRES_NUMER_EXCLUSION_DENOM_GUID, ONE_HUNDRED)
+				.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.NUMER.name(), REQUIRES_NUMER_EXCLUSION_NUMER_GUID, ONE_HUNDRED)
+				.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.NUMEX.name(), REQUIRES_NUMER_EXCLUSION_NUMEX_GUID, ONE_HUNDRED);
 		}
 
 		return measureReferenceResultsNode;
