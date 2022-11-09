@@ -15,7 +15,7 @@ import gov.cms.qpp.conversion.validate.pii.PiiValidator;
  * throughout the conversion.
  */
 public class Context {
-	public static final String REPORTING_YEAR = "2021";
+	public static final String REPORTING_YEAR = "2022";
 	private final Map<Class<? extends Annotation>, Registry<?>> registries = new IdentityHashMap<>();
 	private Program program = Program.ALL;
 	private boolean historical;
