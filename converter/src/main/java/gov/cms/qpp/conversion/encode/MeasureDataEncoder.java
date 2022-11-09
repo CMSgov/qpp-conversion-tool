@@ -29,7 +29,8 @@ public class MeasureDataEncoder extends QppOutputEncoder {
 	 */
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
-		if (!SubPopulationLabel.IPOP.hasAlias(node.getValue(MEASURE_TYPE))) {
+		if (!SubPopulationLabel.IPOP.hasAlias(node.getValue(MEASURE_TYPE)) &&
+			!SubPopulationLabel.NUMEX.hasAlias(node.getValue(MEASURE_TYPE))) {
 			String measureType = node.getValue(MEASURE_TYPE);
 			Node aggCount = node.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
 

@@ -25,6 +25,9 @@ public class SubPopulation {
 	@JsonProperty("numeratorUuid")
 	private String numeratorUuid;
 
+	@JsonProperty("numeratorExclusionUuid")
+	private String numeratorExclusionUuid;
+
 	@JsonProperty("denominatorExceptionUuid")
 	private String denominatorExceptionsUuid;
 
@@ -76,6 +79,14 @@ public class SubPopulation {
 		this.numeratorUuid = numeratorUuid;
 	}
 
+	public String getNumeratorExclusionUuid() {
+		return numeratorExclusionUuid;
+	}
+
+	public void setNumeratorExclusionUuid(final String numeratorExclusionUuid) {
+		this.numeratorExclusionUuid = numeratorExclusionUuid;
+	}
+
 	public String getDenominatorExceptionsUuid() {
 		return denominatorExceptionsUuid;
 	}
@@ -112,6 +123,10 @@ public class SubPopulation {
 				? !numeratorUuid.equals(that.numeratorUuid) : (that.numeratorUuid != null)) {
 			isCool = false;
 		}
+		if (numeratorExclusionUuid != null
+			? !numeratorExclusionUuid.equals(that.numeratorExclusionUuid) : (that.numeratorExclusionUuid != null)) {
+			isCool = false;
+		}
 		if (strata != null ? !strata.equals(that.strata) : (that.strata != null)) {
 			isCool = false;
 		}
@@ -138,7 +153,7 @@ public class SubPopulation {
 	@Override
 	public int hashCode() {
 		return Objects.hash(initialPopulationUuid, denominatorUuid, denominatorExclusionsUuid,
-				numeratorUuid, denominatorExceptionsUuid, strata);
+				numeratorUuid, numeratorExclusionUuid, denominatorExceptionsUuid, strata);
 	}
 
 }
