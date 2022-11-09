@@ -673,8 +673,8 @@ QRDA Category III Measure Section (CMS EP)
                            codeSystem="2.16.840.1.113883.6.96"
                            displayName="Observation Parameters"/>
                      <effectiveTime>
-                        <low value="20210101"/>
-                        <high value="20211231"/>
+                        <low value="20220101"/>
+                        <high value="20221231"/>
                      </effectiveTime>
                   </act>
                </entry>
