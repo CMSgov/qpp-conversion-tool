@@ -11,7 +11,7 @@ public enum DocumentationReference {
 	MEASURE_IDS(40),
 	CEHRT(15);
 
-	private static final String BASE_PATH = "https://ecqi.healthit.gov/sites/default/files/2021-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-v1.3.pdf#page=";
+	private static final String BASE_PATH = "https://ecqi.healthit.gov/sites/default/files/2022-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-V1.1-508.pdf#page=";
 	private final String path;
 
 	DocumentationReference(int page) {
