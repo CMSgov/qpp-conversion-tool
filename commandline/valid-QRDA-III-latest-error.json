@@ -1,0 +1,24 @@
+{
+  "errors" : [ {
+    "sourceIdentifier" : "valid-QRDA-III-latest.xml",
+    "details" : [ {
+      "errorCode" : 6,
+      "message" : "CT - The measure GUID supplied 2c928082-7505-caf9-0175-2382d1bd06b1 is invalid. Please see the 2022 IG https://ecqi.healthit.gov/sites/default/files/2021-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-v1.3.pdf#page=40 for valid measure GUIDs.",
+      "location" : {
+        "location" : "Quality Measure 2c928082-7505-caf9-0175-2382d1bd06b1",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3'][1]/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3'][1]/*[local-name() = 'organizer' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 870,
+        "column" : 83
+      }
+    }, {
+      "errorCode" : 6,
+      "message" : "CT - The measure GUID supplied 2c928082-74c2-3313-0174-c60bd07b02a6 is invalid. Please see the 2022 IG https://ecqi.healthit.gov/sites/default/files/2021-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-v1.3.pdf#page=40 for valid measure GUIDs.",
+      "location" : {
+        "location" : "Quality Measure 2c928082-74c2-3313-0174-c60bd07b02a6",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3'][1]/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'organizer' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 2782,
+        "column" : 83
+      }
+    } ]
+  } ]
+}
