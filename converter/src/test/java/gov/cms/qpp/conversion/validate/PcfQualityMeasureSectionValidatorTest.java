@@ -19,11 +19,6 @@ import static com.google.common.truth.Truth.assertThat;
 public class PcfQualityMeasureSectionValidatorTest {
 
 	private PcfQualityMeasureSectionValidator validator;
-	private static String[] EXPECTED_PCF_MEASURE_IDS = {
-			"2c928085-7198-38ee-0171-9d78a0d406b3", // 122v9
-			"2c928085-7198-38ee-0171-9d6e026b066b", // 130v9
-			"2c928085-7198-38ee-0171-9da6456007ab"  // 165v9
-	};
 
 	@BeforeAll
 	static void setup() {
@@ -39,14 +34,14 @@ public class PcfQualityMeasureSectionValidatorTest {
 	void testMissingPcfExpectedMeasureIds() {
 		Node node = new Node();
 		LocalizedProblem message = ProblemCode.PCF_TOO_FEW_QUALITY_MEASURE_CATEGORY
-			.format(3, String.join(",", EXPECTED_PCF_MEASURE_IDS));
+			.format(3, String.join(",", PcfQualityMeasureSectionValidator.PCF_REQUIRED_MEASURES));
 		List<Detail> details = validator.validateSingleNode(node).getErrors();
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 			.contains(message);
 	}
 	@Test
 	void testCorrectPcfExpectedMeasureIds() {
-		Node node = setupMeasures(EXPECTED_PCF_MEASURE_IDS);
+		Node node = setupMeasures(PcfQualityMeasureSectionValidator.PCF_REQUIRED_MEASURES);
 		List<Detail> details = validator.validateSingleNode(node).getErrors();
 		assertThat(details).hasSize(0);
 	}

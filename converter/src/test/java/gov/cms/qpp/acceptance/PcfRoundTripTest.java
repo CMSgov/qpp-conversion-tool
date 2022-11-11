@@ -36,7 +36,7 @@ public class PcfRoundTripTest {
 	static void setup() throws URISyntaxException, IOException {
 		ApmEntityIds apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json", "test_pcf_apm_entity_ids.json");
 		URL sample = PcfRoundTripTest.class.getClassLoader()
-			.getResource("pcf/success/2021/Y5_PCF_Sample_QRDA-III.xml");
+			.getResource("pcf/success/PCF_Sample_QRDA-III.xml");
 		Path path = Paths.get(sample.toURI());
 		new JsonPathToXpathHelper(path, wrapper, false, new Context(apmEntityIds));
 		json = new ObjectMapper().readValue(wrapper.copyWithoutMetadata().toString(), HashMap.class);
