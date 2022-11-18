@@ -14,8 +14,8 @@ import java.util.Set;
 import static com.google.common.truth.Truth.assertThat;
 
 public class MeasureConfigHelperTest {
-	private static final String THE_UUID = "2c928085-7198-38ee-0171-9d78a0d406b3";
-	private static final String THE_E_MEASURE_ID = "CMS122v9";
+	private static final String THE_UUID = "2c928082-74c2-3313-0174-c60bd07b02a6";
+	private static final String THE_E_MEASURE_ID = "CMS122v10";
 	private static final String THE_MEASURE_ID = "001";
 	private static Set<String> MULTI_TO_SINGLE_MEASURES = Set.of("001", "008", "143", "438");
 

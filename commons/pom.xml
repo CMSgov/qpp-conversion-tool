@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>19.5.0-RELEASE</version>
+		<version>19.6.0-RELEASE</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -64,7 +64,7 @@
 									<goal>wget</goal>
 								</goals>
 								<configuration>
-									<url>https://raw.githubusercontent.com/CMSgov/qpp-measures-data/develop/measures/2021/measures-data.json</url>
+									<url>https://raw.githubusercontent.com/CMSgov/qpp-measures-data/develop/measures/2022/measures-data.json</url>
 									<skipCache>true</skipCache>
 									<overwrite>true</overwrite>
 									<outputDirectory>${basedir}/src/main/resources</outputDirectory>
