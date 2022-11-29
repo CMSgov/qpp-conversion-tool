@@ -3,7 +3,7 @@
   <realmCode code="US" />
   <typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040" />
   <templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01" />
-  <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2020-05-01"/>
+  <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2021-07-01"/>
   <id root="D5E68223-5760-11E7-1256-09173F13E4C5" />
   <code code="55184-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Quality Reporting Document Architecture Calculated Summary Report" />
   <title>Comprehensive Primary Care Plus (CPC+) Sample QRDA-III Report</title>
@@ -199,12 +199,12 @@ QRDA Category III Measure Section (CMS EP)
               <id root="D5E68228-5760-11E7-1256-09173F13E4C5" />
               <code code="252116004" codeSystem="2.16.840.1.113883.6.96" displayName="Observation Parameters" />
               <effectiveTime>
-                <low value="20210101" />
-                <high value="20211231" />
+                <low value="20220101" />
+                <high value="20221231" />
               </effectiveTime>
             </act>
           </entry>
-          <!--Measure Entry for CMS122v8-->
+          <!--Measure Entry for CMS122-->
       		<entry>
       			<organizer classCode="CLUSTER" moodCode="EVN">
       				<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
@@ -219,7 +219,7 @@ QRDA Category III Measure Section (CMS EP)
       				<reference typeCode="REFR">
       					<externalDocument classCode="DOC" moodCode="EVN">
       						<id root="2.16.840.1.113883.4.738"
-      							extension="2c928085-7198-38ee-0171-9d78a0d406b3"/>
+      							extension="2c928082-74c2-3313-0174-c60bd07b02a6"/>
       						<code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
       							  codeSystemName="LOINC" displayName="Health Quality Measure Document"/>
       						<text>Diabetes: Hemoglobin A1c (HbA1c) Poor Control (&gt; 9%)</text>
@@ -240,7 +240,7 @@ QRDA Category III Measure Section (CMS EP)
       						<value xsi:type="REAL" value=".888889"/>
       						<reference typeCode="REFR">
       							<externalObservation classCode="OBS" moodCode="EVN">
-      								<id root="44E72F3A-B3EC-42E6-85DB-928A9515255C"/>
+      								<id root="0E994FD7-399A-46AE-84F3-D4286EB35AD8"/>
       								<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
       									  codeSystemName="ActCode" displayName="Numerator"/>
       							</externalObservation>
@@ -650,7 +650,7 @@ QRDA Category III Measure Section (CMS EP)
       						<!--IPOP Population ID from eCQM-->
       						<reference typeCode="REFR">
       							<externalObservation classCode="OBS" moodCode="EVN">
-      								<id root="C7396995-408E-4254-BF40-D2CD2A97E858"/>
+      								<id root="D0F9A8EF-6C52-429A-A522-B568269EF39A"/>
       							</externalObservation>
       						</reference>
       					</observation>
@@ -1058,7 +1058,7 @@ QRDA Category III Measure Section (CMS EP)
       						<!--DENOM Population ID from eCQM-->
       						<reference typeCode="REFR">
       							<externalObservation classCode="OBS" moodCode="EVN">
-      								<id root="02793E57-2555-4145-BECF-1BE0F6CAED62"/>
+      								<id root="0A5B121A-16A0-41A1-8749-58BD992813C1"/>
       							</externalObservation>
       						</reference>
       					</observation>
@@ -1466,7 +1466,7 @@ QRDA Category III Measure Section (CMS EP)
       						<!--DENEX Population ID from eCQM-->
       						<reference typeCode="REFR">
       							<externalObservation classCode="OBS" moodCode="EVN">
-      								<id root="3FAC8D80-C279-47FC-B001-5E41407757AF"/>
+      								<id root="F4F7D899-682A-43D0-9506-75C0D7C08A76"/>
       							</externalObservation>
       						</reference>
       					</observation>
@@ -1874,14 +1874,14 @@ QRDA Category III Measure Section (CMS EP)
       						<!--NUMER Population ID from eCQM-->
       						<reference typeCode="REFR">
       							<externalObservation classCode="OBS" moodCode="EVN">
-      								<id root="44E72F3A-B3EC-42E6-85DB-928A9515255C"/>
+      								<id root="0E994FD7-399A-46AE-84F3-D4286EB35AD8"/>
       							</externalObservation>
       						</reference>
       					</observation>
       				</component>
       			</organizer>
       		</entry>
-          <!--Measure Entry for CMS130v8-->
+          <!--Measure Entry for CMS130-->
           <entry>
              <organizer classCode="CLUSTER" moodCode="EVN">
                 <templateId root="2.16.840.1.113883.10.20.24.3.98"/>
@@ -1893,7 +1893,7 @@ QRDA Category III Measure Section (CMS EP)
                 <reference typeCode="REFR">
                    <externalDocument classCode="DOC" moodCode="EVN">
                       <id root="2.16.840.1.113883.4.738"
-                          extension="2c928085-7198-38ee-0171-9d6e026b066b"/>
+                          extension="2c928082-74c2-3313-0174-daf39f2c0658"/>
                       <code code="57024-2"
                             codeSystem="2.16.840.1.113883.6.1"
                             codeSystemName="LOINC"
@@ -1915,7 +1915,7 @@ QRDA Category III Measure Section (CMS EP)
                       <value xsi:type="REAL" value=".888889"/>
                       <reference typeCode="REFR">
                          <externalObservation classCode="OBS" moodCode="EVN">
-                            <id root="97995C43-D36C-417F-A1A6-7C379A7F46FF"/>
+                            <id root="43D4D31D-4FCC-445B-9A78-AB4756149E65"/>
                             <code code="NUMER"
                                   codeSystem="2.16.840.1.113883.5.4"
                                   codeSystemName="ActCode"
@@ -2334,7 +2334,7 @@ QRDA Category III Measure Section (CMS EP)
                      <!--IPOP Population ID from eMeasure-->
                      <reference typeCode="REFR">
                          <externalObservation classCode="OBS" moodCode="EVN">
-                            <id root="0C34F7DA-92D7-4B44-9A24-E4950853A642"/>
+                            <id root="17503C2D-5201-451F-8B59-6E8D0C1F06E2"/>
                          </externalObservation>
                       </reference>
                    </observation>
@@ -2749,7 +2749,7 @@ QRDA Category III Measure Section (CMS EP)
                       <!--DENOM Population ID from eMeasure-->
                       <reference typeCode="REFR">
                          <externalObservation classCode="OBS" moodCode="EVN">
-                            <id root="7D6E33BB-31BA-42A9-9447-73A6B47F07D5"/>
+                            <id root="C0BA27DB-723D-4ACE-8E57-0DEA54FC8CCF"/>
                          </externalObservation>
                       </reference>
                    </observation>
@@ -3316,7 +3316,7 @@ QRDA Category III Measure Section (CMS EP)
                       <!--DENEX Population ID from eMeasure-->			
                       <reference typeCode="REFR">
                          <externalObservation classCode="OBS" moodCode="EVN">
-                            <id root="81F6DC72-FA7A-433E-9DFA-A889343F6008"/>
+                            <id root="B45075B5-CCF8-45B3-89B6-71305F8023AE"/>
                          </externalObservation>
                       </reference>
                    </observation>
@@ -3883,14 +3883,14 @@ QRDA Category III Measure Section (CMS EP)
                       <!--NUMER Population ID from eMeasure-->			
                       <reference typeCode="REFR">
                          <externalObservation classCode="OBS" moodCode="EVN">
-                            <id root="97995C43-D36C-417F-A1A6-7C379A7F46FF"/>
+                            <id root="43D4D31D-4FCC-445B-9A78-AB4756149E65"/>
                          </externalObservation>
                       </reference>
                    </observation>
                 </component>
              </organizer>
           </entry>
-          <!--Measure Entry for CMS165v7-->
+          <!--Measure Entry for CMS165-->
           <entry>
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
@@ -3901,7 +3901,7 @@ QRDA Category III Measure Section (CMS EP)
               <!--Measure Reference and Results-->
               <reference typeCode="REFR">
                 <externalDocument classCode="DOC" moodCode="EVN">
-                  <id root="2.16.840.1.113883.4.738" extension="2c928085-7198-38ee-0171-9da6456007ab" />
+                  <id root="2.16.840.1.113883.4.738" extension="2c928082-7505-caf9-0175-2382d1bd06b1" />
                   <code code="57024-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Health Quality Measure Document" />
                   <text>Controlling High Blood Pressure</text>
                 </externalDocument>
@@ -3917,7 +3917,7 @@ QRDA Category III Measure Section (CMS EP)
                   <value xsi:type="REAL" value=".888889" />
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="63DAFD4E-CBD5-4BEE-BE19-E64337356748" />
+                      <id root="DA4AB896-88EF-4F3E-8F44-15165CEEAA0E" />
                       <code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Numerator" />
                     </externalObservation>
                   </reference>
@@ -4321,7 +4321,7 @@ QRDA Category III Measure Section (CMS EP)
                   <!--IPOP Population ID from eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="87338BA5-170B-4264-9E59-6A4A3A57C785" />
+                      <id root="947E37E4-7BC7-4BF0-985F-D8A3F83140D6" />
                     </externalObservation>
                   </reference>
                 </observation>
@@ -4724,7 +4724,7 @@ QRDA Category III Measure Section (CMS EP)
                   <!--DENOM Population ID from eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="B2E2AA67-26CD-48CB-9536-094F1D047149" />
+                      <id root="98174296-AE1D-4245-A8B3-C690B00ADD72" />
                     </externalObservation>
                   </reference>
                 </observation>
@@ -5127,7 +5127,7 @@ QRDA Category III Measure Section (CMS EP)
                   <!--DENEX Population ID from eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="9B6EDB4C-A390-4833-A135-2A2AC6334126" />
+                      <id root="B1176EC6-38FD-4134-865F-65D69C056518" />
                     </externalObservation>
                   </reference>
                 </observation>
@@ -5530,7 +5530,7 @@ QRDA Category III Measure Section (CMS EP)
                   <!--NUMER Population ID from eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="63DAFD4E-CBD5-4BEE-BE19-E64337356748" />
+                      <id root="DA4AB896-88EF-4F3E-8F44-15165CEEAA0E" />
                     </externalObservation>
                   </reference>
                 </observation>

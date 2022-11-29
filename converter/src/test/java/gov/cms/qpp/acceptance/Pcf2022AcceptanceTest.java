@@ -19,8 +19,8 @@ import java.util.stream.Stream;
 import static com.google.common.truth.Truth.assertThat;
 import static gov.cms.qpp.acceptance.Util.getXml;
 
-public class Pcf2021AcceptanceTest {
-    private static final Path BASE = Paths.get("src/test/resources/pcf/acceptance2021");
+public class Pcf2022AcceptanceTest {
+    private static final Path BASE = Paths.get("src/test/resources/pcf/acceptance2022");
     private static final Path SUCCESS = BASE.resolve("success");
     private static final Path SUCCESS_WARNING = BASE.resolve("warning");
     private static final Path FAILURE = BASE.resolve("failure");

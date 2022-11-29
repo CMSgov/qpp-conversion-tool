@@ -4,7 +4,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.acceptance.helper.JsonPathToXpathHelper;
@@ -20,7 +22,13 @@ class QualityMeasureMultiXpathJsonPathTest {
 
 	@BeforeAll
 	static void beforeClass() {
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.TEST_MEASURE_DATA);
 		helper = new JsonPathToXpathHelper(path, wrapper);
+	}
+
+	@AfterAll
+	static void afterClass() {
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 	}
 
 	@Test

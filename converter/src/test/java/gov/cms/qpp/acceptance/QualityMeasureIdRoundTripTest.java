@@ -163,7 +163,6 @@ class QualityMeasureIdRoundTripTest {
 
 	@Test
 	void test2020CorrectMultiToSinglePerfMeasureExample() {
-		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 		Converter converter = new Converter(new PathSource(CORRECT_MULTI_TO_SINGLE_PERF_RATE_FILE), new Context(apmEntityIds));
 		JsonWrapper qpp = converter.transform();
 
@@ -230,7 +229,6 @@ class QualityMeasureIdRoundTripTest {
 
 	@Test
 	void testTopLevelMipsApmSampleFile() {
-		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 		Converter converter = new Converter(new PathSource(MIPS_APM_FILE), new Context(apmEntityIds));
 		JsonWrapper qpp = converter.transform();
 

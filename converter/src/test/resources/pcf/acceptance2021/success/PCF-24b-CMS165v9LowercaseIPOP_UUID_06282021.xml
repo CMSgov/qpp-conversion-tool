@@ -6,7 +6,7 @@
    <realmCode code="US"/>
    <typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
    <templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01"/>
-   <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2020-05-01"/>
+   <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2021-07-01"/>
    <id root="ad68c6aa-5e6a-41d1-afae-ba02a7303baa"/>
    <code code="55184-6"
          codeSystem="2.16.840.1.113883.6.1"
@@ -672,8 +672,8 @@ QRDA Category III Measure Section (CMS EP)
                            codeSystem="2.16.840.1.113883.6.96"
                            displayName="Observation Parameters"/>
                      <effectiveTime>
-                        <low value="20210101"/>
-                        <high value="20211231"/>
+                        <low value="20220101"/>
+                        <high value="20221231"/>
                      </effectiveTime>
                   </act>
                </entry>

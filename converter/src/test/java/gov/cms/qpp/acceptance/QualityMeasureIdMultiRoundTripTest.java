@@ -17,6 +17,7 @@ import gov.cms.qpp.conversion.util.JsonHelper;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.jayway.jsonpath.TypeRef;
@@ -49,9 +50,14 @@ class QualityMeasureIdMultiRoundTripTest {
 	private static MarkupManipulator manipulator;
 
 	@BeforeAll
-	static void setup() {
+	static void beforeAll() {
 		manipulator = new MarkupManipulator.MarkupManipulatorBuilder()
 			.setPathname(JUNK_QRDA3_FILE).build();
+	}
+
+	@BeforeEach
+	void setup() {
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.TEST_MEASURE_DATA);
 	}
 
 	@AfterEach
@@ -111,7 +117,7 @@ class QualityMeasureIdMultiRoundTripTest {
 	@Test
 	void testRoundTripForQualityMeasureIdWithNoDenexMeasureType() {
 		LocalizedProblem error =
-			ProblemCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS128v9", 2, SubPopulationLabel.DENEX.name(), 1);
+			ProblemCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS128v7", 2, SubPopulationLabel.DENEX.name(), 1);
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[5]/observation/value/@code";
 
