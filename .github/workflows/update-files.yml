@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout codebase
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3g
 
       - name: Check PII & Credentiail leaks
         uses: zricethezav/gitleaks-action@6e41781c235feb424ecc3435610dce20ad349a70 # pin@master
@@ -48,6 +48,6 @@ jobs:
           aws_region: ${{ secrets.AWS_REGION }}
 
       - name: Clean up
-          run: |
-            rm -vrf ~/testingCpcPlusValidationFile.json
-            rm -vrf ~/${{ secrets.PARTICIPATION_FILE_NAME }}
+        run: |
+          rm -vrf ~/testingCpcPlusValidationFile.json
+          rm -vrf ~/${{ secrets.PARTICIPATION_FILE_NAME }}
