@@ -1,0 +1,53 @@
+name: Update Participation File
+
+on:
+  push:
+    branches:
+      - feature/QPPSF-10875_Update-Participation-File
+      - master
+
+jobs:
+  builds:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout codebase
+          uses: actions/checkout@v3
+
+      - name: Check PII & Credentiail leaks
+        uses: zricethezav/gitleaks-action@6e41781c235feb424ecc3435610dce20ad349a70 # pin@master
+
+      - name: Retrieve Dev Unformatted File
+        uses: keithweaver/aws-s3-github-action@v1.0.0
+        if: github.ref == 'refs/heads/feature/QPPSF-10875_Update-Participation-File'
+        with:
+          command: cp
+          source: ${{ format('s3://{0}/{1}', secrets.DEV_S3_BUCKET, secrets.DEV_PART_FILE) }}
+          destination: ${{ format('./{0}', secrets.DEV_PART_FILE) }}
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ secrets.AWS_REGION }}
+
+      - name: Run python formatting for Dev
+        uses: actions/setup-python@v4
+        if: github.ref == 'refs/heads/feature/QPPSF-10875_Update-Participation-File'
+        with:
+          python-version: '3.10'
+            run: |
+              pip install openpyxl simplejson collections
+              python ~/tools/scripts/format-participation-file.py ${{ secrets.DEV_PART_FILE }} testingCpcPlusValidationFile.json
+
+      - name: Upload file to Dev s3
+        uses: keithweaver/aws-s3-github-action@v1.0.0
+        if: github.ref == 'refs/heads/feature/QPPSF-10875_Update-Participation-File'
+        with:
+          command: cp
+          source: ./testCpcPlusValidationFile.json
+          destination: ${{ format('s3://{0}/testingCpcPlusValidationFile.json', secrets.DEV_S3_BUCKET) }}
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ secrets.AWS_REGION }}
+
+      - name: Clean up
+          run: |
+            rm -vrf ~/testingCpcPlusValidationFile.json
+            rm -vrf ~/${{ secrets.PARTICIPATION_FILE_NAME }}
