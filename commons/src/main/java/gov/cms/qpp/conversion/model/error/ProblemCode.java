@@ -189,7 +189,13 @@ public enum ProblemCode implements LocalizedProblem {
 	PCF_TOO_FEW_QUALITY_MEASURE_CATEGORY(103, "PCF Submissions must have the `(PCF Measure minimum)` "
 		+ "following measures: `(Listing of valid measure ids)`", true),
 	PCF_MULTI_TIN_NPI_SINGLE_PERFORMER(105, "If multiple TINs/NPIs are submitted, each must be reported within a separate performer"),
-	PCF_NO_PI(106, "PI submissions are not allowed within PCF");
+	PCF_NO_PI(106, "PI submissions are not allowed within PCF"),
+	PCF_MISSING_COMBINATION(107,
+		"NPI/TIN `(npi)`-`(tin)` was active on the PCF practitioner roster for `(apm)` during the performance year but was not found in the file.",
+		true),
+	PCF_INVALID_COMBINATION(108,
+		"NPI/TIN `(npi)`-`(tin)` was reported in the file but does not exist at the practice or was not active on the PCF practitioner roster for `(apm)` during the performance year.",
+		true);
 
 	private static final Map<Integer, ProblemCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ProblemCode::getCode, Function.identity()));
