@@ -16,6 +16,14 @@ jobs:
       - name: Check PII & Credentiail leaks
         uses: zricethezav/gitleaks-action@6e41781c235feb424ecc3435610dce20ad349a70 # pin@master
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ secrets.AWS_REGION }}
+            role-to-assume: ${{ secrets.AWS_BUCKET_ROLE }}
+
       - name: Retrieve Dev Unformatted File
         uses: keithweaver/aws-s3-github-action@v1.0.0
         if: github.ref == 'refs/heads/feature/QPPSF-10875_Update-Participation-File'
