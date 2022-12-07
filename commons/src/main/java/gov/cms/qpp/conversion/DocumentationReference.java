@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion;
 
 public enum DocumentationReference {
 
-	CPC_PLUS_SUBMISSIONS(14),
+	PCF_SUBMISSIONS(14),
 	IDENTIFIERS(15),
 	PERFORMANCE_PERIOD(17),
 	CLINICAL_DOCUMENT(19),

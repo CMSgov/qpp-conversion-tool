@@ -29,9 +29,9 @@ public class PcfPerformancePeriodValidation extends NodeValidator {
 		String programName = clinicalDocument.getValue(ClinicalDocumentDecoder.PROGRAM_NAME).toUpperCase(Locale.ROOT);
 
 		checkErrors(node)
-			.valueIs(ProblemCode.CPC_PCF_PERFORMANCE_PERIOD_START.format(programName),
+			.valueIs(ProblemCode.PCF_PERFORMANCE_PERIOD_START.format(programName),
 				ReportingParametersActDecoder.PERFORMANCE_START, REPORTING_PERIOD_START)
-			.valueIs(ProblemCode.CPC_PCF_PERFORMANCE_PERIOD_END.format(programName),
+			.valueIs(ProblemCode.PCF_PERFORMANCE_PERIOD_END.format(programName),
 				ReportingParametersActDecoder.PERFORMANCE_END, REPORTING_PERIOD_END);
 	}
 }
