@@ -28,8 +28,9 @@ public enum ProblemCode implements LocalizedProblem {
 	NOT_VALID_QRDA_DOCUMENT(5, "The file is not a QRDA-III XML document. "
 		+ "Please ensure that the submission complies with the `(Submission year's)` implementation guide. "
 		+ "`(Implementation guide link)`", true),
-	MEASURE_GUID_MISSING(6, "The measure GUID supplied `(Provided measure id)` is invalid. Please see the `(Submission year's)` IG "
-			+ DocumentationReference.MEASURE_IDS + " for valid measure GUIDs.", true),
+	MEASURE_GUID_MISSING(6, "The measure GUID `(Provided measure id)` is invalid. "
+		+ "Please see the Table 14 of `(Submission year's)` Implementation Guide for valid measure GUIDs: "
+		+ DocumentationReference.MEASURE_IDS, true),
 	CHILD_MEASURE_MISSING(7, "The measure reference results must have at least one measure. "
 			+ "Please review the measures section of your file as it cannot be empty."),
 	AGGREGATE_COUNT_VALUE_NOT_SINGULAR(8, "The `(Parent element)` has `(number of aggregate counts)` aggregate count values."
@@ -40,7 +41,8 @@ public enum ProblemCode implements LocalizedProblem {
 	PI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR(12, "This PI Measure Performed Reference and Results requires "
 		+ "a single Measure ID"),
 	DENOMINATOR_COUNT_INVALID(13, "Denominator count must be less than or equal to Initial Population count "
-			+ "for the measure population `(measure population id)`", true),
+		+ "for the measure population `(measure population id)`. Please see the Table 14 of the Implementation guide for valid measure GUIDs: "
+		+ DocumentationReference.MEASURE_IDS, true),
 	POPULATION_CRITERIA_COUNT_INCORRECT(14,
 			"The electronic measure id: `(Current eMeasure ID)` requires `(Number of Subpopulations required)` "
 			+ "`(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`", true),
@@ -112,10 +114,14 @@ public enum ProblemCode implements LocalizedProblem {
 	IA_MEASURE_INCORRECT_CHILDREN_COUNT(50, "An IA performed measure reference and results must "
 			+ "have exactly one measure performed child"),
 	IA_MEASURE_INVALID_TYPE(51, "A single measure performed value is required and must be either a Y or an N."),
-	MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT(52, "The measure data with population id '`(population id)`' must have exactly one "
-			+ "Aggregate Count.", true),
+	MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT(52,
+			" The measure data with population id '`(population id)`' must have exactly one Aggregate Count. "
+			+ "Please see the Table 14 of `(Submission year's)` Implementation Guide for valid measure GUIDs: "
+			+ DocumentationReference.MEASURE_IDS, true),
 	MEASURE_DATA_VALUE_NOT_INTEGER(53, "Measure data with population id '`(population id)`' "
-			+ "must be a whole number greater than or equal to 0", true),
+			+ "must be a whole number greater than or equal to 0. "
+			+ "Please see the Table 14 of `(Submission year's)` Implementation Guide for valid measure GUIDs: "
+			+ DocumentationReference.MEASURE_IDS, true),
 	PCF_PERFORMANCE_PERIOD_START(55, "A `(Program name)` Performance period start must be 01/01/2022. "
 			+ "Please refer to the IG for more information here: " + DocumentationReference.PCF_SUBMISSIONS, true),
 	PCF_PERFORMANCE_PERIOD_END(56, "A `(Program name)` Performance period end must be 12/31/2022. "
