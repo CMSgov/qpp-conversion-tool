@@ -170,14 +170,14 @@ public enum ProblemCode implements LocalizedProblem {
 	PCF_MISSING_NPI(89, "This `(Program name)` QRDA-III submission is missing a NPI. Please ensure there is an NPI associated with "
 		+ "every TIN submitted", true),
 	PCF_NO_IA_OR_PI(90, "`(Program name)` QRDA-III submissions should not contain an IA section. IA data will be ignored.", true),
-	PCF_INVALID_NULL_PERFORMANCE_RATE(91, "The performance rate `(performanceRateUuid)` has an invalid null value. "
+	PCF_INVALID_NULL_PERFORMANCE_RATE(91, "The performance rate `(performanceRateUuid)` for measure `(measure id)` has an invalid null value. "
 		+ "A performance rate cannot be null unless the performance denominator is 0", true),
 	PCF_PERFORMANCE_DENOM_LESS_THAN_ZERO(92, "The performance denominator for measure `(measureId)` was less than 0. "
 		+ "A performance rate cannot be null unless the performance denominator is 0", true),
-	PCF_NUMERATOR_GREATER_THAN_EITHER_DENOMINATORS(93, "The numerator id `(numeratorUuid)` has a count value that is "
+	PCF_NUMERATOR_GREATER_THAN_EITHER_DENOMINATORS(93, "The numerator id `(numeratorUuid)` for measure `(measure id)` has a count value that is "
 		+ "greater than the denominator and/or the performance denominator "
 		+ "(Denominator count - Denominator exclusion count - Denominator Exception count)", true),
-	PCF_DENEX_GREATER_THAN_DENOMINATOR(94, "The denominator exclusion id `(denexUuid)` has a count value that is greater than the "
+	PCF_DENEX_GREATER_THAN_DENOMINATOR(94, "The denominator exclusion id `(denexUuid)` for measure `(measure id)` has a count value that is greater than the "
 		+ "denominator. The Denominator exclusion cannot be a greater value than the denominator.", true),
 	MEASURE_SECTION_V4_REQUIRED(95, "The Clinical Document must contain one Measure Section v4 with the extension 2017-06-01"),
 	MISSING_API_TIN_NPI_FILE(96, "The APM to TIN/NPI Combination file is missing."),

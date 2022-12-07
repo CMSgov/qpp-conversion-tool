@@ -88,12 +88,14 @@ public class PcfQualityMeasureIdValidator extends QualityMeasureIdValidator {
 				}
 				if (numeratorValue > performanceDenominator || numeratorValue > denominatorValue) {
 					addError(Detail.forProblemAndNode(ProblemCode.PCF_NUMERATOR_GREATER_THAN_EITHER_DENOMINATORS
-						.format(numeratorNode
-							.getValue(MEASURE_POPULATION)), node));
+						.format(
+							numeratorNode.getValue(MEASURE_POPULATION),
+							measureConfig.getElectronicMeasureId()),
+						node));
 				}
 				if (denexValue > denominatorValue) {
 					addError(Detail.forProblemAndNode(ProblemCode.PCF_DENEX_GREATER_THAN_DENOMINATOR
-						.format(denomExclusionNode.getValue(MEASURE_POPULATION)), node));
+						.format(denomExclusionNode.getValue(MEASURE_POPULATION), measureConfig.getElectronicMeasureId()), node));
 				}
 				//skip if performance rate is missing
 				if (null != performanceRateNode) {
@@ -105,7 +107,9 @@ public class PcfQualityMeasureIdValidator extends QualityMeasureIdValidator {
 							addError(Detail.forProblemAndNode(
 								ProblemCode.PCF_INVALID_NULL_PERFORMANCE_RATE
 									.format(performanceRateNode
-										.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID)), node));
+										.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID),
+										measureConfig.getElectronicMeasureId())
+								, node));
 						}
 					} else if (performanceRateValue != null && NumberHelper.isNumeric(performanceRateValue)
 						&& NumberHelper.isZero(performanceRateValue) && (denominatorValue == 0 || performanceDenominator == 0)) {
