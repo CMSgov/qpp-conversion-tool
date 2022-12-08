@@ -19,15 +19,6 @@ public class MeasureConfigHelperTest {
 	private static final String THE_MEASURE_ID = "001";
 	private static Set<String> MULTI_TO_SINGLE_MEASURES = Set.of("001", "008", "143", "438");
 
-//	@Test
-//	void testGetMeasureConfigSuccess() {
-//		Node measureNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4);
-//		measureNode.putValue(MeasureConfigHelper.MEASURE_ID, THE_UUID);
-//		MeasureConfig config = MeasureConfigHelper.getMeasureConfig(measureNode);
-//
-//		assertThat(config).isNotNull();
-//	}
-
 	@Nested
 	@DisplayName("Describe measure value priority")
 	class MeasurePriority {

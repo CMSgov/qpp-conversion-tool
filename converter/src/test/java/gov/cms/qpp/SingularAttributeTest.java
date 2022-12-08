@@ -116,20 +116,6 @@ class SingularAttributeTest{
 		return errorCount;
 	}
 
-//	@Test
-//	void doubleUpProgramName() {
-//		List<Detail> details = manipulationHandler.executeScenario(TemplateId.CLINICAL_DOCUMENT.name(),
-//				ClinicalDocumentDecoder.PROGRAM_NAME, false);
-//
-//		assertWithMessage("error should be about missing missing program name").that(details)
-//				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-//				.containsExactly(ProblemCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME.format(ClinicalDocumentValidator.VALID_PROGRAM_NAMES));
-//
-//		assertWithMessage("error should be about missing program name").that(details)
-//				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-//				.containsExactly(ProblemCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME.format(ClinicalDocumentValidator.VALID_PROGRAM_NAMES));
-//	}
-
 	@Test
 	void noProgramName() {
 		List<Detail> details = manipulationHandler.executeScenario(TemplateId.CLINICAL_DOCUMENT.name(),
