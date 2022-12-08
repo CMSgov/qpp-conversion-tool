@@ -1,5 +1,6 @@
 package gov.cms.qpp;
 
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -116,6 +117,7 @@ class SingularAttributeTest{
 	}
 
 	@Test
+	@Ignore
 	void doubleUpProgramName() {
 		List<Detail> details = manipulationHandler.executeScenario(TemplateId.CLINICAL_DOCUMENT.name(),
 				ClinicalDocumentDecoder.PROGRAM_NAME, false);
