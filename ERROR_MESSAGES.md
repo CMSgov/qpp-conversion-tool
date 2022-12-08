@@ -8,13 +8,13 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 3 : CT - Unexpected exception occurred during conversion. Please contact the Service Center for assistance via phone at 1-866-288-8292 or TTY: 1-877-715-6222, or by emailing QPP@cms.hhs.gov
 * 4 : CT - Unexpected exception occurred during encoding. Please contact the Service Center for assistance via phone at 1-866-288-8292 or TTY: 1-877-715-6222, or by emailing QPP@cms.hhs.gov
 * 5 : CT - The file is not a QRDA-III XML document. Please ensure that the submission complies with the `(Submission year's)` implementation guide. `(Implementation guide link)`
-* 6 : CT - The measure GUID `(Provided measure id)` is invalid. Please see the Table 14 of `(Submission year's)` Implementation Guide: https://ecqi.healthit.gov/sites/default/files/2022-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-V1.1-508.pdf#page=43 for valid measure GUIDs.
+* 6 : CT - The measure GUID `(Provided measure id)` is invalid. Please see the Table 14 of `(Submission year's)` Implementation Guide for valid measure GUIDs: https://ecqi.healthit.gov/sites/default/files/2022-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-V1.1-508.pdf#page=43
 * 7 : CT - The measure reference results must have at least one measure. Please review the measures section of your file as it cannot be empty.
 * 8 : CT - The `(Parent element)` has `(number of aggregate counts)` aggregate count values. A single aggregate count value is required.
 * 9 : CT - Aggregate count value must be an integer
 * 11 : CT - This PI Reference and Results is missing a required Measure Performed child
 * 12 : CT - This PI Measure Performed Reference and Results requires a single Measure ID
-* 13 : CT - Denominator count must be less than or equal to Initial Population count for the measure population `(measure population id)`
+* 13 : CT - Denominator count must be less than or equal to Initial Population count for the measure population `(measure population id)`. Please see the Table 14 of the Implementation guide for valid measure GUIDs: https://ecqi.healthit.gov/sites/default/files/2022-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-V1.1-508.pdf#page=43
 * 14 : CT - The electronic measure id: `(Current eMeasure ID)` requires `(Number of Subpopulations required)` `(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`
 * 15 : CT - PI Numerator Denominator element should have a PI Section element as a parent
 * 16 : CT - PI Numerator Denominator element does not contain a measure name ID
@@ -46,8 +46,8 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 49 : CT - Amount of stratifications `(Current number of Reporting Stratifiers)` does not meet expectations `(Number of stratifiers required)` for `(Current subpopulation type)` measure `(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`. Please refer to the Implementation Guide for correct stratification UUID's here: https://ecqi.healthit.gov/sites/default/files/2022-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-V1.1-508.pdf#page=43
 * 50 : CT - An IA performed measure reference and results must have exactly one measure performed child
 * 51 : CT - A single measure performed value is required and must be either a Y or an N.
-* 52 : CT - The measure data with population id '`(population id)`' must have exactly one Aggregate Count.
-* 53 : CT - Measure data with population id '`(population id)`' must be a whole number greater than or equal to 0
+* 52 : CT -  The measure data with population id '`(population id)`' must have exactly one Aggregate Count. Please see the Table 14 of `(Submission year's)` Implementation Guide for valid measure GUIDs: https://ecqi.healthit.gov/sites/default/files/2022-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-V1.1-508.pdf#page=43
+* 53 : CT - Measure data with population id '`(population id)`' must be a whole number greater than or equal to 0. Please see the Table 14 of `(Submission year's)` Implementation Guide for valid measure GUIDs: https://ecqi.healthit.gov/sites/default/files/2022-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-V1.1-508.pdf#page=43
 * 55 : CT - A `(Program name)` Performance period start must be 01/01/2022. Please refer to the IG for more information here: https://ecqi.healthit.gov/sites/default/files/2022-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-V1.1-508.pdf#page=14
 * 56 : CT - A `(Program name)` Performance period end must be 12/31/2022. Please refer to the IG for more information here: https://ecqi.healthit.gov/sites/default/files/2022-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-V1.1-508.pdf#page=14
 * 57 : CT - The measure reference results must have a single measure population
