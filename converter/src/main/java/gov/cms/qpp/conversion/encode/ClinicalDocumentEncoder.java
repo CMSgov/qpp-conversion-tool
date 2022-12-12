@@ -70,7 +70,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		}
 
 		if (ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP.equals(entityType)) {
-			wrapper.put(ClinicalDocumentDecoder.ENTITY_ID, thisNode.getValue(ClinicalDocumentDecoder.VG_ID));
+			wrapper.put(ClinicalDocumentDecoder.ENTITY_ID, thisNode.getValue(ClinicalDocumentDecoder.ENTITY_ID));
 		}
 
 		if ((Program.isApp(thisNode) || Program.isMips(thisNode) &&
