@@ -54,7 +54,7 @@ jobs:
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=image-dev::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          echo "image-dev::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
       - name: Get task definition for dev
         if: github.ref == 'refs/heads/develop' && success()
@@ -115,7 +115,7 @@ jobs:
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=image-impl::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          echo "image-impl::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
       - name: Get task definition for Impl
         if: startsWith(github.ref,'refs/heads/release/') && success()
@@ -176,7 +176,7 @@ jobs:
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=image-prod::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          echo "image-prod::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
       - name: Get task definition for Prod
         if: github.ref == 'refs/heads/master' && success()
@@ -237,7 +237,7 @@ jobs:
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=image-devpre::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          echo "image-devpre::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
       - name: Get task definition for DevPre
         if: github.ref == 'refs/heads/master' && success()
