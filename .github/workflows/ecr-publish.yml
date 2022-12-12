@@ -17,17 +17,18 @@ jobs:
 
     name: Build Docker image and deploy to AWS ECR
     runs-on: ubuntu-latest
-
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 2
-  
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: arn:aws:iam::${{ secrets.ACCOUNT_ID }}:role/delegatedadmin/developer/qppsf-dev-githubactions-conversiontool-role
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Login to Amazon ECR
