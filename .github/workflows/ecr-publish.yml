@@ -55,7 +55,7 @@ jobs:
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "name=image-dev::${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}" >> $GITHUB_OUTPUT
+          echo "image=${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}" >> $GITHUB_OUTPUT
 
       - name: Get task definition for dev
         if: github.ref == 'refs/heads/develop' && success()
@@ -69,7 +69,7 @@ jobs:
         with:
           task-definition: task-definition.json
           container-name: conversion-tool
-          image: ${{ steps.build-image-dev.outputs.image-dev }}
+          image: ${{ steps.build-image-dev.outputs.image }}
 
       - name: Deploy Amazon ECS task definition
         if: github.ref == 'refs/heads/develop' && success()
@@ -116,7 +116,7 @@ jobs:
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "name=image-impl::${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}" >> $GITHUB_OUTPUT
+          echo "image=${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}" >> $GITHUB_OUTPUT
 
       - name: Get task definition for Impl
         if: startsWith(github.ref,'refs/heads/release/') && success()
@@ -130,7 +130,7 @@ jobs:
         with:
           task-definition: task-definition.json
           container-name: conversion-tool
-          image: ${{ steps.build-image-impl.outputs.image-impl }}
+          image: ${{ steps.build-image-impl.outputs.image }}
 
       - name: Deploy Amazon ECS task definition
         if: startsWith(github.ref,'refs/heads/release/') && success()
@@ -177,7 +177,7 @@ jobs:
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "name=image-prod::${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}" >> $GITHUB_OUTPUT
+          echo "image=${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}" >> $GITHUB_OUTPUT
 
       - name: Get task definition for Prod
         if: github.ref == 'refs/heads/master' && success()
@@ -191,7 +191,7 @@ jobs:
         with:
           task-definition: task-definition.json
           container-name: conversion-tool
-          image: ${{ steps.build-image-prod.outputs.image-prod }}
+          image: ${{ steps.build-image-prod.outputs.image }}
 
       - name: Deploy Amazon ECS task definition
         if: github.ref == 'refs/heads/master' && success()
@@ -238,7 +238,7 @@ jobs:
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "name=image-devpre::${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}" >> $GITHUB_OUTPUT
+          echo "image=${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}" >> $GITHUB_OUTPUT
 
       - name: Get task definition for DevPre
         if: github.ref == 'refs/heads/master' && success()
@@ -252,7 +252,7 @@ jobs:
         with:
           task-definition: task-definition.json
           container-name: conversion-tool
-          image: ${{ steps.build-image-devpre.outputs.image-devpre }}
+          image: ${{ steps.build-image-devpre.outputs.image }}
 
       - name: Deploy Amazon ECS task definition
         if: github.ref == 'refs/heads/master' && success()
