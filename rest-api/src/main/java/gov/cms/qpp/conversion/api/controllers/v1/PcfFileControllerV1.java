@@ -27,7 +27,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/pcf")
-@CrossOrigin
+@CrossOrigin(allowCredentials = "false")
 public class PcfFileControllerV1 {
 
 	private static final String BLOCKED_BY_FEATURE_FLAG =
@@ -48,7 +48,7 @@ public class PcfFileControllerV1 {
 	@GetMapping(value = "/unprocessed-files/{org}",
 		headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<List<UnprocessedFileData>> getUnprocessedPcfPlusFiles(@PathVariable("org") String organization) {
-		API_LOG.info("PCF unprocessed files request received");
+		API_LOG.info("PCF unprocessed files request received - 2");
 
 		String orgAttribute = Constants.ORG_ATTRIBUTE_MAP.get(organization);
 
