@@ -64,3 +64,8 @@ variable "certificate_arn" {
   description = "SSL Certificate arn for the environment"
   type        = string
 }
+
+variable "ct_api_url" {
+    type = string
+    description = "ConversionTool HealthCheck URL"
+}

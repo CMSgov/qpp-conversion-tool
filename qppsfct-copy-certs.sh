@@ -1,16 +1,12 @@
 #!/bin/bash
 
 ENV_CERT=$1
-AWS_KEY=$2
-AWS_SECRET=$3
-AWS_REGION=$4
+AWS_REGION=$2
 CERT_CP_PATH="rest-api/src/main/resources/"
 
-#Export AWS credentials
-export AWS_ACCESS_KEY_ID=${AWS_KEY}
-export AWS_SECRET_ACCESS_KEY=${AWS_SECRET}
-export AWS_REGION=${AWS_REGION}
+#Export Parameters
 export ENV_CERT=${ENV_CERT}
+export AWS_REGION=${AWS_REGION}
 
 #Export Passphrase for Environment
 export SSL_PASS=$(aws ssm get-parameters --name /qppar-sf/${ENV_CERT}/conversion_tool/SSL_SECRET --with-decryption --query "Parameters[0].Value" | tr -d '"')
