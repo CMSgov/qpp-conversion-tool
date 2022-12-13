@@ -15,7 +15,7 @@ import java.util.Set;
  * Web Security Configuration
  */
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String PCF_WILDCARD = "/pcf/**";
