@@ -49,7 +49,7 @@ public class PcfClinicalDocumentValidatorTest {
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
+			.containsExactly(ProblemCode.PCF_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
 				.format(Context.REPORTING_YEAR));
 	}
 
@@ -62,7 +62,7 @@ public class PcfClinicalDocumentValidatorTest {
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED);
+			.containsExactly(ProblemCode.PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED);
 	}
 
 	@Test
@@ -72,7 +72,7 @@ public class PcfClinicalDocumentValidatorTest {
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED);
+			.containsExactly(ProblemCode.PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED);
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class PcfClinicalDocumentValidatorTest {
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PCF_ENTITY_ID, "");
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_EMPTY_APM);
+			.containsExactly(ProblemCode.PCF_CLINICAL_DOCUMENT_EMPTY_APM);
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class PcfClinicalDocumentValidatorTest {
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PCF_ENTITY_ID, "PropertyTaxes");
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_INVALID_APM);
+			.containsExactly(ProblemCode.PCF_CLINICAL_DOCUMENT_INVALID_APM);
 	}
 
 	@Test
@@ -99,7 +99,7 @@ public class PcfClinicalDocumentValidatorTest {
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED);
+			.containsExactly(ProblemCode.PCF_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED);
 	}
 
 	@Test

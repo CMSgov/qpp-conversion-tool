@@ -28,8 +28,9 @@ public enum ProblemCode implements LocalizedProblem {
 	NOT_VALID_QRDA_DOCUMENT(5, "The file is not a QRDA-III XML document. "
 		+ "Please ensure that the submission complies with the `(Submission year's)` implementation guide. "
 		+ "`(Implementation guide link)`", true),
-	MEASURE_GUID_MISSING(6, "The measure GUID supplied `(Provided measure id)` is invalid. Please see the `(Submission year's)` IG "
-			+ DocumentationReference.MEASURE_IDS + " for valid measure GUIDs.", true),
+	MEASURE_GUID_MISSING(6, "The measure GUID `(Provided measure id)` is invalid. "
+		+ "Please see the Table 14 of `(Submission year's)` Implementation Guide for valid measure GUIDs: "
+		+ DocumentationReference.MEASURE_IDS, true),
 	CHILD_MEASURE_MISSING(7, "The measure reference results must have at least one measure. "
 			+ "Please review the measures section of your file as it cannot be empty."),
 	AGGREGATE_COUNT_VALUE_NOT_SINGULAR(8, "The `(Parent element)` has `(number of aggregate counts)` aggregate count values."
@@ -40,7 +41,8 @@ public enum ProblemCode implements LocalizedProblem {
 	PI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR(12, "This PI Measure Performed Reference and Results requires "
 		+ "a single Measure ID"),
 	DENOMINATOR_COUNT_INVALID(13, "Denominator count must be less than or equal to Initial Population count "
-			+ "for the measure population `(measure population id)`", true),
+		+ "for the measure population `(measure population id)`. Please see the Table 14 of the Implementation guide for valid measure GUIDs: "
+		+ DocumentationReference.MEASURE_IDS, true),
 	POPULATION_CRITERIA_COUNT_INCORRECT(14,
 			"The electronic measure id: `(Current eMeasure ID)` requires `(Number of Subpopulations required)` "
 			+ "`(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`", true),
@@ -80,13 +82,13 @@ public enum ProblemCode implements LocalizedProblem {
 			+ "Here is a link to the IG Reporting Parameter Act section: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
 	PERFORMANCE_RATE_INVALID_VALUE(33, "The Performance Rate `(supplied value)` is invalid. "
 		+ "It must be a decimal between 0 and 1.", true),
-	CPC_PCF_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS(34, "CPC+/PCF submissions must contain a practice site address."
+	PCF_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS(34, "PCF submissions must contain a practice site address."
 		+ " Please refer to the `(Submission year's)` IG for more details " + DocumentationReference.PRACTICE_SITE_ADDRESS
 	    + " regarding practice site addresses.", true),
-	CPC_PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED(35, "One and only one Alternative Payment Model (APM) Entity "
+	PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED(35, "One and only one Alternative Payment Model (APM) Entity "
 			+ "Identifier should be specified. Here is a link to the IG section on identifiers: " + DocumentationReference.IDENTIFIERS),
-	CPC_PCF_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED(36, "CPC+/PCF submissions must contain one Measure section"),
-	CPC_PCF_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT(37, "CPC+/PCF submissions must contain correct number of performance rate(s). "
+	PCF_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED(36, "PCF submissions must contain one Measure section"),
+	PCF_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT(37, "PCF submissions must contain correct number of performance rate(s). "
 			+ "Correct Number is `(Expected value)` for measure `(Given measure id)`", true),
 	NUMERATOR_DENOMINATOR_CHILD_EXACT(39,
 			"This PI `(Numerator or Denominator)` element has an incorrect number of Aggregate Count children. A PI "
@@ -100,10 +102,10 @@ public enum ProblemCode implements LocalizedProblem {
 			+ "Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). "
 			+ "Here is a link to the IG Reporting Parameter Act section: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
 	IA_SECTION_WRONG_CHILD(45, "The IA Section must contain only Improvement Activities and a Reporting Parameter Act"),
-	CPC_PCF_QUALITY_MEASURE_ID_MISSING_STRATA(48, "Missing strata `(Reporting Stratum UUID)` for "
+	PCF_QUALITY_MEASURE_ID_MISSING_STRATA(48, "Missing strata `(Reporting Stratum UUID)` for "
 			+ "`(Current subpopulation type)` measure `(Current subpopulation UUID)`. "
 			+ "Here is a link to the IG valid Measure Ids section: " + DocumentationReference.MEASURE_IDS, true),
-	CPC_PCF_QUALITY_MEASURE_ID_STRATA_MISMATCH(49,"Amount of stratifications `(Current number of "
+	PCF_QUALITY_MEASURE_ID_STRATA_MISMATCH(49,"Amount of stratifications `(Current number of "
 			+ "Reporting Stratifiers)` does not meet expectations "
 			+ "`(Number of stratifiers required)` for `(Current subpopulation type)` measure "
 			+ "`(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`. "
@@ -112,14 +114,18 @@ public enum ProblemCode implements LocalizedProblem {
 	IA_MEASURE_INCORRECT_CHILDREN_COUNT(50, "An IA performed measure reference and results must "
 			+ "have exactly one measure performed child"),
 	IA_MEASURE_INVALID_TYPE(51, "A single measure performed value is required and must be either a Y or an N."),
-	MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT(52, "The measure data with population id '`(population id)`' must have exactly one "
-			+ "Aggregate Count.", true),
+	MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT(52,
+			" The measure data with population id '`(population id)`' must have exactly one Aggregate Count. "
+			+ "Please see the Table 14 of `(Submission year's)` Implementation Guide for valid measure GUIDs: "
+			+ DocumentationReference.MEASURE_IDS, true),
 	MEASURE_DATA_VALUE_NOT_INTEGER(53, "Measure data with population id '`(population id)`' "
-			+ "must be a whole number greater than or equal to 0", true),
-	CPC_PCF_PERFORMANCE_PERIOD_START(55, "A `(Program name)` Performance period start must be 01/01/2022. "
-			+ "Please refer to the IG for more information here: " + DocumentationReference.CPC_PLUS_SUBMISSIONS, true),
-	CPC_PCF_PERFORMANCE_PERIOD_END(56, "A `(Program name)` Performance period end must be 12/31/2022. "
-			+ "Please refer to the IG for more information here: " + DocumentationReference.CPC_PLUS_SUBMISSIONS, true),
+			+ "must be a whole number greater than or equal to 0. "
+			+ "Please see the Table 14 of `(Submission year's)` Implementation Guide for valid measure GUIDs: "
+			+ DocumentationReference.MEASURE_IDS, true),
+	PCF_PERFORMANCE_PERIOD_START(55, "A `(Program name)` Performance period start must be 01/01/2022. "
+			+ "Please refer to the IG for more information here: " + DocumentationReference.PCF_SUBMISSIONS, true),
+	PCF_PERFORMANCE_PERIOD_END(56, "A `(Program name)` Performance period end must be 12/31/2022. "
+			+ "Please refer to the IG for more information here: " + DocumentationReference.PCF_SUBMISSIONS, true),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION(57, "The measure reference results must have a single "
 			+ "measure population"),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_TYPE(58, "The measure reference results must have a single "
@@ -129,19 +135,17 @@ public enum ProblemCode implements LocalizedProblem {
 			+ "containing all the valid measure ids: " + DocumentationReference.MEASURE_IDS, true),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE(61, "A Performance Rate must contain a single "
 			+ "Numerator UUID reference."),
-	CPC_PCF_CLINICAL_DOCUMENT_EMPTY_APM(62, "The Alternative Payment Model (APM) Entity Identifier must not be empty. "
+	PCF_CLINICAL_DOCUMENT_EMPTY_APM(62, "The Alternative Payment Model (APM) Entity Identifier must not be empty. "
 			+ "Here is a link to the IG section on identifiers: " + DocumentationReference.IDENTIFIERS),
-	CPC_PCF_CLINICAL_DOCUMENT_INVALID_APM(63, "The Alternative Payment Model (APM) Entity Identifier is not valid. "
+	PCF_CLINICAL_DOCUMENT_INVALID_APM(63, "The Alternative Payment Model (APM) Entity Identifier is not valid. "
 			+ " Here is a link to the IG section on identifiers: " + DocumentationReference.IDENTIFIERS),
-	CPC_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY(64, "CPC+ Submissions must have at least `(CPC+ measure group minimum)` "
-			+ "of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`", true),
-	CPC_PCF_PLUS_MISSING_SUPPLEMENTAL_CODE(66, "Missing the `(Supplemental Type)` - `(Type Qualification)` supplemental data for code "
+	PCF_PLUS_MISSING_SUPPLEMENTAL_CODE(66, "Missing the `(Supplemental Type)` - `(Type Qualification)` supplemental data for code "
 		+ "`(Supplemental Data Code)` for the measure id `(Measure Id)`'s Sub-population `(Sub Population)`", true),
-	CPC_PCF_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT(67, "Must have one count for Supplemental Data `(Supplemental Data Code)` "
+	PCF_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT(67, "Must have one count for Supplemental Data `(Supplemental Data Code)` "
 		+ "on Sub-population `(Sub Population)` for the measure id `(Measure Id)`", true),
-	CPC_PCF_PLUS_SUBMISSION_ENDED(68, "Your `(Program name)` submission was made after the `(Program name)` Measure section submission deadline of "
+	PCF_PLUS_SUBMISSION_ENDED(68, "Your `(Program name)` submission was made after the `(Program name)` Measure section submission deadline of "
 		+ "`(Submission end date)`. Your `(Program name)` QRDA III file has not been processed. Please contact `(Program name)` Support at "
-		+ "`(CPC+ contact email)` for assistance.", true),
+		+ "`(PCF+ contact email)` for assistance.", true),
 	INVALID_PERFORMANCE_PERIOD_FORMAT(69, "`(Performance period start or end date)` is an invalid date format. "
 		+ "Please use a standard ISO date format. "
 		+ "Example valid values are 2019-02-26, 2019/02/26T01:45:23, or 2019-02-26T01:45:23.123. "
@@ -171,27 +175,33 @@ public enum ProblemCode implements LocalizedProblem {
 	PCF_INVALID_NPI(88, "`(Program name)` QRDA-III Submission NPIs require a 10 digit numerical value",true ),
 	PCF_MISSING_NPI(89, "This `(Program name)` QRDA-III submission is missing a NPI. Please ensure there is an NPI associated with "
 		+ "every TIN submitted", true),
-	PCF_NO_IA_OR_PI(90, "`(Program name)` QRDA-III submissions must not contain an IA or PI section", true),
-	PCF_INVALID_NULL_PERFORMANCE_RATE(91, "The performance rate `(performanceRateUuid)` has an invalid null value. "
+	PCF_NO_IA_OR_PI(90, "`(Program name)` QRDA-III submissions should not contain an IA section. IA data will be ignored.", true),
+	PCF_INVALID_NULL_PERFORMANCE_RATE(91, "The performance rate `(performanceRateUuid)` for measure `(measure id)` has an invalid null value. "
 		+ "A performance rate cannot be null unless the performance denominator is 0", true),
 	PCF_PERFORMANCE_DENOM_LESS_THAN_ZERO(92, "The performance denominator for measure `(measureId)` was less than 0. "
 		+ "A performance rate cannot be null unless the performance denominator is 0", true),
-	PCF_NUMERATOR_GREATER_THAN_EITHER_DENOMINATORS(93, "The numerator id `(numeratorUuid)` has a count value that is "
+	PCF_NUMERATOR_GREATER_THAN_EITHER_DENOMINATORS(93, "The numerator id `(numeratorUuid)` for measure `(measure id)` has a count value that is "
 		+ "greater than the denominator and/or the performance denominator "
 		+ "(Denominator count - Denominator exclusion count - Denominator Exception count)", true),
-	PCF_DENEX_GREATER_THAN_DENOMINATOR(94, "The denominator exclusion id `(denexUuid)` has a count value that is greater than the "
+	PCF_DENEX_GREATER_THAN_DENOMINATOR(94, "The denominator exclusion id `(denexUuid)` for measure `(measure id)` has a count value that is greater than the "
 		+ "denominator. The Denominator exclusion cannot be a greater value than the denominator.", true),
 	MEASURE_SECTION_V4_REQUIRED(95, "The Clinical Document must contain one Measure Section v4 with the extension 2017-06-01"),
 	MISSING_API_TIN_NPI_FILE(96, "The APM to TIN/NPI Combination file is missing."),
-	PCF_MISSING_CEHRT_ID(97, "`(Program name)` QRDA-III Submissions require a valid Cehrt ID (Valid Format: XX15EXXXXXXXXXX)", true),
+	PCF_MISSING_CEHRT_ID(97, "`(Program name)` QRDA-III Submissions require a valid CMS EHR Certification ID (Valid Format: XX15EXXXXXXXXXX)", true),
 	PCF_ZERO_PERFORMANCE_RATE(98, "The performance rate cannot have a value of 0 and must be of value Null Attribute (NA)."),
-	PCF_DUPLICATE_CEHRT(100, "More than one Cehrt ID was found. Please submit with only one Cehrt id."),
+	PCF_DUPLICATE_CEHRT(100, "More than one CMS EHR Certification ID was found. Please submit with only one CMS EHR Certification id."),
 	PCF_DENOMINATOR_COUNT_INVALID(101, "Denominator count must be equal to Initial Population count for `(Program name)` measure population `(measure population id)`.", true),
 	PI_RESTRICTED_MEASURES(102, "A PI section cannot contain PI_HIE_5 with PI_HIE_1, PI_LVOTC_1, PI_HIE_4, or PI_LVITC_2", false),
-	PCF_TOO_FEW_QUALITY_MEASURE_CATEGORY(103, "PCF Submissions must have at least `(PCF Measure minimum)` "
-		+ "of the following measures: `(Listing of valid measure ids)`", true),
+	PCF_TOO_FEW_QUALITY_MEASURE_CATEGORY(103, "PCF Submissions must have the `(PCF Measure minimum)` "
+		+ "following measures: `(Listing of valid measure ids)`", true),
 	PCF_MULTI_TIN_NPI_SINGLE_PERFORMER(105, "If multiple TINs/NPIs are submitted, each must be reported within a separate performer"),
-	PCF_NO_PI(106, "PI submissions are not allowed within PCF");
+	PCF_NO_PI(106, "PI submissions are not allowed within PCF"),
+	PCF_MISSING_COMBINATION(107,
+		"NPI/TIN `(npi)`-`(tin)` was active on the PCF practitioner roster for `(apm)` during the performance year but was not found in the file.",
+		true),
+	PCF_INVALID_COMBINATION(108,
+		"NPI/TIN `(npi)`-`(tin)` was reported in the file but does not exist at the practice or was not active on the PCF practitioner roster for `(apm)` during the performance year.",
+		true);
 
 	private static final Map<Integer, ProblemCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ProblemCode::getCode, Function.identity()));

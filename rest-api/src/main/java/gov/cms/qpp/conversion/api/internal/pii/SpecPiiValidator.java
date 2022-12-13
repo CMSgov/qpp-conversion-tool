@@ -48,8 +48,8 @@ public class SpecPiiValidator implements PiiValidator {
 			for (int index = 0; index < npiSize; index++) {
 				String currentTin = tinList.get(index).trim();
 				String currentNpi = npiList.get(index).trim();
-				LocalizedProblem error = ProblemCode.INCORRECT_API_NPI_COMBINATION
-					.format(currentNpi, getMaskedTin(currentTin), program,apm);
+				LocalizedProblem error = ProblemCode.PCF_INVALID_COMBINATION
+					.format(currentNpi, getMaskedTin(currentTin), apm);
 				if (tinNpisMap == null || tinNpisMap.get(currentTin) == null
 					|| !(tinNpisMap.get(currentTin).indexOf(currentNpi) > -1)) {
 					validator.addWarning(Detail.forProblemAndNode(error, node));
@@ -85,8 +85,8 @@ public class SpecPiiValidator implements PiiValidator {
 							}
 						}
 						if (!combinationExists) {
-							LocalizedProblem error = ProblemCode.INCORRECT_API_NPI_COMBINATION
-								.format(currentNpi, getMaskedTin(currentEntry.getKey()), program, apm, program);
+							LocalizedProblem error = ProblemCode.PCF_MISSING_COMBINATION
+								.format(currentNpi, getMaskedTin(currentEntry.getKey()), program, apm);
 							validator.addWarning(Detail.forProblemAndNode(error, node));
 						}
 					}

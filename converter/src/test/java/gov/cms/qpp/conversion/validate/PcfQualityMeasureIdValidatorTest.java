@@ -44,7 +44,7 @@ public class PcfQualityMeasureIdValidatorTest {
 
 		assertWithMessage("Must contain 0 invalid performance rate count errors")
 			.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.doesNotContain(ProblemCode.CPC_PCF_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
+			.doesNotContain(ProblemCode.PCF_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
 				.format(2, E_MEASURE_ID));
 	}
 
@@ -55,7 +55,7 @@ public class PcfQualityMeasureIdValidatorTest {
 
 		assertWithMessage("Must contain 2 invalid performance rate count errors")
 			.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(ProblemCode.CPC_PCF_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
+			.contains(ProblemCode.PCF_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
 				.format(2, E_MEASURE_ID));
 	}
 
@@ -66,7 +66,7 @@ public class PcfQualityMeasureIdValidatorTest {
 
 		assertWithMessage("Must contain 2 invalid performance rate count errors")
 			.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(ProblemCode.CPC_PCF_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
+			.contains(ProblemCode.PCF_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
 				.format(2, E_MEASURE_ID));
 	}
 

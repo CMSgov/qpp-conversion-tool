@@ -52,7 +52,7 @@ public class PcfPerformancePeriodValidationTest {
 		List<Detail> details = validator.validateSingleNode(node).getErrors();
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_PCF_PERFORMANCE_PERIOD_START.format(programName));
+			.containsExactly(ProblemCode.PCF_PERFORMANCE_PERIOD_START.format(programName));
 	}
 
 	@Test
@@ -60,6 +60,6 @@ public class PcfPerformancePeriodValidationTest {
 		node.putValue(ReportingParametersActDecoder.PERFORMANCE_END, "not what we want");
 		List<Detail> details = validator.validateSingleNode(node).getErrors();
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_PCF_PERFORMANCE_PERIOD_END.format(programName));
+			.containsExactly(ProblemCode.PCF_PERFORMANCE_PERIOD_END.format(programName));
 	}
 }
