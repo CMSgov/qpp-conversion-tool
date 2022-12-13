@@ -12,7 +12,7 @@ import gov.cms.qpp.conversion.api.security.JwtAuthorizationFilter;
  * Web Security Configuration
  */
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String PCF_WILDCARD = "/pcf/**";
