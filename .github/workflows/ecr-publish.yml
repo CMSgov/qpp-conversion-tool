@@ -39,7 +39,7 @@ jobs:
         env:
            ENV_CT: dev
         if: github.ref == 'refs/heads/develop'
-        run: bash ./qppsfct-copy-certs.sh ${{ env.ENV_CT }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_REGION }}
+        run: bash ./qppsfct-copy-certs.sh ${{ env.ENV_CT }} ${{ secrets.AWS_REGION }}
       
       - name: Dev - Build and deploy to Amazon ECR
         id: build-image-dev
@@ -55,7 +55,7 @@ jobs:
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "image-dev::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+          echo "name=image-dev::${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}" >> $GITHUB_OUTPUT
 
       - name: Get task definition for dev
         if: github.ref == 'refs/heads/develop' && success()
@@ -100,7 +100,7 @@ jobs:
         env:
            ENV_CT: impl
         if: startsWith(github.ref,'refs/heads/release/')
-        run: bash ./qppsfct-copy-certs.sh ${{ env.ENV_CT }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_REGION }}
+        run: bash ./qppsfct-copy-certs.sh ${{ env.ENV_CT }} ${{ secrets.AWS_REGION }}
 
       - name: Impl - Build and deploy to Amazon ECR
         id: build-image-impl
@@ -116,7 +116,7 @@ jobs:
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "image-impl::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+          echo "name=image-impl::${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}" >> $GITHUB_OUTPUT
 
       - name: Get task definition for Impl
         if: startsWith(github.ref,'refs/heads/release/') && success()
@@ -161,7 +161,7 @@ jobs:
         env:
            ENV_CT: prod
         if: github.ref == 'refs/heads/master'
-        run: bash ./qppsfct-copy-certs.sh ${{ env.ENV_CT }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_REGION }}
+        run: bash ./qppsfct-copy-certs.sh ${{ env.ENV_CT }} ${{ secrets.AWS_REGION }}
 
       - name: Prod - Build and deploy to Amazon ECR
         id: build-image-prod
@@ -177,7 +177,7 @@ jobs:
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "image-prod::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+          echo "name=image-prod::${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}" >> $GITHUB_OUTPUT
 
       - name: Get task definition for Prod
         if: github.ref == 'refs/heads/master' && success()
@@ -222,7 +222,7 @@ jobs:
         env:
            ENV_CT: devpre
         if: github.ref == 'refs/heads/master'
-        run: bash ./qppsfct-copy-certs.sh ${{ env.ENV_CT }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_REGION }}
+        run: bash ./qppsfct-copy-certs.sh ${{ env.ENV_CT }} ${{ secrets.AWS_REGION }}
 
       - name: DevPre - Build and deploy to Amazon ECR
         id: build-image-devpre
@@ -238,7 +238,7 @@ jobs:
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "image-devpre::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+          echo "name=image-devpre::${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}" >> $GITHUB_OUTPUT
 
       - name: Get task definition for DevPre
         if: github.ref == 'refs/heads/master' && success()
