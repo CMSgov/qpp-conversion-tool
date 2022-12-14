@@ -29,7 +29,7 @@ public enum ProblemCode implements LocalizedProblem {
 		+ "Please ensure that the submission complies with the `(Submission year's)` implementation guide. "
 		+ "`(Implementation guide link)`", true),
 	MEASURE_GUID_MISSING(6, "The measure GUID `(Provided measure id)` is invalid. "
-		+ "Please see the Table 14 of `(Submission year's)` Implementation Guide for valid measure GUIDs: "
+		+ "Please see the Table 14 of the `(Submission year's)` Implementation Guide for valid measure GUIDs: "
 		+ DocumentationReference.MEASURE_IDS, true),
 	CHILD_MEASURE_MISSING(7, "The measure reference results must have at least one measure. "
 			+ "Please review the measures section of your file as it cannot be empty."),
@@ -41,7 +41,7 @@ public enum ProblemCode implements LocalizedProblem {
 	PI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR(12, "This PI Measure Performed Reference and Results requires "
 		+ "a single Measure ID"),
 	DENOMINATOR_COUNT_INVALID(13, "Denominator count must be less than or equal to Initial Population count "
-		+ "for the measure population `(measure population id)`. Please see the Table 14 of the Implementation guide for valid measure GUIDs: "
+		+ "for the measure population `(measure population id)`. Please see the Table 14 of the `(Submission Year)` Implementation guide for valid measure GUIDs: "
 		+ DocumentationReference.MEASURE_IDS, true),
 	POPULATION_CRITERIA_COUNT_INCORRECT(14,
 			"The electronic measure id: `(Current eMeasure ID)` requires `(Number of Subpopulations required)` "
@@ -190,7 +190,9 @@ public enum ProblemCode implements LocalizedProblem {
 	PCF_MISSING_CEHRT_ID(97, "`(Program name)` QRDA-III Submissions require a valid CMS EHR Certification ID (Valid Format: XX15EXXXXXXXXXX)", true),
 	PCF_ZERO_PERFORMANCE_RATE(98, "The performance rate cannot have a value of 0 and must be of value Null Attribute (NA)."),
 	PCF_DUPLICATE_CEHRT(100, "More than one CMS EHR Certification ID was found. Please submit with only one CMS EHR Certification id."),
-	PCF_DENOMINATOR_COUNT_INVALID(101, "Denominator count must be equal to Initial Population count for `(Program name)` measure population `(measure population id)`.", true),
+	PCF_DENOMINATOR_COUNT_INVALID(101, "Denominator count must be equal to Initial Population count for `(Program name)` measure population `(measure population id)`."
+		+ "Please see the Table 14 of `(Submission year's)` Implementation Guide for valid measure GUIDs: "
+		+ DocumentationReference.MEASURE_IDS, true),
 	PI_RESTRICTED_MEASURES(102, "A PI section cannot contain PI_HIE_5 with PI_HIE_1, PI_LVOTC_1, PI_HIE_4, or PI_LVITC_2", false),
 	PCF_TOO_FEW_QUALITY_MEASURE_CATEGORY(103, "PCF Submissions must have the `(PCF Measure minimum)` "
 		+ "following measures: `(Listing of valid measure ids)`", true),
