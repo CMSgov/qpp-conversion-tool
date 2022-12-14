@@ -1,6 +1,7 @@
 package gov.cms.qpp.acceptance;
 
 import gov.cms.qpp.acceptance.helper.MarkupManipulator;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
 import gov.cms.qpp.conversion.PathSource;
@@ -164,7 +165,7 @@ class QualityMeasureIdMultiRoundTripTest {
 		}
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(ProblemCode.DENOMINATOR_COUNT_INVALID.format("D4D2DEE7-385A-4C28-A09C-884A062A97AA"));
+				.contains(ProblemCode.DENOMINATOR_COUNT_INVALID.format("D4D2DEE7-385A-4C28-A09C-884A062A97AA", Context.REPORTING_YEAR));
 	}
 
 	@Test
