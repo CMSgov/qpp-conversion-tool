@@ -28,7 +28,7 @@ resource "aws_ecs_task_definition" "conversion-tool" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = "2048"
   memory                   = "5120"
-  task_role_arn            = "arn:aws:iam::003384571330:role/ecsTaskExecutionRole"
+  task_role_arn            = "arn:aws:iam::003384571330:role/delegatedadmin/developer/qppsf-ct-ecstaskexecution-role"
 
   container_definitions = data.template_file.ct_task_def.rendered
 }
@@ -50,11 +50,6 @@ resource "aws_ecs_service" "conversion-tool-service" {
   deployment_maximum_percent         = "100"
   deployment_minimum_healthy_percent = "0"
   platform_version                   = "1.4.0"
-
-  lifecycle {
-    ignore_changes = [task_definition]
-  }
-
   
   network_configuration {
     subnets          = [var.app_subnet1, var.app_subnet2, var.app_subnet3]
