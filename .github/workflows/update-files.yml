@@ -18,22 +18,14 @@ jobs:
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
-          with:
-            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            aws-region: ${{ secrets.AWS_REGION }}
-            role-to-assume: ${{ secrets.AWS_BUCKET_ROLE }}
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.ACCOUNT_ID }}:role/delegatedadmin/developer/qppsf-dev-githubactions-conversiontool-role
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Retrieve Dev Unformatted File
-        uses: keithweaver/aws-s3-github-action@v1.0.0
-        if: github.ref == 'refs/heads/feature/QPPSF-10875_Update-Participation-File'
-        with:
-          command: cp
-          source: ${{ format('s3://{0}/{1}', secrets.DEV_S3_BUCKET, secrets.DEV_PART_FILE) }}
-          destination: ${{ format('./{0}', secrets.DEV_PART_FILE) }}
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_region: ${{ secrets.AWS_REGION }}
+          if: github.ref == 'refs/heads/feature/QPPSF-10875_Update-Participation-File'
+          run: |
+            ${{ format('aws s3 cp s3://{0}/{1} .', secrets.DEV_S3_BUCKET, secrets.DEV_PART_FILE) }}
 
       - name: Run python formatting for Dev
         uses: actions/setup-python@v4
@@ -45,17 +37,11 @@ jobs:
             python ~/tools/scripts/format-participation-file.py ${{ secrets.DEV_PART_FILE }} testingCpcPlusValidationFile.json
 
       - name: Upload file to Dev s3
-        uses: keithweaver/aws-s3-github-action@v1.0.0
-        if: github.ref == 'refs/heads/feature/QPPSF-10875_Update-Participation-File'
-        with:
-          command: cp
-          source: ./testCpcPlusValidationFile.json
-          destination: ${{ format('s3://{0}/testingCpcPlusValidationFile.json', secrets.DEV_S3_BUCKET) }}
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_region: ${{ secrets.AWS_REGION }}
+          if: github.ref == 'refs/heads/feature/QPPSF-10875_Update-Participation-File'
+          run: |
+            ${{ format('aws s3 cp testCpcPlusValidationFile.json s3://{0}/testingCpcPlusValidationFile.json', secrets.DEV_S3_BUCKET) }}
 
       - name: Clean up
         run: |
-          rm -vrf ~/testingCpcPlusValidationFile.json
-          rm -vrf ~/${{ secrets.PARTICIPATION_FILE_NAME }}
+          rm -vrf testingCpcPlusValidationFile.json
+          rm -vrf ${{ secrets.PARTICIPATION_FILE_NAME }}
