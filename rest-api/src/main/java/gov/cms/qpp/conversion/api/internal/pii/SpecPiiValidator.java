@@ -86,7 +86,7 @@ public class SpecPiiValidator implements PiiValidator {
 						}
 						if (!combinationExists) {
 							LocalizedProblem error = ProblemCode.PCF_MISSING_COMBINATION
-								.format(currentNpi, getMaskedTin(currentEntry.getKey()), program, apm);
+								.format(currentNpi, getMaskedTin(currentEntry.getKey()), apm);
 							validator.addWarning(Detail.forProblemAndNode(error, node));
 						}
 					}
