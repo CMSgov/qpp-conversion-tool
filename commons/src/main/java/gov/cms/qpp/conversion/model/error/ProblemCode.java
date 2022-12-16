@@ -206,7 +206,7 @@ public enum ProblemCode implements LocalizedProblem {
 			+ "Instructions on how to update your roster are available in the PCF Practice Management Guide, available on PCF Connect (https://app.innovation.cms.gov/CMMIConnect/IDMLogin).",
 		true),
 	PCF_INVALID_COMBINATION(108,
-		"NPI/TIN `(npi)`-`(tin)` was reported in the file but does not exist at the practice or was not active on the PCF practitioner roster for `(apm)` during the performance year. "
+		"NPI/TIN Warning: NPI/TIN `(npi)`-`(tin)` was reported in the file but does not exist at the practice or was not active on the PCF practitioner roster for `(apm)` during the performance year. "
 			+ "Please ensure your submission only contains NPI/TIN combinations that were active on your roster at any point during the performance year. "
 			+ "Your QRDA III file and/or roster may require updates. Note: The QPP website does not have access to roster updates made after December 2, 2022. "
 			+ "It is therefore critical that you ensure your roster is up to date and your QRDA III file contains all NPI/TIN values that were active on your roster during the performance year. "
