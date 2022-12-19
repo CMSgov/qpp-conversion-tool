@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Lists;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -332,7 +333,7 @@ class QualityMeasureIdValidatorTest {
 		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode).getErrors();
 		assertWithMessage("Must contain the correct error message.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ProblemCode.DENOMINATOR_COUNT_INVALID.format("375D0559-C749-4BB9-9267-81EDF447650B"));
+				.containsExactly(ProblemCode.DENOMINATOR_COUNT_INVALID.format("375D0559-C749-4BB9-9267-81EDF447650B", Context.REPORTING_YEAR));
 	}
 
 	@Test

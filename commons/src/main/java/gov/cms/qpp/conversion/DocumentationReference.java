@@ -2,13 +2,13 @@ package gov.cms.qpp.conversion;
 
 public enum DocumentationReference {
 
-	CPC_PLUS_SUBMISSIONS(14),
+	PCF_SUBMISSIONS(14),
 	IDENTIFIERS(15),
 	PERFORMANCE_PERIOD(17),
 	CLINICAL_DOCUMENT(19),
 	PRACTICE_SITE_ADDRESS(25),
 	REPORTING_PARAMETERS_ACT(17),
-	MEASURE_IDS(40),
+	MEASURE_IDS(43),
 	CEHRT(15);
 
 	private static final String BASE_PATH = "https://ecqi.healthit.gov/sites/default/files/2022-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-V1.1-508.pdf#page=";

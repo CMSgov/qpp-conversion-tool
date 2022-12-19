@@ -50,7 +50,7 @@ public class PcfQualityMeasureIdValidator extends QualityMeasureIdValidator {
 
 			forceCheckErrors(node)
 				.childExact(
-					ProblemCode.CPC_PCF_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
+					ProblemCode.PCF_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
 						.format(requiredPerformanceRateCount, MeasureConfigHelper.getPrioritizedId(node)),
 					requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
 		}
@@ -88,12 +88,14 @@ public class PcfQualityMeasureIdValidator extends QualityMeasureIdValidator {
 				}
 				if (numeratorValue > performanceDenominator || numeratorValue > denominatorValue) {
 					addError(Detail.forProblemAndNode(ProblemCode.PCF_NUMERATOR_GREATER_THAN_EITHER_DENOMINATORS
-						.format(numeratorNode
-							.getValue(MEASURE_POPULATION)), node));
+						.format(
+							numeratorNode.getValue(MEASURE_POPULATION),
+							measureConfig.getElectronicMeasureId()),
+						node));
 				}
 				if (denexValue > denominatorValue) {
 					addError(Detail.forProblemAndNode(ProblemCode.PCF_DENEX_GREATER_THAN_DENOMINATOR
-						.format(denomExclusionNode.getValue(MEASURE_POPULATION)), node));
+						.format(denomExclusionNode.getValue(MEASURE_POPULATION), measureConfig.getElectronicMeasureId()), node));
 				}
 				//skip if performance rate is missing
 				if (null != performanceRateNode) {
@@ -105,7 +107,9 @@ public class PcfQualityMeasureIdValidator extends QualityMeasureIdValidator {
 							addError(Detail.forProblemAndNode(
 								ProblemCode.PCF_INVALID_NULL_PERFORMANCE_RATE
 									.format(performanceRateNode
-										.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID)), node));
+										.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID),
+										measureConfig.getElectronicMeasureId())
+								, node));
 						}
 					} else if (performanceRateValue != null && NumberHelper.isNumeric(performanceRateValue)
 						&& NumberHelper.isZero(performanceRateValue) && (denominatorValue == 0 || performanceDenominator == 0)) {
@@ -171,7 +175,7 @@ public class PcfQualityMeasureIdValidator extends QualityMeasureIdValidator {
 			.collect(Collectors.toList());
 
 		if (strataNodes.size() != sub.getStrata().size()) {
-			LocalizedProblem error = ProblemCode.CPC_PCF_QUALITY_MEASURE_ID_STRATA_MISMATCH.format(strataNodes.size(),
+			LocalizedProblem error = ProblemCode.PCF_QUALITY_MEASURE_ID_STRATA_MISMATCH.format(strataNodes.size(),
 				sub.getStrata().size(),
 				node.getValue(MeasureDataDecoder.MEASURE_TYPE),
 				node.getValue(MEASURE_POPULATION),
@@ -184,7 +188,7 @@ public class PcfQualityMeasureIdValidator extends QualityMeasureIdValidator {
 				child.getValue(StratifierDecoder.STRATIFIER_ID).equalsIgnoreCase(stratum);
 
 			if (strataNodes.stream().noneMatch(seek)) {
-				LocalizedProblem error = ProblemCode.CPC_PCF_QUALITY_MEASURE_ID_MISSING_STRATA.format(stratum,
+				LocalizedProblem error = ProblemCode.PCF_QUALITY_MEASURE_ID_MISSING_STRATA.format(stratum,
 					node.getValue(MeasureDataDecoder.MEASURE_TYPE),
 					node.getValue(MEASURE_POPULATION));
 				addError(Detail.forProblemAndNode(error, node));

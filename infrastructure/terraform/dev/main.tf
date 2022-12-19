@@ -42,3 +42,11 @@ module "conversion-tool" {
   certificate_arn    = var.certificate_arn
 
 }
+
+module "conversion-tool-newrelic" {
+  source = "../modules/newrelic/"
+
+  environment        = var.environment
+  application        = var.application
+
+}

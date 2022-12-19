@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 			.addFilter(new JwtAuthorizationFilter(authenticationManager(), Set.of(orgName, rtiOrgName)))
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			.and().cors();
+			.and().cors()
+			.and().csrf().disable();
 	}
-
 }

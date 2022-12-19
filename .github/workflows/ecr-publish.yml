@@ -17,17 +17,18 @@ jobs:
 
     name: Build Docker image and deploy to AWS ECR
     runs-on: ubuntu-latest
-
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 2
-  
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: arn:aws:iam::${{ secrets.ACCOUNT_ID }}:role/delegatedadmin/developer/qppsf-dev-githubactions-conversiontool-role
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Login to Amazon ECR
@@ -38,7 +39,7 @@ jobs:
         env:
            ENV_CT: dev
         if: github.ref == 'refs/heads/develop'
-        run: bash ./qppsfct-copy-certs.sh ${{ env.ENV_CT }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_REGION }}
+        run: bash ./qppsfct-copy-certs.sh ${{ env.ENV_CT }} ${{ secrets.AWS_REGION }}
       
       - name: Dev - Build and deploy to Amazon ECR
         id: build-image-dev
@@ -54,7 +55,7 @@ jobs:
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=image-dev::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          echo "image=${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}" >> $GITHUB_OUTPUT
 
       - name: Get task definition for dev
         if: github.ref == 'refs/heads/develop' && success()
@@ -68,7 +69,7 @@ jobs:
         with:
           task-definition: task-definition.json
           container-name: conversion-tool
-          image: ${{ steps.build-image-dev.outputs.image-dev }}
+          image: ${{ steps.build-image-dev.outputs.image }}
 
       - name: Deploy Amazon ECS task definition
         if: github.ref == 'refs/heads/develop' && success()
@@ -99,7 +100,7 @@ jobs:
         env:
            ENV_CT: impl
         if: startsWith(github.ref,'refs/heads/release/')
-        run: bash ./qppsfct-copy-certs.sh ${{ env.ENV_CT }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_REGION }}
+        run: bash ./qppsfct-copy-certs.sh ${{ env.ENV_CT }} ${{ secrets.AWS_REGION }}
 
       - name: Impl - Build and deploy to Amazon ECR
         id: build-image-impl
@@ -115,7 +116,7 @@ jobs:
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=image-impl::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          echo "image=${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}" >> $GITHUB_OUTPUT
 
       - name: Get task definition for Impl
         if: startsWith(github.ref,'refs/heads/release/') && success()
@@ -129,7 +130,7 @@ jobs:
         with:
           task-definition: task-definition.json
           container-name: conversion-tool
-          image: ${{ steps.build-image-impl.outputs.image-impl }}
+          image: ${{ steps.build-image-impl.outputs.image }}
 
       - name: Deploy Amazon ECS task definition
         if: startsWith(github.ref,'refs/heads/release/') && success()
@@ -160,7 +161,7 @@ jobs:
         env:
            ENV_CT: prod
         if: github.ref == 'refs/heads/master'
-        run: bash ./qppsfct-copy-certs.sh ${{ env.ENV_CT }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_REGION }}
+        run: bash ./qppsfct-copy-certs.sh ${{ env.ENV_CT }} ${{ secrets.AWS_REGION }}
 
       - name: Prod - Build and deploy to Amazon ECR
         id: build-image-prod
@@ -176,7 +177,7 @@ jobs:
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=image-prod::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          echo "image=${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}" >> $GITHUB_OUTPUT
 
       - name: Get task definition for Prod
         if: github.ref == 'refs/heads/master' && success()
@@ -190,7 +191,7 @@ jobs:
         with:
           task-definition: task-definition.json
           container-name: conversion-tool
-          image: ${{ steps.build-image-prod.outputs.image-prod }}
+          image: ${{ steps.build-image-prod.outputs.image }}
 
       - name: Deploy Amazon ECS task definition
         if: github.ref == 'refs/heads/master' && success()
@@ -221,7 +222,7 @@ jobs:
         env:
            ENV_CT: devpre
         if: github.ref == 'refs/heads/master'
-        run: bash ./qppsfct-copy-certs.sh ${{ env.ENV_CT }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_REGION }}
+        run: bash ./qppsfct-copy-certs.sh ${{ env.ENV_CT }} ${{ secrets.AWS_REGION }}
 
       - name: DevPre - Build and deploy to Amazon ECR
         id: build-image-devpre
@@ -237,7 +238,7 @@ jobs:
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=image-devpre::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          echo "image=${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}" >> $GITHUB_OUTPUT
 
       - name: Get task definition for DevPre
         if: github.ref == 'refs/heads/master' && success()
@@ -251,7 +252,7 @@ jobs:
         with:
           task-definition: task-definition.json
           container-name: conversion-tool
-          image: ${{ steps.build-image-devpre.outputs.image-devpre }}
+          image: ${{ steps.build-image-devpre.outputs.image }}
 
       - name: Deploy Amazon ECS task definition
         if: github.ref == 'refs/heads/master' && success()
