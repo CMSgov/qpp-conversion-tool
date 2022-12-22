@@ -33,6 +33,12 @@
 			<groupId>gov.cms.qpp.conversion</groupId>
 			<artifactId>rest-api</artifactId>
 			<version>${project.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-beans</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>gov.cms.qpp.conversion</groupId>
