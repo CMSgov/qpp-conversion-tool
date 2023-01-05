@@ -48,7 +48,7 @@ public class PcfFileControllerV1 {
 	@GetMapping(value = "/unprocessed-files/{org}",
 		headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<List<UnprocessedFileData>> getUnprocessedPcfPlusFiles(@PathVariable("org") String organization) {
-		API_LOG.info("PCF unprocessed files request received - 2");
+		API_LOG.info("PCF unprocessed files request received");
 
 		String orgAttribute = Constants.ORG_ATTRIBUTE_MAP.get(organization);
 

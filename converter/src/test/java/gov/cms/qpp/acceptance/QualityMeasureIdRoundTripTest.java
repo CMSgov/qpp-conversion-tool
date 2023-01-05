@@ -205,7 +205,7 @@ class QualityMeasureIdRoundTripTest {
 
 		String populationId = "F50E5334-415D-482F-A30D-0623C082B602";
 
-		LocalizedProblem error = ProblemCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(populationId);
+		LocalizedProblem error = ProblemCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(populationId, Context.REPORTING_YEAR);
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 			.contains(error);
 	}

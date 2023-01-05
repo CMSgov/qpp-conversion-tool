@@ -46,7 +46,7 @@ class MeasureDataValidatorTest {
 		List<Detail> errors = validator.validateSingleNode(testNode).getErrors();
 		assertWithMessage("missing error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ProblemCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(EMPTY_POPULATION_ID));
+				.containsExactly(ProblemCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(EMPTY_POPULATION_ID, Context.REPORTING_YEAR));
 	}
 
 	@Test
@@ -86,7 +86,7 @@ class MeasureDataValidatorTest {
 		List<Detail> errors = validator.validateSingleNode(testNode).getErrors();
 		assertWithMessage("missing error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ProblemCode.MEASURE_DATA_VALUE_NOT_INTEGER.format(EMPTY_POPULATION_ID));
+				.containsExactly(ProblemCode.MEASURE_DATA_VALUE_NOT_INTEGER.format(EMPTY_POPULATION_ID, Context.REPORTING_YEAR));
 	}
 
 	@Test
@@ -109,7 +109,7 @@ class MeasureDataValidatorTest {
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsAtLeast(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
 						ProblemCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(TemplateId.MEASURE_DATA_CMS_V4.name(), 2),
-						ProblemCode.MEASURE_DATA_VALUE_NOT_INTEGER.format("58347456-D1F3-4BBB-9B35-5D42825A0AB3"));
+						ProblemCode.MEASURE_DATA_VALUE_NOT_INTEGER.format("58347456-D1F3-4BBB-9B35-5D42825A0AB3", Context.REPORTING_YEAR));
 	}
 
 	private List<Detail> getErrors(AllErrors content) {

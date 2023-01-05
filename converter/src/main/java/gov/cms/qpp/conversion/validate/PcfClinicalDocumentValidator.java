@@ -85,7 +85,7 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 		validateSubmissionDate(node);
 		String programName = node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME).toUpperCase(Locale.ROOT);
 
-		LocalizedProblem addressError = ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
+		LocalizedProblem addressError = ProblemCode.PCF_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
 			.format(Context.REPORTING_YEAR);
 
 		checkErrors(node)
@@ -100,10 +100,10 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 				ProblemCode.PCF_INVALID_NPI.format(programName),
 				ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, 10)
 			.value(addressError, ClinicalDocumentDecoder.PRACTICE_SITE_ADDR)
-			.childMinimum(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED,
+			.childMinimum(ProblemCode.PCF_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED,
 				1, TemplateId.MEASURE_SECTION_V4)
-			.singleValue(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED, ClinicalDocumentDecoder.PCF_ENTITY_ID)
-			.valueIsNotEmpty(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.PCF_ENTITY_ID)
+			.singleValue(ProblemCode.PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED, ClinicalDocumentDecoder.PCF_ENTITY_ID)
+			.valueIsNotEmpty(ProblemCode.PCF_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.PCF_ENTITY_ID)
 			.childExact(ProblemCode.PCF_NO_PI, 0, TemplateId.PI_SECTION_V2)
 			.listValuesAreInts(ProblemCode.PCF_INVALID_NPI.format(node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME)),
 				ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER);
@@ -137,11 +137,11 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 
 		if (cpcPlus) {
 			if (!context.getApmEntityIds().cpcIdExists(apmEntityId)) {
-				addError(Detail.forProblemAndNode(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_INVALID_APM, node));
+				addError(Detail.forProblemAndNode(ProblemCode.PCF_CLINICAL_DOCUMENT_INVALID_APM, node));
 			}
 		} else {
 			if (!context.getApmEntityIds().pcfIdExists(apmEntityId)) {
-				addError(Detail.forProblemAndNode(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_INVALID_APM, node));
+				addError(Detail.forProblemAndNode(ProblemCode.PCF_CLINICAL_DOCUMENT_INVALID_APM, node));
 			}
 		}
 	}
@@ -205,7 +205,7 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 			String formatted = endDate.format(OUTPUT_END_DATE_FORMAT);
 			String program = node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME);
 			addError(Detail.forProblemAndNode(
-				ProblemCode.CPC_PCF_PLUS_SUBMISSION_ENDED.format(program, program, formatted, program, program,
+				ProblemCode.PCF_PLUS_SUBMISSION_ENDED.format(program, program, formatted, program, program,
 					EnvironmentHelper.getOrDefault(CPC_PLUS_CONTACT_EMAIL, DEFAULT_CPC_PLUS_CONTACT_EMAIL)),
 				node));
 		}

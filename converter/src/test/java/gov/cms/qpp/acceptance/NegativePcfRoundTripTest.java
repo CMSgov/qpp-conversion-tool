@@ -16,7 +16,6 @@ import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
-import gov.cms.qpp.conversion.validate.PcfQualityMeasureSectionValidator;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -36,10 +35,10 @@ public class NegativePcfRoundTripTest {
 	static final Path Y5_NEGATIVE_PCF = Paths.get("src/test/resources/pcf/failure/2021/Y5_Negative_PCF_Sample_QRDA-III.xml");
 	ApmEntityIds apmEntityIds;
 
-	static final String[] PCF_REQUIRED_MEASURES = {
-		"2c928082-74c2-3313-0174-c60bd07b02a6", // 122v10
-		"2c928082-74c2-3313-0174-daf39f2c0658", // 130v10
-		"2c928082-7505-caf9-0175-2382d1bd06b1"  // 165v10
+	static final String[] PCF_MEASURE_IDS = {
+		"122v10",
+		"130v10",
+		"165v10"
 	};
 
 	@BeforeEach
@@ -56,7 +55,7 @@ public class NegativePcfRoundTripTest {
 	void testPcfMissingRequiredMeasureId() {
 		List<Detail> details = conversionError(Y5_NEGATIVE_PCF);
 		LocalizedProblem error = ProblemCode.PCF_TOO_FEW_QUALITY_MEASURE_CATEGORY.format(3,
-			String.join(",", PCF_REQUIRED_MEASURES));
+			String.join(",", PCF_MEASURE_IDS));
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 			.contains(error);
@@ -67,7 +66,7 @@ public class NegativePcfRoundTripTest {
 		List<Detail> details = conversionError(Y5_NEGATIVE_PCF);
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_INVALID_APM.getProblemCode());
+			.contains(ProblemCode.PCF_CLINICAL_DOCUMENT_INVALID_APM.getProblemCode());
 	}
 
 	@Test
@@ -84,10 +83,10 @@ public class NegativePcfRoundTripTest {
 		List<Detail> details = conversionError(Y5_NEGATIVE_PCF);
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(ProblemCode.CPC_PCF_PERFORMANCE_PERIOD_START.format(ClinicalDocumentDecoder.PCF_PROGRAM_NAME.toUpperCase(Locale.ROOT)));
+			.contains(ProblemCode.PCF_PERFORMANCE_PERIOD_START.format(ClinicalDocumentDecoder.PCF_PROGRAM_NAME.toUpperCase(Locale.ROOT)));
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(ProblemCode.CPC_PCF_PERFORMANCE_PERIOD_END.format(ClinicalDocumentDecoder.PCF_PROGRAM_NAME.toUpperCase(Locale.ROOT)));
+			.contains(ProblemCode.PCF_PERFORMANCE_PERIOD_END.format(ClinicalDocumentDecoder.PCF_PROGRAM_NAME.toUpperCase(Locale.ROOT)));
 	}
 
 	List<Detail> conversionError(Path path) {

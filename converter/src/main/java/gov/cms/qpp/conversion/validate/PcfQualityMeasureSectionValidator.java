@@ -19,6 +19,12 @@ public class PcfQualityMeasureSectionValidator extends NodeValidator {
 		"2c928082-7505-caf9-0175-2382d1bd06b1"  // 165v10
 	};
 
+	static final String[] PCF_MEASURE_IDS = {
+		"122v10",
+		"130v10",
+		"165v10"
+	};
+
 	/**
 	 * Validate that the Quality Measure Section contains an acceptable combination of measures...
 	 *
@@ -36,7 +42,7 @@ public class PcfQualityMeasureSectionValidator extends NodeValidator {
 	 * @param checker node validator helper
 	 */
 	void checkGroupMinimum(Checker checker) {
- 		checker.hasMeasures(makeError(PCF_REQUIRED_MEASURES), PCF_REQUIRED_MEASURES);
+ 		checker.hasMeasures(makeError(PCF_MEASURE_IDS), PCF_REQUIRED_MEASURES);
 	}
 
 	LocalizedProblem makeError(String... measureIds) {
