@@ -67,43 +67,6 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	}
 
 	/**
-	 * Queries the DynamoDB GSI for unprocessed {@link Metadata} with a maximum of 96 items.
-	 *
-	 * Iterates over all of the different partitions, returning a maximum of three items from each.
-	 *
-	 * @return {@link List} of unprocessed {@link Metadata}
-	 */
-	public List<Metadata> getUnprocessedCpcPlusMetaData(String orgAttribute) {
-		if (mapper.isPresent()) {
-			API_LOG.info("Getting list of unprocessed CPC+ metadata...");
-
-			String cpcConversionStartDate = Optional.ofNullable(
-				environment.getProperty(Constants.CPC_PLUS_UNPROCESSED_FILE_SEARCH_DATE_VARIABLE)).orElse("");
-			String year = cpcConversionStartDate.substring(0, 4);
-			String indexName = Constants.DYNAMO_CPC_ATTRIBUTE + "-" + orgAttribute + "-index";
-
-			return IntStream.range(0, Constants.CPC_DYNAMO_PARTITIONS).mapToObj(partition -> {
-				Map<String, AttributeValue> valueMap = new HashMap<>();
-				valueMap.put(":cpcValue", new AttributeValue().withS(Constants.CPC_DYNAMO_PARTITION_START + partition));
-				valueMap.put(":cpcProcessedValue", new AttributeValue().withS("false#"+year));
-
-				DynamoDBQueryExpression<Metadata> metadataQuery = new DynamoDBQueryExpression<Metadata>()
-					.withIndexName(indexName)
-					.withKeyConditionExpression(Constants.DYNAMO_CPC_ATTRIBUTE + " = :cpcValue and begins_with("
-							+ orgAttribute + ", :cpcProcessedValue)")
-					.withExpressionAttributeValues(valueMap)
-					.withConsistentRead(false);
-
-				return mapper.get().query(Metadata.class, metadataQuery).stream().limit(10);
-			})
-				.flatMap(Function.identity()).collect(Collectors.toList());
-		} else {
-			API_LOG.warn("Could not get unprocessed CPC+ metadata because the dynamodb mapper is absent");
-			return Collections.emptyList();
-		}
-	}
-
-	/**
 	 * Paginated Query of DynamoDb to limit items received as to remove issues with slowness/timeouts
 	 *
 	 * @param orgAttribute controls organizational choice when retrieving data

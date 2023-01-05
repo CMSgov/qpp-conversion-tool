@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.api.internal.pii;
 
 import org.springframework.util.StringUtils;
 
-import gov.cms.qpp.conversion.api.model.CpcValidationInfoMap;
+import gov.cms.qpp.conversion.api.model.PcfValidationInfoMap;
 import gov.cms.qpp.conversion.api.model.TinNpiCombination;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -19,9 +19,9 @@ import java.util.Map;
 
 public class SpecPiiValidator implements PiiValidator {
 
-	private final CpcValidationInfoMap file;
+	private final PcfValidationInfoMap file;
 
-	public SpecPiiValidator(CpcValidationInfoMap file) {
+	public SpecPiiValidator(PcfValidationInfoMap file) {
 		this.file = file;
 	}
 
@@ -48,8 +48,8 @@ public class SpecPiiValidator implements PiiValidator {
 			for (int index = 0; index < npiSize; index++) {
 				String currentTin = tinList.get(index).trim();
 				String currentNpi = npiList.get(index).trim();
-				LocalizedProblem error = ProblemCode.INCORRECT_API_NPI_COMBINATION
-					.format(currentNpi, getMaskedTin(currentTin), program,apm);
+				LocalizedProblem error = ProblemCode.PCF_INVALID_COMBINATION
+					.format(currentNpi, getMaskedTin(currentTin), apm);
 				if (tinNpisMap == null || tinNpisMap.get(currentTin) == null
 					|| !(tinNpisMap.get(currentTin).indexOf(currentNpi) > -1)) {
 					validator.addWarning(Detail.forProblemAndNode(error, node));
@@ -85,8 +85,8 @@ public class SpecPiiValidator implements PiiValidator {
 							}
 						}
 						if (!combinationExists) {
-							LocalizedProblem error = ProblemCode.INCORRECT_API_NPI_COMBINATION
-								.format(currentNpi, getMaskedTin(currentEntry.getKey()), program, apm, program);
+							LocalizedProblem error = ProblemCode.PCF_MISSING_COMBINATION
+								.format(currentNpi, getMaskedTin(currentEntry.getKey()), apm);
 							validator.addWarning(Detail.forProblemAndNode(error, node));
 						}
 					}

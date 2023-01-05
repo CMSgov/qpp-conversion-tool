@@ -23,7 +23,7 @@ resource "aws_ecs_cluster" "conversion-tool-ecs-cluster" {
 
 resource "aws_ecs_task_definition" "conversion-tool" {
   family                   = "qppsf-conversion-tool-td-${var.environment}"
-  execution_role_arn       = aws_iam_role.ecs_execution_role.arn
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = "2048"
@@ -50,10 +50,11 @@ resource "aws_ecs_service" "conversion-tool-service" {
   deployment_maximum_percent         = "100"
   deployment_minimum_healthy_percent = "0"
   platform_version                   = "1.4.0"
-  
+
   lifecycle {
     ignore_changes = [task_definition]
   }
+
   
   network_configuration {
     subnets          = [var.app_subnet1, var.app_subnet2, var.app_subnet3]

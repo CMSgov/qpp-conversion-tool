@@ -163,7 +163,6 @@ class QualityMeasureIdRoundTripTest {
 
 	@Test
 	void test2020CorrectMultiToSinglePerfMeasureExample() {
-		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 		Converter converter = new Converter(new PathSource(CORRECT_MULTI_TO_SINGLE_PERF_RATE_FILE), new Context(apmEntityIds));
 		JsonWrapper qpp = converter.transform();
 
@@ -206,7 +205,7 @@ class QualityMeasureIdRoundTripTest {
 
 		String populationId = "F50E5334-415D-482F-A30D-0623C082B602";
 
-		LocalizedProblem error = ProblemCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(populationId);
+		LocalizedProblem error = ProblemCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(populationId, Context.REPORTING_YEAR);
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 			.contains(error);
 	}
@@ -223,14 +222,13 @@ class QualityMeasureIdRoundTripTest {
 			details.addAll(errors.getErrors().get(0).getDetails());
 		}
 
-		LocalizedProblem error = ProblemCode.CPC_PCF_PLUS_ZERO_PERFORMANCE_RATE;
+		LocalizedProblem error = ProblemCode.PCF_ZERO_PERFORMANCE_RATE;
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 			.contains(error);
 	}
 
 	@Test
 	void testTopLevelMipsApmSampleFile() {
-		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 		Converter converter = new Converter(new PathSource(MIPS_APM_FILE), new Context(apmEntityIds));
 		JsonWrapper qpp = converter.transform();
 
@@ -267,7 +265,7 @@ class QualityMeasureIdRoundTripTest {
 			details.addAll(errors.getErrors().get(0).getDetails());
 		}
 
-		LocalizedProblem error = ProblemCode.CPC_PCF_PLUS_ZERO_PERFORMANCE_RATE;
+		LocalizedProblem error = ProblemCode.PCF_ZERO_PERFORMANCE_RATE;
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 			.contains(error);
 	}

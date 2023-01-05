@@ -13,11 +13,16 @@ import gov.cms.qpp.conversion.model.error.ProblemCode;
 @Validator(value = TemplateId.MEASURE_SECTION_V4, program = Program.PCF)
 public class PcfQualityMeasureSectionValidator extends NodeValidator {
 
-	// To Do: update when Measures data gets updated
 	static final String[] PCF_REQUIRED_MEASURES = {
-		"2c928085-7198-38ee-0171-9d78a0d406b3", // 122v9
-		"2c928085-7198-38ee-0171-9d6e026b066b", // 130v9
-		"2c928085-7198-38ee-0171-9da6456007ab"  // 165v9
+		"2c928082-74c2-3313-0174-c60bd07b02a6", // 122v10
+		"2c928082-74c2-3313-0174-daf39f2c0658", // 130v10
+		"2c928082-7505-caf9-0175-2382d1bd06b1"  // 165v10
+	};
+
+	static final String[] PCF_MEASURE_IDS = {
+		"122v10",
+		"130v10",
+		"165v10"
 	};
 
 	/**
@@ -37,7 +42,7 @@ public class PcfQualityMeasureSectionValidator extends NodeValidator {
 	 * @param checker node validator helper
 	 */
 	void checkGroupMinimum(Checker checker) {
- 		checker.hasMeasures(makeError(PCF_REQUIRED_MEASURES), PCF_REQUIRED_MEASURES);
+ 		checker.hasMeasures(makeError(PCF_MEASURE_IDS), PCF_REQUIRED_MEASURES);
 	}
 
 	LocalizedProblem makeError(String... measureIds) {

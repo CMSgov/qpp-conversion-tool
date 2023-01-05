@@ -30,8 +30,8 @@ public class PcfClinicalDocumentValidatorTest {
 
 	@AfterEach
 	void cleanUp() {
-		System.clearProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE);
-		System.clearProperty(CpcClinicalDocumentValidator.CPC_PLUS_CONTACT_EMAIL);
+		System.clearProperty(PcfClinicalDocumentValidator.END_DATE_VARIABLE);
+		System.clearProperty(PcfClinicalDocumentValidator.CPC_PLUS_CONTACT_EMAIL);
 	}
 
 	@Test
@@ -49,7 +49,7 @@ public class PcfClinicalDocumentValidatorTest {
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
+			.containsExactly(ProblemCode.PCF_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
 				.format(Context.REPORTING_YEAR));
 	}
 
@@ -62,7 +62,7 @@ public class PcfClinicalDocumentValidatorTest {
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED);
+			.containsExactly(ProblemCode.PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED);
 	}
 
 	@Test
@@ -72,7 +72,7 @@ public class PcfClinicalDocumentValidatorTest {
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED);
+			.containsExactly(ProblemCode.PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED);
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class PcfClinicalDocumentValidatorTest {
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PCF_ENTITY_ID, "");
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_EMPTY_APM);
+			.containsExactly(ProblemCode.PCF_CLINICAL_DOCUMENT_EMPTY_APM);
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class PcfClinicalDocumentValidatorTest {
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PCF_ENTITY_ID, "PropertyTaxes");
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_INVALID_APM);
+			.containsExactly(ProblemCode.PCF_CLINICAL_DOCUMENT_INVALID_APM);
 	}
 
 	@Test
@@ -99,14 +99,14 @@ public class PcfClinicalDocumentValidatorTest {
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ProblemCode.CPC_PCF_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED);
+			.containsExactly(ProblemCode.PCF_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED);
 	}
 
 	@Test
 	void testCpcPlusSubmissionBeforeEndDate() {
-		System.setProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE,
-			ZonedDateTime.now(CpcClinicalDocumentValidator.EASTERN_TIME_ZONE).plusYears(3)
-				.format(CpcClinicalDocumentValidator.INPUT_END_DATE_FORMAT));
+		System.setProperty(PcfClinicalDocumentValidator.END_DATE_VARIABLE,
+			ZonedDateTime.now(PcfClinicalDocumentValidator.EASTERN_TIME_ZONE).plusYears(3)
+				.format(PcfClinicalDocumentValidator.INPUT_END_DATE_FORMAT));
 		Node clinicalDocument = createPcfClinicalDocumentNodeWithMeasureSection();
 		List<Detail> errors = validator.validateSingleNode(clinicalDocument).getErrors();
 
@@ -134,7 +134,7 @@ public class PcfClinicalDocumentValidatorTest {
 
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ProblemCode.CPC_PCF_PLUS_INVALID_NPI.format(ClinicalDocumentDecoder.PCF_PROGRAM_NAME.toUpperCase()));
+				.containsExactly(ProblemCode.PCF_INVALID_NPI.format(ClinicalDocumentDecoder.PCF_PROGRAM_NAME.toUpperCase()));
 	}
 
 	private Node createPcfClinicalDocumentNodeWithMeasureSection() {

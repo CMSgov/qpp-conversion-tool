@@ -232,7 +232,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 				.incompleteValidation()
 				.intValue(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
 						AggregateCountDecoder.AGGREGATE_COUNT)
-				.lessThanOrEqualTo(ProblemCode.DENOMINATOR_COUNT_INVALID.format(denominatorUuid),
+				.lessThanOrEqualTo(ProblemCode.DENOMINATOR_COUNT_INVALID.format(denominatorUuid, Context.REPORTING_YEAR),
 					Integer.parseInt(ipopCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT)));
 	}
 
@@ -247,7 +247,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 			.incompleteValidation()
 			.intValue(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
 				AggregateCountDecoder.AGGREGATE_COUNT)
-			.valueIn(ProblemCode.CPC_PCF_PLUS_DENOMINATOR_COUNT_INVALID.format(program, denominatorUuid), AggregateCountDecoder.AGGREGATE_COUNT,
+			.valueIn(ProblemCode.PCF_DENOMINATOR_COUNT_INVALID.format(program, denominatorUuid, Context.REPORTING_YEAR), AggregateCountDecoder.AGGREGATE_COUNT,
 				ipopCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT));
 	}
 

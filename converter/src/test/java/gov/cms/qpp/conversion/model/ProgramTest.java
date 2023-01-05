@@ -32,12 +32,6 @@ class ProgramTest implements EnumContract {
 	}
 
 	@Test
-	void instanceRetrievalCpcPlus() {
-		assertWithMessage("Program other than %s was returned", Program.CPC)
-				.that(Program.getInstance("CPCPLUS")).isSameInstanceAs(Program.CPC);
-	}
-
-	@Test
 	void instanceRetrievalPcf() {
 		assertWithMessage("Program other than %s was returned", Program.PCF)
 			.that(Program.getInstance("PCF")).isSameInstanceAs(Program.PCF);
@@ -53,46 +47,6 @@ class ProgramTest implements EnumContract {
 	void instanceRetrievalNullProgramName() {
 		assertWithMessage("Program other than %s was returned", Program.ALL)
 				.that(Program.getInstance(null)).isSameInstanceAs(Program.ALL);
-	}
-
-	@Test
-	void testIsCpcPlusForNullThrowsNullPointerException() {
-		Assertions.assertThrows(NullPointerException.class, () -> Program.isCpc(null));
-	}
-
-	@Test
-	void testIsCpcPlusForNullStringIsFalse() {
-		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, null);
-		assertThat(Program.isCpc(node)).isFalse();
-	}
-
-	@Test
-	void testIsCpcPlusForRandomStringIsFalse() {
-		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "some fake mock value");
-		assertThat(Program.isCpc(node)).isFalse();
-	}
-
-	@Test
-	void testIsCpcPlusForMipsIsFalse() {
-		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_INDIV");
-		assertThat(Program.isCpc(node)).isFalse();
-	}
-
-	@Test
-	void testIsCpcPlusForCpcplusUppercaseIsTrue() {
-		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "CPCPLUS");
-		assertThat(Program.isCpc(node)).isTrue();
-	}
-
-	@Test
-	void testIsCpcPlusForCpcplusLowercaseIsTrue() {
-		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "cpcplus");
-		assertThat(Program.isCpc(node)).isTrue();
 	}
 
 	@Test
@@ -114,13 +68,6 @@ class ProgramTest implements EnumContract {
 		Node node = new Node();
 		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "pcf");
 		assertThat(Program.isPcf(node)).isTrue();
-	}
-
-	@Test
-	void testIsCpcPlusForCpcplusMixedCaseIsTrue() {
-		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "cPcPlUs");
-		assertThat(Program.isCpc(node)).isTrue();
 	}
 
 	@Test

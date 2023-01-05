@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>18.3.0-RELEASE</version>
+		<version>20.2.0-RELEASE</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -17,7 +17,7 @@
 
 	<properties>
 		<requiredCodeCoverage>0.90</requiredCodeCoverage>
-		<tomcat.version>9.0.62</tomcat.version>
+		<tomcat.version>9.0.68</tomcat.version>
 	</properties>
 
 	<build>
@@ -168,7 +168,7 @@
 		<dependency>
 			<groupId>org.yaml</groupId>
 			<artifactId>snakeyaml</artifactId>
-			<version>1.31</version>
+			<version>1.32</version>
 		</dependency>
 
 		<dependency>

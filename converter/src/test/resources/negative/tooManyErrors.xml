@@ -12,7 +12,7 @@
   <!-- QRDA Category III template ID (this template ID differs from QRDA III comment only template ID). -->
   <templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01"/>
   <!-- QRDA Category III Report - CMS V2 -->
-  <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2020-05-01"/>
+  <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2021-07-01"/>
   <id root='a0b51520-23d3-0137-59c4-000d3a380e5a'  />
 
 
@@ -89,7 +89,7 @@
       <!-- i.	Such intendedRecipients SHALL contain exactly one [1..1] id (CONF:711160).
           1.	This id SHALL contain exactly one [1..1] @root="2.16.840.1.113883.3.249.7" CMS Program (CONF:711161).
           2.	idsThis id SHALL contain exactly one [1..1] @extension, which SHALL be selected from ValueSet CMS Program Name 2.16.840.1.113883.3.249.14.101 (CONF:711162). -->
-      <id root="2.16.840.1.113883.3.249.7" extension="CPCPLUS"/>
+      <id root="2.16.840.1.113883.3.249.7" extension="PCF"/>
     </intendedRecipient>
   </informationRecipient>
   <!-- The legal authenticator of the CDA document is a single person who is at the
@@ -327,8 +327,8 @@
               <id root="D5E68228-5760-11E7-1256-09173F13E4C5" />
               <code code="252116004" codeSystem="2.16.840.1.113883.6.96" displayName="Observation Parameters" />
               <effectiveTime>
-                <low value="20210101" />
-                <high value="20211231" />
+                <low value="20220101" />
+                <high value="20221231" />
               </effectiveTime>
             </act>
           </entry>

@@ -134,6 +134,70 @@
 		]
 	},
 	{
+		"title": "Use of High-Risk Medications in Older Adults",
+		"eMeasureId": "CMS156v9",
+		"nqfEMeasureId": null,
+		"nqfId": "0022",
+		"measureId": "238",
+		"description": "Percentage of patients 65 years of age and older who were ordered at least two of the same high-risk medications.",
+		"nationalQualityStrategyDomain": "Patient Safety",
+		"measureType": "process",
+		"primarySteward": "National Committee for Quality Assurance",
+		"metricType": "singlePerformanceRate",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"isHighPriority": true,
+		"isInverse": true,
+		"isIcdImpacted": false,
+		"isClinicalGuidelineChanged": false,
+		"category": "quality",
+		"isRegistryMeasure": false,
+		"isRiskAdjusted": false,
+		"icdImpacted": [],
+		"clinicalGuidelineChanged": [],
+		"allowedPrograms": [
+			"mips",
+			"cpcPlus",
+			"pcf"
+		],
+		"submissionMethods": [
+			"electronicHealthRecord",
+			"registry"
+		],
+		"measureSets": [
+			"allergyImmunology",
+			"cardiology",
+			"familyMedicine",
+			"internalMedicine",
+			"ophthalmology",
+			"rheumatology",
+			"geriatrics",
+			"skilledNursingFacility",
+			"pulmonology"
+		],
+		"measureSpecification": {
+			"electronicHealthRecord": "https://ecqi.healthit.gov/ecqm/ep/2021/cms156v9",
+			"registry": "https://qpp.cms.gov/docs/QPP_quality_measure_specifications/CQM-Measures/2021_Measure_238_MIPSCQM.pdf"
+		},
+		"strata": [
+			{
+				"name": "overall",
+				"description": "Percentage of patients who were ordered at least one high-risk medication",
+				"eMeasureUuids": {
+					"initialPopulationUuid": "3E177A28-30DE-4381-8C7A-B42CD914DA33",
+					"denominatorUuid": "E7E1C3BB-730F-4020-9BF3-3AA508B914FC",
+					"numeratorUuid": "14F9E2DB-C09F-4E06-AFBD-C1E5E178D920",
+					"numeratorExclusionUuid": "16F9E2DB-C09F-4E06-AFBD-C1E5E178D921"
+				}
+			}
+		],
+		"eMeasureUuid": "requiresNumeratorExclusionGuid",
+		"benchmarks": {
+			"electronicHealthRecord": "removed",
+			"registry": "removed"
+		}
+	},
+	{
 		"category": "quality",
 		"firstPerformanceYear": 2017,
 		"lastPerformanceYear": null,

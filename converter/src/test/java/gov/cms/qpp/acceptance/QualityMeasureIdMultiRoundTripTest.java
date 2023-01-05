@@ -1,6 +1,7 @@
 package gov.cms.qpp.acceptance;
 
 import gov.cms.qpp.acceptance.helper.MarkupManipulator;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
 import gov.cms.qpp.conversion.PathSource;
@@ -17,6 +18,7 @@ import gov.cms.qpp.conversion.util.JsonHelper;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.jayway.jsonpath.TypeRef;
@@ -49,9 +51,14 @@ class QualityMeasureIdMultiRoundTripTest {
 	private static MarkupManipulator manipulator;
 
 	@BeforeAll
-	static void setup() {
+	static void beforeAll() {
 		manipulator = new MarkupManipulator.MarkupManipulatorBuilder()
 			.setPathname(JUNK_QRDA3_FILE).build();
+	}
+
+	@BeforeEach
+	void setup() {
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.TEST_MEASURE_DATA);
 	}
 
 	@AfterEach
@@ -111,7 +118,7 @@ class QualityMeasureIdMultiRoundTripTest {
 	@Test
 	void testRoundTripForQualityMeasureIdWithNoDenexMeasureType() {
 		LocalizedProblem error =
-			ProblemCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS128v9", 2, SubPopulationLabel.DENEX.name(), 1);
+			ProblemCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS128v7", 2, SubPopulationLabel.DENEX.name(), 1);
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[5]/observation/value/@code";
 
@@ -158,7 +165,7 @@ class QualityMeasureIdMultiRoundTripTest {
 		}
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(ProblemCode.DENOMINATOR_COUNT_INVALID.format("D4D2DEE7-385A-4C28-A09C-884A062A97AA"));
+				.contains(ProblemCode.DENOMINATOR_COUNT_INVALID.format("D4D2DEE7-385A-4C28-A09C-884A062A97AA", Context.REPORTING_YEAR));
 	}
 
 	@Test

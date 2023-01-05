@@ -65,16 +65,12 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 				thisNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER));
 		}
 
-		if (Program.isCpc(thisNode)) {
-			wrapper.put(ClinicalDocumentDecoder.ENTITY_ID, thisNode.getValue(ClinicalDocumentDecoder.PRACTICE_ID));
-		}
-
 		if(Program.isPcf(thisNode)) {
 			wrapper.put(ClinicalDocumentDecoder.ENTITY_ID, thisNode.getValue(ClinicalDocumentDecoder.PCF_ENTITY_ID));
 		}
 
 		if (ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP.equals(entityType)) {
-			wrapper.put(ClinicalDocumentDecoder.ENTITY_ID, thisNode.getValue(ClinicalDocumentDecoder.VG_ID));
+			wrapper.put(ClinicalDocumentDecoder.ENTITY_ID, thisNode.getValue(ClinicalDocumentDecoder.ENTITY_ID));
 		}
 
 		if ((Program.isApp(thisNode) || Program.isMips(thisNode) &&
