@@ -17,7 +17,7 @@
 
 	<properties>
 		<requiredCodeCoverage>0.90</requiredCodeCoverage>
-		<tomcat.version>9.0.68</tomcat.version>
+		<tomcat.version>9.0.69</tomcat.version>
 	</properties>
 
 	<build>
