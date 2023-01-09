@@ -22,6 +22,11 @@ resource "aws_s3_bucket" "log_bucket" {
       days          = 120
       storage_class = "GLACIER"
     }
+
+    expiration {
+      days                         = 365
+      expired_object_delete_marker = true
+    }
   }
 
   lifecycle {
