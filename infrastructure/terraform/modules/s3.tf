@@ -14,12 +14,12 @@ resource "aws_s3_bucket" "log_bucket" {
     enabled = true
 
     transition {
-      days          = 90
+      days          = 60
       storage_class = "STANDARD_IA"
     }
 
     transition {
-      days          = 120
+      days          = 90
       storage_class = "GLACIER"
     }
 
