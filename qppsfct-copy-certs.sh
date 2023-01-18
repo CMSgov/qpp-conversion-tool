@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 ENV_CERT=$1
 AWS_REGION=$2
 CERT_CP_PATH="rest-api/src/main/resources/"
