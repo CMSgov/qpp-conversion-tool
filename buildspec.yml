@@ -1,0 +1,17 @@
+version: 0.2
+env:
+  shell: bash
+phases:
+  pre_build:
+    commands:
+      - Getting Certificates for $ENVIRONMENT Environment
+      - ./qppsfct-copy-certs.sh $ENVIRONMENT $AWS_DEFAULT_REGION
+      - echo Logging in to Amazon ECR
+      - aws --version
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+  build:
+    commands:
+      - echo Build started on `date`
+  post_build:
+    commands:
+      - echo Build completed on `date`

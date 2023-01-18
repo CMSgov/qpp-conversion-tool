@@ -40,6 +40,8 @@ module "conversion-tool" {
   application        = var.application
   git-origin         = var.git-origin
   certificate_arn    = var.certificate_arn
+  codebuild_branch_ref = var.codebuild_branch_ref
+  team               = var.team
 
 }
 
