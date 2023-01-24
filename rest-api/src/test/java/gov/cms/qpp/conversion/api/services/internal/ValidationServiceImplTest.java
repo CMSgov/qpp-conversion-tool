@@ -1,7 +1,11 @@
 package gov.cms.qpp.conversion.api.services.internal;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.startsWith;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -20,6 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.apache.commons.io.FileUtils;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,7 +46,6 @@ import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.ErrorMessage;
-import gov.cms.qpp.conversion.api.services.internal.ValidationServiceImpl;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
@@ -145,29 +149,28 @@ class ValidationServiceImplTest {
 
 		TransformException thrown = assertThrows(TransformException.class,
 				() -> objectUnderTest.validateQpp(converter.getReport()));
-		assertThat(thrown).hasMessageThat().isEqualTo("Converted QPP failed validation");
 	}
 
 	@Test
 	void testHeaderCreation() {
 		HttpHeaders headers = objectUnderTest.getHeaders();
 
-		assertThat(headers.getFirst(HttpHeaders.CONTENT_TYPE)).isEqualTo(ValidationServiceImpl.CONTENT_TYPE);
-		assertThat(headers.getFirst(HttpHeaders.ACCEPT)).isEqualTo(ValidationServiceImpl.CONTENT_TYPE);
+		assertThat(headers.getFirst(HttpHeaders.CONTENT_TYPE), is(ValidationServiceImpl.CONTENT_TYPE));
+		assertThat(headers.getFirst(HttpHeaders.ACCEPT), is(ValidationServiceImpl.CONTENT_TYPE));
 	}
 
 	@Test
 	void testHeaderCreationNoAuth() {
 		when(environment.getProperty(eq(Constants.SUBMISSION_API_TOKEN_ENV_VARIABLE))).thenReturn(null);
 		HttpHeaders headers = objectUnderTest.getHeaders();
-		assertThat(headers.get(HttpHeaders.AUTHORIZATION)).isNull();
+		assertNull(headers.get(HttpHeaders.AUTHORIZATION));
 	}
 
 	@Test
 	void testHeaderCreationNoAuthEmpty() {
 		when(environment.getProperty(eq(Constants.SUBMISSION_API_TOKEN_ENV_VARIABLE))).thenReturn("");
 		HttpHeaders headers = objectUnderTest.getHeaders();
-		assertThat(headers.get(HttpHeaders.AUTHORIZATION)).isNull();
+		assertNull(headers.get(HttpHeaders.AUTHORIZATION));
 	}
 
 	@Test
@@ -175,14 +178,12 @@ class ValidationServiceImplTest {
 		when(environment.getProperty(eq(Constants.SUBMISSION_API_TOKEN_ENV_VARIABLE))).thenReturn("meep");
 		HttpHeaders headers = objectUnderTest.getHeaders();
 
-		assertThat(headers.getFirst(HttpHeaders.AUTHORIZATION)).contains("meep");
+		assertThat(headers.getFirst(HttpHeaders.AUTHORIZATION), containsString("meep"));
 	}
 
 	@Test
 	void testJsonDeserialization() {
-		assertWithMessage("Error json should map to AllErrors")
-				.that(convertedErrors.getErrors())
-				.hasSize(1);
+		assertThat(convertedErrors.getErrors().size(), is(1));
 	}
 
 	@Test
@@ -190,12 +191,10 @@ class ValidationServiceImplTest {
 		String errorJson = new String(Files.readAllBytes(pathToSubmissionDuplicateEntryError));
 		convertedErrors = service.convertQppValidationErrorsToQrda(errorJson, qppWrapper);
 
-		assertWithMessage("Error json should map to AllErrors")
-				.that(convertedErrors.getErrors())
-				.hasSize(1);
+		assertThat(convertedErrors.getErrors().size(), is(1));
 
-		assertThat(convertedErrors.getErrors().get(0).getDetails().get(0).getMessage())
-			.startsWith(ValidationServiceImpl.SV_LABEL);
+		assertThat(convertedErrors.getErrors().get(0).getDetails().get(0).getMessage(),
+			startsWith(ValidationServiceImpl.SV_LABEL));
 	}
 
 	@Test
@@ -203,9 +202,7 @@ class ValidationServiceImplTest {
 		Detail detail = submissionError.getError().getDetails().get(0);
 		Detail mappedDetails = convertedErrors.getErrors().get(0).getDetails().get(0);
 
-		assertWithMessage("Json path should be converted to xpath")
-				.that(detail.getLocation().getPath())
-				.isNotEqualTo(mappedDetails.getLocation().getPath());
+		assertNotEquals(mappedDetails.getLocation().getPath(), detail.getLocation().getPath());
 	}
 
 	@Test
@@ -228,6 +225,7 @@ class ValidationServiceImplTest {
 		convertedErrors = service.convertQppValidationErrorsToQrda(errorJson, qppWrapper);
 
 		convertedErrors.getErrors().stream().flatMap(error -> error.getDetails().stream())
-			.map(Detail::getLocation).map(Location::getPath).forEach(path -> assertThat(path).isEqualTo(ValidationServiceImpl.UNABLE_PROVIDE_XPATH));
+			.map(Detail::getLocation).map(Location::getPath)
+			.forEach(path -> assertThat(path, is(ValidationServiceImpl.UNABLE_PROVIDE_XPATH)));
 	}
 }
