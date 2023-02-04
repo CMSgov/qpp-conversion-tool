@@ -5,7 +5,7 @@ env:
 phases:
   install:
     runtime-versions:
-      python: 3.9
+      python: 3.8
   pre_build:
     commands:
       - echo ${CODEBUILD_SRC_DIR}
