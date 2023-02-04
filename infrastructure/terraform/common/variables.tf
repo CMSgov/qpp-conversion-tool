@@ -22,3 +22,19 @@ variable "team" {
   type = string
   description = "QPP Team"
 }
+
+variable "pagerduty_email" {
+  type = string
+}
+
+variable "owner" {
+  type = string
+}
+
+variable "application" {
+  type = string
+}
+
+variable "sensitivity" {
+  type = string
+}

@@ -1,0 +1,39 @@
+version: 0.2
+env:
+  parameter-store: 
+    AWS_ACCOUNT_ID: "/qppar-sf/account_id"
+phases:
+  install:
+    runtime-versions:
+      python: 3.10
+  pre_build:
+    commands:
+      - echo ${CODEBUILD_SRC_DIR}
+      - echo ${AWS_DEFAULT_REGION}
+      - echo ${AWS_ACCOUNT_ID}
+      - echo ${ENVIRONMENT}
+      - echo ${CODEBUILD_RESOLVED_SOURCE_VERSION}
+      - echo Getting Certificates for ${ENVIRONMENT}
+      - chmod +x ./qppsfct-copy-certs.sh
+      - ./qppsfct-copy-certs.sh $ENVIRONMENT $AWS_DEFAULT_REGION
+      - echo Logging in to Amazon ECR
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com
+  build:
+    commands:
+      - echo "Build Docker Image"
+      - REPOSITORY_URI="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/new-qpp-conversion-tool"
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
+      - docker build -t $REPOSITORY_URI:latest .
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+      - echo Pushing the Docker image
+      - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Writing Task Definition json file
+      - printf '[{"name":"'$ecs_container_name'","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > qppsf-conversion-tool-td-${ENVIRONMENT}.json
+artifacts:
+    files: qppsf-conversion-tool-td-${ENVIRONMENT}.json
+post_build:
+    commands:
+      - if [ "$CODEBUILD_BUILD_SUCCEEDING" -eq 0 ]; then echo "BUILD FAILED" && exit 1 ; fi
+      - if [ "$CODEBUILD_BUILD_SUCCEEDING" -eq 1 ]; then echo "BUILD SUCCEEDED" ; fi
