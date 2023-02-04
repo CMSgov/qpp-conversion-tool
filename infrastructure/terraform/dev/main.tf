@@ -52,26 +52,3 @@ module "conversion-tool-newrelic" {
   application        = var.application
 
 }
-
-module "conversion-tool-build-deploy" {
-  source = "../modules/conversion-tool-build-deploy/"
-
-  pagerduty_email    = var.pagerduty_email
-  lb_security_group  = var.lb_security_group
-  vpc_cidr           = var.vpc_cidr
-  vpn_security_group = var.vpn_security_group
-  project_name       = var.project_name
-  vpc_id             = var.vpc_id
-  app_subnet2        = var.app_subnet2
-  app_subnet3        = var.app_subnet3
-  owner              = var.owner
-  sensitivity        = var.sensitivity
-  app_subnet1        = var.app_subnet1
-  environment        = var.environment
-  application        = var.application
-  git-origin         = var.git-origin
-  certificate_arn    = var.certificate_arn
-  codebuild_branch_ref = var.codebuild_branch_ref
-  team               = var.team
-
-}

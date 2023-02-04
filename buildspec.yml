@@ -31,9 +31,9 @@ phases:
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing Task Definition json file
       - printf '[{"name":"'$ecs_container_name'","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > qppsf-conversion-tool-td-${ENVIRONMENT}.json
-artifacts:
+  artifacts:
     files: qppsf-conversion-tool-td-${ENVIRONMENT}.json
-post_build:
-    commands:
+  post_build:
+      commands:
       - if [ "$CODEBUILD_BUILD_SUCCEEDING" -eq 0 ]; then echo "BUILD FAILED" && exit 1 ; fi
       - if [ "$CODEBUILD_BUILD_SUCCEEDING" -eq 1 ]; then echo "BUILD SUCCEEDED" ; fi
