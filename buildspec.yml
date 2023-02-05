@@ -20,22 +20,31 @@ phases:
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com
   build:
     commands:
-      - echo "Build Docker Image"
       - REPOSITORY_URI="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/new-qpp-conversion-tool"
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
+      - ECR_IMAGE="${REPOSITORY_URI}:${IMAGE_TAG}"
+      - TASK_FAMILY="qppsf-conversion-tool-td-${ENVIRONMENT}"
+      - ECS_CLUSTER="qppsf-conversion-tool-${ENVIRONMENT}"
+      - SERVICE_NAME="conversion-tool-service-${ENVIRONMENT}"
+      - echo "Build Container Image"
       - docker build -t $REPOSITORY_URI:latest .
-      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+      - docker tag $REPOSITORY_URI:latest ${ECR_IMAGE}
       - echo Pushing the Docker image
       - docker push $REPOSITORY_URI:latest
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
-      - aws ecs describe-task-definition --task-definition qppsf-conversion-tool-td-${ENVIRONMENT} --query taskDefinition > task-definition.json
-      - cat task-definition.json
-      - cat task-definition.json | jq -r --arg image "$REPOSITORY_URI:$IMAGE_TAG" '.taskDefinition.containerDefinitions | .[0].image = $image' <<< $task_definition > qppsf-conversion-tool-td-${ENVIRONMENT}.json
-      - cat qppsf-conversion-tool-td-${ENVIRONMENT}.json
+      - docker push ${ECR_IMAGE}
+      - TASK_DEF=$(aws ecs describe-task-definition --task-definition ${TASK_FAMILY})
+      - UPDATED_TASK_DEF=$(echo $TASK_DEFINITION | jq --arg IMAGE "$REPOSITORY_URI:$IMAGE_TAG" '.taskDefinition | .containerDefinitions[0].image = $IMAGE')
+      - REGISTER_TASK_DEF=$(aws ecs register-task-definition --region "$AWS_DEFAULT_REGION" --cli-input-json "$UPDATED_TASK_DEF")
+      - NEW_REVISION=$(echo $REGISTER_TASK_DEF | jq '.taskDefinition.revision')
+      - echo "Starting ECS Deployment"
+      - aws ecs update-service --cluster ${ECS_CLUSTER} \
+                       --service ${SERVICE_NAME} \
+                       --task-definition ${TASK_FAMILY}:${NEW_REVISION}```
+      - aws ecs wait services-stable \
+                      --cluster ${ECS_CLUSTER} \
+                      --services ${SERVICE_NAME}
   post_build:
       commands:
       - if [ "$CODEBUILD_BUILD_SUCCEEDING" -eq 0 ]; then echo "BUILD FAILED" && exit 1 ; fi
       - if [ "$CODEBUILD_BUILD_SUCCEEDING" -eq 1 ]; then echo "BUILD SUCCEEDED" ; fi
-artifacts:
-    files: qppsf-conversion-tool-td-${ENVIRONMENT}.json

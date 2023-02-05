@@ -1,66 +1,19 @@
-############################################################# CodePipeline ###############################################
-data "aws_ssm_parameter" "conversiontool_git_pat" {
-  name = "/qppar-sf/common/conversion_tool/GIT_PAT"
-}
-
-data "aws_ssm_parameter" "conversion_tool_artifact_s3" {
-  name = "/qppar-sf/common/conversion_tool/codepipeline_artifact_bucket"
-}
-
-resource "aws_codestarconnections_connection" "ct_github_repo" {
-  name          = "qppsf-conversiontool-github"
-  provider_type = "GitHub"
-}
-
-resource "aws_codepipeline" "conversion_tool_pipeline" {
-  name     = "${var.team}-${var.environment}-ecs-conversiontool-codepipeline"
-  role_arn = "${aws_iam_role.conversiontool_codepipeline_role.arn}"
-
-  artifact_store {
-    location = data.aws_ssm_parameter.conversion_tool_artifact_s3.value
-    type     = "S3"
-  }
-
-  stage {
-    name = "Source"
-
-    action {
-      name             = "Source"
-      category         = "Source"
-      owner            = "AWS"
-      provider         = "CodeStarSourceConnection"
-      version          = "1"
-      output_artifacts = ["source"]
-
-      configuration = {
-        ConnectionArn    = aws_codestarconnections_connection.ct_github_repo.arn
-        FullRepositoryId = var.git-origin
-        BranchName       = var.codebuild_branch_ref
-      }
-    }
-  }
-
-  stage {
-    name = "Build"
-
-    action {
-      name             = "Build"
-      category         = "Build"
-      owner            = "AWS"
-      provider         = "CodeBuild"
-      version          = "1"
-      input_artifacts  = ["source"]
-      output_artifacts = ["build"]
-
-      configuration = {
-          ProjectName = "${aws_codebuild_project.conversion_tool_codebuild_project.name}"
-      }
-    }
-  }
-}
-
-
 ############################################################# CodeBuild ###############################################
+resource "aws_codebuild_webhook" "codebuild_webhook_event" {
+  project_name = aws_codebuild_project.conversion_tool_codebuild_project.name
+  build_type   = "BUILD"
+  filter_group {
+    filter {
+      type    = "EVENT"
+      pattern = "PUSH"
+    }
+
+    filter {
+      type    = "HEAD_REF"
+      pattern = var.codebuild_branch_ref
+    }
+  }
+}
 
 resource "aws_codebuild_project" "conversion_tool_codebuild_project" {
   name          = "${var.team}-${var.environment}-conversiontool-codebuild-ecs-deploy"
