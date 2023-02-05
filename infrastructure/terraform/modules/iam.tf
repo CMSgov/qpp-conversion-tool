@@ -313,7 +313,7 @@ resource "aws_iam_role_policy_attachment" "conversiontool_servicerole_policyatta
 ################################################# CodePipeline IAM Role ######################################
 
 resource "aws_iam_role" "conversiontool_codepipeline_role" {
-  name = "${var.team}-${var.environment}-codepipeline-conversiontool-role"
+  name = "${var.team}-${var.environment}-codepipeline-conversiontool"
   path = "/delegatedadmin/developer/"
   permissions_boundary = "arn:aws:iam::${local.account_id}:policy/cms-cloud-admin/developer-boundary-policy"
  assume_role_policy = <<EOF
@@ -401,7 +401,7 @@ resource "aws_iam_role_policy_attachment" "conversiontool_codepipeline_policyatt
 ################################################# CodeDeploy IAM Role ######################################
 
 resource "aws_iam_role" "conversiontool_codedeploy_role" {
-  name = "${var.team}-${var.environment}-codedeploy-conversiontool-role"
+  name = "${var.team}-${var.environment}-codedeploy-conversiontool"
   path = "/delegatedadmin/developer/"
   permissions_boundary = "arn:aws:iam::${local.account_id}:policy/cms-cloud-admin/developer-boundary-policy"
  assume_role_policy = <<EOF
@@ -448,7 +448,7 @@ resource "aws_iam_policy" "conversiontool_codedeploy_policy" {
             "Effect": "Allow",
       		"Action": ["s3:GetObject"],
             "Resource": [
-        		"arn:aws:s3:::qppsf-codepipeline-s3-003384571330-us-east-1",
+        		  "arn:aws:s3:::qppsf-codepipeline-s3-003384571330-us-east-1",
             	"arn:aws:s3:::qppsf-codepipeline-s3-003384571330-us-east-1/*"
       	]
         },
