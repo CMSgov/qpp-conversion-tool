@@ -20,7 +20,7 @@ phases:
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com
   build:
     commands:
-      - REPOSITORY_URI="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/new-qpp-conversion-tool"
+      - REPOSITORY_URI="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/qppsf/conversion-tool/${ENVIRONMENT}"
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
       - ECR_IMAGE="${REPOSITORY_URI}:${IMAGE_TAG}"
@@ -33,17 +33,12 @@ phases:
       - echo Pushing the Docker image
       - docker push $REPOSITORY_URI:latest
       - docker push ${ECR_IMAGE}
-      - TASK_DEF=$(aws ecs describe-task-definition --task-definition ${TASK_FAMILY})
-      - UPDATED_TASK_DEF=$(echo $TASK_DEFINITION | jq --arg IMAGE "$REPOSITORY_URI:$IMAGE_TAG" '.taskDefinition | .containerDefinitions[0].image = $IMAGE')
-      - REGISTER_TASK_DEF=$(aws ecs register-task-definition --region "$AWS_DEFAULT_REGION" --cli-input-json "$UPDATED_TASK_DEF")
-      - NEW_REVISION=$(echo $REGISTER_TASK_DEF | jq '.taskDefinition.revision')
+      - aws ecs describe-task-definition --task-definition ${TASK_FAMILY} --query taskDefinition > task-definitions.json | jq -r --arg IMAGE "$REPOSITORY_URI:$IMAGE_TAG" '.taskDefinition.containerDefinitions[0].image = $IMAGE' <<< $task_definition > qppsf-conversion-tool-td-${ENVIRONMENT}.json
+      - aws ecs register-task-definition --region "$AWS_DEFAULT_REGION" --cli-input-json file://qppsf-conversion-tool-td-${ENVIRONMENT}.json
+      - NEW_REVISION=$(cat "qppsf-conversion-tool-td-${ENVIRONMENT}.json" | jq '.revision')
       - echo "Starting ECS Deployment"
-      - aws ecs update-service --cluster ${ECS_CLUSTER} \
-                       --service ${SERVICE_NAME} \
-                       --task-definition ${TASK_FAMILY}:${NEW_REVISION}```
-      - aws ecs wait services-stable \
-                      --cluster ${ECS_CLUSTER} \
-                      --services ${SERVICE_NAME}
+      - aws ecs update-service --cluster ${ECS_CLUSTER} service ${SERVICE_NAME} task-definition ${TASK_FAMILY}:${NEW_REVISION} --force-new-deployment
+      - aws ecs wait services-stable cluster ${ECS_CLUSTER} services ${SERVICE_NAME}
   post_build:
       commands:
       - if [ "$CODEBUILD_BUILD_SUCCEEDING" -eq 0 ]; then echo "BUILD FAILED" && exit 1 ; fi
