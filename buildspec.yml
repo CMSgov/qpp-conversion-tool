@@ -29,8 +29,10 @@ phases:
       - echo Pushing the Docker image
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
-      - aws ecs describe-task-definition --task-definition qppsf-conversion-tool-td-${ENVIRONMENT} | jq > task-definition.json;
-      - cat task-definition.json | jq -r --arg image "$REPOSITORY_URI:$IMAGE_TAG" '.taskDefinition.containerDefinitions | .[0].image = $image' > qppsf-conversion-tool-td-${ENVIRONMENT}.json;
+      - aws ecs describe-task-definition --task-definition qppsf-conversion-tool-td-${ENVIRONMENT} --query taskDefinition > task-definition.json
+      - cat task-definition.json
+      - cat task-definition.json | jq -r --arg image "$REPOSITORY_URI:$IMAGE_TAG" '.taskDefinition.containerDefinitions | .[0].image = $image' > qppsf-conversion-tool-td-${ENVIRONMENT}.json
+      - cat qppsf-conversion-tool-td-${ENVIRONMENT}.json
   post_build:
       commands:
       - if [ "$CODEBUILD_BUILD_SUCCEEDING" -eq 0 ]; then echo "BUILD FAILED" && exit 1 ; fi
