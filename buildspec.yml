@@ -27,7 +27,7 @@ phases:
       - TASK_FAMILY="qppsf-conversion-tool-td-${ENVIRONMENT}"
       - ECS_CLUSTER="qppsf-conversion-tool-${ENVIRONMENT}"
       - SERVICE_NAME="conversion-tool-service-${ENVIRONMENT}"
-      - echo "Building Container Image for ConversionTool"
+      - echo "Building Container Image for CT"
       - docker build -t $REPOSITORY_URI:latest .
       - docker tag $REPOSITORY_URI:latest ${ECR_IMAGE}
       - echo Pushing the Docker image
