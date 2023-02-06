@@ -33,12 +33,14 @@ phases:
       - echo Pushing the Docker image
       - docker push $REPOSITORY_URI:latest
       - docker push ${ECR_IMAGE}
-      - aws ecs describe-task-definition --task-definition ${TASK_FAMILY} --query taskDefinition > task-definitions.json | jq -r --arg IMAGE "$REPOSITORY_URI:$IMAGE_TAG" '.taskDefinition.containerDefinitions[0].image = $IMAGE' <<< $task_definition > qppsf-conversion-tool-td-${ENVIRONMENT}.json
+      - TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition ${TASK_FAMILY} --query taskDefinition)
+      - echo $TASK_DEFINITION | jq -r --arg IMAGE ${ECR_IMAGE} '.containerDefinitions[0].image=$IMAGE' > qppsf-conversion-tool-td-${ENVIRONMENT}.json
       - aws ecs register-task-definition --region "$AWS_DEFAULT_REGION" --cli-input-json file://qppsf-conversion-tool-td-${ENVIRONMENT}.json
-      - NEW_REVISION=$(cat "qppsf-conversion-tool-td-${ENVIRONMENT}.json" | jq '.revision')
+      - NEW_REVISION=$(echo $TASK_DEFINITION | jq '.revision')
       - echo "Starting ECS Deployment"
       - aws ecs update-service --cluster ${ECS_CLUSTER} service ${SERVICE_NAME} task-definition ${TASK_FAMILY}:${NEW_REVISION} --force-new-deployment
-      - aws ecs wait services-stable cluster ${ECS_CLUSTER} services ${SERVICE_NAME}
+      - aws ecs wait services-stable cluster ${ECS_CLUSTER} service ${SERVICE_NAME}
+
   post_build:
       commands:
       - if [ "$CODEBUILD_BUILD_SUCCEEDING" -eq 0 ]; then echo "BUILD FAILED" && exit 1 ; fi
