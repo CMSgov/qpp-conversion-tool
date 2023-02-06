@@ -34,9 +34,10 @@ phases:
       - docker push $REPOSITORY_URI:latest
       - docker push ${ECR_IMAGE}
       - TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition ${TASK_FAMILY} --query taskDefinition)
+      - NEW_TASK_DEFINITION=$(echo $TASK_DEFINITION | jq -r --arg IMAGE ${ECR_IMAGE} '.containerDefinitions[0].image=$IMAGE')
       - echo $TASK_DEFINITION | jq -r --arg IMAGE ${ECR_IMAGE} '.containerDefinitions[0].image=$IMAGE' > qppsf-conversion-tool-td-${ENVIRONMENT}.json
-      - aws ecs register-task-definition --region "$AWS_DEFAULT_REGION" --cli-input-json file://qppsf-conversion-tool-td-${ENVIRONMENT}.json
-      - NEW_REVISION=$(echo $TASK_DEFINITION | jq '.revision')
+      - aws ecs register-task-definition --family ${TASK_FAMILY} --region "$AWS_DEFAULT_REGION" --cli-input-json file://qppsf-conversion-tool-td-${ENVIRONMENT}.json
+      - NEW_REVISION=$(echo $NEW_TASK_DEFINITION | jq '.revision')
       - echo "Starting ECS Deployment"
       - aws ecs update-service --cluster ${ECS_CLUSTER} service ${SERVICE_NAME} task-definition ${TASK_FAMILY}:${NEW_REVISION} --force-new-deployment
       - aws ecs wait services-stable cluster ${ECS_CLUSTER} service ${SERVICE_NAME}
