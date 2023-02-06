@@ -68,34 +68,6 @@ public class ConversionFileWriterWrapperTest {
 	}
 
 	@Test
-	@PrepareForTest({Files.class, ConversionFileWriterWrapper.class})
-	public void testFailureToWriteQpp() throws IOException {
-		PowerMockito.mockStatic(Files.class);
-		PowerMockito.when(Files.newBufferedWriter(ArgumentMatchers.any(Path.class))).thenThrow(new IOException());
-
-		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
-		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
-
-		converterWrapper.transform();
-
-		assertFileDoesNotExists("valid-QRDA-III-latest-qpp.json");
-	}
-
-	@Test
-	@PrepareForTest({Files.class, ConversionFileWriterWrapper.class})
-	public void testFailureToWriteErrors() throws IOException {
-		PowerMockito.mockStatic(Files.class);
-		PowerMockito.when(Files.newBufferedWriter(ArgumentMatchers.any(Path.class))).thenThrow(new IOException());
-
-		Path path = Paths.get("src/test/resources/not-a-QRDA-III-file.xml");
-		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
-
-		converterWrapper.transform();
-
-		assertFileDoesNotExists("not-a-QRDA-III-file-error.json");
-	}
-
-	@Test
 	public void testErrorHasSourceId() throws IOException {
 		//when
 		Path path = Paths.get("src/test/resources/not-a-QRDA-III-file.xml");

@@ -43,7 +43,8 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.Mockito.when;
+
 
 @ExtendWith(MockitoExtension.class)
 class ExceptionHandlerControllerV1Test implements LoggerContract {
@@ -232,7 +233,7 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 		MockMvc mvc = MockMvcBuilders.standaloneSetup(mock)
 				.setControllerAdvice(new ExceptionHandlerControllerV1(auditService))
 				.build();
-		Mockito.when(mock.uploadQrdaFile(ArgumentMatchers.any(), ArgumentMatchers.anyString())).thenCallRealMethod();
+		when(mock.uploadQrdaFile(ArgumentMatchers.any(), ArgumentMatchers.anyString())).thenCallRealMethod();
 
 		String purpose = "this is an invalid purpose because it's too long" + UUID.randomUUID();
 		RequestBuilder builder = MockMvcRequestBuilders.multipart("/")

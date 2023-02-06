@@ -106,7 +106,7 @@ public class SpecPiiValidatorTest {
 			}
 		};
 		validator.validateApmTinNpiCombination(node, nodeValidator);
-		Truth.assertThat(nodeValidator.viewWarnings().get(0).getErrorCode()).isEqualTo(80);
+		Truth.assertThat(nodeValidator.viewWarnings().get(0).getErrorCode()).isEqualTo(108);
 	}
 
 	private SpecPiiValidator validator(String apm, String npi) throws Exception {

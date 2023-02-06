@@ -85,7 +85,7 @@ resource "aws_ecs_service" "conversion-tool-service" {
 
 resource "aws_cloudwatch_log_group" "conversion-tool" {
   name              = "/qppsf/conversion-tool-${var.environment}"
-  retention_in_days = 30
+  retention_in_days = 365
 }
 
 resource "aws_cloudwatch_log_subscription_filter" "cw-kinesis-subscription-filter" {
