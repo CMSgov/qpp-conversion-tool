@@ -9,7 +9,7 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -36,10 +36,8 @@ import com.amazonaws.services.s3.transfer.Upload;
 import com.amazonaws.services.s3.transfer.model.UploadResult;
 
 import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.api.services.internal.StorageServiceImpl;
 import gov.cms.qpp.conversion.util.MeasuredInputStreamSupplier;
 import gov.cms.qpp.test.MockitoExtension;
-
 
 @ExtendWith(MockitoExtension.class)
 class StorageServiceImplTest {
