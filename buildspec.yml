@@ -43,8 +43,8 @@ phases:
       - LATEST_TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition ${TASK_FAMILY} --query taskDefinition)
       - NEW_REVISION=$(echo $LATEST_TASK_DEFINITION | jq '.revision')
       - echo "Starting ECS Deployment"
-      - aws ecs update-service --cluster ${ECS_CLUSTER} service ${SERVICE_NAME} task-definition ${TASK_FAMILY}:${NEW_REVISION} --force-new-deployment
-      - aws ecs wait services-stable cluster ${ECS_CLUSTER} service ${SERVICE_NAME}
+      - aws ecs update-service --cluster ${ECS_CLUSTER} --service ${SERVICE_NAME} --task-definition ${TASK_FAMILY}:${NEW_REVISION} --force-new-deployment
+      - aws ecs wait services-stable --cluster ${ECS_CLUSTER} --services ${SERVICE_NAME}
 
   post_build:
       commands:
