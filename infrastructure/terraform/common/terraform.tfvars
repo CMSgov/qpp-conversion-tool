@@ -1,0 +1,8 @@
+environment = "dev"
+team = "qppsf"
+git-org = "CMSgov"
+git-repo = "qpp-conversion-tool"
+application = "conversion-tool"
+sensitivity = "PII/PHI"
+owner = "qpp-final-scoring-devops@semanticbits.com"
+pagerduty_email = "qpp-final-scoring-devops@semanticbits.com"

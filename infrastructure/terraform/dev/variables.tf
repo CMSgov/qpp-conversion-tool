@@ -52,6 +52,11 @@ variable "application" {
   type = string
 }
 
+variable "team" {
+  type = string
+  description = "QPP Team"
+}
+
 variable "sensitivity" {
   type = string
 }
@@ -63,4 +68,9 @@ variable "git-origin" {
 variable "certificate_arn" {
   description = "SSL Certificate arn for the environment"
   type        = string
+}
+
+variable "codebuild_branch_ref" {
+  type = string
+  description = "ConversionTool Branch Ref"
 }
