@@ -54,10 +54,9 @@ phases:
   post_build:
       commands:
       - |
-        if [ "$CODEBUILD_BUILD_SUCCEEDING" -eq 1 ]
-        then
-           - SLACK_MSG="BUILD SUCCEEDED for Conversion Tool ${ENVIRONMENT} Environment, ${CODEBUILD_BUILD_ARN}"
-           - curl -X POST -H 'Content-type: application/json' --data "{ \"attachments\": [{\"color\":\"good\",\"channel\":\"${SLACK_CHANNEL}\",\"username\":\"aws-codebuild\",\"text\":\"${SLACK_MSG}\",}]}" ${SLACK_WEBHOOK}
+        if [ "$CODEBUILD_BUILD_SUCCEEDING" -eq 1 ]; then
+          - SLACK_MSG="BUILD SUCCEEDED for Conversion Tool ${ENVIRONMENT} Environment, ${CODEBUILD_BUILD_ARN}"
+          - curl -X POST -H 'Content-type: application/json' --data "{ \"attachments\": [{\"color\":\"good\",\"channel\":\"${SLACK_CHANNEL}\",\"username\":\"aws-codebuild\",\"text\":\"${SLACK_MSG}\",}]}" ${SLACK_WEBHOOK}
         else
           - SLACK_MSG="BUILD FAILED for Conversion Tool ${ENVIRONMENT} Environment, ${CODEBUILD_BUILD_ARN}"
           - curl -X POST -H 'Content-type: application/json' --data "{ \"attachments\": [{\"color\":\"danger\",\"channel\":\"${SLACK_CHANNEL}\",\"username\":\"aws-codebuild\",\"text\":\"${SLACK_MSG}\",}]}" ${SLACK_WEBHOOK}
