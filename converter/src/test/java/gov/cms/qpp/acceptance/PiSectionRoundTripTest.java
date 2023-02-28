@@ -14,6 +14,7 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+import gov.cms.qpp.conversion.util.JsonHelper;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.io.BufferedWriter;
@@ -22,6 +23,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.jayway.jsonpath.TypeRef;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -30,6 +33,13 @@ class PiSectionRoundTripTest {
 
 	private static final Path PI_RESTRICTED_MEASURES =
 		Paths.get("src/test/resources/negative/mipsInvalidPIMeasureIds.xml");
+	private static final Path APP1_APM_ENTITY_CEHRT =
+		Paths.get("src/test/resources/app/2022/App1-ApmEntity-Qrda-III.xml");
+	private static final Path APP1_GROUP_CEHRT =
+		Paths.get("src/test/resources/app/2022/App1-Group-QRDA-III.xml");
+	private static final Path APP1_INDIVIDUAL_CEHRT =
+		Paths.get("src/test/resources/app/2022/App1-Indv-QRDA-III.xml");
+
 
 	@Test
 	void parseSparsePiSectionAsNode() throws XmlException {
@@ -173,6 +183,75 @@ class PiSectionRoundTripTest {
 		}
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 			.contains(ProblemCode.PI_RESTRICTED_MEASURES);
+	}
+
+	@Test
+	void testAppApmCehrtIsEncoded() {
+		Converter converter = new Converter(new PathSource(APP1_APM_ENTITY_CEHRT));
+		AllErrors errors = null;
+		List<Detail> warnings = null;
+		JsonWrapper qppWrapper = null;
+
+
+		List<Detail> details = new ArrayList<>();
+		try {
+			qppWrapper = converter.transform();
+		} catch (TransformException failure) {
+			errors = failure.getDetails();
+			warnings = failure.getConversionReport().getWarnings();
+		}
+
+		assertThat(errors).isNull();
+		assertThat(warnings).isNull();
+		List<String> cehrtIdList = JsonHelper.readJsonAtJsonPath(qppWrapper.toString(),
+			"$.measurementSets[?(@.category=='pi')].cehrtId", new TypeRef<List<String>>() { });
+		assertThat(cehrtIdList.get(0)).isEqualTo("XX15EXXXXXXXXXX");
+	}
+
+	@Test
+	void testAppGroupCehrtIsEncoded() {
+		Converter converter = new Converter(new PathSource(APP1_GROUP_CEHRT));
+		AllErrors errors = null;
+		List<Detail> warnings = null;
+		JsonWrapper qppWrapper = null;
+
+
+		List<Detail> details = new ArrayList<>();
+		try {
+			qppWrapper = converter.transform();
+		} catch (TransformException failure) {
+			errors = failure.getDetails();
+			warnings = failure.getConversionReport().getWarnings();
+		}
+
+		assertThat(errors).isNull();
+		assertThat(warnings).isNull();
+		List<String> cehrtIdList = JsonHelper.readJsonAtJsonPath(qppWrapper.toString(),
+			"$.measurementSets[?(@.category=='pi')].cehrtId", new TypeRef<List<String>>() { });
+		assertThat(cehrtIdList.get(0)).isEqualTo("XX15EXXXXXXXXXX");
+	}
+
+	@Test
+	void testAppIndividualCehrtIsEncoded() {
+		Converter converter = new Converter(new PathSource(APP1_INDIVIDUAL_CEHRT));
+		AllErrors errors = null;
+		List<Detail> warnings = null;
+		JsonWrapper qppWrapper = null;
+
+
+		List<Detail> details = new ArrayList<>();
+		try {
+			qppWrapper = converter.transform();
+		} catch (TransformException failure) {
+			errors = failure.getDetails();
+			warnings = failure.getConversionReport().getWarnings();
+		}
+
+		assertThat(errors).isNull();
+		assertThat(warnings).isNull();
+		List<String> cehrtIdList = JsonHelper.readJsonAtJsonPath(qppWrapper.toString(),
+			"$.measurementSets[?(@.category=='pi')].cehrtId", new TypeRef<List<String>>() { });
+		assertThat(cehrtIdList.get(0)).isEqualTo("XX15EXXXXXXXXXX");
 	}
 
 	private void assertAciSectionHasSingleQedNode(Node aciSectionNode) {
