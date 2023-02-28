@@ -1,10 +1,11 @@
 version: 0.2
 env:
+  variables:
+    SLACK_CHANNEL: "p-qpp-sub-alerts"
   parameter-store: 
     AWS_ACCOUNT_ID: "/qppar-sf/account_id"
     DOCKERHUB_USERNAME: "/qppar-sf/DOCKERHUB_USERNAME"
     DOCKERHUB_PASS: "/qppar-sf/DOCKERHUB_PASS"
-    SLACK_CHANNEL: "p-qpp-sub-alerts"
     SLACK_WEBHOOK: "/qppar-sf/dev/conversion_tool/slack_hook_url"
 phases:
   install:
