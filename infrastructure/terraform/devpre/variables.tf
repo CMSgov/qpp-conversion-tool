@@ -7,6 +7,11 @@ variable "environment" {
   type = string
 }
 
+variable "team" {
+  type = string
+  description = "QPP Team"
+}
+
 variable "region" {
   type    = string
   default = "us-east-1"
@@ -68,4 +73,9 @@ variable "certificate_arn" {
 variable "ct_api_url" {
     type = string
     description = "ConversionTool HealthCheck URL"
+}
+
+variable "codebuild_branch_ref" {
+  type = string
+  description = "ConversionTool Branch Ref"
 }

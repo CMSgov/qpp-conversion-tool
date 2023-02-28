@@ -12,6 +12,11 @@ variable "region" {
   default = "us-east-1"
 }
 
+variable "team" {
+  type = string
+  description = "QPP Team"
+}
+
 variable "vpc_id" {
   type = string
 }
@@ -68,4 +73,9 @@ variable "certificate_arn" {
 variable "ct_api_url" {
     type = string
     description = "ConversionTool HealthCheck URL"
+}
+
+variable "codebuild_branch_ref" {
+  type = string
+  description = "ConversionTool Branch Ref"
 }

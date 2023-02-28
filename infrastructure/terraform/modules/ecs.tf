@@ -28,7 +28,7 @@ resource "aws_ecs_task_definition" "conversion-tool" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = "2048"
   memory                   = "5120"
-  task_role_arn            = "arn:aws:iam::003384571330:role/ecsTaskExecutionRole"
+  task_role_arn            = aws_iam_role.ecs_task_exec_role.arn
 
   container_definitions = data.template_file.ct_task_def.rendered
 }
@@ -85,7 +85,7 @@ resource "aws_ecs_service" "conversion-tool-service" {
 
 resource "aws_cloudwatch_log_group" "conversion-tool" {
   name              = "/qppsf/conversion-tool-${var.environment}"
-  retention_in_days = 30
+  retention_in_days = 365
 }
 
 resource "aws_cloudwatch_log_subscription_filter" "cw-kinesis-subscription-filter" {
