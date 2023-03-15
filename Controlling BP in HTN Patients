@@ -1,0 +1,919 @@
+Patients with a Specific Diagnosis
+Run Date: March 15, 2023 at 02:36:33 PM
+Customer is SANDEEP KAPOOR PLLC
+Claim ICDs is I10
+Claim From Date is between 01/01/2022 and 12/31/2022
+
+                              Patient  Claim ID                                Patient
+Provider Name/ID              ID       (CntUnq) Patient Full Name                  Age
+--------------------------------------------------------------------------------------
+ALEXANDER, EMILY  (10114777)  38339100 17       KIRCHNER, JANE                      75
+                              38392829 7        MAY, KAREN                          76
+                              38404357 3        WARFIELD, EARL                      87
+                              38404382 5        MULLINS, MICHAEL                    64
+                              38405385 8        JENNINGS, DAVID                     63
+                              38428714 7        GALLAGHER, RALPH                    76
+                              38435861 1        PERKINS, MILDRED                    90
+                              38443337 5        WARFIELD, VIRGINIA                  86
+                              38454236 14       BROOKS, PAULINE                     86
+                              38460426 6        PURVIS, CHARLES                     50
+                              38562485 5        PEZZAROSSI, JAMES                   84
+                              38569593 3        HARPER, CLARICE                     92
+                              38596658 14       EDGE, GENEVA                        83
+                              38596701 11       DAVIS, PHYLLIS                      76
+                              38597064 11       KIPER, BARBARA                      78
+                              38597172 15       MCGEE, ELZNER                       75
+                              38597215 11       NELSON, JUDY                        77
+                              38597232 14       PAYTON, MINNIE                      90
+                              38606473 2        GIBSON, MORRIS                      85
+                              38622374 14       WOODCOCK, DORIS                     70
+                              38643720 5        GARVIN, MAURICE                     64
+                              38824224 13       SHELLEY, MICHAEL                    46
+                              38830039 1        TINGLE, AGNES                       97
+                              38830111 10       TIPTON, WILLIE                      80
+                              38831693 3        LINDNER, EVELYN                     84
+                              38931941 2        HENNESSY, MARY                      97
+                              38984729 1        BRYMER, NINA                        41
+                              39230242 1        HUNT, GRACE                         76
+                              39266378 2        MANNING, KAREN                      72
+                              39296037 16       CLARK, CAROLYN                      79
+                              39374073 9        LOARING, EVA                        88
+                              39552183 5        HUNDLEY, DORIS                      68
+                              39561350 1        PEACH, DEBORAH                      70
+                              39601928 4        ALLEN, LOIS                         90
+                              39602459 2        MCGINITY, MARY                      69
+                              39625043 16       RICHARDSON, SANDRA                  76
+                              39635325 7        HUFFMAN, ANNA C                     58
+                              39635790 12       THOMAS, DEANN                       84
+                              39638826 8        BIRD, GERALD                        63
+                              39768667 6        PALMER-BALL, MARY                   95
+                              39776789 4        FARRIS, PHYLLIS                     74
+                              39777421 6        SPICER, LENORA                      92
+                              40097890 2        SMITH, LOLA C                       96
+                              40103202 3        NICHOLS, LEONA                      98
+                              40175070 2        HAYDEN, ROBERTA                     95
+                              40175216 11       OVERPECK, ANTHONY                   47
+                              40175264 11       ROBERTSON, CLARENCE                 67
+                              40175340 15       WENDELKEN, KAREN                    75
+                              40377062 3        ROBINSON, ANITA                     60
+                              40628276 5        WHISMAN, EMORY                      59
+                              40631247 4        DAVENPORT, MARY                     84
+                              40706907 2        BRIGHT, RITA                        76
+                              40708475 3        MOTLEY, MARTHA                      83
+                              40893710 1        PARMAN, JAMES A                     86
+                              40897804 10       LUOMA, RAYMOND                      72
+                              41120245 6        WEDDING, LILA                       88
+                              41120310 17       DUVALL, BRENDA                      74
+                              41120351 3        LANDERS, DONALD                     82
+                              41169887 5        ROBINSON, RICKY                     68
+                              41169925 2        LOVEALL, GRACE                      94
+                              41170499 4        BROWN, GILBERT                      68
+                              41171716 6        WILSON, DARRELL                     40
+                              41171971 2        ANDERSON, ROGER                     70
+                              41172143 1        JACKSON, ROBERT                     84
+                              41172220 4        BRAUNER, JOHN D                     59
+                              41173905 8        JACOBS, CARRIE                      83
+                              41174019 3        FIELDS, ROBERT                      84
+                              41176186 4        HOWARD, WILLIS                      88
+                              41322161 6        DUNN, LINDA                         74
+                              41324691 9        LANCE, WILLIAM MICHAEL              78
+                              41324719 8        MCCLURE, DIANA                      66
+                              41324936 9        DIEHL, RHONDA                       74
+                              41324971 5        MIBURO, SERAPHINE                   51
+                              41325010 6        NOLAN, BONNIE                       75
+                              41325081 9        KNAPP, JULIA                        78
+                              41325228 5        FOGLE, ELEANOR                      80
+                              41325283 5        HATCH, PATRICIA                     71
+                              41325416 3        VALLE, ELIBALDO                     82
+                              41532150 1        SHEETS, WILLIAM                     89
+                              41532344 2        ETHRIDGE, LARRY                     77
+                              41542500 6        HUNT, MARY ANN                      63
+                              41543144 13       JOHNSON, TORRE                      64
+                              41543330 5        DAVIS, JEAN                         54
+                              41543666 6        BURNS, STEVEN                       48
+                              41543714 7        RUTHERFORD, SARAH                   60
+                              41543748 6        WATKINS, CAROLYN                    66
+                              41686124 6        RICHTER, KATHLEEN                   74
+                              41689204 8        STUART, DIANE                       82
+                              41690478 12       GOWIN, ROSILAND                     82
+                              41690619 12       ROSS, BECKY                         76
+                              41690696 14       JONES, ELEANOR                      77
+                              41690962 4        MARLOW, JAMES                       83
+                              41721145 5        PEGRAM, BOBBY                       79
+                              41721393 10       BINGHAM, REBECCA                    94
+                              41721513 7        JOHNSON, NANCY                      65
+                              41782621 6        GORDON, ROBERT                      61
+                              41782678 13       HARRISON, JENNIFER                  53
+                              41783056 6        PITCHFORD, LARRY                    82
+                              42010502 9        STEWART, BETTY                      85
+                              42010648 1        HALL, WILLIE L                      84
+                              42010914 18       BIVENS, MARK B                      68
+                              42011075 18       SCHOENLAUB, JANICE                  73
+                              42011144 9        MONTGOMERY, MARIAN                  73
+                              42011270 15       PERRY, BARBARA                      84
+                              42011301 15       ALLEN, CHARLOTTE                    71
+                              42012066 2        TAYLOR, MARY                        94
+                              42100206 8        LAWSON, MICHEAL                     72
+                              42100630 2        AMBROSE, MARION                     82
+                              42112032 7        WARD, ANDREW                        87
+                              42415167 1        HAMMERLE, ROSALIA                   93
+                              42415830 4        SCHMITZ, REBA ANN                   87
+                              42416242 10       HALL, ELIZABETH                     84
+                              42467838 10       SUTTON, GAYLE FARRELL               85
+                              42468832 3        CARPENTER, WILMA                    88
+                              42468879 11       TEMPLE, EARL M                      64
+                              42468959 10       LOGAN, ALICE                        94
+                              42555650 2        SOUZA, KATHY                        73
+                              42555728 4        NASH, PAUL                          67
+                              42587184 23       NICHOLS, BARRY                      77
+                              42587675 8        NEWMAN, DELORES J                   69
+                              42588984 11       PITCHFORD, JOANNE                   81
+                              42589453 4        NICHOLS, DONALD                     92
+                              42590712 13       WILLIAMS, STELLA                    70
+                              42639957 7        HARRALSON, JOHN H                   95
+                              42654996 2        KLUGE, GRACE                        84
+                              43038546 3        STICKNEY, GARY                      75
+                              43039593 16       LEACH, SHERRY                       68
+                              43039673 4        HARP, JOYCE                         92
+                              43040970 23       CAMPBELL, PATTY                     75
+                              43041412 1        BOBBITT, LEROY                      89
+                              43297877 10       GRIEB, NELLIE                       90
+                              43299351 10       COSTELLO, ROSALIE                   84
+                              43304502 12       FOGLE, RITA                         80
+                              43510183 16       PUTZ, PAMELA                        72
+                              43532950 2        FLEISCHMAN, MILDRED                100
+                              43568120 3        FUQUA, MIA                          56
+                              43575540 6        ANDREWS, ROBERT                     63
+                              43587399 4        HUNT, TOYOMI                        95
+                              43587641 4        HESTER, JIMMY                       49
+                              43588082 5        COOK, MARJORIE                      80
+                              43589936 1        JONAK, STEVIE                       33
+                              43589997 12       SAPP, EDITH                         96
+                              43590039 15       SMILEY, NORMAN                      79
+                              43590242 12       BUIS, SANDRA                        78
+                              43781401 7        CURTIS, EDWARD                      64
+                              43840473 2        LEVEQUE, STEVEN                     71
+                              44086459 8        MOCTAR, BENITA                      61
+                              44087504 1        LEWIS, KAREN                        71
+                              44087563 1        FIRST, DOROTHY                      85
+                              44232029 2        MELILLO, DAWN L                     69
+                              44239095 2        MARTIN, ANTHONY                     74
+                              44257538 1        GARDNER, GERALD                     65
+                              44257827 5        MULLINS, LARIS                      82
+                              44258093 8        WALKER, TIM                         61
+                              44310239 2        LYNCH, BETTY                        92
+                              44310281 5        RYAN, JOAN                          80
+                              44310957 8        SANDERS, JOAN                       85
+                              44437610 9        SOLOMON, BONITA                     73
+                              44438102 5        MINYARD, KATHY                      63
+                              44440395 1        BONMON, RALPH                       68
+                              44461285 4        CALVERT, HALLIE                     83
+                              44502998 5        GAHIMER, WILLIAM                    75
+                              44740423 5        LIST, COLLEEN                       70
+                              44741219 1        ADAMSON, JUANITA                    94
+                              44760713 11       LEGER, DOUGLAS                      60
+                              44760874 4        GREEN, MARY                         96
+                              44760932 9        SHARTZER, KAREN                     84
+                              44761901 1        PETTY, RUBY                         86
+                              44762817 12       PRESTON, SARA                       81
+                              44763519 2        RUSH, RUBY                          90
+                              44902791 5        PALMA, PATRICIA                     89
+                              44902871 10       GILES, LORETTA                      81
+                              44925882 4        LEWIS, AMANDA                       40
+                              44979242 7        WALDRIDGE, DAWN                     53
+                              45030852 3        BAILEY, NANCY                       62
+                              45079574 1        TOBIAS, REGULO                      84
+                              45155721 5        SHEPHERD, MORRIS                    63
+                              45156720 9        GILBERT, PERLA                      71
+                              45157280 1        SEAY, JOHN                          72
+                              45315133 1        WALSTON, CAROLYN                    75
+                              45317063 2        LEWIS, ARVIL                        60
+                              45317470 11       HURST, BONEVA                       85
+                              45317667 5        WASHER, BRENDA                      55
+                              45340807 9        NICHOLS, DORIS                      94
+                              45712805 13       PROHASKA, JAMES                     84
+                              45714865 15       SKIRVIN, JOHN                       58
+                              45716076 6        MONREW, CHRISTINE                   89
+                              45717169 20       CARLTON, BARBARA                    84
+                              45718168 8        FORD, VIRGIL                        69
+                              45771587 2        MCCUBBIN, JOHN                      76
+                              46307321 2        JOHNSON, IDA                        89
+                              46307707 9        BAILEY, HELEN                       84
+                              46319030 11       BAYS, OLIVIA                        88
+                              46939231 2        KING, MATTIE                        77
+                              47257670 6        OWSLEY, DAVID                       55
+                              47257796 8        SMITH, ROBERT                       64
+                              47258994 1        MARSHALL, BUFORD                    77
+                              47262110 3        CLINE, ANNE                         80
+                              47262520 1        SCHMIDT, KARL                       84
+                              47292172 5        MANNING, DENZEL                     27
+                              47292441 3        LOUIS, CAROLYN                      70
+                              47339823 8        WORKMAN, DAVID                      70
+                              47340629 5        LEE, ZOLA                           70
+                              47345920 5        ADAMS, CHRISTOPHER                  56
+                              47346088 11       WATERS, STEPHEN                     69
+                              47346223 2        PAGE, DARRELL                       57
+                              47346875 6        LAWSON, POLLY                       70
+                              47403586 2        NARROD, CLAIR                       76
+                              47408026 1        GOETTSCH, TERRY                     78
+                              47411112 1        FURLONG, JAMES                      71
+                              47746149 1        GENTRY, OLLIE                       79
+                              48077735 9        DYER, NANCY                         79
+                              48079946 7        MOFFETT, WILLIAM                    74
+                              48218953 3        MATTHEWS, SUSAN                     63
+                              48219146 2        JESSEE, MARY                        88
+                              48219718 2        PARKER, JOHN                        84
+                              48219975 4        STINSON ROBINSON, ANN               95
+                              48224378 3        RAGLAND, ILEANE                     97
+                              48224944 3        SIMMONS, HAZEL                      96
+                              48225651 2        FOSTER, KAREN                       74
+                              48387350 4        AINSWORTH, FRANKIE                  80
+                              48390844 2        ROBERTS, MARGARET                   80
+                              48391938 1        POWELL, ALAN R                      78
+                              48392980 2        MOODY, ROGER                        82
+                              48393956 3        VOGEL, PHILLIP                      88
+                              48394297 1        RIDINGS, DOROTHY                    83
+                              48394935 3        YOUNG, ZELIA                        87
+                              48395136 1        SCHUETZ, MAUREEN                    81
+                              48492765 2        ARENELLA, SARA                      89
+                              48493175 1        DAVIS, RUBY                         87
+                              48494189 1        WALES, SHIRLEY                      87
+                              48622278 5        GOEING, MARTHA                      95
+                              48622868 1        ROBINSON, CONCHITA                  83
+                              48642086 2        DEAN, LINDA                         75
+                              48642464 6        HERZIG, DONNA S                     75
+                              48642617 8        PEDIGO, NAOMI                       88
+                              48642808 2        BAAR, ROBERT                        70
+                              48642873 2        HOBBS, DORCAS                       87
+                              48642922 3        HOGAN, GERALDINE                    82
+                              48666914 5        TAYLOR, BETTY                       85
+                              48667181 2        JAMESON, CAROLYN                    77
+                              48667506 1        DUVALL, WILBER                      88
+                              48667839 1        EDDAY, PATSY                        86
+                              48668025 2        JENNINGS, LEONIA                    93
+                              48668136 2        SNOOK, CAROLYN                      77
+                              48668425 10       REBEL, DON                          87
+                              48668653 1        LONG, DOROTHY                       96
+                              48668839 2        POLSGROVE, ROBERT                   71
+                              48669062 2        CANNON, SHAARON R                   80
+                              48669127 4        ROBINSON, HENRY                     90
+                              48669224 3        THURMAN, MARY                       73
+                              48669263 1        DOWNS, WILLIAM                      77
+                              48669342 1        BENNER, LUCILLE                     83
+                              48669576 5        MILLER, MARY                        81
+                              48669967 8        VEST, BOYD                          81
+                              48670054 3        MANICA, LINDA                       73
+                              48689783 1        STONER, CHARLES                     75
+                              48689864 3        ALDI, VERA                          93
+                              48690018 1        CALBERT, EDWARD                     81
+                              48692242 1        RASH, JEROME B                      78
+                              48694114 8        BYRNSIDE, RHONDA                    72
+                              48694195 3        OWENS, MARY ANN                     84
+                              48707146 2        KLEFOT, PATRICIA                    90
+                              48708145 16       MORROW, GERALD                      71
+                              48708553 11       STONE, OLIVER                       94
+                              48709719 1        BUCHANAN, EDITH                     89
+                              48710337 4        MARTIN, MELVINLYN J                 68
+                              48780819 2        JOHNSON, ROSALIND                   71
+                              48780876 10       EVANS, CHARLOTTE                    64
+                              48780920 1        SHANGLE, JAN A                      85
+                              48780962 1        SUMNER, PATRICK                     77
+                              48781295 2        HUFF, DEBORAH                       75
+                              48781370 3        HUNTER, JOANNA                      54
+                              48781474 3        CURTIS, JOHN                        59
+                              48781582 4        DECKER, DAVID                       59
+                              48783639 3        SCOTT, JANE                         38
+                              48783692 2        JACOB, ANTHONY                      52
+                              48783742 4        HUNTER, DEAON                       51
+                              48783803 3        JORDAN, MARY                        98
+                              48786501 1        PATEL, HASMUKH                      71
+                              48886864 2        WALKER, JOYCE                       80
+                              48887098 4        GENENWEIN, CAROLYN                  90
+                              48887353 3        NICHOLAS, PATRICIA                  70
+                              48887513 8        FISHER, JOHN                        69
+                              48887827 5        HICKMAN, ANTHONY                    72
+                              48889432 4        FIGUEROA, ROBERT                    33
+                              48889523 4        FORD, JOSEPH                        53
+                              48889780 5        ADAMS, ERNEST                       77
+                              48889816 3        MCBRIDE, JACK                       60
+                              48890372 2        YATES, ROBIN                        53
+                              48903701 2        GAINES, DIANN                       78
+                              48903934 2        BLACKSHEAR, ANNIE                   91
+                              48903975 6        LEFLER, ROY                         64
+                              48904020 1        PRUITT, DOROTHY                     85
+                              48904328 11       BATTLE, MARY                        81
+                              48904379 3        COOMBS, EVETTE                      55
+                              48905204 2        NEWTON, DAVID                       72
+                              48905306 5        CARTER, EDITH                       66
+                              48908480 4        STAMPER, MICHAEL                    72
+                              48908606 5        ROGERS, TERESA                      76
+                              48908706 7        HUDSON, COREY                       50
+                              48909198 2        BARTAK, PAUL                        56
+                              48909979 1        BAKER, GARY                         64
+                              48934176 2        CLAYWELL, RICHARD L                 82
+                              48934250 4        HOBBS, ROXANNE                      82
+                              48934465 1        BLACKSHEAR, JANEE S                 34
+                              48934630 3        TURNER, WILBERT                     80
+                              48934761 3        BONNER, PHYLLIS                     59
+                              48934842 4        BRINLEY, JIMMY                      83
+                              48934992 2        MCKINNEY, MARY                      99
+                              48935196 2        SMITH, DARRELL                      73
+                              48935269 2        THOMAS, CHERYL                      75
+                              48935350 3        COX, MARY                           83
+                              48935455 1        HERBER, BOBBY                       93
+                              48935726 14       COFFMAN, MARY                       72
+                              48935828 2        BARNETT, JOSEPH                     89
+                              48936482 3        EPPEHIMER, BARBARA                  88
+                              48936726 3        CARR, EDITH                         84
+                              48939023 4        BURBA, MARSHALL                     85
+                              48941446 3        RAY, SCOTTY                         41
+                              48942005 3        GREENWALD, ELIZABETH               100
+                              48953244 3        HALL, SHARON                        63
+                              48953301 3        BELL, RICHARD                       35
+                              48954653 2        GOOTEE, MARK                        62
+                              48954902 2        PULLIAM, JENNIFER                   36
+                              48954973 3        DISNEY, HUBERT                      95
+                              48957759 6        MARIA, LAYTON                       89
+                              48957821 1        WOODARD, GENECA                     42
+                              48965926 2        WIGGINTON, SIDNEY                   71
+                              48965994 1        PRICE, MARK                         56
+                              48966908 1        NEWTON, JERRY L                     66
+                              48967060 3        WOODSON, CELESTINE L                60
+                              48969523 2        TINSLEY, KATHERINE                  70
+                              48969728 2        JONES, CHARLES                      78
+                              48970394 10       STORY, NANCY                        88
+                              48970644 2        ROBERTS, WANDA                      83
+                              49076251 2        PARKER, CLAUDE W                    62
+                              49076367 3        LAWRENCE, NORA                      77
+                              49077759 3        HARRIS, GEORGE                      80
+                              49078025 3        HALPERN, GILDA                      92
+                              49079205 2        GOETTEL, GUY R                      87
+                              49111988 5        DUFF, MARY M                        86
+                              49112121 8        WOODS, DAVID                        74
+                              49113548 2        ECKLES, PATRICIA B                  92
+                              49113633 2        MORIOKA, ASAKO                     100
+                              49114051 9        DAVENPORT, JEAN MARIE               66
+                              49114154 4        RUSHING, DONALD G                   90
+                              49129054 2        BARNER, MARTHA                      71
+                              49130606 1        BYRLEY, KAREN                       79
+                              49130919 2        BANE, ROY A                         81
+                              49131031 2        GOODPASTER, RUBY                    88
+                              49162002 1        BOLING, WILLIAM R                   85
+                              49162086 1        WINES, MAXINE                       90
+                              49162245 1        DANIEL, MILDRED                     94
+                              49162383 15       DIEHL, PHYLLIS J                    92
+                              49162557 1        EMBREE, DEBRA                       62
+                              49163555 1        SMITH, JAMES D                      84
+                              49163937 4        BYRNE, MARY                         91
+                              49164212 4        KEELING, MARY                       79
+                              49164995 1        COFFEY, DENNIS                      68
+                              49165148 1        JIBBEN, NORMA                       92
+                              49507587 6        FENWICK, CHARLES                    81
+                              49507752 4        HEPKINS, RITA M                     81
+                              49508013 1        BURGE, WILLIAM                      93
+                              49509818 1        LYDDAN, JOHN M                      79
+                              49509906 4        PACE, JOYCE A                       82
+                              49510139 3        CRAIG, DOUGLAS                      61
+                              49707043 1        EDIE, WILLIAM                       78
+                              49707098 3        O'LEARY, ELIZABETH A                56
+                              49707142 9        THOMPSON, SHEILA R                  55
+                              49707235 3        ARNETT, LEAH                        63
+                              49707279 5        LOVE, SHEILA E                      73
+                              49707313 9        OGLETREE, PATSY                     95
+                              49843490 3        FRANCOIS, RICHARD                   53
+                              49843626 7        GLASS, PATRICIA                     85
+                              49843686 12       BRADLEY, EDELL F                    75
+                              49844260 3        NOLAN, JANE                         76
+                              49844472 1        HAWES, HAROLD                       63
+                              49844523 2        MEYER, KATHY                        69
+                              49997795 1        GARDNER, STEVEN K                   58
+                              49997884 1        REID, MARY                          95
+                              49998033 1        BAUER, WILLIAM                      70
+                              49998121 3        GERHART, BEVERLY                    92
+                              49998304 2        BURRUS, MARY                        80
+                              49998359 4        NOE, JANELLEN                       69
+                              49998510 1        BAKER, NANCY                        69
+                              49998569 1        COFFMAN, FRANK                      81
+                              49998779 5        KELLY, JACQUELINE                   87
+                              49999043 2        GUTHRIE, LAJOHNYA C                 62
+                              49999183 1        DENNY, DANNY L                      78
+                              49999246 1        ROGERS, WATANA                      59
+                              49999341 17       AUSTIN, ELIZABETH                   63
+                              49999913 3        DOZIER, CHARLIE T                   80
+                              49999975 2        BUTTS, KATHLEEN                     92
+                              50000122 1        MURPHY, JEANETTE                    83
+                              50000175 1        STORMS, SHARON                      80
+                              50001773 2        EDELSTEIN, ALEXANDER                68
+                              50002006 1        BROWN, CHARLES                      73
+                              50002213 2        WHITE, JANE C                       91
+                              50002333 4        SEXTON, CHARLENE                    84
+                              50010388 1        ZIPPIN, ONAELIZABE T                70
+                              50010530 2        FAULKNER, JACKIE                    75
+                              50010793 2        BUTLER, RICHARD                     61
+                              50010844 12       BELL, MARGIE                        87
+                              50010875 4        ROBERTS, EVAN                       69
+                              50010917 1        JOHNSON ADKINS, SHERYL R            70
+                              50010932 1        MILES, KIMBERLY                     54
+                              50147478 2        JANE, SPALDING                      85
+                              50210772 5        TRUMBULL, PHYLLIS                   92
+                              50211062 4        LEWIS, CAROL ANN                    70
+                              50211201 3        WILSON, FREDA                       72
+                              50211336 6        SNYDER, SHIRLEY                     83
+                              50211393 4        BOHANNON, VIRGINIA KESLER           98
+                              50211442 11       COOK, THERESA                       72
+                              50211651 2        ANGELOVE, SUZANNA                   78
+                              50211833 4        GOODING, FREDERICK                  84
+                              50211954 4        BYRD, DONNA MAY                     78
+                              50212126 3        SALERNO, JEAN                       96
+                              50212750 2        LAND, ERMA S                        83
+                              50212832 1        FENNELL, DAVID                      75
+                              50213000 2        GENTILE, DOUGLAS                    80
+                              50213463 2        BORLAND, BETTY                      85
+                              50233229 2        HARRELL, VICKI                      69
+                              50233282 5        FIELDEN, JOHN                       79
+                              50233452 14       HILL, SUSAN A                       81
+                              50233626 1        AMOS, FLORA                         78
+                              50233680 5        ROBERTSON, JACK                     78
+                              50233729 2        NEWMAN, DONALD                      64
+                              50233802 8        TURNER, GERALDINE                   81
+                              50260790 3        SHRADER, CALVIN                     97
+                              50261355 4        MELLOAN, BETTY                      78
+                              50261510 3        BLAND, WILLIAM                      84
+                              50262091 3        TEWSLEY, MARY                       64
+                              50262147 2        SMITH, IVAN                         83
+                              50295438 3        SHIPLEY, PATRICIA                   63
+                              50295529 2        MANN, JOYCE                         85
+                              50295580 2        OESWEIN, CAROLE                     78
+                              50295651 1        LAMBERT, DEBORAH                    67
+                              50295796 3        TRACY, SALLY H                      77
+                              50324147 3        ANDERSON, PHILLIP                   82
+                              50324573 9        SELLERS, LAURA                      88
+                              50337336 4        ALDRIDGE, ALICE                     70
+                              50337368 3        CAMPBELL, RAYMOND                   65
+                              50360610 2        FRAZIER, JERALENE                   79
+                              50360695 2        ONEAL, DONNA                        75
+                              50360893 2        ROWLETT, SHARON                     71
+                              50361163 1        SMITH, LINDA                        74
+                              50361734 2        HORTON, GLORIA                      91
+                              50362138 2        THOMPSON, JANICE                    80
+                              50362373 2        MORGAN, LEONARD E                   90
+                              50376745 2        HOFF, SANDRA                        73
+                              50376820 10       SCHNEIDER, BOBBIE                   69
+                              50376906 2        GRAHAM, JOHN                        82
+                              50377170 5        BOLGER, TERRIE                      60
+                              50377353 11       RUBIN, ELIZABETH                    61
+                              50377988 8        WEBB, ROBERT                        73
+                              50390060 3        CARVER, JAMES                       87
+                              50390093 13       SANFORD, CAROLYN                    74
+                              50390189 3        ISON, RALPH E                       70
+                              50390274 2        DE LOS SANTOS, MABEL                90
+                              50390439 1        HARTH, MICHAEL                      73
+                              50390505 2        WELSCHER, DEBORAH A                 70
+                              50390550 3        SAVAGE, CONSTANCE E                 53
+                              50391659 2        SIMPSON, MARY                       80
+                              50391950 1        KRUPP, ROBERT                       77
+                              50392589 1        MINTON, FAITH D                     62
+                              50392630 1        XHAFOLLI, SHAQIR                    66
+                              50392833 1        SERDENIS, MARSHA                    79
+                              50392877 1        DOYLE, VIRGINIA A                   82
+                              50393046 1        BROWN, EDWARD E                     69
+                              50393992 1        BROWN, MEL                          58
+                              50394057 1        REBER, LOIS                         86
+                              50394142 2        KEBERT, FAY                         91
+                              50395624 1        ONAN, MICHAEL                       54
+                              50402968 1        JOHNSON, MARK                       66
+                              50403258 1        LEWIS, JOANN D                      71
+                              50403307 2        MOORE, GEORGE                       80
+                              50403514 4        MANSFIELD, JAMES                    78
+                              50403786 1        GUEST, SUSAN                        65
+                              50403926 7        LOONEY, BERTHA                      92
+                              50404028 2        SAMS, ERNEST                        76
+                              50404536 2        DEHART, PATRICIA                    75
+                              50404652 1        TATE, CHRISTOPHER                   45
+                              50404738 2        GIBBS, KELLYE L                     57
+                              50405787 1        MAPLES, LILA                        90
+                              50405800 3        ASANTEWA, NANA                      81
+                              50405924 1        HAYNES, HOLLY                       68
+                              50407319 5        ELLIS, SELMA                        65
+                              50407401 11       DEPOYSTER, PAULETTE                 58
+                              50407457 1        CRAWFORD, LANETTE                   49
+                              50407506 9        TRAPP, CHARLES                      86
+                              50414626 2        DOWNS, PAULA A                      72
+                              50414701 1        SHUCK, BILLY                        82
+                              50414757 1        CARR, LESLEY                        65
+                              50414794 1        BEARD, BETTYE                       90
+                              50416196 1        ELLIOTT, ALBERT                     85
+                              50416361 1        HOUCK, PETER                        98
+                              50416489 2        LESCH, EDWARD                       96
+                              50416692 1        PURVIS, VIRGINIA                    95
+                              50416871 3        SAUNDERS, DORIS                     90
+                              50421465 3        SPALDING, PAMELA                    72
+                              50421662 2        DENNIS, TONI                        72
+                              50421933 2        MONTGOMERY, LILLIAN                 92
+                              50421975 2        CHANCEY, GAIL                       89
+                              50422021 3        MILLS, ALMA                         85
+                              50422057 2        NEWTON, BEVERLY                     85
+                              50422106 4        BURKE, RUBY                         84
+                              50432730 2        WATKINS, BARBARA                    79
+                              50445449 1        ROYER, ROBERT                       95
+                              50445724 4        CALDWELL, COLLETTE                  70
+                              50445876 2        DAGES, JUDITH                       83
+                              50445982 2        BENTLEY, TERRY                      71
+                              50446054 2        CRAIG, ELAINE                       77
+                              50446123 1        HITE, MARTHA L                      87
+                              50446230 2        ROGERS, REBECCA S                   79
+                              50446521 2        SHOBE, DORIS                        63
+                              50446731 2        WRIGLEY, MARCIA                     91
+                              50481847 1        ROSE, VIRGIL                        76
+                              50483706 4        METCALFE, KATHRYN                   70
+                              50484021 9        DEERING, CHERRY                     95
+                              50485284 6        WHITE, QUENTIN                      83
+                              50485351 5        BRYANT, LALITA H                    80
+                              50499074 1        KENDRICK, LAYNE                     75
+                              50514900 1        FOX, RAYMOND                        91
+                              50514951 1        SYKES, KELLY                        41
+                              50515001 1        BROWN, RAMMIE                       54
+                              50515120 1        DENNY, STEVEN                       71
+                              50515192 1        MCELROY, VICKIE                     65
+                              50515259 1        BLAKELY, STEVEN                     63
+                              50515309 1        PATTERSON, DOMINIQUE                33
+                              50515388 2        TURNER, ROCHELLA                    83
+                              50515453 2        LAY, CINDY                          59
+                              50515683 2        GATEWOOD, SHARON                    82
+                              50515827 2        MORROW, DALLAS                      58
+                              50515970 2        BLEVINS, MARGIE                     69
+                              50516030 2        MADDUX, MARGARET                    76
+                              50517479 2        MOON, JAMES                         84
+                              50517538 2        WALLACE, CAROLE                     80
+                              50517843 1        CORBETT, PHILIP                     80
+                              50518722 2        THOMAS, CATHERINE                   64
+                              50670044 2        WILLIAMS, DONALD                    85
+                              50670105 4        BORIE, PAMELA                       67
+                              50670161 4        NELSON, SHIRLEY                     77
+                              50671333 3        MAY, JAMES                          74
+                              50671631 10       TUCKER, TIMOTHY E                   43
+                              50671815 8        HILL, GARY                          66
+                              50684349 6        RICHERT, THOMAS                     73
+                              50684460 1        OBER, LINDA                         81
+                              50689410 14       SANDERS, JUNE                       89
+                              50737362 3        BROOKS, WANDA L                     81
+                              50738051 3        MITCHELL, ANN                       83
+                              50738312 1        THOMPSON, VOLITA RUTH               92
+                              50769960 1        STATON, ALMA                        97
+                              50770002 1        SMITH, CHARLES                      84
+                              50770166 1        POLK, THELMA                        70
+                              50770322 1        STECK, PHYLLIS                      83
+                              50770535 1        PRENTICE, ROBERT                    93
+                              50772218 1        WILLIAMS, JERMAYNE                  57
+                              50772747 4        DEDMAN, SHARON                      61
+                              50778313 12       ROBBINS, PATRICIA ANN               61
+                              50808134 3        DURRETT, BOBBY L                    62
+                              50808576 2        MCTIGHE, ANNA JUSTINA               94
+                              50808817 5        HELTON, MARY ANN                    84
+                              50809123 4        WITTMER, SUE A                      88
+                              50820843 2        DEMPSEY, SHARON                     80
+                              50826228 3        MERCER, DOROTHY                     80
+                              50826615 4        STAYTON, EUGENE                     62
+                              50826664 7        ELEBY, WILLIE                       67
+                              50826713 6        PRICE, SANDRA                       67
+                              50826948 4        KNOWLES, ALAN                       57
+                              50827083 1        STONE, JOHN W                       85
+                              50827208 1        THOMPSON, CHIQUITA                  57
+                              50827335 1        SIMPSON, NOVA                       58
+                              50827586 1        ARNDELL, THOMAS                     56
+                              50827638 1        EDWARDS, DAVID A                    57
+                              50833438 6        ASHLEY, ANGELA                      60
+                              50833505 2        BROCK, ARLINE                       86
+                              50833677 1        COEN, BETTY                         78
+                              50833724 2        GODOY, MARIA                        64
+                              50834108 1        HAYDON, LINDA                       77
+                              50834152 1        MILLION, GEORGE                     75
+                              50834321 5        POPP, ETHEL                         84
+                              50835172 3        WAGUESPACK, SANDRA                  86
+                              50835576 2        LOMAX, JOSEPHINE                    93
+                              50843233 3        FRAZIER, HATTIE                     82
+                              50843649 2        GARDNER, MABEL                      86
+                              50843693 2        BELL, CAROLYN                       62
+                              50844233 11       TUCKER, ANNA                        78
+                              50844524 1        MCGRUDER, GLORIA                    73
+                              50844886 3        SHUFFETT, ROBERT                    73
+                              50846753 1        HAYES, LONA S                       74
+                              50846913 1        SNYDER, BETTY                       64
+                              50847305 1        SPENCER, LELAND                     55
+                              50892805 1        SANDERS, WILLIAM                    72
+                              50929081 4        BURKLEY, JANET                      93
+                              50929186 4        HINES, FLOYD                        79
+                              50929427 3        BIZIANES, JUDITH                    81
+                              50929620 3        HAMM, KATHLEEN M                    83
+                              50929652 3        CAMPBELL, GILDA                     86
+                              51290336 2        DOMECK, NELL                        97
+                              51290477 5        BUNCH, SELWA                        83
+                              51291404 4        BIVEN, LINDA                        79
+                              51291698 7        BALLERSTEDT, ERIC                   59
+                              51291755 7        WOODFORD, JUANITA                   75
+                              51291804 4        BROOKS, ANITA                       84
+                              51292980 5        DURRETT, DENNIS                     64
+                              51293015 8        RICE, GLEN                          75
+                              51293074 8        STIVERS, MOLLIE                     80
+                              51293659 6        MCCARTY, BONNIE                     73
+                              51293721 3        HATFIELD, CRISTY                    44
+                              51293749 6        SMITH, ANITHA                       69
+                              51293768 6        KLEMPNER, BONNIE                    72
+                              51293820 2        CODEY, MARY                         83
+                              51293867 4        BOYD, PORTIA                        74
+                              51294135 1        DENNISON, TIMOTHY                   65
+                              51294201 3        ALLEN, KATHLEEN                     78
+                              51294726 1        BYRD, ROY                           88
+                              51294746 1        VANHOOSE, MARY SUE                  90
+                              51294765 2        HOLMER, JOHN                        76
+                              51294842 5        HEADEN, ALFRED                      82
+                              51294894 1        STEINHILIBER, WILLIAM               89
+                              51319409 1        RODGERS, LONNIE                     83
+                              51319438 1        TAYLOR, DOLLIE                      84
+                              51319768 1        MITCHELL, CARLISLE                  48
+                              51319892 1        ALLENSWORTH, BARRY                  61
+                              51319916 1        STEARNS, ERIC                       58
+                              51319989 1        BROOKS, GAYLE                       74
+                              51320021 1        HESS, JANE                          73
+                              51320120 1        BOLET DE BUSTAMANTE, CARMEN         64
+                              51320412 1        EVERETT, DIANNE                     64
+                              51320823 1        MARCANO, DAVID                      59
+                              51320855 1        KERSTETTER, DAVID                   63
+                              51325992 2        PRIDE, MILTON                       61
+                              51326061 1        LISTER, LAVERNE                     55
+                              51326106 1        MOSER, STEPHEN                      50
+                              51327286 1        PRICE, BRIAN                        49
+                              51327351 1        KEARNEY, CARLETTA                   39
+                              51327404 1        ABNEY, GREGORY                      51
+                              51327445 1        LATENDRESSE, ROSEMARIE              80
+                              51369362 1        SCHNEIDER, RONALD                   82
+                              51369536 3        OSGOOD, MYRNA                       84
+                              51369934 2        ZIMMERMAN, MARJORIE                 94
+                              51370191 2        MILLER, CATHERINE                   90
+                              51370279 2        STATEN, JACKIE M                    81
+                              51370719 2        ALLSMILLER, IRIS C                  80
+                              51520528 3        GROVER, MARY                        91
+                              51520582 4        BRODENHEIMER, FRITZ                 81
+                              51521239 5        BROWN, ALAN                         63
+                              51521323 5        MUTHLER, JUNE                       85
+                              51521420 3        MALIN, CHRISTINE                    75
+                              51521444 2        CHANDLER, BILLY                     77
+                              51521507 3        COMBS, MARY                         86
+                              51521615 1        NEELY, SHAUNA                       65
+                              51521652 1        TINKER, RICHARD                     74
+                              51521687 1        DEACON-ARCHER, MELISSA              55
+                              51521972 1        FOREMAN, YOLANDA                    56
+                              51522068 1        ABNEY, DEBORAH                      64
+                              51522112 1        PARSONS, BARBRA                     86
+                              51602189 3        FLINT, BERNARD                      83
+                              51602225 1        JONES, THOMAS                       86
+                              51602262 5        MCCRARY, CARL                       91
+                              51602464 4        MCGRATH, BEVERLY                    83
+                              51687480 3        RAGER, CHRISTINE                    89
+                              51687669 3        SARVER, ANTHONY                     60
+                              51687726 1        HERNANDEZ, ZEFERINA                 81
+                              51687813 2        LEE, TIMOTHY                        64
+                              51687873 1        HAMILTON, RUSSELL                   95
+                              51687885 3        DANNER, CHARLES                     72
+                              51688036 1        SHOUSE, JOHN W                      92
+                              51688668 3        FORD, LEEANN                        76
+                              51688739 2        MORGAN, NATHAN                      66
+                              51688959 1        ELLIOTT, JAMES                      95
+                              51689184 1        LUDLOW, BARBARA                     78
+                              51689264 1        LEE, JEAN                           55
+                              51689294 1        HILL, STEPHANIE V                   62
+                              51712172 1        NALLEY, WILLIAM                     61
+                              51712249 1        SMITH, MARTHA                       66
+                              51712516 1        KAYS, SANDRA                        51
+                              51712649 1        BRADSHAW, BETSY                     83
+                              51713074 1        PEDEN, JOHN                         76
+                              51713187 1        KEENE, GEORGE                       56
+                              51713219 1        PITCHER, THOMAS                     75
+                              682                                                     
+COLEMAN, NATALIE D (10114037) 38186080 5        BEAVER, CAROL                       68
+                              38190384 4        BLAIR, ALICE                        99
+                              38190471 8        DOWDELL, JANICE                     80
+                              38190593 6        JOHNSON, CHARLES                    83
+                              38200530 1        MILLER, PATRICIA                    82
+                              38213614 8        SPENCER, PERRY                      88
+                              38214176 3        WILLS, VERDA                        82
+                              38233548 9        FOWLER, PHYLLIS                     76
+                              8                                                       
+COURSEY, JOHANNA  (10102179)  35481260 3        WADELL, DOROTHY J                   98
+                              35481287 3        LINK, LAWRENCE                      93
+                              35481876 4        SHERMAN, ERWIN                      93
+                              35482018 4        WALKER, ANNA                        93
+                              35486666 5        SPICER, LISA M                      59
+                              35486687 4        SHOCKEY, MICHAEL                    58
+                              35495559 4        MATTINGLY, LARRY D                  67
+                              35500562 6        BREIT, SYLVESTER                    97
+                              35500607 2        MCGRUDER, GLORIA                    78
+                              35504538 13       COTTNER, RHONDA G                   69
+                              35506407 1        JONES, HERBERT L                    77
+                              35518852 4        BARTSCH, ROBERT                     66
+                              35526162 1        MALONE, MARGIE                      65
+                              35551069 1        BEAVERS, BRIDGETT                   57
+                              35551546 3        WRIGHT, LINDA L                     80
+                              35552531 1        CARTER, MARGARET H                  90
+                              35575075 20       HINES, DEBORAH M                    70
+                              35575395 7        WALKER, JO                          90
+                              35596204 6        TOLSON, MARTHA BASCOM               99
+                              35603825 4        MAYNARD, JOANN A                    87
+                              35606577 8        CRICK, CORA M                       91
+                              35607029 9        OAK, JOHN                           52
+                              35665956 5        COOK, GARLAND                       85
+                              35852326 4        HAYDEN, JAMES                       81
+                              35852381 7        CARDWELL, JOYCE A                   84
+                              35856240 9        SCHMIDT, PEGGY D                    75
+                              35871743 4        HILDRETH, NETTIE                    97
+                              35881473 10       GRIZZLE, VIRGINIA A                 73
+                              35881614 5        COOLEY, WILMA                       79
+                              35881723 10       BRAWNER, MAUDIE S                   80
+                              35881842 8        WALLING, MARSHA L                   73
+                              35910998 9        BOULTON, BARBARA                    73
+                              35912589 1        ATNIP, ALVA                         79
+                              35931366 2        VAUGHAN, MICHAEL                    58
+                              35985756 8        MOFFETT, CAROLYN                    96
+                              35992768 12       IRWIN, BERNADETTE                   89
+                              35993059 10       HOFELICH, ANGELA                    81
+                              36014883 5        WILLIAMS, BOBBIE J                  82
+                              36015347 1        BROYLES, LINDA                      76
+                              36015373 5        ANDERSON, JEAN T                    96
+                              36072844 2        RYAN, MORA                          87
+                              36073060 10       VANCE, JOHN                         84
+                              36082374 4        KELLEY, CATHERINE S                 66
+                              36149053 3        HALSEY, MARY                        99
+                              36149586 9        OWENS, ORA                          87
+                              36177808 4        JONES, FRANKLIN                     65
+                              36480733 3        MICKENS, MICHAEL                    72
+                              36485486 10       FURMAN, HALLIE                      94
+                              36485510 11       RILEY, KATHLEEN                     87
+                              36488223 3        DOANE, DANNY                        74
+                              36490661 8        GILBERT, JUANITA                    75
+                              36709107 3        FENWICK, CHARLES                    81
+                              36841516 2        CARDWELL, MILDRED B                 94
+                              37004542 3        KITTLE, CHARLOTTE                   96
+                              37064023 1        MCCARTY, MICHAEL                    77
+                              37181251 5        JASMINE, YVONNE                     85
+                              37222145 7        WILLIAMS, DEBORAH                   72
+                              37280525 9        BUSH, ANDRELET                      33
+                              37281741 11       DAVIS, LILLIE                       77
+                              37402574 2        ILER, CLARA                         89
+                              37424694 1        FAIRMAN, STANLEY                    90
+                              37505774 13       GREENWELL, STANLEY                  82
+                              37961364 3        MCCLARTY, JOAN                      89
+                              38126016 6        ENIX, FREDDY                        78
+                              38126105 3        PIKE, ZACHARY                       28
+                              38126183 2        PASHA, ATAULLA                      62
+                              38126251 4        BUSSMAN, ALFRED                     73
+                              38126444 5        MCMURRAY, ROSALINE                  65
+                              38126599 6        WATSON, JERRY                       75
+                              38126873 7        COPELAND, CAMILLE                   76
+                              38129976 2        THOMAS, BERNIECE                    96
+                              38129985 1        DYER, ANN                           87
+                              52133343 2        BRADLEY, PEGGY                      84
+                              52133364 2        SYED, SAJIDA                        81
+                              52133389 2        MOORE, LINDA                        80
+                              52133436 2        HIGGINS, MARY                       86
+                              52133474 4        GRUNEISEN, MARY ANN                 88
+                              52138372 2        MAYO, RAYMOND                       63
+                              52138406 1        MADDOX, AUDIE                       86
+                              52138453 1        MOSER, WILLIAM                      83
+                              52149974 2        ROGERS, STEPHEN                     60
+                              52150001 2        SNELL, JOHN                         59
+                              52150098 4        KOENIGSKNECHT, AGNES                72
+                              52150138 4        DUNNE, BRIAN                        50
+                              52150356 2        LONG, ANN                           76
+                              52150406 2        FRANKLIN, JERRY                     82
+                              52200904 1        SMITH, RONNIE                       75
+                              52200984 1        KIRTLEY, CAMBRIDGE E                76
+                              52201007 1        TAYLOR, PAULA                       54
+                              52201057 1        PUMPHREY, RONALD L                  71
+                              52201275 1        CAUDILL, CYNTHIA M                  64
+                              52201677 1        THOMAS, BECKY                       57
+                              52201813 1        KIRBY, CHRISTOPH D                  44
+                              52201901 2        BARTON, VIRGINIA                    62
+                              52216189 1        HARDIN, EDWARD                      80
+                              52216357 1        MITCHELL, ISAIAH                    71
+                              52216409 1        PETTY JOHN, LEON                    87
+                              52241974 3        BECHERER, KITTY                     78
+                              52241997 1        MCGUIRE, THELMA                     94
+                              52308516 3        CATES, JOHN                         69
+                              52308634 2        BREDHOLD, YVONNE                    86
+                              52308722 2        DAVIS, MARIE                        61
+                              52308783 3        STOESS, DAVID                       82
+                              52309000 2        RICHTER, JOSEPH                     81
+                              52309567 1        GIBSON, NAYDENE                     78
+                              52309757 3        HILL, EVELYN                        88
+                              52309772 3        COLDING, GLADYS E                   93
+                              52309791 3        GRAVES, DEBORAH                     72
+                              52310284 3        PRESNELL, NANNIE                    87
+                              52310359 2        SCHROETER, GUY                      86
+                              52406686 2        WHISMAN, ENOCH                      82
+                              52406790 2        FRANKLIN, PRISCILLA                 73
+                              52406903 2        HARTFORD, HERBERT                   65
+                              52407182 1        MEDLAR, PAUL                        77
+                              52407202 3        ADAMS, CARLA                        76
+                              52407277 2        MILLER, CHARLES                     74
+                              52407330 3        DESPAIN, JANICE                     78
+                              52408134 1        BROWNING, BARRETT                   40
+                              52408394 1        GROEPPE, JANICE                     64
+                              52421299 1        EVERSOLE, CHARLENE                  68
+                              52421486 1        MOORMAN, KATHY                      63
+                              52421518 1        SHROUT, SUSAN                       71
+                              52421952 1        CRAVEN, JANE                        72
+                              52422304 1        SIMPSON, ANTON                      26
+                              52422399 1        BROWN, WILLIAM                      50
+                              52422481 1        BURGESS, ALEXANDER                  27
+                              52422697 1        SMITH, BRIAN                        55
+                              52422719 1        GORDON, WAYNE                       69
+                              52536116 1        GIBSON, CAROL                       87
+                              52536381 2        CALHOUN, ORETHA                     88
+                              52536419 2        COMBS, ANNEMARIE                    91
+                              52536464 1        HAJIR, HABIBA                       56
+                              52536590 1        CLARK, ORLANDO                      73
+                              52536702 1        SAYLOR, BILLY                       83
+                              52539112 2        BRANHAM, CHARLENE                   86
+                              52539165 2        MAHORNEY, CAROL                     80
+                              52539283 2        STROTHER, PATRICIA                  89
+                              52539308 1        BRYANT, WANDA                       92
+                              52539612 1        OVERMAN, NICOLE                     52
+                              52539631 1        DOWELL, GEORGE                      56
+                              52539739 1        SHELBY, JEROME                      74
+                              52540542 1        DOWNS, CHARLES                      87
+                              52540577 1        SACKIE, JIMMY                       55
+                              52540604 1        SHROUT, CECIL                       71
+                              52540707 1        JAGIELO, MICHAEL                    62
+                              52541560 1        MURPHY, PRISCILLA                   74
+                              52541722 1        MARTIN, EMILY                       79
+                              52541845 1        WILLIS, JOSHUA                      34
+                              52542197 2        LARKINS, DAVID                      54
+                              52542211 1        PRICE, MONA                         70
+                              52542580 1        MCCLOUD, RUBY                       94
+                              52542597 1        MAYFIELD, PATTY                     91
+                              52542640 1        SPAHIC, JASMIN                      59
+                              52542667 1        CROSS, GERALD                       68
+                              52542720 1        NIEMIEC, CHARLES                    41
+                              52542782 1        ALEXANDER, LISA                     54
+                              52542803 1        HALL, RITA                          59
+                              52542824 1        BUKLEY, MARTHA                      81
+                              52542848 1        MURPHY, CATHERINE                   89
+                              52542878 1        LIBERTO, BETTY                      73
+                              52542952 1        CARTER, JOEY                        58
+                              52542962 1        ELKINS, DEBRA                       61
+                              52543031 1        DAVEY, REGINA                       54
+                              52543098 1        PREWITT, EDITH                      92
+                              52543160 1        TESTER, MELISSA                     46
+                              52543216 1        BRUCE, DONALD                       59
+                              52543232 1        MILLER, AUSTIN                      44
+                              52543240 1        WALSH, JAMES                        74
+                              52543272 1        HUFF, LOIS                          53
+                              52543292 1        HARROD, BESSIE                      94
+                              170                                                     
+KAPOOR, SANDEEP  (10102172)   36812415 4        TRUE, BENNY Y                       88
+                              36812751 4        LEET, MARY P                        89
+                              36812858 2        OGDEN, RAMONA                       66
+                              36812864 12       DARBY, KATHLEEN                     75
+                              36813675 1        MCKINNEY, JOYCE                     85
+                              36813678 3        BAKER, ORILLA                       85
+                              36813721 2        REEDER, GILBERT                     65
+                              36813733 3        COMPTON, PATRICIA L                 85
+                              36813969 1        ADAMS, HILDA                        82
+                              36814005 3        FERMAN, JAMES                       80
+                              36814030 2        CAMPBELL, LAVADA                    87
+                              36814066 2        BLEVINS, LARRY                      76
+                              36814087 1        STUMBO, JACK                        84
+                              36814129 1        LUSK, HARRY                         81
+                              36814161 3        POLSTON, MARGARET                   92
+                              36814285 2        EVANS, HERBERT WAYNE                80
+                              36814291 3        SCHOENBACHLER, HELEN                98
+                              36814296 5        WISHON, DONALD                      70
+                              36814374 1        LITTLE, SARA A                      80
+                              36814402 2        BROWN, BRENDA                       68
+                              36814425 5        QUESADA PEREZ, JUAN FRANCISCO       67
+                              36814574 6        MEFFERT, RAYMOND                    71
+                              36814671 6        HARDESTY, ALMA C                    79
+                              36814718 1        MONSON, SALLY                       71
+                              36814839 2        KING, WILLIA N                      80
+                              36815012 1        ALMON, LOUISE                       92
+                              36815083 5        HODGES, MARY                        82
+                              36815091 4        BURDEN, WILLIAM WD                  82
+                              36815100 5        WEBB, LISA                          68
+                              36815139 5        WILSON, LADY                        98
+                              36815189 6        OAKES, ANNA                         85
+                              36815194 7        HAM, PATRICIA                       60
+                              36815250 2        ADAMS, LOWELL                       88
+                              36815328 8        EDMONSON, CHARLOTTE                 91
+                              36815353 2        CHILDERS, BARBARA                   84
+                              36815403 8        CURTSINGER, BETTY J                 85
+                              36815441 7        TURNER, NANCY                       96
+                              36815453 5        NEWLAND, JOHN                       87
+                              36816148 2        BROOKS, MARY E                      63
+                              36816155 2        SEGEE, PATRICIA                     67
+                              36816343 5        ROACH, CRAIG                        44
+                              36816349 2        BROWN, KENNETH                      69
+                              36816425 3        FORD, DALE                          87
+                              43                                                      
+--------------------------------------------------------------------------------------
+                              903                                                     
+
