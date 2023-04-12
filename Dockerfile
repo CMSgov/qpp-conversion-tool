@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11:ubi
+FROM eclipse-temurin:11
 
 ARG MAVEN_VERSION=3.8.4
 ARG USER_HOME_DIR="/root"
