@@ -14,7 +14,7 @@ common: &default_settings
   # account. For example, if your license key is 12345 use this:
   # license_key: '12345'
   # The key binds your Agent's data to your account in the New Relic service.
-  license_key: 'NEWRELIC_API_KEY'
+  license_key: 'AA2DF767BE695EDB841E6223AF151C753243D2FACCB0D4B7D2E54A6B569F1323'
 
   # Agent Enabled
   # Use this setting to disable the agent instead of removing it from the startup command.
