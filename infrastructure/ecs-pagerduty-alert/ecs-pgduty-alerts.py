@@ -29,9 +29,10 @@ def lambda_handler(event, context):
             
             
             response = ses_client.send_email(
-                Source='qpp-final-scoring@cms-qpp.pagerduty.com',
+                Source='893a0342-571a-43d4-ad5e-f4b0aef7654b+CT-routingkey-nonprod@alert.victorops.com',
                 Destination={
-                    'ToAddresses': ['qpp-final-scoring@cms-qpp.pagerduty.com'],
+                    'ToAddresses': ['893a0342-571a-43d4-ad5e-f4b0aef7654b+CT-routingkey-nonprod@alert.victorops.com'],
+                    'CcAddresses': ['qpp-final-scoring@cms-qpp.pagerduty.com'],
 				    },  
 				    Message={
 				        'Subject': {
