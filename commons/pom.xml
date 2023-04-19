@@ -14,8 +14,8 @@
 	<name>Commons</name>
 	<packaging>jar</packaging>
 
-	<properties>gi
-		<requiredCodeCoverage>0.05</requiredCodeCoverage>
+	<properties>
+		<requiredCodeCoverage>0.05<cl/requiredCodeCoverage>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/../test-coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 
