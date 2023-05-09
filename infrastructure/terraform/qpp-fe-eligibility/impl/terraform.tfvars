@@ -1,0 +1,11 @@
+// EFS Vars
+efs_creation_token = "terraform-20200804143341258200000001"
+efs_kms_key_id     = "arn:aws:kms:us-east-1:968524040713:key/a745b049-e3b6-4466-b676-f65d70df3069"
+efs_environment    = "imp"
+efs_Name           = "qpp-imp-eft"
+efs_application    = "qpp-eligibility"
+efs_description    = "EFS volume for IMP environment data files"
+efs_iac-repo-url   = "https://github.com/cloudposse/terraform-aws-efs.git"
+efs_owner          = "qppfe.devops.group@adhocteam.us"
+efs_pagerduty-email = "893a0342-571a-43d4-ad5e-f4b0aef7654b+ELIG-routingkey-nonprod@alert.victorops.com"
+efs_sensitivity    = "confidential"

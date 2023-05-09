@@ -28,3 +28,4 @@ jspm_packages
 # Terraform files
 terraform.tfstate.backup
 .terraform
+.terraform.lock.hcl
