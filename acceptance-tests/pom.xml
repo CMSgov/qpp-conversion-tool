@@ -43,7 +43,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-            <version>5.2.22.RELEASE</version>
+            <version>5.3.26</version>
         </dependency>
 
         <dependency>
@@ -92,12 +92,12 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>3.0.0-M3</version>
+					<version>3.0.0</version>
 					<dependencies>
 						<dependency>
 							<groupId>org.apache.maven.surefire</groupId>
 							<artifactId>surefire-junit47</artifactId>
-							<version>3.0.0-M3</version>
+							<version>3.0.0</version>
 						</dependency>
 					</dependencies>
 				</plugin>
