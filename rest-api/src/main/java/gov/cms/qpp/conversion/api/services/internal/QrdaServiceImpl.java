@@ -88,9 +88,6 @@ public class QrdaServiceImpl implements QrdaService {
 	}
 
 	private ApmEntityIds retrieveApmEntityValidationFile() {
-		API_LOG.info("Trying to fetch the Cpc Plus APM Validation file");
-		InputStream cpcPlusApmInputStream = retrieveApmValidationFile(Constants.CPC_PLUS_APM_FILE_NAME_KEY);
-
 		API_LOG.info("Trying to fetch the Pcf APM Validation file");
 		InputStream pcfApmInputStream = retrieveApmValidationFile(Constants.PCF_APM_FILE_NAME_KEY);
 
