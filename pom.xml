@@ -6,7 +6,7 @@
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-conversion-tool-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>2022.2.1-RELEASE</version>
+	<version>2022.3.0-RELEASE</version>
 	<name>QPP Conversion Tool</name>
 
 	<properties>
@@ -138,7 +138,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>3.0.0-M4</version>
+					<version>3.0.0</version>
 					<configuration>
 						<useSystemClassLoader>false</useSystemClassLoader>
 						<trimStackTrace>false</trimStackTrace>
@@ -213,7 +213,7 @@
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-databind</artifactId>
-				<version>2.13.4</version>
+				<version>2.13.4.2</version>
 			</dependency>
 
 			<dependency>
@@ -225,13 +225,13 @@
 			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
-				<version>30.0-jre</version>
+				<version>32.1.1-jre</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava-testlib</artifactId>
-				<version>30.1.1-jre</version>
+				<version>32.1.1-jre</version>
 			</dependency>
 
 			<dependency>

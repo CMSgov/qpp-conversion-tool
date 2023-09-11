@@ -5,7 +5,7 @@
     <parent>
         <artifactId>qpp-conversion-tool-parent</artifactId>
         <groupId>gov.cms.qpp.conversion</groupId>
-        <version>2022.2.1-RELEASE</version>
+        <version>2022.3.0-RELEASE</version>
 		<relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -61,7 +61,7 @@
 		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-core</artifactId>
-            <version>3.6.2</version>
+            <version>3.8.1</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.apache.maven.shared</groupId>
