@@ -81,7 +81,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 94 : CT - The denominator exclusion id `(denexUuid)` for measure `(measure id)` has a count value that is greater than the denominator. The Denominator exclusion cannot be a greater value than the denominator.
 * 95 : CT - The Clinical Document must contain one Measure Section v4 with the extension 2017-06-01
 * 96 : CT - The APM to TIN/NPI Combination file is missing.
-* 97 : CT - `(Program name)` QRDA-III Submissions require a valid CMS EHR Certification ID (Valid Format: XX15EXXXXXXXXXX)
+* 97 : CT - `(Program name)` QRDA-III Submissions require a valid CMS EHR Certification ID (Valid Formats: XX15EXXXXXXXXXX, XX15CXXXXXXXXXX)
 * 98 : CT - The performance rate cannot have a value of 0 and must be of value Null Attribute (NA).
 * 100 : CT - More than one CMS EHR Certification ID was found. Please submit with only one CMS EHR Certification id.
 * 101 : CT - Denominator count must be equal to Initial Population count for `(Program name)` measure population `(measure population id)`.Please see the Table 14 of `(Submission year's)` Implementation Guide for valid measure GUIDs: https://ecqi.healthit.gov/sites/default/files/2022-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-V1.1-508.pdf#page=43
