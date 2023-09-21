@@ -10,7 +10,7 @@ import gov.cms.qpp.conversion.model.error.ProblemCode;
 /**
  * Validates a measure groupings for a PCF Quality Measure Section node.
  */
-@Validator(value = TemplateId.MEASURE_SECTION_V4, program = Program.PCF)
+@Validator(value = TemplateId.MEASURE_SECTION_V5, program = Program.PCF)
 public class PcfQualityMeasureSectionValidator extends NodeValidator {
 
 	static final String[] PCF_REQUIRED_MEASURES = {

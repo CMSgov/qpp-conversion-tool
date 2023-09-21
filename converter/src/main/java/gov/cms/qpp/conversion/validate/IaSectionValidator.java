@@ -8,7 +8,7 @@ import gov.cms.qpp.conversion.model.error.ProblemCode;
 /**
  * Validates Improvement Activity Section Node - expects at least one Improvement Activity Measure
  */
-@Validator(TemplateId.IA_SECTION)
+@Validator(TemplateId.IA_SECTION_V3)
 public class IaSectionValidator extends NodeValidator {
 
 	/**
