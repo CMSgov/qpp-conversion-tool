@@ -6,7 +6,7 @@
 	<realmCode code="US"/>
 	<typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
 	<templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01"/>
-	<templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2021-07-01"/>
+	<templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2022-12-01"/>
 	<id root="26a42253-99f5-48e7-9274-b467c6c7f623"/>
 	<code code="55184-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 		  displayName="Quality Reporting Document Architecture Calculated Summary Report"/>
@@ -128,9 +128,9 @@
 					<!-- Measure Section -->
 					<templateId root="2.16.840.1.113883.10.20.24.2.2"/>
 					<!-- QRDA Category III Measure Section (V3) -->
-					<templateId root="2.16.840.1.113883.10.20.27.2.1" extension="2017-06-01"/>
+					<templateId root="2.16.840.1.113883.10.20.27.2.1" extension="2020-12-01"/>
 					<!-- QRDA Category III Measure Section - CMS (V2) -->
-					<templateId root="2.16.840.1.113883.10.20.27.2.3" extension="2019-05-01"/>
+					<templateId root="2.16.840.1.113883.10.20.27.2.3" extension="2022-05-01"/>
 					<code code="55186-1" codeSystem="2.16.840.1.113883.6.1"
 						  displayName="measure section"/>
 					<title>Measure Section</title>
@@ -139,7 +139,7 @@
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
 							<templateId root="2.16.840.1.113883.10.20.27.3.1" extension="2016-09-01"/>
-							<templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2016-11-01"/>
+							<templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2022-05-01"/>
 							<id root="40280381-51f0-825b-0152-2273af5a150b"/>
 							<statusCode code="completed"/>
 							<!--Measure Reference and Results-->

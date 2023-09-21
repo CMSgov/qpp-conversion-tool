@@ -63,7 +63,7 @@ CDA Header
 	<realmCode code="US"/>
 	<typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
 	<templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01"/>
-	<templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2021-07-01"/>
+	<templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2022-12-01"/>
 	<id root="26a42253-99f5-48e7-9274-b467c6c7f623"/>
 	<code code="55184-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 		  displayName="Quality Reporting Document Architecture Calculated Summary Report"/>
@@ -189,8 +189,8 @@ CDA Header
 					<component>
 							<section>
 									<templateId root="2.16.840.1.113883.10.20.24.2.2"/>
-									<templateId extension="2017-06-01" root="2.16.840.1.113883.10.20.27.2.1"/>
-									<templateId extension="2019-05-01" root="2.16.840.1.113883.10.20.27.2.3"/>
+									<templateId extension="2020-12-01" root="2.16.840.1.113883.10.20.27.2.1"/>
+									<templateId extension="2022-05-01" root="2.16.840.1.113883.10.20.27.2.3"/>
 									<code code="55186-1" codeSystem="2.16.840.1.113883.6.1"/>
 									<title>Measure section</title>
 									<text>
@@ -500,7 +500,7 @@ CDA Header
 											<organizer classCode="CLUSTER" moodCode="EVN">
 													<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
 													<templateId extension="2016-09-01" root="2.16.840.1.113883.10.20.27.3.1"/>
-													<templateId extension="2019-05-01"
+													<templateId extension="2022-05-01"
 															root="2.16.840.1.113883.10.20.27.3.17"/>
 													<id root="72B98C12-AE3D-11ED-A1C0-640339ACF087"/>
 													<statusCode code="completed"/>
@@ -6884,7 +6884,7 @@ CDA Header
 					</component>
 					<component>
 							<section>
-									<templateId extension="2017-06-01" root="2.16.840.1.113883.10.20.27.2.4"/>
+									<templateId extension="2020-12-01" root="2.16.840.1.113883.10.20.27.2.4"/>
 									<templateId root="2.16.840.1.113883.10.20.24.2.2"/>
 									<code code="55186-1" codeSystem="2.16.840.1.113883.6.1"/>
 									<title>Measure section</title>
@@ -7097,7 +7097,7 @@ CDA Header
 					</component>
 					<component>
 							<section>
-									<templateId extension="2017-06-01" root="2.16.840.1.113883.10.20.27.2.5"/>
+									<templateId extension="2020-12-01" root="2.16.840.1.113883.10.20.27.2.5"/>
 									<templateId root="2.16.840.1.113883.10.20.24.2.2"/>
 									<code code="55186-1" codeSystem="2.16.840.1.113883.6.1"/>
 									<title>Measure section</title>
