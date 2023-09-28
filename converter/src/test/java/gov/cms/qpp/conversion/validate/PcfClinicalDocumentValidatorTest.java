@@ -118,7 +118,7 @@ public class PcfClinicalDocumentValidatorTest {
 	@Test
 	void testNoPi() {
 		Node clinicalDocumentNode = createPcfClinicalDocumentNodeWithMeasureSection();
-		Node pi = new Node(TemplateId.PI_SECTION_V2);
+		Node pi = new Node(TemplateId.PI_SECTION_V3);
 		clinicalDocumentNode.addChildNode(pi);
 
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
@@ -157,7 +157,7 @@ public class PcfClinicalDocumentValidatorTest {
 	}
 
 	private void addMeasureSectionNode(Node clinicalDocumentNode) {
-		Node measureSection = new Node(TemplateId.MEASURE_SECTION_V4);
+		Node measureSection = new Node(TemplateId.MEASURE_SECTION_V5);
 		clinicalDocumentNode.addChildNode(measureSection);
 	}
 }

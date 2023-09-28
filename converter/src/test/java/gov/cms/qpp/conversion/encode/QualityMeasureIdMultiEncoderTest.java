@@ -55,7 +55,7 @@ class QualityMeasureIdMultiEncoderTest {
 
 	@BeforeEach
 	void setUp() {
-		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4);
+		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V5);
 		qualityMeasureId.putValue(MEASURE_ID, "test1");
 
 		Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);

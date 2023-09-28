@@ -79,7 +79,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 92 : CT - The performance denominator for measure `(measureId)` was less than 0. A performance rate cannot be null unless the performance denominator is 0
 * 93 : CT - The numerator id `(numeratorUuid)` for measure `(measure id)` has a count value that is greater than the denominator and/or the performance denominator (Denominator count - Denominator exclusion count - Denominator Exception count)
 * 94 : CT - The denominator exclusion id `(denexUuid)` for measure `(measure id)` has a count value that is greater than the denominator. The Denominator exclusion cannot be a greater value than the denominator.
-* 95 : CT - The Clinical Document must contain one Measure Section v4 with the extension 2017-06-01
+* 95 : CT - The Clinical Document must contain one Category Section v5 with the extension 2020-12-01
 * 96 : CT - The APM to TIN/NPI Combination file is missing.
 * 97 : CT - `(Program name)` QRDA-III Submissions require a valid CMS EHR Certification ID (Valid Formats: XX15EXXXXXXXXXX, XX15CXXXXXXXXXX)
 * 98 : CT - The performance rate cannot have a value of 0 and must be of value Null Attribute (NA).

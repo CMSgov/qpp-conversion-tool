@@ -28,7 +28,7 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 
 		//the aci numerator denominator measure node must have an aci section node as parent
 		Checker nodeChecker = checkErrors(node).hasParent(
-				ProblemCode.PI_NUMERATOR_DENOMINATOR_PARENT_NOT_PI_SECTION, TemplateId.PI_SECTION_V2);
+				ProblemCode.PI_NUMERATOR_DENOMINATOR_PARENT_NOT_PI_SECTION, TemplateId.PI_SECTION_V3);
 		//the aci numerator denominator measure node must have a numerator node and a denominator node as children
 		validateChildren(nodeChecker);
 	}

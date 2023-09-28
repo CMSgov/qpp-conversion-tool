@@ -29,7 +29,7 @@ public class PcfPerformancePeriodValidationTest {
 		Node clinicalDocument = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocument.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, programName);
 
-		Node measureSection = new Node(TemplateId.MEASURE_SECTION_V4);
+		Node measureSection = new Node(TemplateId.MEASURE_SECTION_V5);
 		measureSection.setParent(clinicalDocument);
 
 		node = new Node(TemplateId.REPORTING_PARAMETERS_ACT);

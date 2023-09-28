@@ -626,7 +626,7 @@ class CheckerTest {
 
 	@Test
 	void testHasChildrenWithTemplateIdSuccess() {
-		Node iaSectionNode = new Node(TemplateId.IA_SECTION);
+		Node iaSectionNode = new Node(TemplateId.IA_SECTION_V3);
 		Node iaMeasureNode = new Node(TemplateId.IA_MEASURE);
 		iaSectionNode.addChildNode(iaMeasureNode);
 
@@ -639,19 +639,19 @@ class CheckerTest {
 
 	@Test
 	void testdoesNotChildrenErrors() {
-		Node iaSectionNode = new Node(TemplateId.IA_SECTION);
+		Node iaSectionNode = new Node(TemplateId.IA_SECTION_V3);
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.addChildNode(iaSectionNode);
 
 		Checker checker = Checker.check(clinicalDocumentNode, details);
-		checker.doesNotHaveChildren(ERROR_MESSAGE, TemplateId.IA_SECTION);
+		checker.doesNotHaveChildren(ERROR_MESSAGE, TemplateId.IA_SECTION_V3);
 
 		assertThat(details).isNotEmpty();
 	}
 
 	@Test
 	void testHasChildrenWithTemplateIdFailure() {
-		Node iaSectionNode = new Node(TemplateId.IA_SECTION);
+		Node iaSectionNode = new Node(TemplateId.IA_SECTION_V3);
 		Node iaMeasureNode = new Node(TemplateId.IA_MEASURE);
 		iaSectionNode.addChildNode(iaMeasureNode);
 
