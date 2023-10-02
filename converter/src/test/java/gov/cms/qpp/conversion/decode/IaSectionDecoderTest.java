@@ -26,7 +26,7 @@ class IaSectionDecoderTest {
 	void decodeAciSectionAsNode() throws XmlException {
 		Node root = executeDecoderWithoutDefaults();
 
-		Node iaSectionNode = root.findFirstNode(TemplateId.IA_SECTION);
+		Node iaSectionNode = root.findFirstNode(TemplateId.IA_SECTION_V3);
 
 		assertThat(iaSectionNode.getValue("category"))
 				.isEqualTo("ia");
@@ -39,7 +39,7 @@ class IaSectionDecoderTest {
 						"Unexpected stuff appears here\n\n<statusCode ");
 
 		Node root = executeDecoderWithoutDefaults();
-		Node iaSectionNode = root.findFirstNode(TemplateId.IA_SECTION);
+		Node iaSectionNode = root.findFirstNode(TemplateId.IA_SECTION_V3);
 
 		assertThat(iaSectionNode.getValue("category"))
 				.isEqualTo("ia");

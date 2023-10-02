@@ -3,7 +3,7 @@
    <realmCode  code="US"/>
    <typeId  extension="POCD_HD000040" root="2.16.840.1.113883.1.3"/>
    <templateId  extension="2017-06-01" root="2.16.840.1.113883.10.20.27.1.1"/>
-   <templateId  extension="2021-07-01" root="2.16.840.1.113883.10.20.27.1.2"/>
+   <templateId  extension="2022-12-01" root="2.16.840.1.113883.10.20.27.1.2"/>
    <id  root="d9181c9b-89ee-4bb2-96e3-9baa467131d3"/>
    <code 
          code="55184-6"
@@ -135,9 +135,9 @@
 
 		       <component>
             <section>
-               <templateId extension="2017-06-01" root="2.16.840.1.113883.10.20.27.2.1"/>
+               <templateId extension="2020-12-01" root="2.16.840.1.113883.10.20.27.2.1"/>
                <templateId root="2.16.840.1.113883.10.20.24.2.2"/>
-               <templateId extension="2019-05-01" root="2.16.840.1.113883.10.20.27.2.3"/>
+               <templateId extension="2022-05-01" root="2.16.840.1.113883.10.20.27.2.3"/>
                <code code="55186-1"
                      codeSystem="2.16.840.1.113883.6.1"
                      displayName="measure document"/>
@@ -162,7 +162,7 @@
                   <organizer classCode="CLUSTER" moodCode="EVN">
                      <templateId root="2.16.840.1.113883.10.20.24.3.98"/>
                      <templateId extension="2016-09-01" root="2.16.840.1.113883.10.20.27.3.1"/>
-                     <templateId extension="2019-05-01" root="2.16.840.1.113883.10.20.27.3.17"/>
+                     <templateId extension="2022-05-01" root="2.16.840.1.113883.10.20.27.3.17"/>
                      <id root="95944FB9-241B-11E5-1027-09173F13E4C5"/>
                      <statusCode code="completed"/>
                      <reference typeCode="REFR">
@@ -2122,7 +2122,7 @@
                   <organizer classCode="CLUSTER" moodCode="EVN">
                      <templateId root="2.16.840.1.113883.10.20.24.3.98"/>
                      <templateId extension="2016-09-01" root="2.16.840.1.113883.10.20.27.3.1"/>
-                     <templateId extension="2019-05-01" root="2.16.840.1.113883.10.20.27.3.17"/>
+                     <templateId extension="2022-05-01" root="2.16.840.1.113883.10.20.27.3.17"/>
                      <id root="95944FB9-241B-11E5-1027-09173F13E4C5"/>
                      <statusCode code="completed"/>
         
@@ -4087,7 +4087,7 @@
         
                      <templateId extension="2016-09-01" root="2.16.840.1.113883.10.20.27.3.1"/>
         
-                     <templateId extension="2019-05-01" root="2.16.840.1.113883.10.20.27.3.17"/>
+                     <templateId extension="2022-05-01" root="2.16.840.1.113883.10.20.27.3.17"/>
                      <id root="95944FB9-241B-11E5-1027-09173F13E4C5"/>
                      <statusCode code="completed"/>
                      <reference typeCode="REFR">

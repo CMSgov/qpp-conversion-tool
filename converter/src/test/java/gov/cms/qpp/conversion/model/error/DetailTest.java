@@ -39,7 +39,7 @@ class DetailTest {
 
 	@Test
 	void testComputeLocationMeasure() {
-		Node node = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4);
+		Node node = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V5);
 		String measureId = "Moof";
 		node.putValue("measureId", measureId);
 

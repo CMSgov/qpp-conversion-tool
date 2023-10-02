@@ -185,9 +185,9 @@ public enum ProblemCode implements LocalizedProblem {
 		+ "(Denominator count - Denominator exclusion count - Denominator Exception count)", true),
 	PCF_DENEX_GREATER_THAN_DENOMINATOR(94, "The denominator exclusion id `(denexUuid)` for measure `(measure id)` has a count value that is greater than the "
 		+ "denominator. The Denominator exclusion cannot be a greater value than the denominator.", true),
-	MEASURE_SECTION_V4_REQUIRED(95, "The Clinical Document must contain one Measure Section v4 with the extension 2017-06-01"),
+	MEASURE_SECTION_V5_REQUIRES_CATEGORY_SECTION(95, "The Clinical Document must contain one Category Section v5 with the extension 2020-12-01"),
 	MISSING_API_TIN_NPI_FILE(96, "The APM to TIN/NPI Combination file is missing."),
-	PCF_MISSING_CEHRT_ID(97, "`(Program name)` QRDA-III Submissions require a valid CMS EHR Certification ID (Valid Format: XX15EXXXXXXXXXX)", true),
+	PCF_MISSING_CEHRT_ID(97, "`(Program name)` QRDA-III Submissions require a valid CMS EHR Certification ID (Valid Formats: XX15EXXXXXXXXXX, XX15CXXXXXXXXXX)", true),
 	PCF_ZERO_PERFORMANCE_RATE(98, "The performance rate cannot have a value of 0 and must be of value Null Attribute (NA)."),
 	PCF_DUPLICATE_CEHRT(100, "More than one CMS EHR Certification ID was found. Please submit with only one CMS EHR Certification id."),
 	PCF_DENOMINATOR_COUNT_INVALID(101, "Denominator count must be equal to Initial Population count for `(Program name)` measure population `(measure population id)`."

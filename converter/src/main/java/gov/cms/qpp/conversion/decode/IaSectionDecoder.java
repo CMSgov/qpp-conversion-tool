@@ -7,7 +7,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 /**
  * Decoder to parse Improvement Activity Section.
  */
-@Decoder(TemplateId.IA_SECTION)
+@Decoder(TemplateId.IA_SECTION_V3)
 public class IaSectionDecoder extends SkeletalSectionDecoder {
 
 	public IaSectionDecoder(Context context) {
