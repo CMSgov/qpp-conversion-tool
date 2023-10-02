@@ -32,6 +32,7 @@ class ClinicalDocumentDecoderTest {
 	private Node clinicalDocument;
 	private static final String TEST_TIN = "123456789";
 	private static final String TEST_NPI = "2567891421";
+	private static final String TEST_MVP_ID = "MVP01123";
 
 	@BeforeAll
 	static void init() throws IOException {
@@ -69,6 +70,12 @@ class ClinicalDocumentDecoderTest {
 	void testRootTaxpayerIdentificationNumber() {
 		assertThat(clinicalDocument.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo(TEST_TIN);
+	}
+
+	@Test
+	void testRootMvpId() {
+		assertThat(clinicalDocument.getValue(ClinicalDocumentDecoder.MVP_ID))
+			.isEqualTo(TEST_MVP_ID);
 	}
 
 	@Test

@@ -14,6 +14,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.function.Consumer;
 
 /**
@@ -49,6 +50,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	public static final String ENTITY_VIRTUAL_GROUP = "virtualGroup";
 	public static final String APP_PROGRAM_NAME = "app1";
 	public static final String MIPS = "MIPS";
+	public static final Set<String> MVP_ENTITIES = Set.of(ENTITY_INDIVIDUAL, ENTITY_GROUP, ENTITY_SUBGROUP, ENTITY_APM);
 
 	// Program names in XML format
 	public static final String PCF = "PCF";
@@ -58,6 +60,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	private static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
 	public static final String MIPS_APM = "MIPS_APMENTITY";
 	public static final String MIPS_VIRTUAL_GROUP = "MIPS_VIRTUALGROUP";
+	public static final String MIPS_SUBGROUP = "MIPS_SUBGROUP";
 	private static final String APP_GROUP = "MIPS_APP1_GROUP";
 	private static final String APP_INDIVIDUAL = "MIPS_APP1_INDIV";
 	public static final String APP_APM = "MIPS_APP1_APMENTITY";
@@ -79,6 +82,9 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 		setPracticeSiteAddress(element, thisNode);
 		setCehrtOnNode(element, thisNode);
 		String entityType = thisNode.getValue(ENTITY_TYPE);
+		if (MVP_ENTITIES.contains(entityType) && Program.isMips(thisNode)) {
+			setMvpIdOnNode(element, thisNode);
+		}
 		if (ENTITY_APM.equalsIgnoreCase(entityType)) {
 			setEntityIdOnNode(element, thisNode);
 			setMultipleNationalProviderIdsOnNode(element, thisNode);
@@ -143,6 +149,11 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 		Consumer<Attribute> consumer = cehrt ->
 			thisNode.putValue(CEHRT, cehrt.getValue(), false);
 		setOnNode(element, getXpath(CEHRT), consumer, Filters.attribute(), false);
+	}
+
+	private void setMvpIdOnNode(Element element, Node thisNode) {
+		Consumer<? super Attribute> consumer = p -> thisNode.putValue(MVP_ID, p.getValue());
+		setOnNode(element, getXpath(MVP_ID), consumer, Filters.attribute(), true);
 	}
 
 	/**
