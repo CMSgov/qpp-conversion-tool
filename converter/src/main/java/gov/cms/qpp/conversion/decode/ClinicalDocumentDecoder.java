@@ -36,6 +36,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	public static final String APM_ENTITY_ID = "apmEntityId";
 	public static final String VG_ID = "virtualGroupId";
 	public static final String CEHRT = "cehrtId";
+	public static final String MVP_ID = "mvpId";
 
 	//QPP Json value constants for: Node(Identifier, value)
 	public static final String MIPS_PROGRAM_NAME = "mips";
@@ -44,6 +45,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	public static final String ENTITY_APM = "apm";
 	static final String ENTITY_GROUP = "group";
 	static final String ENTITY_INDIVIDUAL = "individual";
+	static final String ENTITY_SUBGROUP = "subgroup";
 	public static final String ENTITY_VIRTUAL_GROUP = "virtualGroup";
 	public static final String APP_PROGRAM_NAME = "app1";
 	public static final String MIPS = "MIPS";
