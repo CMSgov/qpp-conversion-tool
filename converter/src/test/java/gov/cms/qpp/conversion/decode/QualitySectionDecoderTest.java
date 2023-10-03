@@ -53,10 +53,10 @@ class QualitySectionDecoderTest {
 		String xmlFragment = IOUtils.toString(stream, StandardCharsets.UTF_8);
 
 		Node root = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
-		Node measureSectionV3 = root.findFirstNode(TemplateId.MEASURE_SECTION_V4);
+		Node measureSection = root.findFirstNode(TemplateId.MEASURE_SECTION_V5);
 
-		assertThat(measureSectionV3.getValue(QualitySectionDecoder.CATEGORY_SECTION_V4))
-			.isEqualTo(TemplateId.CATEGORY_REPORT_V4.getExtension());
+		assertThat(measureSection.getValue(QualitySectionDecoder.CATEGORY_SECTION_V5))
+			.isEqualTo(TemplateId.CATEGORY_REPORT_V5.getExtension());
 	}
 
 	private String getValidXML() {

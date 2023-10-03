@@ -107,7 +107,7 @@ class PiSectionEncoderMultiMeasureTest {
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS_PROGRAM_NAME);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_INDIV");
 
-		aciSectionNode = new Node(TemplateId.PI_SECTION_V2, clinicalDocumentNode);
+		aciSectionNode = new Node(TemplateId.PI_SECTION_V3, clinicalDocumentNode);
 		aciSectionNode.putValue("category", "pi");
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
 		aciSectionNode.addChildNode(aciProportionMeasureNode2);

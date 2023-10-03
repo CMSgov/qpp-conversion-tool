@@ -60,7 +60,7 @@ class ClinicalDocumentValidatorTest {
 	@Test
 	void testClinicalDocumentPresentEcQM() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
-		Node ecqmSectionNode = new Node(TemplateId.MEASURE_SECTION_V4, clinicalDocumentNode);
+		Node ecqmSectionNode = new Node(TemplateId.MEASURE_SECTION_V5, clinicalDocumentNode);
 		ecqmSectionNode.putValue("category", "eCQM");
 		clinicalDocumentNode.addChildNode(ecqmSectionNode);
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
@@ -295,19 +295,19 @@ class ClinicalDocumentValidatorTest {
 	}
 
 	private Node createAciSectionNode(Node clinicalDocumentNode) {
-		Node aciSectionNode = new Node(TemplateId.PI_SECTION_V2, clinicalDocumentNode);
+		Node aciSectionNode = new Node(TemplateId.PI_SECTION_V3, clinicalDocumentNode);
 		aciSectionNode.putValue("category", "aci");
 		return aciSectionNode;
 	}
 
 	private Node createIASectionNode(Node clinicalDocumentNode) {
-		Node IASectionNode = new Node(TemplateId.IA_SECTION, clinicalDocumentNode);
+		Node IASectionNode = new Node(TemplateId.IA_SECTION_V3, clinicalDocumentNode);
 		IASectionNode.putValue("category", "ia");
 		return IASectionNode;
 	}
 
 	private Node createQualityMeasureSectionNode(Node clinicalDocumentNode) {
-		Node qualityMeasureNode = new Node(TemplateId.MEASURE_SECTION_V4, clinicalDocumentNode);
+		Node qualityMeasureNode = new Node(TemplateId.MEASURE_SECTION_V5, clinicalDocumentNode);
 		qualityMeasureNode.putValue("category", "ecqm");
 		return qualityMeasureNode;
 	}

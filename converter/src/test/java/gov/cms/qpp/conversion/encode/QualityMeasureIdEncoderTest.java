@@ -33,7 +33,7 @@ class QualityMeasureIdEncoderTest {
 
 	@BeforeEach
 	void setUp() {
-		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4);
+		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V5);
 		qualityMeasureId.putValue("measureId", "40280382-6258-7581-0162-92d6e6db1680");
 
 		aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);

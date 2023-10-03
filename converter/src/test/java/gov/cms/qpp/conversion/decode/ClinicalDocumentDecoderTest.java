@@ -534,8 +534,8 @@ class ClinicalDocumentDecoderTest {
 		Element structuredBody = new Element("structuredBody", rootns);
 		Element componentTwo = new Element("component", rootns);
 		Element aciSectionElement = new Element("templateId", rootns);
-		aciSectionElement.setAttribute("root", TemplateId.PI_SECTION_V2.getRoot());
-		aciSectionElement.setAttribute("extension", TemplateId.PI_SECTION_V2.getExtension());
+		aciSectionElement.setAttribute("root", TemplateId.PI_SECTION_V3.getRoot());
+		aciSectionElement.setAttribute("extension", TemplateId.PI_SECTION_V3.getExtension());
 
 		componentTwo.addContent(aciSectionElement);
 		structuredBody.addContent(componentTwo);
