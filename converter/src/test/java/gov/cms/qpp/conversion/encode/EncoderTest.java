@@ -18,12 +18,12 @@ class EncoderTest {
 
 	private final Set<TemplateId> templateIds = EnumSet.of(
 			TemplateId.CLINICAL_DOCUMENT,
-			TemplateId.MEASURE_SECTION_V4,
-			TemplateId.IA_SECTION,
-			TemplateId.PI_SECTION_V2,
+			TemplateId.MEASURE_SECTION_V5,
+			TemplateId.IA_SECTION_V3,
+			TemplateId.PI_SECTION_V3,
 			TemplateId.PI_AGGREGATE_COUNT,
 			TemplateId.MEASURE_DATA_CMS_V4,
-			TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4,
+			TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V5,
 			TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2,
 			TemplateId.RACE_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2,
 			TemplateId.REPORTING_STRATUM_CMS,

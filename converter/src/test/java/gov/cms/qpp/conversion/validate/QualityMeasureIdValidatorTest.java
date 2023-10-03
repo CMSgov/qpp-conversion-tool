@@ -451,11 +451,11 @@ class QualityMeasureIdValidatorTest {
 	private static class MeasureReferenceBuilder {
 		Node measureReferenceResultsNode;
 		Node clinicalDoc = new Node(TemplateId.CLINICAL_DOCUMENT);
-		Node measureSection = new Node(TemplateId.MEASURE_SECTION_V4, clinicalDoc);
+		Node measureSection = new Node(TemplateId.MEASURE_SECTION_V5, clinicalDoc);
 
 		MeasureReferenceBuilder() {
 			clinicalDoc.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS_PROGRAM_NAME);
-			measureReferenceResultsNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4, measureSection);
+			measureReferenceResultsNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V5, measureSection);
 		}
 
 		MeasureReferenceBuilder addMeasureId(String measureId) {

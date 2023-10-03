@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
 import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID;
 
-@Validator(value = TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4, program = Program.PCF)
+@Validator(value = TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V5, program = Program.PCF)
 public class PcfQualityMeasureIdValidator extends QualityMeasureIdValidator {
 
 	/**
