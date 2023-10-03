@@ -38,6 +38,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	public static final String VG_ID = "virtualGroupId";
 	public static final String CEHRT = "cehrtId";
 	public static final String MVP_ID = "mvpId";
+	public static final String SUBGROUP_ID = "subgroupId";
 
 	//QPP Json value constants for: Node(Identifier, value)
 	public static final String MIPS_PROGRAM_NAME = "mips";
@@ -154,6 +155,11 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	private void setMvpIdOnNode(Element element, Node thisNode) {
 		Consumer<? super Attribute> consumer = p -> thisNode.putValue(MVP_ID, p.getValue());
 		setOnNode(element, getXpath(MVP_ID), consumer, Filters.attribute(), true);
+	}
+
+	private void setSubgroupIdOnNode(Element element, Node thisNode, String entityLocationId) {
+		Consumer<? super Attribute> consumer = p -> thisNode.putValue(SUBGROUP_ID, p.getValue());
+		setOnNode(element, getXpath(entityLocationId), consumer, Filters.attribute(), true);
 	}
 
 	/**
