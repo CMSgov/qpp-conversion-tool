@@ -304,3 +304,7 @@ prod:
 impl:
   <<: *default_settings
   app_name: QPP Conversion App - impl
+
+devpre:
+  <<: *default_settings
+  app_name: QPP Conversion App - devpre
