@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -90,9 +91,16 @@ public class PiSectionEncoder extends QppOutputEncoder {
 	 * @param parent the clinical document node
 	 */
 	private void pilferParent(JsonWrapper wrapper, Node parent) {
-		wrapper.put(ClinicalDocumentDecoder.PROGRAM_NAME,
+		String mvpId = parent.getValue(ClinicalDocumentDecoder.MVP_ID);
+		if (StringUtils.isEmpty(mvpId)) {
+			wrapper.put(ClinicalDocumentDecoder.PROGRAM_NAME,
 				parent.getValue(ClinicalDocumentDecoder.PROGRAM_NAME));
-		maintainContinuity(wrapper, parent, ClinicalDocumentDecoder.PROGRAM_NAME);
+			maintainContinuity(wrapper, parent, ClinicalDocumentDecoder.PROGRAM_NAME);
+		} else {
+			wrapper.put(ClinicalDocumentDecoder.PROGRAM_NAME,
+				parent.getValue(ClinicalDocumentDecoder.MVP_ID));
+			maintainContinuity(wrapper, parent, ClinicalDocumentDecoder.MVP_ID);
+		}
 	}
 
 	/**
