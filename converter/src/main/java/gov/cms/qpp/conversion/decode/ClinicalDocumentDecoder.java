@@ -47,7 +47,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	public static final String ENTITY_APM = "apm";
 	static final String ENTITY_GROUP = "group";
 	static final String ENTITY_INDIVIDUAL = "individual";
-	static final String ENTITY_SUBGROUP = "subgroup";
+	public static final String ENTITY_SUBGROUP = "subgroup";
 	public static final String ENTITY_VIRTUAL_GROUP = "virtualGroup";
 	public static final String APP_PROGRAM_NAME = "app1";
 	public static final String MIPS = "MIPS";
@@ -57,8 +57,8 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	public static final String PCF = "PCF";
 	public static final String APP = "APP";
 	public static final String CPCPLUS = "CPCPLUS";
-	private static final String MIPS_GROUP = "MIPS_GROUP";
-	private static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
+	public static final String MIPS_GROUP = "MIPS_GROUP";
+	public static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
 	public static final String MIPS_APM = "MIPS_APMENTITY";
 	public static final String MIPS_VIRTUAL_GROUP = "MIPS_VIRTUALGROUP";
 	public static final String MIPS_SUBGROUP = "MIPS_SUBGROUP";
@@ -82,9 +82,12 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 		setProgramNameOnNode(element, thisNode);
 		setPracticeSiteAddress(element, thisNode);
 		setCehrtOnNode(element, thisNode);
-		String entityType = thisNode.getValue(ENTITY_TYPE);
+		String entityType = thisNode.getValueOrDefault(ENTITY_TYPE, "");
 		if (MVP_ENTITIES.contains(entityType) && Program.isMips(thisNode)) {
-			setMvpIdOnNode(element, thisNode);
+			setValueOnNode(element, thisNode, MVP_ID);
+			if (ENTITY_SUBGROUP.equalsIgnoreCase(entityType)) {
+				setValueOnNode(element, thisNode, SUBGROUP_ID);
+			}
 		}
 		if (ENTITY_APM.equalsIgnoreCase(entityType)) {
 			setEntityIdOnNode(element, thisNode);
@@ -157,9 +160,15 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 		setOnNode(element, getXpath(MVP_ID), consumer, Filters.attribute(), true);
 	}
 
-	private void setSubgroupIdOnNode(Element element, Node thisNode, String entityLocationId) {
-		Consumer<? super Attribute> consumer = p -> thisNode.putValue(SUBGROUP_ID, p.getValue());
-		setOnNode(element, getXpath(entityLocationId), consumer, Filters.attribute(), true);
+	/**
+	 * Sets a specific value as an element on the Node class decoder
+	 * @param element current xml element to find the value via xpath
+	 * @param thisNode current node
+	 * @param currentValue to be added to the Node
+	 */
+	private void setValueOnNode(Element element, Node thisNode, String currentValue) {
+		Consumer<? super Attribute> consumer = p -> thisNode.putValue(currentValue, p.getValue());
+		setOnNode(element, getXpath(currentValue), consumer, Filters.attribute(), true);
 	}
 
 	/**
@@ -277,6 +286,10 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 
 			case PCF:
 				pair = new ImmutablePair<>(PCF_PROGRAM_NAME, ENTITY_APM);
+				break;
+
+			case MIPS_SUBGROUP:
+				pair = new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_SUBGROUP);
 				break;
 
 			default:
