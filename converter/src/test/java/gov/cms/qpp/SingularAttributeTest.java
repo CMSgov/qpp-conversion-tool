@@ -56,6 +56,8 @@ class SingularAttributeTest{
 						ClinicalDocumentDecoder.PCF_ENTITY_ID,
 						ClinicalDocumentDecoder.VG_ID,
 						ClinicalDocumentDecoder.APM_ENTITY_ID,
+						ClinicalDocumentDecoder.MVP_ID,
+						ClinicalDocumentDecoder.SUBGROUP_ID,
 						PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE,
 						PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE,
 						//There are no validations for performanceYear
