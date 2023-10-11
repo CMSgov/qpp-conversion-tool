@@ -21,7 +21,7 @@ class CommandLineRunnerTest implements LoggerContract {
 
 	private static final String VALID_FILE = "src/test/resources/valid-QRDA-III-latest.xml";
 	private static final String INVALID_FILE = "THIS_FILE_SHOULD_NOT_EXIST.xml";
-	private static final String WINDOWS_FILE = "src\\test\\resources\\valid-QRDA-III-latest.xml";
+	private static final String WINDOWS_FILE = "src/test/resources/valid-QRDA-III-latest.xml";
 	public static final String VALID_QRDA_III_LATEST_QPP_JSON = "valid-QRDA-III-latest-qpp.json";
 
 	@Test

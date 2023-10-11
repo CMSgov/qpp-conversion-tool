@@ -1,6 +1,7 @@
 package gov.cms.qpp.acceptance;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -11,6 +12,7 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -34,12 +36,18 @@ public class PcfRoundTripTest {
 	@SuppressWarnings("unchecked")
 	@BeforeAll
 	static void setup() throws URISyntaxException, IOException {
+		MeasureConfigs.setMeasureDataFile("test-2022-measure-data.json");
 		ApmEntityIds apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json", "test_pcf_apm_entity_ids.json");
 		URL sample = PcfRoundTripTest.class.getClassLoader()
 			.getResource("pcf/success/PCF_Sample_QRDA-III.xml");
 		Path path = Paths.get(sample.toURI());
 		new JsonPathToXpathHelper(path, wrapper, false, new Context(apmEntityIds));
 		json = new ObjectMapper().readValue(wrapper.copyWithoutMetadata().toString(), HashMap.class);
+	}
+
+	@AfterAll
+	static void resetMeasuresData() {
+		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 	}
 
 	@ParameterizedTest

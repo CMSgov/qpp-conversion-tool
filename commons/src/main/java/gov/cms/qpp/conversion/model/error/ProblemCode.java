@@ -122,9 +122,9 @@ public enum ProblemCode implements LocalizedProblem {
 			+ "must be a whole number greater than or equal to 0. "
 			+ "Please see the Table 14 of `(Submission year's)` Implementation Guide for valid measure GUIDs: "
 			+ DocumentationReference.MEASURE_IDS, true),
-	PCF_PERFORMANCE_PERIOD_START(55, "A `(Program name)` Performance period start must be 01/01/2022. "
+	PCF_PERFORMANCE_PERIOD_START(55, "A `(Program name)` Performance period start must be 01/01/2023. "
 			+ "Please refer to the IG for more information here: " + DocumentationReference.PCF_SUBMISSIONS, true),
-	PCF_PERFORMANCE_PERIOD_END(56, "A `(Program name)` Performance period end must be 12/31/2022. "
+	PCF_PERFORMANCE_PERIOD_END(56, "A `(Program name)` Performance period end must be 12/31/2023. "
 			+ "Please refer to the IG for more information here: " + DocumentationReference.PCF_SUBMISSIONS, true),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION(57, "The measure reference results must have a single "
 			+ "measure population"),
