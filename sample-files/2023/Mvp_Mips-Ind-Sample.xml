@@ -79,22 +79,14 @@ CDA Header
 			</representedOrganization>
 		</assignedEntity>
 	</legalAuthenticator>
-	<participant typeCode="LOC">
-		<associatedEntity classCode="SDLOC">
-			<id root="2.16.840.1.113883.3.249.5.1"
-				extension="AR000000"
-				assigningAuthorityName="CMS-CMMI"/>
-			<id root="2.16.840.1.113883.3.2074.1" extension="XX15EXXXXXXXXXX"/>
-			<code code="394730007"
-				  displayName="healthcare related organization"
-				  codeSystem="2.16.840.1.113883.6.96"
-				  codeSystemName="SNOMED-CT"/>
-			<addr>
-				<streetAddressLine>123 Healthcare St</streetAddressLine>
-				<city>Norman</city>
-				<state>OK</state>
-				<postalCode>73019</postalCode>
-			</addr>
+	<participant typeCode="OTH">
+		<!-- b.	SHALL contain exactly one [1..1] associatedEntity (CONF:18302).  i.	This associatedEntity SHALL contain exactly one [1..1] @classCode="RGPR" Regulated Product (CodeSystem: RoleClass 2.16.840.1.113883.5.110 STATIC) (CONF:18303). -->
+		<associatedEntity classCode="PROG">
+			<!-- If CMS EHR Certification ID  - This associatedEntity MAY contain zero or one [0..1] id (CONF:18304) such that it
+					1.	SHALL contain exactly one [1..1] @root="2.16.840.1.113883.3.2074.1" CMS EHR Certification ID (CONF:18305). Note: This value specifies that the id is the CMS EHR Certification ID. .-->
+			<id root="2.16.840.1.113883.3.249.5.6" extension="G0053"/>
+			<!-- This associatedEntity SHALL contain exactly one [1..1] code (CONF:18308).  This code SHALL contain exactly one [1..1] @code="129465004" medical record, device (CodeSystem: SNOMED CT 2.16.840.1.113883.6.96 STATIC) (CONF:18309). -->
+			<code code="129465004" displayName="medical record, device" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT"/>
 		</associatedEntity>
 	</participant>
 	<documentationOf typeCode="DOC">
@@ -150,667 +142,8 @@ CDA Header
 					<code code="55186-1" codeSystem="2.16.840.1.113883.6.1"
 						  displayName="measure section"/>
 					<title>Measure Section</title>
-					<text>
-						<!--CMS165v8/NQF0018: Controlling High Blood Pressure -->
-						<table border="1" width="100%">
-							<thead>
-								<tr>
-									<th>eMeasure Title</th>
-									<th>Version neutral identifier</th>
-									<th>Version specific identifier</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Controlling High Blood Pressure</td>
-									<td>abdc37cc-bac6-4156-9b91-d1be2c8b7268</td>
-									<td>40280381-51f0-825b-0152-22b98cff181a</td>
-								</tr>
-							</tbody>
-						</table>
-						<list>
-							<item>
-								<content styleCode="Bold">Performance Rate</content>:0.842105
-							</item>
-							<item>
-								<content styleCode="Bold">Initial Population</content>:1000
-								<list>
-									<item>
-										<content styleCode="Bold">Gender - Male</content>400
-									</item>
-									<item>
-										<content styleCode="Bold">Gender - Female</content>600
-									</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Not Hispanic or Latino</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Hispanic or Latino</content>650
-									</item>
-									<item>
-										<content styleCode="Bold">Race - Black or African American</content>300
-									</item>
-									<item>
-										<content styleCode="Bold">Race - White</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Race - Asian</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Race - American Indian or Alaska
-											Native</content>0
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Medicare</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Medicaid</content>250
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Private Health Insurance</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Other</content>50
-									</item>
-								</list>
-							</item>
-							<item>
-								<content styleCode="Bold">Denominator Exclusions</content>:50
-								<list>
-									<item>
-										<content styleCode="Bold">Gender - Male</content>30
-									</item>
-									<item>
-										<content styleCode="Bold">Gender - Female</content>20
-									</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Not Hispanic or Latino</content>40
-									</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Hispanic or Latino</content>10
-									</item>
-									<item>
-										<content styleCode="Bold">Race - Black or African American</content>10
-									</item>
-									<item>
-										<content styleCode="Bold">Race - White</content>20
-									</item>
-									<item>
-										<content styleCode="Bold">Race - Asian</content>20
-									</item>
-									<item>
-										<content styleCode="Bold">Race - American Indian or Alaska Native</content>0
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Medicare</content>15
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Medicaid</content>10
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Private Health Insurance</content>15
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Other</content>10
-									</item>
-								</list>
-							</item>
-							<item>
-								<content styleCode="Bold">Denominator</content>:1000
-								<list>
-									<item>
-										<content styleCode="Bold">Gender - Male</content>400
-									</item>
-									<item>
-										<content styleCode="Bold">Gender -
-											Female</content>600
-									</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Not Hispanic or
-											Latino</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Hispanic or
-											Latino</content>650
-									</item>
-									<item>
-										<content styleCode="Bold">Race - Black or African
-											American</content>300
-									</item>
-									<item>
-										<content styleCode="Bold">Race - White</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Race - Asian</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Race - American Indian or Alaska
-											Native</content>0
-									</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicare</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicaid</content>250
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Private Health
-											Insurance</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Other</content>50
-									</item>
-								</list>
-							</item>
-							<item>
-								<content styleCode="Bold">Numerator</content>:800
-								<list>
-									<item>
-										<content styleCode="Bold">Gender - Male</content>300
-									</item>
-									<item>
-										<content styleCode="Bold">Gender -
-											Female</content>500
-									</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Not Hispanic or
-											Latino</content>250
-									</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Hispanic or
-											Latino</content>550
-									</item>
-									<item>
-										<content styleCode="Bold">Race - Black or African
-											American</content>250
-									</item>
-									<item>
-										<content styleCode="Bold">Race - White</content>300
-									</item>
-									<item>
-										<content styleCode="Bold">Race - Asian</content>250
-									</item>
-									<item>
-										<content styleCode="Bold">Race - American Indian or Alaska
-											Native</content>0
-									</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicare</content>300
-									</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicaid</content>200
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Private Health
-											Insurance</content>250
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Other</content>50
-									</item>
-								</list>
-							</item>
-						</list>
 
-						<!-- CMS122v5/NQF0059: Diabetes: Hemoglobin A1c (HbA1c) Poor Control (> 9%)-->
-						<table border="1" width="100%">
-							<thead>
-								<tr>
-									<th>eMeasure Title</th>
-									<th>Version neutral identifier</th>
-									<th>Version specific identifier</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Diabetes: Hemoglobin A1c (HbA1c) Poor Control (> 9%)</td>
-									<td>f2986519-5a4e-4149-a8f2-af0a1dc7f6bc</td>
-									<td>40280381-51f0-825b-0152-229afff616ee</td>
-								</tr>
-							</tbody>
-						</table>
-						<list>
-							<item>
-								<content styleCode="Bold">Performance Rate</content>0.947368
-							</item>
-							<item>
-								<content styleCode="Bold">Initial Population</content>:950
-								<list>
-									<item>
-										<content styleCode="Bold">Gender - Male</content>400
-									</item>
-									<item>
-										<content styleCode="Bold">Gender -
-											Female</content>550
-									</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Not Hispanic or
-											Latino</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Hispanic or
-											Latino</content>600
-									</item>
-									<item>
-										<content styleCode="Bold">Race - Black or African
-											American</content>300
-									</item>
-									<item>
-										<content styleCode="Bold">Race - White</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Race - Asian</content>300
-									</item>
-									<item>
-										<content styleCode="Bold">Race - American Indian or Alaska
-											Native</content>0
-									</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicare</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicaid</content>250
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Private Health
-											Insurance</content>300
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Other</content>50
-									</item>
-								</list>
-							</item>
-							<item>
-								<content styleCode="Bold">Denominator</content>:950
-								<list>
-									<item>
-										<content styleCode="Bold">Gender - Male</content>400
-									</item>
-									<item>
-										<content styleCode="Bold">Gender -
-											Female</content>550
-									</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Not Hispanic or
-											Latino</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Hispanic or
-											Latino</content>600
-									</item>
-									<item>
-										<content styleCode="Bold">Race - Black or African
-											American</content>300
-									</item>
-									<item>
-										<content styleCode="Bold">Race - White</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Race - Asian</content>300
-									</item>
-									<item>
-										<content styleCode="Bold">Race - American Indian or Alaska
-											Native</content>0
-									</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicare</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicaid</content>250
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Private Health
-											Insurance</content>300
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Other</content>50
-									</item>
-								</list>
-							</item>
-							<item>
-								<content styleCode="Bold">Numerator</content>:900
-								<list>
-									<item>
-										<content styleCode="Bold">Gender - Male</content>400
-									</item>
-									<item>
-										<content styleCode="Bold">Gender -
-											Female</content>500
-									</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Not Hispanic or
-											Latino</content>550
-									</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Hispanic or
-											Latino</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Race - Black or African
-											American</content>250
-									</item>
-									<item>
-										<content styleCode="Bold">Race - White</content>598
-									</item>
-									<item>
-										<content styleCode="Bold">Race - Asian</content>50
-									</item>
-									<item>
-										<content styleCode="Bold">Race - American Indian or Alaska
-											Native</content>2
-									</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicare</content>300
-									</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicaid</content>200
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Private Health
-											Insurance</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Other</content>50
-									</item>
-								</list>
-							</item>
-						</list>
-
-						<!-- CMS68v6/NQF0419: Documentation of Current Medications in the Medical Record -->
-						<table border="1" width="100%">
-							<thead>
-								<tr>
-									<th>eMeasure Title</th>
-									<th>Version neutral identifier</th>
-									<th>Version specific identifier</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Documentation of Current Medications in the Medical Record</td>
-									<td>9a032d9c-3d9b-11e1-8634-00237d5bf174</td>
-									<td>40280381-52fc-3a32-0153-3d64af97147b</td>
-								</tr>
-							</tbody>
-						</table>
-						<list>
-							<item>
-								<content styleCode="Bold">Performance Rate</content>0.816327
-							</item>
-							<item>
-								<content styleCode="Bold">Initial Population</content>:1000
-								<list>
-									<item>
-										<content styleCode="Bold">Gender - Male</content>400
-									</item>
-									<item>
-										<content styleCode="Bold">Gender -
-											Female</content>600
-									</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Not Hispanic or
-											Latino</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Hispanic or
-											Latino</content>650
-									</item>
-									<item>
-										<content styleCode="Bold">Race - Black or African
-											American</content>300
-									</item>
-									<item>
-										<content styleCode="Bold">Race - White</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Race - Asian</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Race - American Indian or Alaska
-											Native</content>0
-									</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicare</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicaid</content>250
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Private Health
-											Insurance</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Other</content>50
-									</item>
-								</list>
-							</item>
-							<item>
-								<content styleCode="Bold">Denominator Exceptions</content>:20
-								<list>
-									<item>
-										<content styleCode="Bold">Gender - Male</content>12
-									</item>
-									<item>
-										<content styleCode="Bold">Gender - Female</content>8
-									</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Not Hispanic or
-											Latino</content>18
-									</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Hispanic or
-											Latino</content>2
-									</item>
-									<item>
-										<content styleCode="Bold">Race - Black or African
-											American</content>3
-									</item>
-									<item>
-										<content styleCode="Bold">Race - White</content>15
-									</item>
-									<item>
-										<content styleCode="Bold">Race - Asian</content>2
-									</item>
-									<item>
-										<content styleCode="Bold">Race - American Indian or Alaska
-											Native</content>0
-									</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicare</content>10
-									</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicaid</content>3
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Private Health
-											Insurance</content>5
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Other</content>2
-									</item>
-								</list>
-							</item>
-							<item>
-								<content styleCode="Bold">Denominator</content>:1000
-								<list>
-									<item>
-										<content styleCode="Bold">Gender - Male</content>400
-									</item>
-									<item>
-										<content styleCode="Bold">Gender -
-											Female</content>600
-									</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Not Hispanic or
-											Latino</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Hispanic or
-											Latino</content>650
-									</item>
-									<item>
-										<content styleCode="Bold">Race - Black or African
-											American</content>300
-									</item>
-									<item>
-										<content styleCode="Bold">Race - White</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Race - Asian</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Race - American Indian or Alaska
-											Native</content>0
-									</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicare</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicaid</content>250
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Private Health
-											Insurance</content>350
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Other</content>50
-									</item>
-								</list>
-							</item>
-							<item>
-								<content styleCode="Bold">Numerator</content>:800
-								<list>
-									<item>
-										<content styleCode="Bold">Gender - Male</content>300
-									</item>
-									<item>
-										<content styleCode="Bold">Gender -
-											Female</content>500
-									</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Not Hispanic or
-											Latino</content>250
-									</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Hispanic or
-											Latino</content>550
-									</item>
-									<item>
-										<content styleCode="Bold">Race - Black or African
-											American</content>250
-									</item>
-									<item>
-										<content styleCode="Bold">Race - White</content>300
-									</item>
-									<item>
-										<content styleCode="Bold">Race - Asian</content>250
-									</item>
-									<item>
-										<content styleCode="Bold">Race - American Indian or Alaska
-											Native</content>0
-									</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicare</content>300
-									</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicaid</content>200
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Private Health
-											Insurance</content>250
-									</item>
-									<item>
-										<content styleCode="Bold">Payer - Other</content>50
-									</item>
-								</list>
-							</item>
-						</list>
-
-
-						<!-- CMS160v5/NQF0712: Depression Utilization of the PHQ-9 Tool -->
-						<table border="1" width="100%">
-							<thead>
-								<tr>
-									<th>eMeasure Title</th>
-									<th>Version neutral identifier</th>
-									<th>Version specific identifier</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Depression Utilization of the PHQ-9 Tool</td>
-									<td>a4b9763c-847e-4e02-bb7e-acc596e90e2c</td>
-									<td>40280381-503f-a1fc-0150-afe320c01761</td>
-								</tr>
-							</tbody>
-						</table>
-						<list>
-							<item>
-								<content styleCode="Bold">Performance Rate</content>0.860177
-							</item>
-							<item>
-								<content styleCode="Bold">Initial Population</content>:600
-							</item>
-							<item>
-								<content styleCode="Bold">Denominator Population</content>:600
-							</item>
-							<item>
-								<content styleCode="Bold">Denominator Exclusions</content>:35
-							</item>
-							<item>
-								<content styleCode="Bold">Numerator</content>:486
-							</item>
-							<item>
-								<content styleCode="Bold">Performance Rate</content>0.921052
-							</item>
-							<item>
-								<content styleCode="Bold">Initial Population</content>:800
-							</item>
-							<item>
-								<content styleCode="Bold">Denominator Population</content>:800
-							</item>
-							<item>
-								<content styleCode="Bold">Denominator Exclusions</content>:40
-							</item>
-							<item>
-								<content styleCode="Bold">Numerator</content>:700
-							</item>
-							<item>
-								<content styleCode="Bold">Performance Rate</content>0.962963
-							</item>
-							<item>
-								<content styleCode="Bold">Initial Population</content>:580
-							</item>
-							<item>
-								<content styleCode="Bold">Denominator Population</content>:580
-							</item>
-							<item>
-								<content styleCode="Bold">Denominator Exclusions</content>:40
-							</item>
-							<item>
-								<content styleCode="Bold">Numerator</content>:520
-							</item>
-						</list>
-					</text>
-
-					<!--Measure Entry for CMS165v11-->
+					<!--Measure Entry for CMS68-->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
@@ -821,7 +154,7 @@ CDA Header
 							<!--Measure Reference and Results-->
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
-									<id root="2.16.840.1.113883.4.738" extension="2c928082-7a14-d92c-017a-67b6f9971ea8"/>
+									<id root="2.16.840.1.113883.4.738" extension="2c928084-7545-fe85-0175-4c7c02dd03cd"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 										  displayName="Health Quality Measure Document"/>
 									<text>Controlling High Blood Pressure</text>
@@ -839,7 +172,7 @@ CDA Header
 									<value xsi:type="REAL" value=".888889"/>
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="FDF9F696-67F2-4AE6-953C-5DDE27BB93E7"/>
+											<id root="1AFA65C6-DD78-4C1B-BCC9-BDB42C34C934"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
 												  displayName="Numerator"/>
 										</externalObservation>
@@ -1308,7 +641,7 @@ CDA Header
 									<!--IPOP Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="EB3E42F6-9774-4066-8CA8-4329C95E4541"/>
+											<id root="8B444C58-4A04-4D51-B7B8-928AE6CA680B"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -1776,12 +1109,12 @@ CDA Header
 									<!--DENOM Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="66167A47-3FD1-4E48-A51F-750ED6FF9147"/>
+											<id root="5A4DF326-B357-4194-B8F0-A120369F5659"/>
 										</externalObservation>
 									</reference>
 								</observation>
 							</component>
-							<!--DENEX Population-->
+							<!--DENEXCEP Population-->
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
@@ -1789,9 +1122,9 @@ CDA Header
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
 										  displayName="Assertion"/>
 									<statusCode code="completed"/>
-									<value xsi:type="CD" code="DENEX" codeSystem="2.16.840.1.113883.5.4"
+									<value xsi:type="CD" code="DENEXCEP" codeSystem="2.16.840.1.113883.5.4"
 										   codeSystemName="ActCode"/>
-									<!--DENEX Count-->
+									<!--DENEXCEP Count-->
 									<entryRelationship typeCode="SUBJ" inversionInd="true">
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
@@ -2244,7 +1577,7 @@ CDA Header
 									<!--DENEX Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="CD4A4AD6-3C0B-4D7B-9751-F1A9268DF402"/>
+											<id root="45228FD2-22C3-4158-BEAD-91C5F7683AD0"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -2712,7 +2045,7 @@ CDA Header
 									<!--NUMER Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="FDF9F696-67F2-4AE6-953C-5DDE27BB93E7"/>
+											<id root="1AFA65C6-DD78-4C1B-BCC9-BDB42C34C934"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -2720,7 +2053,7 @@ CDA Header
 						</organizer>
 					</entry>
 
-					<!--Measure Entry for CMS122v11-->
+					<!--Measure Entry for CMS127-->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
@@ -2735,7 +2068,7 @@ CDA Header
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<id root="2.16.840.1.113883.4.738"
-										extension="2c928085-7b2a-eb52-017b-56761e0218d0"/>
+										extension="2c928082-7505-caf9-0175-31a156030df1"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
 										  codeSystemName="LOINC" displayName="Health Quality Measure Document"/>
 									<text>Diabetes: Hemoglobin A1c (HbA1c) Poor Control (&gt; 9%)</text>
@@ -2756,7 +2089,7 @@ CDA Header
 									<value xsi:type="REAL" value=".888889"/>
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="8EDDEC39-361E-41C4-89C0-5223A25F24C6"/>
+											<id root="5A485CD5-8C78-4E7F-BDDA-50D35A75DF43"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
 												  codeSystemName="ActCode" displayName="Numerator"/>
 										</externalObservation>
@@ -3171,7 +2504,7 @@ CDA Header
 									<!--IPOP Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="03D10A51-45B8-4910-998B-7AA0E9B5B9C8"/>
+											<id root="DC287E02-F308-48F8-99C1-9D4A8DCB1797"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -3584,7 +2917,7 @@ CDA Header
 									<!--DENOM Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="04DFCA04-73BE-4D53-B178-A978A59FC516"/>
+											<id root="3A3EF85F-8D70-432B-8528-2542208F32AA"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -3997,7 +3330,7 @@ CDA Header
 									<!--DENEX Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="E12607B8-2F74-4528-9A0D-EBC9AA6392F8"/>
+											<id root="D0CA3DEF-36B7-4B3E-AD4E-4AF0C85DE27D"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -4263,7 +3596,7 @@ CDA Header
 											</entryRelationship>
 										</observation>
 									</entryRelationship>
-									<!--Race Supplemental Data Element - Other Race-->
+									<!--Race Supplemental2.16.840.1.113883.3.249.5.6 Data Element - Other Race-->
 									<entryRelationship typeCode="COMP">
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.8"
@@ -4410,7 +3743,7 @@ CDA Header
 									<!--NUMER Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="8EDDEC39-361E-41C4-89C0-5223A25F24C6"/>
+											<id root="5A485CD5-8C78-4E7F-BDDA-50D35A75DF43"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -4428,282 +3761,6 @@ CDA Header
 							<effectiveTime>
 								<low value="20230101"/>
 								<high value="20231231"/>
-							</effectiveTime>
-						</act>
-					</entry>
-				</section>
-			</component>
-			<!--
-		  	********************************************************
-		  	Promoting Interoperability Section (V2)
-		  	urn:hl7ii:2.16.840.1.113883.10.20.27.2.5:2017-06-01
-		  	********************************************************
-		  	-->
-			<component>
-				<section>
-					<!-- Measure Section -->
-					<templateId root="2.16.840.1.113883.10.20.24.2.2"/>
-					<!-- Advancing Care Information Section templateId -->
-					<templateId root="2.16.840.1.113883.10.20.27.2.5" extension="2020-12-01"/>
-					<code code="55186-1" codeSystem="2.16.840.1.113883.6.1"
-						  displayName="Measure Section"/>
-					<title>Measure Section</title>
-					<text>
-						<table border="1" width="100%">
-							<thead>
-								<tr>
-									<th>PI Measure Title</th>
-									<th>Measure Identifier</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Provide Patient Access</td>
-									<td>PI_PEA_1</td>
-								</tr>
-							</tbody>
-						</table>
-						<list>
-							<item>
-								<content styleCode="Bold">Denominator:</content>800
-							</item>
-							<item>
-								<content styleCode="Bold">Numerator:</content>600
-							</item>
-							<item>
-								<content styleCode="Bold">Performance Rate:
-								</content>0.75
-							</item>
-						</list>
-						<list>
-							<item>
-								<content styleCode="Bold">Measure Answer (Yes/No):
-								</content>Yes
-							</item>
-						</list>
-					</text>
-					<!-- PI_PEA_1	Reporting Metric: Numerator/Denominator -->
-					<!-- Advancing Care Information Numerator Denominator Type Measure Reference and Results -->
-					<entry>
-						<organizer classCode="CLUSTER" moodCode="EVN">
-							<!-- Implied template Measure Reference templateId -->
-							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
-							<!-- PI Numerator Denominator Type Measure Reference and Results templateId -->
-							<templateId root="2.16.840.1.113883.10.20.27.3.28"
-										extension="2017-06-01"/>
-							<id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
-							<statusCode code="completed"/>
-							<reference typeCode="REFR">
-								<!-- Reference to a particular PI measure's unique identifier. -->
-								<externalDocument classCode="DOC" moodCode="EVN">
-									<!-- This is a temporary root OID that indicates this is an PI measure identifier -->
-									<id root="2.16.840.1.113883.3.7031" extension="PI_PEA_1"/>
-									<!-- PI measure title -->
-									<text>Provide Patient Access</text>
-								</externalDocument>
-							</reference>
-							<!-- Performance Rate for PI is optional -->
-							<component>
-								<observation classCode="OBS" moodCode="EVN">
-									<!-- Performance Rate templateId -->
-									<templateId root="2.16.840.1.113883.10.20.27.3.30"
-												extension="2016-09-01"/>
-									<code code="72510-1" codeSystem="2.16.840.1.113883.6.1"
-										  codeSystemName="LOINC" displayName="Performance Rate"/>
-									<statusCode code="completed"/>
-									<value xsi:type="REAL" value="0.75"/>
-								</observation>
-							</component>
-							<component>
-								<observation classCode="OBS" moodCode="EVN">
-									<!-- PI Numerator Denominator Type Measure Numerator Data templateId -->
-									<templateId root="2.16.840.1.113883.10.20.27.3.31"
-												extension="2016-09-01"/>
-									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
-										  codeSystemName="ActCode" displayName="Assertion"/>
-									<statusCode code="completed"/>
-									<value xsi:type="CD" code="NUMER"
-										   codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"/>
-									<!-- Numerator Count-->
-									<entryRelationship typeCode="SUBJ" inversionInd="true">
-										<observation classCode="OBS" moodCode="EVN">
-											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
-											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
-												  codeSystemName="ActCode"
-												  displayName="rate aggregation"/>
-											<statusCode code="completed"/>
-											<value xsi:type="INT" value="600"/>
-											<methodCode code="COUNT"
-														codeSystem="2.16.840.1.113883.5.84"
-														codeSystemName="ObservationMethod"
-														displayName="Count"/>
-										</observation>
-									</entryRelationship>
-								</observation>
-							</component>
-							<component>
-								<observation classCode="OBS" moodCode="EVN">
-									<!-- PI Numerator Denominator Type Measure Denominator Data templateId -->
-									<templateId root="2.16.840.1.113883.10.20.27.3.32"
-												extension="2016-09-01"/>
-									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
-										  codeSystemName="ActCode" displayName="Assertion"/>
-									<statusCode code="completed"/>
-									<value xsi:type="CD" code="DENOM"
-										   codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"/>
-									<!-- Denominator Count-->
-									<entryRelationship typeCode="SUBJ" inversionInd="true">
-										<observation classCode="OBS" moodCode="EVN">
-											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
-											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
-												  codeSystemName="ActCode"
-												  displayName="rate aggregation"/>
-											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
-											<methodCode code="COUNT"
-														codeSystem="2.16.840.1.113883.5.84"
-														codeSystemName="ObservationMethod"
-														displayName="Count"/>
-										</observation>
-									</entryRelationship>
-								</observation>
-							</component>
-						</organizer>
-					</entry>
-
-					<!-- Reporting Parameters Act -->
-					<entry typeCode="DRIV">
-						<act classCode="ACT" moodCode="EVN">
-							<templateId root="2.16.840.1.113883.10.20.17.3.8"/>
-							<id root="00b669fd-fa4d-4f5c-b109-65c6bbbf73ae"/>
-							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
-								  displayName="Observation Parameters"/>
-							<effectiveTime>
-								<low value="20230201"/>
-								<high value="20230531"/>
-							</effectiveTime>
-						</act>
-					</entry>
-				</section>
-			</component>
-
-			<!--
-			********************************************************
-			Improvement Activity Section (V2)
-			urn:hl7ii:2.16.840.1.113883.10.20.27.2.4:2017-06-01
-			********************************************************
-			-->
-			<component>
-				<section>
-					<!-- Measure Section -->
-					<templateId root="2.16.840.1.113883.10.20.24.2.2"/>
-					<!-- Improvement Activity Section templateId -->
-					<templateId root="2.16.840.1.113883.10.20.27.2.4" extension="2020-12-01"/>
-					<code code="55186-1" codeSystem="2.16.840.1.113883.6.1"
-						  displayName="Measure Section"/>
-					<title>Measure Section</title>
-					<text>
-						<table border="1" width="100%">
-							<thead>
-								<tr>
-									<th>Improvement Activity Name</th>
-									<th>Activity ID</th>
-									<th>Question Answer Code</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Collection and use of patient experience and satisfaction data on access</td>
-									<td>IA_EPA_3</td>
-									<td>Y</td>
-								</tr>
-
-								<tr>
-									<td>Care transition documentation practice improvements</td>
-									<td>IA_CC_10</td>
-									<td>Y</td>
-								</tr>
-							</tbody>
-						</table>
-					</text>
-					<!-- Must have at least one entry with a Measure Performed Reference and Result -->
-					<!-- IA_EPA_3 -->
-					<entry>
-						<organizer classCode="CLUSTER" moodCode="EVN">
-							<!-- Implied template Measure Reference templateId -->
-							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
-							<!-- Improvement Activity Performed Reference and Results templateId -->
-							<templateId root="2.16.840.1.113883.10.20.27.3.33" extension="2016-09-01"/>
-							<id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
-							<statusCode code="completed"/>
-							<reference typeCode="REFR">
-								<!-- Reference to a particular PI measure's unique identifier. -->
-								<externalDocument classCode="DOC" moodCode="EVN">
-									<!-- This is a temporary root OID that indicates this is an improvement activity identifier -->
-									<id root="2.16.840.1.113883.3.7034" extension="IA_EPA_3"/>
-									<!-- Improvement activity narrative text (for reference) -->
-									<text>Collection and use of patient experience and satisfaction data on access</text>
-								</externalDocument>
-							</reference>
-							<component>
-								<observation classCode="OBS" moodCode="EVN">
-									<!-- Measure Performed templateId -->
-									<templateId root="2.16.840.1.113883.10.20.27.3.27"
-												extension="2016-09-01"/>
-									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
-										  codeSystemName="ActCode" displayName="Assertion"/>
-									<statusCode code="completed"/>
-									<value xsi:type="CD" code="Y" displayName="Yes"
-										   codeSystemName="Yes/no indicator (HL7 Table 0136)"
-										   codeSystem="2.16.840.1.113883.12.136"/>
-								</observation>
-							</component>
-						</organizer>
-					</entry>
-					<!-- IA_CC_10 -->
-					<entry>
-						<organizer classCode="CLUSTER" moodCode="EVN">
-							<!-- Implied template Measure Reference templateId -->
-							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
-							<!-- Improvement Activity Performed Reference and Results templateId -->
-							<templateId root="2.16.840.1.113883.10.20.27.3.33"
-										extension="2016-09-01"/>
-							<id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
-							<statusCode code="completed"/>
-							<reference typeCode="REFR">
-								<!-- Reference to a particular PI measure's unique identifier. -->
-								<externalDocument classCode="DOC" moodCode="EVN">
-									<!-- This is a temporary root OID that indicates this is an improvement activity identifier -->
-									<id root="2.16.840.1.113883.3.7034" extension="IA_CC_10"/>
-									<!-- Improvement activity narrative text (for reference) -->
-									<text>Care transition documentation practice improvements</text>
-								</externalDocument>
-							</reference>
-							<component>
-								<observation classCode="OBS" moodCode="EVN">
-									<!-- Measure Performed templateId -->
-									<templateId root="2.16.840.1.113883.10.20.27.3.27"
-												extension="2016-09-01"/>
-									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
-										  codeSystemName="ActCode" displayName="Assertion"/>
-									<statusCode code="completed"/>
-									<value xsi:type="CD" code="Y" displayName="Yes"
-										   codeSystemName="Yes/no indicator (HL7 Table 0136)"
-										   codeSystem="2.16.840.1.113883.12.136"/>
-								</observation>
-							</component>
-						</organizer>
-					</entry>
-					<!-- Reporting Parameters Act -->
-					<entry typeCode="DRIV">
-						<act classCode="ACT" moodCode="EVN">
-							<templateId root="2.16.840.1.113883.10.20.17.3.8"/>
-							<id root="00b669fd-fa4d-4f5c-b109-65c6bbbf73ae"/>
-							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
-								  displayName="Observation Parameters"/>
-							<effectiveTime>
-								<low value="20230101"/>
-								<high value="20230430"/>
 							</effectiveTime>
 						</act>
 					</entry>
