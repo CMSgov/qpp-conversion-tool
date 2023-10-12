@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +27,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(ClinicalDocumentEncoder.class);
 	private static final String MEASUREMENT_SETS = "measurementSets";
+	private static final String SUBMISSION = "submission";
 
 	public ClinicalDocumentEncoder(Context context) {
 		super(context);
@@ -55,17 +57,17 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	 */
 	private void encodeToplevel(JsonWrapper wrapper, Node thisNode) {
 		String entityType = thisNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE);
-
 		encodePerformanceYear(wrapper, thisNode);
 		wrapper.put(ClinicalDocumentDecoder.ENTITY_TYPE, entityType);
-		if (!ClinicalDocumentDecoder.ENTITY_APM.equals(entityType)) {
+		if (!ClinicalDocumentDecoder.ENTITY_APM.equals(entityType)
+			&& !ClinicalDocumentDecoder.ENTITY_SUBGROUP.equalsIgnoreCase(entityType)) {
 			wrapper.put(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER,
 				thisNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER));
 			wrapper.put(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
 				thisNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER));
 		}
 
-		if(Program.isPcf(thisNode)) {
+		if (Program.isPcf(thisNode)) {
 			wrapper.put(ClinicalDocumentDecoder.ENTITY_ID, thisNode.getValue(ClinicalDocumentDecoder.PCF_ENTITY_ID));
 		}
 
@@ -76,6 +78,10 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		if ((Program.isApp(thisNode) || Program.isMips(thisNode) &&
 			ClinicalDocumentDecoder.ENTITY_APM.equalsIgnoreCase(entityType))) {
 			wrapper.put(ClinicalDocumentDecoder.ENTITY_ID, thisNode.getValue(ClinicalDocumentDecoder.ENTITY_ID));
+		}
+
+		if (ClinicalDocumentDecoder.ENTITY_SUBGROUP.equalsIgnoreCase(entityType)) {
+			wrapper.put(ClinicalDocumentDecoder.ENTITY_ID, thisNode.getValue(ClinicalDocumentDecoder.SUBGROUP_ID));
 		}
 	}
 
@@ -111,7 +117,6 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 			if (child == null) {
 				continue;
 			}
-
 			try {
 				TemplateId childType = child.getType();
 
@@ -120,7 +125,12 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
 				sectionEncoder.encode(childWrapper, child);
 				childWrapper.put("source", "qrda3");
+				String mvpId = currentNode.getValue(ClinicalDocumentDecoder.MVP_ID);
 				if (TemplateId.MEASURE_SECTION_V5.getRoot().equalsIgnoreCase(childType.getRoot())
+					&& !StringUtils.isEmpty(mvpId)) {
+					childWrapper.put(ClinicalDocumentDecoder.PROGRAM_NAME, mvpId);
+				}
+				else if (TemplateId.MEASURE_SECTION_V5.getRoot().equalsIgnoreCase(childType.getRoot())
 					&& ClinicalDocumentDecoder.MIPS_APM.equalsIgnoreCase(
 						currentNode.getValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME))) {
 					childWrapper.put(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS.toLowerCase(Locale.getDefault()));

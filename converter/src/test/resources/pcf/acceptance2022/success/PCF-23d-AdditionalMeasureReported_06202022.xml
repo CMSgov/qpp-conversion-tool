@@ -113,13 +113,13 @@
 	  <documentationOf typeCode="DOC">
       <serviceEvent classCode="PCPR">
          <effectiveTime>
-            <low value="20220101"/>
-            <high value="20221231"/>
+            <low value="20230101"/>
+            <high value="20231231"/>
          </effectiveTime>	
          <performer typeCode="PRF">
             <time>
-               <low value="20220101"/>
-               <high value="20221231"/>
+               <low value="20230101"/>
+               <high value="20231231"/>
             </time>
             <assignedEntity>
                <id root="2.16.840.1.113883.4.6" extension="2567891421"/>
@@ -131,8 +131,8 @@
          </performer>	
          <performer typeCode="PRF">
             <time>
-               <low value="20220101"/>
-               <high value="20221231"/>
+               <low value="20230101"/>
+               <high value="20231231"/>
             </time>
             <assignedEntity>
                <id root="2.16.840.1.113883.4.6" extension="2589654740"/>
@@ -176,8 +176,8 @@ QRDA Category III Measure Section (CMS EC)
 							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
 								displayName="Observation Parameters"/>
 							<effectiveTime>
-								<low value="20220101"/>
-								<high value="20221231"/>
+								<low value="20230101"/>
+								<high value="20231231"/>
 							</effectiveTime>
 						</act>
 					</entry>
