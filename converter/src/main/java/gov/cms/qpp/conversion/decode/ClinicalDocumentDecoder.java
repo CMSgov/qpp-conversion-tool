@@ -155,11 +155,6 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 		setOnNode(element, getXpath(CEHRT), consumer, Filters.attribute(), false);
 	}
 
-	private void setMvpIdOnNode(Element element, Node thisNode) {
-		Consumer<? super Attribute> consumer = p -> thisNode.putValue(MVP_ID, p.getValue());
-		setOnNode(element, getXpath(MVP_ID), consumer, Filters.attribute(), true);
-	}
-
 	/**
 	 * Sets a specific value as an element on the Node class decoder
 	 * @param element current xml element to find the value via xpath
