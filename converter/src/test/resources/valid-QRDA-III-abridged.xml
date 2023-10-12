@@ -188,6 +188,16 @@ CDA Header
 			<code code="129465004" displayName="medical record, device" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT"/>
 		</associatedEntity>
 	</participant>
+	<participant typeCode="OTH">
+		<!-- b.	SHALL contain exactly one [1..1] associatedEntity (CONF:18302).  i.	This associatedEntity SHALL contain exactly one [1..1] @classCode="RGPR" Regulated Product (CodeSystem: RoleClass 2.16.840.1.113883.5.110 STATIC) (CONF:18303). -->
+		<associatedEntity classCode="PROG">
+			<!-- If CMS EHR Certification ID  - This associatedEntity MAY contain zero or one [0..1] id (CONF:18304) such that it
+					1.	SHALL contain exactly one [1..1] @root="2.16.840.1.113883.3.2074.1" CMS EHR Certification ID (CONF:18305). Note: This value specifies that the id is the CMS EHR Certification ID. .-->
+			<id root="2.16.840.1.113883.3.249.5.6" extension="MVP01123"/>
+			<!-- This associatedEntity SHALL contain exactly one [1..1] code (CONF:18308).  This code SHALL contain exactly one [1..1] @code="129465004" medical record, device (CodeSystem: SNOMED CT 2.16.840.1.113883.6.96 STATIC) (CONF:18309). -->
+			<code code="129465004" displayName="medical record, device" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT"/>
+		</associatedEntity>
+	</participant>
 	<!-- ** 1.1.8	documentationOf ** -->
 	<!--  The aggregated data contained in a QRDA Category III report was provided by one or more providers. The documentationOf service event can contain identifiers for all of the (one or more) providers involved, using the serviceEvent/performer elements.  -->
 	<!--  SHALL contain exactly one [1..1] documentationOf (CONF:711214). -->

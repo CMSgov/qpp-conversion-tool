@@ -294,6 +294,39 @@ class ClinicalDocumentEncoderTest {
 				.isNotNull();
 	}
 
+	@Test
+	void testMvpIdReplacesProgramName() throws EncodeException {
+		JsonWrapper testJsonWrapper = new JsonWrapper();
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.MVP_ID, "G0053");
+
+		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
+		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
+
+		JsonWrapper measurementSets = getMeasurementSets(testJsonWrapper);
+		String programName = measurementSets.get(0).getString("programName");
+
+		assertThat(programName).isEqualTo("G0053");
+	}
+
+	@Test
+	void testSubgroupIncludesSubgroupId() throws EncodeException {
+		JsonWrapper testJsonWrapper = new JsonWrapper();
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.MVP_ID, "G0053");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "subgroup");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.SUBGROUP_ID, "SG-00000001");
+
+		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
+		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
+
+
+		JsonWrapper measurementSets = getMeasurementSets(testJsonWrapper);
+		String programName = measurementSets.get(0).getString("programName");
+
+		assertThat(programName).isEqualTo("G0053");
+		assertThat(testJsonWrapper.getString(ClinicalDocumentDecoder.ENTITY_TYPE)).isEqualTo("subgroup");
+		assertThat(testJsonWrapper.getString(ClinicalDocumentDecoder.ENTITY_ID)).isEqualTo("SG-00000001");
+	}
+
 
 	private JsonWrapper getMeasurementSets(JsonWrapper clinicalDocument) {
 		return clinicalDocument.get("measurementSets");
