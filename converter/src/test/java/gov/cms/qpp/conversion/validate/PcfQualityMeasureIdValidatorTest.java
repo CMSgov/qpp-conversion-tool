@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +12,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 
 import java.util.List;
@@ -25,6 +28,16 @@ public class PcfQualityMeasureIdValidatorTest {
 	private Node testNode;
 	private Node clinicalDoc;
 	private Node measureSection;
+
+	@BeforeAll
+	static  void setUpCustomMeasureData() {
+		MeasureConfigs.setMeasureDataFile("test-2022-measure-data.json");
+	}
+
+	@AfterAll
+	static void resetMeasuresData() {
+		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
+	}
 
 	@BeforeEach
 	void setUp() {

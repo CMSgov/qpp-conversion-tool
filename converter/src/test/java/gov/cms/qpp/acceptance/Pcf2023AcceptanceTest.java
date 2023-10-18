@@ -7,7 +7,11 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
+
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -36,6 +40,16 @@ public class Pcf2023AcceptanceTest {
 
     static Stream<Path> successWithWarningsData() {
         return getXml(SUCCESS_WARNING);
+    }
+
+    @BeforeAll
+    static  void setUpCustomMeasureData() {
+        MeasureConfigs.setMeasureDataFile("test-2022-measure-data.json");
+    }
+
+    @AfterAll
+    static void resetMeasuresData() {
+        MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
     }
 
     @ParameterizedTest
