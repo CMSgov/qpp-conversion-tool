@@ -191,7 +191,7 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 	}
 
 	private boolean cehrtFormat(String requiredSubstring) {
-		return requiredSubstring.equalsIgnoreCase("15E");
+		return requiredSubstring.equalsIgnoreCase("15E") || requiredSubstring.equalsIgnoreCase("15C");
 	}
 
 	/**

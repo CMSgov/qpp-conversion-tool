@@ -42,16 +42,6 @@ public class Pcf2023AcceptanceTest {
         return getXml(SUCCESS_WARNING);
     }
 
-    @BeforeAll
-    static  void setUpCustomMeasureData() {
-        MeasureConfigs.setMeasureDataFile("test-2022-measure-data.json");
-    }
-
-    @AfterAll
-    static void resetMeasuresData() {
-        MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
-    }
-
     @ParameterizedTest
     @MethodSource("failureData")
     void testPcfFileFailures(Path entry) {

@@ -161,10 +161,10 @@ QRDA Body
    <component>
       <structuredBody>
          <!--
-********************************************************
-QRDA Category III Measure Section (CMS EP)
-********************************************************
--->
+		  ********************************************************
+		  QRDA Category III Measure Section (CMS EP)
+		  ********************************************************
+		  -->
          
          <!-- Multiple Additional Measures added -->
          <component>
@@ -8053,7 +8053,7 @@ QRDA Category III Measure Section (CMS EP)
                            <!--DENOM Population ID from eCQM-->
                            <reference typeCode="REFR">
                               <externalObservation classCode="OBS" moodCode="EVN">
-                                 <id root="81658781-B84A-4DEA-927F-05B23D34ABFE"/>
+                                 <id root="86BADCD8-40F2-4DE6-869E-8D070BCD836B"/>
                               </externalObservation>
                            </reference>
                         </observation>
@@ -11581,6 +11581,389 @@ QRDA Category III Measure Section (CMS EP)
                            </reference>
                         </observation>
                      </component>
+					 <!--DENEX Population-->
+					 <component>
+						  <observation classCode="OBS" moodCode="EVN">
+							  <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
+							  <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2019-05-01"/>
+							  <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+									codeSystemName="ActCode" displayName="Assertion"/>
+							  <statusCode code="completed"/>
+							  <value xsi:type="CD" code="DENEX"
+									 codeSystem="2.16.840.1.113883.5.1063"
+									 codeSystemName="ObservationValue"/>
+							  <!--DENEX Count-->
+							  <entryRelationship typeCode="SUBJ" inversionInd="true">
+								  <observation classCode="OBS" moodCode="EVN">
+									  <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+									  <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+											codeSystemName="ActCode" displayName="rate aggregation"/>
+									  <value xsi:type="INT" value="50"/>
+									  <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+												  codeSystemName="ObservationMethod" displayName="Count"/>
+								  </observation>
+							  </entryRelationship>
+							  <!--Gender Supplemental Data Element - Male-->
+							  <entryRelationship typeCode="COMP">
+								  <observation classCode="OBS" moodCode="EVN">
+									  <templateId root="2.16.840.1.113883.10.20.27.3.6"
+												  extension="2016-09-01"/>
+									  <id root="9594516A-241B-11E5-1027-09173F13E4C5"/>
+									  <code code="76689-9" codeSystem="2.16.840.1.113883.6.1"
+											codeSystemName="LOINC" displayName="Sex assigned at birth"/>
+									  <statusCode code="completed"/>
+									  <value xsi:type="CD" code="M" codeSystem="2.16.840.1.113883.5.1"
+											 codeSystemName="AdministrativeGenderCode" displayName="Male"/>
+									  <entryRelationship typeCode="SUBJ" inversionInd="true">
+										  <observation classCode="OBS" moodCode="EVN">
+											  <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											  <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+													codeSystemName="ActCode" displayName="rate aggregation"/>
+											  <value xsi:type="INT" value="30"/>
+											  <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+														  codeSystemName="ObservationMethod" displayName="Count"/>
+										  </observation>
+									  </entryRelationship>
+								  </observation>
+							  </entryRelationship>
+							  <!--Gender Supplemental Data Element - Female-->
+							  <entryRelationship typeCode="COMP">
+								  <observation classCode="OBS" moodCode="EVN">
+									  <templateId root="2.16.840.1.113883.10.20.27.3.6"
+												  extension="2016-09-01"/>
+									  <id root="9594516B-241B-11E5-1027-09173F13E4C5"/>
+									  <code code="76689-9" codeSystem="2.16.840.1.113883.6.1"
+											codeSystemName="LOINC" displayName="Sex assigned at birth"/>
+									  <statusCode code="completed"/>
+									  <value xsi:type="CD" code="F" codeSystem="2.16.840.1.113883.5.1"
+											 codeSystemName="AdministrativeGenderCode" displayName="Female"/>
+									  <entryRelationship typeCode="SUBJ" inversionInd="true">
+										  <observation classCode="OBS" moodCode="EVN">
+											  <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											  <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+													codeSystemName="ActCode" displayName="rate aggregation"/>
+											  <value xsi:type="INT" value="20"/>
+											  <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+														  codeSystemName="ObservationMethod" displayName="Count"/>
+										  </observation>
+									  </entryRelationship>
+								  </observation>
+							  </entryRelationship>
+							  <!--Ethnicity Supplemental Data Element - Not Hispanic or Latino-->
+							  <entryRelationship typeCode="COMP">
+								  <observation classCode="OBS" moodCode="EVN">
+									  <templateId root="2.16.840.1.113883.10.20.27.3.7"
+												  extension="2016-09-01"/>
+									  <id root="9594516C-241B-11E5-1027-09173F13E4C5"/>
+									  <code code="69490-1" codeSystem="2.16.840.1.113883.6.1"
+											codeSystemName="LOINC" displayName="Ethnic"/>
+									  <statusCode code="completed"/>
+									  <value xsi:type="CD" code="2186-5"
+											 codeSystem="2.16.840.1.113883.6.238"
+											 codeSystemName="Race &amp; Ethnicity - CDC"
+											 displayName="Not Hispanic or Latino"/>
+									  <entryRelationship typeCode="SUBJ" inversionInd="true">
+										  <observation classCode="OBS" moodCode="EVN">
+											  <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											  <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+													codeSystemName="ActCode" displayName="rate aggregation"/>
+											  <value xsi:type="INT" value="40"/>
+											  <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+														  codeSystemName="ObservationMethod" displayName="Count"/>
+										  </observation>
+									  </entryRelationship>
+								  </observation>
+							  </entryRelationship>
+							  <!--Ethnicity Supplemental Data Element - Hispanic or Latino-->
+							  <entryRelationship typeCode="COMP">
+								  <observation classCode="OBS" moodCode="EVN">
+									  <templateId root="2.16.840.1.113883.10.20.27.3.7"
+												  extension="2016-09-01"/>
+									  <id root="9594516D-241B-11E5-1027-09173F13E4C5"/>
+									  <code code="69490-1" codeSystem="2.16.840.1.113883.6.1"
+											codeSystemName="LOINC" displayName="Ethnic"/>
+									  <statusCode code="completed"/>
+									  <value xsi:type="CD" code="2135-2"
+											 codeSystem="2.16.840.1.113883.6.238"
+											 codeSystemName="Race &amp; Ethnicity - CDC"
+											 displayName="Hispanic or Latino"/>
+									  <entryRelationship typeCode="SUBJ" inversionInd="true">
+										  <observation classCode="OBS" moodCode="EVN">
+											  <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											  <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+													codeSystemName="ActCode" displayName="rate aggregation"/>
+											  <value xsi:type="INT" value="10"/>
+											  <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+														  codeSystemName="ObservationMethod" displayName="Count"/>
+										  </observation>
+									  </entryRelationship>
+								  </observation>
+							  </entryRelationship>
+							  <!--Race Supplemental Data Element - Black or African American-->
+							  <entryRelationship typeCode="COMP">
+								  <observation classCode="OBS" moodCode="EVN">
+									  <templateId root="2.16.840.1.113883.10.20.27.3.8"
+												  extension="2016-09-01"/>
+									  <id root="9594516E-241B-11E5-1027-09173F13E4C5"/>
+									  <code code="72826-1" codeSystem="2.16.840.1.113883.6.1"
+											codeSystemName="LOINC" displayName="Race"/>
+									  <statusCode code="completed"/>
+									  <value xsi:type="CD" code="2054-5"
+											 codeSystem="2.16.840.1.113883.6.238"
+											 codeSystemName="Race &amp; Ethnicity - CDC"
+											 displayName="Black or African American"/>
+									  <entryRelationship typeCode="SUBJ" inversionInd="true">
+										  <observation classCode="OBS" moodCode="EVN">
+											  <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											  <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+													codeSystemName="ActCode" displayName="rate aggregation"/>
+											  <value xsi:type="INT" value="10"/>
+											  <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+														  codeSystemName="ObservationMethod" displayName="Count"/>
+										  </observation>
+									  </entryRelationship>
+								  </observation>
+							  </entryRelationship>
+							  <!--Race Supplemental Data Element - White-->
+							  <entryRelationship typeCode="COMP">
+								  <observation classCode="OBS" moodCode="EVN">
+									  <templateId root="2.16.840.1.113883.10.20.27.3.8"
+												  extension="2016-09-01"/>
+									  <id root="9594516F-241B-11E5-1027-09173F13E4C5"/>
+									  <code code="72826-1" codeSystem="2.16.840.1.113883.6.1"
+											codeSystemName="LOINC" displayName="Race"/>
+									  <statusCode code="completed"/>
+									  <value xsi:type="CD" code="2106-3"
+											 codeSystem="2.16.840.1.113883.6.238"
+											 codeSystemName="Race &amp; Ethnicity - CDC" displayName="White"/>
+									  <entryRelationship typeCode="SUBJ" inversionInd="true">
+										  <observation classCode="OBS" moodCode="EVN">
+											  <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											  <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+													codeSystemName="ActCode" displayName="rate aggregation"/>
+											  <value xsi:type="INT" value="20"/>
+											  <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+														  codeSystemName="ObservationMethod" displayName="Count"/>
+										  </observation>
+									  </entryRelationship>
+								  </observation>
+							  </entryRelationship>
+							  <!--Race Supplemental Data Element - Asian-->
+							  <entryRelationship typeCode="COMP">
+								  <observation classCode="OBS" moodCode="EVN">
+									  <templateId root="2.16.840.1.113883.10.20.27.3.8"
+												  extension="2016-09-01"/>
+									  <id root="95945170-241B-11E5-1027-09173F13E4C5"/>
+									  <code code="72826-1" codeSystem="2.16.840.1.113883.6.1"
+											codeSystemName="LOINC" displayName="Race"/>
+									  <statusCode code="completed"/>
+									  <value xsi:type="CD" code="2028-9"
+											 codeSystem="2.16.840.1.113883.6.238"
+											 codeSystemName="Race &amp; Ethnicity - CDC" displayName="Asian"/>
+									  <entryRelationship typeCode="SUBJ" inversionInd="true">
+										  <observation classCode="OBS" moodCode="EVN">
+											  <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											  <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+													codeSystemName="ActCode" displayName="rate aggregation"/>
+											  <value xsi:type="INT" value="20"/>
+											  <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+														  codeSystemName="ObservationMethod" displayName="Count"/>
+										  </observation>
+									  </entryRelationship>
+								  </observation>
+							  </entryRelationship>
+							  <!--Race Supplemental Data Element - American Indian or Alaska Native-->
+							  <entryRelationship typeCode="COMP">
+								  <observation classCode="OBS" moodCode="EVN">
+									  <templateId root="2.16.840.1.113883.10.20.27.3.8"
+												  extension="2016-09-01"/>
+									  <id root="95945171-241B-11E5-1027-09173F13E4C5"/>
+									  <code code="72826-1" codeSystem="2.16.840.1.113883.6.1"
+											codeSystemName="LOINC" displayName="Race"/>
+									  <statusCode code="completed"/>
+									  <value xsi:type="CD" code="1002-5"
+											 codeSystem="2.16.840.1.113883.6.238"
+											 codeSystemName="Race &amp; Ethnicity - CDC"
+											 displayName="American Indian or Alaska Native"/>
+									  <entryRelationship typeCode="SUBJ" inversionInd="true">
+										  <observation classCode="OBS" moodCode="EVN">
+											  <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											  <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+													codeSystemName="ActCode" displayName="rate aggregation"/>
+											  <value xsi:type="INT" value="0"/>
+											  <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+														  codeSystemName="ObservationMethod" displayName="Count"/>
+										  </observation>
+									  </entryRelationship>
+								  </observation>
+							  </entryRelationship>
+							  <!--Race Supplemental Data Element - Native Hawaiian or Other Pacific Islander-->
+							  <entryRelationship typeCode="COMP">
+								  <observation classCode="OBS" moodCode="EVN">
+									  <templateId root="2.16.840.1.113883.10.20.27.3.8"
+												  extension="2016-09-01"/>
+									  <id root="95944FC0-241B-11E5-1027-09173F13E4C5"/>
+									  <code code="72826-1" codeSystem="2.16.840.1.113883.6.1"
+											codeSystemName="LOINC" displayName="Race"/>
+									  <statusCode code="completed"/>
+									  <value xsi:type="CD" code="2076-8"
+											 codeSystem="2.16.840.1.113883.6.238"
+											 codeSystemName="Race &amp; Ethnicity - CDC"
+											 displayName="Native Hawaiian or Other Pacific Islander"/>
+									  <entryRelationship typeCode="SUBJ" inversionInd="true">
+										  <observation classCode="OBS" moodCode="EVN">
+											  <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											  <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+													codeSystemName="ActCode" displayName="rate aggregation"/>
+											  <value xsi:type="INT" value="0"/>
+											  <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+														  codeSystemName="ObservationMethod" displayName="Count"/>
+										  </observation>
+									  </entryRelationship>
+								  </observation>
+							  </entryRelationship>
+							  <!--Race Supplemental Data Element - Other -->
+							  <entryRelationship typeCode="COMP">
+								  <observation classCode="OBS" moodCode="EVN">
+									  <templateId root="2.16.840.1.113883.10.20.27.3.8"
+												  extension="2016-09-01"/>
+									  <id root="95944FC0-241B-11E5-1027-09173F13E4C5"/>
+									  <code code="72826-1" codeSystem="2.16.840.1.113883.6.1"
+											codeSystemName="LOINC" displayName="Race"/>
+									  <statusCode code="completed"/>
+									  <value xsi:type="CD" code="2131-1"
+											 codeSystem="2.16.840.1.113883.6.238"
+											 codeSystemName="Race &amp; Ethnicity - CDC"
+											 displayName="Other Race"/>
+									  <entryRelationship typeCode="SUBJ" inversionInd="true">
+										  <observation classCode="OBS" moodCode="EVN">
+											  <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											  <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+													codeSystemName="ActCode" displayName="rate aggregation"/>
+											  <value xsi:type="INT" value="0"/>
+											  <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+														  codeSystemName="ObservationMethod" displayName="Count"/>
+										  </observation>
+									  </entryRelationship>
+								  </observation>
+							  </entryRelationship>
+							  <!--Payer Supplemental Data Element - Medicare-->
+							  <entryRelationship typeCode="COMP">
+								  <observation classCode="OBS" moodCode="EVN">
+									  <templateId root="2.16.840.1.113883.10.20.27.3.9"
+												  extension="2016-02-01"/>
+									  <templateId root="2.16.840.1.113883.10.20.27.3.18"
+												  extension="2018-05-01"/>
+									  <id root="95945172-241B-11E5-1027-09173F13E4C5"/>
+									  <code code="48768-6" codeSystem="2.16.840.1.113883.6.1"
+											codeSystemName="LOINC" displayName="Payment Source"/>
+									  <statusCode code="completed"/>
+									  <value xsi:type="CD" nullFlavor="OTH">
+										  <translation code="A" codeSystem="2.16.840.1.113883.3.249.12"
+													   codeSystemName="CMS Clinical Codes" displayName="Medicare"/>
+									  </value>
+									  <entryRelationship typeCode="SUBJ" inversionInd="true">
+										  <observation classCode="OBS" moodCode="EVN">
+											  <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											  <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+													codeSystemName="ActCode" displayName="rate aggregation"/>
+											  <value xsi:type="INT" value="15"/>
+											  <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+														  codeSystemName="ObservationMethod" displayName="Count"/>
+										  </observation>
+									  </entryRelationship>
+								  </observation>
+							  </entryRelationship>
+							  <!--Payer Supplemental Data Element - Medicaid-->
+							  <entryRelationship typeCode="COMP">
+								  <observation classCode="OBS" moodCode="EVN">
+									  <templateId root="2.16.840.1.113883.10.20.27.3.9"
+												  extension="2016-02-01"/>
+									  <templateId root="2.16.840.1.113883.10.20.27.3.18"
+												  extension="2018-05-01"/>
+									  <id root="95945173-241B-11E5-1027-09173F13E4C5"/>
+									  <code code="48768-6" codeSystem="2.16.840.1.113883.6.1"
+											codeSystemName="LOINC" displayName="Payment Source"/>
+									  <statusCode code="completed"/>
+									  <value xsi:type="CD" nullFlavor="OTH">
+										  <translation code="B" codeSystem="2.16.840.1.113883.3.249.12"
+													   codeSystemName="CMS Clinical Codes" displayName="Medicaid"/>
+									  </value>
+									  <entryRelationship typeCode="SUBJ" inversionInd="true">
+										  <observation classCode="OBS" moodCode="EVN">
+											  <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											  <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+													codeSystemName="ActCode" displayName="rate aggregation"/>
+											  <value xsi:type="INT" value="10"/>
+											  <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+														  codeSystemName="ObservationMethod" displayName="Count"/>
+										  </observation>
+									  </entryRelationship>
+								  </observation>
+							  </entryRelationship>
+							  <!--Payer Supplemental Data Element - Private Health Insurance-->
+							  <entryRelationship typeCode="COMP">
+								  <observation classCode="OBS" moodCode="EVN">
+									  <templateId root="2.16.840.1.113883.10.20.27.3.9"
+												  extension="2016-02-01"/>
+									  <templateId root="2.16.840.1.113883.10.20.27.3.18"
+												  extension="2018-05-01"/>
+									  <id root="95945174-241B-11E5-1027-09173F13E4C5"/>
+									  <code code="48768-6" codeSystem="2.16.840.1.113883.6.1"
+											codeSystemName="LOINC" displayName="Payment Source"/>
+									  <statusCode code="completed"/>
+									  <value xsi:type="CD" nullFlavor="OTH">
+										  <translation code="C" codeSystem="2.16.840.1.113883.3.249.12"
+													   codeSystemName="CMS Clinical Codes"
+													   displayName="Private Health Insurance"/>
+									  </value>
+									  <entryRelationship typeCode="SUBJ" inversionInd="true">
+										  <observation classCode="OBS" moodCode="EVN">
+											  <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											  <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+													codeSystemName="ActCode" displayName="rate aggregation"/>
+											  <value xsi:type="INT" value="15"/>
+											  <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+														  codeSystemName="ObservationMethod" displayName="Count"/>
+										  </observation>
+									  </entryRelationship>
+								  </observation>
+							  </entryRelationship>
+							  <!--Payer Supplemental Data Element - Other-->
+							  <entryRelationship typeCode="COMP">
+								  <observation classCode="OBS" moodCode="EVN">
+									  <templateId root="2.16.840.1.113883.10.20.27.3.9"
+												  extension="2016-02-01"/>
+									  <templateId root="2.16.840.1.113883.10.20.27.3.18"
+												  extension="2018-05-01"/>
+									  <id root="95945175-241B-11E5-1027-09173F13E4C5"/>
+									  <code code="48768-6" codeSystem="2.16.840.1.113883.6.1"
+											codeSystemName="LOINC" displayName="Payment Source"/>
+									  <statusCode code="completed"/>
+									  <value xsi:type="CD" nullFlavor="OTH">
+										  <translation code="D" codeSystem="2.16.840.1.113883.3.249.12"
+													   codeSystemName="CMS Clinical Codes" displayName="Other"/>
+									  </value>
+									  <entryRelationship typeCode="SUBJ" inversionInd="true">
+										  <observation classCode="OBS" moodCode="EVN">
+											  <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											  <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+													codeSystemName="ActCode" displayName="rate aggregation"/>
+											  <value xsi:type="INT" value="10"/>
+											  <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84"
+														  codeSystemName="ObservationMethod" displayName="Count"/>
+										  </observation>
+									  </entryRelationship>
+								  </observation>
+							  </entryRelationship>
+							  <!--DENEXCEP Population ID from eCQM-->
+							  <reference typeCode="REFR">
+								  <externalObservation classCode="OBS" moodCode="EVN">
+									  <id root="6C20AA4B-12AE-4317-B863-41AAFFB5B6D2"/>
+								  </externalObservation>
+							  </reference>
+						  </observation>
+					  </component>
                   </organizer>
                </entry>
                <!--Measure Entry for CMS139v11-->
@@ -22086,7 +22469,7 @@ QRDA Category III Measure Section (CMS EP)
                            </reference>
                         </observation>
                      </component>
-                     <!--DENEXCEP 1 Population-->
+                     <!--DENEX 1 Population-->
                      <component>
                         <observation classCode="OBS" moodCode="EVN">
                            <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
@@ -22094,10 +22477,10 @@ QRDA Category III Measure Section (CMS EP)
                            <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
                               codeSystemName="ActCode" displayName="Assertion"/>
                            <statusCode code="completed"/>
-                           <value xsi:type="CD" code="DENEXCEP"
+                           <value xsi:type="CD" code="DENEX"
                               codeSystem="2.16.840.1.113883.5.1063"
                               codeSystemName="ObservationValue"/>
-                           <!--DENEXCEP 1 Count-->
+                           <!--DENEX 1 Count-->
                            <entryRelationship typeCode="SUBJ" inversionInd="true">
                               <observation classCode="OBS" moodCode="EVN">
                                  <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
@@ -22461,7 +22844,7 @@ QRDA Category III Measure Section (CMS EP)
                                  </entryRelationship>
                               </observation>
                            </entryRelationship>
-                           <!--DENEXCEP 1 Population ID from eCQM-->
+                           <!--DENEX 1 Population ID from eCQM-->
                            <reference typeCode="REFR">
                               <externalObservation classCode="OBS" moodCode="EVN">
                                  <id root="56A0A788-68BF-4CED-BA2E-4E6B62E9F3E0"/>
@@ -23615,7 +23998,7 @@ QRDA Category III Measure Section (CMS EP)
                            </reference>
                         </observation>
                      </component>
-                     <!--DENEXCEP 2 Population-->
+                     <!--DENEX 2 Population-->
                      <component>
                         <observation classCode="OBS" moodCode="EVN">
                            <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
@@ -23623,10 +24006,10 @@ QRDA Category III Measure Section (CMS EP)
                            <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
                               codeSystemName="ActCode" displayName="Assertion"/>
                            <statusCode code="completed"/>
-                           <value xsi:type="CD" code="DENEXCEP"
+                           <value xsi:type="CD" code="DENEX"
                               codeSystem="2.16.840.1.113883.5.1063"
                               codeSystemName="ObservationValue"/>
-                           <!--DENEXCEP 2 Count-->
+                           <!--DENEX 2 Count-->
                            <entryRelationship typeCode="SUBJ" inversionInd="true">
                               <observation classCode="OBS" moodCode="EVN">
                                  <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
@@ -23990,7 +24373,7 @@ QRDA Category III Measure Section (CMS EP)
                                  </entryRelationship>
                               </observation>
                            </entryRelationship>
-                           <!--DENEXCEP 2 Population ID from eCQM-->
+                           <!--DENEX 2 Population ID from eCQM-->
                            <reference typeCode="REFR">
                               <externalObservation classCode="OBS" moodCode="EVN">
                                  <id root="6317874C-E95E-4230-A3DA-D65D00C1644F"/>
@@ -25144,7 +25527,7 @@ QRDA Category III Measure Section (CMS EP)
                            </reference>
                         </observation>
                      </component>
-                     <!--DENEXCEP 3 Population-->
+                     <!--DENEX 3 Population-->
                      <component>
                         <observation classCode="OBS" moodCode="EVN">
                            <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
@@ -25152,10 +25535,10 @@ QRDA Category III Measure Section (CMS EP)
                            <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
                               codeSystemName="ActCode" displayName="Assertion"/>
                            <statusCode code="completed"/>
-                           <value xsi:type="CD" code="DENEXCEP"
+                           <value xsi:type="CD" code="DENEX"
                               codeSystem="2.16.840.1.113883.5.1063"
                               codeSystemName="ObservationValue"/>
-                           <!--DENEXCEP 3 Count-->
+                           <!--DENEX 3 Count-->
                            <entryRelationship typeCode="SUBJ" inversionInd="true">
                               <observation classCode="OBS" moodCode="EVN">
                                  <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
@@ -25519,7 +25902,7 @@ QRDA Category III Measure Section (CMS EP)
                                  </entryRelationship>
                               </observation>
                            </entryRelationship>
-                           <!--DENEXCEP 3 Population ID from eCQM-->
+                           <!--DENEX 3 Population ID from eCQM-->
                            <reference typeCode="REFR">
                               <externalObservation classCode="OBS" moodCode="EVN">
                                  <id root="F6CB55D6-D6ED-4471-88C7-9B7C9C34B060"/>

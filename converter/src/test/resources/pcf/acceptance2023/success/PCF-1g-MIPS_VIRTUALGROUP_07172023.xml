@@ -109,7 +109,7 @@
             <assignedEntity>
                <id extension="2589654740" root="2.16.840.1.113883.4.6"/>
                <representedOrganization>
-                  <id extension="990000099" root="2.16.840.1.113883.4.2"/>
+                  <id extension="MVGID" root="2.16.840.1.113883.3.249.5.2"/>
                   <name>QRDA Test File Generator Practice</name>
                </representedOrganization>
             </assignedEntity>
