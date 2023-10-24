@@ -28,3 +28,4 @@ jspm_packages
 # Terraform files
 terraform.tfstate.backup
 .terraform
+infrastructure/terraform/dev/.terraform-version
