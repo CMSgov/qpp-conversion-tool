@@ -30,16 +30,17 @@ resource "aws_ecs_task_definition" "conversion-tool" {
   memory                   = "5120"
   task_role_arn            = aws_iam_role.ecs_task_exec_role.arn
 
-  container_definitions = data.template_file.ct_task_def.rendered
+#  container_definitions = data.template_file.ct_task_def.rendered
+  container_definitions = templatefile("${path.module}/templates/conversion_tool_task_def.tpl", { env = var.environment } )
 }
 
-data "template_file" "ct_task_def" {
-  template = file("${path.module}/templates/conversion_tool_task_def.tpl")
+# data "template_file" "ct_task_def" {
+#   template = file("${path.module}/templates/conversion_tool_task_def.tpl")
 
-  vars = {
-    env = var.environment
-  }
-}
+#   vars = {
+#     env = var.environment
+#   }
+# }
 
 resource "aws_ecs_service" "conversion-tool-service" {
   name                               = "conversion-tool-service-${var.environment}"

@@ -286,17 +286,17 @@ resource "aws_iam_role_policy_attachment" "cwlogs_to_kinesis_policy" {
 resource "aws_iam_policy" "ct_ecsTaskExecution_policy" {
   name = "${var.project_name}-ecsTaskExecution-${var.environment}"
   path = "/delegatedadmin/developer/"
-  policy = data.template_file.ecs_TaskExecution_policy.rendered
-
+  #policy = data.template_file.ecs_TaskExecution_policy.rendered
+  policy = templatefile("${path.module}/templates/ecs_task_execution_policy.tpl", { env = var.environment } )
 }
 
-data "template_file" "ecs_TaskExecution_policy" {
-  template = file("${path.module}/templates/ecs_task_execution_policy.tpl")
+# data "template_file" "ecs_TaskExecution_policy" {
+#   template = file("${path.module}/templates/ecs_task_execution_policy.tpl")
 
-  vars = {
-    env = var.environment
-  }
-}
+#   vars = {
+#     env = var.environment
+#   }
+# }
 
 resource "aws_iam_role_policy_attachment" "conversiontool_dynamodb" {
   role       = aws_iam_role.ecs_task_execution_role.name
