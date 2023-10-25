@@ -29,3 +29,8 @@ jspm_packages
 terraform.tfstate.backup
 .terraform
 infrastructure/terraform/dev/.terraform-version
+infrastructure/terraform/dev/twe.initial_refresh.plan
+.gitignore
+infrastructure/terraform/dev/twe.full.plan
+infrastructure/terraform/dev/twe.full.plan.txt
+infrastructure/terraform/dev/twe.initial_refresh.plan.txt
