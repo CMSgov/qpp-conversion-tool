@@ -103,9 +103,9 @@ resource "aws_iam_policy" "conversiontool_ecs_task_exec_policy" {
 			"Sid": "VisualEditor1",
 			"Effect": "Allow",
 			"Action": "kms:*",
-			# "Resource": "arn:aws:kms:*:*:key/*"
+			"Resource": "arn:aws:kms:*:*:key/*"
       # QPPSE-1211: move to AWSCLI-generated list of keys:
-      "Resource": "${data.local_file.cmk_arn_list.content}"
+      #"Resource": "${data.local_file.cmk_arn_list.content}"
 		},
 		{
 			"Sid": "VisualEditor2",
