@@ -10,7 +10,7 @@ resource "aws_s3_bucket" "log_bucket" {
   #
   # acl    = "log-delivery-write"
 
-  # QPPSE-1211 correct warning:
+  # QPPSE-1211 correct warning: 
   # Warning: Argument is deprecated
   # ...
   # Use resource aws_s3_bucket_versioning instead
