@@ -20,6 +20,10 @@ terraform {
 
 provider "aws" {
   region  = var.region
+  # QPPSE-120g
+  default_tags {
+    tags = var.default_tags
+  }
 }
 
 module "conversion-tool" {
