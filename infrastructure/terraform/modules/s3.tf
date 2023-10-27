@@ -41,12 +41,11 @@ resource "aws_s3_bucket" "log_bucket" {
     }
   }
   tags = {
-    "Name"                = "${var.project_name}-s3-${var.environment}"
+    "Name"                = "${var.project_name}-s3-logs-bucket"
     "qpp:owner"           = var.owner
     "qpp:pagerduty-email" = var.pagerduty_email
     "qpp:application"     = var.application
     "qpp:project"         = var.project_name
-    "qpp:environment"     = var.environment
     "qpp:layer"           = "Application"
     "qpp:sensitivity"     = var.sensitivity
     "qpp:description"     = "Conversiontool Logs S3 Bucket"

@@ -35,7 +35,15 @@ resource "aws_iam_role" "ecs_task_exec_role" {
 }
 EOF
 }
-
+#
+# Create file ./cmk-list.json from AWS CLI:
+# $ aws kms list-keys --no-paginate --query 'Keys[].KeyArn' > cmk-arn-list.json
+#
+data "local_file" "cmk_arn_list" {
+  filename = "${path.module}/cmk-arn-list.json"
+}
+# updated per SecurityHub Compliance KMS.1
+#
 resource "aws_iam_policy" "conversiontool_ecs_task_exec_policy" {
   name = "${var.team}-${var.environment}-conversiontool-ecsTaskExecutionRole-role-policy"
   path = "/delegatedadmin/developer/"
@@ -95,7 +103,9 @@ resource "aws_iam_policy" "conversiontool_ecs_task_exec_policy" {
 			"Sid": "VisualEditor1",
 			"Effect": "Allow",
 			"Action": "kms:*",
-			"Resource": "arn:aws:kms:*:*:key/*"
+			#"Resource": "arn:aws:kms:*:*:key/*"
+      # QPPSE-1211: move to AWSCLI-generated list of keys:
+      "Resource": "${data.local_file.cmk_arn_list.content}"
 		},
 		{
 			"Sid": "VisualEditor2",
@@ -276,17 +286,17 @@ resource "aws_iam_role_policy_attachment" "cwlogs_to_kinesis_policy" {
 resource "aws_iam_policy" "ct_ecsTaskExecution_policy" {
   name = "${var.project_name}-ecsTaskExecution-${var.environment}"
   path = "/delegatedadmin/developer/"
-  policy = data.template_file.ecs_TaskExecution_policy.rendered
-
+  #policy = data.template_file.ecs_TaskExecution_policy.rendered
+  policy = templatefile("${path.module}/templates/ecs_task_execution_policy.tpl", { env = var.environment } )
 }
 
-data "template_file" "ecs_TaskExecution_policy" {
-  template = file("${path.module}/templates/ecs_task_execution_policy.tpl")
+# data "template_file" "ecs_TaskExecution_policy" {
+#   template = file("${path.module}/templates/ecs_task_execution_policy.tpl")
 
-  vars = {
-    env = var.environment
-  }
-}
+#   vars = {
+#     env = var.environment
+#   }
+# }
 
 resource "aws_iam_role_policy_attachment" "conversiontool_dynamodb" {
   role       = aws_iam_role.ecs_task_execution_role.name
