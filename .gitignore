@@ -34,3 +34,14 @@ infrastructure/terraform/dev/twe.initial_refresh.plan
 infrastructure/terraform/dev/twe.full.plan
 infrastructure/terraform/dev/twe.full.plan.txt
 infrastructure/terraform/dev/twe.initial_refresh.plan.txt
+infrastructure/terraform/dev/dev.qppse1208.plan
+infrastructure/terraform/dev/dev.qppse1211.plan
+infrastructure/terraform/devpre/.terraform.lock.hcl
+infrastructure/terraform/devpre/devpre.qppse1211.plan
+infrastructure/terraform/impl/.terraform.lock.hcl
+infrastructure/terraform/impl/impl.qppse1211.plan
+infrastructure/terraform/prod/.terraform.lock.hcl
+infrastructure/terraform/prod/prod.qppse1211.plan
+infrastructure/terraform/devpre/.terraform.lock.hcl
+infrastructure/terraform/impl/.terraform.lock.hcl
+infrastructure/terraform/prod/.terraform.lock.hcl

@@ -129,13 +129,13 @@ variable "default_tags" {
     qpp_incident-response-email = "qpp-final-scoring-devops@semanticbits.com"  # email_addr
     qpp_application             = "qpp-conversiontool"
     qpp_environment             = "dev"
-    qpp_layer                   = "utility"     # primarily EC2
+    qpp_layer                   = "Application"     # primarily EC2
     qpp_distribution            = ""            # optional, primarily EC2
     cpm-backup                  = ""            # optional, primarily EC2 + RDS
     qpp_expiry-date             = 2147483647    # optional, Unix timestamp
     qpp_source-ami              = ""            # optional, primarily EC2
-    qpp_sensitivity             = "PII/PHI"
+    qpp_sensitivity             = "Confidential"
     qpp_description             = "default tag set"
-    qpp_iac-repo-url            = "https://github.com/CMSgov/qpp-conversion-tool"
+    qpp_iac-repo-url            = "https://github.com/CMSgov/qpp-conversion-tool.git"
   }
 }
