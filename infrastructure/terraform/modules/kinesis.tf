@@ -1,3 +1,19 @@
+# QPPSE-1208
+locals {
+  kinesis_tags = {
+    Name                = "${var.project_name}-kinesis-${var.environment}"
+    qpp_owner           = var.owner
+    qpp_incident-response-email = var.pagerduty_email
+    qpp_application     = var.application
+    qpp_project         = var.project_name
+    qpp_environment     = var.environment
+    qpp_layer           = "Application"
+    qpp_sensitivity     = var.sensitivity
+    qpp_description     = "Kinesis Stream for Conversiontool"
+    qpp_iac-repo-url    = var.git-origin
+  }
+}
+
 resource "aws_kinesis_stream" "kinesis-stream-cw-logs" {
   name             = "conversion-tool-${var.environment}-kinesis-stream"
   shard_count      = 1
@@ -6,16 +22,5 @@ resource "aws_kinesis_stream" "kinesis-stream-cw-logs" {
   encryption_type = "KMS"
   kms_key_id      = "alias/aws/kinesis"
 
-  tags = {
-    "Name"                = "${var.project_name}-kinesis-${var.environment}"
-    "qpp:owner"           = var.owner
-    "qpp:pagerduty-email" = var.pagerduty_email
-    "qpp:application"     = var.application
-    "qpp:project"         = var.project_name
-    "qpp:environment"     = var.environment
-    "qpp:layer"           = "Application"
-    "qpp:sensitivity"     = var.sensitivity
-    "qpp:description"     = "Kinesis Stream for Conversiontool"
-    "qpp:iac-repo-url"    = var.git-origin
-  }
+  tags = merge(var.tags,local.kinesis_tags)
 }

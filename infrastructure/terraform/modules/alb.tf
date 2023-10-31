@@ -1,3 +1,31 @@
+# QPPSE-1208
+locals {
+  ctalb_tags = {
+    Name                = "${var.project_name}-alb-${var.environment}"
+    qpp_owner           = var.owner
+    qpp_incident-response-email = var.pagerduty_email
+    qpp_application     = var.application
+    qpp_project         = var.project_name
+    qpp_environment     = var.environment
+    qpp_layer           = "Application"
+    qpp_sensitivity     = var.sensitivity
+    qpp_description     = "Application Load Balancer for Conversiontool"
+    qpp_iac-repo-url    = var.git-origin
+  }
+  ctalb_tgtgrp_tags = {
+    Name                = "${var.project_name}-alb-targetgrp-${var.environment}"
+    qpp_owner           = var.owner
+    qpp_incident-response-email = var.pagerduty_email
+    qpp_application     = var.application
+    qpp_project         = var.project_name
+    qpp_environment     = var.environment
+    qpp_layer           = "Application"
+    qpp_sensitivity     = var.sensitivity
+    qpp_description     = "Application Load Balancer Target Group for Conversiontool"
+    qpp_iac-repo-url    = var.git-origin
+  }
+}
+
 resource "aws_lb" "qppsf" {
   name               = "qppsf-conversion-tool-lb-${var.environment}"
   internal           = true
@@ -7,18 +35,20 @@ resource "aws_lb" "qppsf" {
 
   enable_deletion_protection = true
 
-  tags = {
-    "Name"                = "${var.project_name}-alb-${var.environment}"
-    "qpp:owner"           = var.owner
-    "qpp:pagerduty-email" = var.pagerduty_email
-    "qpp:application"     = var.application
-    "qpp:project"         = var.project_name
-    "qpp:environment"     = var.environment
-    "qpp:layer"           = "Application"
-    "qpp:sensitivity"     = var.sensitivity
-    "qpp:description"     = "Application Load Balancer for Conversiontool"
-    "qpp:iac-repo-url"    = var.git-origin
-  }
+  # tags = {
+  #   "Name"                = "${var.project_name}-alb-${var.environment}"
+  #   "qpp:owner"           = var.owner
+  #   "qpp:pagerduty-email" = var.pagerduty_email
+  #   "qpp:application"     = var.application
+  #   "qpp:project"         = var.project_name
+  #   "qpp:environment"     = var.environment
+  #   "qpp:layer"           = "Application"
+  #   "qpp:sensitivity"     = var.sensitivity
+  #   "qpp:description"     = "Application Load Balancer for Conversiontool"
+  #   "qpp:iac-repo-url"    = var.git-origin
+  # }
+  tags = merge(var.tags,local.ctalb_tags)
+
   access_logs {
     bucket  = aws_s3_bucket.log_bucket.id
     prefix  = "conversion-tool/${var.environment}"
@@ -43,18 +73,19 @@ resource "aws_lb_target_group" "conversion-tg-ssl" {
     matcher  = "200-499"
   }
 
-  tags = {
-    "Name"                = "${var.project_name}-alb-targetgrp-${var.environment}"
-    "qpp:owner"           = var.owner
-    "qpp:pagerduty-email" = var.pagerduty_email
-    "qpp:application"     = var.application
-    "qpp:project"         = var.project_name
-    "qpp:environment"     = var.environment
-    "qpp:layer"           = "Application"
-    "qpp:sensitivity"     = var.sensitivity
-    "qpp:description"     = "Application Load Balancer Target Group for Conversiontool"
-    "qpp:iac-repo-url"    = var.git-origin
-  }
+  # tags = {
+  #   "Name"                = "${var.project_name}-alb-targetgrp-${var.environment}"
+  #   "qpp:owner"           = var.owner
+  #   "qpp:pagerduty-email" = var.pagerduty_email
+  #   "qpp:application"     = var.application
+  #   "qpp:project"         = var.project_name
+  #   "qpp:environment"     = var.environment
+  #   "qpp:layer"           = "Application"
+  #   "qpp:sensitivity"     = var.sensitivity
+  #   "qpp:description"     = "Application Load Balancer Target Group for Conversiontool"
+  #   "qpp:iac-repo-url"    = var.git-origin
+  # }
+  tags = merge(var.tags,local.ctalb_tgtgrp_tags)
 }
 
 #ALB Listener for HTTPS
