@@ -374,7 +374,9 @@ resource "aws_iam_policy" "conversiontool_svc_policy" {
 				"acm:DescribeCertificate"
 			],
 			"Effect": "Allow",
-			"Resource": "*",
+			"Resource": [
+        "arn:aws:acm:${var.region}:${data.aws_caller_identity.current.account_id}:certificate/*"
+      ],
 			"Sid": "ACMPermissions"
 		},
 		{
@@ -423,7 +425,7 @@ resource "aws_iam_policy" "conversiontool_svc_policy" {
 				"ssm:DescribeParameters"
 			],
 			"Effect": "Allow",
-			"Resource": "*",
+			"Resource": ["arn:aws:ssm:${var.region}:${data.aws_caller_identity.current.account_id}:parameter/qppar-sf/*"],
 			"Sid": "SSMPermissions"
 		}
 	]
