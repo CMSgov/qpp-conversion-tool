@@ -86,18 +86,24 @@ resource "aws_iam_policy" "lambda_ecs_policy" {
   path         = "/delegatedadmin/developer/"
   policy = <<EOF
 {
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "ecs:ListTasks",
-        "ecs:StopTask",
-        "ecs:UpdateService"
-      ],
-      "Resource": "*",
-      "Effect": "Allow"
-    }
-  ]
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "ECSTaskPermissions",
+            "Effect": "Allow",
+            "Action": [
+              "ecs:ListTasks",
+              "ecs:StopTask",
+              "ecs:UpdateService"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "ArnEquals": { 
+                    "ecs:cluster": "arn:aws:ecs:${var.region}:${data.aws_caller_identity.current.account_id}:cluster/${var.project_name}-conversion-tool-${var.environment}"
+                }
+            }
+        }
+    ]
 }
 EOF
 }
