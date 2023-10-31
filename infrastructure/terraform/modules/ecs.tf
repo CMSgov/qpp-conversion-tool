@@ -172,13 +172,11 @@ resource "aws_security_group" "conversion-tool_alb" {
   tags = merge(var.tags, local.alb_tags)
 }
 
-# QPPSE-1208 
-# Believe this resource is superfluous
-# resource "aws_security_group_rule" "allow_https" {
-#   type              = "ingress"
-#   from_port         = 443
-#   to_port           = 8443
-#   protocol          = "tcp"
-#   cidr_blocks       = var.vpc_cidr
-#   security_group_id = aws_security_group.conversion-tool_alb.id
-# }
+resource "aws_security_group_rule" "allow_https" {
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 8443
+  protocol          = "tcp"
+  cidr_blocks       = var.vpc_cidr
+  security_group_id = aws_security_group.conversion-tool_alb.id
+}
