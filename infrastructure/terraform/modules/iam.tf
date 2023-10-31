@@ -50,57 +50,50 @@ resource "aws_iam_policy" "conversiontool_ecs_task_exec_policy" {
   policy = jsonencode({
 	"Version": "2012-10-17",
 	"Statement": [{
-			"Sid": "VisualEditor0",
-			"Effect": "Allow",
-			"Action": [
-				"s3:GetAccessPoint",
-				"ssm:DescribeDocument",
-				"kms:GenerateRandom",
-				"ec2messages:GetEndpoint",
-				"ssmmessages:OpenControlChannel",
-				"ec2messages:GetMessages",
-				"ssm:PutConfigurePackageResult",
-				"ssm:ListInstanceAssociations",
-				"ssm:GetParameter",
-				"ssm:UpdateAssociationStatus",
-				"ssm:GetManifest",
-				"kms:DescribeCustomKeyStores",
-				"kms:DeleteCustomKeyStore",
-				"ec2messages:DeleteMessage",
-				"ssm:UpdateInstanceInformation",
-				"kms:UpdateCustomKeyStore",
-				"ec2messages:FailMessage",
-				"ssmmessages:OpenDataChannel",
-				"ssm:GetDocument",
-				"kms:CreateKey",
-				"kms:ConnectCustomKeyStore",
-				"s3:HeadBucket",
-				"ssm:PutComplianceItems",
-				"ssm:DescribeAssociation",
-				"s3:PutAccountPublicAccessBlock",
-				"ssm:GetDeployablePatchSnapshotForInstance",
-				"s3:ListAccessPoints",
-				"s3:ListJobs",
-				"ec2messages:AcknowledgeMessage",
-				"ssm:GetParameters",
-				"ssmmessages:CreateControlChannel",
-				"kms:CreateCustomKeyStore",
-				"ssmmessages:CreateDataChannel",
-				"kms:ListKeys",
-				"ssm:PutInventory",
-				"s3:GetAccountPublicAccessBlock",
-				"s3:ListAllMyBuckets",
-				"kms:ListAliases",
-				"kms:DisconnectCustomKeyStore",
-				"ec2messages:SendReply",
-				"s3:CreateJob",
-				"ssm:ListAssociations",
-				"ssm:UpdateInstanceAssociationStatus"
-			],
-			"Resource": "*"
-		},
-		{
-			"Sid": "VisualEditor1",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:DescribeAssociation",
+        "ssm:GetDeployablePatchSnapshotForInstance",
+        "ssm:GetDocument",
+        "ssm:DescribeDocument",
+        "ssm:GetManifest",
+        "ssm:GetParameter",
+        "ssm:GetParameters",
+        "ssm:ListAssociations",
+        "ssm:ListInstanceAssociations",
+        "ssm:PutInventory",
+        "ssm:PutComplianceItems",
+        "ssm:PutConfigurePackageResult",
+        "ssm:UpdateAssociationStatus",
+        "ssm:UpdateInstanceAssociationStatus",
+        "ssm:UpdateInstanceInformation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ssmmessages:CreateControlChannel",
+        "ssmmessages:CreateDataChannel",
+        "ssmmessages:OpenControlChannel",
+        "ssmmessages:OpenDataChannel"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2messages:AcknowledgeMessage",
+        "ec2messages:DeleteMessage",
+        "ec2messages:FailMessage",
+        "ec2messages:GetEndpoint",
+        "ec2messages:GetMessages",
+        "ec2messages:SendReply"
+      ],
+      "Resource": "*"
+    },
+    {
+			"Sid": "EcsKmsPermissions",
 			"Effect": "Allow",
 			"Action": "kms:*",
 			#"Resource": "arn:aws:kms:*:*:key/*"
@@ -108,17 +101,17 @@ resource "aws_iam_policy" "conversiontool_ecs_task_exec_policy" {
       "Resource": "${data.local_file.cmk_arn_list.content}"
 		},
 		{
-			"Sid": "VisualEditor2",
+			"Sid": "S3Permissions",
 			"Effect": "Allow",
-			"Action": "s3:*",
-			"Resource": [
-				"arn:aws:s3:::*",
-				"arn:aws:s3:*:*:accesspoint/*",
-				"arn:aws:s3:::*/*",
-				"arn:aws:s3:*:*:job/*"
-			]
+			"Action": [
+        "s3:ListAllMyBuckets",
+        "s3:ListBucket",
+        "s3:HeadBucket",
+        "s3:*"
+      ],
+			"Resource": "*"
 		}
-	]
+  ]
 })
 }
 
@@ -381,7 +374,9 @@ resource "aws_iam_policy" "conversiontool_svc_policy" {
 				"acm:DescribeCertificate"
 			],
 			"Effect": "Allow",
-			"Resource": "*",
+			"Resource": [
+        "arn:aws:acm:${var.region}:${data.aws_caller_identity.current.account_id}:certificate/*"
+      ],
 			"Sid": "ACMPermissions"
 		},
 		{
@@ -430,7 +425,7 @@ resource "aws_iam_policy" "conversiontool_svc_policy" {
 				"ssm:DescribeParameters"
 			],
 			"Effect": "Allow",
-			"Resource": "*",
+			"Resource": ["arn:aws:ssm:${var.region}:${data.aws_caller_identity.current.account_id}:parameter/qppar-sf/*"],
 			"Sid": "SSMPermissions"
 		}
 	]

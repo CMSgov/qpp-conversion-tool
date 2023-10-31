@@ -108,6 +108,14 @@ resource "aws_iam_policy" "lambda_publish_to_ses" {
                 "ses:SendEmail",
                 "ses:SendRawEmail"
             ],
+            "Condition": {
+              "StringLike": {
+                "ses:FromAddress": [
+                  "893a0342-571a-43d4-ad5e-f4b0aef7654b+CT-routingkey-nonprod@alert.victorops.com",
+                  "893a0342-571a-43d4-ad5e-f4b0aef7654b+CT-routingkey-prod@alert.victorops.com"
+                ],
+              }
+          }
             "Resource": "*"
         }
     ]
