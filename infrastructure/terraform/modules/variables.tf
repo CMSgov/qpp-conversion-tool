@@ -74,6 +74,9 @@ variable "codebuild_branch_ref" {
   type = string
   description = "ConversionTool Branch Ref"
 }
+variable "allow_kms_keys" {
+  description = "kms arns to be allowed"
+}
 
 # QPPSE-1208
 # add default_tags as variable to allow clean merge/override

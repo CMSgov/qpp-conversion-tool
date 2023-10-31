@@ -75,6 +75,10 @@ variable "codebuild_branch_ref" {
   description = "ConversionTool Branch Ref"
 }
 
+variable "allow_kms_keys" {
+  description = "kms arns to be allowed"
+}
+
 # QPPSE-1208
 variable "default_tags" {
   description = "default project tags for compliance"

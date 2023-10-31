@@ -35,85 +35,76 @@ resource "aws_iam_role" "ecs_task_exec_role" {
 }
 EOF
 }
-#
-# Create file ./cmk-list.json from AWS CLI:
-# $ aws kms list-keys --no-paginate --query 'Keys[].KeyArn' > cmk-arn-list.json
-#
-data "local_file" "cmk_arn_list" {
-  filename = "${path.module}/cmk-arn-list.json"
-}
+
 # updated per SecurityHub Compliance KMS.1
-#
+
 resource "aws_iam_policy" "conversiontool_ecs_task_exec_policy" {
   name = "${var.team}-${var.environment}-conversiontool-ecsTaskExecutionRole-role-policy"
   path = "/delegatedadmin/developer/"
   policy = jsonencode({
-	"Version": "2012-10-17",
-	"Statement": [{
-      "Effect": "Allow",
-      "Action": [
-        "ssm:DescribeAssociation",
-        "ssm:GetDeployablePatchSnapshotForInstance",
-        "ssm:GetDocument",
-        "ssm:DescribeDocument",
-        "ssm:GetManifest",
-        "ssm:GetParameter",
-        "ssm:GetParameters",
-        "ssm:ListAssociations",
-        "ssm:ListInstanceAssociations",
-        "ssm:PutInventory",
-        "ssm:PutComplianceItems",
-        "ssm:PutConfigurePackageResult",
-        "ssm:UpdateAssociationStatus",
-        "ssm:UpdateInstanceAssociationStatus",
-        "ssm:UpdateInstanceInformation"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ssmmessages:CreateControlChannel",
-        "ssmmessages:CreateDataChannel",
-        "ssmmessages:OpenControlChannel",
-        "ssmmessages:OpenDataChannel"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ec2messages:AcknowledgeMessage",
-        "ec2messages:DeleteMessage",
-        "ec2messages:FailMessage",
-        "ec2messages:GetEndpoint",
-        "ec2messages:GetMessages",
-        "ec2messages:SendReply"
-      ],
-      "Resource": "*"
-    },
-    {
-			"Sid": "EcsKmsPermissions",
-			"Effect": "Allow",
-			"Action": "kms:*",
-			#"Resource": "arn:aws:kms:*:*:key/*"
-      # QPPSE-1211: move to AWSCLI-generated list of keys:
-      "Resource": "${data.local_file.cmk_arn_list.content}"
-		},
-		{
-			"Sid": "S3Permissions",
-			"Effect": "Allow",
-			"Action": [
-        "s3:ListAllMyBuckets",
-        "s3:ListBucket",
-        "s3:HeadBucket",
-        "s3:*"
-      ],
-			"Resource": "*"
+  "Version": "2012-10-17",
+  "Statement": [
+        {   
+            "Effect": "Allow",
+            "Action": [
+                "ssm:DescribeAssociation",
+                "ssm:GetDeployablePatchSnapshotForInstance",
+                "ssm:GetDocument",
+                "ssm:DescribeDocument",
+                "ssm:GetManifest",
+                "ssm:GetParameter",
+                "ssm:GetParameters",
+                "ssm:ListAssociations",
+                "ssm:ListInstanceAssociations",
+                "ssm:PutInventory",
+                "ssm:PutComplianceItems",
+                "ssm:PutConfigurePackageResult",
+                "ssm:UpdateAssociationStatus",
+                "ssm:UpdateInstanceAssociationStatus",
+                "ssm:UpdateInstanceInformation"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ssmmessages:CreateControlChannel",
+                "ssmmessages:CreateDataChannel",
+                "ssmmessages:OpenControlChannel",
+                "ssmmessages:OpenDataChannel"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2messages:AcknowledgeMessage",
+                "ec2messages:DeleteMessage",
+                "ec2messages:FailMessage",
+                "ec2messages:GetEndpoint",
+                "ec2messages:GetMessages",
+                "ec2messages:SendReply"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "kms:*"
+            ],
+            "Resource": "${var.allow_kms_keys}" 
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:*"
+            ],
+            "Resource": "*"
 		}
-  ]
+	]
 })
 }
+
 
 resource "aws_iam_role_policy_attachment" "dynamodb-role-policy-attach" {
   role       = "${aws_iam_role.ecs_task_exec_role.name}"
