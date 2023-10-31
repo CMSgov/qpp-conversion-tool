@@ -74,3 +74,7 @@ variable "codebuild_branch_ref" {
   type = string
   description = "ConversionTool Branch Ref"
 }
+
+variable "allow_kms_keys" {
+  description = "kms arns to be allowed"
+}
