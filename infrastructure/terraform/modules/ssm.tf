@@ -263,18 +263,8 @@ resource "aws_ssm_parameter" "app_env" {
       value
     ]
   }
-  # tags = {
-  #   "Name"                = "${var.project_name}-ssm-${var.environment}"
-  #   "qpp:owner"           = var.owner
-  #   "qpp:pagerduty-email" = var.pagerduty_email
-  #   "qpp:application"     = var.application
-  #   "qpp:project"         = var.project_name
-  #   "qpp:environment"     = var.environment
-  #   "qpp:layer"           = "Application"
-  #   "qpp:sensitivity"     = "Confidential"
-  #   "qpp:description"     = "Env for Conversiontool"
-  #   "qpp:iac-repo-url"    = var.git-origin
-  # }
+
+# QPPSE-1208
   tags = merge(var.tags,local.ssmappenv_tags)
 
 }
@@ -291,18 +281,8 @@ resource "aws_ssm_parameter" "ar_api_base_url" {
       value
     ]
   }
-  # tags = {
-  #   "Name"                = "${var.project_name}-ssm-${var.environment}"
-  #   "qpp:owner"           = var.owner
-  #   "qpp:pagerduty-email" = var.pagerduty_email
-  #   "qpp:application"     = var.application
-  #   "qpp:project"         = var.project_name
-  #   "qpp:environment"     = var.environment
-  #   "qpp:layer"           = "Application"
-  #   "qpp:sensitivity"     = "Confidential"
-  #   "qpp:description"     = "AR API URL for Conversiontool"
-  #   "qpp:iac-repo-url"    = var.git-origin
-  # }
+
+# QPPSE-1208
   tags = merge(var.tags,local.ssmappapibaseurl_tags)
 }
 
@@ -318,18 +298,8 @@ resource "aws_ssm_parameter" "bucket_name" {
       value
     ]
   }
-  # tags = {
-  #   "Name"                = "${var.project_name}-ssm-${var.environment}"
-  #   "qpp:owner"           = var.owner
-  #   "qpp:pagerduty-email" = var.pagerduty_email
-  #   "qpp:application"     = var.application
-  #   "qpp:project"         = var.project_name
-  #   "qpp:environment"     = var.environment
-  #   "qpp:layer"           = "Application"
-  #   "qpp:sensitivity"     = "Confidential"
-  #   "qpp:description"     = "navadevops Bucket"
-  #   "qpp:iac-repo-url"    = var.git-origin
-  # }
+
+# QPPSE-1208
   tags = merge(var.tags,local.ssmbucket_tags)
 }
 
@@ -345,18 +315,8 @@ resource "aws_ssm_parameter" "cpc_end_date" {
       value
     ]
   }
-  # tags = {
-  #   "Name"                = "${var.project_name}-ssm-${var.environment}"
-  #   "qpp:owner"           = var.owner
-  #   "qpp:pagerduty-email" = var.pagerduty_email
-  #   "qpp:application"     = var.application
-  #   "qpp:project"         = var.project_name
-  #   "qpp:environment"     = var.environment
-  #   "qpp:layer"           = "Application"
-  #   "qpp:sensitivity"     = "Confidential"
-  #   "qpp:description"     = "CPC End Date for Conversiontool"
-  #   "qpp:iac-repo-url"    = var.git-origin
-  # }
+
+# QPPSE-1208
   tags = merge(var.tags,local.ssmcpcenddate_tags)
 }
 
@@ -372,18 +332,8 @@ resource "aws_ssm_parameter" "cpc_plus_bucket_name" {
       value
     ]
   }
-  # tags = {
-  #   "Name"                = "${var.project_name}-ssm-${var.environment}"
-  #   "qpp:owner"           = var.owner
-  #   "qpp:pagerduty-email" = var.pagerduty_email
-  #   "qpp:application"     = var.application
-  #   "qpp:project"         = var.project_name
-  #   "qpp:environment"     = var.environment
-  #   "qpp:layer"           = "Application"
-  #   "qpp:sensitivity"     = "Confidential"
-  #   "qpp:description"     = "SSM Param for Conversiontool"
-  #   "qpp:iac-repo-url"    = var.git-origin
-  # }
+
+# QPPSE-1208
   tags = merge(var.tags,local.ssmcpcplusbkt_tags)
 }
 
@@ -399,18 +349,8 @@ resource "aws_ssm_parameter" "cpc_plus_unprocessed_filter_start_date" {
       value
     ]
   }
-  # tags = {
-  #   "Name"                = "${var.project_name}-ssm-${var.environment}"
-  #   "qpp:owner"           = var.owner
-  #   "qpp:pagerduty-email" = var.pagerduty_email
-  #   "qpp:application"     = var.application
-  #   "qpp:project"         = var.project_name
-  #   "qpp:environment"     = var.environment
-  #   "qpp:layer"           = "Application"
-  #   "qpp:sensitivity"     = "Confidential"
-  #   "qpp:description"     = "SSM Param for Conversiontool"
-  #   "qpp:iac-repo-url"    = var.git-origin
-  # }
+
+# QPPSE-1208
   tags = merge(var.tags,local.ssmcpcplus_upfsd_tags)
 }
 
@@ -426,18 +366,8 @@ resource "aws_ssm_parameter" "cpc_plus_validation_file" {
       value
     ]
   }
-  # tags = {
-  #   "Name"                = "${var.project_name}-ssm-${var.environment}"
-  #   "qpp:owner"           = var.owner
-  #   "qpp:pagerduty-email" = var.pagerduty_email
-  #   "qpp:application"     = var.application
-  #   "qpp:project"         = var.project_name
-  #   "qpp:environment"     = var.environment
-  #   "qpp:layer"           = "Application"
-  #   "qpp:sensitivity"     = "Confidential"
-  #   "qpp:description"     = "SSM Param for Conversiontool"
-  #   "qpp:iac-repo-url"    = var.git-origin
-  # }
+
+# QPPSE-1208
   tags = merge(var.tags,local.ssmcpcplus_vfile_tags)
 }
 
@@ -453,18 +383,8 @@ resource "aws_ssm_parameter" "db_app_username" {
       value
     ]
   }
-  # tags = {
-  #   "Name"                = "${var.project_name}-ssm-${var.environment}"
-  #   "qpp:owner"           = var.owner
-  #   "qpp:pagerduty-email" = var.pagerduty_email
-  #   "qpp:application"     = var.application
-  #   "qpp:project"         = var.project_name
-  #   "qpp:environment"     = var.environment
-  #   "qpp:layer"           = "Application"
-  #   "qpp:sensitivity"     = "Confidential"
-  #   "qpp:description"     = "SSM Param for Conversiontool"
-  #   "qpp:iac-repo-url"    = var.git-origin
-  # }
+
+# QPPSE-1208
   tags = merge(var.tags,local.ssmdbappuser_tags)
 }
 
@@ -480,18 +400,8 @@ resource "aws_ssm_parameter" "db_master_username" {
       value
     ]
   }
-  # tags = {
-  #   "Name"                = "${var.project_name}-ssm-${var.environment}"
-  #   "qpp:owner"           = var.owner
-  #   "qpp:pagerduty-email" = var.pagerduty_email
-  #   "qpp:application"     = var.application
-  #   "qpp:project"         = var.project_name
-  #   "qpp:environment"     = var.environment
-  #   "qpp:layer"           = "Application"
-  #   "qpp:sensitivity"     = "Confidential"
-  #   "qpp:description"     = "SSM Param for Conversiontool"
-  #   "qpp:iac-repo-url"    = var.git-origin
-  # }
+
+# QPPSE-1208
   tags = merge(var.tags,local.ssmdbmaster_tags)
 }
 
@@ -507,18 +417,8 @@ resource "aws_ssm_parameter" "deploy0a_public-i-p" {
       value
     ]
   }
-  # tags = {
-  #   "Name"                = "${var.project_name}-ssm-${var.environment}"
-  #   "qpp:owner"           = var.owner
-  #   "qpp:pagerduty-email" = var.pagerduty_email
-  #   "qpp:application"     = var.application
-  #   "qpp:project"         = var.project_name
-  #   "qpp:environment"     = var.environment
-  #   "qpp:layer"           = "Application"
-  #   "qpp:sensitivity"     = "Confidential"
-  #   "qpp:description"     = "SSM Param for Conversiontool"
-  #   "qpp:iac-repo-url"    = var.git-origin
-  # }
+
+# QPPSE-1208
   tags = merge(var.tags,local.ssmdeploy_publicip_tags)
 }
 
@@ -534,18 +434,8 @@ resource "aws_ssm_parameter" "dynamo_table_name" {
       value
     ]
   }
-  # tags = {
-  #   "Name"                = "${var.project_name}-ssm-${var.environment}"
-  #   "qpp:owner"           = var.owner
-  #   "qpp:pagerduty-email" = var.pagerduty_email
-  #   "qpp:application"     = var.application
-  #   "qpp:project"         = var.project_name
-  #   "qpp:environment"     = var.environment
-  #   "qpp:layer"           = "Application"
-  #   "qpp:sensitivity"     = "Confidential"
-  #   "qpp:description"     = "SSM Param for Conversiontool"
-  #   "qpp:iac-repo-url"    = var.git-origin
-  # }
+
+# QPPSE-1208
   tags = merge(var.tags, local.ssmdynamo_tags)
 }
 
@@ -561,18 +451,8 @@ resource "aws_ssm_parameter" "gdit_nessus_pub_key" {
       value
     ]
   }
-  # tags = {
-  #   "Name"                = "${var.project_name}-ssm-${var.environment}"
-  #   "qpp:owner"           = var.owner
-  #   "qpp:pagerduty-email" = var.pagerduty_email
-  #   "qpp:application"     = var.application
-  #   "qpp:project"         = var.project_name
-  #   "qpp:environment"     = var.environment
-  #   "qpp:layer"           = "Application"
-  #   "qpp:sensitivity"     = "Confidential"
-  #   "qpp:description"     = "SSM Param for Conversiontool"
-  #   "qpp:iac-repo-url"    = var.git-origin
-  # }
+
+# QPPSE-1208
   tags = merge(var.tags,local.ssmnessuspkey_tags)
 }
 
@@ -588,18 +468,8 @@ resource "aws_ssm_parameter" "java_opts" {
       value
     ]
   }
-  # tags = {
-  #   "Name"                = "${var.project_name}-ssm-${var.environment}"
-  #   "qpp:owner"           = var.owner
-  #   "qpp:pagerduty-email" = var.pagerduty_email
-  #   "qpp:application"     = var.application
-  #   "qpp:project"         = var.project_name
-  #   "qpp:environment"     = var.environment
-  #   "qpp:layer"           = "Application"
-  #   "qpp:sensitivity"     = "Confidential"
-  #   "qpp:description"     = "SSM Param for Conversiontool"
-  #   "qpp:iac-repo-url"    = var.git-origin
-  # }
+
+# QPPSE-1208
   tags = merge(var.tags,local.ssmjavaopts_tags)
 }
 
@@ -615,18 +485,8 @@ resource "aws_ssm_parameter" "kms_key" {
       value
     ]
   }
-  # tags = {
-  #   "Name"                = "${var.project_name}-ssm-${var.environment}"
-  #   "qpp:owner"           = var.owner
-  #   "qpp:pagerduty-email" = var.pagerduty_email
-  #   "qpp:application"     = var.application
-  #   "qpp:project"         = var.project_name
-  #   "qpp:environment"     = var.environment
-  #   "qpp:layer"           = "Application"
-  #   "qpp:sensitivity"     = "Confidential"
-  #   "qpp:description"     = "SSM Param for Conversiontool"
-  #   "qpp:iac-repo-url"    = var.git-origin
-  # }
+
+# QPPSE-1208
   tags = merge(var.tags,local.ssmctkmskey_tags)
 }
 
@@ -642,18 +502,8 @@ resource "aws_ssm_parameter" "nexus_host" {
       value
     ]
   }
-  # tags = {
-  #   "Name"                = "${var.project_name}-ssm-${var.environment}"
-  #   "qpp:owner"           = var.owner
-  #   "qpp:pagerduty-email" = var.pagerduty_email
-  #   "qpp:application"     = var.application
-  #   "qpp:project"         = var.project_name
-  #   "qpp:environment"     = var.environment
-  #   "qpp:layer"           = "Application"
-  #   "qpp:sensitivity"     = "Confidential"
-  #   "qpp:description"     = "SSM Param for Conversiontool"
-  #   "qpp:iac-repo-url"    = var.git-origin
-  # }
+
+# QPPSE-1208
   tags = merge(var.tags,local.ssmctnexushost_tags)
 }
 
@@ -669,18 +519,8 @@ resource "aws_ssm_parameter" "org_name" {
       value
     ]
   }
-  # tags = {
-  #   "Name"                = "${var.project_name}-ssm-${var.environment}"
-  #   "qpp:owner"           = var.owner
-  #   "qpp:pagerduty-email" = var.pagerduty_email
-  #   "qpp:application"     = var.application
-  #   "qpp:project"         = var.project_name
-  #   "qpp:environment"     = var.environment
-  #   "qpp:layer"           = "Application"
-  #   "qpp:sensitivity"     = "Confidential"
-  #   "qpp:description"     = "SSM Param for Conversiontool"
-  #   "qpp:iac-repo-url"    = var.git-origin
-  # }
+
+# QPPSE-1208
   tags = merge(var.tags,local.ssmctorgname_tags)
 }
 
@@ -696,18 +536,8 @@ resource "aws_ssm_parameter" "rti_org_name" {
       value
     ]
   }
-  # tags = {
-  #   "Name"                = "${var.project_name}-ssm-${var.environment}"
-  #   "qpp:owner"           = var.owner
-  #   "qpp:pagerduty-email" = var.pagerduty_email
-  #   "qpp:application"     = var.application
-  #   "qpp:project"         = var.project_name
-  #   "qpp:environment"     = var.environment
-  #   "qpp:layer"           = "Application"
-  #   "qpp:sensitivity"     = "Confidential"
-  #   "qpp:description"     = "SSM Param for Conversiontool"
-  #   "qpp:iac-repo-url"    = var.git-origin
-  # }
+
+# QPPSE-1208
   tags = merge(var.tags,local.ssmrtiorgname_tags)
 }
 
@@ -723,18 +553,8 @@ resource "aws_ssm_parameter" "validation_url" {
       value
     ]
   }
-  # tags = {
-  #   "Name"                = "${var.project_name}-ssm-${var.environment}"
-  #   "qpp:owner"           = var.owner
-  #   "qpp:pagerduty-email" = var.pagerduty_email
-  #   "qpp:application"     = var.application
-  #   "qpp:project"         = var.project_name
-  #   "qpp:environment"     = var.environment
-  #   "qpp:layer"           = "Application"
-  #   "qpp:sensitivity"     = "Confidential"
-  #   "qpp:description"     = "SSM Param for Conversiontool"
-  #   "qpp:iac-repo-url"    = var.git-origin
-  # }
+
+# QPPSE-1208
   tags = merge(var.tags,local.ssmctvalidurl_tags)
 }
 resource "aws_ssm_parameter" "ssl_secret" {
@@ -751,18 +571,7 @@ resource "aws_ssm_parameter" "ssl_secret" {
     ]
   }
   
-  # tags = {
-  #   "Name"                = "${var.project_name}-ssm-${var.environment}"
-  #   "qpp:owner"           = var.owner
-  #   "qpp:pagerduty-email" = var.pagerduty_email
-  #   "qpp:application"     = var.application
-  #   "qpp:project"         = var.project_name
-  #   "qpp:environment"     = var.environment
-  #   "qpp:layer"           = "Application"
-  #   "qpp:sensitivity"     = "Confidential"
-  #   "qpp:description"     = "SSM Param for Conversiontool"
-  #   "qpp:iac-repo-url"    = var.git-origin
-  # }
+# QPPSE-1208
   tags = merge(var.tags,local.ssmctsslsecret_tags)
 }
 
@@ -780,17 +589,6 @@ resource "aws_ssm_parameter" "cert_arn" {
     ]
   }
   
-  # tags = {
-  #   "Name"                = "${var.project_name}-ssm-${var.environment}"
-  #   "qpp:owner"           = var.owner
-  #   "qpp:pagerduty-email" = var.pagerduty_email
-  #   "qpp:application"     = var.application
-  #   "qpp:project"         = var.project_name
-  #   "qpp:environment"     = var.environment
-  #   "qpp:layer"           = "Application"
-  #   "qpp:sensitivity"     = "Confidential"
-  #   "qpp:description"     = "SSM Param for Conversiontool"
-  #   "qpp:iac-repo-url"    = var.git-origin
-  # }
+# QPPSE-1208
   tags = merge(var.tags,local.ssmctcertarn_tags)
 }

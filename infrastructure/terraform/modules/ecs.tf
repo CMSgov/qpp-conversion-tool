@@ -42,19 +42,7 @@ resource "aws_ecs_cluster" "conversion-tool-ecs-cluster" {
     value = "enabled"
   }
 
-  # QPPSE-1208
-  # tags = {
-  #   "Name"                = "${var.project_name}-ecs-${var.environment}"
-  #   "qpp:owner"           = var.owner
-  #   "qpp:pagerduty-email" = var.pagerduty_email
-  #   "qpp:application"     = var.application
-  #   "qpp:project"         = var.project_name
-  #   "qpp:environment"     = var.environment
-  #   "qpp:layer"           = "Application"
-  #   "qpp:sensitivity"     = var.sensitivity
-  #   "qpp:description"     = "ECS Cluster for Conversiontool"
-  #   "qpp:iac-repo-url"    = var.git-origin
-  # }
+# QPPSE-1208
   tags = merge(var.tags,local.ctcluster_tags)
 }
 
@@ -106,20 +94,7 @@ resource "aws_ecs_service" "conversion-tool-service" {
     container_port   = "8443"
   }
 
-  # QPPSE-1208
-  #
-  # tags = {
-  #   "Name"                = "${var.project_name}-ecs-svc-${var.environment}"
-  #   "qpp:owner"           = var.owner
-  #   "qpp:pagerduty-email" = var.pagerduty_email
-  #   "qpp:application"     = var.application
-  #   "qpp:project"         = var.project_name
-  #   "qpp:environment"     = var.environment
-  #   "qpp:layer"           = "Application"
-  #   "qpp:sensitivity"     = var.sensitivity
-  #   "qpp:description"     = "ECS Service for Conversiontool"
-  #   "qpp:iac-repo-url"    = var.git-origin
-  # }
+# QPPSE-1208
   tags = merge(var.tags,local.ctservice_tags)
 }
 
@@ -154,10 +129,8 @@ resource "aws_security_group" "ct_app" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  # QPPSE-1208
-  # tags = {
-  #   Name = "conversion-tool-app-${var.environment}"
-  # }
+
+# QPPSE-1208
   tags = merge(var.tags,local.ctapp_tags)
 }
 
@@ -165,10 +138,8 @@ resource "aws_security_group" "conversion-tool_alb" {
   name        = "${var.project_name}_${var.environment}_alb_sg"
   description = "Security group for conversion-tool."
   vpc_id      = var.vpc_id
-  # QPPSE-1208
-  # tags = {
-  #   Name = "${var.project_name}_${var.environment}conversion-tool_alb"
-  # }
+
+# QPPSE-1208
   tags = merge(var.tags, local.alb_tags)
 }
 

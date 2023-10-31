@@ -22,6 +22,7 @@ resource "aws_ecr_repository" "qpp-final-scoring-ct" {
     scan_on_push = true
   }
 
+# QPPSE-1208
   tags = merge(var.tags,local.ctecr_tags)
 }
 

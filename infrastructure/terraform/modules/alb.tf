@@ -35,18 +35,7 @@ resource "aws_lb" "qppsf" {
 
   enable_deletion_protection = true
 
-  # tags = {
-  #   "Name"                = "${var.project_name}-alb-${var.environment}"
-  #   "qpp:owner"           = var.owner
-  #   "qpp:pagerduty-email" = var.pagerduty_email
-  #   "qpp:application"     = var.application
-  #   "qpp:project"         = var.project_name
-  #   "qpp:environment"     = var.environment
-  #   "qpp:layer"           = "Application"
-  #   "qpp:sensitivity"     = var.sensitivity
-  #   "qpp:description"     = "Application Load Balancer for Conversiontool"
-  #   "qpp:iac-repo-url"    = var.git-origin
-  # }
+# QPPSE-1208
   tags = merge(var.tags,local.ctalb_tags)
 
   access_logs {
@@ -73,18 +62,7 @@ resource "aws_lb_target_group" "conversion-tg-ssl" {
     matcher  = "200-499"
   }
 
-  # tags = {
-  #   "Name"                = "${var.project_name}-alb-targetgrp-${var.environment}"
-  #   "qpp:owner"           = var.owner
-  #   "qpp:pagerduty-email" = var.pagerduty_email
-  #   "qpp:application"     = var.application
-  #   "qpp:project"         = var.project_name
-  #   "qpp:environment"     = var.environment
-  #   "qpp:layer"           = "Application"
-  #   "qpp:sensitivity"     = var.sensitivity
-  #   "qpp:description"     = "Application Load Balancer Target Group for Conversiontool"
-  #   "qpp:iac-repo-url"    = var.git-origin
-  # }
+# QPPSE-1208
   tags = merge(var.tags,local.ctalb_tgtgrp_tags)
 }
 

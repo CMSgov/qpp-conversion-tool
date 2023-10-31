@@ -30,6 +30,7 @@ resource "aws_lambda_function" "kinesis_cw_lambda" {
   runtime = "nodejs14.x"
   timeout = 30
 
+# QPPSE-1208
   tags = merge(var.tags,local.kinesis_lambda_tags)
 
   environment {

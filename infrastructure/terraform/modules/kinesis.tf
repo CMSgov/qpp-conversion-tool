@@ -22,5 +22,6 @@ resource "aws_kinesis_stream" "kinesis-stream-cw-logs" {
   encryption_type = "KMS"
   kms_key_id      = "alias/aws/kinesis"
 
+# QPPSE-1208
   tags = merge(var.tags,local.kinesis_tags)
 }
