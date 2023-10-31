@@ -110,10 +110,10 @@ variable "default_tags" {
     # devpre 
     # prod
     qpp_layer                   = string    # primarily EC2
-    qpp_distribution            = string    # optional, primarily EC2
-    cpm-backup                  = string    # optional, primarily EC2 + RDS
-    qpp_expiry-date             = number    # optional, Unix timestamp
-    qpp_source-ami              = string    # optional, primarily EC2
+    qpp_distribution            = optional(string)    # optional, primarily EC2
+    cpm-backup                  = optional(string)    # optional, primarily EC2 + RDS
+    qpp_expiry-date             = optional(number)    # optional, Unix timestamp
+    qpp_source-ami              = optional(string)    # optional, primarily EC2
     qpp_sensitivity             = string
     # one of phi, pii, fti, confidential, public [default]
     qpp_description             = string
@@ -130,10 +130,10 @@ variable "default_tags" {
     qpp_application             = "qpp-conversiontool"
     qpp_environment             = "dev"
     qpp_layer                   = "Application"     # primarily EC2
-    qpp_distribution            = ""            # optional, primarily EC2
-    cpm-backup                  = ""            # optional, primarily EC2 + RDS
-    qpp_expiry-date             = 2147483647    # optional, Unix timestamp
-    qpp_source-ami              = ""            # optional, primarily EC2
+    ###qpp_distribution            = ""            # optional, primarily EC2
+    ###cpm-backup                  = ""            # optional, primarily EC2 + RDS
+    ###qpp_expiry-date             = 2147483647    # optional, Unix timestamp
+    ###qpp_source-ami              = ""            # optional, primarily EC2
     qpp_sensitivity             = "Confidential"
     qpp_description             = "default tag set"
     qpp_iac-repo-url            = "https://github.com/CMSgov/qpp-conversion-tool.git"

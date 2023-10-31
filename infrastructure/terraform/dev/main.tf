@@ -46,7 +46,8 @@ module "conversion-tool" {
   certificate_arn    = var.certificate_arn
   codebuild_branch_ref = var.codebuild_branch_ref
   team               = var.team
-
+  ## QPPSE-1208
+  tags = var.default_tags
 }
 
 module "conversion-tool-newrelic" {
