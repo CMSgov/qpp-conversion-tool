@@ -24,6 +24,17 @@ locals {
     qpp_description     = "Application Load Balancer Target Group for Conversiontool"
     qpp_iac-repo-url    = var.git-origin
   }
+  ctlb_ssl_tags = {
+    Name                = "${var.project_name}-lb-SSL-${var.environment}"
+    qpp_description     = "Application Load Balancer with SSL for Conversiontool"
+    qpp_owner           = var.owner
+    qpp_incident-response-email = var.pagerduty_email
+    qpp_application     = var.application
+    qpp_project         = var.project_name
+    qpp_environment     = var.environment
+    qpp_layer           = "Application"
+    qpp_sensitivity     = var.sensitivity
+  }
 }
 
 resource "aws_lb" "qppsf" {
@@ -79,7 +90,7 @@ resource "aws_lb_listener" "conversion-tool-ssl" {
     target_group_arn = aws_lb_target_group.conversion-tg-ssl.arn
   }
   # QPPSE-1208
-  tags = var.tags
+  tags = merge(var.tags,local.ctlb_ssl_tags)
 }
 
 resource "aws_security_group_rule" "ct-ingress-from-https-elb-to-ui" {
