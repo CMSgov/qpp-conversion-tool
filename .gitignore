@@ -50,3 +50,8 @@ infrastructure/terraform/prod/.terraform.lock.hcl
 infrastructure/terraform/impl/.terraform.lock.hcl
 .gitignore
 infrastructure/terraform/dev/dev.qppse1208-v2.plan
+infrastructure/terraform/dev/.terraform.lock.hcl
+infrastructure/terraform/dev/dev.qppse1208-v3.plan
+infrastructure/terraform/devpre/.terraform.lock.hcl
+.gitignore
+infrastructure/terraform/prod/.terraform.lock.hcl
