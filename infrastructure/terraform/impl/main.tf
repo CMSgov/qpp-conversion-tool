@@ -47,7 +47,8 @@ module "conversion-tool" {
   codebuild_branch_ref = var.codebuild_branch_ref
   team               = var.team
   allow_kms_keys     = var.allow_kms_keys
-}
+  ## QPPSE-1208
+  tags = var.default_tags}
 
 module "conversion-tool-newrelic" {
   source = "../modules/newrelic/"
