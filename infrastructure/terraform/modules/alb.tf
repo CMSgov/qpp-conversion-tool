@@ -89,6 +89,4 @@ resource "aws_security_group_rule" "ct-ingress-from-https-elb-to-ui" {
   security_group_id        = aws_security_group.ct_app.id
   source_security_group_id = aws_security_group.conversion-tool_alb.id
   type                     = "ingress"
-  # QPPSE-1208
-  tags = var.tags
 }
