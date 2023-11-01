@@ -42,7 +42,7 @@ module "conversion-tool" {
   certificate_arn    = var.certificate_arn
   codebuild_branch_ref = var.codebuild_branch_ref
   team               = var.team
-
+  allow_kms_keys     = var.allow_kms_keys
 }
 
 module "conversion-tool-newrelic" {

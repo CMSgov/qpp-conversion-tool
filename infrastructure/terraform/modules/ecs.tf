@@ -50,7 +50,7 @@ resource "aws_ecs_service" "conversion-tool-service" {
   launch_type                        = "FARGATE"
   deployment_maximum_percent         = "100"
   deployment_minimum_healthy_percent = "0"
-  platform_version                   = "1.4.0"
+  platform_version                   = "LATEST"
 
   lifecycle {
     ignore_changes = [task_definition]
