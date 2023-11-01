@@ -48,7 +48,8 @@ module "conversion-tool" {
   team               = var.team
   allow_kms_keys     = var.allow_kms_keys
   ## QPPSE-1208
-  tags = var.default_tags}
+  tags = var.default_tags
+}
 
 module "conversion-tool-newrelic" {
   source = "../modules/newrelic/"
