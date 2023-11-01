@@ -7,7 +7,7 @@ import sys
 def main(argv):
 	# Open the workbook and select the second sheet
 	wb = load_workbook(filename = argv[0])
-	sh = wb['2022_Providers']
+	sh = wb['2023_Providers']
 	data_list = []
 	for row in sh.iter_rows(sh.min_row+1, sh.max_row):
 		data = OrderedDict()
