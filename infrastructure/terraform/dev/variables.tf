@@ -130,7 +130,7 @@ variable "default_tags" {
   default = {
     Name                        = "qppsf-ct project"
     qpp_owner                   = "qpp-final-scoring-devops@semanticbits.com"  # email_addr
-    qpp_incident-response-email = "qpp-final-scoring-devops@semanticbits.com"  # email_addr
+    qpp_incident-response-email = "893a0342-571a-43d4-ad5e-f4b0aef7654b+CT-routingkey-nonprod@alert.victorops.com"  # email_addr
     qpp_application             = "qpp-conversiontool"
     qpp_environment             = "dev"
     qpp_layer                   = "Application"     # primarily EC2
