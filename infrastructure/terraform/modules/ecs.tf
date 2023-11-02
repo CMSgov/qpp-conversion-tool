@@ -1,3 +1,39 @@
+# QPPSE-1208
+locals {
+  alb_tags = { 
+    Name            = "${var.project_name}_${var.environment}conversion-tool_alb" 
+    qpp_description = "ct-app App Load Balancer" 
+  }
+  ctapp_tags = { 
+    Name            = "conversion-tool-app-${var.environment}"
+    qpp_description = "ct-app-sg Allows inbound traffic"
+  }
+  ctservice_tags = {
+    Name                = "${var.project_name}-ecs-svc-${var.environment}"
+    qpp_owner           = var.owner
+    qpp_pagerduty-email = var.pagerduty_email
+    qpp_application     = var.application
+    qpp_project         = var.project_name
+    qpp_environment     = var.environment
+    qpp_layer           = "Application"
+    qpp_sensitivity     = var.sensitivity
+    qpp_description     = "ECS Service for Conversiontool"
+    qpp_iac-repo-url    = var.git-origin
+  }
+  ctcluster_tags = {
+    Name                = "${var.project_name}-ecs-${var.environment}"
+    qpp_owner           = var.owner
+    qpp_pagerduty-email = var.pagerduty_email
+    qpp_application     = var.application
+    qpp_project         = var.project_name
+    qpp_environment     = var.environment
+    qpp_layer           = "Application"
+    qpp_sensitivity     = var.sensitivity
+    qpp_description     = "ECS Cluster for Conversiontool"
+    qpp_iac-repo-url    = var.git-origin
+  }
+}
+
 resource "aws_ecs_cluster" "conversion-tool-ecs-cluster" {
   name = "qppsf-conversion-tool-${var.environment}"
 
@@ -6,19 +42,8 @@ resource "aws_ecs_cluster" "conversion-tool-ecs-cluster" {
     value = "enabled"
   }
 
-
-  tags = {
-    "Name"                = "${var.project_name}-ecs-${var.environment}"
-    "qpp:owner"           = var.owner
-    "qpp:pagerduty-email" = var.pagerduty_email
-    "qpp:application"     = var.application
-    "qpp:project"         = var.project_name
-    "qpp:environment"     = var.environment
-    "qpp:layer"           = "Application"
-    "qpp:sensitivity"     = var.sensitivity
-    "qpp:description"     = "ECS Cluster for Conversiontool"
-    "qpp:iac-repo-url"    = var.git-origin
-  }
+# QPPSE-1208
+  tags = merge(var.tags,local.ctcluster_tags)
 }
 
 resource "aws_ecs_task_definition" "conversion-tool" {
@@ -69,19 +94,8 @@ resource "aws_ecs_service" "conversion-tool-service" {
     container_port   = "8443"
   }
 
-  tags = {
-    "Name"                = "${var.project_name}-ecs-svc-${var.environment}"
-    "qpp:owner"           = var.owner
-    "qpp:pagerduty-email" = var.pagerduty_email
-    "qpp:application"     = var.application
-    "qpp:project"         = var.project_name
-    "qpp:environment"     = var.environment
-    "qpp:layer"           = "Application"
-    "qpp:sensitivity"     = var.sensitivity
-    "qpp:description"     = "ECS Service for Conversiontool"
-    "qpp:iac-repo-url"    = var.git-origin
-  }
-
+# QPPSE-1208
+  tags = merge(var.tags,local.ctservice_tags)
 }
 
 resource "aws_cloudwatch_log_group" "conversion-tool" {
@@ -115,18 +129,18 @@ resource "aws_security_group" "ct_app" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  tags = {
-    Name = "conversion-tool-app-${var.environment}"
-  }
+
+# QPPSE-1208
+  tags = merge(var.tags,local.ctapp_tags)
 }
 
 resource "aws_security_group" "conversion-tool_alb" {
   name        = "${var.project_name}_${var.environment}_alb_sg"
   description = "Security group for conversion-tool."
   vpc_id      = var.vpc_id
-  tags = {
-    Name = "${var.project_name}_${var.environment}conversion-tool_alb"
-  }
+
+# QPPSE-1208
+  tags = merge(var.tags, local.alb_tags)
 }
 
 resource "aws_security_group_rule" "allow_https" {

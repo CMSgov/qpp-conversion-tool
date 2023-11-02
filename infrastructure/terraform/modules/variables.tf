@@ -77,3 +77,19 @@ variable "codebuild_branch_ref" {
 variable "allow_kms_keys" {
   description = "kms arns to be allowed"
 }
+
+# QPPSE-1208
+# add default_tags as variable to allow clean merge/override
+variable "tags" {
+  type = object( {
+    Name                        = string
+    qpp_owner                   = string
+    qpp_incident-response-email = string
+    qpp_application             = string
+    qpp_environment             = string
+    qpp_layer                   = string
+    qpp_sensitivity             = string
+    qpp_description             = string
+    qpp_iac-repo-url            = string
+  } )
+}
