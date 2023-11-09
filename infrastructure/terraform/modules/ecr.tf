@@ -1,3 +1,19 @@
+# QPPSE-1208
+locals {
+  ctecr_tags = {
+    Name                = "${var.project_name}-ecr-${var.environment}"
+    qpp_owner           = var.owner
+    qpp_incident-response-email = var.pagerduty_email
+    qpp_application     = var.application
+    qpp_project         = var.project_name
+    qpp_environment     = var.environment
+    qpp_layer           = "Application"
+    qpp_sensitivity     = var.sensitivity
+    qpp_description     = "ECR Repo for Conversiontool"
+    qpp_iac-repo-url    = var.git-origin
+  }
+}
+
 resource "aws_ecr_repository" "qpp-final-scoring-ct" {
   name                 = "qppsf/conversion-tool/${var.environment}"
   image_tag_mutability = "MUTABLE"
@@ -6,18 +22,8 @@ resource "aws_ecr_repository" "qpp-final-scoring-ct" {
     scan_on_push = true
   }
 
-  tags = {
-    "Name"                = "${var.project_name}-ecr-${var.environment}"
-    "qpp:owner"           = var.owner
-    "qpp:pagerduty-email" = var.pagerduty_email
-    "qpp:application"     = var.application
-    "qpp:project"         = var.project_name
-    "qpp:environment"     = var.environment
-    "qpp:layer"           = "Application"
-    "qpp:sensitivity"     = var.sensitivity
-    "qpp:description"     = "ECR Repo for Conversiontool"
-    "qpp:iac-repo-url"    = var.git-origin
-  }
+# QPPSE-1208
+  tags = merge(var.tags,local.ctecr_tags)
 }
 
 resource "aws_ecr_repository_policy" "qpp-ecr-repository" {
