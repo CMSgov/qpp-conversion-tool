@@ -28,7 +28,7 @@ phases:
       - chmod +x ./qppsfct-copy-certs.sh
       - ./qppsfct-copy-certs.sh $ENVIRONMENT $AWS_DEFAULT_REGION
       - echo "Updating participation file"
-      - chmod +x ./upload-part-file.sh
+      - chmod +x ./update-part-file.sh
       - ./update-part-file.sh ${PART_BUCKET} ${PART_FILE} ${OUTPUT_PART_FILE} ${AWS_DEFAULT_REGION}
       - echo "Logging in to Amazon dockerHub ECR"
       - docker login --username $DOCKERHUB_USERNAME --password $DOCKERHUB_PASS
