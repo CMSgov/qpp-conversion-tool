@@ -7,11 +7,9 @@ AWS_REGION=$4
 
 export AWS_REGION=${AWS_REGION}
 
-echo "${PART_FILE_BUCKET} ${PART_FILE} ${FORMATTED_FILE_NAME} ${AWS_REGION}"
-
 aws s3 cp s3://${PART_FILE_BUCKET}/${PART_FILE} .
 chmod +x ./tools/scripts/format-participation-file.py
-python ./tools/scripts/format-participation-file.py ${PART_FILE} ${FORMATTED_FILE_NAME}
+python3 ./tools/scripts/format-participation-file.py ${PART_FILE} ${FORMATTED_FILE_NAME}
 aws s3 mv ${FORMATTED_FILE_NAME} s3://${PART_FILE_BUCKET}/${FORMATTED_FILE_NAME}
 
 rm ${FORMATTED_FILE_NAME}
