@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#${{ format('aws s3 cp s3://{0}/{1} .', secrets.DEV_S3_BUCKET, secrets.DEV_PART_FILE) }}
+
 PART_FILE_BUCKET=$1
 PART_FILE=$2
 FORMATTED_FILE_NAME=$3
