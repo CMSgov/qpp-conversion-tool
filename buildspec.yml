@@ -25,6 +25,7 @@ phases:
       - echo ${CODEBUILD_BUILD_ID}
       - echo ${CODEBUILD_BUILD_ARN}
       - echo Getting Certificates for ${ENVIRONMENT}
+      - pip install openpyxl
       - chmod +x ./qppsfct-copy-certs.sh
       - ./qppsfct-copy-certs.sh $ENVIRONMENT $AWS_DEFAULT_REGION
       - echo "Updating participation file"
