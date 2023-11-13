@@ -7,7 +7,8 @@ AWS_REGION=$4
 
 export AWS_REGION=${AWS_REGION}
 
-echo "${PART_FILE_BUCKET} ${PART_FILE} ${FORMATTED_FILE_NAME} ${AWS_REGION}"
+pip install openpyxl
+pip install simplejson
 
 aws s3 cp s3://${PART_FILE_BUCKET}/${PART_FILE} .
 chmod +x ./tools/scripts/format-participation-file.py
