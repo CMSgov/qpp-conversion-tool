@@ -2,14 +2,11 @@ version: 0.2
 env:
   variables:
     SLACK_CHANNEL: "p-qpp-sub-alerts"
-    PART_FILE: "2023_PCF_Participation_File_10182023.xlsx"
-  parameter-store: 
+  parameter-store:
     AWS_ACCOUNT_ID: "/qppar-sf/account_id"
     DOCKERHUB_USERNAME: "/qppar-sf/DOCKERHUB_USERNAME"
     DOCKERHUB_PASS: "/qppar-sf/DOCKERHUB_PASS"
     SLACK_WEBHOOK: "/qppar-sf/dev/conversion_tool/slack_hook_url"
-    PART_FILE_BUCKET: "/qppar-sf/$ENVIRONMENT/conversion_tool/CPC_PLUS_BUCKET_NAME"
-    OUTPUT_PART_FILE: "/qppar-sf/$ENVIRONMENT/conversion_tool/CPC_PLUS_VALIDATION_FILE"
 phases:
   install:
     runtime-versions:
@@ -20,21 +17,16 @@ phases:
       - echo ${AWS_DEFAULT_REGION}
       - echo ${AWS_ACCOUNT_ID}
       - echo ${ENVIRONMENT}
-      - echo ${PART_FILE_BUCKET}
       - echo ${CODEBUILD_RESOLVED_SOURCE_VERSION}
       - echo ${CODEBUILD_BUILD_ID}
       - echo ${CODEBUILD_BUILD_ARN}
       - echo Getting Certificates for ${ENVIRONMENT}
-      - pip install openpyxl
       - chmod +x ./qppsfct-copy-certs.sh
       - ./qppsfct-copy-certs.sh $ENVIRONMENT $AWS_DEFAULT_REGION
-      - echo "Updating participation file"
-      - chmod +x ./upload-part-file.sh
-      - ./upload-part-file.sh $PART_FILE_BUCKET $PART_FILE $OUTPUT_PART_FILE $AWS_DEFAULT_REGION
       - echo "Logging in to Amazon dockerHub ECR"
       - docker login --username $DOCKERHUB_USERNAME --password $DOCKERHUB_PASS
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com
-  
+
   build:
     commands:
       - REPOSITORY_URI="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/qppsf/conversion-tool/${ENVIRONMENT}"
@@ -61,7 +53,7 @@ phases:
       - aws ecs wait services-stable --cluster ${ECS_CLUSTER} --services ${SERVICE_NAME}
 
   post_build:
-      commands:
+    commands:
       - |
         if [ "$CODEBUILD_BUILD_SUCCEEDING" -eq 1 ]; then
           - SLACK_MSG="BUILD SUCCEEDED for Conversion Tool ${ENVIRONMENT} Environment, ${CODEBUILD_BUILD_ARN}"
