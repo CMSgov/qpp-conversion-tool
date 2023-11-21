@@ -40,3 +40,8 @@ variable "ecs_cluster" {
 variable "ecs_svc" {
   type = string
 }
+
+variable "environment" {
+  type = string
+  description = "Environment(tier)"
+}
