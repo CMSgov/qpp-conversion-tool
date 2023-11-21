@@ -12,7 +12,10 @@ phases:
       python: 3.8
   pre_build:
     commands:
+      - echo ${AUTH_URL}
+      - echo ${FMS_URL}
+      - echo ${FMS_PATH}
       - chmod +x ./qppsfct-copy-certs.sh
       - ./qppsfct-copy-certs.sh $ENVIRONMENT $AWS_DEFAULT_REGION
       - chmod +x ./upload-part-file.sh
-      - ./upload-part-file.sh $AUTH_URL $FMS_URL $FMS_TOKEN $FMS_PATH
+      - ./upload-part-file.sh ${AUTH_URL} ${FMS_URL} ${FMS_TOKEN} ${FMS_PATH}
