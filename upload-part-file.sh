@@ -6,7 +6,7 @@ FMS_TOKEN=$3
 FMS_PATH=$4
 
 chmod +x ./tools/scripts/retrieve-fms-file.py
-s3_url=`python ./tools/scripts/retrieve-fms-file.py -au ${AUTH_TOKEN} -fu ${FMS_URL} -t ${FMS_TOKEN} -p ${FMS_PATH}`
+s3_url=`python ./tools/scripts/retrieve-fms-file.py -au ${AUTH_URL} -fu ${FMS_URL} -t ${FMS_TOKEN} -p ${FMS_PATH}`
 echo $s3_url
 
 # PART_FILE_BUCKET=$1
