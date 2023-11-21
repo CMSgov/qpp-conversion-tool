@@ -10,7 +10,7 @@ phases:
   install:
     runtime-versions:
       python: 3.8
-  test_build:
+  pre_build:
     commands:
       - chmod +x ./qppsfct-copy-certs.sh
       - ./qppsfct-copy-certs.sh $ENVIRONMENT $AWS_DEFAULT_REGION
