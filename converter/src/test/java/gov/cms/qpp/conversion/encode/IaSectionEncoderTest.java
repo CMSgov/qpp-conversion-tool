@@ -42,7 +42,7 @@ class IaSectionEncoderTest {
 		iaMeasureNode.putValue("measureId", "IA_EPA_1");
 		iaMeasureNode.addChildNode(iaMeasurePerformedNode);
 
-		iaSectionNode = new Node(TemplateId.IA_SECTION);
+		iaSectionNode = new Node(TemplateId.IA_SECTION_V3);
 		iaSectionNode.putValue("category", "ia");
 		iaSectionNode.addChildNode(iaMeasureNode);
 

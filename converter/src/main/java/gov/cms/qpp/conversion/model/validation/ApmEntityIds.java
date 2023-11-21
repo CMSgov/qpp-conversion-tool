@@ -22,8 +22,7 @@ public class ApmEntityIds {
 
 	private Set<String> validPcfApmEntityIds;
 
-	public ApmEntityIds(InputStream cpcPlusFileStream, InputStream pcfFilestream) {
-		validCpcPlusApmEntityIds = JsonHelper.readJson(cpcPlusFileStream, SET_OF_STRINGS_TYPE);
+	public ApmEntityIds(InputStream pcfFilestream) {
 		validPcfApmEntityIds = JsonHelper.readJson(pcfFilestream, SET_OF_STRINGS_TYPE);
 	}
 

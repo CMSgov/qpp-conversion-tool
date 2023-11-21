@@ -12,14 +12,18 @@ terraform {
     required_providers {
         aws = {
             source = "hashicorp/aws"
-            version = "=3.70.0"
+            version = "4.55.0"
         }
     }
-    required_version = "1.0.0"
+    required_version = "1.5.0"
 }
 
 provider "aws" {
   region  = var.region
+  # QPPSE-1208
+  default_tags {
+    tags = var.default_tags
+  }
 }
 
 module "conversion-tool" {
@@ -42,7 +46,9 @@ module "conversion-tool" {
   certificate_arn    = var.certificate_arn
   codebuild_branch_ref = var.codebuild_branch_ref
   team               = var.team
-
+  allow_kms_keys     = var.allow_kms_keys
+  ## QPPSE-1208
+  tags = var.default_tags
 }
 
 module "conversion-tool-newrelic" {

@@ -29,7 +29,7 @@ class PiSectionValidatorTest {
 		measureNode = new Node(TemplateId.MEASURE_PERFORMED);
 		measureNode.putValue("measureId", VALID_PI_MEASURE);
 
-		piSectionNode = new Node(TemplateId.PI_SECTION_V2);
+		piSectionNode = new Node(TemplateId.PI_SECTION_V3);
 		piSectionNode.putValue("category", "pi");
 	}
 

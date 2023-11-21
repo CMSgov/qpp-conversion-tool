@@ -30,7 +30,7 @@ public class NodeHelperTest {
 	@Test
 	void findParentTest() {
 		Node grandParentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
-		Node parentNode = new Node(TemplateId.MEASURE_SECTION_V4);
+		Node parentNode = new Node(TemplateId.MEASURE_SECTION_V5);
 		parentNode.setParent(grandParentNode);
 
 		Node testNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
@@ -40,6 +40,6 @@ public class NodeHelperTest {
 		Node expectedParent = NodeHelper.findParent(testNode, parentNode.getType());
 
 		assertThat(expectedGrandparent.getType()).isSameInstanceAs(TemplateId.CLINICAL_DOCUMENT);
-		assertThat(expectedParent.getType()).isSameInstanceAs(TemplateId.MEASURE_SECTION_V4);
+		assertThat(expectedParent.getType()).isSameInstanceAs(TemplateId.MEASURE_SECTION_V5);
 	}
 }
