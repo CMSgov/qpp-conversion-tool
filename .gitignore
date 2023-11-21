@@ -15,6 +15,7 @@ bin/
 .factorypath
 *.swp
 qrdaToQppAssociations.txt
+local.env
 
 */.checkstyle
 

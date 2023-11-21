@@ -92,3 +92,17 @@ Finished a cool new feature or fix for the conversion tool? Please feel free sub
 See the [contribution guidelines](/.github/CONTRIBUTING.md) on how to submit a Pull Request.
 
 [readme]: /README.md
+
+## FMS Retrieval
+
+In order to retrieve files from FMS, `local.env` should contain values for below parameters.  These contain sensitive information and cannot be committed to the repository.
+
+```
+auth_url='url'
+fms_url='url'
+fms_token='token'
+fms_path='folder/file.ext'
+s3_bucket='aws-pii-bucket'
+```
+
+With access to the conversion tool environment, update your local `~/.aws/credentials` file with new short-term AWS credentials before initiating the request ([learn more](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/setup-credentials.html)).
