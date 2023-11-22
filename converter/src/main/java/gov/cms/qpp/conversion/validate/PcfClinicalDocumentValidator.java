@@ -191,7 +191,7 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 	}
 
 	private boolean cehrtFormat(String requiredSubstring) {
-		return requiredSubstring.equalsIgnoreCase("15E");
+		return requiredSubstring.equalsIgnoreCase("15E") || requiredSubstring.equalsIgnoreCase("15C");
 	}
 
 	/**
@@ -205,7 +205,7 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 			String formatted = endDate.format(OUTPUT_END_DATE_FORMAT);
 			String program = node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME);
 			addError(Detail.forProblemAndNode(
-				ProblemCode.PCF_PLUS_SUBMISSION_ENDED.format(program, program, formatted, program, program,
+				ProblemCode.PCF_SUBMISSION_ENDED.format(program, program, formatted, program, program,
 					EnvironmentHelper.getOrDefault(CPC_PLUS_CONTACT_EMAIL, DEFAULT_CPC_PLUS_CONTACT_EMAIL)),
 				node));
 		}
