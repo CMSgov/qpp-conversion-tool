@@ -139,11 +139,11 @@ public enum ProblemCode implements LocalizedProblem {
 			+ "Here is a link to the IG section on identifiers: " + DocumentationReference.IDENTIFIERS),
 	PCF_CLINICAL_DOCUMENT_INVALID_APM(63, "The Alternative Payment Model (APM) Entity Identifier is not valid. "
 			+ " Here is a link to the IG section on identifiers: " + DocumentationReference.IDENTIFIERS),
-	PCF_PLUS_MISSING_SUPPLEMENTAL_CODE(66, "Missing the `(Supplemental Type)` - `(Type Qualification)` supplemental data for code "
+	PCF_MISSING_SUPPLEMENTAL_CODE(66, "Missing the `(Supplemental Type)` - `(Type Qualification)` supplemental data for code "
 		+ "`(Supplemental Data Code)` for the measure id `(Measure Id)`'s Sub-population `(Sub Population)`", true),
-	PCF_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT(67, "Must have one count for Supplemental Data `(Supplemental Data Code)` "
+	PCF_SUPPLEMENTAL_DATA_MISSING_COUNT(67, "Must have one count for Supplemental Data `(Supplemental Data Code)` "
 		+ "on Sub-population `(Sub Population)` for the measure id `(Measure Id)`", true),
-	PCF_PLUS_SUBMISSION_ENDED(68, "Your `(Program name)` submission was made after the `(Program name)` Measure section submission deadline of "
+	PCF_SUBMISSION_ENDED(68, "Your `(Program name)` submission was made after the `(Program name)` Measure section submission deadline of "
 		+ "`(Submission end date)`. Your `(Program name)` QRDA III file has not been processed. Please contact `(Program name)` Support at "
 		+ "`(PCF+ contact email)` for assistance.", true),
 	INVALID_PERFORMANCE_PERIOD_FORMAT(69, "`(Performance period start or end date)` is an invalid date format. "
@@ -199,18 +199,20 @@ public enum ProblemCode implements LocalizedProblem {
 	PCF_MULTI_TIN_NPI_SINGLE_PERFORMER(105, "If multiple TINs/NPIs are submitted, each must be reported within a separate performer"),
 	PCF_NO_PI(106, "PI submissions are not allowed within PCF"),
 	PCF_MISSING_COMBINATION(107,
-		"NPI/TIN Warning: NPI/TIN `(npi)`-`(tin)` was active on the PCF practitioner roster for `(apm)` during the performance year but was not found in the file. "
+		"NPI/TIN Warning: Missing NPI/TIN Combination Identified. NPI/TIN `(npi)`-`(tin)` was active on the PCF practitioner roster for `(apm)` during the performance year but was not found in the file. "
 			+ "Please ensure your submission contains all NPI/TIN combinations that were active on your roster at any point during the performance year. "
-			+ "Your QRDA III file and/or roster may require updates. Note: The QPP website does not have access to roster updates made after December 2, 2022. "
+			+ "Your QRDA III file and/or roster may require updates. Note: The QPP website does not have access to roster updates made after December 1, 2023. "
 			+ "It is therefore critical that you ensure your roster is up to date and your QRDA III file contains all NPI/TIN values that were active on your roster during the performance year. "
-			+ "Instructions on how to update your roster are available in the PCF Practice Management Guide, available on PCF Connect (https://app.innovation.cms.gov/CMMIConnect/IDMLogin).",
+			+ "Please contact your health IT vendor if your QRDA III file requires updates. "
+			+ "Instructions on how to update your roster are available in the PCF Practice Management Guide (https://cmmi.my.salesforce.com/sfc/p/#i0000000iryR/a/t00000028RsP/dMF_romOmf5VLe7p5lUj8vch11mPmELP6ZuyI16vS.Y).",
 		true),
 	PCF_INVALID_COMBINATION(108,
-		"NPI/TIN Warning: NPI/TIN `(npi)`-`(tin)` was reported in the file but does not exist at the practice or was not active on the PCF practitioner roster for `(apm)` during the performance year. "
+		"NPI/TIN Warning: Unexpected NPI/TIN Combination Found. NPI/TIN `(npi)`-`(tin)` was reported in the file but does not exist at the practice or was not active on the PCF practitioner roster for `(apm)` during the performance year. "
 			+ "Please ensure your submission only contains NPI/TIN combinations that were active on your roster at any point during the performance year. "
-			+ "Your QRDA III file and/or roster may require updates. Note: The QPP website does not have access to roster updates made after December 2, 2022. "
+			+ "Your QRDA III file and/or roster may require updates. Note: The QPP website does not have access to roster updates made after December 1, 2023. "
 			+ "It is therefore critical that you ensure your roster is up to date and your QRDA III file contains all NPI/TIN values that were active on your roster during the performance year. "
-			+ "Instructions on how to update your roster are available in the PCF Practice Management Guide, available on PCF Connect (https://app.innovation.cms.gov/CMMIConnect/IDMLogin).",
+			+ "Please contact your health IT vendor if your QRDA III file requires updates. "
+			+ "Instructions on how to update your roster are available in the PCF Practice Management Guide (https://cmmi.my.salesforce.com/sfc/p/#i0000000iryR/a/t00000028RsP/dMF_romOmf5VLe7p5lUj8vch11mPmELP6ZuyI16vS.Y).",
 		true);
 
 	private static final Map<Integer, ProblemCode> CODE_TO_VALUE = Arrays.stream(values())
