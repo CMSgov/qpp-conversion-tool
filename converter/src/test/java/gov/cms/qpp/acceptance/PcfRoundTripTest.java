@@ -36,7 +36,6 @@ public class PcfRoundTripTest {
 	@SuppressWarnings("unchecked")
 	@BeforeAll
 	static void setup() throws URISyntaxException, IOException {
-		MeasureConfigs.setMeasureDataFile("test-2022-measure-data.json");
 		ApmEntityIds apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json", "test_pcf_apm_entity_ids.json");
 		URL sample = PcfRoundTripTest.class.getClassLoader()
 			.getResource("pcf/success/PCF_Sample_QRDA-III.xml");
