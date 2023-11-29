@@ -23,8 +23,8 @@ import java.util.stream.Stream;
 import static com.google.common.truth.Truth.assertThat;
 import static gov.cms.qpp.acceptance.Util.getXml;
 
-public class Pcf2022AcceptanceTest {
-    private static final Path BASE = Paths.get("src/test/resources/pcf/acceptance2022");
+public class Pcf2023AcceptanceTest {
+    private static final Path BASE = Paths.get("src/test/resources/pcf/acceptance2023");
     private static final Path SUCCESS = BASE.resolve("success");
     private static final Path SUCCESS_WARNING = BASE.resolve("warning");
     private static final Path FAILURE = BASE.resolve("failure");
@@ -40,16 +40,6 @@ public class Pcf2022AcceptanceTest {
 
     static Stream<Path> successWithWarningsData() {
         return getXml(SUCCESS_WARNING);
-    }
-
-    @BeforeAll
-    static  void setUpCustomMeasureData() {
-        MeasureConfigs.setMeasureDataFile("test-2022-measure-data.json");
-    }
-
-    @AfterAll
-    static void resetMeasuresData() {
-        MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
     }
 
     @ParameterizedTest
