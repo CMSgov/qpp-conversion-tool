@@ -74,3 +74,72 @@ variable "codebuild_branch_ref" {
   type = string
   description = "ConversionTool Branch Ref"
 }
+
+variable "allow_kms_keys" {
+  description = "kms arns to be allowed"
+}
+
+# QPPSE-1208
+variable "default_tags" {
+  description = "default project tags for compliance"
+  type = object ({
+    Name                        = string
+    qpp_owner                   = string  # email_addr
+    qpp_incident-response-email = string  # email_addr
+    qpp_application             = string
+    # one of:
+    # qpp-ar
+    # qpp-auth
+    # qpp-claims
+    # qpp-epcs
+    # qpp-frontend
+    # qpp-conversiontool
+    # qpp-eligibility
+    # qpp-scoring
+    # qpp-selfnomination
+    # qpp-sfui
+    # qpp-clinicians-api
+    # qpp-scoring-api
+    # qpp-submissions-api
+    # qpp-targetedreview
+    # qpp-webinterface
+    # qpp-qa
+    # qpp-secops
+    # cqr-ui
+    qpp_environment             = string
+    # one of:
+    # dev
+    # test
+    # impl 
+    # devpre 
+    # prod
+    qpp_layer                   = string    # primarily EC2
+    qpp_distribution            = optional(string)    # optional, primarily EC2
+    cpm-backup                  = optional(string)    # optional, primarily EC2 + RDS
+    qpp_expiry-date             = optional(number)    # optional, Unix timestamp
+    qpp_source-ami              = optional(string)    # optional, primarily EC2
+    qpp_sensitivity             = string
+    # one of phi, pii, fti, confidential, public [default]
+    qpp_description             = string
+    qpp_iac-repo-url            = string
+    # starts with 
+    # https://github.cms.gov/[repo-path]
+    # https://github.com/cmsgov
+    # or 'na'
+  })
+  default = {
+    Name                        = "qppsf-ct project"
+    qpp_owner                   = "qpp-final-scoring-devops@semanticbits.com"  # email_addr
+    qpp_incident-response-email = "893a0342-571a-43d4-ad5e-f4b0aef7654b+CT-routingkey-nonprod@alert.victorops.com"  # email_addr
+    qpp_application             = "qpp-conversiontool"
+    qpp_environment             = "dev"
+    qpp_layer                   = "Application"     # primarily EC2
+    ###qpp_distribution            = ""            # optional, primarily EC2
+    ###cpm-backup                  = ""            # optional, primarily EC2 + RDS
+    ###qpp_expiry-date             = 2147483647    # optional, Unix timestamp
+    ###qpp_source-ami              = ""            # optional, primarily EC2
+    qpp_sensitivity             = "Confidential"
+    qpp_description             = "default tag set"
+    qpp_iac-repo-url            = "https://github.com/CMSgov/qpp-conversion-tool.git"
+  }
+}

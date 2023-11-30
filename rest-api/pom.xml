@@ -17,7 +17,7 @@
 
 	<properties>
 		<requiredCodeCoverage>0.90</requiredCodeCoverage>
-		<tomcat.version>9.0.72</tomcat.version>
+		<tomcat.version>9.0.80</tomcat.version>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/../test-coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 		<io.rest-assured.version>4.1.2</io.rest-assured.version>
 	</properties>
