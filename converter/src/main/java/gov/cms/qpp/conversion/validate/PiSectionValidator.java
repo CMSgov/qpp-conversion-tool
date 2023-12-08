@@ -17,7 +17,7 @@ import static gov.cms.qpp.conversion.decode.PiNumeratorDenominatorDecoder.MEASUR
 /**
  * Validate the ACI Section.
  */
-@Validator(TemplateId.PI_SECTION_V2)
+@Validator(TemplateId.PI_SECTION_V3)
 public class PiSectionValidator extends NodeValidator {
 
 	protected static final Set<String> RESTRICTED_PI_MEASURES = Collections.unmodifiableSet(Sets.newHashSet("PI_HIE_1", "PI_LVOTC_1", "PI_HIE_4", "PI_LVITC_2"));

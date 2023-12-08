@@ -32,6 +32,8 @@ class ClinicalDocumentDecoderTest {
 	private Node clinicalDocument;
 	private static final String TEST_TIN = "123456789";
 	private static final String TEST_NPI = "2567891421";
+	private static final String TEST_MVP_ID = "MVP01123";
+	private static final String TEST_SUBGROUP_ID = "SG-00000001";
 
 	@BeforeAll
 	static void init() throws IOException {
@@ -69,6 +71,12 @@ class ClinicalDocumentDecoderTest {
 	void testRootTaxpayerIdentificationNumber() {
 		assertThat(clinicalDocument.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo(TEST_TIN);
+	}
+
+	@Test
+	void testRootMvpId() {
+		assertThat(clinicalDocument.getValue(ClinicalDocumentDecoder.MVP_ID))
+			.isEqualTo(TEST_MVP_ID);
 	}
 
 	@Test
@@ -141,7 +149,7 @@ class ClinicalDocumentDecoderTest {
 
 	@Test
 	void decodeClinicalDocumentInternalDecode() {
-		Element clinicalDocument = makeClinicalDocument("MIPS");
+		Element clinicalDocument = makeClinicalDocument("MIPS", false, false);
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
@@ -163,7 +171,7 @@ class ClinicalDocumentDecoderTest {
 
 	@Test
 	void decodeAppClinicalDocumentInternalDecode() {
-		Element clinicalDocument = makeClinicalDocument("APP1");
+		Element clinicalDocument = makeClinicalDocument("APP1", false, false);
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
@@ -185,7 +193,7 @@ class ClinicalDocumentDecoderTest {
 
 	@Test
 	void decodeClinicalDocumentInternalDecodeMIPSIndividual() {
-		Element clinicalDocument = makeClinicalDocument("MIPS_INDIV");
+		Element clinicalDocument = makeClinicalDocument("MIPS_INDIV", false, false);
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
@@ -207,7 +215,7 @@ class ClinicalDocumentDecoderTest {
 
 	@Test
 	void decodeClinicalDocumentInternalDecodeMIPSAPPIndividual() {
-		Element clinicalDocument = makeClinicalDocument("MIPS_APP1_INDIV");
+		Element clinicalDocument = makeClinicalDocument("MIPS_APP1_INDIV", false, false);
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
@@ -229,7 +237,7 @@ class ClinicalDocumentDecoderTest {
 
 	@Test
 	void decodeClinicalDocumentInternalDecodeMIPSGroup() {
-		Element clinicalDocument = makeClinicalDocument("MIPS_GROUP");
+		Element clinicalDocument = makeClinicalDocument("MIPS_GROUP", false, false);
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
@@ -251,7 +259,7 @@ class ClinicalDocumentDecoderTest {
 
 	@Test
 	void decodeClinicalDocumentInternalDecodeMIPSAPPGroup() {
-		Element clinicalDocument = makeClinicalDocument("MIPS_APP1_GROUP");
+		Element clinicalDocument = makeClinicalDocument("MIPS_APP1_GROUP", false, false);
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
@@ -273,7 +281,7 @@ class ClinicalDocumentDecoderTest {
 
 	@Test
 	void decodeClinicalDocumentInternalDecodeUnknown() {
-		Element clinicalDocument = makeClinicalDocument("Unknown");
+		Element clinicalDocument = makeClinicalDocument("Unknown", false, false);
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
@@ -295,8 +303,8 @@ class ClinicalDocumentDecoderTest {
 
 	@Test
 	void decodePcfPracticeSiteAddressTest() {
-		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.PCF_PROGRAM_NAME);
-		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), CPC_PRACTICE_ROOT));
+		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.PCF_PROGRAM_NAME, false, false);
+		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), CPC_PRACTICE_ROOT, ENTITY_ID_VALUE));
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
@@ -308,8 +316,8 @@ class ClinicalDocumentDecoderTest {
 
 	@Test
 	void decodePcfTinTest() {
-		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
-		clinicalDocument.addContent( prepareParticipant(clinicalDocument.getNamespace(), CPC_PRACTICE_ROOT) );
+		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME, false, false);
+		clinicalDocument.addContent( prepareParticipant(clinicalDocument.getNamespace(), CPC_PRACTICE_ROOT, ENTITY_ID_VALUE));
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
@@ -321,7 +329,7 @@ class ClinicalDocumentDecoderTest {
 
 	@Test
 	void testClinicalDocumentDecodeProgramPcf() {
-		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.PCF);
+		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.PCF, false, false);
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
@@ -337,8 +345,8 @@ class ClinicalDocumentDecoderTest {
 
 	@Test
 	void testClinicalDocumentDecodePcfTin() {
-		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.PCF);
-		clinicalDocument.addContent( prepareParticipant(clinicalDocument.getNamespace(), CPC_PRACTICE_ROOT) );
+		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.PCF, false, false);
+		clinicalDocument.addContent( prepareParticipant(clinicalDocument.getNamespace(), CPC_PRACTICE_ROOT, ENTITY_ID_VALUE));
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
@@ -350,8 +358,8 @@ class ClinicalDocumentDecoderTest {
 
 	@Test
 	void testClinicalDocumentDecodePcfNpi() {
-		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.PCF);
-		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), PCF_PRACTICE_ROOT));
+		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.PCF, false, false);
+		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), PCF_PRACTICE_ROOT, ENTITY_ID_VALUE));
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
@@ -363,8 +371,8 @@ class ClinicalDocumentDecoderTest {
 
 	@Test
 	void testClinicalDocumentDecodePcfEntityId() {
-		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.PCF);
-		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), PCF_PRACTICE_ROOT));
+		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.PCF, false, false);
+		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), PCF_PRACTICE_ROOT, ENTITY_ID_VALUE));
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
@@ -376,8 +384,8 @@ class ClinicalDocumentDecoderTest {
 
 	@Test
 	void testClinicalDocumentDecodePcfPracticeSiteAddress() {
-		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.PCF);
-		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), PCF_PRACTICE_ROOT));
+		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.PCF, false, false);
+		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), PCF_PRACTICE_ROOT, ENTITY_ID_VALUE));
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
@@ -389,7 +397,7 @@ class ClinicalDocumentDecoderTest {
 
 	@Test
 	void decodeMipsVirtualGroup() {
-		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.MIPS_VIRTUAL_GROUP);
+		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.MIPS_VIRTUAL_GROUP, false, false);
 		Node testParentNode = new Node();
 
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
@@ -404,8 +412,8 @@ class ClinicalDocumentDecoderTest {
 
 	@Test
 	void decodeMipsApmTest() {
-		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.MIPS_APM);
-		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), CPC_PRACTICE_ROOT));
+		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.MIPS_APM, false, false);
+		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), CPC_PRACTICE_ROOT, ENTITY_ID_VALUE));
 		Node testParentNode = new Node();
 
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
@@ -420,7 +428,7 @@ class ClinicalDocumentDecoderTest {
 
 	@Test
 	void decodeMipsAppApmTest() {
-		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.APP_APM);
+		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.APP_APM, false, false);
 		Node testParentNode = new Node();
 
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
@@ -433,18 +441,90 @@ class ClinicalDocumentDecoderTest {
 				.isEqualTo("TEST_APM");
 	}
 
-	private Element makeClinicalDocument(String programName) {
+	@Test
+	void decodeMvpMipsAppApmTest() {
+		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.MIPS_APM, false, true);
+		Node testParentNode = new Node();
+
+		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
+		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
+		objectUnderTest.decode(clinicalDocument, testParentNode);
+
+		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE))
+			.isEqualTo(ClinicalDocumentDecoder.ENTITY_APM);
+		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_ID))
+			.isEqualTo("TEST_APM");
+		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.MVP_ID))
+			.isEqualTo(TEST_MVP_ID);
+	}
+
+	@Test
+	void decodeMvpMipsIndividualTest() {
+		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.MIPS_INDIVIDUAL, false, true);
+		Node testParentNode = new Node();
+
+		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
+		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
+		objectUnderTest.decode(clinicalDocument, testParentNode);
+
+		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
+			.isEqualTo(TEST_TIN);
+		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+			.isEqualTo(TEST_NPI);
+		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.MVP_ID))
+			.isEqualTo(TEST_MVP_ID);
+	}
+
+	@Test
+	void decodeMvpMipsGroupTest() {
+		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.MIPS_GROUP, false, true);
+		Node testParentNode = new Node();
+
+		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
+		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
+		objectUnderTest.decode(clinicalDocument, testParentNode);
+
+		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
+			.isEqualTo(TEST_TIN);
+		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.MVP_ID))
+			.isEqualTo(TEST_MVP_ID);
+	}
+
+	@Test
+	void decodeMvpMipsSubgroupTest() {
+		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.MIPS_SUBGROUP, true, true);
+		Node testParentNode = new Node();
+
+		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
+		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
+		objectUnderTest.decode(clinicalDocument, testParentNode);
+
+		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE))
+			.isEqualTo(ClinicalDocumentDecoder.ENTITY_SUBGROUP);
+		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.SUBGROUP_ID))
+			.isEqualTo(TEST_SUBGROUP_ID);
+		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.MVP_ID))
+			.isEqualTo(TEST_MVP_ID);
+	}
+
+	private Element makeClinicalDocument(String programName, boolean isSubgroup, boolean isMvp) {
 		Namespace rootns = Namespace.getNamespace("urn:hl7-org:v3");
 		Namespace ns = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
 
 		Element clinicalDocument = new Element("ClinicalDocument", rootns);
 		clinicalDocument.addNamespaceDeclaration(ns);
 		Element informationRecipient = prepareInfoRecipient(rootns, programName);
-		Element documentationOf = prepareDocumentationElement(rootns);
+		if (isMvp) {
+			clinicalDocument.addContent(prepareParticipant(rootns, "2.16.840.1.113883.3.249.5.6", TEST_MVP_ID));
+		}
+		if (isSubgroup) {
+			clinicalDocument.addContent(prepareSubgroupDocumentationElement(rootns));
+		} else {
+			clinicalDocument.addContent(prepareDocumentationElement(rootns));
+		}
 		Element component = prepareComponentElement(rootns);
 
 		clinicalDocument.addContent(informationRecipient);
-		clinicalDocument.addContent(documentationOf);
 		clinicalDocument.addContent(component);
 		return clinicalDocument;
 	}
@@ -461,13 +541,13 @@ class ClinicalDocumentDecoderTest {
 	}
 
 	// This is the Entity Id for CPCPlus program name
-	private Element prepareParticipant(Namespace rootns, String root) {
+	private Element prepareParticipant(Namespace rootns, String root, String id) {
 		Element participant = new Element("participant", rootns);
 		Element associatedEntity = new Element("associatedEntity", rootns);
 
 		Element entityId = new Element("id", rootns)
 			.setAttribute("root", root)
-			.setAttribute("extension", ENTITY_ID_VALUE)
+			.setAttribute("extension", id)
 			.setAttribute("assigningAuthorityName", "CMS-CMMI");
 		Element addr = new Element("addr", rootns)
 			.setText("testing123");
@@ -529,13 +609,38 @@ class ClinicalDocumentDecoderTest {
 		return representedOrganization;
 	}
 
+	private Element prepareSubgroupDocumentationElement(Namespace rootns) {
+		Element documentationOf = new Element("documentationOf", rootns);
+		Element serviceEvent = new Element("serviceEvent", rootns);
+		Element performer = new Element("performer", rootns);
+		Element assignedEntity = new Element("assignedEntity", rootns);
+
+		Element representedOrganization = prepareRepOrgWithSubgroupId(rootns, TEST_SUBGROUP_ID);
+		assignedEntity.addContent(representedOrganization);
+		performer.addContent(assignedEntity);
+
+		serviceEvent.addContent(performer);
+		documentationOf.addContent(serviceEvent);
+		return documentationOf;
+	}
+
+	private Element prepareRepOrgWithSubgroupId(Namespace rootns, String subgroupId) {
+		Element representedOrganization = new Element("representedOrganization", rootns);
+		Element taxpayerIdentificationNumber = new Element("id", rootns)
+			.setAttribute("root", "2.16.840.1.113883.3.249.5.5")
+			.setAttribute("extension", subgroupId);
+
+		representedOrganization.addContent(taxpayerIdentificationNumber);
+		return representedOrganization;
+	}
+
 	private Element prepareComponentElement(Namespace rootns) {
 		Element component = new Element("component", rootns);
 		Element structuredBody = new Element("structuredBody", rootns);
 		Element componentTwo = new Element("component", rootns);
 		Element aciSectionElement = new Element("templateId", rootns);
-		aciSectionElement.setAttribute("root", TemplateId.PI_SECTION_V2.getRoot());
-		aciSectionElement.setAttribute("extension", TemplateId.PI_SECTION_V2.getExtension());
+		aciSectionElement.setAttribute("root", TemplateId.PI_SECTION_V3.getRoot());
+		aciSectionElement.setAttribute("extension", TemplateId.PI_SECTION_V3.getExtension());
 
 		componentTwo.addContent(aciSectionElement);
 		structuredBody.addContent(componentTwo);

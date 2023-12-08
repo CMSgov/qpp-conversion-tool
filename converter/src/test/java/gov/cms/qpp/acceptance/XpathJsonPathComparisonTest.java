@@ -57,13 +57,13 @@ class XpathJsonPathComparisonTest {
 	@Test
 	void compareAciMeasurePerformanceEnd() throws XmlException {
 		String jsonPath = "measurementSets[1].performanceEnd";
-		helper.executeAttributeTest(jsonPath, "value", "20220531");
+		helper.executeAttributeTest(jsonPath, "value", "20230531");
 	}
 
 	@Test
 	void compareAciMeasurePerformanceStart() throws XmlException {
 		String jsonPath = "measurementSets[1].performanceStart";
-		helper.executeAttributeTest(jsonPath, "value", "20220201");
+		helper.executeAttributeTest(jsonPath, "value", "20230201");
 	}
 
 	@Test
@@ -88,13 +88,13 @@ class XpathJsonPathComparisonTest {
 	@Test
 	void compareIaMeasurePerformanceEnd() throws XmlException {
 		String jsonPath = "measurementSets[2].performanceEnd";
-		helper.executeAttributeTest(jsonPath, "value", "20220430");
+		helper.executeAttributeTest(jsonPath, "value", "20230430");
 	}
 
 	@Test
 	void compareIaMeasurePerformanceStart() throws XmlException {
 		String jsonPath = "measurementSets[2].performanceStart";
-		helper.executeAttributeTest(jsonPath, "value", "20220101");
+		helper.executeAttributeTest(jsonPath, "value", "20230101");
 	}
 
 	@Test
@@ -113,13 +113,13 @@ class XpathJsonPathComparisonTest {
 	@Test
 	void compareQualityMeasurePerformanceEnd() throws XmlException {
 		String jsonPath = "measurementSets[0].performanceEnd";
-		helper.executeAttributeTest(jsonPath, "value", "20221231");
+		helper.executeAttributeTest(jsonPath, "value", "20231231");
 	}
 
 	@Test
 	void compareQualityMeasurePerformanceStart() throws XmlException {
 		String jsonPath = "measurementSets[0].performanceStart";
-		helper.executeAttributeTest(jsonPath, "value", "20220101");
+		helper.executeAttributeTest(jsonPath, "value", "20230101");
 	}
 
 	@Test

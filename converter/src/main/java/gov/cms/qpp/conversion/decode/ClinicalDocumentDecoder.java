@@ -14,6 +14,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.function.Consumer;
 
 /**
@@ -36,6 +37,8 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	public static final String APM_ENTITY_ID = "apmEntityId";
 	public static final String VG_ID = "virtualGroupId";
 	public static final String CEHRT = "cehrtId";
+	public static final String MVP_ID = "mvpId";
+	public static final String SUBGROUP_ID = "subgroupId";
 
 	//QPP Json value constants for: Node(Identifier, value)
 	public static final String MIPS_PROGRAM_NAME = "mips";
@@ -44,18 +47,21 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	public static final String ENTITY_APM = "apm";
 	static final String ENTITY_GROUP = "group";
 	static final String ENTITY_INDIVIDUAL = "individual";
+	public static final String ENTITY_SUBGROUP = "subgroup";
 	public static final String ENTITY_VIRTUAL_GROUP = "virtualGroup";
 	public static final String APP_PROGRAM_NAME = "app1";
 	public static final String MIPS = "MIPS";
+	public static final Set<String> MVP_ENTITIES = Set.of(ENTITY_INDIVIDUAL, ENTITY_GROUP, ENTITY_SUBGROUP, ENTITY_APM);
 
 	// Program names in XML format
 	public static final String PCF = "PCF";
 	public static final String APP = "APP";
 	public static final String CPCPLUS = "CPCPLUS";
-	private static final String MIPS_GROUP = "MIPS_GROUP";
-	private static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
+	public static final String MIPS_GROUP = "MIPS_GROUP";
+	public static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
 	public static final String MIPS_APM = "MIPS_APMENTITY";
 	public static final String MIPS_VIRTUAL_GROUP = "MIPS_VIRTUALGROUP";
+	public static final String MIPS_SUBGROUP = "MIPS_SUBGROUP";
 	private static final String APP_GROUP = "MIPS_APP1_GROUP";
 	private static final String APP_INDIVIDUAL = "MIPS_APP1_INDIV";
 	public static final String APP_APM = "MIPS_APP1_APMENTITY";
@@ -76,7 +82,13 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 		setProgramNameOnNode(element, thisNode);
 		setPracticeSiteAddress(element, thisNode);
 		setCehrtOnNode(element, thisNode);
-		String entityType = thisNode.getValue(ENTITY_TYPE);
+		String entityType = thisNode.getValueOrDefault(ENTITY_TYPE, "");
+		if (MVP_ENTITIES.contains(entityType) && Program.isMips(thisNode)) {
+			setValueOnNode(element, thisNode, MVP_ID);
+			if (ENTITY_SUBGROUP.equalsIgnoreCase(entityType)) {
+				setValueOnNode(element, thisNode, SUBGROUP_ID);
+			}
+		}
 		if (ENTITY_APM.equalsIgnoreCase(entityType)) {
 			setEntityIdOnNode(element, thisNode);
 			setMultipleNationalProviderIdsOnNode(element, thisNode);
@@ -141,6 +153,17 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 		Consumer<Attribute> consumer = cehrt ->
 			thisNode.putValue(CEHRT, cehrt.getValue(), false);
 		setOnNode(element, getXpath(CEHRT), consumer, Filters.attribute(), false);
+	}
+
+	/**
+	 * Sets a specific value as an element on the Node class decoder
+	 * @param element current xml element to find the value via xpath
+	 * @param thisNode current node
+	 * @param currentValue to be added to the Node
+	 */
+	private void setValueOnNode(Element element, Node thisNode, String currentValue) {
+		Consumer<? super Attribute> consumer = p -> thisNode.putValue(currentValue, p.getValue());
+		setOnNode(element, getXpath(currentValue), consumer, Filters.attribute(), true);
 	}
 
 	/**
@@ -258,6 +281,10 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 
 			case PCF:
 				pair = new ImmutablePair<>(PCF_PROGRAM_NAME, ENTITY_APM);
+				break;
+
+			case MIPS_SUBGROUP:
+				pair = new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_SUBGROUP);
 				break;
 
 			default:

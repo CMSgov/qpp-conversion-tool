@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +20,7 @@ import java.util.Optional;
 /**
  * Encoder to serialize PI Section and it's measures
  */
-@Encoder(TemplateId.PI_SECTION_V2)
+@Encoder(TemplateId.PI_SECTION_V3)
 public class PiSectionEncoder extends QppOutputEncoder {
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(PiSectionEncoder.class);
@@ -54,7 +55,7 @@ public class PiSectionEncoder extends QppOutputEncoder {
 		wrapper.put("category", node.getValue("category"));
 		wrapper.put(SUBMISSION_METHOD, "electronicHealthRecord");
 		Node topLevelParent = node.getParent();
-		if (TemplateId.PI_SECTION_V2 == node.getType() && (Program.isMips(topLevelParent) || Program.isApp(topLevelParent))) {
+		if (TemplateId.PI_SECTION_V3 == node.getType() && (Program.isMips(topLevelParent) || Program.isApp(topLevelParent))) {
 			wrapper.put(ClinicalDocumentDecoder.CEHRT, node.getParent().getValue(ClinicalDocumentDecoder.CEHRT));
 		}
 	}
@@ -90,9 +91,16 @@ public class PiSectionEncoder extends QppOutputEncoder {
 	 * @param parent the clinical document node
 	 */
 	private void pilferParent(JsonWrapper wrapper, Node parent) {
-		wrapper.put(ClinicalDocumentDecoder.PROGRAM_NAME,
+		String mvpId = parent.getValue(ClinicalDocumentDecoder.MVP_ID);
+		if (StringUtils.isEmpty(mvpId)) {
+			wrapper.put(ClinicalDocumentDecoder.PROGRAM_NAME,
 				parent.getValue(ClinicalDocumentDecoder.PROGRAM_NAME));
-		maintainContinuity(wrapper, parent, ClinicalDocumentDecoder.PROGRAM_NAME);
+			maintainContinuity(wrapper, parent, ClinicalDocumentDecoder.PROGRAM_NAME);
+		} else {
+			wrapper.put(ClinicalDocumentDecoder.PROGRAM_NAME,
+				parent.getValue(ClinicalDocumentDecoder.MVP_ID));
+			maintainContinuity(wrapper, parent, ClinicalDocumentDecoder.MVP_ID);
+		}
 	}
 
 	/**

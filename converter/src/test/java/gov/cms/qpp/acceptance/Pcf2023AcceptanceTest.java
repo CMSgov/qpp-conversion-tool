@@ -7,7 +7,11 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
+
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -19,8 +23,8 @@ import java.util.stream.Stream;
 import static com.google.common.truth.Truth.assertThat;
 import static gov.cms.qpp.acceptance.Util.getXml;
 
-public class Pcf2022AcceptanceTest {
-    private static final Path BASE = Paths.get("src/test/resources/pcf/acceptance2022");
+public class Pcf2023AcceptanceTest {
+    private static final Path BASE = Paths.get("src/test/resources/pcf/acceptance2023");
     private static final Path SUCCESS = BASE.resolve("success");
     private static final Path SUCCESS_WARNING = BASE.resolve("warning");
     private static final Path FAILURE = BASE.resolve("failure");

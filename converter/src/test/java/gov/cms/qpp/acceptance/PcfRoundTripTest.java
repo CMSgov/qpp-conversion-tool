@@ -1,6 +1,7 @@
 package gov.cms.qpp.acceptance;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -11,6 +12,7 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -25,7 +27,7 @@ import static com.google.common.truth.Truth.assertThat;
  * Positive Testing Scenarios to check PCF for valid top level attributes and validations
  * Ensures:
  * - valid apm entity
- * - Sample file with valid test tin/npi and measurement sets for 2021 go through without issue.
+ * - Sample file with valid test tin/npi and measurement sets for 2023 go through without issue.
  */
 public class PcfRoundTripTest {
 	private static JsonWrapper wrapper = new JsonWrapper();
@@ -40,6 +42,11 @@ public class PcfRoundTripTest {
 		Path path = Paths.get(sample.toURI());
 		new JsonPathToXpathHelper(path, wrapper, false, new Context(apmEntityIds));
 		json = new ObjectMapper().readValue(wrapper.copyWithoutMetadata().toString(), HashMap.class);
+	}
+
+	@AfterAll
+	static void resetMeasuresData() {
+		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 	}
 
 	@ParameterizedTest

@@ -8,7 +8,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
  * Encoder to serialize Improvement Activity Section. This class is nearly empty due to the fact that it does the same
  * encoding as its super class {@link PiSectionEncoder} but is a different templateId.
  */
-@Encoder(TemplateId.IA_SECTION)
+@Encoder(TemplateId.IA_SECTION_V3)
 public class IaSectionEncoder extends PiSectionEncoder {
 
 	public IaSectionEncoder(Context context) {

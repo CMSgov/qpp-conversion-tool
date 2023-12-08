@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +12,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 
 import java.util.List;
@@ -26,14 +29,24 @@ public class PcfQualityMeasureIdValidatorTest {
 	private Node clinicalDoc;
 	private Node measureSection;
 
+	@BeforeAll
+	static  void setUpCustomMeasureData() {
+		MeasureConfigs.setMeasureDataFile("test-2022-measure-data.json");
+	}
+
+	@AfterAll
+	static void resetMeasuresData() {
+		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
+	}
+
 	@BeforeEach
 	void setUp() {
 		validator = new PcfQualityMeasureIdValidator();
 
 		clinicalDoc = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDoc.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.PCF);
-		measureSection = new Node(TemplateId.MEASURE_SECTION_V4, clinicalDoc);
-		testNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4, measureSection);
+		measureSection = new Node(TemplateId.MEASURE_SECTION_V5, clinicalDoc);
+		testNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V5, measureSection);
 		testNode.putValue(MeasureConfigHelper.MEASURE_ID, MEASURE_ID);
 	}
 

@@ -1,0 +1,24 @@
+{
+  "errors" : [ {
+    "sourceIdentifier" : "valid-QRDA-III-latest.xml",
+    "details" : [ {
+      "errorCode" : 6,
+      "message" : "CT - The measure GUID 2c928082-7a14-d92c-017a-67b6f9971ea8 is invalid. Please see the Table 14 of the 2022 Implementation Guide for valid measure GUIDs: https://ecqi.healthit.gov/sites/default/files/2022-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-V1.1-508.pdf#page=43",
+      "location" : {
+        "location" : "Quality Measure 2c928082-7a14-d92c-017a-67b6f9971ea8",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3'][1]/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3'][1]/*[local-name() = 'organizer' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 818,
+        "column" : 83
+      }
+    }, {
+      "errorCode" : 6,
+      "message" : "CT - The measure GUID 2c928085-7b2a-eb52-017b-56761e0218d0 is invalid. Please see the Table 14 of the 2022 Implementation Guide for valid measure GUIDs: https://ecqi.healthit.gov/sites/default/files/2022-CMS-QRDA-III-Eligible-Clinicians-and-EP-IG-V1.1-508.pdf#page=43",
+      "location" : {
+        "location" : "Quality Measure 2c928085-7b2a-eb52-017b-56761e0218d0",
+        "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3'][1]/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'organizer' and namespace-uri() = 'urn:hl7-org:v3']",
+        "line" : 2730,
+        "column" : 83
+      }
+    } ]
+  } ]
+}

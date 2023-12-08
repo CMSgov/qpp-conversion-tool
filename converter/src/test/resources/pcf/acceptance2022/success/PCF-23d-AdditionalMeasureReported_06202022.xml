@@ -6,7 +6,7 @@
    <realmCode code="US"/>
    <typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
    <templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01"/>
-   <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2021-07-01"/>
+   <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2022-12-01"/>
    <id root="d9181c9b-89ee-4bb2-96e3-9baa467131d3"/>
    <code code="55184-6"
          codeSystem="2.16.840.1.113883.6.1"
@@ -113,13 +113,13 @@
 	  <documentationOf typeCode="DOC">
       <serviceEvent classCode="PCPR">
          <effectiveTime>
-            <low value="20220101"/>
-            <high value="20221231"/>
+            <low value="20230101"/>
+            <high value="20231231"/>
          </effectiveTime>	
          <performer typeCode="PRF">
             <time>
-               <low value="20220101"/>
-               <high value="20221231"/>
+               <low value="20230101"/>
+               <high value="20231231"/>
             </time>
             <assignedEntity>
                <id root="2.16.840.1.113883.4.6" extension="2567891421"/>
@@ -131,8 +131,8 @@
          </performer>	
          <performer typeCode="PRF">
             <time>
-               <low value="20220101"/>
-               <high value="20221231"/>
+               <low value="20230101"/>
+               <high value="20231231"/>
             </time>
             <assignedEntity>
                <id root="2.16.840.1.113883.4.6" extension="2589654740"/>
@@ -159,9 +159,9 @@ QRDA Category III Measure Section (CMS EC)
       	<!--  Additional Measures Present -->
          <component>
             <section>
-               <templateId root="2.16.840.1.113883.10.20.27.2.1" extension="2017-06-01"/>
+               <templateId root="2.16.840.1.113883.10.20.27.2.1" extension="2020-12-01"/>
                <templateId root="2.16.840.1.113883.10.20.24.2.2"/>
-               <templateId root="2.16.840.1.113883.10.20.27.2.3" extension="2019-05-01"/>
+               <templateId root="2.16.840.1.113883.10.20.27.2.3" extension="2022-05-01"/>
                <code code="55186-1"
                      codeSystem="2.16.840.1.113883.6.1"
                      displayName="measure document"/>
@@ -176,8 +176,8 @@ QRDA Category III Measure Section (CMS EC)
 							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
 								displayName="Observation Parameters"/>
 							<effectiveTime>
-								<low value="20220101"/>
-								<high value="20221231"/>
+								<low value="20230101"/>
+								<high value="20231231"/>
 							</effectiveTime>
 						</act>
 					</entry>
@@ -189,8 +189,7 @@ QRDA Category III Measure Section (CMS EC)
 							<!-- Measure Reference and Results (V3) -->
 							<templateId root="2.16.840.1.113883.10.20.27.3.1" extension="2016-09-01"/>
 							<!-- Measure Reference and Results - CMS (V4) -->
-							<templateId root="2.16.840.1.113883.10.20.27.3.17"
-								extension="2019-05-01"/>
+							<templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2022-05-01"/>
 							<id root="95944FB9-241B-11E5-1027-09173F13E4C5"/>
 							<statusCode code="completed"/>
 							<reference typeCode="REFR">

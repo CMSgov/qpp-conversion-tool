@@ -1,6 +1,5 @@
 package gov.cms.qpp;
 
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -57,13 +56,15 @@ class SingularAttributeTest{
 						ClinicalDocumentDecoder.PCF_ENTITY_ID,
 						ClinicalDocumentDecoder.VG_ID,
 						ClinicalDocumentDecoder.APM_ENTITY_ID,
+						ClinicalDocumentDecoder.MVP_ID,
+						ClinicalDocumentDecoder.SUBGROUP_ID,
 						PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE,
 						PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE,
 						//There are no validations for performanceYear
 						ReportingParametersActDecoder.PERFORMANCE_YEAR,
 						SupplementalDataEthnicityDecoder.SUPPLEMENTAL_DATA_CODE,
 						SupplementalDataPayerDecoder.SUPPLEMENTAL_DATA_PAYER_CODE,
-						QualitySectionDecoder.CATEGORY_SECTION_V4,
+						QualitySectionDecoder.CATEGORY_SECTION_V5,
 						//stratum is not currently mapped
 						"stratum",
 						"cehrtId",

@@ -101,16 +101,16 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 				ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, 10)
 			.value(addressError, ClinicalDocumentDecoder.PRACTICE_SITE_ADDR)
 			.childMinimum(ProblemCode.PCF_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED,
-				1, TemplateId.MEASURE_SECTION_V4)
+				1, TemplateId.MEASURE_SECTION_V5)
 			.singleValue(ProblemCode.PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED, ClinicalDocumentDecoder.PCF_ENTITY_ID)
 			.valueIsNotEmpty(ProblemCode.PCF_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.PCF_ENTITY_ID)
-			.childExact(ProblemCode.PCF_NO_PI, 0, TemplateId.PI_SECTION_V2)
+			.childExact(ProblemCode.PCF_NO_PI, 0, TemplateId.PI_SECTION_V3)
 			.listValuesAreInts(ProblemCode.PCF_INVALID_NPI.format(node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME)),
 				ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER);
 
 		validateApmEntityId(node, ClinicalDocumentDecoder.PCF_ENTITY_ID, false);
 		checkWarnings(node)
-			.doesNotHaveChildren(ProblemCode.PCF_NO_IA_OR_PI.format(programName), TemplateId.IA_SECTION, TemplateId.PI_SECTION_V2);
+			.doesNotHaveChildren(ProblemCode.PCF_NO_IA_OR_PI.format(programName), TemplateId.IA_SECTION_V3, TemplateId.PI_SECTION_V3);
 
 		if (hasTinAndNpi(node)) {
 			validateNumberOfTinsAndNpis(node, programName);
@@ -191,7 +191,7 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 	}
 
 	private boolean cehrtFormat(String requiredSubstring) {
-		return requiredSubstring.equalsIgnoreCase("15E");
+		return requiredSubstring.equalsIgnoreCase("15E") || requiredSubstring.equalsIgnoreCase("15C");
 	}
 
 	/**
@@ -205,7 +205,7 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 			String formatted = endDate.format(OUTPUT_END_DATE_FORMAT);
 			String program = node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME);
 			addError(Detail.forProblemAndNode(
-				ProblemCode.PCF_PLUS_SUBMISSION_ENDED.format(program, program, formatted, program, program,
+				ProblemCode.PCF_SUBMISSION_ENDED.format(program, program, formatted, program, program,
 					EnvironmentHelper.getOrDefault(CPC_PLUS_CONTACT_EMAIL, DEFAULT_CPC_PLUS_CONTACT_EMAIL)),
 				node));
 		}

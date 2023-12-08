@@ -96,7 +96,7 @@ class ClinicalDocumentEncoderTest {
 		aciProportionMeasureNode3.addChildNode(aciProportionDenominatorNode3);
 		aciProportionMeasureNode3.putValue(MEASURE_ID, "ACI_CCTPE_3");
 
-		aciSectionNode = new Node(TemplateId.PI_SECTION_V2);
+		aciSectionNode = new Node(TemplateId.PI_SECTION_V3);
 		aciSectionNode.putValue(CATEGORY, "aci");
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
 		aciSectionNode.addChildNode(aciProportionMeasureNode2);
@@ -292,6 +292,39 @@ class ClinicalDocumentEncoderTest {
 
 		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID))
 				.isNotNull();
+	}
+
+	@Test
+	void testMvpIdReplacesProgramName() throws EncodeException {
+		JsonWrapper testJsonWrapper = new JsonWrapper();
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.MVP_ID, "G0053");
+
+		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
+		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
+
+		JsonWrapper measurementSets = getMeasurementSets(testJsonWrapper);
+		String programName = measurementSets.get(0).getString("programName");
+
+		assertThat(programName).isEqualTo("G0053");
+	}
+
+	@Test
+	void testSubgroupIncludesSubgroupId() throws EncodeException {
+		JsonWrapper testJsonWrapper = new JsonWrapper();
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.MVP_ID, "G0053");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "subgroup");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.SUBGROUP_ID, "SG-00000001");
+
+		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
+		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
+
+
+		JsonWrapper measurementSets = getMeasurementSets(testJsonWrapper);
+		String programName = measurementSets.get(0).getString("programName");
+
+		assertThat(programName).isEqualTo("G0053");
+		assertThat(testJsonWrapper.getString(ClinicalDocumentDecoder.ENTITY_TYPE)).isEqualTo("subgroup");
+		assertThat(testJsonWrapper.getString(ClinicalDocumentDecoder.ENTITY_ID)).isEqualTo("SG-00000001");
 	}
 
 

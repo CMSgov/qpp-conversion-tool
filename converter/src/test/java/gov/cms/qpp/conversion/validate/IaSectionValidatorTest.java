@@ -21,7 +21,7 @@ class IaSectionValidatorTest {
 
 	@BeforeEach
 	void setUpIaSectionNode() {
-		iaSectionNode = new Node(TemplateId.IA_SECTION);
+		iaSectionNode = new Node(TemplateId.IA_SECTION_V3);
 		iaMeasureNode = new Node(TemplateId.IA_MEASURE);
 		reportingParamActNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 	}

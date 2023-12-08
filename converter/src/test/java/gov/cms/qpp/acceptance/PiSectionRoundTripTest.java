@@ -14,6 +14,7 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
@@ -25,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.jayway.jsonpath.TypeRef;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -39,6 +42,16 @@ class PiSectionRoundTripTest {
 		Paths.get("src/test/resources/app/2022/App1-Group-QRDA-III.xml");
 	private static final Path APP1_INDIVIDUAL_CEHRT =
 		Paths.get("src/test/resources/app/2022/App1-Indv-QRDA-III.xml");
+
+	@BeforeAll
+	static  void setUpCustomMeasureData() {
+		MeasureConfigs.setMeasureDataFile("test-2022-measure-data.json");
+	}
+
+	@AfterAll
+	static void resetMeasuresData() {
+		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
+	}
 
 
 	@Test
@@ -76,7 +89,7 @@ class PiSectionRoundTripTest {
 		Node parentNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		//assert
-		Node aciSectionNode = parentNode.findFirstNode(TemplateId.PI_SECTION_V2);
+		Node aciSectionNode = parentNode.findFirstNode(TemplateId.PI_SECTION_V3);
 		assertAciSectionHasSingleQedNode(aciSectionNode);
 	}
 
@@ -117,7 +130,7 @@ class PiSectionRoundTripTest {
 		Node parentNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		//assert
-		Node aciSectionNode = parentNode.findFirstNode(TemplateId.PI_SECTION_V2);
+		Node aciSectionNode = parentNode.findFirstNode(TemplateId.PI_SECTION_V3);
 		assertAciSectionHasSingleQedNode(aciSectionNode);
 	}
 
