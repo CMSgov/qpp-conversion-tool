@@ -4,6 +4,10 @@ on:
   pull_request:
     branches:
       - develop
+
+env:
+  CHECKOV_OUTPUT_CODE_LINE_LIMIT: 255
+  
 jobs:
   build:
 

@@ -10,14 +10,18 @@ terraform {
     required_providers {
         aws = {
             source = "hashicorp/aws"
-            version = "=3.70.0"
+            version = "=4.55.0"
         }
     }
-    required_version = "1.0.0"
+    required_version = "1.5.0"
+}
+
+locals {
+  myregion = "us-east-1"
 }
 
 provider "aws" {
-  region  = "us-east-1"
+  region  = local.myregion
 }
 
 data "aws_caller_identity" "current" {}
@@ -57,7 +61,7 @@ resource "aws_iam_policy" "new_relic_budget_policy" {
     {
       "Effect": "Allow",
       "Action": ["budgets:ViewBudget"],
-      "Resource": "*"
+      "Resource": "arn:aws:${local.myregion}:*:*:*"
     }
   ]
 }
