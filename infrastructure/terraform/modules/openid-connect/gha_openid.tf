@@ -2,10 +2,10 @@ terraform {
     required_providers {
         aws = {
             source = "hashicorp/aws"
-            version = "=3.70.0"
+            version = "=4.55.0"
         }
     }
-    required_version = "1.0.0"
+    required_version = "1.5.0"
 }
 
 provider "aws" {
@@ -70,58 +70,58 @@ resource "aws_iam_policy" "github_actions_conversiontool_policy" {
         "iam:GetRole",
         "iam:PassRole"
 			],
-			"Resource": "*"
+			"Resource": "arn:aws:ecs:${var.region}:*:*"
 		},
-        {
-            "Action": [
-                "acm:ListCertificates",
-                "acm:ExportCertificate",
-                "acm:GetCertificate",
-                "acm:DescribeCertificate"
-            ],
-            "Effect": "Allow",
-            "Resource": ["arn:aws:acm:${var.region}:${data.aws_caller_identity.current.account_id}:certificate/*"],
-            "Sid": "ACMPermissions"
-        },
-        {
-            "Sid": "ECRauthorization",
-            "Effect": "Allow",
-            "Action": "ecr:GetAuthorizationToken",
-            "Resource": "*"
-        },
+    {
+        "Action": [
+            "acm:ListCertificates",
+            "acm:ExportCertificate",
+            "acm:GetCertificate",
+            "acm:DescribeCertificate"
+        ],
+        "Effect": "Allow",
+        "Resource": ["arn:aws:acm:${var.region}:${data.aws_caller_identity.current.account_id}:certificate/*"],
+        "Sid": "ACMPermissions"
+    },
+    {
+        "Sid": "ECRauthorization",
+        "Effect": "Allow",
+        "Action": "ecr:GetAuthorizationToken",
+        "Resource": "arn:aws:ecr:${var.region}:*:*"
+    },
 		{
-            "Sid": "ECRPermissions",
-            "Effect": "Allow",
-            "Action": [
-                "ecr:GetDownloadUrlForLayer",
-                "ecr:BatchGetImage",
-                "ecr:CompleteLayerUpload",
-                "ecr:UploadLayerPart",
-                "ecr:InitiateLayerUpload",
-                "ecr:BatchCheckLayerAvailability",
-                "ecr:PutImage"
-            ],
-            "Resource":[
-                "arn:aws:ecr:us-east-1:003384571330:repository/new-qpp-conversion-tool",
-                "003384571330.dkr.ecr.us-east-1.amazonaws.com/qppsf/conversion-tool/dev",
-                "003384571330.dkr.ecr.us-east-1.amazonaws.com/qppsf/conversion-tool/devpre",
-                "003384571330.dkr.ecr.us-east-1.amazonaws.com/qppsf/conversion-tool/impl",
-                "003384571330.dkr.ecr.us-east-1.amazonaws.com/qppsf/conversion-tool/prod"
-            ] 
-        },
-        {
-            "Action": [
-                "ssm:GetParameters",
-                "ssm:PutParameter",
-                "ssm:GetParameterHistory",
-                "ssm:GetParametersByPath",
-                "ssm:GetParameter",
-                "ssm:DescribeParameters"
-            ],
-            "Effect": "Allow",
-            "Resource": ["arn:aws:ssm:${var.region}:${data.aws_caller_identity.current.account_id}:parameter/qppar-sf/*"],
-            "Sid": "SSMPermissions"
-        }
+        "Sid": "ECRPermissions",
+        "Effect": "Allow",
+        "Action": [
+            "ecr:GetDownloadUrlForLayer",
+            "ecr:BatchGetImage",
+            "ecr:CompleteLayerUpload",
+            "ecr:UploadLayerPart",
+            "ecr:InitiateLayerUpload",
+            "ecr:BatchCheckLayerAvailability",
+            "ecr:PutImage"
+        ],
+        "Resource":[
+            "arn:aws:ecr:us-east-1:003384571330:repository/new-qpp-conversion-tool",
+            "003384571330.dkr.ecr.us-east-1.amazonaws.com/qppsf/conversion-tool/dev",
+            "003384571330.dkr.ecr.us-east-1.amazonaws.com/qppsf/conversion-tool/devpre",
+            "003384571330.dkr.ecr.us-east-1.amazonaws.com/qppsf/conversion-tool/impl",
+            "003384571330.dkr.ecr.us-east-1.amazonaws.com/qppsf/conversion-tool/prod"
+        ] 
+    },
+    {
+        "Action": [
+            "ssm:GetParameters",
+            "ssm:PutParameter",
+            "ssm:GetParameterHistory",
+            "ssm:GetParametersByPath",
+            "ssm:GetParameter",
+            "ssm:DescribeParameters"
+        ],
+        "Effect": "Allow",
+        "Resource": ["arn:aws:ssm:${var.region}:${data.aws_caller_identity.current.account_id}:parameter/qppar-sf/*"],
+        "Sid": "SSMPermissions"
+    }
 	]
 })
 }

@@ -342,7 +342,7 @@ resource "aws_iam_policy" "conversiontool_svc_policy" {
 				"iam:GetRole",
 				"iam:PassRole"
 			],
-			"Resource": "*"
+			"Resource": "arn:aws:ecs:${var.region}:*:*"
 		},
 		{
 			"Sid": "AllowS3",
@@ -384,7 +384,7 @@ resource "aws_iam_policy" "conversiontool_svc_policy" {
 			"Sid": "ECRauthorization",
 			"Effect": "Allow",
 			"Action": "ecr:GetAuthorizationToken",
-			"Resource": "*"
+			"Resource": "arn:aws:ecr:${var.region}:*:*"
 		},
 		{
 			"Sid": "ECRPermissions",
