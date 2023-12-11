@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>2023.2.0-RELEASE</version>
+		<version>2023.3.0-RELEASE</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -50,30 +50,30 @@
 					<name>!env.CI</name>
 				</property>
 			</activation>
-<!--			<build>-->
-<!--				<plugins>-->
-<!--					<plugin>-->
-<!--						<groupId>com.googlecode.maven-download-plugin</groupId>-->
-<!--						<artifactId>download-maven-plugin</artifactId>-->
-<!--						<version>1.6.6</version>-->
-<!--						<executions>-->
-<!--							<execution>-->
-<!--								<id>get-measure-data</id>-->
-<!--								<phase>validate</phase>-->
-<!--								<goals>-->
-<!--									<goal>wget</goal>-->
-<!--								</goals>-->
-<!--								<configuration>-->
-<!--									<url>https://raw.githubusercontent.com/CMSgov/qpp-measures-data/develop/measures/2022/measures-data.json</url>-->
-<!--									<skipCache>true</skipCache>-->
-<!--									<overwrite>true</overwrite>-->
-<!--									<outputDirectory>${basedir}/src/main/resources</outputDirectory>-->
-<!--								</configuration>-->
-<!--							</execution>-->
-<!--						</executions>-->
-<!--					</plugin>-->
-<!--				</plugins>-->
-<!--			</build>-->
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.googlecode.maven-download-plugin</groupId>
+						<artifactId>download-maven-plugin</artifactId>
+						<version>1.6.6</version>
+						<executions>
+							<execution>
+								<id>get-measure-data</id>
+								<phase>validate</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<url>https://raw.githubusercontent.com/CMSgov/qpp-measures-data/develop/measures/2023/measures-data.json</url>
+									<skipCache>true</skipCache>
+									<overwrite>true</overwrite>
+									<outputDirectory>${basedir}/src/main/resources</outputDirectory>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 	</profiles>
 
