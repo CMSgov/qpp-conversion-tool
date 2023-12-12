@@ -28,7 +28,7 @@ Before you can use the qpp-conversion-tool application, you must install and con
   ```
 
   Sometimes the Java Runtime installer doesn't update your path. So you must do it manually. Alternatively, download and install
-  the [Java Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (version `>= 1.8`). The JDK is
+  the [Java Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (version `>= 11`). The JDK is
   better at updating your path.
 
 * [Maven](https://maven.apache.org) (version `>= 3.8.4`).
@@ -70,7 +70,7 @@ directory.
 
 ```shell
 # Build the Docker image and run the container using docker-compose.
-docker-compose -f ./docker-compose.test.yaml up
+docker-compose -f ./docker-compose.test.yaml --build up 
 ```
 
 #### Invoking the Endpoint

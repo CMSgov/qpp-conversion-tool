@@ -156,15 +156,16 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_bucket" {
   # }
 }
 
-resource "aws_s3_bucket_ownership_controls" "log_bucket" {
-  bucket = aws_s3_bucket.log_bucket.id
-  rule {
-    object_ownership = "BucketOwnerPreferred"
-  }
-}
+# QPPSE-1461
+# resource "aws_s3_bucket_ownership_controls" "log_bucket" {
+#   bucket = aws_s3_bucket.log_bucket.id
+#   rule {
+#     object_ownership = "BucketOwnerPreferred"
+#   }
+# }
 
 resource "aws_s3_bucket_acl" "log_bucket" {
-  depends_on = [aws_s3_bucket_ownership_controls.log_bucket]
+  # depends_on = [aws_s3_bucket_ownership_controls.log_bucket]
 
   bucket = aws_s3_bucket.log_bucket.id
 
