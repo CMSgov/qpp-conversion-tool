@@ -11,7 +11,9 @@ pip install openpyxl
 pip install simplejson
 
 aws s3 cp s3://${PART_FILE_BUCKET}/${PART_FILE} .
+#chmod +x ./tools/scripts/retrieve-fms-file.py
 chmod +x ./tools/scripts/format-participation-file.py
+#python ./tools/scripts/retrieve-fms-file.py -au ${AUTH_URL} -fu ${FMS_URL} -t ${FMS_TOKEN} -p ${FMS_PATH}
 python ./tools/scripts/format-participation-file.py ${PART_FILE} ${FORMATTED_FILE_NAME}
 aws s3 mv ${FORMATTED_FILE_NAME} s3://${PART_FILE_BUCKET}/${FORMATTED_FILE_NAME}
 
