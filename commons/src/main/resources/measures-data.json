@@ -10103,11 +10103,11 @@
       "registry": "http://qpp.cms.gov/docs/QPP_quality_measure_specifications/CQM-Measures/2023_Measure_438_MIPSCQM.pdf",
       "electronicHealthRecord": "https://ecqi.healthit.gov/ecqm/ec/2023/cms347v6"
     },
-    "eMeasureUuid":  "2c928082-7fac-c041-017f-b8180fec068b",
+    "eMeasureUuid": "2c928082-7fac-c041-017f-b8180fec068b",
     "strata": [
       {
         "name": "clinicalASCVD",
-        "description": "Adults aged >= 21 years who were previously diagnosed with or currently have an active diagnosis of clinical atherosclerotic cardiovascular disease (ASCVD)",
+        "description": "All patients with an active diagnosis of clinical atherosclerotic cardiovascular disease (ASCVD) or ever had an ASCVD procedure",
         "eMeasureUuids": {
           "initialPopulationUuid": "B12E750E-E32A-4DAF-93A4-2902B9A7A006",
           "denominatorUuid": "D7210073-99D6-4616-8511-B15FF2C0DC36",
@@ -10117,8 +10117,8 @@
         }
       },
       {
-        "name": ">21Familial",
-        "description": "Adults aged >= 21 years who have ever had a fasting or direct low-density lipoprotein cholesterol (LDL-C) level >= 190 mg/dL or were previously diagnosed with or currently have an active diagnosis of familial or pure hypercholesterolemia",
+        "name": ">=20Familial",
+        "description": "Patients aged >= 20 years who have ever had a low-density lipoprotein cholesterol (LDL-C) level >= 190 mg/dL or were previously diagnosed with or currently have an active diagnosis of familial hypercholesterolemia",
         "eMeasureUuids": {
           "initialPopulationUuid": "0EC4214D-3153-4AAB-84E0-E9F18EB384B5",
           "denominatorUuid": "4138280C-EE28-4B9D-A963-B9EB69CA2C8B",
@@ -10129,7 +10129,7 @@
       },
       {
         "name": "between40And75",
-        "description": "Adults aged 40-75 years with a diagnosis of diabetes with a fasting or direct LDL-C level of 70-189 mg/dL",
+        "description": "Patients aged 40-75 years with a diagnosis of diabetes",
         "eMeasureUuids": {
           "initialPopulationUuid": "B2FD2F54-F64B-446A-B8D6-69E87CF6B1DB",
           "denominatorUuid": "733BFDF4-72B5-4474-95CA-AD14BDD0F739",
