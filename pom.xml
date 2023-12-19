@@ -6,7 +6,7 @@
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-conversion-tool-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>2023.3.0-RELEASE</version>
+	<version>2023.4.0-RELEASE</version>
 	<name>QPP Conversion Tool</name>
 
 	<properties>
@@ -147,6 +147,9 @@
 							<excludeGroups>${junit.excludes}</excludeGroups>
 							<groups>${junit.includes}</groups>
 						</properties>
+						<systemPropertyVariables>
+							<org.springframework.boot.logging.LoggingSystem>none</org.springframework.boot.logging.LoggingSystem>
+						</systemPropertyVariables>
 						<argLine>${argLine}</argLine>
 					</configuration>
 				</plugin>
@@ -189,7 +192,7 @@
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
-				<version>1.7.30</version>
+				<version>1.7.3</version>
 			</dependency>
 
 			<dependency>
@@ -421,13 +424,13 @@
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-classic</artifactId>
-				<version>1.2.9</version>
+				<version>1.2.13</version>
 			</dependency>
 
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-core</artifactId>
-				<version>1.2.9</version>
+				<version>1.2.13</version>
 			</dependency>
 
 			<dependency>

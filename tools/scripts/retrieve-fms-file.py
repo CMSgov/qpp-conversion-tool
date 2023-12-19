@@ -1,0 +1,101 @@
+#!/usr/bin/env python3
+
+import sys
+import boto3
+import argparse
+import requests
+import simplejson as json
+from io import BytesIO
+from dotenv import dotenv_values
+from openpyxl import load_workbook
+
+config = dotenv_values("local.env")
+s3_client = boto3.client('s3')
+
+
+def get_user_inputs():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-au', '--auth-url', required=True, type=str,
+                        help='QPP Auth token retrieval url. Example: https://imp.qpp.cms.gov/api/auth/oauth/token')
+    parser.add_argument('-fu', '--fms-url', required=True, type=str,
+                        help='FMS Base url. Example: https://impl.ar.qpp.internal/dataservices')
+    parser.add_argument('-t', '--fms-token', required=True, type=str,
+                        help='QPP Auth client assertion token to retrieve the FMS S2S token')
+    parser.add_argument('-p', '--fms-path', required=True, type=str,
+                        help='FMS path with file name and extension. Example: /folder/file.xlsx')
+    args = parser.parse_args()
+
+    return args
+
+
+def download_from_fms(auth_url, fms_url, fms_token, fms_path):
+    d = {'client_assertion': fms_token,
+         'client_assertion_type': 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
+         'grant_type': 'client_credentials',
+         'scope': 'analyticsAndReporting'
+         }
+    # print('starting s2s token retrieval request from qpp auth')
+    get_s2s_token = requests.post(
+        url=auth_url,
+        data=d,
+        headers={
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept': 'application/vnd.qpp.cms.gov.v2+json'
+        }
+    )
+    s2s_token = get_s2s_token.json()["data"]["token"]
+    # print('starting download from fms for file - ' + fms_path)
+    get_download_url = requests.post(
+        url=fms_url + '/get-file',
+        json={"path": fms_path},
+        verify=False,
+        headers={
+            'Accept': 'application/vnd.qpp.cms.gov.v2+json',
+            'Authorization': 'Bearer ' + s2s_token
+        }
+    )
+    download_url = get_download_url.json()['presigned_url']
+    download_result = requests.get(url=download_url)
+    return download_result
+
+
+def process_file(download_result):
+    print('processing file')
+    file_object = BytesIO(download_result.content)
+    wb = load_workbook(file_object)
+    sh = wb['2023_Practices']
+    data_list = []
+    for row in sh.iter_rows(sh.min_row + 1, sh.max_row):
+        data_list.append(row[0].value)
+    j = json.dumps(data_list)
+    with open('./converter/src/main/resources/pcf_apm_entity_ids.json', 'w') as f:
+        f.write(j)
+
+
+def upload_to_s3(download_result):
+    filename = config.get('fms_path').split('/')[-1]
+    # print('starting to upload file to s3 bucket - ' + filename)
+    upload_status = s3_client.put_object(
+        Bucket=config.get('s3_bucket'),
+        Key=filename,
+        Body=download_result.content,
+        ServerSideEncryption='aws:kms'
+    )
+    print(upload_status)
+
+
+def main():
+    try:
+        # args = get_user_inputs()
+        # s3_url = download_from_fms(args.auth_url, args.fms_url, args.fms_token, args.fms_path)
+        download_result = download_from_fms(config.get('auth_url'), config.get('fms_url'), config.get('fms_token'),
+                                            config.get('fms_path'))
+        process_file(download_result)
+        upload_to_s3(download_result)
+    except Exception as err:
+        print(f"Unexpected Error. {err = }, {type(err) = }")
+        sys.exit(1)
+
+
+if __name__ == '__main__':
+    main()

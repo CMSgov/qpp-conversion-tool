@@ -4,8 +4,4 @@
 # You can also use email addresses if you prefer.
 
 # Default reviewers
-*       @saquino0827 @omnivion
-
-# CoreVPC Nava reviewers
-*.tf    @gabesmed @ohlol
-*.tpl   @gabesmed @ohlol
+*       @saquino0827 @sivaksb @jpec07
