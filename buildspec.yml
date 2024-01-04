@@ -29,6 +29,8 @@ phases:
       - pip install openpyxl
       - echo "Updating participation file"
       - chmod +x ./upload-part-file.sh
+      - echo $PART_FILE_BUCKET
+      - echo $PART_FILE
       - ./upload-part-file.sh $PART_FILE_BUCKET $PART_FILE $OUTPUT_PART_FILE $AWS_DEFAULT_REGION
       - echo "Logging in to Amazon dockerHub ECR"
       - docker login --username $DOCKERHUB_USERNAME --password $DOCKERHUB_PASS
