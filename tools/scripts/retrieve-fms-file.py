@@ -11,6 +11,7 @@ from openpyxl import load_workbook
 
 config = dotenv_values("local.env")
 s3_client = boto3.client('s3')
+pcf_filename = "pcf_apm_entity_ids.json"
 
 
 def get_user_inputs():
@@ -67,18 +68,22 @@ def process_file(download_result):
     data_list = []
     for row in sh.iter_rows(sh.min_row + 1, sh.max_row):
         data_list.append(row[0].value)
-    j = json.dumps(data_list)
-    with open('./converter/src/main/resources/pcf_apm_entity_ids.json', 'w') as f:
-        f.write(j)
+    json_data = json.dumps(data_list)
+    return str(json_data).replace(" ", "")
+
+def update_local_repo(data):
+     # print('writing ' + pcf_filename + ' to local repository')
+    with open('./converter/src/main/resources/' + pcf_filename, 'w') as f:
+        f.write(data)
 
 
-def upload_to_s3(download_result):
-    filename = config.get('fms_path').split('/')[-1]
-    # print('starting to upload file to s3 bucket - ' + filename)
+def upload_to_s3(data):
+    # print('starting to upload file to s3 bucket - ' + pcf_filename)
     upload_status = s3_client.put_object(
         Bucket=config.get('s3_bucket'),
-        Key=filename,
-        Body=download_result.content,
+        Key=pcf_filename,
+        Body=data,
+        ContentType='application/json',
         ServerSideEncryption='aws:kms'
     )
     print(upload_status)
@@ -90,8 +95,9 @@ def main():
         # s3_url = download_from_fms(args.auth_url, args.fms_url, args.fms_token, args.fms_path)
         download_result = download_from_fms(config.get('auth_url'), config.get('fms_url'), config.get('fms_token'),
                                             config.get('fms_path'))
-        process_file(download_result)
-        upload_to_s3(download_result)
+        processed_data = process_file(download_result)
+        update_local_repo(processed_data)
+        upload_to_s3(processed_data)
     except Exception as err:
         print(f"Unexpected Error. {err = }, {type(err) = }")
         sys.exit(1)
