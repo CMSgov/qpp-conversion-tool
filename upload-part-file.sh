@@ -10,12 +10,7 @@ export AWS_REGION=${AWS_REGION}
 pip install openpyxl
 pip install simplejson
 
-n=${#PART_FILE}
-echo "Length of the file is : $n "
-b=${#PART_FILE_BUCKET}
-echo "Length of the bucket is : $b "
-aws s3 ls
-# aws s3 cp s3://${PART_FILE_BUCKET}/${PART_FILE} .
+aws s3 cp s3://${PART_FILE_BUCKET}/${PART_FILE} .
 #chmod +x ./tools/scripts/retrieve-fms-file.py
 # chmod +x ./tools/scripts/format-participation-file.py
 # #python ./tools/scripts/retrieve-fms-file.py -au ${AUTH_URL} -fu ${FMS_URL} -t ${FMS_TOKEN} -p ${FMS_PATH}
