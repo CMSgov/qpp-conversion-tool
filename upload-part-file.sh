@@ -10,7 +10,7 @@ export AWS_REGION=${AWS_REGION}
 pip install openpyxl
 pip install simplejson
 
-aws s3 cp s3://${PART_FILE_BUCKET}/${PART_FILE} .
+aws s3 --region=${AWS_REGION} cp s3://${PART_FILE_BUCKET}/${PART_FILE} .
 #chmod +x ./tools/scripts/retrieve-fms-file.py
 # chmod +x ./tools/scripts/format-participation-file.py
 # #python ./tools/scripts/retrieve-fms-file.py -au ${AUTH_URL} -fu ${FMS_URL} -t ${FMS_TOKEN} -p ${FMS_PATH}
