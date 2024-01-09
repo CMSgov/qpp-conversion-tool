@@ -7,6 +7,7 @@ env:
     DOCKERHUB_USERNAME: "/qppar-sf/DOCKERHUB_USERNAME"
     DOCKERHUB_PASS: "/qppar-sf/DOCKERHUB_PASS"
     SLACK_WEBHOOK: "/qppar-sf/dev/conversion_tool/slack_hook_url"
+    PART_FILE: "/qppar-sf/conversion_tool/CPC_PLUS_FILE_NAME"
     PART_FILE_BUCKET: "/qppar-sf/$ENVIRONMENT/conversion_tool/CPC_PLUS_BUCKET_NAME"
     OUTPUT_PART_FILE: "/qppar-sf/$ENVIRONMENT/conversion_tool/CPC_PLUS_VALIDATION_FILE"
 phases:
