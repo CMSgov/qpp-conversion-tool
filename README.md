@@ -127,6 +127,10 @@ View all commands with `convert.sh`.
 Sample QRDA-III files that cover all of the eCQM, PI, and IA measures as well as other scenarios
 can be found in the [sample-files](sample-files/README.md) folder.
 
+## Swagger Info
+
+Swagger will be enabled under `/swagger-ui/index.html#/` path.  And the api docs are avilable under `v3/api-docs`.
+
 ## Want to Contribute?
 
 Want to file a bug or contribute some code? Read up on our guidelines for [contributing] and
