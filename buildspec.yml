@@ -1,5 +1,6 @@
 version: 0.2
 env:
+  shell: bash
   variables:
     SLACK_CHANNEL: "p-qpp-sub-alerts"
   parameter-store:
