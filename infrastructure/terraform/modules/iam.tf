@@ -17,7 +17,7 @@ resource "aws_iam_role" "ecs_task_exec_role" {
   name                 = "${var.project_name}-ecsTaskExecutionRole-${var.environment}"
   description          = "Conversion Tool ECS Task Execution Role"
   path                 = "/delegatedadmin/developer/"
-  permissions_boundary = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/cms-cloud-admin/developer-boundary-policy"
+  permissions_boundary = "arn:aws:iam::${local.account_id}:policy/cms-cloud-admin/developer-boundary-policy"
 
   assume_role_policy = <<EOF
 {
@@ -125,7 +125,7 @@ resource "aws_iam_role" "ecs_task_execution_role" {
   name                 = "${var.project_name}-ecstask-role-${var.environment}"
   description          = "Conversion Tool ECS Task Execution Role"
   path                 = "/delegatedadmin/developer/"
-  permissions_boundary = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/cms-cloud-admin/developer-boundary-policy"
+  permissions_boundary = "arn:aws:iam::${local.account_id}:policy/cms-cloud-admin/developer-boundary-policy"
 
   assume_role_policy = <<EOF
 {
@@ -149,7 +149,7 @@ EOF
 resource "aws_iam_role" "cwlogs_to_kinesis" {
   name = "${var.project_name}-cloudwatch-to-kinesis-${var.environment}"
   path = "/delegatedadmin/developer/"
-  permissions_boundary = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/cms-cloud-admin/developer-boundary-policy"
+  permissions_boundary = "arn:aws:iam::${local.account_id}:policy/cms-cloud-admin/developer-boundary-policy"
 
   assume_role_policy = <<EOF
 {
@@ -199,7 +199,7 @@ EOF
 resource "aws_iam_role" "kinesis_lambda_role" {
   name = "${var.project_name}-kinesis_lambda_role-${var.environment}"
   path = "/delegatedadmin/developer/"
-  permissions_boundary = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/cms-cloud-admin/developer-boundary-policy"
+  permissions_boundary = "arn:aws:iam::${local.account_id}:policy/cms-cloud-admin/developer-boundary-policy"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -331,19 +331,45 @@ resource "aws_iam_policy" "conversiontool_svc_policy" {
   path = "/delegatedadmin/developer/"
   policy = jsonencode({
 	"Version": "2012-10-17",
-	"Statement": [{
-			"Sid": "githubecs",
-			"Effect": "Allow",
-			"Action": [
-				"ecs:DescribeTaskDefinition",
-				"ecs:RegisterTaskDefinition",
-				"ecs:DescribeServices",
-				"ecs:UpdateService",
-				"iam:GetRole",
-				"iam:PassRole"
-			],
-			"Resource": "arn:aws:ecs:${var.region}:*:*"
-		},
+	"Statement": [
+    {
+        "Action": [
+            "ecs:DescribeTaskDefinition",
+            "ecs:RegisterTaskDefinition",
+            "ecs:ListTaskDefinitions"
+        ],
+        "Effect": "Allow",
+        "Resource": "*",
+        "Sid": "ECSTaskpermissions"
+    },
+    {
+        "Action": [
+            "ecs:DescribeServices",
+            "ecs:UpdateService"
+        ],
+        "Effect": "Allow",
+        "Resource": "arn:aws:ecs:*:*:service/*",
+        "Sid": "ECSServicepermissions"
+    },
+    {
+        "Action": [
+            "iam:GetRole",
+            "iam:PassRole"
+        ],
+        "Sid": "PassRolePermissions",
+        "Effect": "Allow",
+        "Resource": [
+            "arn:aws:iam::${local.account_id}:role/delegatedadmin/developer/${var.project_name}-ecsTaskExecutionRole-${var.environment}",
+            "arn:aws:iam::${local.account_id}:role/delegatedadmin/developer/${var.project_name}-ecstask-role-${var.environment}"
+        ],
+        "Condition": {
+            "StringLike": {
+                "iam:PassedToService": [
+                    "ecs-tasks.amazonaws.com"
+                ]
+            }
+        }
+    },
 		{
 			"Sid": "AllowS3",
 			"Effect": "Allow",
@@ -353,9 +379,11 @@ resource "aws_iam_policy" "conversiontool_svc_policy" {
 				"s3:PutObject"
 			],
 			"Resource": [
-				"arn:aws:s3:::qppsf-codepipeline-s3-003384571330-us-east-1",
-				"arn:aws:s3:::qppsf-codepipeline-s3-003384571330-us-east-1/*"
-			]
+        "arn:aws:s3:::${var.team}-codepipeline-s3-${local.account_id}-${var.region}",
+        "arn:aws:s3:::${var.team}-codepipeline-s3-${local.account_id}-${var.region}/*",
+        "arn:aws:s3:::aws-hhs-cms-ccsq-qpp-navadevops-pii-cnvrt-npicpc-dev-${var.region}",
+        "arn:aws:s3:::aws-hhs-cms-ccsq-qpp-navadevops-pii-cnvrt-npicpc-dev-${var.region}/*"
+]
 		},
 		{
 			"Action": [
@@ -366,7 +394,7 @@ resource "aws_iam_policy" "conversiontool_svc_policy" {
 			],
 			"Effect": "Allow",
 			"Resource": [
-        "arn:aws:acm:${var.region}:${data.aws_caller_identity.current.account_id}:certificate/*"
+        "arn:aws:acm:${var.region}:${local.account_id}:certificate/*"
       ],
 			"Sid": "ACMPermissions"
 		},
@@ -384,7 +412,7 @@ resource "aws_iam_policy" "conversiontool_svc_policy" {
 			"Sid": "ECRauthorization",
 			"Effect": "Allow",
 			"Action": "ecr:GetAuthorizationToken",
-			"Resource": "arn:aws:ecr:${var.region}:*:*"
+			"Resource": "*"
 		},
 		{
 			"Sid": "ECRPermissions",
@@ -416,7 +444,7 @@ resource "aws_iam_policy" "conversiontool_svc_policy" {
 				"ssm:DescribeParameters"
 			],
 			"Effect": "Allow",
-			"Resource": ["arn:aws:ssm:${var.region}:${data.aws_caller_identity.current.account_id}:parameter/qppar-sf/*"],
+			"Resource": ["arn:aws:ssm:${var.region}:${local.account_id}:parameter/qppar-sf/*"],
 			"Sid": "SSMPermissions"
 		}
 	]
