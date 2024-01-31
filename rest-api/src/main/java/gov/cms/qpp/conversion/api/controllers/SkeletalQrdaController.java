@@ -6,6 +6,9 @@ import java.io.UncheckedIOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -14,11 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import gov.cms.qpp.conversion.ConversionReport;
@@ -33,6 +32,7 @@ import gov.cms.qpp.conversion.api.services.ValidationService;
 /**
  * Controller to handle uploading files for QRDA-III Conversion
  */
+@Tag(name="Conversion")
 @RestController
 @CrossOrigin
 public abstract class SkeletalQrdaController<T> {
@@ -66,7 +66,9 @@ public abstract class SkeletalQrdaController<T> {
 	 * @param purpose the purpose for the conversion
 	 * @return Valid json or error json content
 	 */
-	@PostMapping
+	@Operation(summary = "Converts QRDA3 XML to QPP JSON", description = "Converts QRDA3 XML to QPP JSON. Provide a QRDA3 XML file as a multipart file. The response body will contain the QPP JSON upon success or error JSON on failure.")
+	@Parameter(name = "Purpose", hidden = true)
+	@PostMapping(consumes = {"multipart/form-data"})
 	public ResponseEntity<T> uploadQrdaFile(
 		@RequestParam(name = "file") MultipartFile file,
 		@RequestHeader(required = false, name = "Purpose") String purpose) {

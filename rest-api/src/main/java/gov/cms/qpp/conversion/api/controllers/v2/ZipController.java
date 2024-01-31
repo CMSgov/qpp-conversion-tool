@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -24,6 +25,7 @@ import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.api.services.ValidationService;
 
+@Hidden
 @RestController
 @RequestMapping(path = "/", headers = {"Accept=application/zip"})
 public class ZipController extends SkeletalQrdaController<List<ConvertResponse>> {
