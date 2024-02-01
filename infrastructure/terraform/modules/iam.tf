@@ -354,7 +354,9 @@ resource "aws_iam_policy" "conversiontool_svc_policy" {
 			],
 			"Resource": [
 				"arn:aws:s3:::qppsf-codepipeline-s3-003384571330-us-east-1",
-				"arn:aws:s3:::qppsf-codepipeline-s3-003384571330-us-east-1/*"
+				"arn:aws:s3:::qppsf-codepipeline-s3-003384571330-us-east-1/*",
+        "arn:aws:s3:::aws-hhs-cms-ccsq-qpp-navadevops-pii-cnvrt-npicpc-${var.s3cpcbucket_env}-us-east-1",
+        "arn:aws:s3:::aws-hhs-cms-ccsq-qpp-navadevops-pii-cnvrt-npicpc-${var.s3cpcbucket_env}-us-east-1/*"
 			]
 		},
 		{

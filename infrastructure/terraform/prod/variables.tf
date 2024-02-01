@@ -84,6 +84,11 @@ variable "allow_kms_keys" {
   description = "kms arns to be allowed"
 }
 
+variable "s3cpcbucket_env" {
+  type = string
+  description = "Environment of CPC Bucket"
+}
+
 # QPPSE-1208
 variable "default_tags" {
   description = "default project tags for compliance"
