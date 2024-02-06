@@ -47,6 +47,8 @@ module "conversion-tool" {
   codebuild_branch_ref = var.codebuild_branch_ref
   team               = var.team
   allow_kms_keys     = var.allow_kms_keys
+  s3cpcbucket_env    = var.s3cpcbucket_env
+
   ## QPPSE-1208
   tags = var.default_tags
 }
