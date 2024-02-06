@@ -27,7 +27,7 @@ resource "aws_lambda_function" "kinesis_cw_lambda" {
   function_name = "ConversionTool-${var.environment}"
   role = "${aws_iam_role.kinesis_lambda_role.arn}"
   handler = "index.handler"
-  runtime = "nodejs14.x"
+  runtime = "nodejs16.x"
   timeout = 30
 
 # QPPSE-1208

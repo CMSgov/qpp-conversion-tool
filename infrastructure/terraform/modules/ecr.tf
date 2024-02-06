@@ -58,3 +58,22 @@ resource "aws_ecr_repository_policy" "qpp-ecr-repository" {
 }
 EOF
 }
+
+resource "aws_ecr_lifecycle_policy" "conversiontool_lifecyclepolicy" {
+  repository = aws_ecr_repository.qpp-final-scoring-ct.name
+ 
+  policy = jsonencode({
+   rules = [{
+     rulePriority = 1
+     description  = "keep last 5 images"
+     action       = {
+       type = "expire"
+     }
+     selection     = {
+       tagStatus   = "any"
+       countType   = "imageCountMoreThan"
+       countNumber = 5
+     }
+   }]
+  })
+}
