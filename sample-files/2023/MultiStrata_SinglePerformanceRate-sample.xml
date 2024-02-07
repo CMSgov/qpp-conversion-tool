@@ -74,7 +74,7 @@
     </legalAuthenticator>
     <participant typeCode="LOC">
         <associatedEntity classCode="SDLOC">
-            <id assigningAuthorityName="CMS-CMMI" extension="AR1898" root="2.16.840.1.113883.3.249.5.3"/>
+            <id assigningAuthorityName="CMS-CMMI" extension="AR0000" root="2.16.840.1.113883.3.249.5.3"/>
             <code code="394730007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT"
             displayName="Unity Health North Cabot Family Medicine"/>
             <addr>
