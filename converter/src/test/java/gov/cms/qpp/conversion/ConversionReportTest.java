@@ -33,7 +33,6 @@ class ConversionReportTest {
 	@BeforeAll
 	static void setup() {
 		inputSource = new PathSource(Paths.get("../qrda-files/valid-QRDA-III-latest.xml"));
-		System.out.println(inputSource.toString());
 		Converter converter = new Converter(inputSource);
 		wrapper = converter.transform();
 		report = converter.getReport();
