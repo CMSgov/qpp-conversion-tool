@@ -30,23 +30,23 @@ class CommandLineRunnerTest implements LoggerContract {
 		Truth.assertThat(exception).hasMessageThat().isEqualTo("commandLine");
 	}
 
-//	void testRunHelp() {
-//		CommandLineRunner runner = new CommandLineRunner(line("-" + CommandLineMain.HELP));
-//		runner.run();
-//		Truth.assertThat(getLogs()).isNotEmpty();
-//	}
-//
-//	void testRunWithoutFiles() {
-//		CommandLineRunner runner = new CommandLineRunner(line());
-//		runner.run();
-//		Truth.assertThat(getLogs()).contains("You must specify files to convert");
-//	}
-//
-//	void testRunWithMissingFile() {
-//		CommandLineRunner runner = new CommandLineRunner(line(INVALID_FILE));
-//		runner.run();
-//		Truth.assertThat(getLogs()).contains("Invalid or missing paths: [FILE]".replace("FILE", INVALID_FILE));
-//	}
+	void testRunHelp() {
+		CommandLineRunner runner = new CommandLineRunner(line("-" + CommandLineMain.HELP));
+		runner.run();
+		Truth.assertThat(getLogs()).isNotEmpty();
+	}
+
+	void testRunWithoutFiles() {
+		CommandLineRunner runner = new CommandLineRunner(line());
+		runner.run();
+		Truth.assertThat(getLogs()).contains("You must specify files to convert");
+	}
+
+	void testRunWithMissingFile() {
+		CommandLineRunner runner = new CommandLineRunner(line(INVALID_FILE));
+		runner.run();
+		Truth.assertThat(getLogs()).contains("Invalid or missing paths: [FILE]".replace("FILE", INVALID_FILE));
+	}
 
 	@JimfsTest
 	void testRunWithValidFile(FileSystem fileSystem) {
