@@ -32,11 +32,10 @@ jobs:
       run: rm -vrf ~/.m2
 
     - name: Maven build
-      run: mvn install -Dmaven.test.skip -Djacoco.skip=true
+      run: mvn package -Dmaven.test.skip -Djacoco.skip=true
 
     - name: Run Unit tests & Sonar Scan
-      # run: mvn --batch-mode verify
-      run: mvn -pl converter test -Dtest="ConversionReportTest"
+      run: mvn --batch-mode verify
 
     - name: Run integration tests
       run: mvn --batch-mode test -Pintegration
