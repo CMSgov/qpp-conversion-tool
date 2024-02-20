@@ -16,16 +16,17 @@ jobs:
     steps:
 
     - name: Checkout codebase
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Check PII & Credentiail leaks
       uses: zricethezav/gitleaks-action@6e41781c235feb424ecc3435610dce20ad349a70 # pin@master
 
 
     - name: Set up JDK 11
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v4
       with:
-        java-version: 11
+        java-version: "11"
+        distribution: "corretto"
 
     - name: Delete old dependencies (may trigger Snyk vulnerability otherwise)
       run: rm -vrf ~/.m2
@@ -34,8 +35,6 @@ jobs:
       run: mvn package -Dmaven.test.skip -Djacoco.skip=true
 
     - name: Run Unit tests & Sonar Scan
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: mvn --batch-mode verify
 
     - name: Run integration tests
