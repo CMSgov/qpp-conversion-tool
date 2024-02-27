@@ -11287,7 +11287,7 @@
         ]
       },
       {
-        "optionGroup": "00",
+        "optionGroup": "01",
         "optionType": "eligiblePopulationExclusion",
         "qualityCodes": [
           {
@@ -27414,6 +27414,15 @@
         "optionType": "performanceMet",
         "qualityCodes": [
           {
+            "code": "1036F"
+          }
+        ]
+      },
+      {
+        "optionGroup": "02",
+        "optionType": "performanceMet",
+        "qualityCodes": [
+          {
             "code": "G0030"
           }
         ]
@@ -28039,6 +28048,15 @@
       },
       {
         "optionGroup": "00",
+        "optionType": "eligiblePopulationExclusion",
+        "qualityCodes": [
+          {
+            "code": "G8797"
+          }
+        ]
+      },
+      {
+        "optionGroup": "00",
         "optionType": "performanceMet",
         "qualityCodes": [
           {
@@ -28130,6 +28148,15 @@
             "modifiers": [
               "1P"
             ]
+          }
+        ]
+      },
+      {
+        "optionGroup": "00",
+        "optionType": "eligiblePopulationExclusion",
+        "qualityCodes": [
+          {
+            "code": "G8798"
           }
         ]
       },
@@ -40421,7 +40448,7 @@
         "optionType": "performanceMet",
         "qualityCodes": [
           {
-            "code": "G8633"
+            "code": "3095F"
           }
         ]
       },
@@ -40461,6 +40488,15 @@
         "qualityCodes": [
           {
             "code": "G2125"
+          }
+        ]
+      },
+      {
+        "optionGroup": "00",
+        "optionType": "performanceNotMet",
+        "qualityCodes": [
+          {
+            "code": "G8635"
           }
         ]
       },
@@ -40514,6 +40550,15 @@
         "optionType": "performanceMet",
         "qualityCodes": [
           {
+            "code": "G8633"
+          }
+        ]
+      },
+      {
+        "optionGroup": "01",
+        "optionType": "performanceMet",
+        "qualityCodes": [
+          {
             "code": "3095F"
           }
         ]
@@ -40524,6 +40569,18 @@
         "qualityCodes": [
           {
             "code": "G8633"
+          }
+        ]
+      },
+      {
+        "optionGroup": "00",
+        "optionType": "performanceNotMet",
+        "qualityCodes": [
+          {
+            "code": "3095F",
+            "modifiers": [
+              "8P"
+            ]
           }
         ]
       },
