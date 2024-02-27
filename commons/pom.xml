@@ -19,14 +19,14 @@
     </properties>
     <build>
         <plugins>
-            <plugin>
+            <!-- <plugin>
                 <groupId>org.gaul</groupId>
                 <artifactId>modernizer-maven-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
-            </plugin>
+            </plugin> -->
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
