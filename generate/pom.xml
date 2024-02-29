@@ -22,7 +22,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-plugin</artifactId>
-            	<version>3.6.0</version>
+            	<version>3.11.0</version>
                 <configuration>
                     <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
                 </configuration>
@@ -36,15 +36,35 @@
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+			</plugin>
+
         </plugins>
     </build>
 
     <dependencies>
-        <dependency>
-            <groupId>com.github.spullara.mustache.java</groupId>
-            <artifactId>compiler</artifactId>
-            <version>0.9.5</version>
-        </dependency>
+
+		<dependency>
+			<groupId>gov.cms.qpp.conversion</groupId>
+			<artifactId>commons</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>gov.cms.qpp.conversion</groupId>
+			<artifactId>test-commons</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.spullara.mustache.java</groupId>
+			<artifactId>compiler</artifactId>
+			<version>0.9.6</version>
+		</dependency>
 
         <dependency>
             <groupId>org.apache.maven</groupId>
@@ -69,48 +89,10 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.maven.shared</groupId>
 			<artifactId>maven-shared-utils</artifactId>
 			<version>3.3.3</version>
-		</dependency>
-
-        <dependency>
-            <groupId>gov.cms.qpp.conversion</groupId>
-            <artifactId>commons</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        
-        <dependency>
-		    <groupId>org.junit.jupiter</groupId>
-		    <artifactId>junit-jupiter-api</artifactId>
-            <version>5.5.2</version>
-		    <scope>test</scope>
-		</dependency>
-
-		<dependency>
-		    <groupId>org.junit.jupiter</groupId>
-		    <artifactId>junit-jupiter-engine</artifactId>
-		    <scope>test</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-		    <scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.google.truth</groupId>
-			<artifactId>truth</artifactId>
-		    <scope>test</scope>
-		</dependency>
-        
-        <dependency>
-		    <groupId>org.junit.platform</groupId>
-		    <artifactId>junit-platform-launcher</artifactId>
-		    <scope>test</scope>
 		</dependency>
 		
     </dependencies>

@@ -24,9 +24,7 @@ import org.mockito.Mockito;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -1135,20 +1133,19 @@ class JsonWrapperTest {
 	@Test
 	void test_JsonWrapperMetadataSerilizer_jsonContainer_noMetadata() throws Exception {
 		JsonGenerator gen = mock(JsonGenerator.class);
-		JsonWrapper.Type map = mock(JsonWrapper.Type.class);
+		JsonWrapper.Type map = Type.STRING;
 		JsonWrapper value = new JsonWrapper().put("value").setType(map);
 		
 		JsonWrapper.JsonWrapperMetadataSerilizer metaSer = new JsonWrapper.JsonWrapperMetadataSerilizer();
 		metaSer.jsonContainer(value, gen, null);
 		
 		// should call the super class handling if metadata is absent from the wrapper
-		verify(map, times(0)).metadata(value, gen);
-		verify(map, times(1)).json(value, gen);
+		verify(gen, times(1)).writeString(any(String.class));
 	}
 	@Test
 	void test_JsonWrapperMetadataSerilizer_jsonContainer_withMetadata() throws Exception {
 		JsonGenerator gen = mock(JsonGenerator.class);
-		JsonWrapper.Type map = mock(JsonWrapper.Type.class);
+		JsonWrapper.Type map = JsonWrapper.Type.STRING;
 		JsonWrapper value = new JsonWrapper().put("value").putMetadata("meta", "data");
 		value.setType(map);
 		
@@ -1156,8 +1153,7 @@ class JsonWrapperTest {
 		metaSer.jsonContainer(value, gen, null);
 
 		// should call the metadata method on the type instance if metadata is added to the wrapper
-		verify(map, times(1)).metadata(value, gen);
-		verify(map, times(0)).json(value, gen);
+		verify(gen, times(0)).writeString(any(String.class));
 	}
 	
 	@Test

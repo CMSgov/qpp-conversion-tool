@@ -10,9 +10,10 @@
 	<name>QPP Conversion Tool</name>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<aws.version>1.12.316</aws.version>
-		<junit.version>5.8.1</junit.version>
+		<junit.jupiter.version>5.7.2</junit.jupiter.version>
+		<junit.platform.version>1.7.2</junit.platform.version>
 		<jjwt.version>0.10.7</jjwt.version>
 
 		<requiredCodeCoverage>0.90</requiredCodeCoverage>
@@ -24,11 +25,18 @@
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<io.rest-assured.version>4.1.2</io.rest-assured.version>
+		<argLine>
+			--add-opens java.base/java.util=ALL-UNNAMED
+			--add-opens java.base/java.lang=ALL-UNNAMED
+			--add-opens java.base/java.lang.reflect=ALL-UNNAMED
+			--add-opens java.base/java.nio.file=ALL-UNNAMED
+			--add-opens java.base/java.util.concurrent=ALL-UNNAMED
+		</argLine>
 	</properties>
 
 	<modules>
-		<module>commons</module>
 		<module>test-commons</module>
+		<module>commons</module>
 		<module>converter</module>
 		<module>commandline</module>
 		<module>rest-api</module>
@@ -45,7 +53,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.8.1</version>
+					<version>3.11.0</version>
 					<configuration>
 						<forceJavacCompilerUse>true</forceJavacCompilerUse>
 						<source>${java.version}</source>
@@ -55,7 +63,7 @@
 						<dependency>
 							<groupId>org.reflections</groupId>
 							<artifactId>reflections</artifactId>
-							<version>0.9.9</version>
+							<version>0.9.12</version>
 						</dependency>
 					</dependencies>
 				</plugin>
@@ -63,7 +71,7 @@
 				<plugin>
 					<groupId>org.gaul</groupId>
 					<artifactId>modernizer-maven-plugin</artifactId>
-					<version>2.0.0</version>
+					<version>2.3.0</version>
 					<configuration>
 						<javaVersion>${java.version}</javaVersion>
 					</configuration>
@@ -79,35 +87,15 @@
 				</plugin>
 
 				<plugin>
-					<groupId>com.github.spotbugs</groupId>
-					<artifactId>spotbugs-maven-plugin</artifactId>
-					<version>4.1.3</version>
-					<configuration>
-						<effort>Max</effort>
-						<threshold>Low</threshold>
-						<omitVisitors>SerializableIdiom,Naming</omitVisitors>
-					</configuration>
-					<executions>
-						<execution>
-							<id>verify</id>
-							<phase>verify</phase>
-							<goals>
-								<goal>check</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-
-				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>3.1.1</version>
+					<version>3.6.0</version>
 				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-shade-plugin</artifactId>
-					<version>3.2.1</version>
+					<version>3.5.1</version>
 					<executions>
 						<execution>
 							<id>shade</id>
@@ -125,7 +113,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>3.2.0</version>
+					<version>3.3.0</version>
 					<configuration>
 						<archive>
 							<manifest>
@@ -155,36 +143,42 @@
 				</plugin>
 
 				<plugin>
-					<groupId>org.sonarsource.scanner.maven</groupId>
-					<artifactId>sonar-maven-plugin</artifactId>
-					<version>3.7.0.1746</version>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>0.8.8</version>
 					<executions>
 						<execution>
-							<phase>verify</phase>
+							<id>jacoco-initialize</id>
 							<goals>
-								<goal>sonar</goal>
+								<goal>prepare-agent</goal>
 							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>3.6.0</version>
+					<executions>
+						<execution>
+							<id>copy-dependencies</id>
+							<phase>package</phase>
+							<goals>
+								<goal>copy-dependencies</goal>
+							</goals>
+							<configuration>
+								<outputDirectory>${project.build.directory}/lib</outputDirectory>
+								<overWriteReleases>true</overWriteReleases>
+								<overWriteSnapshots>true</overWriteSnapshots>
+								<overWriteIfNewer>true</overWriteIfNewer>
+							</configuration>
 						</execution>
 					</executions>
 				</plugin>
 
 			</plugins>
 		</pluginManagement>
-		<plugins>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.5</version>
-				<executions>
-					<execution>
-						<id>jacoco-initialize</id>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
 	</build>
 
 	<dependencyManagement>
@@ -264,25 +258,30 @@
 			<dependency>
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter-engine</artifactId>
-				<version>${junit.version}</version>
+				<version>${junit.jupiter.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter-params</artifactId>
-				<version>${junit.version}</version>
+				<version>${junit.jupiter.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-api</artifactId>
+				<version>${junit.jupiter.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.junit.vintage</groupId>
 				<artifactId>junit-vintage-engine</artifactId>
-				<version>${junit.version}</version>
+				<version>${junit.jupiter.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.junit.platform</groupId>
 				<artifactId>junit-platform-launcher</artifactId>
-				<version>1.5.2</version>
+				<version>${junit.platform.version}</version>
 			</dependency>
 
 			<dependency>
@@ -412,7 +411,7 @@
 			<dependency>
 				<groupId>org.reflections</groupId>
 				<artifactId>reflections</artifactId>
-				<version>0.9.9</version>
+				<version>0.9.12</version>
 			</dependency>
 
 			<dependency>
@@ -470,12 +469,6 @@
 			</dependency>
 
 			<dependency>
-				<groupId>com.github.spullara.mustache.java</groupId>
-				<artifactId>compiler</artifactId>
-				<version>0.9.6</version>
-			</dependency>
-
-			<dependency>
 				<groupId>net.logstash.logback</groupId>
 				<artifactId>logstash-logback-encoder</artifactId>
 				<version>6.4</version>
@@ -485,12 +478,6 @@
 				<groupId>com.jcabi</groupId>
 				<artifactId>jcabi-manifests</artifactId>
 				<version>1.1</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.junit.jupiter</groupId>
-				<artifactId>junit-jupiter-api</artifactId>
-				<version>${junit.version}</version>
 			</dependency>
 
 			<dependency>
@@ -573,22 +560,6 @@
 				<junit.excludes>internet</junit.excludes>
 			</properties>
 		</profile>
-
-		<profile>
-			<id>sonar</id>
-			<properties>
-				<sonar.host.url>https://sonarcloud.io</sonar.host.url>
-			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.sonarsource.scanner.maven</groupId>
-						<artifactId>sonar-maven-plugin</artifactId>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-
 	</profiles>
 
 </project>

@@ -4,7 +4,7 @@
 		<artifactId>qpp-conversion-tool-parent</artifactId>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<version>2023.5.0-RELEASE</version>
-		<relativePath>../</relativePath>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>qpp-update-measures</artifactId>
@@ -36,7 +36,6 @@
 		<dependency>
 			<groupId>org.jdom</groupId>
 			<artifactId>jdom2</artifactId>
-			<version>2.0.6.1</version>
 		</dependency>
 		<dependency>
 			<groupId>gov.cms.qpp.conversion</groupId>

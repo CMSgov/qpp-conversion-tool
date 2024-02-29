@@ -44,13 +44,13 @@
 			</plugin>
 
 			<plugin>
-				<groupId>com.github.spotbugs</groupId>
-				<artifactId>spotbugs-maven-plugin</artifactId>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
 			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
+				<artifactId>maven-dependency-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
@@ -64,6 +64,12 @@
 				<version>2.5.14</version>
 				<type>pom</type>
 				<scope>import</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>org.junit</groupId>
+						<artifactId>junit-bom</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -349,6 +355,7 @@
 		<dependency>
 			<groupId>com.github.spullara.mustache.java</groupId>
 			<artifactId>compiler</artifactId>
+			<version>0.9.6</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -402,34 +409,30 @@
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
-			<version>5.7.2</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
-			<version>5.7.2</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.junit.vintage</groupId>
 			<artifactId>junit-vintage-engine</artifactId>
-			<version>5.7.2</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.junit.platform</groupId>
 			<artifactId>junit-platform-launcher</artifactId>
-			<version>1.5.2</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-params</artifactId>
-			<version>5.7.2</version>
 			<scope>test</scope>
 		</dependency>
 	

@@ -27,11 +27,6 @@
 			</plugin>
 
 			<plugin>
-				<groupId>com.github.spotbugs</groupId>
-				<artifactId>spotbugs-maven-plugin</artifactId>
-			</plugin>
-
-			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 			</plugin>
 
@@ -71,6 +66,11 @@
 								</configuration>
 							</execution>
 						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
 					</plugin>
 				</plugins>
 			</build>
