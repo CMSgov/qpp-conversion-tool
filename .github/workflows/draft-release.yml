@@ -20,7 +20,7 @@ jobs:
         uses: salsify/action-detect-and-tag-new-version@68bbe8670f415d304e02942186441939c4692aa6 # pin@v1.0.3
         with:
           version-command: |
-            mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | grep -v '\['
+            mvn org.apache.maven.plugins:maven-help-plugin:3.4.0:evaluate -Dexpression=project.version | grep -v '\['
 
       - name: Draft release notes
         uses: release-drafter/release-drafter@06d4616a80cd7c09ea3cf12214165ad6c1859e67 #v5.11
