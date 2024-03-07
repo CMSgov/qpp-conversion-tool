@@ -33,14 +33,14 @@ class EnvironmentHelperTest implements LoggerContract {
 				.that(EnvironmentHelper.isPresent(random)).isFalse();
 	}
 
-//	@Test
-//	void testLogEntryForFailures() {
-//		String random = UUID.randomUUID().toString();
-//		String message = String.format(EnvironmentHelper.NOT_FOUND, random);
-//		EnvironmentHelper.get(random);
-//
-//		assertThat(getLogs()).contains(message);
-//	}
+	@Test
+	void testLogEntryForFailures() {
+		String random = UUID.randomUUID().toString();
+		String message = String.format(EnvironmentHelper.NOT_FOUND, random);
+		EnvironmentHelper.get(random);
+
+		assertThat(getLogs()).contains(message);
+	}
 
 	@Test
 	void testIsPresentOnAdded() {

@@ -1,5 +1,11 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.InputStreamResource;
@@ -25,6 +31,7 @@ import gov.cms.qpp.conversion.api.services.AdvancedApmFileService;
 import java.io.IOException;
 import java.util.List;
 
+@Tag(name = "PCF Endpoints")
 @RestController
 @RequestMapping("/pcf")
 @CrossOrigin(allowCredentials = "false")
@@ -45,6 +52,11 @@ public class PcfFileControllerV1 {
 	 *
 	 * @return Valid json or error json content
 	 */
+	@Operation(summary = "Retrieve unprocessed files", description = "Retrieve a list of unprocessed CPC+ files.")
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = UnprocessedFileData.class), mediaType = "application/json") }),
+			@ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+			@ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
 	@GetMapping(value = "/unprocessed-files/{org}",
 		headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<List<UnprocessedFileData>> getUnprocessedPcfPlusFiles(@PathVariable("org") String organization) {
@@ -74,6 +86,11 @@ public class PcfFileControllerV1 {
 	 * @return object json or xml content
 	 * @throws IOException if S3Object content stream is invalid
 	 */
+	@Operation(summary = "Retrieve a submitted QPP JSON file", description = "Retrieves the submitted file content containing converted QPP JSON data")
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(), mediaType = "application/json") }),
+			@ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+			@ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
 	@GetMapping(value = "/qpp/{fileId}",
 		headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<InputStreamResource> getQppById(@PathVariable("fileId") String fileId)
@@ -99,6 +116,11 @@ public class PcfFileControllerV1 {
 	 * @return object json or xml content
 	 * @throws IOException if S3Object content stream is invalid
 	 */
+	@Operation(summary = "Retrieve a submitted QRDA-III file", description = "Retrieves the submitted file containing QRDA-III XML data")
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(), mediaType = "application/xml") }),
+			@ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+			@ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
 	@GetMapping(value = "/file/{fileId}",
 		headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<InputStreamResource> getFileById(@PathVariable("fileId") String fileId)
@@ -124,6 +146,11 @@ public class PcfFileControllerV1 {
 	 * @param request The new state of the file being updated
 	 * @return Message if the file was updated or not
 	 */
+	@Operation(summary = "Update status of CPC+ file", description = "Update the status of a CPC+ file to processed/unprocessed.  Returns if the file has been updated as processed/unprocessed.")
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(), mediaType = "text/plain") }),
+			@ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+			@ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
 	@PutMapping(value = "/file/{fileId}/{org}",
 		headers = {"Accept=" +
 			Constants.V1_API_ACCEPT})
