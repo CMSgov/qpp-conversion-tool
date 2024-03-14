@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,7 +27,7 @@ import com.google.common.collect.Lists;
  * Map that holds the data gleaned from an input file.
  * Nodes can contain other nodes as children to create a hierarchy.
  */
-public class Node {
+public class Node implements Serializable {
 
 	public static final int DEFAULT_LOCATION_NUMBER = -1;
 
