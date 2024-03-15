@@ -20,6 +20,7 @@ import gov.cms.qpp.conversion.util.FormatHelper;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -35,7 +36,7 @@ import java.util.stream.Stream;
  * This class is a wrapper around a container, value, and 
  * metadata Kind with container types, list and map.
  */
-public class JsonWrapper {
+public class JsonWrapper implements Serializable {
 
 	public static enum Kind {
 		CONTAINER, VALUE, METADATA;
@@ -802,8 +803,7 @@ public class JsonWrapper {
 	/**
 	 * Helps enforce the initialized representation of the {@link JsonWrapper} as a hash or an array.
 	 *
-	 * @param check should be null
-	 */
+     */
 	protected void checkMapState() {
 		if (isType(Type.MAP)) {
 			throw new IllegalStateException("Current state may not change (from map to list).");
@@ -813,8 +813,7 @@ public class JsonWrapper {
 	/**
 	 * Helps enforce the initialized representation of the {@link JsonWrapper} as a hash or an array.
 	 *
-	 * @param check should be null
-	 */
+     */
 	protected void checkListState() {
 		if (isType(Type.LIST)) {
 			throw new IllegalStateException("Current state may not change (from list to map).");
@@ -824,7 +823,7 @@ public class JsonWrapper {
 	/**
 	 * Helps enforce no null or empty values added to a {@link JsonWrapper}.
 	 *
-	 * @param check should be null
+	 * @param wrapper should be null
 	 */
 	protected boolean checkState(JsonWrapper wrapper) {
 		if (wrapper == null) { // no null entries
