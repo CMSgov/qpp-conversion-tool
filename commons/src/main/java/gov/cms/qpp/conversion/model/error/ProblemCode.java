@@ -29,7 +29,7 @@ public enum ProblemCode implements LocalizedProblem {
 		+ "Please ensure that the submission complies with the `(Submission year's)` implementation guide. "
 		+ "`(Implementation guide link)`", true),
 	MEASURE_GUID_MISSING(6, "The measure GUID `(Provided measure id)` is invalid. "
-		+ "Please see the Table 14 of the `(Submission year's)` Implementation Guide for valid measure GUIDs: "
+		+ "Please see the Table 15 of the `(Submission year's)` Implementation Guide for valid measure GUIDs: "
 		+ DocumentationReference.MEASURE_IDS, true),
 	CHILD_MEASURE_MISSING(7, "The measure reference results must have at least one measure. "
 			+ "Please review the measures section of your file as it cannot be empty."),
@@ -41,7 +41,7 @@ public enum ProblemCode implements LocalizedProblem {
 	PI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR(12, "This PI Measure Performed Reference and Results requires "
 		+ "a single Measure ID"),
 	DENOMINATOR_COUNT_INVALID(13, "Denominator count must be less than or equal to Initial Population count "
-		+ "for the measure population `(measure population id)`. Please see the Table 14 of the `(Submission Year)` Implementation guide for valid measure GUIDs: "
+		+ "for the measure population `(measure population id)`. Please see the Table 15 of the `(Submission Year)` Implementation guide for valid measure GUIDs: "
 		+ DocumentationReference.MEASURE_IDS, true),
 	POPULATION_CRITERIA_COUNT_INCORRECT(14,
 			"The electronic measure id: `(Current eMeasure ID)` requires `(Number of Subpopulations required)` "
@@ -116,11 +116,11 @@ public enum ProblemCode implements LocalizedProblem {
 	IA_MEASURE_INVALID_TYPE(51, "A single measure performed value is required and must be either a Y or an N."),
 	MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT(52,
 			" The measure data with population id '`(population id)`' must have exactly one Aggregate Count. "
-			+ "Please see the Table 14 of `(Submission year's)` Implementation Guide for valid measure GUIDs: "
+			+ "Please see the Table 15 of `(Submission year's)` Implementation Guide for valid measure GUIDs: "
 			+ DocumentationReference.MEASURE_IDS, true),
 	MEASURE_DATA_VALUE_NOT_INTEGER(53, "Measure data with population id '`(population id)`' "
 			+ "must be a whole number greater than or equal to 0. "
-			+ "Please see the Table 14 of `(Submission year's)` Implementation Guide for valid measure GUIDs: "
+			+ "Please see the Table 15 of `(Submission year's)` Implementation Guide for valid measure GUIDs: "
 			+ DocumentationReference.MEASURE_IDS, true),
 	PCF_PERFORMANCE_PERIOD_START(55, "A `(Program name)` Performance period start must be 01/01/2023. "
 			+ "Please refer to the IG for more information here: " + DocumentationReference.PCF_SUBMISSIONS, true),
@@ -191,7 +191,7 @@ public enum ProblemCode implements LocalizedProblem {
 	PCF_ZERO_PERFORMANCE_RATE(98, "The performance rate cannot have a value of 0 and must be of value Null Attribute (NA)."),
 	PCF_DUPLICATE_CEHRT(100, "More than one CMS EHR Certification ID was found. Please submit with only one CMS EHR Certification id."),
 	PCF_DENOMINATOR_COUNT_INVALID(101, "Denominator count must be equal to Initial Population count for `(Program name)` measure population `(measure population id)`."
-		+ "Please see the Table 14 of `(Submission year's)` Implementation Guide for valid measure GUIDs: "
+		+ "Please see the Table 15 of `(Submission year's)` Implementation Guide for valid measure GUIDs: "
 		+ DocumentationReference.MEASURE_IDS, true),
 	PI_RESTRICTED_MEASURES(102, "A PI section cannot contain PI_HIE_5 with PI_HIE_1, PI_LVOTC_1, PI_HIE_4, or PI_LVITC_2", false),
 	PCF_TOO_FEW_QUALITY_MEASURE_CATEGORY(103, "PCF Submissions must have the `(PCF Measure minimum)` "
