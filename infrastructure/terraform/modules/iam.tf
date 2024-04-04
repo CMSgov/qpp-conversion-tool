@@ -332,15 +332,27 @@ resource "aws_iam_policy" "conversiontool_svc_policy" {
   policy = jsonencode({
 	"Version": "2012-10-17",
 	"Statement": [
+ 		{
+			"Sid": "CTCodebuildAccess",
+			"Effect": "Allow",
+			"Action": [
+				"codebuild:ListProjects",
+				"codebuild:StartBuild",
+				"codebuild:BatchGetBuilds"
+			],
+			"Resource": [
+				"arn:aws:codebuild:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:project/*"
+			]
+		},
     {
-        "Action": [
-            "ecs:DescribeTaskDefinition",
-            "ecs:RegisterTaskDefinition",
-            "ecs:ListTaskDefinitions"
-        ],
-        "Effect": "Allow",
-        "Resource": "*",
-        "Sid": "ECSTaskpermissions"
+      "Action": [
+          "ecs:DescribeTaskDefinition",
+          "ecs:RegisterTaskDefinition",
+          "ecs:ListTaskDefinitions"
+      ],
+      "Effect": "Allow",
+      "Resource": "*",
+      "Sid": "ECSTaskpermissions"
     },
     {
         "Action": [
@@ -409,30 +421,22 @@ resource "aws_iam_policy" "conversiontool_svc_policy" {
 			"Resource": "arn:aws:logs:*:*:*"
 		},
 		{
-			"Sid": "ECRauthorization",
-			"Effect": "Allow",
-			"Action": "ecr:GetAuthorizationToken",
-			"Resource": "*"
-		},
-		{
 			"Sid": "ECRPermissions",
 			"Effect": "Allow",
 			"Action": [
-				"ecr:GetDownloadUrlForLayer",
-				"ecr:BatchGetImage",
-				"ecr:CompleteLayerUpload",
-				"ecr:UploadLayerPart",
-				"ecr:InitiateLayerUpload",
-				"ecr:BatchCheckLayerAvailability",
-				"ecr:PutImage"
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:BatchGetImage",
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:DescribeRepositories",
+        "ecr:GetRepositoryPolicy",
+        "ecr:ListImages",
+        "ecr:GetAuthorizationToken",
+        "ecr:CompleteLayerUpload",
+        "ecr:PutImage",
+        "ecr:InitiateLayerUpload",
+        "ecr:UploadLayerPart"
 			],
-			"Resource": [
-				"arn:aws:ecr:us-east-1:${local.account_id}:repository/new-qpp-conversion-tool",
-				"arn:aws:ecr:us-east-1:${local.account_id}:repository/qppsf/conversion-tool/dev",
-				"arn:aws:ecr:us-east-1:${local.account_id}:repository/qppsf/conversion-tool/devpre",
-				"arn:aws:ecr:us-east-1:${local.account_id}:repository/qppsf/conversion-tool/impl",
-				"arn:aws:ecr:us-east-1:${local.account_id}:repository/qppsf/conversion-tool/prod"
-			]
+			"Resource": "*"
 		},
 		{
 			"Action": [
@@ -450,6 +454,36 @@ resource "aws_iam_policy" "conversiontool_svc_policy" {
 	]
 })
 }
+		# {
+		# 	"Sid": "ECRauthorization",
+		# 	"Effect": "Allow",
+		# 	"Action": "ecr:GetAuthorizationToken",
+		# 	"Resource": "*"
+		# },
+		# {
+		# 	"Sid": "ECRPermissions",
+		# 	"Effect": "Allow",
+		# 	"Action": [
+    #     "ecr:GetDownloadUrlForLayer",
+    #     "ecr:BatchGetImage",
+    #     "ecr:BatchCheckLayerAvailability",
+    #     "ecr:DescribeRepositories",
+    #     "ecr:GetRepositoryPolicy",
+    #     "ecr:ListImages",
+    #     "ecr:GetAuthorizationToken",
+    #     "ecr:CompleteLayerUpload",
+    #     "ecr:PutImage",
+    #     "ecr:InitiateLayerUpload",
+    #     "ecr:UploadLayerPart"
+		# 	],
+		# 	"Resource": [
+		# 		"arn:aws:ecr:us-east-1:${local.account_id}:repository/new-qpp-conversion-tool",
+		# 		"arn:aws:ecr:us-east-1:${local.account_id}:repository/qppsf/conversion-tool/dev",
+		# 		"arn:aws:ecr:us-east-1:${local.account_id}:repository/qppsf/conversion-tool/devpre",
+		# 		"arn:aws:ecr:us-east-1:${local.account_id}:repository/qppsf/conversion-tool/impl",
+		# 		"arn:aws:ecr:us-east-1:${local.account_id}:repository/qppsf/conversion-tool/prod"
+		# 	]
+		# },
 
 resource "aws_iam_role_policy_attachment" "conversiontool_servicerole_policyattachment" {
   role       = aws_iam_role.conversiontool_codebuild_servicerole.name
