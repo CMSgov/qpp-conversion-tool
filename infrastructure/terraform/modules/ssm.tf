@@ -460,7 +460,8 @@ resource "aws_ssm_parameter" "java_opts" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/JAVA_OPTS"
   description = "JAVA_OPTS"
   type        = "SecureString"
-  value       = "-Xms6G -Xmx6G -Xmn5G -XX:+UseStringDeduplication -XX:-AggressiveOpts"
+  ##value       = "-Xms6G -Xmx6G -Xmn5G -XX:+UseStringDeduplication -XX:-AggressiveOpts"
+  value       = "-Xms6G -Xmx6G -Xmn5G -XX:+UseStringDeduplication"
   overwrite   = true
 
   lifecycle {
