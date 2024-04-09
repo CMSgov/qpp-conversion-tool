@@ -353,7 +353,7 @@ resource "aws_iam_policy" "conversiontool_svc_policy" {
           "ecs:ListTaskDefinitions"
       ],
       "Effect": "Allow",
-      "Resource": "*",
+      "Resource": "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:task-definition/*",
       "Sid": "ECSTaskpermissions"
     },
     {
@@ -438,7 +438,7 @@ resource "aws_iam_policy" "conversiontool_svc_policy" {
         "ecr:InitiateLayerUpload",
         "ecr:UploadLayerPart"
 			],
-			"Resource": "*"
+			"Resource": "arn:aws:ecr:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:repository/*"
 		},
 		{
 			"Action": [
