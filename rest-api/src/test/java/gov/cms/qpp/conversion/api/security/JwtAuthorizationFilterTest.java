@@ -3,12 +3,9 @@ package gov.cms.qpp.conversion.api.security;
 import com.google.common.truth.Truth;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,8 +27,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 //Using jUnit 4 for power mock
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({SecurityContextHolder.class})
+//@RunWith(PowerMockRunner.class)
+//@PrepareForTest({SecurityContextHolder.class})
 @PowerMockIgnore({"org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*", "com.sun.org.apache.xerces.*", "javax.crypto.*"})
 
 public class JwtAuthorizationFilterTest {
