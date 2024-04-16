@@ -60,6 +60,10 @@ cd ./qpp-conversion-tool
 
 ## Running the Converter
 
+### Disable HTTPS
+
+In order to run converter locally, HTTPS may need to be disabled.  It can be done by removing or commenting server.port and server.ssl.key-store-type in application.properties file under `rest-api/src/main/resources`
+
 ### ReST API via Docker
 
 The Conversion Tool can be executed through a ReST API. Using the ReST API has the added benefit of having the
@@ -70,7 +74,7 @@ directory.
 
 ```shell
 # Build the Docker image and run the container using docker-compose.
-docker-compose -f ./docker-compose.test.yaml --build up 
+docker-compose -f ./docker-compose.test.yaml up --build 
 ```
 
 #### Invoking the Endpoint
