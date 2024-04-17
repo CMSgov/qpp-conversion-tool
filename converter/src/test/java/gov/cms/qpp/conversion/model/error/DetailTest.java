@@ -56,4 +56,10 @@ class DetailTest {
 
 		assertThat(detail.getLocation().getLocation()).isEmpty();
 	}
+
+	@Test
+	public void testDetailStringArray() {
+		Detail detail = new Detail("test");
+		assertThat(detail.getMessage()).isEqualTo("test");
+	}
 }

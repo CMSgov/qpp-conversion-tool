@@ -33,6 +33,15 @@ public class Detail implements Serializable {
 	}
 
 	/**
+	 * Constructor to accept detail message without an object
+	 *
+	 * @param detail string to set message
+	 */
+	public Detail(String detail) {
+		this.setMessage(detail);
+	}
+
+	/**
 	 * Copy constructor
 	 *
 	 * @param copy object to copy
