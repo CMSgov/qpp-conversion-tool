@@ -16,22 +16,22 @@ Before you can use the qpp-conversion-tool application, you must install and con
 
   [GitHub's Guide to Installing Git](https://help.github.com/articles/set-up-git) is a good source of information.
 
-* [Java Runtime](https://java.com/download) (version `>= 11`).
+* [Java Runtime](https://java.com/download) (version `>= 17`).
 
   It is important that you have the right version of `java` on your path.
 
   ```shell
-  # When you run 'java -version', you should get 11. For example:
+  # When you run 'java -version', you should get 17. For example:
   java -version
-  java version "11"
+  java version "17"
   ...
   ```
 
   Sometimes the Java Runtime installer doesn't update your path. So you must do it manually. Alternatively, download and install
-  the [Java Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (version `>= 11`). The JDK is
+  the [Java Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (version `>= 17`). The JDK is
   better at updating your path.
 
-* [Maven](https://maven.apache.org) (version `>= 3.8.4`).
+* [Maven](https://maven.apache.org) (version `>= 3.9.6`).
 
   Maven is used to build the application, manage dependencies, and run tests. After you unzip the Maven archive, you need to add
   the `bin` directory to your path, as described the [Maven installation instructions](https://maven.apache.org/install.html).
@@ -39,7 +39,7 @@ Before you can use the qpp-conversion-tool application, you must install and con
   ```shell
   # When you run 'mvn -v', you should get 3.8.4. For example:
   mvn -v
-  Apache Maven 3.8.4
+  Apache Maven 3.9.6
   ...
   ```
 * [Docker](https://www.docker.com).
@@ -60,6 +60,10 @@ cd ./qpp-conversion-tool
 
 ## Running the Converter
 
+### Disable HTTPS
+
+In order to run converter locally, HTTPS may need to be disabled.  It can be done by removing or commenting server.port and server.ssl.key-store-type in application.properties file under `rest-api/src/main/resources`
+
 ### ReST API via Docker
 
 The Conversion Tool can be executed through a ReST API. Using the ReST API has the added benefit of having the
@@ -70,7 +74,7 @@ directory.
 
 ```shell
 # Build the Docker image and run the container using docker-compose.
-docker-compose -f ./docker-compose.test.yaml --build up 
+docker-compose -f ./docker-compose.test.yaml up --build 
 ```
 
 #### Invoking the Endpoint

@@ -17,7 +17,7 @@ if you'd like to contribute to qpp-conversion-tool.
 
 The additional prerequisites that were not already outlined in the
 [main README][readme] are...
-- [Java Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (version `>= 1.8`). The Java Runtime
+- [Java Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (version `>= 17`). The Java Runtime
 will not suffice.
 - [Maven](https://maven.apache.org).
 
