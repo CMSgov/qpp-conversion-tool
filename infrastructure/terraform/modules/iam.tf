@@ -353,7 +353,7 @@ resource "aws_iam_policy" "conversiontool_svc_policy" {
           "ecs:ListTaskDefinitions"
       ],
       "Effect": "Allow",
-      "Resource": "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:task-definition/*",
+      "Resource": "*",
       "Sid": "ECSTaskpermissions"
     },
     {
@@ -362,7 +362,7 @@ resource "aws_iam_policy" "conversiontool_svc_policy" {
             "ecs:UpdateService"
         ],
         "Effect": "Allow",
-        "Resource": "arn:aws:ecs:*:*:service/*",
+        "Resource": "*",
         "Sid": "ECSServicepermissions"
     },
     {
@@ -432,7 +432,6 @@ resource "aws_iam_policy" "conversiontool_svc_policy" {
         "ecr:DescribeRepositories",
         "ecr:GetRepositoryPolicy",
         "ecr:ListImages",
-        "ecr:GetAuthorizationToken",
         "ecr:CompleteLayerUpload",
         "ecr:PutImage",
         "ecr:InitiateLayerUpload",
@@ -452,17 +451,36 @@ resource "aws_iam_policy" "conversiontool_svc_policy" {
 			"Effect": "Allow",
 			"Resource": ["arn:aws:ssm:${var.region}:${local.account_id}:parameter/qppar-sf/*"],
 			"Sid": "SSMPermissions"
-		}
+		},
+    {
+        "Sid": "ECRTokenPermissions",
+        "Effect": "Allow",
+        "Action": "ecr:GetAuthorizationToken",
+        "Resource": "*"
+    }
 	]
 })
 }
-		# {
-		# 	"Sid": "ECRauthorization",
-		# 	"Effect": "Allow",
-		# 	"Action": "ecr:GetAuthorizationToken",
-		# 	"Resource": "*"
-		# },
-		# {
+    # {
+    #   "Action": [
+    #       "ecs:DescribeTaskDefinition",
+    #       "ecs:RegisterTaskDefinition",
+    #       "ecs:ListTaskDefinitions"
+    #   ],
+    #   "Effect": "Allow",
+    #   "Resource": "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:task-definition/*",
+    #   "Sid": "ECSTaskpermissions"
+    # },
+    # {
+    #     "Action": [
+    #         "ecs:DescribeServices",
+    #         "ecs:UpdateService"
+    #     ],
+    #     "Effect": "Allow",
+    #     "Resource": "arn:aws:ecs:*:*:service/*",
+    #     "Sid": "ECSServicepermissions"
+    # },		
+    # {
 		# 	"Sid": "ECRPermissions",
 		# 	"Effect": "Allow",
 		# 	"Action": [
