@@ -3,24 +3,20 @@ package gov.cms.qpp.conversion.api.config;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-
 import static com.google.common.truth.Truth.assertWithMessage;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
+import org.junit.jupiter.api.Test;
+import static org.mockito.Mockito.mockStatic;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(AmazonS3ClientBuilder.class)
 @PowerMockIgnore({"org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*", "com.sun.org.apache.xerces.*" })
 public class S3ConfigTest {
 
@@ -29,15 +25,15 @@ public class S3ConfigTest {
 
 	@Test
 	public void testDefaultClient() {
-		mockStatic(AmazonS3ClientBuilder.class);
+        mockStatic(AmazonS3ClientBuilder.class);
 		when(AmazonS3ClientBuilder.defaultClient()).thenReturn(Mockito.mock(AmazonS3.class));
-		Assert.assertNotNull(underTest.s3client());
+		assertNotNull(underTest.s3client());
 		verify(underTest, times(0)).planB();
 	}
 
 	@Test
 	public void testRegionClient() {
-		mockStatic(AmazonS3ClientBuilder.class);
+        mockStatic(AmazonS3ClientBuilder.class);
 		when(AmazonS3ClientBuilder.defaultClient()).thenThrow(new SdkClientException("meep"));
 		doAnswer(invocationOnMock -> null).when(underTest).planB();
 

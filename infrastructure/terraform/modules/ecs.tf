@@ -123,6 +123,12 @@ resource "aws_security_group" "ct_app" {
     protocol        = "tcp"
     security_groups = [aws_security_group.conversion-tool_alb.id]
   }
+  ingress {
+    from_port       = 443
+    to_port         = 8443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.conversion-tool_alb.id]
+  }
   egress {
     from_port   = 0
     to_port     = 0

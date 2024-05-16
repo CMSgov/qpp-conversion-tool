@@ -22,7 +22,6 @@ import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 import gov.cms.qpp.test.helper.JsonTestHelper;
 
-@RunWith(PowerMockRunner.class)
 @PowerMockIgnore({"org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*", "com.sun.org.apache.xerces.*" })
 public class ConversionFileWriterWrapperTest {
 
