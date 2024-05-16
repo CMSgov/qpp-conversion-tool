@@ -346,146 +346,121 @@ resource "aws_iam_policy" "conversiontool_svc_policy" {
 				"arn:aws:codebuild:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:project/*"
 			]
 		},
-    {
-      "Action": [
-          "ecs:DescribeTaskDefinition",
-          "ecs:RegisterTaskDefinition",
-          "ecs:ListTaskDefinitions"
-      ],
-      "Effect": "Allow",
-      "Resource": "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:task-definition/*",
-      "Sid": "ECSTaskpermissions"
-    },
-    {
-        "Action": [
-            "ecs:DescribeServices",
-            "ecs:UpdateService"
-        ],
-        "Effect": "Allow",
-        "Resource": "arn:aws:ecs:*:*:service/*",
-        "Sid": "ECSServicepermissions"
-    },
-    {
-        "Action": [
-            "iam:GetRole",
-            "iam:PassRole"
-        ],
-        "Sid": "PassRolePermissions",
-        "Effect": "Allow",
-        "Resource": [
-            "arn:aws:iam::${local.account_id}:role/delegatedadmin/developer/${var.project_name}-ecsTaskExecutionRole-${var.environment}",
-            "arn:aws:iam::${local.account_id}:role/delegatedadmin/developer/${var.project_name}-ecstask-role-${var.environment}"
-        ],
-        "Condition": {
-            "StringLike": {
-                "iam:PassedToService": [
-                    "ecs-tasks.amazonaws.com"
-                ]
-            }
-        }
-    },
-		{
-			"Sid": "AllowS3",
-			"Effect": "Allow",
-			"Action": [
-				"s3:GetObject",
-				"s3:ListBucket",
-				"s3:PutObject"
-			],
-			"Resource": [
-        "arn:aws:s3:::${var.team}-codepipeline-s3-${local.account_id}-${var.region}",
-        "arn:aws:s3:::${var.team}-codepipeline-s3-${local.account_id}-${var.region}/*",
-        "arn:aws:s3:::aws-hhs-cms-ccsq-qpp-navadevops-pii-cnvrt-npicpc-dev-${var.region}",
-        "arn:aws:s3:::aws-hhs-cms-ccsq-qpp-navadevops-pii-cnvrt-npicpc-dev-${var.region}/*"
-]
-		},
-		{
-			"Action": [
-				"acm:ListCertificates",
-				"acm:ExportCertificate",
-				"acm:GetCertificate",
-				"acm:DescribeCertificate"
-			],
-			"Effect": "Allow",
-			"Resource": [
-        "arn:aws:acm:${var.region}:${local.account_id}:certificate/*"
-      ],
-			"Sid": "ACMPermissions"
-		},
-		{
-			"Sid": "CloudWatchLogsPolicy",
-			"Effect": "Allow",
-			"Action": [
-				"logs:CreateLogGroup",
-				"logs:CreateLogStream",
-				"logs:PutLogEvents"
-			],
-			"Resource": "arn:aws:logs:*:*:*"
-		},
-		{
-			"Sid": "ECRPermissions",
-			"Effect": "Allow",
-			"Action": [
-        "ecr:GetDownloadUrlForLayer",
-        "ecr:BatchGetImage",
-        "ecr:BatchCheckLayerAvailability",
-        "ecr:DescribeRepositories",
-        "ecr:GetRepositoryPolicy",
-        "ecr:ListImages",
-        "ecr:GetAuthorizationToken",
-        "ecr:CompleteLayerUpload",
-        "ecr:PutImage",
-        "ecr:InitiateLayerUpload",
-        "ecr:UploadLayerPart"
-			],
-			"Resource": "arn:aws:ecr:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:repository/*"
-		},
-		{
-			"Action": [
-				"ssm:GetParameters",
-				"ssm:PutParameter",
-				"ssm:GetParameterHistory",
-				"ssm:GetParametersByPath",
-				"ssm:GetParameter",
-				"ssm:DescribeParameters"
-			],
-			"Effect": "Allow",
-			"Resource": ["arn:aws:ssm:${var.region}:${local.account_id}:parameter/qppar-sf/*"],
-			"Sid": "SSMPermissions"
-		}
+	    {
+	      "Action": [
+	          "ecs:DescribeTaskDefinition",
+	          "ecs:RegisterTaskDefinition",
+	          "ecs:ListTaskDefinitions"
+	      ],
+	      "Effect": "Allow",
+	      "Resource": "*",
+	      "Sid": "ECSTaskpermissions"
+	    },
+	    {
+	        "Action": [
+	            "ecs:DescribeServices",
+	            "ecs:UpdateService"
+	        ],
+	        "Effect": "Allow",
+	        "Resource": "*",
+	        "Sid": "ECSServicepermissions"
+	    },
+	    {
+        	"Action": [
+            		"iam:GetRole",
+            		"iam:PassRole"
+		        ],
+		"Sid": "PassRolePermissions",
+        	"Effect": "Allow",
+		"Resource": [
+		        "arn:aws:iam::${local.account_id}:role/delegatedadmin/developer/${var.project_name}-ecsTaskExecutionRole-${var.environment}",
+            		"arn:aws:iam::${local.account_id}:role/delegatedadmin/developer/${var.project_name}-ecstask-role-${var.environment}"
+		],
+        	"Condition": {
+            		"StringLike": {
+                		"iam:PassedToService": [
+                		"ecs-tasks.amazonaws.com"
+                		]
+            		}
+        	}
+    	    },
+	    {
+		"Sid": "AllowS3",
+		"Effect": "Allow",
+		"Action": [
+			"s3:GetObject",
+			"s3:ListBucket",
+			"s3:PutObject"
+		],
+		"Resource": [
+        		"arn:aws:s3:::${var.team}-codepipeline-s3-${local.account_id}-${var.region}",
+        		"arn:aws:s3:::${var.team}-codepipeline-s3-${local.account_id}-${var.region}/*",
+		        "arn:aws:s3:::aws-hhs-cms-ccsq-qpp-navadevops-pii-cnvrt-npicpc-dev-${var.region}",
+        		"arn:aws:s3:::aws-hhs-cms-ccsq-qpp-navadevops-pii-cnvrt-npicpc-dev-${var.region}/*"
+		]
+	    },
+	    {
+		"Action": [
+			"acm:ListCertificates",
+			"acm:ExportCertificate",
+			"acm:GetCertificate",
+			"acm:DescribeCertificate"
+		],
+		"Effect": "Allow",
+		"Resource": [
+        		"arn:aws:acm:${var.region}:${local.account_id}:certificate/*"
+      		],
+		"Sid": "ACMPermissions"
+	    },
+	    {
+		"Sid": "CloudWatchLogsPolicy",
+		"Effect": "Allow",
+		"Action": [
+			"logs:CreateLogGroup",
+			"logs:CreateLogStream",
+			"logs:PutLogEvents"
+		],
+		"Resource": "arn:aws:logs:*:*:*"
+	    },
+	    {
+		"Sid": "ECRPermissions",
+		"Effect": "Allow",
+		"Action": [
+        		"ecr:GetDownloadUrlForLayer",
+        		"ecr:BatchGetImage",
+        		"ecr:BatchCheckLayerAvailability",
+        		"ecr:DescribeRepositories",
+        		"ecr:GetRepositoryPolicy",
+        		"ecr:ListImages",
+        		"ecr:CompleteLayerUpload",
+        		"ecr:PutImage",
+        		"ecr:InitiateLayerUpload",
+        		"ecr:UploadLayerPart"
+		],
+		"Resource": "arn:aws:ecr:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:repository/*"
+	    },
+	    {
+		"Action": [
+			"ssm:GetParameters",
+			"ssm:PutParameter",
+			"ssm:GetParameterHistory",
+			"ssm:GetParametersByPath",
+			"ssm:GetParameter",
+			"ssm:DescribeParameters"
+		],
+		"Effect": "Allow",
+		"Resource": ["arn:aws:ssm:${var.region}:${local.account_id}:parameter/qppar-sf/*"],
+		"Sid": "SSMPermissions"
+	    },
+    	    {
+        	"Sid": "ECRTokenPermissions",
+        	"Effect": "Allow",
+        	"Action": "ecr:GetAuthorizationToken",
+        	"Resource": "*"
+	    }
 	]
 })
 }
-		# {
-		# 	"Sid": "ECRauthorization",
-		# 	"Effect": "Allow",
-		# 	"Action": "ecr:GetAuthorizationToken",
-		# 	"Resource": "*"
-		# },
-		# {
-		# 	"Sid": "ECRPermissions",
-		# 	"Effect": "Allow",
-		# 	"Action": [
-    #     "ecr:GetDownloadUrlForLayer",
-    #     "ecr:BatchGetImage",
-    #     "ecr:BatchCheckLayerAvailability",
-    #     "ecr:DescribeRepositories",
-    #     "ecr:GetRepositoryPolicy",
-    #     "ecr:ListImages",
-    #     "ecr:GetAuthorizationToken",
-    #     "ecr:CompleteLayerUpload",
-    #     "ecr:PutImage",
-    #     "ecr:InitiateLayerUpload",
-    #     "ecr:UploadLayerPart"
-		# 	],
-		# 	"Resource": [
-		# 		"arn:aws:ecr:us-east-1:${local.account_id}:repository/new-qpp-conversion-tool",
-		# 		"arn:aws:ecr:us-east-1:${local.account_id}:repository/qppsf/conversion-tool/dev",
-		# 		"arn:aws:ecr:us-east-1:${local.account_id}:repository/qppsf/conversion-tool/devpre",
-		# 		"arn:aws:ecr:us-east-1:${local.account_id}:repository/qppsf/conversion-tool/impl",
-		# 		"arn:aws:ecr:us-east-1:${local.account_id}:repository/qppsf/conversion-tool/prod"
-		# 	]
-		# },
 
 resource "aws_iam_role_policy_attachment" "conversiontool_servicerole_policyattachment" {
   role       = aws_iam_role.conversiontool_codebuild_servicerole.name
