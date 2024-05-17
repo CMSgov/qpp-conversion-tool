@@ -3,9 +3,6 @@ package gov.cms.qpp.conversion.api.controllers;
 import gov.cms.qpp.conversion.api.model.HealthCheck;
 import gov.cms.qpp.conversion.api.services.VersionService;
 
-import java.util.ArrayList;
-import java.util.stream.Collectors;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -52,10 +49,12 @@ public class HealthCheckController {
 	@ResponseStatus(HttpStatus.OK)
 	public @ResponseBody HealthCheck health() {
 		HealthCheck healthCheck = new HealthCheck();
-		healthCheck.setEnvironmentVariables(new ArrayList<>(System.getenv().keySet()));
-		healthCheck.setSystemProperties(
-				System.getProperties().keySet().stream().map(String::valueOf).collect(Collectors.toList()));
 		healthCheck.setImplementationVersion(version.getImplementationVersion());
+		healthCheck.setValidationUrl(System.getenv("VALIDATION_URL"));
+		healthCheck.setPcfClose(System.getenv("CPC_END_DATE") + " EST");
+		healthCheck.setValidationFile(System.getenv("CPC_PLUS_VALIDATION_FILE"));
+		healthCheck.setJavaVersion(System.getenv("JAVA_VERSION"));
+		healthCheck.setStatus(HttpStatus.OK);
 
 		return healthCheck;
 	}
