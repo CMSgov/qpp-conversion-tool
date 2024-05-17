@@ -2,12 +2,15 @@ version: 0.2
 env:
   shell: bash
   variables:
-    SLACK_CHANNEL: "p-qpp-sub-alerts"
+    #SLACK_CHANNEL: "p-qpp-sub-alerts"
+    SLACK_API_URL: "https://slack.com/api/chat.postMessage"
   parameter-store:
     AWS_ACCOUNT_ID: "/qppar-sf/account_id"
     DOCKERHUB_USERNAME: "/qppar-sf/DOCKERHUB_USERNAME"
     DOCKERHUB_PASS: "/qppar-sf/DOCKERHUB_PASS"
-    SLACK_WEBHOOK: "/qppar-sf/dev/conversion_tool/slack_hook_url"
+    #SLACK_WEBHOOK: "/qppar-sf/dev/conversion_tool/slack_hook_url"
+    SLACK_CHANNEL: "/qppar-sf/global/slack_channel"
+    SLACK_SECRET_TOKEN: "/qppar-sf/global/slack_token"
     PART_FILE: "/qppar-sf/conversion_tool/CPC_PLUS_FILE_NAME"
     PART_FILE_BUCKET: "/qppar-sf/$ENVIRONMENT/conversion_tool/CPC_PLUS_BUCKET_NAME"
     OUTPUT_PART_FILE: "/qppar-sf/$ENVIRONMENT/conversion_tool/CPC_PLUS_VALIDATION_FILE"
@@ -16,6 +19,7 @@ phases:
     runtime-versions:
       python: 3.8
   pre_build:
+    on-failure: ABORT
     commands:
       - echo ${CODEBUILD_SRC_DIR}
       - echo ${AWS_DEFAULT_REGION}
@@ -36,6 +40,7 @@ phases:
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com
 
   build:
+    on-failure: ABORT
     commands:
       - REPOSITORY_URI="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/qppsf/conversion-tool/${ENVIRONMENT}"
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION)
@@ -63,10 +68,17 @@ phases:
   post_build:
     commands:
       - |
-        if [[ $CODEBUILD_BUILD_SUCCEEDING -eq 1 ]]; then
-          SLACK_MSG="BUILD SUCCEEDED for Conversion Tool ${ENVIRONMENT} Environment, ${CODEBUILD_BUILD_ARN}"
-          curl -X POST -H 'Content-type: application/json' --data "{ \"attachments\": [{\"color\":\"good\",\"channel\":\"${SLACK_CHANNEL}\",\"username\":\"aws-codebuild\",\"text\":\"${SLACK_MSG}\",}]}" ${SLACK_WEBHOOK}
+        SLACK_MSG=""
+        SLACK_EMOJI=""
+        if [[ $CODEBUILD_BUILD_SUCCEEDING -eq 1 ]]
+        then
+          SLACK_EMOJI=":ok:"
+          SLACK_MSG="${SLACK_EMOJI} BUILD SUCCEEDED for Conversion Tool ${ENVIRONMENT} Environment, ${CODEBUILD_BUILD_ARN}"
         else
-          SLACK_MSG="BUILD FAILED for Conversion Tool ${ENVIRONMENT} Environment, ${CODEBUILD_BUILD_ARN}"
-          curl -X POST -H 'Content-type: application/json' --data "{ \"attachments\": [{\"color\":\"danger\",\"channel\":\"${SLACK_CHANNEL}\",\"username\":\"aws-codebuild\",\"text\":\"${SLACK_MSG}\",}]}" ${SLACK_WEBHOOK}
+          SLACK_EMOJI=":warning:"
+          SLACK_MSG="${SLACK_EMOJI} BUILD FAILED for Conversion Tool ${ENVIRONMENT} Environment, ${CODEBUILD_BUILD_ARN}"
         fi
+        SLACK_HDR1="'Authorization:Bearer ${SLACK_SECRET_TOKEN}'"
+        SLACK_HDR2="'Content-type: application/json'"
+        SLACK_PAYLOAD="'"$(echo "{ \"channel\":\"${SLACK_CHANNEL}\", \"blocks\": [ { \"type\":\"section\", \"text\": { \"type\":\"mrkdwn\", \"text\":\"${SLACK_MSG}\" } } ] }" | jq -rc '.')"'"
+        eval $(echo curl -X POST -H ${SLACK_HDR1} -H ${SLACK_HDR2} -d ${SLACK_PAYLOAD} ${SLACK_API_URL} )
