@@ -21,23 +21,13 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 public class PcfQualityMeasureIdValidatorTest {
-	private static final String MEASURE_ID = "2c928084-7545-fe85-0175-4685342200a1";
-	private static final String E_MEASURE_ID = "CMS128v10";
+	private static final String MEASURE_ID = "2c928084-83d3-1b44-0183-ec9f5639051f";
+	private static final String E_MEASURE_ID = "CMS128v12";
 
 	private PcfQualityMeasureIdValidator validator;
 	private Node testNode;
 	private Node clinicalDoc;
 	private Node measureSection;
-
-	@BeforeAll
-	static  void setUpCustomMeasureData() {
-		MeasureConfigs.setMeasureDataFile("test-2022-measure-data.json");
-	}
-
-	@AfterAll
-	static void resetMeasuresData() {
-		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
-	}
 
 	@BeforeEach
 	void setUp() {
