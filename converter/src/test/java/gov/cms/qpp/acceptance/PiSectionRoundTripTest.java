@@ -37,24 +37,13 @@ class PiSectionRoundTripTest {
 	private static final Path PI_RESTRICTED_MEASURES =
 		Paths.get("src/test/resources/negative/mipsInvalidPIMeasureIds.xml");
 	private static final Path APP1_APM_ENTITY_CEHRT1 =
-			Paths.get("src/test/resources/app/2022/App1-ApmEntity-Qrda-III-1.xml");
+			Paths.get("src/test/resources/app/2024/App1-ApmEntity-Qrda-III-1.xml");
 	private static final Path APP1_APM_ENTITY_CEHRT2 =
-			Paths.get("src/test/resources/app/2022/App1-ApmEntity-Qrda-III-2.xml");
+			Paths.get("src/test/resources/app/2024/App1-ApmEntity-Qrda-III-2.xml");
 	private static final Path APP1_GROUP_CEHRT =
-		Paths.get("src/test/resources/app/2022/App1-Group-QRDA-III.xml");
+		Paths.get("src/test/resources/app/2024/App1-Group-QRDA-III.xml");
 	private static final Path APP1_INDIVIDUAL_CEHRT =
-		Paths.get("src/test/resources/app/2022/App1-Indv-QRDA-III.xml");
-
-	@BeforeAll
-	static  void setUpCustomMeasureData() {
-		MeasureConfigs.setMeasureDataFile("test-2022-measure-data.json");
-	}
-
-	@AfterAll
-	static void resetMeasuresData() {
-		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
-	}
-
+		Paths.get("src/test/resources/app/2024/App1-Indv-QRDA-III.xml");
 
 	@Test
 	void parseSparsePiSectionAsNode() throws XmlException {
