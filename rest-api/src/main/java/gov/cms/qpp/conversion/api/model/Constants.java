@@ -27,7 +27,7 @@ public class Constants {
 	public static final String CPC_PLUS_FILENAME_VARIABLE = "CPC_PLUS_VALIDATION_FILE";
 	public static final String CPC_PLUS_UNPROCESSED_FILE_SEARCH_DATE_VARIABLE = "CPC_PLUS_UNPROCESSED_FILTER_START_DATE";
 	public static final HashMap<String, String> ORG_ATTRIBUTE_MAP;
-	public static final String CPC_ORG = "cpcplus";
+	public static final String CPC_ORG = "telligen";
 	public static final String RTI_ORG = "rti";
 	public static final String CPC_PLUS_APM_FILE_NAME_KEY = "cpc_plus_apm_entity_ids.json";
 	public static final String PCF_APM_FILE_NAME_KEY = "pcf_apm_entity_ids.json";
