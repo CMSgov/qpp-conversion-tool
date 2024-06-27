@@ -20,4 +20,7 @@
 	<root level="INFO">
 		<appender-ref ref="STDOUT_DETAIL"/>
 	</root>
+	<logger name="org.springframework.web.filter.CommonsRequestLoggingFilter">
+		<level value="DEBUG" />
+	</logger>
 </configuration>
