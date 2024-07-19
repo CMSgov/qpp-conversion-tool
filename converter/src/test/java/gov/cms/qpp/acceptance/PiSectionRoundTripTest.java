@@ -36,25 +36,12 @@ class PiSectionRoundTripTest {
 
 	private static final Path PI_RESTRICTED_MEASURES =
 		Paths.get("src/test/resources/negative/mipsInvalidPIMeasureIds.xml");
-	private static final Path APP1_APM_ENTITY_CEHRT1 =
-			Paths.get("src/test/resources/app/2022/App1-ApmEntity-Qrda-III-1.xml");
-	private static final Path APP1_APM_ENTITY_CEHRT2 =
-			Paths.get("src/test/resources/app/2022/App1-ApmEntity-Qrda-III-2.xml");
+	private static final Path APP1_APM_ENTITY_CEHRT =
+			Paths.get("src/test/resources/app/2024/App1-ApmEntity-Qrda-III.xml");
 	private static final Path APP1_GROUP_CEHRT =
-		Paths.get("src/test/resources/app/2022/App1-Group-QRDA-III.xml");
+		Paths.get("src/test/resources/app/2024/App1-Group-QRDA-III.xml");
 	private static final Path APP1_INDIVIDUAL_CEHRT =
-		Paths.get("src/test/resources/app/2022/App1-Indv-QRDA-III.xml");
-
-	@BeforeAll
-	static  void setUpCustomMeasureData() {
-		MeasureConfigs.setMeasureDataFile("test-2022-measure-data.json");
-	}
-
-	@AfterAll
-	static void resetMeasuresData() {
-		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
-	}
-
+		Paths.get("src/test/resources/app/2024/App1-Indv-QRDA-III.xml");
 
 	@Test
 	void parseSparsePiSectionAsNode() throws XmlException {
@@ -202,7 +189,7 @@ class PiSectionRoundTripTest {
 
 	@Test
 	void testAppApmCehrtIsEncoded() {
-		Converter converter = new Converter(new PathSource(APP1_APM_ENTITY_CEHRT1));
+		Converter converter = new Converter(new PathSource(APP1_APM_ENTITY_CEHRT));
 		AllErrors errors = null;
 		List<Detail> warnings = null;
 		JsonWrapper qppWrapper = null;
@@ -220,29 +207,6 @@ class PiSectionRoundTripTest {
 		assertThat(warnings).isNull();
 		List<String> cehrtIdList = JsonHelper.readJsonAtJsonPath(qppWrapper.toString(),
 			"$.measurementSets[?(@.category=='pi')].cehrtId", new TypeRef<List<String>>() { });
-		assertThat(cehrtIdList.get(0)).isEqualTo("XX15EXXXXXXXXXX");
-	}
-
-	@Test
-	void testNewCehrtIDValidation() {
-		Converter converter = new Converter(new PathSource(APP1_APM_ENTITY_CEHRT2));
-		AllErrors errors = null;
-		List<Detail> warnings = null;
-		JsonWrapper qppWrapper = null;
-
-
-		List<Detail> details = new ArrayList<>();
-		try {
-			qppWrapper = converter.transform();
-		} catch (TransformException failure) {
-			errors = failure.getDetails();
-			warnings = failure.getConversionReport().getWarnings();
-		}
-
-		assertThat(errors).isNull();
-		assertThat(warnings).isNull();
-		List<String> cehrtIdList = JsonHelper.readJsonAtJsonPath(qppWrapper.toString(),
-				"$.measurementSets[?(@.category=='pi')].cehrtId", new TypeRef<List<String>>() { });
 		assertThat(cehrtIdList.get(0)).isEqualTo("XX15CXXXXXXXXXX");
 	}
 
@@ -266,7 +230,7 @@ class PiSectionRoundTripTest {
 		assertThat(warnings).isNull();
 		List<String> cehrtIdList = JsonHelper.readJsonAtJsonPath(qppWrapper.toString(),
 			"$.measurementSets[?(@.category=='pi')].cehrtId", new TypeRef<List<String>>() { });
-		assertThat(cehrtIdList.get(0)).isEqualTo("XX15EXXXXXXXXXX");
+		assertThat(cehrtIdList.get(0)).isEqualTo("XX15CXXXXXXXXXX");
 	}
 
 	@Test
@@ -289,7 +253,7 @@ class PiSectionRoundTripTest {
 		assertThat(warnings).isNull();
 		List<String> cehrtIdList = JsonHelper.readJsonAtJsonPath(qppWrapper.toString(),
 			"$.measurementSets[?(@.category=='pi')].cehrtId", new TypeRef<List<String>>() { });
-		assertThat(cehrtIdList.get(0)).isEqualTo("XX15EXXXXXXXXXX");
+		assertThat(cehrtIdList.get(0)).isEqualTo("XX15CXXXXXXXXXX");
 	}
 
 	private void assertAciSectionHasSingleQedNode(Node aciSectionNode) {

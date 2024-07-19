@@ -1,32 +1,19 @@
 package gov.cms.qpp.conversion.api.model;
 
-import java.util.List;
 import java.util.Objects;
+import org.springframework.http.HttpStatus;
 
 /**
  * Response sent when a health check request is received
  */
 public class HealthCheck {
 
-	private List<String> environmentVariables;
-	private List<String> systemProperties;
 	private String implementationVersion;
-
-	public List<String> getEnvironmentVariables() {
-		return environmentVariables;
-	}
-
-	public void setEnvironmentVariables(List<String> environmentVariables) {
-		this.environmentVariables = environmentVariables;
-	}
-
-	public List<String> getSystemProperties() {
-		return systemProperties;
-	}
-
-	public void setSystemProperties(List<String> systemProperties) {
-		this.systemProperties = systemProperties;
-	}
+	private HttpStatus status;
+	private String javaVersion;
+	private String pcfClose;
+	private String validationUrl;
+	private String validationFile;
 
 	public String getImplementationVersion() {
 		return implementationVersion;
@@ -34,6 +21,31 @@ public class HealthCheck {
 
 	public void setImplementationVersion(String implementationVersion) {
 		this.implementationVersion = implementationVersion;
+	}
+
+	public String getJavaVersion() { return javaVersion; }
+	public void setJavaVersion(String javaVersion) {
+		this.javaVersion = javaVersion;
+	}
+
+	public String getValidationUrl() { return validationUrl; }
+	public void setValidationUrl(String validationUrl) {
+		this.validationUrl = validationUrl;
+	}
+
+	public String getValidationFile() { return validationFile; }
+	public void setValidationFile(String validationFile) {
+		this.validationFile = validationFile;
+	}
+
+	public String getPcfClose() { return pcfClose; }
+	public void setPcfClose(String pcfClose) {
+		this.pcfClose = pcfClose;
+	}
+
+	public HttpStatus getStatus() { return status; }
+	public void setStatus(HttpStatus status) {
+		this.status = status;
 	}
 
 	@Override
@@ -48,15 +60,18 @@ public class HealthCheck {
 
 		HealthCheck that = (HealthCheck) o;
 
-		boolean equals = Objects.equals(environmentVariables, that.environmentVariables);
-		equals &= Objects.equals(systemProperties, that.systemProperties);
-		equals &= Objects.equals(implementationVersion, that.implementationVersion);
+		boolean equals = Objects.equals(implementationVersion, that.implementationVersion);
+		equals &= Objects.equals(status, that.status);
+		equals &= Objects.equals(javaVersion, that.javaVersion);
+		equals &= Objects.equals(pcfClose, that.pcfClose);
+		equals &= Objects.equals(validationUrl, that.validationUrl);
+		equals &= Objects.equals(validationFile, that.validationFile);
+
 		return equals;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(environmentVariables, systemProperties, implementationVersion);
+		return Objects.hash(implementationVersion, status, javaVersion, pcfClose, validationUrl, validationFile);
 	}
-
 }
