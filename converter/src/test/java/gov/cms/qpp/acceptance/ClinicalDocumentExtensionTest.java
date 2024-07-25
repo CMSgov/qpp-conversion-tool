@@ -1,5 +1,7 @@
 package gov.cms.qpp.acceptance;
 
+import gov.cms.qpp.CacheBuilder;
+import gov.cms.qpp.model.CacheType;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -64,7 +66,7 @@ class ClinicalDocumentExtensionTest {
 	}
 
 	private JsonWrapper convert(Path location) throws IOException {
-		ApmEntityIds apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json", "test_apm_entity_ids.json");
+		ApmEntityIds apmEntityIds = CacheBuilder.getEntityIds(CacheType.ApmEntityIds);
 		Converter converter = new Converter(new PathSource(location), new Context(apmEntityIds));
 		return converter.transform();
 	}
