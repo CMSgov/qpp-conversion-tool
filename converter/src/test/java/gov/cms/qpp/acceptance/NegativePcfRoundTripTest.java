@@ -1,5 +1,7 @@
 package gov.cms.qpp.acceptance;
 
+import gov.cms.qpp.CacheBuilder;
+import gov.cms.qpp.model.CacheType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,7 +45,7 @@ public class NegativePcfRoundTripTest {
 
 	@BeforeEach
 	void setup() {
-		apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json", "test_apm_entity_ids.json");
+		apmEntityIds = CacheBuilder.getEntityIds(CacheType.ApmEntityIds);
 	}
 
 	@AfterEach

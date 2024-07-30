@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.model.validation;
 
+import gov.cms.qpp.CacheBuilder;
+import gov.cms.qpp.model.CacheType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +17,7 @@ class ApmEntityIdsTest {
 
 	@BeforeEach
 	void setUp() {
-		apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json");
+		apmEntityIds = CacheBuilder.getEntityIds(CacheType.ApmEntityId);
 	}
 
 	@Test

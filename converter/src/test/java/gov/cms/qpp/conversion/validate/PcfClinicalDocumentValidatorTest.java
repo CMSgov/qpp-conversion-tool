@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.CacheBuilder;
+import gov.cms.qpp.model.CacheType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +26,7 @@ public class PcfClinicalDocumentValidatorTest {
 
 	@BeforeEach
 	void setUp() {
-		apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json", "test_apm_entity_ids.json");
+		apmEntityIds = CacheBuilder.getEntityIds(CacheType.ApmEntityIds);
 		validator = new PcfClinicalDocumentValidator(new Context(apmEntityIds));
 	}
 
