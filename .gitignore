@@ -27,6 +27,8 @@ jspm_packages
 .serverless
 
 # Terraform files
+#terraform plan output
+*.out
 terraform.tfstate.backup
 .terraform
 infrastructure/terraform/dev/.terraform-version
