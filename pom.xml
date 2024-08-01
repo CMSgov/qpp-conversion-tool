@@ -6,7 +6,7 @@
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-conversion-tool-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>2024.1.0-RELEASE</version>
+	<version>2024.2.0-RELEASE</version>
 	<name>QPP Conversion Tool</name>
 
 	<properties>
@@ -221,6 +221,12 @@
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava-testlib</artifactId>
 				<version>32.1.1-jre</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.github.ben-manes.caffeine</groupId>
+				<artifactId>caffeine</artifactId>
+				<version>3.1.8</version>
 			</dependency>
 
 			<dependency>

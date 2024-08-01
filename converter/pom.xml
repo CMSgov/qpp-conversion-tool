@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>2024.1.0-RELEASE</version>
+		<version>2024.2.0-RELEASE</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -89,6 +89,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.github.ben-manes.caffeine</groupId>
+			<artifactId>caffeine</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>gov.cms.qpp.conversion</groupId>
 			<artifactId>test-commons</artifactId>
 			<version>${project.version}</version>
@@ -164,7 +170,7 @@
 		<dependency>
 			<groupId>gov.cms.qpp.conversion</groupId>
 			<artifactId>commons</artifactId>
-			<version>2024.1.0-RELEASE</version>
+			<version>2024.2.0-RELEASE</version>
 			<scope>compile</scope>
 		</dependency>
 

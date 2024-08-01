@@ -1,6 +1,8 @@
 package gov.cms.qpp.acceptance;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import gov.cms.qpp.CacheBuilder;
+import gov.cms.qpp.model.CacheType;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -27,7 +29,7 @@ import static com.google.common.truth.Truth.assertThat;
  * Positive Testing Scenarios to check PCF for valid top level attributes and validations
  * Ensures:
  * - valid apm entity
- * - Sample file with valid test tin/npi and measurement sets for 2023 go through without issue.
+ * - Sample file with valid test tin/npi and measurement sets for 2024 go through without issue.
  */
 public class PcfRoundTripTest {
 	private static JsonWrapper wrapper = new JsonWrapper();
@@ -36,7 +38,7 @@ public class PcfRoundTripTest {
 	@SuppressWarnings("unchecked")
 	@BeforeAll
 	static void setup() throws URISyntaxException, IOException {
-		ApmEntityIds apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json", "test_pcf_apm_entity_ids.json");
+		ApmEntityIds apmEntityIds = CacheBuilder.getEntityIds(CacheType.ApmPcfEntityIds);
 		URL sample = PcfRoundTripTest.class.getClassLoader()
 			.getResource("pcf/success/PCF_Sample_QRDA-III.xml");
 		Path path = Paths.get(sample.toURI());

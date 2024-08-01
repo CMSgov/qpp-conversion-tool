@@ -99,7 +99,7 @@ resource "aws_ecs_service" "conversion-tool-service" {
 }
 
 resource "aws_cloudwatch_log_group" "conversion-tool" {
-  name              = "/qppsf/conversion-tool-${var.environment}"
+  name              = "/aws/ecs/fargate/conversion-tool-${var.environment}"
   retention_in_days = 365
 }
 

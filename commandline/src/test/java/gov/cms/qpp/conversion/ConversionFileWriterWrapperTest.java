@@ -35,7 +35,7 @@ public class ConversionFileWriterWrapperTest {
 
 	@Test
 	public void testValidQpp() {
-		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
+		Path path = Paths.get("src/test/resources/valid-QRDA-III-latest.xml");
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
 
 		Context context = new Context();

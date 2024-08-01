@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.CacheBuilder;
+import gov.cms.qpp.model.CacheType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +26,7 @@ public class PcfClinicalDocumentValidatorTest {
 
 	@BeforeEach
 	void setUp() {
-		apmEntityIds = new ApmEntityIds("test_apm_entity_ids.json", "test_apm_entity_ids.json");
+		apmEntityIds = CacheBuilder.getEntityIds(CacheType.ApmEntityIds);
 		validator = new PcfClinicalDocumentValidator(new Context(apmEntityIds));
 	}
 
@@ -151,7 +153,7 @@ public class PcfClinicalDocumentValidatorTest {
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PCF_ENTITY_ID, "DogCow");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, "123456789");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, "9900000099");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.CEHRT, "XX15EXXXXXXXXXX");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.CEHRT, "XX15CXXXXXXXXXX");
 
 		return clinicalDocumentNode;
 	}
