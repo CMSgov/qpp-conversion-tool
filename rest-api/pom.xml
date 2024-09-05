@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>2024.2.0-RELEASE</version>
+		<version>2024.2.1-RELEASE</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -18,7 +18,7 @@
 	<properties>
 		<requiredCodeCoverage>0.90</requiredCodeCoverage>
 
-		<tomcat.version>9.0.83</tomcat.version>
+		<tomcat.version>9.0.90</tomcat.version>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/../test-coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 		<io.rest-assured.version>4.1.2</io.rest-assured.version>
 	</properties>
@@ -298,7 +298,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
-			<version>2.6.8</version>
+			<version>3.1.11</version>
 		</dependency>
 
 		<dependency>
