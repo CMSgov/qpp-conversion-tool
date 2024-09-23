@@ -12443,7 +12443,7 @@
       "administrativeClaims"
     ],
     "measureSpecification": {
-      "default": "https://qpp.cms.gov/docs/cost_specifications/2023-12-13-mif-tpcc.pdf"
+      "default": "https://qpp.cms.gov/docs/cost_specifications/2023-12-13-mif-tpcc-v2.pdf"
     },
     "allowedPrograms": [
       "mips",
