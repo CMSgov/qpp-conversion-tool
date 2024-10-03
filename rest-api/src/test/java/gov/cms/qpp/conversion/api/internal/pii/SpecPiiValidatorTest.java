@@ -9,17 +9,18 @@ import com.amazonaws.util.StringInputStream;
 import com.google.common.truth.Truth;
 
 import gov.cms.qpp.conversion.api.model.PcfValidationInfoMap;
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.validate.NodeValidator;
+
+import static gov.cms.qpp.conversion.model.Constants.*;
 
 public class SpecPiiValidatorTest {
 
 	@Test
 	void testValidCombination() throws Exception {
 		SpecPiiValidator validator = validator("DogCow_APM", "DogCow_NPI");
-		Node node = node("DogCow_APM", "DogCow_NPI,DogCow_NPI2", "DogCow,DogCow", ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
+		Node node = node("DogCow_APM", "DogCow_NPI,DogCow_NPI2", "DogCow,DogCow", CPCPLUS_PROGRAM_NAME);
 		NodeValidator nodeValidator = new NodeValidator() {
 			@Override
 			protected void performValidation(Node node) {
@@ -32,7 +33,7 @@ public class SpecPiiValidatorTest {
 	@Test
 	void testDuplicateSpecStillValid() throws Exception {
 		SpecPiiValidator validator = validatorWithDupeSpec("DogCow_APM", "DogCow_NPI");
-		Node node = node("DogCow_APM", "DogCow_NPI", "DogCow", ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
+		Node node = node("DogCow_APM", "DogCow_NPI", "DogCow", CPCPLUS_PROGRAM_NAME);
 		NodeValidator nodeValidator = new NodeValidator() {
 			@Override
 			protected void performValidation(Node node) {
@@ -45,7 +46,7 @@ public class SpecPiiValidatorTest {
 	@Test
 	void testMissingAndInvalidCombination() throws Exception {
 		SpecPiiValidator validator = validator("Valid_DogCow_APM", "Valid_DogCow_NPI");
-		Node node = node("Valid_DogCow_APM", "Invalid_Entered_DogCow_NPI", "DogCow", ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
+		Node node = node("Valid_DogCow_APM", "Invalid_Entered_DogCow_NPI", "DogCow", CPCPLUS_PROGRAM_NAME);
 		NodeValidator nodeValidator = new NodeValidator() {
 			@Override
 			protected void performValidation(Node node) {
@@ -59,7 +60,7 @@ public class SpecPiiValidatorTest {
 	@Test
 	void testNullSpec() throws  Exception {
 		SpecPiiValidator validator = validator("Valid_DogCow_APM", "Valid_DogCow_NPI");
-		Node node = node("DogCow_APM", "Invalid_Entered_DogCow_NPI", "DogCow", ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
+		Node node = node("DogCow_APM", "Invalid_Entered_DogCow_NPI", "DogCow", CPCPLUS_PROGRAM_NAME);
 		NodeValidator nodeValidator = new NodeValidator() {
 			@Override
 			protected void performValidation(Node node) {
@@ -72,7 +73,7 @@ public class SpecPiiValidatorTest {
 	@Test
 	void testMasking() throws Exception {
 		SpecPiiValidator validator = validator("DogCow_APM", "DogCow_NPI");
-		Node node = node("DogCow_APM", "DogCow_NPI", "_____INVALID", ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
+		Node node = node("DogCow_APM", "DogCow_NPI", "_____INVALID", CPCPLUS_PROGRAM_NAME);
 		NodeValidator nodeValidator = new NodeValidator() {
 			@Override
 			protected void performValidation(Node node) {
@@ -86,7 +87,7 @@ public class SpecPiiValidatorTest {
 	@Test
 	void testValidPcfCombination() throws Exception {
 		SpecPiiValidator validator = validator("DogCow_APM", "DogCow_NPI");
-		Node node = node("DogCow_APM", "DogCow_NPI,DogCow_NPI2", "DogCow,DogCow", ClinicalDocumentDecoder.PCF_PROGRAM_NAME);
+		Node node = node("DogCow_APM", "DogCow_NPI,DogCow_NPI2", "DogCow,DogCow", PCF_PROGRAM_NAME);
 		NodeValidator nodeValidator = new NodeValidator() {
 			@Override
 			protected void performValidation(Node node) {
@@ -99,7 +100,7 @@ public class SpecPiiValidatorTest {
 	@Test
 	void testInvalidApm() throws Exception {
 		SpecPiiValidator validator = validator("DogCow_APM", "DogCow_NPI");
-		Node node = node("Invalid_Apm", "DogCow_NPI,DogCow_NPI2", "DogCow,DogCow", ClinicalDocumentDecoder.PCF_PROGRAM_NAME);
+		Node node = node("Invalid_Apm", "DogCow_NPI,DogCow_NPI2", "DogCow,DogCow", PCF_PROGRAM_NAME);
 		NodeValidator nodeValidator = new NodeValidator() {
 			@Override
 			protected void performValidation(Node node) {
@@ -157,11 +158,11 @@ public class SpecPiiValidatorTest {
 
 	private Node node(String apm, String npi, String tin, String programName) {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID, apm);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PCF_ENTITY_ID, apm);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, npi);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, tin);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, programName);
+		clinicalDocumentNode.putValue(PRACTICE_ID, apm);
+		clinicalDocumentNode.putValue(PCF_ENTITY_ID, apm);
+		clinicalDocumentNode.putValue(NATIONAL_PROVIDER_IDENTIFIER, npi);
+		clinicalDocumentNode.putValue(TAX_PAYER_IDENTIFICATION_NUMBER, tin);
+		clinicalDocumentNode.putValue(PROGRAM_NAME, programName);
 		return clinicalDocumentNode;
 	}
 

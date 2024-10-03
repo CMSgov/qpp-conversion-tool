@@ -11,13 +11,13 @@ import gov.cms.qpp.conversion.model.TemplateId;
 
 import java.util.function.Consumer;
 
+import static gov.cms.qpp.conversion.model.Constants.MEASURE_ID;
+
 /**
  * Decoder to parse PI Numerator Denominator Type Measure reference and results.
  */
 @Decoder(TemplateId.PI_NUMERATOR_DENOMINATOR)
 public class PiNumeratorDenominatorDecoder extends QrdaDecoder {
-
-	public static final String MEASURE_ID = "measureId";
 
 	public PiNumeratorDenominatorDecoder(Context context) {
 		super(context);

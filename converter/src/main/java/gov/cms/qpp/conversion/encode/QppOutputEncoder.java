@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
  */
 public class QppOutputEncoder extends JsonOutputEncoder {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QppOutputEncoder.class);
-	public static final String VALUE = "value";
 	protected final Registry<JsonOutputEncoder> encoders;
 
 	protected final Context context;

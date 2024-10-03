@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.Context;
+import static gov.cms.qpp.conversion.model.Constants.VALUE;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
