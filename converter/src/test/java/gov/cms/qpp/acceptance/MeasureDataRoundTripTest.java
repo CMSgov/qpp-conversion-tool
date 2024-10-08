@@ -1,7 +1,7 @@
 package gov.cms.qpp.acceptance;
 
 import static com.google.common.truth.Truth.assertThat;
-import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
+import static gov.cms.qpp.conversion.model.Constants.MEASURE_TYPE;
 
 import java.io.BufferedWriter;
 import java.io.IOException;

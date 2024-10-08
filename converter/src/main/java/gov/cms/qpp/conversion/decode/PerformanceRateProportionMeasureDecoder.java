@@ -11,15 +11,13 @@ import gov.cms.qpp.conversion.model.TemplateId;
 
 import java.util.function.Consumer;
 
+import static gov.cms.qpp.conversion.model.Constants.*;
+
 /**
  * Decodes the Performance Rate Proportion Measure from the Measure Section
  */
 @Decoder(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
 public class PerformanceRateProportionMeasureDecoder extends QrdaDecoder {
-
-	public static final String PERFORMANCE_RATE = "rate";
-	public static final String NULL_PERFORMANCE_RATE = "nullRate";
-	public static final String PERFORMANCE_RATE_ID = "performanceRateUuid";
 
 	public PerformanceRateProportionMeasureDecoder(Context context) {
 		super(context);

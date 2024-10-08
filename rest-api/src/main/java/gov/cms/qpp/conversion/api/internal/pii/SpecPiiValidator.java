@@ -4,7 +4,6 @@ import org.springframework.util.StringUtils;
 
 import gov.cms.qpp.conversion.api.model.PcfValidationInfoMap;
 import gov.cms.qpp.conversion.api.model.TinNpiCombination;
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
@@ -16,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import static gov.cms.qpp.conversion.model.Constants.*;
 
 public class SpecPiiValidator implements PiiValidator {
 
@@ -32,12 +33,12 @@ public class SpecPiiValidator implements PiiValidator {
 	}
 
 	private void validateInvalidApmCombinations(Node node, NodeValidator validator) {
-		String program = node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME);
+		String program = node.getValue(PROGRAM_NAME);
 		String apm = getApmEntityId(node, program);
 		List<String> npiList = Arrays.asList(
-			node.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER).split(","));
+			node.getValue(NATIONAL_PROVIDER_IDENTIFIER).split(","));
 		List<String> tinList = Arrays.asList(
-			node.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER).split(","));
+			node.getValue(TAX_PAYER_IDENTIFICATION_NUMBER).split(","));
 
 		Map<String, Map<String, List<String>>> apmToTinNpiMap = file.getApmTinNpiCombinationMap();
 		if (apmToTinNpiMap == null || StringUtils.isEmpty(apm)) {
@@ -59,12 +60,12 @@ public class SpecPiiValidator implements PiiValidator {
 	}
 
 	private void validateMissingApmCombinations(Node node, NodeValidator validator) {
-		String program = node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME);
+		String program = node.getValue(PROGRAM_NAME);
 		String apm = getApmEntityId(node, program);
 		List<String> npiList = Arrays.asList(
-			node.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER).split(","));
+			node.getValue(NATIONAL_PROVIDER_IDENTIFIER).split(","));
 		List<String> tinList = Arrays.asList(
-			node.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER).split(","));
+			node.getValue(TAX_PAYER_IDENTIFICATION_NUMBER).split(","));
 
 		List<TinNpiCombination> tinNpiCombinations = createTinNpiMap(tinList, npiList);
 
@@ -97,10 +98,10 @@ public class SpecPiiValidator implements PiiValidator {
 
 	private String getApmEntityId(final Node node, final String program) {
 		String apm;
-		if (ClinicalDocumentDecoder.PCF_PROGRAM_NAME.equalsIgnoreCase(program)) {
-			apm = node.getValue(ClinicalDocumentDecoder.PCF_ENTITY_ID);
-		} else if (ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME.equalsIgnoreCase(program)) {
-			apm = node.getValue(ClinicalDocumentDecoder.PRACTICE_ID);
+		if (PCF_PROGRAM_NAME.equalsIgnoreCase(program)) {
+			apm = node.getValue(PCF_ENTITY_ID);
+		} else if (CPCPLUS_PROGRAM_NAME.equalsIgnoreCase(program)) {
+			apm = node.getValue(PRACTICE_ID);
 		} else {
 			apm = "";
 		}

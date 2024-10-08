@@ -1,8 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
-import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -11,28 +9,28 @@ import gov.cms.qpp.conversion.model.validation.Strata;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 import gov.cms.qpp.conversion.util.SubPopulationHelper;
+import static gov.cms.qpp.conversion.model.Constants.MEASURE_ID;
+import static gov.cms.qpp.conversion.model.Constants.SINGLE_PERFORMANCE_RATE;
+import static gov.cms.qpp.conversion.model.Constants.TRUE;
+import static gov.cms.qpp.conversion.model.Constants.PERFORMANCE_NOT_MET;
+import static gov.cms.qpp.conversion.model.Constants.MEASURE_POPULATION;
+import static gov.cms.qpp.conversion.model.Constants.STRATUM_FIELD_NAME;
+import static gov.cms.qpp.conversion.model.Constants.MEASURE_TYPE;
+import static gov.cms.qpp.conversion.model.Constants.IS_END_TO_END_REPORTED;
+import static gov.cms.qpp.conversion.model.Constants.DEFAULT_INT_VALUE;
+import static gov.cms.qpp.conversion.model.Constants.VALUE;
+import static gov.cms.qpp.conversion.model.Constants.AGGREGATE_COUNT;
+
 
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-
-import static gov.cms.qpp.conversion.decode.AggregateCountDecoder.AGGREGATE_COUNT;
 
 /**
  * Encoder to serialize Quality Measure Identifier and Measure Sections
  */
 @Encoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V5)
 public class QualityMeasureIdEncoder extends QppOutputEncoder {
-
-	private static final String MEASURE_ID = "measureId";
-	private static final String SINGLE_PERFORMANCE_RATE = "singlePerformanceRate";
-	private static final String TRUE = "true";
-	private static final String PERFORMANCE_NOT_MET = "performanceNotMet";
-	protected static final String STRATUM_FIELD_NAME = "stratum";
-
-	public static final String TYPE = "type";
-	public static final String IS_END_TO_END_REPORTED = "isEndToEndReported";
-	public static final String DEFAULT_INT_VALUE = "0";
 
 	public QualityMeasureIdEncoder(Context context) {
 		super(context);
@@ -121,7 +119,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	private int calculateSubPopulationSum(Node measureReferenceNode, SubPopulationLabel label) {
 		return measureReferenceNode.getChildNodes(TemplateId.MEASURE_DATA_CMS_V4)
 			.filter(childNode ->
-				label.hasAlias(childNode.getValue(MeasureDataDecoder.MEASURE_TYPE)))
+				label.hasAlias(childNode.getValue(MEASURE_TYPE)))
 			.mapToInt(ipopNode ->
 				Integer.parseInt(ipopNode.findFirstNode(TemplateId.PI_AGGREGATE_COUNT).getValue(AGGREGATE_COUNT))).sum();
 	}
@@ -249,13 +247,13 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param parentNode holder of the the numerator node
 	 */
 	private void encodePerformanceMet(JsonWrapper wrapper, Node parentNode) {
-		Node numeratorNode = parentNode.findChildNode(n -> SubPopulationLabel.NUMER.hasAlias(n.getValue(TYPE)));
+		Node numeratorNode = parentNode.findChildNode(n -> SubPopulationLabel.NUMER.hasAlias(n.getValue(MEASURE_TYPE)));
 		Optional.ofNullable(numeratorNode).ifPresent(
 			node -> {
 				Node aggCount = node.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
 				maintainContinuity(wrapper, aggCount, SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.NUMER));
 				wrapper.putInteger(SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.NUMER),
-					aggCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT));
+					aggCount.getValue(AGGREGATE_COUNT));
 			});
 	}
 
@@ -268,12 +266,12 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param measureConfig The measure configuration for the current measure.
 	 */
 	private void encodeStratum(JsonWrapper wrapper, Node parentNode, final MeasureConfig measureConfig) {
-		Node numeratorNode = parentNode.findChildNode(n -> SubPopulationLabel.NUMER.hasAlias(n.getValue(TYPE)));
+		Node numeratorNode = parentNode.findChildNode(n -> SubPopulationLabel.NUMER.hasAlias(n.getValue(MEASURE_TYPE)));
 		Optional.ofNullable(numeratorNode).ifPresent(
 				node -> {
 					maintainContinuity(wrapper, node, "stratum");
 					String numeratorPopulationId =
-							node.getValue(MeasureDataDecoder.MEASURE_POPULATION).toUpperCase(Locale.ENGLISH);
+							node.getValue(MEASURE_POPULATION).toUpperCase(Locale.ENGLISH);
 					String stratum = stratumForNumeratorUuid(numeratorPopulationId, measureConfig);
 					wrapper.put(STRATUM_FIELD_NAME, stratum);
 				});
@@ -303,16 +301,16 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param parentNode holder of the denominator and denominator exclusion nodes
 	 */
 	private void encodePerformanceNotMet(JsonWrapper wrapper, Node parentNode) {
-		Node numeratorNode = parentNode.findChildNode(n -> SubPopulationLabel.NUMER.hasAlias(n.getValue(TYPE)));
-		Node denominatorNode = parentNode.findChildNode(n -> SubPopulationLabel.DENOM.hasAlias(n.getValue(TYPE)));
-		Node denomExclusionNode = parentNode.findChildNode(n -> SubPopulationLabel.DENEX.hasAlias(n.getValue(TYPE)));
-		Node denomExceptionNode = parentNode.findChildNode(n -> SubPopulationLabel.DENEXCEP.hasAlias(n.getValue(TYPE)));
+		Node numeratorNode = parentNode.findChildNode(n -> SubPopulationLabel.NUMER.hasAlias(n.getValue(MEASURE_TYPE)));
+		Node denominatorNode = parentNode.findChildNode(n -> SubPopulationLabel.DENOM.hasAlias(n.getValue(MEASURE_TYPE)));
+		Node denomExclusionNode = parentNode.findChildNode(n -> SubPopulationLabel.DENEX.hasAlias(n.getValue(MEASURE_TYPE)));
+		Node denomExceptionNode = parentNode.findChildNode(n -> SubPopulationLabel.DENEXCEP.hasAlias(n.getValue(MEASURE_TYPE)));
 
 		Optional.ofNullable(denomExclusionNode).ifPresent(
 				node -> {
 					Node aggCount = node.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
 					maintainContinuity(wrapper, aggCount, SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.DENEX));
-					String value = aggCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT);
+					String value = aggCount.getValue(AGGREGATE_COUNT);
 					wrapper.putInteger(SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.DENEX), value);
 				});
 
@@ -320,7 +318,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 				node -> {
 					Node aggCount = node.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
 					maintainContinuity(wrapper, aggCount, SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.DENEXCEP));
-					String value = aggCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT);
+					String value = aggCount.getValue(AGGREGATE_COUNT);
 					wrapper.putInteger(SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.DENEXCEP), value);
 				});
 
@@ -347,13 +345,13 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 											Node denomExclusionNode, Node denomExceptionNode) {
 
 		String denominatorValue = denominatorNode == null ? "0" :
-				denominatorNode.findFirstNode(TemplateId.PI_AGGREGATE_COUNT).getValue(AggregateCountDecoder.AGGREGATE_COUNT);
+				denominatorNode.findFirstNode(TemplateId.PI_AGGREGATE_COUNT).getValue(AGGREGATE_COUNT);
 		String denomExclusionValue = denomExclusionNode == null ? "0" :
-				denomExclusionNode.findFirstNode(TemplateId.PI_AGGREGATE_COUNT).getValue(AggregateCountDecoder.AGGREGATE_COUNT);
+				denomExclusionNode.findFirstNode(TemplateId.PI_AGGREGATE_COUNT).getValue(AGGREGATE_COUNT);
 		String numeratorValue = numeratorNode == null ? "0" :
-				numeratorNode.findFirstNode(TemplateId.PI_AGGREGATE_COUNT).getValue(AggregateCountDecoder.AGGREGATE_COUNT);
+				numeratorNode.findFirstNode(TemplateId.PI_AGGREGATE_COUNT).getValue(AGGREGATE_COUNT);
 		String denomExceptionValue = denomExceptionNode == null ? "0" :
-				denomExceptionNode.findFirstNode(TemplateId.PI_AGGREGATE_COUNT).getValue(AggregateCountDecoder.AGGREGATE_COUNT);
+				denomExceptionNode.findFirstNode(TemplateId.PI_AGGREGATE_COUNT).getValue(AGGREGATE_COUNT);
 
 		// for eCQMs, will be equal to denominator - numerator - denominator exclusion - denominator exception
 		return Integer.toString(Integer.parseInt(denominatorValue)

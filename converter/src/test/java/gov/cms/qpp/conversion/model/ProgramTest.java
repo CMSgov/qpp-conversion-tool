@@ -1,9 +1,6 @@
 package gov.cms.qpp.conversion.model;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.test.enums.EnumContract;
 
 import java.util.HashSet;
@@ -12,6 +9,7 @@ import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
+import static gov.cms.qpp.conversion.model.Constants.RAW_PROGRAM_NAME;
 
 class ProgramTest implements EnumContract {
 
@@ -52,56 +50,56 @@ class ProgramTest implements EnumContract {
 	@Test
 	void testIsPcfForMixedCaseIsTrue() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "pCf");
+		node.putValue(RAW_PROGRAM_NAME, "pCf");
 		assertThat(Program.isPcf(node)).isTrue();
 	}
 
 	@Test
 	void testIsPcfUppercaseIsTrue() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "PCF");
+		node.putValue(RAW_PROGRAM_NAME, "PCF");
 		assertThat(Program.isPcf(node)).isTrue();
 	}
 
 	@Test
 	void testIsPcfLowercaseIsTrue() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "pcf");
+		node.putValue(RAW_PROGRAM_NAME, "pcf");
 		assertThat(Program.isPcf(node)).isTrue();
 	}
 
 	@Test
 	void testIsAppIndividualIsTrue() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_APP1_INDIV");
+		node.putValue(RAW_PROGRAM_NAME, "MIPS_APP1_INDIV");
 		assertThat(Program.isApp(node)).isTrue();
 	}
 
 	@Test
 	void testIsMipsNonAppIndividualFalse() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_INDIV");
+		node.putValue(RAW_PROGRAM_NAME, "MIPS_INDIV");
 		assertThat(Program.isApp(node)).isFalse();
 	}
 
 	@Test
 	void testExtractProgramForMipsInd() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_INDIV");
+		node.putValue(RAW_PROGRAM_NAME, "MIPS_INDIV");
 		assertThat(Program.isMips(node)).isTrue();
 	}
 
 	@Test
 	void testExtractProgramForMipsGroup() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_GROUP");
+		node.putValue(RAW_PROGRAM_NAME, "MIPS_GROUP");
 		assertThat(Program.isMips(node)).isTrue();
 	}
 
 	@Test
 	void testExtractProgramForMipsVirtualGroup() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_VIRTUALGROUP");
+		node.putValue(RAW_PROGRAM_NAME, "MIPS_VIRTUALGROUP");
 		assertThat(Program.isMips(node)).isTrue();
 	}
 
