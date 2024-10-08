@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 import static com.google.common.truth.Truth.assertThat;
+import static gov.cms.qpp.conversion.model.Constants.CATEGORY_SECTION_V5;
 
 class QualitySectionDecoderTest {
 
@@ -55,7 +56,7 @@ class QualitySectionDecoderTest {
 		Node root = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 		Node measureSection = root.findFirstNode(TemplateId.MEASURE_SECTION_V5);
 
-		assertThat(measureSection.getValue(QualitySectionDecoder.CATEGORY_SECTION_V5))
+		assertThat(measureSection.getValue(CATEGORY_SECTION_V5))
 			.isEqualTo(TemplateId.CATEGORY_REPORT_V5.getExtension());
 	}
 

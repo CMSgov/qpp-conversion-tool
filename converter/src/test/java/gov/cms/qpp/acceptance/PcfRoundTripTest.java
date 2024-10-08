@@ -11,7 +11,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import gov.cms.qpp.acceptance.helper.JsonPathToXpathHelper;
 import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
@@ -24,6 +23,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 
 import static com.google.common.truth.Truth.assertThat;
+import static gov.cms.qpp.conversion.model.Constants.ENTITY_APM;
 
 /**
  * Positive Testing Scenarios to check PCF for valid top level attributes and validations
@@ -72,6 +72,6 @@ public class PcfRoundTripTest {
 	@Test
 	void testEntityType() {
 		String entityId = (String) json.get("entityType");
-		assertThat(entityId).isEqualTo(ClinicalDocumentDecoder.ENTITY_APM);
+		assertThat(entityId).isEqualTo(ENTITY_APM);
 	}
 }

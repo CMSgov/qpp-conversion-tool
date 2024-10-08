@@ -7,13 +7,13 @@ import org.junit.jupiter.api.Test;
 import gov.cms.qpp.conversion.api.helper.MetadataHelper.Outcome;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.test.enums.EnumContract;
 import gov.cms.qpp.test.helper.HelperContract;
 
 import static com.google.common.truth.Truth.assertThat;
+import static gov.cms.qpp.conversion.model.Constants.*;
 
 class MetadataHelperTest implements HelperContract {
 
@@ -42,7 +42,7 @@ class MetadataHelperTest implements HelperContract {
 	@Test
 	void testExtractsPcfProgramType() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "PCF");
+		node.putValue(RAW_PROGRAM_NAME, "PCF");
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
 		assertThat(metadata.getPcf()).startsWith(Constants.PCF_DYNAMO_PARTITION_START);
@@ -62,7 +62,7 @@ class MetadataHelperTest implements HelperContract {
 	@Test
 	void testExtractsApm() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.PRACTICE_ID, MOCK_STRING);
+		node.putValue(PRACTICE_ID, MOCK_STRING);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
 		assertThat(metadata.getApm()).isEqualTo(MOCK_STRING);
@@ -71,8 +71,8 @@ class MetadataHelperTest implements HelperContract {
 	@Test
 	void testExtractsPcfApm() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.PCF_ENTITY_ID, MOCK_STRING);
-		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, ClinicalDocumentDecoder.PCF_PROGRAM_NAME);
+		node.putValue(PCF_ENTITY_ID, MOCK_STRING);
+		node.putValue(RAW_PROGRAM_NAME, PCF_PROGRAM_NAME);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
 		assertThat(metadata.getApm()).isEqualTo(MOCK_STRING);
@@ -83,7 +83,7 @@ class MetadataHelperTest implements HelperContract {
 		Node node = new Node();
 		Node child = new Node();
 		child.setType(TemplateId.CLINICAL_DOCUMENT);
-		child.putValue(ClinicalDocumentDecoder.PRACTICE_ID, MOCK_STRING);
+		child.putValue(PRACTICE_ID, MOCK_STRING);
 		node.addChildNode(child);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
@@ -104,7 +104,7 @@ class MetadataHelperTest implements HelperContract {
 	@Test
 	void testExtractsTin() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, MOCK_STRING);
+		node.putValue(TAX_PAYER_IDENTIFICATION_NUMBER, MOCK_STRING);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
 		assertThat(metadata.getTin()).isEqualTo(MOCK_STRING);
@@ -115,7 +115,7 @@ class MetadataHelperTest implements HelperContract {
 		Node node = new Node();
 		Node child = new Node();
 		child.setType(TemplateId.CLINICAL_DOCUMENT);
-		child.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, MOCK_STRING);
+		child.putValue(TAX_PAYER_IDENTIFICATION_NUMBER, MOCK_STRING);
 		node.addChildNode(child);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
@@ -136,7 +136,7 @@ class MetadataHelperTest implements HelperContract {
 	@Test
 	void testExtractsNpi() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, MOCK_STRING);
+		node.putValue(NATIONAL_PROVIDER_IDENTIFIER, MOCK_STRING);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
 		assertThat(metadata.getNpi()).isEqualTo(MOCK_STRING);
@@ -147,7 +147,7 @@ class MetadataHelperTest implements HelperContract {
 		Node node = new Node();
 		Node child = new Node();
 		child.setType(TemplateId.CLINICAL_DOCUMENT);
-		child.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, MOCK_STRING);
+		child.putValue(NATIONAL_PROVIDER_IDENTIFIER, MOCK_STRING);
 		node.addChildNode(child);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
