@@ -4,8 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
-import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
@@ -14,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.google.common.truth.Truth.assertThat;
+import static gov.cms.qpp.conversion.model.Constants.*;
 
 class ClinicalDocumentEncoderTest {
 
@@ -103,20 +102,20 @@ class ClinicalDocumentEncoderTest {
 		aciSectionNode.addChildNode(aciProportionMeasureNode3);
 
 		aciReportingPerformanceNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
-		aciReportingPerformanceNode.putValue(ReportingParametersActDecoder.PERFORMANCE_YEAR, "2017");
-		aciReportingPerformanceNode.putValue(ReportingParametersActDecoder.PERFORMANCE_START, "20170101");
-		aciReportingPerformanceNode.putValue(ReportingParametersActDecoder.PERFORMANCE_END, "20171231");
+		aciReportingPerformanceNode.putValue(PERFORMANCE_YEAR, "2017");
+		aciReportingPerformanceNode.putValue(PERFORMANCE_START, "20170101");
+		aciReportingPerformanceNode.putValue(PERFORMANCE_END, "20171231");
 		aciSectionNode.addChildNode(aciReportingPerformanceNode);
 
 		clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "mips");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "individual");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, "123456789");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, "2567891421");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID,  "AR000000" );
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID,  "x12345" );
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.VG_ID,  "x12345" );
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.CEHRT, "xxxxxxxxxx12345");
+		clinicalDocumentNode.putValue(PROGRAM_NAME, "mips");
+		clinicalDocumentNode.putValue(ENTITY_TYPE, "individual");
+		clinicalDocumentNode.putValue(TAX_PAYER_IDENTIFICATION_NUMBER, "123456789");
+		clinicalDocumentNode.putValue(NATIONAL_PROVIDER_IDENTIFIER, "2567891421");
+		clinicalDocumentNode.putValue(PRACTICE_ID,  "AR000000" );
+		clinicalDocumentNode.putValue(ENTITY_ID,  "x12345" );
+		clinicalDocumentNode.putValue(VG_ID,  "x12345" );
+		clinicalDocumentNode.putValue(CEHRT, "xxxxxxxxxx12345");
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
 		aciSectionNode.setParent(clinicalDocumentNode);
@@ -130,7 +129,7 @@ class ClinicalDocumentEncoderTest {
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
-		Object performanceYear = testJsonWrapper.getInteger(ReportingParametersActDecoder.PERFORMANCE_YEAR);
+		Object performanceYear = testJsonWrapper.getInteger(PERFORMANCE_YEAR);
 
 		assertThat(performanceYear).isEqualTo(2017);
 	}
@@ -142,11 +141,11 @@ class ClinicalDocumentEncoderTest {
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 
-		assertThat(testJsonWrapper.getString(ClinicalDocumentDecoder.ENTITY_TYPE))
+		assertThat(testJsonWrapper.getString(ENTITY_TYPE))
 				.isEqualTo("individual");
-		assertThat(testJsonWrapper.getString(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
+		assertThat(testJsonWrapper.getString(TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
-		assertThat(testJsonWrapper.getString(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+		assertThat(testJsonWrapper.getString(NATIONAL_PROVIDER_IDENTIFIER))
 				.isEqualTo("2567891421");
 	}
 
@@ -167,7 +166,7 @@ class ClinicalDocumentEncoderTest {
 	@Test
 	void testInternalEncodeEmptyEntityId() throws EncodeException {
 		clinicalDocumentNode.getChildNodes().remove(aciSectionNode);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID,"");
+		clinicalDocumentNode.putValue(PRACTICE_ID,"");
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
@@ -175,14 +174,14 @@ class ClinicalDocumentEncoderTest {
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.toObject());
 
-		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.PRACTICE_ID))
+		assertThat(clinicalDocMap.get(PRACTICE_ID))
 				.isNull();
 	}
 
 	@Test
 	void testInternalEncodeNullEntityId() throws EncodeException {
 		clinicalDocumentNode.getChildNodes().remove(aciSectionNode);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID,null);
+		clinicalDocumentNode.putValue(PRACTICE_ID,null);
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
@@ -190,15 +189,15 @@ class ClinicalDocumentEncoderTest {
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.toObject());
 
-		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.PRACTICE_ID))
+		assertThat(clinicalDocMap.get(PRACTICE_ID))
 				.isNull();
 	}
 
 	@Test
 	void testClinicalDocumentEncoderIgnoresInvalidMeasurementSection() {
 		Node reportingParamNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT, clinicalDocumentNode);
-		reportingParamNode.putValue(ReportingParametersActEncoder.PERFORMANCE_START,"20170101");
-		reportingParamNode.putValue(ReportingParametersActEncoder.PERFORMANCE_END,"20171231");
+		reportingParamNode.putValue(PERFORMANCE_START,"20170101");
+		reportingParamNode.putValue(PERFORMANCE_END,"20171231");
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 		String expectedSection = "aci";
 
@@ -214,48 +213,48 @@ class ClinicalDocumentEncoderTest {
 
 	@Test
 	void testVirtualGroupIdEncode() {
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP);
+		clinicalDocumentNode.putValue(ENTITY_TYPE, ENTITY_VIRTUAL_GROUP);
 
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 
-		assertThat(testJsonWrapper.getString(ClinicalDocumentDecoder.ENTITY_ID))
+		assertThat(testJsonWrapper.getString(ENTITY_ID))
 			.isEqualTo("x12345"); // TODO asdf refactor equals to toObject maybe if not comparing to JsW
 	}
 
 	@Test
 	void testApmExcludeNpiEncoding() throws EncodeException {
 		JsonWrapper testJsonWrapper = new JsonWrapper();
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "apm");
+		clinicalDocumentNode.putValue(ENTITY_TYPE, "apm");
 
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.toObject());
 
-		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+		assertThat(clinicalDocMap.get(NATIONAL_PROVIDER_IDENTIFIER))
 			.isNull();
 	}
 
 	@Test
 	void testApmIncludesEntityID() throws EncodeException {
 		JsonWrapper testJsonWrapper = new JsonWrapper();
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.APM_ENTITY_ID, "apm");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "apm");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_APP1_APMENTITY");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "app1");
+		clinicalDocumentNode.putValue(APM_ENTITY_ID, "apm");
+		clinicalDocumentNode.putValue(ENTITY_TYPE, "apm");
+		clinicalDocumentNode.putValue(RAW_PROGRAM_NAME, "MIPS_APP1_APMENTITY");
+		clinicalDocumentNode.putValue(PROGRAM_NAME, "app1");
 
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.toObject());
 
-		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+		assertThat(clinicalDocMap.get(NATIONAL_PROVIDER_IDENTIFIER))
 			.isNull();
 
-		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID))
+		assertThat(clinicalDocMap.get(ENTITY_ID))
 			.isNotNull();
 	}
 
@@ -277,27 +276,27 @@ class ClinicalDocumentEncoderTest {
 	@Test
 	void testAppApmIncludesEntityID() throws EncodeException {
 		JsonWrapper testJsonWrapper = new JsonWrapper();
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.APM_ENTITY_ID, "apm");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "apm");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_APP1_APMENTITY");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "app1");
+		clinicalDocumentNode.putValue(APM_ENTITY_ID, "apm");
+		clinicalDocumentNode.putValue(ENTITY_TYPE, "apm");
+		clinicalDocumentNode.putValue(RAW_PROGRAM_NAME, "MIPS_APP1_APMENTITY");
+		clinicalDocumentNode.putValue(PROGRAM_NAME, "app1");
 
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.toObject());
 
-		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+		assertThat(clinicalDocMap.get(NATIONAL_PROVIDER_IDENTIFIER))
 				.isNull();
 
-		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID))
+		assertThat(clinicalDocMap.get(ENTITY_ID))
 				.isNotNull();
 	}
 
 	@Test
 	void testMvpIdReplacesProgramName() throws EncodeException {
 		JsonWrapper testJsonWrapper = new JsonWrapper();
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.MVP_ID, "G0053");
+		clinicalDocumentNode.putValue(MVP_ID, "G0053");
 
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
@@ -311,9 +310,9 @@ class ClinicalDocumentEncoderTest {
 	@Test
 	void testSubgroupIncludesSubgroupId() throws EncodeException {
 		JsonWrapper testJsonWrapper = new JsonWrapper();
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.MVP_ID, "G0053");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "subgroup");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.SUBGROUP_ID, "SG-00000001");
+		clinicalDocumentNode.putValue(MVP_ID, "G0053");
+		clinicalDocumentNode.putValue(ENTITY_TYPE, "subgroup");
+		clinicalDocumentNode.putValue(SUBGROUP_ID, "SG-00000001");
 
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
@@ -323,8 +322,8 @@ class ClinicalDocumentEncoderTest {
 		String programName = measurementSets.get(0).getString("programName");
 
 		assertThat(programName).isEqualTo("G0053");
-		assertThat(testJsonWrapper.getString(ClinicalDocumentDecoder.ENTITY_TYPE)).isEqualTo("subgroup");
-		assertThat(testJsonWrapper.getString(ClinicalDocumentDecoder.ENTITY_ID)).isEqualTo("SG-00000001");
+		assertThat(testJsonWrapper.getString(ENTITY_TYPE)).isEqualTo("subgroup");
+		assertThat(testJsonWrapper.getString(ENTITY_ID)).isEqualTo("SG-00000001");
 	}
 
 

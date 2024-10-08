@@ -14,6 +14,9 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static gov.cms.qpp.conversion.model.Constants.MEASURE_POPULATION;
+import static gov.cms.qpp.conversion.model.Constants.MEASURE_TYPE;
+
 /**
  * Decoder for CMS V2 Measure Data eCQM
  */
@@ -22,9 +25,6 @@ public class MeasureDataDecoder extends QrdaDecoder {
 
 	static final Set<String> MEASURES = Stream.of("IPP", "IPOP", "DENEX", "DENOM", "DENEXCEP", "NUMER", "NUMEX")
 			.collect(Collectors.toSet());
-
-	public static final String MEASURE_TYPE = "type";
-	public static final String MEASURE_POPULATION = "populationId";
 
 	public MeasureDataDecoder(Context context) {
 		super(context);

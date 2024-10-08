@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
-import gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
@@ -31,6 +30,7 @@ import java.util.Map;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
+import static gov.cms.qpp.conversion.model.Constants.PERFORMANCE_RATE_ID;
 
 class QualityMeasureIdRoundTripTest {
 	static final Path JUNK_QRDA3_FILE = Paths.get("src/test/resources/negative/junk_in_quality_measure.xml");
@@ -106,7 +106,7 @@ class QualityMeasureIdRoundTripTest {
 			.get("40280382-5fa6-fe85-0160-0ea3e0012376").getSubPopulation().get(0).getNumeratorUuid();
 
 		LocalizedProblem error = ProblemCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(measureId,
-				PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID, correctId);
+				PERFORMANCE_RATE_ID, correctId);
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(error);
 	}

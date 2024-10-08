@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
@@ -207,7 +206,7 @@ class QualityMeasureIdEncoderTest {
 	@Test
 	void testEncodeSingleToMultiDefault() {
 		qualityMeasureId.putValue("measureId", "40280382-6258-7581-0162-626f31a0009e");
-		numeratorNode.putValue(MeasureDataDecoder.MEASURE_POPULATION,"F4580E7F-EB6C-42AB-93A8-9AF1A4FD46EE");
+		numeratorNode.putValue("populationId","F4580E7F-EB6C-42AB-93A8-9AF1A4FD46EE");
 		executeInternalEncode();
 		JsonWrapper childValues = getChildValues();
 		List<?> strata = JsonHelper.readJsonAtJsonPath(childValues.toString(), "$.strata", new TypeRef<List<?>>() {});

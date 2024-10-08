@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.encode;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 import static com.google.common.truth.Truth.assertThat;
+import static gov.cms.qpp.conversion.model.Constants.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.spy;
@@ -16,8 +17,6 @@ import org.mockito.Captor;
 import org.mockito.Mockito;
 
 import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
-import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
@@ -64,13 +63,13 @@ class PiSectionEncoderTest {
 		piNumeratorDenominatorNode.putValue(MEASUREMENT_ID, MEASUREMENT_ID_VALUE);
 
 		reportingParametersNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
-		reportingParametersNode.putValue(ReportingParametersActDecoder.PERFORMANCE_START,"20170101");
-		reportingParametersNode.putValue(ReportingParametersActDecoder.PERFORMANCE_END,"20171231");
+		reportingParametersNode.putValue(PERFORMANCE_START,"20170101");
+		reportingParametersNode.putValue(PERFORMANCE_END,"20171231");
 
 		clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.CEHRT, "xxxxxxxxxx12345");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS_PROGRAM_NAME);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_INDIV");
+		clinicalDocumentNode.putValue(CEHRT, "xxxxxxxxxx12345");
+		clinicalDocumentNode.putValue(PROGRAM_NAME, MIPS_PROGRAM_NAME);
+		clinicalDocumentNode.putValue(RAW_PROGRAM_NAME, "MIPS_INDIV");
 
 		piSectionNode = new Node(TemplateId.PI_SECTION_V3, clinicalDocumentNode);
 		piSectionNode.putValue(CATEGORY, PI);
@@ -87,7 +86,7 @@ class PiSectionEncoderTest {
 		assertWithMessage("Must have a child node").that(jsonWrapper).isNotNull();
 		assertWithMessage("Must be category PI").that(jsonWrapper.getString(CATEGORY)).isEqualTo(PI);
 		assertWithMessage("Must have measurements").that(jsonWrapper.get(MEASUREMENTS)).isNotNull();
-		assertThat(jsonWrapper.getString(ClinicalDocumentDecoder.CEHRT)).isNotNull();
+		assertThat(jsonWrapper.getString(CEHRT)).isNotNull();
 		assertWithMessage("Must have submissionMethod")
 				.that(jsonWrapper.getString(SUBMISSION_METHOD)).isEqualTo(ELECTRONIC_HEALTH_RECORD);
 	}
