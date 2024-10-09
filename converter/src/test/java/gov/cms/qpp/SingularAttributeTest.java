@@ -5,12 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.correlation.model.Goods;
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
-import gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder;
-import gov.cms.qpp.conversion.decode.QualitySectionDecoder;
-import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
-import gov.cms.qpp.conversion.decode.SupplementalDataEthnicityDecoder;
-import gov.cms.qpp.conversion.decode.SupplementalDataPayerDecoder;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
@@ -25,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.google.common.truth.Truth.assertWithMessage;
+import static gov.cms.qpp.conversion.model.Constants.*;
 
 class SingularAttributeTest{
 
@@ -46,25 +41,25 @@ class SingularAttributeTest{
 		exclusions = new HashSet<>(
 				Arrays.asList(
 						//MultipleTinsDecoder maps multiple tin/npi combination
-						ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
-						ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER,
-						ClinicalDocumentDecoder.ENTITY_ID,
+						TAX_PAYER_IDENTIFICATION_NUMBER,
+						NATIONAL_PROVIDER_IDENTIFIER,
+						ENTITY_ID,
 						//There are no validations currently for entity type
-						ClinicalDocumentDecoder.PRACTICE_ID,
-						ClinicalDocumentDecoder.PRACTICE_SITE_ADDR,
+						PRACTICE_ID,
+						PRACTICE_SITE_ADDR,
 						//We have validations implemented
-						ClinicalDocumentDecoder.PCF_ENTITY_ID,
-						ClinicalDocumentDecoder.VG_ID,
-						ClinicalDocumentDecoder.APM_ENTITY_ID,
-						ClinicalDocumentDecoder.MVP_ID,
-						ClinicalDocumentDecoder.SUBGROUP_ID,
-						PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE,
-						PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE,
+						PCF_ENTITY_ID,
+						VG_ID,
+						APM_ENTITY_ID,
+						MVP_ID,
+						SUBGROUP_ID,
+						PERFORMANCE_RATE,
+						NULL_PERFORMANCE_RATE,
 						//There are no validations for performanceYear
-						ReportingParametersActDecoder.PERFORMANCE_YEAR,
-						SupplementalDataEthnicityDecoder.SUPPLEMENTAL_DATA_CODE,
-						SupplementalDataPayerDecoder.SUPPLEMENTAL_DATA_PAYER_CODE,
-						QualitySectionDecoder.CATEGORY_SECTION_V5,
+						PERFORMANCE_YEAR,
+						SUPPLEMENTAL_DATA_CODE,
+						SUPPLEMENTAL_DATA_PAYER_CODE,
+						CATEGORY_SECTION_V5,
 						//stratum is not currently mapped
 						"stratum",
 						"cehrtId",
@@ -120,7 +115,7 @@ class SingularAttributeTest{
 	@Test
 	void noProgramName() {
 		List<Detail> details = manipulationHandler.executeScenario(TemplateId.CLINICAL_DOCUMENT.name(),
-				ClinicalDocumentDecoder.PROGRAM_NAME, true);
+				PROGRAM_NAME, true);
 
 		assertWithMessage("error should be about missing program name").that(details)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)

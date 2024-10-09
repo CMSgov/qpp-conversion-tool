@@ -7,9 +7,8 @@ import gov.cms.qpp.conversion.api.model.ErrorMessage;
 import gov.cms.qpp.conversion.api.services.ValidationService;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
-import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.*;
 import gov.cms.qpp.conversion.model.error.Error;
-import gov.cms.qpp.conversion.model.error.QppValidationException;
 import gov.cms.qpp.conversion.util.JsonHelper;
 
 import org.slf4j.Logger;
@@ -29,6 +28,7 @@ import javax.annotation.PostConstruct;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 /**
  * Implementation for the QPP Validation Service
@@ -159,20 +159,20 @@ public class ValidationServiceImpl implements ValidationService {
 			return errors;
 		}
 
-		Error error = getError(validationResponse);
-
-		error.getDetails().forEach(detail -> {
-			detail.setMessage(SV_LABEL + detail.getMessage());
-			String newPath = UNABLE_PROVIDE_XPATH;
-			try {
+		try {
+			Error error = getError(validationResponse);
+			error.getDetails().forEach(detail -> {
+				String newPath = UNABLE_PROVIDE_XPATH;
+				detail.setMessage(SV_LABEL + detail.getMessage());
 				newPath = PathCorrelator.prepPath(detail.getLocation().getPath(), wrapper);
-			} catch (ClassCastException | JsonPathException exc) {
-				API_LOG.warn("Failed to convert from json path to an XPath.", exc);
-			}
-			detail.getLocation().setPath(newPath);
-		});
-
-		errors.addError(error);
+				detail.getLocation().setPath(newPath);
+			});
+			errors.addError(error);
+		} catch (Exception exception) {
+			API_LOG.warn("Failed to convert from json path to an XPath.", exception);
+			List<Detail> details = List.of(Detail.forProblemCode(ProblemCode.UNEXPECTED_ERROR));
+			errors.addError(new Error("CT", details));
+		}
 
 		return errors;
 	}

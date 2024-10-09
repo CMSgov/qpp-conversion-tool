@@ -1,10 +1,10 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
+import static gov.cms.qpp.conversion.model.Constants.*;
 
 /**
  * Validates REPORTING_PARAMETERS_ACT nodes.
@@ -26,21 +26,21 @@ public class ReportingParametersActValidator extends NodeValidator {
 	 */
 	@Override
 	protected void performValidation(Node node) {
-		String performanceStart = node.getValueOrDefault(ReportingParametersActDecoder.PERFORMANCE_START, "");
+		String performanceStart = node.getValueOrDefault(PERFORMANCE_START, "");
 
-		String performanceEnd = node.getValueOrDefault(ReportingParametersActDecoder.PERFORMANCE_END,"");
+		String performanceEnd = node.getValueOrDefault(PERFORMANCE_END,"");
 
 		checkErrors(node)
 				.singleValue(ProblemCode.REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START,
-						ReportingParametersActDecoder.PERFORMANCE_START)
+						PERFORMANCE_START)
 				.singleValue(ProblemCode.REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_END,
-						ReportingParametersActDecoder.PERFORMANCE_END)
+						PERFORMANCE_END)
 				.value(ProblemCode.REPORTING_PARAMETERS_MISSING_PERFORMANCE_YEAR,
-						ReportingParametersActDecoder.PERFORMANCE_YEAR)
+						PERFORMANCE_YEAR)
 				.isValidDate(ProblemCode.INVALID_PERFORMANCE_PERIOD_FORMAT.format(
 					performanceStart),
-					ReportingParametersActDecoder.PERFORMANCE_START)
+					PERFORMANCE_START)
 				.isValidDate(ProblemCode.INVALID_PERFORMANCE_PERIOD_FORMAT.format(performanceEnd),
-					ReportingParametersActDecoder.PERFORMANCE_END);
+					PERFORMANCE_END);
 	}
 }
