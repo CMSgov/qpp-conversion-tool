@@ -92,6 +92,7 @@ public class ValidationServiceImpl implements ValidationService {
 		JsonWrapper wrapper = conversionReport.getEncodedWithMetadata();
 		ResponseEntity<String> validationResponse = callValidationEndpoint(validationUrl, wrapper.copyWithoutMetadata());
 		API_LOG.info("Submission Validation Response Code - " + validationResponse.getStatusCode());
+		API_LOG.info("Submission Validation Response Code - " + validationResponse.getHeaders());
 
 		if (HttpStatus.UNPROCESSABLE_ENTITY == validationResponse.getStatusCode()) {
 
