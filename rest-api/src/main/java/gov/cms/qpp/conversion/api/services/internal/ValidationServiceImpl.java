@@ -92,7 +92,6 @@ public class ValidationServiceImpl implements ValidationService {
 		JsonWrapper wrapper = conversionReport.getEncodedWithMetadata();
 		ResponseEntity<String> validationResponse = callValidationEndpoint(validationUrl, wrapper.copyWithoutMetadata());
 		API_LOG.info("Submission Validation Response Code - " + validationResponse.getStatusCode());
-		API_LOG.info("Submission Validation Response Code - " + validationResponse.getHeaders());
 
 		if (HttpStatus.UNPROCESSABLE_ENTITY == validationResponse.getStatusCode()) {
 
@@ -117,6 +116,7 @@ public class ValidationServiceImpl implements ValidationService {
 	private ResponseEntity<String> callValidationEndpoint(String url, JsonWrapper qpp) {
 		restTemplate.setErrorHandler(new NoHandlingErrorHandler());
 		HttpEntity<String> request = new HttpEntity<>(qpp.toString(), getHeaders());
+		API_LOG.info("Submission Validation Response Code - " + request.getHeaders());
 
 		API_LOG.info("Calling QPP validation API {}", url);
 
