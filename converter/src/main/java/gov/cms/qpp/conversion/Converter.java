@@ -82,6 +82,8 @@ public class Converter {
 			errors.add(detail);
 		} catch (RuntimeException exception) {
 			DEV_LOG.error(ProblemCode.UNEXPECTED_ERROR.getMessage());
+			System.out.println(exception.getCause());
+			System.out.println(exception);
 			DEV_LOG.error("Problem with transform: " + exception);
 			Detail detail = Detail.forProblemCode(ProblemCode.UNEXPECTED_ERROR);
 			errors.add(detail);
