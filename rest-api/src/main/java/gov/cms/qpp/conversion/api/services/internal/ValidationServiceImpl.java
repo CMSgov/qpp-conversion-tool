@@ -132,11 +132,11 @@ public class ValidationServiceImpl implements ValidationService {
 		headers.add(HttpHeaders.CONTENT_TYPE, CONTENT_TYPE);
 		headers.add(HttpHeaders.ACCEPT, CONTENT_TYPE);
 
-		String implCookie = environment.getProperty(Constants.IMPL_COOKIE);
 		API_LOG.info("Cookie Parameter - ", Constants.IMPL_COOKIE);
-		API_LOG.info("Cookie Value - ", implCookie);
 		API_LOG.info("Validation URL Parameter - ", Constants.VALIDATION_URL_ENV_VARIABLE);
+		API_LOG.info("Cookie Value - ", environment.getProperty(Constants.IMPL_COOKIE));
 		API_LOG.info("Validation URL Value - ", environment.getProperty(Constants.VALIDATION_URL_ENV_VARIABLE));
+		String implCookie = environment.getProperty(Constants.IMPL_COOKIE);
 		if (implCookie != null && !implCookie.isEmpty()) {
 			headers.add(HttpHeaders.COOKIE, "ACA=" + implCookie);
 		}
