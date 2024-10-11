@@ -137,7 +137,6 @@ public class ValidationServiceImpl implements ValidationService {
 		if (implCookie != null && !implCookie.isEmpty()) {
 			headers.add(HttpHeaders.COOKIE, "ACA=" + implCookie);
 		}
-		headers.add(HttpHeaders.COOKIE, "ACA=2ZjUuQkphZ");
 
 		String submissionToken = environment.getProperty(Constants.SUBMISSION_API_TOKEN_ENV_VARIABLE);
 		if (submissionToken != null && !submissionToken.isEmpty()) {
