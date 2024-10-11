@@ -224,18 +224,6 @@ locals {
     qpp_description     = local.commonDescription
     qpp_iac-repo-url    = var.git-origin
   }
-  ssmctacacookie_tags = {
-    Name                = local.commonName
-    qpp_owner           = var.owner
-    qpp_incident-response-email = var.pagerduty_email
-    qpp_application     = var.application
-    qpp_project         = var.project_name
-    qpp_environment     = var.environment
-    qpp_layer           = local.commonLayer
-    qpp_sensitivity     = local.commonSensitivity
-    qpp_description     = local.commonDescription
-    qpp_iac-repo-url    = var.git-origin
-  }
   ssmctsslsecret_tags = {
     Name                = local.commonName
     qpp_owner           = var.owner
@@ -570,25 +558,6 @@ resource "aws_ssm_parameter" "validation_url" {
 # QPPSE-1208
   tags = merge(var.tags,local.ssmctvalidurl_tags)
 }
-
-resource "aws_ssm_parameter" "impl_aca_cookie" {
-  name        = "/qppar-sf/${var.environment}/conversion_tool/IMPL_ACA_COOKIE"
-  description = "ACA Cookie"
-  type        = "SecureString"
-  value       = "secret"
-  overwrite   = false
-
-
-  lifecycle {
-    ignore_changes = [
-      value
-    ]
-  }
-
-  # QPPSE-1208
-  tags = merge(var.tags,local.ssmctacacookie_tags)
-}
-
 resource "aws_ssm_parameter" "ssl_secret" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/SSL_SECRET"
   description = "SSL KeyStore Password"
