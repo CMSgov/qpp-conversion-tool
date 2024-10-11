@@ -95,6 +95,10 @@
                     "name": "VALIDATION_URL"
                 },
                 {
+                    "valueFrom": "arn:aws:ssm:us-east-1:003384571330:parameter/qppar-sf/${env}/conversion_tool/IMPL_ACA_COOKIE",
+                    "name": "IMPL_ACA_COOKIE"
+                },
+                {
                     "valueFrom": "arn:aws:ssm:us-east-1:003384571330:parameter/qppar-sf/${env}/conversion_tool/RTI_ORG_NAME",
                     "name": "RTI_ORG_NAME"
                 }
