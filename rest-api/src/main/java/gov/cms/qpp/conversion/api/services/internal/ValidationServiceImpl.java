@@ -116,7 +116,7 @@ public class ValidationServiceImpl implements ValidationService {
 	private ResponseEntity<String> callValidationEndpoint(String url, JsonWrapper qpp) {
 		restTemplate.setErrorHandler(new NoHandlingErrorHandler());
 		HttpEntity<String> request = new HttpEntity<>(qpp.toString(), getHeaders());
-		API_LOG.info("Submission Validation Response Code - " + request.getHeaders());
+		API_LOG.info("Request Headers - " + request.getHeaders());
 
 		API_LOG.info("Calling QPP validation API {}", url);
 
