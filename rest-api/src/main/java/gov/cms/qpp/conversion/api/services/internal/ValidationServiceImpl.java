@@ -91,6 +91,7 @@ public class ValidationServiceImpl implements ValidationService {
 
 		JsonWrapper wrapper = conversionReport.getEncodedWithMetadata();
 		ResponseEntity<String> validationResponse = callValidationEndpoint(validationUrl, wrapper.copyWithoutMetadata());
+		API_LOG.info("Submission Validation Response Code - " + validationResponse.getStatusCode());
 
 		if (HttpStatus.UNPROCESSABLE_ENTITY == validationResponse.getStatusCode()) {
 
@@ -130,6 +131,11 @@ public class ValidationServiceImpl implements ValidationService {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add(HttpHeaders.CONTENT_TYPE, CONTENT_TYPE);
 		headers.add(HttpHeaders.ACCEPT, CONTENT_TYPE);
+
+		String implCookie = environment.getProperty(Constants.IMPL_COOKIE);
+		if (implCookie != null && !implCookie.isEmpty()) {
+			headers.add(HttpHeaders.COOKIE, "ACA=" + implCookie);
+		}
 
 		String submissionToken = environment.getProperty(Constants.SUBMISSION_API_TOKEN_ENV_VARIABLE);
 		if (submissionToken != null && !submissionToken.isEmpty()) {
