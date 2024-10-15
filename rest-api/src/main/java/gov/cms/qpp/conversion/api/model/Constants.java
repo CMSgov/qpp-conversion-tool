@@ -11,6 +11,7 @@ public class Constants {
 	public static final String NO_AUDIT_ENV_VARIABLE = "NO_AUDIT";
 	public static final String BUCKET_NAME_ENV_VARIABLE = "BUCKET_NAME";
 	public static final String SUBMISSION_API_TOKEN_ENV_VARIABLE = "SUBMISSION_API_TOKEN";
+	public static final String IMPL_COOKIE = "IMPL_ACA_COOKIE";
 	public static final String VALIDATION_URL_ENV_VARIABLE = "VALIDATION_URL";
 	public static final String NO_CPC_PLUS_API_ENV_VARIABLE = "NO_CPC_PLUS_API";
 	public static final String V1_API_ACCEPT = "application/vnd.qpp.cms.gov.v1+json";
