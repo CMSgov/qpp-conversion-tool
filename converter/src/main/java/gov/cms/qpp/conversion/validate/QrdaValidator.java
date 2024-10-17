@@ -56,7 +56,7 @@ public class QrdaValidator {
 	 * @param node The root node to start validating from.
 	 */
 	private void validateTree(final Node node) {
-		DEV_LOG.info("Node Type - ", node.getType());
+		DEV_LOG.info(node.toString());
 		validateSingleNode(node);
 		DEV_LOG.info(("Validated Single Node"));
 
