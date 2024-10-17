@@ -70,6 +70,15 @@ public class QrdaValidator {
 	 * @param node The node to validate.
 	 */
 	private void validateSingleNode(final Node node) {
+		DEV_LOG.info(node.getType().toString());
+		DEV_LOG.info(getValidators(node.getType()).toList().toString());
+		getValidators(node.getType()).filter(this::isValidationRequired).forEach(nodes -> { DEV_LOG.info(nodes.toString()); });
+		getValidators(node.getType()).filter(this::isValidationRequired).forEach(nodes -> {
+			ValidationResult problems = nodes.validateSingleNode(node);
+			DEV_LOG.info(nodes.toString());
+			DEV_LOG.info(problems.getWarnings().toString());
+			DEV_LOG.info(problems.getErrors().toString());
+		});
 		getValidators(node.getType())
 			.filter(this::isValidationRequired)
 			.forEach(validatorForNode -> {
