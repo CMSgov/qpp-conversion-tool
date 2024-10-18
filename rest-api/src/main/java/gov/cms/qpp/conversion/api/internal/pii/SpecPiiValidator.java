@@ -33,12 +33,8 @@ public class SpecPiiValidator implements PiiValidator {
 
 	@Override
 	public void validateApmTinNpiCombination(Node node, NodeValidator validator) {
-		DEV_LOG.info("Validate Invalid APM Combinations");
 		validateInvalidApmCombinations(node, validator);
-		DEV_LOG.info("Validated Invalid APM Combinations");
-		DEV_LOG.info("Validate Missing APM Combinations");
 		validateMissingApmCombinations(node, validator);
-		DEV_LOG.info("Validated Missing APM Combinations");
 	}
 
 	private void validateInvalidApmCombinations(Node node, NodeValidator validator) {

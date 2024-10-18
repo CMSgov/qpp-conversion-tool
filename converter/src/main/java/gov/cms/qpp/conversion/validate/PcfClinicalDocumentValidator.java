@@ -118,15 +118,9 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 			.doesNotHaveChildren(ProblemCode.PCF_NO_IA_OR_PI.format(programName), TemplateId.IA_SECTION_V3, TemplateId.PI_SECTION_V3);
 
 		if (hasTinAndNpi(node)) {
-			DEV_LOG.info("Validate Number of TINs and NPIs");
 			validateNumberOfTinsAndNpis(node, programName);
-			DEV_LOG.info("Validated Number of TINs and NPIs");
-			DEV_LOG.info("Validate APM NPI Combination");
 			validateApmNpiCombination(node);
-			DEV_LOG.info("Validated APM NPI Combination");
-			DEV_LOG.info("Validate Single TIN NPI Per Performer");
 			validateSingleTinNpiPerPerformer(node);
-			DEV_LOG.info("Validated Single TIN NPI Per Performer");
 		}
 		validateCehrtId(node, programName);
 	}
@@ -187,11 +181,7 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 	}
 
 	private void validateApmNpiCombination(Node node) {
-		DEV_LOG.info("Inside");
-		DEV_LOG.info(context.getPiiValidator().toString());
-		DEV_LOG.info("Got PII Validator");
 		context.getPiiValidator().validateApmTinNpiCombination(node, this);
-		DEV_LOG.info("Finished");
 	}
 
 	private void validateCehrtId(Node node, String programName) {
