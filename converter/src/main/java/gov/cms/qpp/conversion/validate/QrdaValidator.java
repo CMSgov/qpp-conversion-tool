@@ -43,8 +43,6 @@ public class QrdaValidator {
 	 */
 	public ValidationResult validate(Node rootNode) {
 		DEV_LOG.info("Validating all nodes in the tree");
-		DEV_LOG.info(rootNode.toString());
-		DEV_LOG.info("Calling Validate Tree with rootNode");
 
 		//validate each node while traversing the tree
 		validateTree(rootNode);
@@ -58,14 +56,9 @@ public class QrdaValidator {
 	 * @param node The root node to start validating from.
 	 */
 	private void validateTree(final Node node) {
-		DEV_LOG.info(node.toString());
-		DEV_LOG.info(("Validate Single Node"));
 		validateSingleNode(node);
-		DEV_LOG.info(("Validated Single Node"));
 
-		DEV_LOG.info(("Validate Child Node"));
 		validateChildren(node);
-		DEV_LOG.info(("Validated Child Node"));
 	}
 
 	/**
@@ -74,15 +67,6 @@ public class QrdaValidator {
 	 * @param node The node to validate.
 	 */
 	private void validateSingleNode(final Node node) {
-		DEV_LOG.info(node.getType().toString());
-		DEV_LOG.info(getValidators(node.getType()).toList().toString());
-		getValidators(node.getType()).filter(this::isValidationRequired).forEach(nodes -> { DEV_LOG.info(nodes.toString()); });
-		getValidators(node.getType()).filter(this::isValidationRequired).forEach(nodes -> {
-			ValidationResult problems = nodes.validateSingleNode(node);
-			DEV_LOG.info(nodes.toString());
-			DEV_LOG.info(problems.getWarnings().toString());
-			DEV_LOG.info(problems.getErrors().toString());
-		});
 		getValidators(node.getType())
 			.filter(this::isValidationRequired)
 			.forEach(validatorForNode -> {
