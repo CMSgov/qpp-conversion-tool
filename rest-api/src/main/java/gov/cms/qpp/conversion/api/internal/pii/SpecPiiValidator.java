@@ -1,5 +1,8 @@
 package gov.cms.qpp.conversion.api.internal.pii;
 
+import gov.cms.qpp.conversion.validate.QrdaValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import gov.cms.qpp.conversion.api.model.PcfValidationInfoMap;
@@ -20,6 +23,8 @@ import static gov.cms.qpp.conversion.model.Constants.*;
 
 public class SpecPiiValidator implements PiiValidator {
 
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(QrdaValidator.class);
+
 	private final PcfValidationInfoMap file;
 
 	public SpecPiiValidator(PcfValidationInfoMap file) {
@@ -28,8 +33,12 @@ public class SpecPiiValidator implements PiiValidator {
 
 	@Override
 	public void validateApmTinNpiCombination(Node node, NodeValidator validator) {
+		DEV_LOG.info("Validate Invalid APM Combinations");
 		validateInvalidApmCombinations(node, validator);
+		DEV_LOG.info("Validated Invalid APM Combinations");
+		DEV_LOG.info("Validate Missing APM Combinations");
 		validateMissingApmCombinations(node, validator);
+		DEV_LOG.info("Validated Missing APM Combinations");
 	}
 
 	private void validateInvalidApmCombinations(Node node, NodeValidator validator) {

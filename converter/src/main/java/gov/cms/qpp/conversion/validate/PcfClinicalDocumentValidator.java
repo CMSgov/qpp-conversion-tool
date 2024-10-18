@@ -187,7 +187,11 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 	}
 
 	private void validateApmNpiCombination(Node node) {
+		DEV_LOG.info("Inside");
+		context.getPiiValidator();
+		DEV_LOG.info("Got PII Validator");
 		context.getPiiValidator().validateApmTinNpiCombination(node, this);
+		DEV_LOG.info("Finished");
 	}
 
 	private void validateCehrtId(Node node, String programName) {
