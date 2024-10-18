@@ -43,6 +43,8 @@ public class QrdaValidator {
 	 */
 	public ValidationResult validate(Node rootNode) {
 		DEV_LOG.info("Validating all nodes in the tree");
+		DEV_LOG.info(rootNode.toString());
+		DEV_LOG.info("Calling Validate Tree with rootNode");
 
 		//validate each node while traversing the tree
 		validateTree(rootNode);
@@ -57,9 +59,11 @@ public class QrdaValidator {
 	 */
 	private void validateTree(final Node node) {
 		DEV_LOG.info(node.toString());
+		DEV_LOG.info(("Validate Single Node"));
 		validateSingleNode(node);
 		DEV_LOG.info(("Validated Single Node"));
 
+		DEV_LOG.info(("Validate Child Node"));
 		validateChildren(node);
 		DEV_LOG.info(("Validated Child Node"));
 	}
