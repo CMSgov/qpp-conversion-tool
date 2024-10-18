@@ -88,14 +88,10 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 	@Override
 	protected void performValidation(Node node) {
 		validateSubmissionDate(node);
-		DEV_LOG.info("Submission Date Validated!");
 		String programName = node.getValue(PROGRAM_NAME).toUpperCase(Locale.ROOT);
-		DEV_LOG.info("Program Name Validated!");
 
 		LocalizedProblem addressError = ProblemCode.PCF_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
 			.format(Context.REPORTING_YEAR);
-
-		DEV_LOG.info("PCF Site Address Validated!");
 
 		checkErrors(node)
 			.valueIsNotEmpty(ProblemCode.PCF_TIN_REQUIRED.format(programName),
@@ -118,14 +114,19 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 				NATIONAL_PROVIDER_IDENTIFIER);
 
 		validateApmEntityId(node, PCF_ENTITY_ID, false);
-		DEV_LOG.info("APM Entity Validated!");
 		checkWarnings(node)
 			.doesNotHaveChildren(ProblemCode.PCF_NO_IA_OR_PI.format(programName), TemplateId.IA_SECTION_V3, TemplateId.PI_SECTION_V3);
 
 		if (hasTinAndNpi(node)) {
+			DEV_LOG.info("Validate Number of TINs and NPIs");
 			validateNumberOfTinsAndNpis(node, programName);
+			DEV_LOG.info("Validated Number of TINs and NPIs");
+			DEV_LOG.info("Validate APM NPI Combination");
 			validateApmNpiCombination(node);
+			DEV_LOG.info("Validated APM NPI Combination");
+			DEV_LOG.info("Validate Single TIN NPI Per Performer");
 			validateSingleTinNpiPerPerformer(node);
+			DEV_LOG.info("Validated Single TIN NPI Per Performer");
 		}
 		validateCehrtId(node, programName);
 	}
