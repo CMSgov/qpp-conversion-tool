@@ -1,8 +1,5 @@
 package gov.cms.qpp.conversion.api.internal.pii;
 
-import gov.cms.qpp.conversion.validate.QrdaValidator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import gov.cms.qpp.conversion.api.model.PcfValidationInfoMap;
@@ -22,8 +19,6 @@ import java.util.Map;
 import static gov.cms.qpp.conversion.model.Constants.*;
 
 public class SpecPiiValidator implements PiiValidator {
-
-	private static final Logger DEV_LOG = LoggerFactory.getLogger(QrdaValidator.class);
 
 	private final PcfValidationInfoMap file;
 

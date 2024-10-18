@@ -18,8 +18,6 @@ import org.jdom2.filter.Filters;
 import org.jdom2.located.LocatedElement;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.Clock;
 import java.time.Year;
@@ -41,8 +39,6 @@ import static gov.cms.qpp.conversion.model.Constants.*;
  */
 @Validator(value = TemplateId.CLINICAL_DOCUMENT, program = Program.PCF)
 public class PcfClinicalDocumentValidator extends NodeValidator {
-
-	private static final Logger DEV_LOG = LoggerFactory.getLogger(QrdaValidator.class);
 
 	public PcfClinicalDocumentValidator(Context context) {
 		super(context);
