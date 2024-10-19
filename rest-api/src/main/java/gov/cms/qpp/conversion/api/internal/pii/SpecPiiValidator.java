@@ -28,17 +28,21 @@ public class SpecPiiValidator implements PiiValidator {
 
 	@Override
 	public void validateApmTinNpiCombination(Node node, NodeValidator validator) {
-		validateInvalidApmCombinations(node, validator);
-		validateMissingApmCombinations(node, validator);
+		List<String> npiList = Arrays.asList(
+				node.getValue(NATIONAL_PROVIDER_IDENTIFIER).split(","));
+		List<String> tinList = Arrays.asList(
+				node.getValue(TAX_PAYER_IDENTIFICATION_NUMBER).split(","));
+		if (npiList.size() != tinList.size()) {
+			validator.addError(Detail.forProblemAndNode(ProblemCode.INCORRECT_API_NPI_COMBINATION, node));
+		} else {
+			validateInvalidApmCombinations(node, validator, npiList, tinList);
+			validateMissingApmCombinations(node, validator, npiList, tinList);
+		}
 	}
 
-	private void validateInvalidApmCombinations(Node node, NodeValidator validator) {
+	private void validateInvalidApmCombinations(Node node, NodeValidator validator, List<String> npiList, List<String> tinList) {
 		String program = node.getValue(PROGRAM_NAME);
 		String apm = getApmEntityId(node, program);
-		List<String> npiList = Arrays.asList(
-			node.getValue(NATIONAL_PROVIDER_IDENTIFIER).split(","));
-		List<String> tinList = Arrays.asList(
-			node.getValue(TAX_PAYER_IDENTIFICATION_NUMBER).split(","));
 
 		Map<String, Map<String, List<String>>> apmToTinNpiMap = file.getApmTinNpiCombinationMap();
 		if (apmToTinNpiMap == null || StringUtils.isEmpty(apm)) {
@@ -59,13 +63,9 @@ public class SpecPiiValidator implements PiiValidator {
 		}
 	}
 
-	private void validateMissingApmCombinations(Node node, NodeValidator validator) {
+	private void validateMissingApmCombinations(Node node, NodeValidator validator, List<String> npiList, List<String> tinList) {
 		String program = node.getValue(PROGRAM_NAME);
 		String apm = getApmEntityId(node, program);
-		List<String> npiList = Arrays.asList(
-			node.getValue(NATIONAL_PROVIDER_IDENTIFIER).split(","));
-		List<String> tinList = Arrays.asList(
-			node.getValue(TAX_PAYER_IDENTIFICATION_NUMBER).split(","));
 
 		List<TinNpiCombination> tinNpiCombinations = createTinNpiMap(tinList, npiList);
 
