@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.validate;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
+import static gov.cms.qpp.conversion.model.Constants.CATEGORY_SECTION_V5;
 import static gov.cms.qpp.conversion.model.TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V5;
 
 import java.util.List;
@@ -11,7 +12,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.MarkupManipulationHandler;
-import gov.cms.qpp.conversion.decode.QualitySectionDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
@@ -42,7 +42,7 @@ class QualityMeasureSectionValidatorTest {
 	void testValidQualityMeasureSectionValidation() {
 		qualityMeasureSectionNode.addChildNode(reportingParameterNode);
 		qualityMeasureSectionNode.addChildNode(measure);
-		qualityMeasureSectionNode.putValue(QualitySectionDecoder.CATEGORY_SECTION_V5,
+		qualityMeasureSectionNode.putValue(CATEGORY_SECTION_V5,
 			TemplateId.CATEGORY_REPORT_V5.getExtension());
 
 		List<Detail> errors = validateQualityMeasureSection();
@@ -54,7 +54,7 @@ class QualityMeasureSectionValidatorTest {
 	@Test
 	void testQualityMeasureSectionWithoutMeasure() {
 		qualityMeasureSectionNode.addChildNode(reportingParameterNode);
-		qualityMeasureSectionNode.putValue(QualitySectionDecoder.CATEGORY_SECTION_V5,
+		qualityMeasureSectionNode.putValue(CATEGORY_SECTION_V5,
 			TemplateId.CATEGORY_REPORT_V5.getExtension());
 
 		List<Detail> errors = validateQualityMeasureSection();
@@ -68,7 +68,7 @@ class QualityMeasureSectionValidatorTest {
 
 	@Test
 	void testMissingReportingParams() {
-		qualityMeasureSectionNode.putValue(QualitySectionDecoder.CATEGORY_SECTION_V5,
+		qualityMeasureSectionNode.putValue(CATEGORY_SECTION_V5,
 			TemplateId.CATEGORY_REPORT_V5.getExtension());
 
 		List<Detail> errors = validateQualityMeasureSection();
@@ -83,7 +83,7 @@ class QualityMeasureSectionValidatorTest {
 	void testTooManyReportingParams() {
 		Node secondReportingParameterNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		qualityMeasureSectionNode.addChildNodes(reportingParameterNode, secondReportingParameterNode);
-		qualityMeasureSectionNode.putValue(QualitySectionDecoder.CATEGORY_SECTION_V5,
+		qualityMeasureSectionNode.putValue(CATEGORY_SECTION_V5,
 			TemplateId.CATEGORY_REPORT_V5.getExtension());
 
 		List<Detail> errors = validateQualityMeasureSection();

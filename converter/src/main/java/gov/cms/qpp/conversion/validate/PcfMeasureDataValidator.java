@@ -18,7 +18,8 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static gov.cms.qpp.conversion.decode.SkeletalSupplementalDataDecoder.SUPPLEMENTAL_DATA_KEY;
+import static gov.cms.qpp.conversion.model.Constants.MEASURE_TYPE;
+import static gov.cms.qpp.conversion.model.Constants.SUPPLEMENTAL_DATA_KEY;
 
 @Validator(value = TemplateId.MEASURE_DATA_CMS_V4, program = Program.PCF)
 public class PcfMeasureDataValidator extends NodeValidator {
@@ -113,7 +114,7 @@ public class PcfMeasureDataValidator extends NodeValidator {
 		LocalizedProblem error =
 			ProblemCode.PCF_MISSING_SUPPLEMENTAL_CODE.format(
 				supplementalData.getType(), supplementalData, supplementalData.getCode(),
-				measureId, node.getValue(MeasureDataDecoder.MEASURE_TYPE));
+				measureId, node.getValue(MEASURE_TYPE));
 		addError(Detail.forProblemAndNode(error, node));
 	}
 
@@ -127,7 +128,7 @@ public class PcfMeasureDataValidator extends NodeValidator {
 	 */
 	private LocalizedProblem makeIncorrectCountSizeLocalizedError(Node node, String supplementalCode, String measureId) {
 		return ProblemCode.PCF_SUPPLEMENTAL_DATA_MISSING_COUNT.format(
-			supplementalCode, node.getValue(MeasureDataDecoder.MEASURE_TYPE),
+			supplementalCode, node.getValue(MEASURE_TYPE),
 			measureId);
 	}
 }

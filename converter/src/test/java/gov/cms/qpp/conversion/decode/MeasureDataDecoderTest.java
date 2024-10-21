@@ -15,7 +15,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 import java.io.IOException;
 
 import static com.google.common.truth.Truth.assertThat;
-import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
+import static gov.cms.qpp.conversion.model.Constants.MEASURE_TYPE;
 
 class MeasureDataDecoderTest {
 

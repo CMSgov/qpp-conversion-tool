@@ -1,12 +1,12 @@
 package gov.cms.qpp.conversion.validate;
 
 import static com.google.common.truth.Truth.assertWithMessage;
+import static gov.cms.qpp.conversion.model.Constants.AGGREGATE_COUNT;
 
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
@@ -44,7 +44,7 @@ class AggregateCountValidatorTest {
 	void testValueTypeFailure() {
 		Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		aggregateCountNode.setParent(new Node(TemplateId.PI_NUMERATOR));
-		aggregateCountNode.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "meep");
+		aggregateCountNode.putValue(AGGREGATE_COUNT, "meep");
 
 		AggregateCountValidator validator = new AggregateCountValidator();
 		List<Detail> errors = validator.validateSingleNode(aggregateCountNode).getErrors();
@@ -58,7 +58,7 @@ class AggregateCountValidatorTest {
 	void testValueTypeSuccess() {
 		Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		aggregateCountNode.setParent(new Node(TemplateId.PI_NUMERATOR));
-		aggregateCountNode.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "7");
+		aggregateCountNode.putValue(AGGREGATE_COUNT, "7");
 
 		AggregateCountValidator validator = new AggregateCountValidator();
 		List<Detail> errors = validator.validateSingleNode(aggregateCountNode).getErrors();

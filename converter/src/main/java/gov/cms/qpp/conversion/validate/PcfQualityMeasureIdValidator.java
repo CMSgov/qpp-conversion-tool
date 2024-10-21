@@ -1,14 +1,8 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
-import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
 import gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder;
 import gov.cms.qpp.conversion.decode.StratifierDecoder;
-import gov.cms.qpp.conversion.encode.QualityMeasureIdEncoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Program;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.Validator;
+import gov.cms.qpp.conversion.model.*;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
@@ -25,8 +19,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
-import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID;
+import static gov.cms.qpp.conversion.model.Constants.*;
 
 @Validator(value = TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V5, program = Program.PCF)
 public class PcfQualityMeasureIdValidator extends QualityMeasureIdValidator {
@@ -61,17 +54,17 @@ public class PcfQualityMeasureIdValidator extends QualityMeasureIdValidator {
 			List<Node> subPopNodes = MeasureConfigHelper.createSubPopulationGrouping(node, measureConfig);
 			for (Node subpopulationNode: subPopNodes) {
 				Node numeratorNode = subpopulationNode.findChildNode(
-					n -> SubPopulationLabel.NUMER.hasAlias(n.getValue(QualityMeasureIdEncoder.TYPE)));
+					n -> SubPopulationLabel.NUMER.hasAlias(n.getValue(MEASURE_TYPE)));
 				Node denominatorNode = subpopulationNode.findChildNode(
-					n -> SubPopulationLabel.DENOM.hasAlias(n.getValue(QualityMeasureIdEncoder.TYPE)));
+					n -> SubPopulationLabel.DENOM.hasAlias(n.getValue(MEASURE_TYPE)));
 				Node denomExclusionNode = subpopulationNode.findChildNode(
-					n -> SubPopulationLabel.DENEX.hasAlias(n.getValue(QualityMeasureIdEncoder.TYPE)));
+					n -> SubPopulationLabel.DENEX.hasAlias(n.getValue(MEASURE_TYPE)));
 				Node denomExceptionNode = subpopulationNode.findChildNode(
-					n -> SubPopulationLabel.DENEXCEP.hasAlias(n.getValue(QualityMeasureIdEncoder.TYPE)));
+					n -> SubPopulationLabel.DENEXCEP.hasAlias(n.getValue(MEASURE_TYPE)));
 				Node performanceRateNode = node.getChildNodes(n ->
 					TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE.equals(n.getType()))
 					.filter(n -> numeratorNode.getValue(MEASURE_POPULATION).equalsIgnoreCase
-						(n.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID)))
+						(n.getValue(PERFORMANCE_RATE_ID)))
 					.findFirst()
 					.orElse(null);
 
@@ -100,14 +93,14 @@ public class PcfQualityMeasureIdValidator extends QualityMeasureIdValidator {
 				//skip if performance rate is missing
 				if (null != performanceRateNode) {
 					String performanceRateValue =
-						performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE);
+						performanceRateNode.getValue(PERFORMANCE_RATE);
 					if (PerformanceRateValidator.NULL_ATTRIBUTE.equals(
-						performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE))) {
+						performanceRateNode.getValue(NULL_PERFORMANCE_RATE))) {
 						if (performanceDenominator != 0) {
 							addError(Detail.forProblemAndNode(
 								ProblemCode.PCF_INVALID_NULL_PERFORMANCE_RATE
 									.format(performanceRateNode
-										.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID),
+										.getValue(PERFORMANCE_RATE_ID),
 										measureConfig.getElectronicMeasureId())
 								, node));
 						}
@@ -177,7 +170,7 @@ public class PcfQualityMeasureIdValidator extends QualityMeasureIdValidator {
 		if (strataNodes.size() != sub.getStrata().size()) {
 			LocalizedProblem error = ProblemCode.PCF_QUALITY_MEASURE_ID_STRATA_MISMATCH.format(strataNodes.size(),
 				sub.getStrata().size(),
-				node.getValue(MeasureDataDecoder.MEASURE_TYPE),
+				node.getValue(MEASURE_TYPE),
 				node.getValue(MEASURE_POPULATION),
 				sub.getStrata());
 			addError(Detail.forProblemAndNode(error, node));
@@ -189,7 +182,7 @@ public class PcfQualityMeasureIdValidator extends QualityMeasureIdValidator {
 
 			if (strataNodes.stream().noneMatch(seek)) {
 				LocalizedProblem error = ProblemCode.PCF_QUALITY_MEASURE_ID_MISSING_STRATA.format(stratum,
-					node.getValue(MeasureDataDecoder.MEASURE_TYPE),
+					node.getValue(MEASURE_TYPE),
 					node.getValue(MEASURE_POPULATION));
 				addError(Detail.forProblemAndNode(error, node));
 			}
@@ -208,7 +201,7 @@ public class PcfQualityMeasureIdValidator extends QualityMeasureIdValidator {
 			Node aggregate =
 				node.getChildNodes(n -> TemplateId.PI_AGGREGATE_COUNT.equals(n.getType())).findFirst().orElse(null);
 			if (null != aggregate) {
-				String value = aggregate.getValue(AggregateCountDecoder.AGGREGATE_COUNT);
+				String value = aggregate.getValue(AGGREGATE_COUNT);
 				if (NumberHelper.isNumeric(value)){
 					extractedValue = Integer.valueOf(value);
 				}

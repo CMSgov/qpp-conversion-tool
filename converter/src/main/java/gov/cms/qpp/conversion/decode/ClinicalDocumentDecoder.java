@@ -14,57 +14,15 @@ import gov.cms.qpp.conversion.model.TemplateId;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 import java.util.function.Consumer;
+
+import static gov.cms.qpp.conversion.model.Constants.*;
 
 /**
  * Decoder to parse the root element of the Document-Level Template: QRDA Category III Report (ClinicalDocument).
  */
 @Decoder(TemplateId.CLINICAL_DOCUMENT)
 public class ClinicalDocumentDecoder extends QrdaDecoder {
-
-	/*  Constants for lookups and tests */
-	// Identifier constants for: Node(Identifier, Value) and xpathlocation
-	public static final String NATIONAL_PROVIDER_IDENTIFIER = "nationalProviderIdentifier";
-	public static final String TAX_PAYER_IDENTIFICATION_NUMBER = "taxpayerIdentificationNumber";
-	public static final String PROGRAM_NAME = "programName";
-	public static final String ENTITY_TYPE = "entityType";
-	public static final String RAW_PROGRAM_NAME = "rawProgramName";
-	public static final String PRACTICE_SITE_ADDR = "practiceSiteAddr";
-	public static final String PRACTICE_ID = "practiceId";
-	public static final String ENTITY_ID = "entityId";
-	public static final String PCF_ENTITY_ID = "pcfEntityId";
-	public static final String APM_ENTITY_ID = "apmEntityId";
-	public static final String VG_ID = "virtualGroupId";
-	public static final String CEHRT = "cehrtId";
-	public static final String MVP_ID = "mvpId";
-	public static final String SUBGROUP_ID = "subgroupId";
-
-	//QPP Json value constants for: Node(Identifier, value)
-	public static final String MIPS_PROGRAM_NAME = "mips";
-	public static final String PCF_PROGRAM_NAME = "pcf";
-	public static final String CPCPLUS_PROGRAM_NAME = "cpcPlus";
-	public static final String ENTITY_APM = "apm";
-	static final String ENTITY_GROUP = "group";
-	static final String ENTITY_INDIVIDUAL = "individual";
-	public static final String ENTITY_SUBGROUP = "subgroup";
-	public static final String ENTITY_VIRTUAL_GROUP = "virtualGroup";
-	public static final String APP_PROGRAM_NAME = "app1";
-	public static final String MIPS = "MIPS";
-	public static final Set<String> MVP_ENTITIES = Set.of(ENTITY_INDIVIDUAL, ENTITY_GROUP, ENTITY_SUBGROUP, ENTITY_APM);
-
-	// Program names in XML format
-	public static final String PCF = "PCF";
-	public static final String APP = "APP";
-	public static final String CPCPLUS = "CPCPLUS";
-	public static final String MIPS_GROUP = "MIPS_GROUP";
-	public static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
-	public static final String MIPS_APM = "MIPS_APMENTITY";
-	public static final String MIPS_VIRTUAL_GROUP = "MIPS_VIRTUALGROUP";
-	public static final String MIPS_SUBGROUP = "MIPS_SUBGROUP";
-	private static final String APP_GROUP = "MIPS_APP1_GROUP";
-	private static final String APP_INDIVIDUAL = "MIPS_APP1_INDIV";
-	public static final String APP_APM = "MIPS_APP1_APMENTITY";
 
 	public ClinicalDocumentDecoder(Context context) {
 		super(context);
@@ -99,7 +57,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 				setNationalProviderIdOnNode(element, thisNode);
 			}
 			if (ENTITY_VIRTUAL_GROUP.equals(entityType)) {
-				setEntityIdOnNode(element, thisNode, ClinicalDocumentDecoder.VG_ID);
+				setEntityIdOnNode(element, thisNode, VG_ID);
 			}
 		}
 
@@ -119,7 +77,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 				thisNode.putValue(PCF_ENTITY_ID, id.getValue(), false);
 			setOnNode(element, getXpath(PCF_ENTITY_ID), consumer, Filters.attribute(), false);
 		} else {
-			setEntityIdOnNode(element, thisNode, ClinicalDocumentDecoder.APM_ENTITY_ID);
+			setEntityIdOnNode(element, thisNode, APM_ENTITY_ID);
 		}
 	}
 

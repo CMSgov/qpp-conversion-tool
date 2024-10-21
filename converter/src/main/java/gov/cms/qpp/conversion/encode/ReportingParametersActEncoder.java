@@ -7,14 +7,15 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static gov.cms.qpp.conversion.model.Constants.PERFORMANCE_END;
+import static gov.cms.qpp.conversion.model.Constants.PERFORMANCE_START;
+
 /**
  * Encoder to serialize reporting paramters
  */
 @Encoder(TemplateId.REPORTING_PARAMETERS_ACT)
 public class ReportingParametersActEncoder extends QppOutputEncoder {
 
-	public static final String PERFORMANCE_START = "performanceStart";
-	public static final String PERFORMANCE_END = "performanceEnd";
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(ReportingParametersActEncoder.class);
 
 	public ReportingParametersActEncoder(Context context) {

@@ -12,14 +12,12 @@ import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 
+import static gov.cms.qpp.conversion.model.Constants.*;
+
 /**
  * {@link QrdaDecoder} abstraction for decoding supplemental data
  */
 public abstract class SkeletalSupplementalDataDecoder extends QrdaDecoder {
-
-	public static final String SUPPLEMENTAL_DATA_CODE = "code";
-	public static final String SUPPLEMENTAL_DATA_KEY = "supplementalData";
-	public static final String SUPPLEMENTAL_DATA_PAYER_CODE = "payerCode";
 
 	private final SupplementalType type;
 

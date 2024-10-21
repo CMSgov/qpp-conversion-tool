@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion.api.helper;
 
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -11,6 +10,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static gov.cms.qpp.conversion.model.Constants.*;
 
 /**
  * Utilities for working with Metadata beans
@@ -74,9 +75,9 @@ public class MetadataHelper {
 	 */
 	private static String findApm(Node node) {
 		if (isPcf(node)) {
-			return findValue(node, ClinicalDocumentDecoder.PCF_ENTITY_ID, TemplateId.CLINICAL_DOCUMENT);
+			return findValue(node, PCF_ENTITY_ID, TemplateId.CLINICAL_DOCUMENT);
 		} else {
-			return findValue(node, ClinicalDocumentDecoder.PRACTICE_ID, TemplateId.CLINICAL_DOCUMENT);
+			return findValue(node, PRACTICE_ID, TemplateId.CLINICAL_DOCUMENT);
 		}
 	}
 
@@ -87,7 +88,7 @@ public class MetadataHelper {
 	 * @return TIN value
 	 */
 	private static String findTin(Node node) {
-		return findValue(node, ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
+		return findValue(node, TAX_PAYER_IDENTIFICATION_NUMBER,
 				TemplateId.CLINICAL_DOCUMENT);
 	}
 
@@ -98,12 +99,12 @@ public class MetadataHelper {
 	 * @return NPI value
 	 */
 	private static String findNpi(Node node) {
-		return findValue(node, ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER,
+		return findValue(node, NATIONAL_PROVIDER_IDENTIFIER,
 				TemplateId.CLINICAL_DOCUMENT);
 	}
 
 	private static String findProgramName(Node node) {
-		return findValue(node, ClinicalDocumentDecoder.PROGRAM_NAME,
+		return findValue(node, PROGRAM_NAME,
 				TemplateId.CLINICAL_DOCUMENT);
 	}
 
@@ -112,7 +113,7 @@ public class MetadataHelper {
 			return true;
 		}
 
-		Node found = findPossibleChildNode(node, ClinicalDocumentDecoder.RAW_PROGRAM_NAME,
+		Node found = findPossibleChildNode(node, RAW_PROGRAM_NAME,
 			TemplateId.CLINICAL_DOCUMENT);
 
 		return found != null && Program.isPcf(found);

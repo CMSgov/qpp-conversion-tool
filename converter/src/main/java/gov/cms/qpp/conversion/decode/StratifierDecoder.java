@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.decode;
 
 
+import gov.cms.qpp.conversion.model.Constants;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
@@ -18,7 +19,7 @@ import java.util.function.Consumer;
 @Decoder(TemplateId.REPORTING_STRATUM_CMS)
 public class StratifierDecoder extends QrdaDecoder {
 
-	public static final String STRATIFIER_ID = "populationId";
+	public static final String STRATIFIER_ID = Constants.MEASURE_POPULATION;
 
 	public StratifierDecoder(Context context) {
 		super(context);

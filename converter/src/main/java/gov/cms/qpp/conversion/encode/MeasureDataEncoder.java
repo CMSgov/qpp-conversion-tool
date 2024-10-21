@@ -1,14 +1,12 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.model.Constants;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.util.SubPopulationHelper;
-
-import static gov.cms.qpp.conversion.decode.AggregateCountDecoder.AGGREGATE_COUNT;
-import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 
 /**
  * Encoder for CMS V2 Measure Data
@@ -29,13 +27,13 @@ public class MeasureDataEncoder extends QppOutputEncoder {
 	 */
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
-		if (!SubPopulationLabel.IPOP.hasAlias(node.getValue(MEASURE_TYPE)) &&
-			!SubPopulationLabel.NUMEX.hasAlias(node.getValue(MEASURE_TYPE))) {
-			String measureType = node.getValue(MEASURE_TYPE);
+		if (!SubPopulationLabel.IPOP.hasAlias(node.getValue(Constants.MEASURE_TYPE)) &&
+			!SubPopulationLabel.NUMEX.hasAlias(node.getValue(Constants.MEASURE_TYPE))) {
+			String measureType = node.getValue(Constants.MEASURE_TYPE);
 			Node aggCount = node.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
 
 			String encodeLabel = SubPopulationHelper.measureTypeMap.get(SubPopulationLabel.findPopulation(measureType));
-			wrapper.putInteger(encodeLabel, aggCount.getValue(AGGREGATE_COUNT));
+			wrapper.putInteger(encodeLabel, aggCount.getValue(Constants.AGGREGATE_COUNT));
 			maintainContinuity(wrapper, aggCount, encodeLabel);
 		}
 	}

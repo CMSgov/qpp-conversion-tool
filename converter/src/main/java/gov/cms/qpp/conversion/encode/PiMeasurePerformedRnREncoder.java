@@ -5,6 +5,8 @@ import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
+import static gov.cms.qpp.conversion.model.Constants.VALUE;
+
 @Encoder(TemplateId.PI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
 public class PiMeasurePerformedRnREncoder extends QppOutputEncoder {
 

@@ -19,17 +19,14 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static gov.cms.qpp.conversion.model.Constants.*;
+
 /**
  * The engine for parsing XML into QPP format.
  */
 public class QrdaDecoderEngine extends XmlDecoderEngine {
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QrdaDecoderEngine.class);
-	private static final String TEMPLATE_ID = "templateId";
-	private static final String NOT_VALID_QRDA_III_FORMAT = "The file is not a QRDA-III XML document";
-	private static final String ROOT_STRING = "root";
-	private static final String EXTENSION_STRING = "extension";
-
 	protected final Context context;
 	private final Registry<QrdaDecoder> decoders;
 

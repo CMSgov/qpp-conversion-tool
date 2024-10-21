@@ -11,13 +11,13 @@ import gov.cms.qpp.conversion.model.TemplateId;
 
 import java.util.function.Consumer;
 
+import static gov.cms.qpp.conversion.model.Constants.AGGREGATE_COUNT;
+
 /**
  * Decoder to parse an Aggregate Count value type.
  */
 @Decoder(TemplateId.PI_AGGREGATE_COUNT)
 public class AggregateCountDecoder extends QrdaDecoder {
-
-	public static final String AGGREGATE_COUNT = "aggregateCount";
 
 	public AggregateCountDecoder(Context context) {
 		super(context);

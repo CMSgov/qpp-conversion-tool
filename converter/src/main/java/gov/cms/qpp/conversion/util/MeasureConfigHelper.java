@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static gov.cms.qpp.conversion.model.Constants.MEASURE_POPULATION;
+
 public class MeasureConfigHelper {
 
 	public static final String MEASURE_ID = "measureId";
@@ -91,7 +93,7 @@ public class MeasureConfigHelper {
 		node.getChildNodes().stream()
 			.filter(childNode -> TemplateId.MEASURE_DATA_CMS_V4 == childNode.getType())
 			.forEach(childNode -> {
-				String populationId = childNode.getValue(MeasureDataDecoder.MEASURE_POPULATION);
+				String populationId = childNode.getValue(MEASURE_POPULATION);
 				Integer subPopIndex = mapPopulationIdToSubPopIndex.get(populationId.toUpperCase(Locale.ENGLISH));
 				if (subPopIndex != null) {
 					Node newParentNode = subPopNodes.get(subPopIndex);

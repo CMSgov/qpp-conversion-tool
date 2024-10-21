@@ -1,10 +1,11 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.LocalizedProblem;
+
+import static gov.cms.qpp.conversion.model.Constants.AGGREGATE_COUNT;
 
 /**
  * Super class for AciNumeratorValidator and AciDenominatorValidator classes
@@ -40,15 +41,15 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 	 * @param aggregateCountNode aggregate count node
 	 */
 	private void validateAggregateCount(Node aggregateCountNode) {
-		String aggregateCountValue = aggregateCountNode.getValue(AggregateCountDecoder.AGGREGATE_COUNT);
+		String aggregateCountValue = aggregateCountNode.getValue(AGGREGATE_COUNT);
 		if (aggregateCountValue == null) {
 			aggregateCountValue = "empty";
 		}
 		checkErrors(aggregateCountNode)
 				.singleValue(format(ProblemCode.NUMERATOR_DENOMINATOR_INVALID_VALUE, aggregateCountValue),
-					AggregateCountDecoder.AGGREGATE_COUNT)
+					AGGREGATE_COUNT)
 				.intValue(format(ProblemCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER, aggregateCountValue),
-					AggregateCountDecoder.AGGREGATE_COUNT)
+					AGGREGATE_COUNT)
 				.greaterThan(format(ProblemCode.NUMERATOR_DENOMINATOR_INVALID_VALUE, aggregateCountValue), -1);
 	}
 

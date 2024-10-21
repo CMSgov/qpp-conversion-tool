@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -17,6 +16,8 @@ import gov.cms.qpp.conversion.model.error.ProblemCode;
 import java.util.List;
 import java.util.Optional;
 
+import static gov.cms.qpp.conversion.model.Constants.*;
+
 /**
  * Encoder to serialize PI Section and it's measures
  */
@@ -24,7 +25,6 @@ import java.util.Optional;
 public class PiSectionEncoder extends QppOutputEncoder {
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(PiSectionEncoder.class);
-	public static final String SUBMISSION_METHOD = "submissionMethod";
 
 	public PiSectionEncoder(Context context) {
 		super(context);
@@ -56,7 +56,7 @@ public class PiSectionEncoder extends QppOutputEncoder {
 		wrapper.put(SUBMISSION_METHOD, "electronicHealthRecord");
 		Node topLevelParent = node.getParent();
 		if (TemplateId.PI_SECTION_V3 == node.getType() && (Program.isMips(topLevelParent) || Program.isApp(topLevelParent))) {
-			wrapper.put(ClinicalDocumentDecoder.CEHRT, node.getParent().getValue(ClinicalDocumentDecoder.CEHRT));
+			wrapper.put(CEHRT, node.getParent().getValue(CEHRT));
 		}
 	}
 
@@ -91,15 +91,15 @@ public class PiSectionEncoder extends QppOutputEncoder {
 	 * @param parent the clinical document node
 	 */
 	private void pilferParent(JsonWrapper wrapper, Node parent) {
-		String mvpId = parent.getValue(ClinicalDocumentDecoder.MVP_ID);
+		String mvpId = parent.getValue(MVP_ID);
 		if (StringUtils.isEmpty(mvpId)) {
-			wrapper.put(ClinicalDocumentDecoder.PROGRAM_NAME,
-				parent.getValue(ClinicalDocumentDecoder.PROGRAM_NAME));
-			maintainContinuity(wrapper, parent, ClinicalDocumentDecoder.PROGRAM_NAME);
+			wrapper.put(PROGRAM_NAME,
+				parent.getValue(PROGRAM_NAME));
+			maintainContinuity(wrapper, parent, PROGRAM_NAME);
 		} else {
-			wrapper.put(ClinicalDocumentDecoder.PROGRAM_NAME,
-				parent.getValue(ClinicalDocumentDecoder.MVP_ID));
-			maintainContinuity(wrapper, parent, ClinicalDocumentDecoder.MVP_ID);
+			wrapper.put(PROGRAM_NAME,
+				parent.getValue(MVP_ID));
+			maintainContinuity(wrapper, parent, MVP_ID);
 		}
 	}
 
@@ -117,7 +117,7 @@ public class PiSectionEncoder extends QppOutputEncoder {
 			return;
 		}
 		reportingParamEncoder.encode(wrapper, reportingChild, false);
-		maintainContinuity(wrapper, reportingChild, ReportingParametersActDecoder.PERFORMANCE_END);
-		maintainContinuity(wrapper, reportingChild, ReportingParametersActDecoder.PERFORMANCE_START);
+		maintainContinuity(wrapper, reportingChild, PERFORMANCE_END);
+		maintainContinuity(wrapper, reportingChild, PERFORMANCE_START);
 	}
 }

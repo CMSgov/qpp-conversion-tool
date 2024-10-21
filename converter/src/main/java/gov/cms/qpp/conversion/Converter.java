@@ -81,7 +81,8 @@ public class Converter {
 			Detail detail = Detail.forProblemCode(ProblemCode.NOT_VALID_XML_DOCUMENT);
 			errors.add(detail);
 		} catch (RuntimeException exception) {
-			DEV_LOG.error(ProblemCode.UNEXPECTED_ERROR.getMessage(), exception);
+			DEV_LOG.error(ProblemCode.UNEXPECTED_ERROR.getMessage());
+			DEV_LOG.error("Problem with transform: " + exception);
 			Detail detail = Detail.forProblemCode(ProblemCode.UNEXPECTED_ERROR);
 			errors.add(detail);
 		}

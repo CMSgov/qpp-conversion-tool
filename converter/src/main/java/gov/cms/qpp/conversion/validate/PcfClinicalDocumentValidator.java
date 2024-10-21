@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -30,6 +29,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import static gov.cms.qpp.conversion.model.Constants.*;
 
 
 /**
@@ -83,32 +84,32 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 	@Override
 	protected void performValidation(Node node) {
 		validateSubmissionDate(node);
-		String programName = node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME).toUpperCase(Locale.ROOT);
+		String programName = node.getValue(PROGRAM_NAME).toUpperCase(Locale.ROOT);
 
 		LocalizedProblem addressError = ProblemCode.PCF_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
 			.format(Context.REPORTING_YEAR);
 
 		checkErrors(node)
 			.valueIsNotEmpty(ProblemCode.PCF_TIN_REQUIRED.format(programName),
-				ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER)
+				TAX_PAYER_IDENTIFICATION_NUMBER)
 			.listValuesAreValid(
 				ProblemCode.PCF_INVALID_TIN.format(programName),
-				ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, 9)
+				TAX_PAYER_IDENTIFICATION_NUMBER, 9)
 			.valueIsNotEmpty(ProblemCode.PCF_NPI_REQUIRED.format(programName),
-				ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER)
+				NATIONAL_PROVIDER_IDENTIFIER)
 			.listValuesAreValid(
 				ProblemCode.PCF_INVALID_NPI.format(programName),
-				ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, 10)
-			.value(addressError, ClinicalDocumentDecoder.PRACTICE_SITE_ADDR)
+				NATIONAL_PROVIDER_IDENTIFIER, 10)
+			.value(addressError, PRACTICE_SITE_ADDR)
 			.childMinimum(ProblemCode.PCF_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED,
 				1, TemplateId.MEASURE_SECTION_V5)
-			.singleValue(ProblemCode.PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED, ClinicalDocumentDecoder.PCF_ENTITY_ID)
-			.valueIsNotEmpty(ProblemCode.PCF_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.PCF_ENTITY_ID)
+			.singleValue(ProblemCode.PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED, PCF_ENTITY_ID)
+			.valueIsNotEmpty(ProblemCode.PCF_CLINICAL_DOCUMENT_EMPTY_APM, PCF_ENTITY_ID)
 			.childExact(ProblemCode.PCF_NO_PI, 0, TemplateId.PI_SECTION_V3)
-			.listValuesAreInts(ProblemCode.PCF_INVALID_NPI.format(node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME)),
-				ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER);
+			.listValuesAreInts(ProblemCode.PCF_INVALID_NPI.format(node.getValue(PROGRAM_NAME)),
+				NATIONAL_PROVIDER_IDENTIFIER);
 
-		validateApmEntityId(node, ClinicalDocumentDecoder.PCF_ENTITY_ID, false);
+		validateApmEntityId(node, PCF_ENTITY_ID, false);
 		checkWarnings(node)
 			.doesNotHaveChildren(ProblemCode.PCF_NO_IA_OR_PI.format(programName), TemplateId.IA_SECTION_V3, TemplateId.PI_SECTION_V3);
 
@@ -153,8 +154,8 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 	 * @return
 	 */
 	private boolean hasTinAndNpi(final Node node) {
-		return null != node.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER) &&
-			null != node.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER);
+		return null != node.getValue(NATIONAL_PROVIDER_IDENTIFIER) &&
+			null != node.getValue(TAX_PAYER_IDENTIFICATION_NUMBER);
 	}
 
 	/**
@@ -164,14 +165,14 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 	 */
 	private void validateNumberOfTinsAndNpis(final Node node, final String programName) {
 		int numOfTins = Arrays.asList(
-			node.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER).split(",")).size();
+			node.getValue(TAX_PAYER_IDENTIFICATION_NUMBER).split(",")).size();
 		int numOfNpis = Arrays.asList(
-			node.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER).split(",")).size();
+			node.getValue(NATIONAL_PROVIDER_IDENTIFIER).split(",")).size();
 		if (numOfTins > numOfNpis) {
 			addError(Detail.forProblemAndNode(ProblemCode.PCF_MISSING_NPI.format(programName), node));
 		} else if (numOfNpis > numOfTins) {
 			addError(Detail.forProblemAndNode(ProblemCode.PCF_MISSING_TIN
-				.format(node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME)), node));
+				.format(node.getValue(PROGRAM_NAME)), node));
 		}
 	}
 
@@ -180,11 +181,11 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 	}
 
 	private void validateCehrtId(Node node, String programName) {
-		String cehrtId = node.getValue(ClinicalDocumentDecoder.CEHRT);
+		String cehrtId = node.getValue(CEHRT);
 		if(cehrtId == null || cehrtId.length() != 15 || !cehrtFormat(cehrtId.substring(2, 5))) {
 			addError(Detail.forProblemAndNode(ProblemCode.PCF_MISSING_CEHRT_ID.format(programName), node));
 		}
-		List<String> duplicateCehrts = node.getDuplicateValues(ClinicalDocumentDecoder.CEHRT);
+		List<String> duplicateCehrts = node.getDuplicateValues(CEHRT);
 		if (duplicateCehrts != null && duplicateCehrts.size() > 0) {
 			addError(Detail.forProblemAndNode(ProblemCode.PCF_DUPLICATE_CEHRT, node));
 		}
@@ -203,7 +204,7 @@ public class PcfClinicalDocumentValidator extends NodeValidator {
 		ZonedDateTime endDate = endDate();
 		if (now().isAfter(endDate)) {
 			String formatted = endDate.format(OUTPUT_END_DATE_FORMAT);
-			String program = node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME);
+			String program = node.getValue(PROGRAM_NAME);
 			addError(Detail.forProblemAndNode(
 				ProblemCode.PCF_SUBMISSION_ENDED.format(program, program, formatted, program, program,
 					EnvironmentHelper.getOrDefault(CPC_PLUS_CONTACT_EMAIL, DEFAULT_CPC_PLUS_CONTACT_EMAIL)),

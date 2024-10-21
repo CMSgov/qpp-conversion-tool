@@ -4,6 +4,7 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import static gov.cms.qpp.conversion.model.Constants.VALUE;
 
 /**
  * Encoder to serialize Improvement Activity Performed Measure Reference and Results

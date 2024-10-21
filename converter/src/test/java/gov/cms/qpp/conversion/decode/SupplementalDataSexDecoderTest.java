@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.google.common.truth.Truth.assertThat;
-import static gov.cms.qpp.conversion.decode.SupplementalDataEthnicityDecoder.SUPPLEMENTAL_DATA_KEY;
+import static gov.cms.qpp.conversion.model.Constants.SUPPLEMENTAL_DATA_KEY;
 
 public class SupplementalDataSexDecoderTest {
 

@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 
 import static com.google.common.truth.Truth.assertThat;
+import static gov.cms.qpp.conversion.model.Constants.*;
 
 import java.io.BufferedWriter;
 import java.io.StringWriter;
@@ -12,8 +13,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
-import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
@@ -103,9 +102,9 @@ class PiSectionEncoderMultiMeasureTest {
 		aciProportionMeasureNode3.putValue("measureId", "PI_CCTPE_3");
 
 		clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.CEHRT, "xxxxxxxxxx12345");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS_PROGRAM_NAME);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_INDIV");
+		clinicalDocumentNode.putValue(CEHRT, "xxxxxxxxxx12345");
+		clinicalDocumentNode.putValue(PROGRAM_NAME, MIPS_PROGRAM_NAME);
+		clinicalDocumentNode.putValue(RAW_PROGRAM_NAME, "MIPS_INDIV");
 
 		aciSectionNode = new Node(TemplateId.PI_SECTION_V3, clinicalDocumentNode);
 		aciSectionNode.putValue("category", "pi");
@@ -114,8 +113,8 @@ class PiSectionEncoderMultiMeasureTest {
 		aciSectionNode.addChildNode(aciProportionMeasureNode3);
 
 		reportingParametersNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
-		reportingParametersNode.putValue(ReportingParametersActDecoder.PERFORMANCE_START,"20170101");
-		reportingParametersNode.putValue(ReportingParametersActDecoder.PERFORMANCE_END,"20171231");
+		reportingParametersNode.putValue(PERFORMANCE_START,"20170101");
+		reportingParametersNode.putValue(PERFORMANCE_END,"20171231");
 		aciSectionNode.addChildNode(reportingParametersNode);
 
 		nodes = new ArrayList<>();

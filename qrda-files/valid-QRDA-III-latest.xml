@@ -4426,8 +4426,8 @@ CDA Header
 							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
 								  displayName="Observation Parameters"/>
 							<effectiveTime>
-								<low value="20230101"/>
-								<high value="20231231"/>
+								<low value="20240101"/>
+								<high value="20241231"/>
 							</effectiveTime>
 						</act>
 					</entry>
@@ -4579,8 +4579,8 @@ CDA Header
 							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
 								  displayName="Observation Parameters"/>
 							<effectiveTime>
-								<low value="20230201"/>
-								<high value="20230531"/>
+								<low value="20240201"/>
+								<high value="20240531"/>
 							</effectiveTime>
 						</act>
 					</entry>
@@ -4702,8 +4702,8 @@ CDA Header
 							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
 								  displayName="Observation Parameters"/>
 							<effectiveTime>
-								<low value="20230101"/>
-								<high value="20230430"/>
+								<low value="20240101"/>
+								<high value="20240430"/>
 							</effectiveTime>
 						</act>
 					</entry>

@@ -2,12 +2,12 @@ package gov.cms.qpp.conversion.correlation;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
+import static gov.cms.qpp.conversion.model.Constants.PROGRAM_NAME;
 
 import java.lang.reflect.Constructor;
 
 import org.junit.jupiter.api.Test;
 
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.TemplateId;
 
@@ -23,7 +23,7 @@ class PathCorrelatorTest {
 	@Test
 	void pathCorrelatorInitilization() {
 		String xpath = PathCorrelator.getXpath(TemplateId.CLINICAL_DOCUMENT.name(),
-				ClinicalDocumentDecoder.PROGRAM_NAME, "meep");
+				PROGRAM_NAME, "meep");
 		assertThat(xpath).isNotNull();
 	}
 
@@ -31,7 +31,7 @@ class PathCorrelatorTest {
 	void verifyXpathNsSubstitution() {
 		String meep = "meep";
 		String path = PathCorrelator.getXpath(
-				TemplateId.CLINICAL_DOCUMENT.name(), ClinicalDocumentDecoder.PROGRAM_NAME, meep);
+				TemplateId.CLINICAL_DOCUMENT.name(), PROGRAM_NAME, meep);
 
 		int meepCount = (path.length() - path.replace(meep, "").length()) / meep.length();
 

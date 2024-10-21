@@ -75,6 +75,10 @@
                     "name": "NEWRELIC_API_KEY"
                 },
                 {
+                    "valueFrom": "arn:aws:ssm:us-east-1:003384571330:parameter/qppar-sf/${env}/conversion_tool/IMPL_ACA_COOKIE",
+                    "name": "IMPL_ACA_COOKIE"
+                },
+                {
                     "valueFrom": "arn:aws:ssm:us-east-1:003384571330:parameter/qppar-sf/${env}/conversion_tool/NEXUS_CREDS",
                     "name": "NEXUS_CREDS"
                 },

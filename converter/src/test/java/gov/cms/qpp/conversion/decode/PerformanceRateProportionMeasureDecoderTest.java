@@ -14,6 +14,7 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.io.IOException;
 
 import static com.google.common.truth.Truth.assertThat;
+import static gov.cms.qpp.conversion.model.Constants.*;
 
 class PerformanceRateProportionMeasureDecoderTest {
 	private static String happy;
@@ -38,14 +39,14 @@ class PerformanceRateProportionMeasureDecoderTest {
 
 	@Test
 	void testPerformanceRateValueSuccess() {
-		assertThat(performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE))
+		assertThat(performanceRateNode.getValue(PERFORMANCE_RATE))
 				.isEqualTo("0.947368");
 	}
 
 	@Test
 	void testPerformanceRateUuidSuccess() {
 		final String performanceRateId = "6D01A564-58CC-4CF5-929F-B83583701BFE";
-		assertThat(performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID))
+		assertThat(performanceRateNode.getValue(PERFORMANCE_RATE_ID))
 				.isEqualTo(performanceRateId);
 	}
 
@@ -53,7 +54,7 @@ class PerformanceRateProportionMeasureDecoderTest {
 	void testSuccessfulNullPerformanceRate() throws XmlException {
 		decodeNodeFromFile(nullHappy);
 		performanceRateNode = getNode();
-		assertThat(performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE))
+		assertThat(performanceRateNode.getValue(NULL_PERFORMANCE_RATE))
 				.isEqualTo("NA");
 	}
 

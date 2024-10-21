@@ -8,8 +8,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 import static com.google.common.truth.Truth.assertThat;
-import static gov.cms.qpp.conversion.decode.AggregateCountDecoder.AGGREGATE_COUNT;
-import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
+import static gov.cms.qpp.conversion.model.Constants.AGGREGATE_COUNT;
+import static gov.cms.qpp.conversion.model.Constants.MEASURE_TYPE;
 
 class MeasureDataEncoderTest {
 	private enum Fixture {

@@ -11,13 +11,13 @@ import gov.cms.qpp.conversion.model.TemplateId;
 
 import java.util.function.Consumer;
 
+import static gov.cms.qpp.conversion.model.Constants.MEASURE_ID;
+
 /**
  * Decoder to parse an PI Measure Performed Reference and Results.
  */
 @Decoder(TemplateId.PI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
 public class PiMeasurePerformedRnRDecoder extends QrdaDecoder {
-
-	public static final String MEASURE_ID = "measureId";
 
 	public PiMeasurePerformedRnRDecoder(Context context) {
 		super(context);

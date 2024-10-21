@@ -11,16 +11,13 @@ import gov.cms.qpp.conversion.model.TemplateId;
 
 import java.util.function.Consumer;
 
+import static gov.cms.qpp.conversion.model.Constants.*;
+
 /**
  * Decoder to parse Reporting Parameters Act - CMS (V2).
  */
 @Decoder(TemplateId.REPORTING_PARAMETERS_ACT)
 public class ReportingParametersActDecoder extends QrdaDecoder {
-
-	public static final String PERFORMANCE_START = "performanceStart";
-	public static final String PERFORMANCE_END = "performanceEnd";
-	public static final String PERFORMANCE_YEAR = "performanceYear";
-	private static final int YEAR_LAST_INDEX = 4;
 
 	public ReportingParametersActDecoder(Context context) {
 		super(context);

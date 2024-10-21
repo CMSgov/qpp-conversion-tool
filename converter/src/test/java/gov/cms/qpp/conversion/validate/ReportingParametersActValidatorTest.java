@@ -4,10 +4,10 @@ import static com.google.common.truth.Truth.assertThat;
 
 import java.util.List;
 
+import gov.cms.qpp.conversion.model.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
@@ -102,9 +102,9 @@ class ReportingParametersActValidatorTest {
 
 	private Node createReportingParametersAct(String startDate, String endDate, String performanceYear) {
 		Node reportingParametersActNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
-		reportingParametersActNode.putValue(ReportingParametersActDecoder.PERFORMANCE_START, startDate);
-		reportingParametersActNode.putValue(ReportingParametersActDecoder.PERFORMANCE_END, endDate);
-		reportingParametersActNode.putValue(ReportingParametersActDecoder.PERFORMANCE_YEAR, performanceYear);
+		reportingParametersActNode.putValue(Constants.PERFORMANCE_START, startDate);
+		reportingParametersActNode.putValue(Constants.PERFORMANCE_END, endDate);
+		reportingParametersActNode.putValue(Constants.PERFORMANCE_YEAR, performanceYear);
 
 		return reportingParametersActNode;
 	}

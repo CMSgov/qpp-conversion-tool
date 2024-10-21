@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
@@ -19,6 +18,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 import static com.google.common.truth.Truth.assertThat;
+import static gov.cms.qpp.conversion.model.Constants.*;
 
 public class PcfClinicalDocumentValidatorTest {
 	private PcfClinicalDocumentValidator validator;
@@ -47,7 +47,7 @@ public class PcfClinicalDocumentValidatorTest {
 	@Test
 	void testMissingPcfPracticeSiteAddress() {
 		Node clinicalDocumentNode = createPcfClinicalDocumentNodeWithMeasureSection();
-		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR);
+		clinicalDocumentNode.removeValue(PRACTICE_SITE_ADDR);
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -60,7 +60,7 @@ public class PcfClinicalDocumentValidatorTest {
 		Node clinicalDocumentNode = createPcfClinicalDocumentNodeWithMeasureSection();
 
 		// extra APM
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PCF_ENTITY_ID, "1234567", false);
+		clinicalDocumentNode.putValue(PCF_ENTITY_ID, "1234567", false);
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -70,7 +70,7 @@ public class PcfClinicalDocumentValidatorTest {
 	@Test
 	void testPcfNoApm() {
 		Node clinicalDocumentNode = createPcfClinicalDocumentNodeWithMeasureSection();
-		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.PCF_ENTITY_ID);
+		clinicalDocumentNode.removeValue(PCF_ENTITY_ID);
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -80,7 +80,7 @@ public class PcfClinicalDocumentValidatorTest {
 	@Test
 	void testPcfEmptyApm() {
 		Node clinicalDocumentNode = createPcfClinicalDocumentNodeWithMeasureSection();
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PCF_ENTITY_ID, "");
+		clinicalDocumentNode.putValue(PCF_ENTITY_ID, "");
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 			.containsExactly(ProblemCode.PCF_CLINICAL_DOCUMENT_EMPTY_APM);
@@ -89,7 +89,7 @@ public class PcfClinicalDocumentValidatorTest {
 	@Test
 	void testPcfInvalidApm() {
 		Node clinicalDocumentNode = createPcfClinicalDocumentNodeWithMeasureSection();
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PCF_ENTITY_ID, "PropertyTaxes");
+		clinicalDocumentNode.putValue(PCF_ENTITY_ID, "PropertyTaxes");
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 			.containsExactly(ProblemCode.PCF_CLINICAL_DOCUMENT_INVALID_APM);
@@ -131,12 +131,12 @@ public class PcfClinicalDocumentValidatorTest {
 	@Test
 	void testNonNumericNpi() {
 		Node clinicalDocumentNode = createPcfClinicalDocumentNodeWithMeasureSection();
-		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, "9900000.99");
+		clinicalDocumentNode.removeValue(NATIONAL_PROVIDER_IDENTIFIER);
+		clinicalDocumentNode.putValue(NATIONAL_PROVIDER_IDENTIFIER, "9900000.99");
 
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ProblemCode.PCF_INVALID_NPI.format(ClinicalDocumentDecoder.PCF_PROGRAM_NAME.toUpperCase()));
+				.containsExactly(ProblemCode.PCF_INVALID_NPI.format(PCF_PROGRAM_NAME.toUpperCase()));
 	}
 
 	private Node createPcfClinicalDocumentNodeWithMeasureSection() {
@@ -147,13 +147,13 @@ public class PcfClinicalDocumentValidatorTest {
 
 	private Node createPcfClinicalDocumentNodeOnly() {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.PCF);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR, "test");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PCF_ENTITY_ID, "DogCow");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, "123456789");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, "9900000099");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.CEHRT, "XX15CXXXXXXXXXX");
+		clinicalDocumentNode.putValue(PROGRAM_NAME, PCF);
+		clinicalDocumentNode.putValue(ENTITY_TYPE, "");
+		clinicalDocumentNode.putValue(PRACTICE_SITE_ADDR, "test");
+		clinicalDocumentNode.putValue(PCF_ENTITY_ID, "DogCow");
+		clinicalDocumentNode.putValue(TAX_PAYER_IDENTIFICATION_NUMBER, "123456789");
+		clinicalDocumentNode.putValue(NATIONAL_PROVIDER_IDENTIFIER, "9900000099");
+		clinicalDocumentNode.putValue(CEHRT, "XX15CXXXXXXXXXX");
 
 		return clinicalDocumentNode;
 	}
