@@ -80,19 +80,6 @@ public class SpecPiiValidator implements PiiValidator {
 				for(final Map.Entry<String, List<String>> currentEntry: tinNpisMap.entrySet()) {
 					for (final String currentNpi : currentEntry.getValue()) {
 						checkTinNpiCombinations(node, validator, apm, currentEntry, tinNpiCombinations, currentNpi);
-//						boolean combinationExists = false;
-//						for (TinNpiCombination currentCombination : tinNpiCombinations) {	//NOSONAR
-//							if (currentEntry.getKey().equalsIgnoreCase((currentCombination.getTin())) &&	//NOSONAR
-//								currentNpi.equalsIgnoreCase(currentCombination.getNpi())) {
-//								combinationExists = true;
-//								break;
-//							}
-//						}
-//						if (!combinationExists) {	//NOSONAR
-//							LocalizedProblem error = ProblemCode.PCF_MISSING_COMBINATION
-//								.format(currentNpi, getMaskedTin(currentEntry.getKey()), apm);
-//							validator.addWarning(Detail.forProblemAndNode(error, node));
-//						}
 					}
 				}
 			}
