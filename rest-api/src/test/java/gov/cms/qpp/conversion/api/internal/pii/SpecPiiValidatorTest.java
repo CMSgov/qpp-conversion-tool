@@ -117,7 +117,8 @@ public class SpecPiiValidatorTest {
 		System.out.println(node);
 		NodeValidator nodeValidator = new NodeValidator() {
 			@Override
-			protected void performValidation(Node node) {	//NOSONAR
+			protected void performValidation(Node node) {
+				// Empty Function.  Just adding a comment to avoid sonar flag.
 			}
 		};
 		validator.validateApmTinNpiCombination(node, nodeValidator);

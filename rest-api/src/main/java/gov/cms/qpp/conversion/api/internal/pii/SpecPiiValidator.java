@@ -79,22 +79,39 @@ public class SpecPiiValidator implements PiiValidator {
 			if (tinNpisMap != null) {
 				for(final Map.Entry<String, List<String>> currentEntry: tinNpisMap.entrySet()) {
 					for (final String currentNpi : currentEntry.getValue()) {
-						boolean combinationExists = false;
-						for (TinNpiCombination currentCombination : tinNpiCombinations) {	//NOSONAR
-							if (currentEntry.getKey().equalsIgnoreCase((currentCombination.getTin())) &&	//NOSONAR
-								currentNpi.equalsIgnoreCase(currentCombination.getNpi())) {
-								combinationExists = true;
-								break;
-							}
-						}
-						if (!combinationExists) {	//NOSONAR
-							LocalizedProblem error = ProblemCode.PCF_MISSING_COMBINATION
-								.format(currentNpi, getMaskedTin(currentEntry.getKey()), apm);
-							validator.addWarning(Detail.forProblemAndNode(error, node));
-						}
+						checkTinNpiCombinations(node, validator, apm, currentEntry, tinNpiCombinations, currentNpi);
+//						boolean combinationExists = false;
+//						for (TinNpiCombination currentCombination : tinNpiCombinations) {	//NOSONAR
+//							if (currentEntry.getKey().equalsIgnoreCase((currentCombination.getTin())) &&	//NOSONAR
+//								currentNpi.equalsIgnoreCase(currentCombination.getNpi())) {
+//								combinationExists = true;
+//								break;
+//							}
+//						}
+//						if (!combinationExists) {	//NOSONAR
+//							LocalizedProblem error = ProblemCode.PCF_MISSING_COMBINATION
+//								.format(currentNpi, getMaskedTin(currentEntry.getKey()), apm);
+//							validator.addWarning(Detail.forProblemAndNode(error, node));
+//						}
 					}
 				}
 			}
+		}
+	}
+
+	private void checkTinNpiCombinations(Node node, NodeValidator validator, String apm, Map.Entry<String, List<String>> currentEntry, List<TinNpiCombination> tinNpiCombinations, String currentNpi) {
+		boolean combinationExists = false;
+		for (TinNpiCombination currentCombination : tinNpiCombinations) {
+			if (currentEntry.getKey().equalsIgnoreCase((currentCombination.getTin())) &&
+					currentNpi.equalsIgnoreCase(currentCombination.getNpi())) {
+				combinationExists = true;
+				break;
+			}
+		}
+		if (!combinationExists) {
+			LocalizedProblem error = ProblemCode.PCF_MISSING_COMBINATION
+					.format(currentNpi, getMaskedTin(currentEntry.getKey()), apm);
+			validator.addWarning(Detail.forProblemAndNode(error, node));
 		}
 	}
 
