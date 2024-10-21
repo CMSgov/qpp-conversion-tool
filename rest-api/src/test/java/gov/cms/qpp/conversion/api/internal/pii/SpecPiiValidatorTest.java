@@ -117,7 +117,7 @@ public class SpecPiiValidatorTest {
 		System.out.println(node);
 		NodeValidator nodeValidator = new NodeValidator() {
 			@Override
-			protected void performValidation(Node node) {
+			protected void performValidation(Node node) {	//NOSONAR
 			}
 		};
 		validator.validateApmTinNpiCombination(node, nodeValidator);

@@ -69,6 +69,8 @@ public class SpecPiiValidator implements PiiValidator {
 
 		List<TinNpiCombination> tinNpiCombinations = createTinNpiMap(tinList, npiList);
 
+		// Adding some sonar exclusions, to avoid cognitive complexity.
+		// The conditions here would probably need to be checked in the specific order
 		Map<String, Map<String, List<String>>> apmToTinNpiMap = file.getApmTinNpiCombinationMap();
 		if (apmToTinNpiMap == null || StringUtils.isEmpty(apm)) {
 			validator.addWarning(Detail.forProblemAndNode(ProblemCode.MISSING_API_TIN_NPI_FILE, node));
@@ -78,14 +80,14 @@ public class SpecPiiValidator implements PiiValidator {
 				for(final Map.Entry<String, List<String>> currentEntry: tinNpisMap.entrySet()) {
 					for (final String currentNpi : currentEntry.getValue()) {
 						boolean combinationExists = false;
-						for (TinNpiCombination currentCombination : tinNpiCombinations) {
-							if (currentEntry.getKey().equalsIgnoreCase((currentCombination.getTin())) &&
+						for (TinNpiCombination currentCombination : tinNpiCombinations) {	//NOSONAR
+							if (currentEntry.getKey().equalsIgnoreCase((currentCombination.getTin())) &&	//NOSONAR
 								currentNpi.equalsIgnoreCase(currentCombination.getNpi())) {
 								combinationExists = true;
 								break;
 							}
 						}
-						if (!combinationExists) {
+						if (!combinationExists) {	//NOSONAR
 							LocalizedProblem error = ProblemCode.PCF_MISSING_COMBINATION
 								.format(currentNpi, getMaskedTin(currentEntry.getKey()), apm);
 							validator.addWarning(Detail.forProblemAndNode(error, node));
