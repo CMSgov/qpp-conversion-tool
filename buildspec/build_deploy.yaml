@@ -23,7 +23,7 @@ env:
 phases:
   install:
     runtime-versions:
-      python: 3.12
+      python: 3.8
     commands:
       - |
           CURL_PAYLOAD=$( jq -n \
