@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - ecr-deploy
-      - develop
-      - release/*
-      - master
 
 env:
   SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

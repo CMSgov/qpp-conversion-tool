@@ -1,0 +1,73 @@
+version: 0.2
+
+env:
+  variables:
+        ENV: "local"
+        NODE_ENV: "development"
+
+  parameter-store:
+    DOCKERHUB_TOKEN: "/global/dockerhub_token"
+    DOCKERHUB_USER: "/global/dockerhub_user"
+    SCORING_REPO_PAT: "/global/scoring_api_repo_pat"
+
+phases:
+  install:
+    commands:
+      - |
+          CURL_PAYLOAD=$( jq -n \
+            --arg state "pending" \
+            --arg target_url "https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#logEvent:group=/aws/codebuild/scoring-api-pr;stream=${CODEBUILD_LOG_PATH}" \
+            --arg description "The build job has started." \
+            --arg context "CodeBuild Status" \
+            '{state: $state, target_url: $target_url, description: $description, context: $context}' )
+
+          echo "$CURL_PAYLOAD"
+
+          curl \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${SCORING_REPO_PAT}" \
+            ${BRANCH_STATUSES_URL} \
+            -d "${CURL_PAYLOAD}"
+      - node -v
+      - npm -v
+      - docker --version
+      - aws --version
+      - jq --version
+
+  build:
+    commands:
+      - echo $DOCKERHUB_TOKEN | docker login --username $DOCKERHUB_USER --password-stdin
+      - echo "Building the Docker image and running tests..."
+      - docker build --no-cache -t $TAG_BUILD --target build .
+      - docker run --rm --env-file example.env $TAG_BUILD npm run lint
+      - docker run --rm --env-file example.env $TAG_BUILD npm run test:cov
+
+  post_build:
+    commands:
+      # Check the build status and set the slack message to reflect pass or fail status
+      - echo "Code build exit number (1 is success, 0 is failed) = $CODEBUILD_BUILD_SUCCEEDING"
+      - |
+          if [ "${CODEBUILD_BUILD_SUCCEEDING}" = 1 ]; then
+            STATE="success"
+            DESCRIPTION="The build succeeded!"
+          else
+            STATE="failure"
+            DESCRIPTION="The build failed. Click Details for the logs."
+          fi
+
+          CURL_PAYLOAD=$( jq -n \
+            --arg state "$STATE" \
+            --arg target_url "https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#logEvent:group=/aws/codebuild/scoring-api-pr;stream=${CODEBUILD_LOG_PATH}" \
+            --arg description "$DESCRIPTION" \
+            --arg context "CodeBuild Status" \
+            '{state: $state, target_url: $target_url, description: $description, context: $context}' )
+
+          echo "$CURL_PAYLOAD"
+
+          curl \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${SCORING_REPO_PAT}" \
+            ${BRANCH_STATUSES_URL} \
+            -d "${CURL_PAYLOAD}"

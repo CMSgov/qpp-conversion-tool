@@ -1,0 +1,161 @@
+version: 0.2
+
+env:
+  variables:
+    SLACK_COLOR: "good"
+    BUILD_STATUS: "completed successfully"
+    SLACK_CHANNEL: "p-qppsf-deploys"
+    CODEBUILD_ICON: "https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg"
+    AWS_DEFAULT_REGION: "us-east-1"
+    TEXT_VALUE: ""
+
+  parameter-store:
+    SLACK_URL: "/slack/p-qppsf-deploys"
+    DOCKERHUB_TOKEN: "/global/dockerhub_token"
+    DOCKERHUB_USER: "/global/dockerhub_user"
+    NPM_TOKEN: "/global/npm_token"
+    NR_API_TOKEN: "/global/nr_api_key"
+    IMPL_SR_NR_APP_ID: "/global/impl_sr_nr_app_id"
+    AWS_ACCOUNT : "/global/aws_account"
+    PROD_SR_NR_APP_ID: "/global/prod_sr_nr_app_id"
+    BRANCH_STATUS_URL: "/global/branch_status_url"
+    SCORING_REPO_PAT: "/global/scoring_api_repo_pat"
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - |
+          CURL_PAYLOAD=$( jq -n \
+            --arg state "pending" \
+            --arg target_url "https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#logEvent:group=/aws/codebuild/${ENV}-scoring-api;stream=${CODEBUILD_LOG_PATH}" \
+            --arg description "The build job has started." \
+            --arg context "CodeBuild Status" \
+            '{state: $state, target_url: $target_url, description: $description, context: $context}' )
+
+          echo "$CURL_PAYLOAD"
+
+          curl \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${SCORING_REPO_PAT}" \
+            "${BRANCH_STATUS_URL}/${CODEBUILD_RESOLVED_SOURCE_VERSION}" \
+            -d "${CURL_PAYLOAD}"
+      - node -v
+      - npm -v
+      - docker --version
+      - aws --version
+      - jq --version
+      - pip install ecs-deploy
+      - pwd
+      - ls -la
+
+  pre_build:
+    commands:
+      - |
+        if [ "$ENV" = "prod" ]; then
+          CLUSTER_NAME="qppa-prod-api-ecs"
+          SERVICE_NAME="prod-scoring-api-v4"
+        else
+          CLUSTER_NAME="${ENV}-api-ecs"
+          SERVICE_NAME="${ENV}-scoring-ssl-api"
+        fi
+      - BRANCH=$(echo "${CODEBUILD_SOURCE_VERSION}")
+      - echo "${BRANCH}"
+      - COMMIT_SHORT_SHA=$(echo "${CODEBUILD_RESOLVED_SOURCE_VERSION}" | cut -c1-7)
+      - echo "${COMMIT_SHORT_SHA}"
+      - TAG_BUILD="build-${ENV}-scoring-ssl-api:${BRANCH}-${COMMIT_SHORT_SHA}"
+      - TAG_GIT="${AWS_ACCOUNT}.dkr.ecr.us-east-1.amazonaws.com/${SERVICE_NAME}:${BRANCH}-${COMMIT_SHORT_SHA}"
+      - TAG_LATEST="${AWS_ACCOUNT}.dkr.ecr.us-east-1.amazonaws.com/${SERVICE_NAME}:latest"
+      - ECS_ENV="${ENV}"
+      - API_VERSION=$( jq -r '.version' build_properties.json )
+      - echo "$API_VERSION"
+      - ConfluencePageId=$( jq -r '.confluenceReleasePageId' build_properties.json )
+      - echo "$ConfluencePageId"
+      - Type=$( jq -r '.releaseType' build_properties.json )
+      - echo "$Type"
+      - touch .env
+      - echo "Logging in to Amazon ECR..."
+      - echo $DOCKERHUB_TOKEN | docker login --username $DOCKERHUB_USER --password-stdin
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT}.dkr.ecr.us-east-1.amazonaws.com
+      - TEXT_VALUE="Deploying QPP Scoring API service version branch ${BRANCH} to ${ECS_ENV}-scoring-ssl-api..."
+      - curl -X POST --fail --data-urlencode "payload={\"text\":\"Deployment Status\",\"channel\":\"${SLACK_CHANNEL}\",\"username\":\"CodeBuild\",\"icon_url\":\"${CODEBUILD_ICON}\",\"attachments\":[{\"title\":\"${TEXT_VALUE}\",\"color\":\"${SLACK_COLOR}\"}]}" ${SLACK_URL}
+
+  build:
+    commands:
+      - echo "Deploying..."
+      - echo "Build started on `date`..."
+      - echo "Building the Docker image and running tests..."
+      - docker build -t $TAG_BUILD --target build .
+      - docker run --rm --env-file example.env $TAG_BUILD npm run lint
+      - docker run --rm --env-file example.env $TAG_BUILD npm run test:cov
+      - |
+        if [ $ECS_ENV != "feature" ]; then
+          echo "Branch ${ECS_ENV} is deployable to ECS..."
+          echo "Building the Docker image..."
+          docker build -t $TAG_LATEST -t $TAG_GIT .;
+          echo "Building tools container image..."
+          docker build --build-arg NPM_TOKEN=${NPM_TOKEN} -t $TAG_TOOLS . -f docker-tools.dockerfile;
+          echo "Pushing the Docker image to AWS ECR..."
+          docker push $TAG_LATEST;
+          docker push $TAG_TOOLS;
+          docker push $TAG_GIT;
+          if [ $ECS_ENV = "prod" ]; then
+            echo "Branch is ${ECS_ENV}, Deploying to ${ECS_ENV}-api-ecs cluster and ${ECS_ENV}-scoring-ssl-api service..."
+            echo "Sending deployment mark to NewRelic..."
+            ecs deploy $CLUSTER_NAME $SERVICE_NAME --newrelic-apikey ${NR_API_TOKEN} --newrelic-appid ${PROD_SR_NR_APP_ID} -t $BRANCH-$COMMIT_SHORT_SHA --newrelic-revision $API_VERSION --no-deregister --region us-east-1 --timeout 900 --task $SERVICE_NAME;
+            aws ecs wait services-stable --cluster $CLUSTER_NAME --services $SERVICE_NAME --region us-east-1;
+          elif [ $ECS_ENV = "impl" ]; then
+            echo "Branch is ${ECS_ENV}, Deploying to ${ECS_ENV}-api-ecs cluster and ${ECS_ENV}-scoring-ssl-api service..."
+            echo "Sending deployment mark to NewRelic..."
+            ecs deploy $CLUSTER_NAME $SERVICE_NAME --newrelic-apikey ${NR_API_TOKEN} --newrelic-appid ${IMPL_SR_NR_APP_ID} -t $BRANCH-$COMMIT_SHORT_SHA --newrelic-revision $API_VERSION --no-deregister --region us-east-1 --timeout 900 --task $SERVICE_NAME;
+            aws ecs wait services-stable --cluster $CLUSTER_NAME --services $SERVICE_NAME --region us-east-1;
+          else
+            echo "Branch is ${ECS_ENV}, Deploying to ${ECS_ENV}-api-ecs cluster and ${ECS_ENV}-scoring-ssl-api service..."
+            ecs deploy $CLUSTER_NAME $SERVICE_NAME -t $BRANCH-$COMMIT_SHORT_SHA --no-deregister --region us-east-1 --timeout 900 --task $SERVICE_NAME;
+            aws ecs wait services-stable --cluster $CLUSTER_NAME --services $SERVICE_NAME --region us-east-1;
+            echo "Environment ${ECS_ENV} is not imp or prod, deployment mark is not recorded to NewRelic..."
+          fi
+        else
+          echo "Environmnet ${ECS_ENV} is not dev/impl/prod, so not building image and deploying to ecs..."
+        fi
+
+  post_build:
+    commands:
+      # Check the build status and set the slack message to reflect pass or fail status
+      - |
+        if [ $ECS_ENV = "prod" ]; then
+            echo "Starting smoke tests for prod"
+            cd buildspec
+            aws codebuild start-build --cli-input-json file://start_smoke_tests_prod.json
+            cd ..
+        fi
+      - echo "Code build exit number (1 is success) = $CODEBUILD_BUILD_SUCCEEDING"
+      - if [ $CODEBUILD_BUILD_SUCCEEDING = 0 ]; then SLACK_COLOR="danger" && BUILD_STATUS="FAILED"; fi
+      - TEXT_VALUE="Deployment of branch ${BRANCH} to QPP Scoring API service in $ECS_ENV-scoring-ssl-api $BUILD_STATUS"
+      - curl -X POST --fail --data-urlencode "payload={\"text\":\"Deployment Status\",\"channel\":\"${SLACK_CHANNEL}\",\"username\":\"CodeBuild\",\"icon_url\":\"${CODEBUILD_ICON}\",\"attachments\":[{\"title\":\"${TEXT_VALUE}\",\"color\":\"${SLACK_COLOR}\"}]}" ${SLACK_URL}
+      - |
+          if [ "${CODEBUILD_BUILD_SUCCEEDING}" = 1 ]; then
+            STATE="success"
+            DESCRIPTION="The build succeeded!"
+          else
+            STATE="failure"
+            DESCRIPTION="The build failed. Click Details for the logs."
+          fi
+
+          CURL_PAYLOAD=$( jq -n \
+            --arg state "$STATE" \
+            --arg target_url "https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#logEvent:group=/aws/codebuild/${ENV}-scoring-api;stream=${CODEBUILD_LOG_PATH}" \
+            --arg description "$DESCRIPTION" \
+            --arg context "CodeBuild Status" \
+            '{state: $state, target_url: $target_url, description: $description, context: $context}' )
+
+          echo "$CURL_PAYLOAD"
+
+          curl \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${SCORING_REPO_PAT}" \
+            "${BRANCH_STATUS_URL}/${CODEBUILD_RESOLVED_SOURCE_VERSION}" \
+            -d "${CURL_PAYLOAD}"
