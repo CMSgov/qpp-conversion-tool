@@ -16,7 +16,7 @@ env:
     AWS_ACCOUNT : "/global/aws_account"
     REPO_PAT: "/global/scoring_api_repo_pat"
     BRANCH_STATUS_URL: "/global/branch_status_url"
-    PART_FILE: "/qppar-sf/conversion_tool/CPC_PLUS_FILE_NAME"   # create secret
+    PART_FILE: "/qppar-sf/conversion_tool/CPC_PLUS_FILE_NAME"   # create secret with hypen not underscore
     PART_FILE_BUCKET: "/qppar-sf/$ENV/conversion_tool/CPC_PLUS_BUCKET_NAME"
     OUTPUT_PART_FILE: "/qppar-sf/$ENV/conversion_tool/CPC_PLUS_VALIDATION_FILE"
 
@@ -59,6 +59,7 @@ phases:
         else
           CLUSTER_NAME="${ENV}-api-ecs"
         fi
+      - echo "${CLUSTER_NAME}"
       - SERVICE_NAME="${ENV}-conversion-tool"
       - BRANCH=$(echo "${CODEBUILD_SOURCE_VERSION}")
       - echo ${CODEBUILD_RESOLVED_SOURCE_VERSION}
