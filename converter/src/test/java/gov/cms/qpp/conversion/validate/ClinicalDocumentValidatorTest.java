@@ -252,7 +252,7 @@ class ClinicalDocumentValidatorTest {
 
 		assertWithMessage("Must contain the error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ProblemCode.CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME.format(invalidProgramName, ClinicalDocumentValidator.VALID_PROGRAM_NAMES));
+				.containsExactly(ProblemCode.CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME.format(ClinicalDocumentValidator.VALID_PROGRAM_NAMES, invalidProgramName));
 	}
 
 	@Test
