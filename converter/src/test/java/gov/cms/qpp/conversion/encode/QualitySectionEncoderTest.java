@@ -1,8 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
-import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
@@ -11,6 +9,7 @@ import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
+import static gov.cms.qpp.conversion.model.Constants.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -65,14 +64,14 @@ class QualitySectionEncoderTest {
 	 */
 	private Node getQualitySectionNode() {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.CEHRT, "xxxxxxxxxx12345");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
+		clinicalDocumentNode.putValue(CEHRT, "xxxxxxxxxx12345");
+		clinicalDocumentNode.putValue(PROGRAM_NAME, CPCPLUS_PROGRAM_NAME);
 		Node qualitySectionNode = new Node(TemplateId.MEASURE_SECTION_V5, clinicalDocumentNode);
 		qualitySectionNode.putValue("category", "quality");
 		qualitySectionNode.putValue("submissionMethod", "electronicHealthRecord");
 		Node reportingParameterNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
-		reportingParameterNode.putValue(ReportingParametersActDecoder.PERFORMANCE_START,"20170101");
-		reportingParameterNode.putValue(ReportingParametersActDecoder.PERFORMANCE_END, "20171231");
+		reportingParameterNode.putValue(PERFORMANCE_START,"20170101");
+		reportingParameterNode.putValue(PERFORMANCE_END, "20171231");
 		qualitySectionNode.addChildNode(reportingParameterNode);
 		return qualitySectionNode;
 	}

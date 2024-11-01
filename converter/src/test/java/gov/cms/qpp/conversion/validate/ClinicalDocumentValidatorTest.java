@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.validate;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
+import static gov.cms.qpp.conversion.model.Constants.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.AllErrors;
@@ -246,7 +246,7 @@ class ClinicalDocumentValidatorTest {
 		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
 		clinicalDocumentNode.addChildNodes(aciSectionNode);
 		String invalidProgramName = "Invalid program name";
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME,invalidProgramName);
+		clinicalDocumentNode.putValue(PROGRAM_NAME,invalidProgramName);
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode).getErrors();
 
@@ -258,7 +258,7 @@ class ClinicalDocumentValidatorTest {
 	@Test
 	void testMissingVirtualGroupId() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP);
+		clinicalDocumentNode.putValue(ENTITY_TYPE, ENTITY_VIRTUAL_GROUP);
 		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
@@ -271,8 +271,8 @@ class ClinicalDocumentValidatorTest {
 	@Test
 	void testSuccessVirtualGroupId() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, "x12345");
+		clinicalDocumentNode.putValue(ENTITY_TYPE, ENTITY_VIRTUAL_GROUP);
+		clinicalDocumentNode.putValue(ENTITY_ID, "x12345");
 		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();

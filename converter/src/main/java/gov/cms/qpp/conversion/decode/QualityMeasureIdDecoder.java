@@ -15,13 +15,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+import static gov.cms.qpp.conversion.model.Constants.MEASURE_ID;
+
 /**
  * Decoder to read XML Data for an Quality Measure Identifier (eCQM).
  */
 @Decoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V5)
 public class QualityMeasureIdDecoder extends QrdaDecoder {
-
-	public static final String MEASURE_ID = "measureId";
 
 	public QualityMeasureIdDecoder(Context context) {
 		super(context);
