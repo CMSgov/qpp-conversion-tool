@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.model.error;
 import com.google.common.base.MoreObjects;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -34,6 +35,13 @@ public class AllErrors implements Serializable {
 	 * @return All the {@code Error}s.
 	 */
 	public List<Error> getErrors() {
+		if (null == errors) return errors;
+		errors.forEach(error -> {
+			if (!error.getDetails().isEmpty()) {
+				List<Detail> details = new ArrayList<>(new LinkedHashSet<>(error.getDetails()));
+				error.setDetails(details);
+			}
+		});
 		return errors;
 	}
 
