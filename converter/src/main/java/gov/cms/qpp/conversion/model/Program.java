@@ -1,13 +1,13 @@
 package gov.cms.qpp.conversion.model;
 
 
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static gov.cms.qpp.conversion.model.Constants.RAW_PROGRAM_NAME;
 
 /**
  * Construct that helps categorize submissions by program name.
@@ -66,7 +66,7 @@ public enum Program {
 	 * @return program with which node is affiliated
 	 */
 	public static Program extractProgram(Node node) {
-		return Program.getInstance(node.getValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME));
+		return Program.getInstance(node.getValue(RAW_PROGRAM_NAME));
 	}
 
 	/**

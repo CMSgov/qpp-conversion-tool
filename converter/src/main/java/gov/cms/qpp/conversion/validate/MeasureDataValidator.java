@@ -1,13 +1,14 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
-import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.util.DuplicationCheckHelper;
+
+import static gov.cms.qpp.conversion.model.Constants.AGGREGATE_COUNT;
+import static gov.cms.qpp.conversion.model.Constants.MEASURE_POPULATION;
 
 
 /**
@@ -30,7 +31,7 @@ public class MeasureDataValidator extends NodeValidator {
 	 */
 	@Override
 	protected void performValidation(Node node) {
-		String populationId = node.getValue(MeasureDataDecoder.MEASURE_POPULATION);
+		String populationId = node.getValue(MEASURE_POPULATION);
 		if (populationId == null) {
 			populationId = EMPTY_POPULATION_ID;
 		}
@@ -44,9 +45,9 @@ public class MeasureDataValidator extends NodeValidator {
 			Node child = node.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
 			checkErrors(child)
 					.singleValue(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(node.getType().name(),
-						DuplicationCheckHelper.calculateDuplications(child, AggregateCountDecoder.AGGREGATE_COUNT)),
-						AggregateCountDecoder.AGGREGATE_COUNT)
-					.intValue(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER, AggregateCountDecoder.AGGREGATE_COUNT)
+						DuplicationCheckHelper.calculateDuplications(child, AGGREGATE_COUNT)),
+						AGGREGATE_COUNT)
+					.intValue(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER, AGGREGATE_COUNT)
 					.greaterThan(ProblemCode.MEASURE_DATA_VALUE_NOT_INTEGER.format(populationId, Context.REPORTING_YEAR), -1);
 		}
 	}

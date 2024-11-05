@@ -1,9 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
 import static com.google.common.truth.Truth.assertWithMessage;
-import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
-import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
-import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID;
+import static gov.cms.qpp.conversion.model.Constants.*;
 
 import java.util.List;
 
@@ -454,7 +452,7 @@ class QualityMeasureIdValidatorTest {
 		Node measureSection = new Node(TemplateId.MEASURE_SECTION_V5, clinicalDoc);
 
 		MeasureReferenceBuilder() {
-			clinicalDoc.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS_PROGRAM_NAME);
+			clinicalDoc.putValue(PROGRAM_NAME, MIPS_PROGRAM_NAME);
 			measureReferenceResultsNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V5, measureSection);
 		}
 
@@ -494,7 +492,7 @@ class QualityMeasureIdValidatorTest {
 			measureNode.putValue(MEASURE_POPULATION, populationId);
 
 			Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
-			aggregateCountNode.putValue(AggregateCountDecoder.AGGREGATE_COUNT, count);
+			aggregateCountNode.putValue(AGGREGATE_COUNT, count);
 
 			measureNode.addChildNode(aggregateCountNode);
 
@@ -509,7 +507,7 @@ class QualityMeasureIdValidatorTest {
 			measureNode.putValue(MEASURE_POPULATION, populationId);
 
 			Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
-			aggregateCountNode.putValue(AggregateCountDecoder.AGGREGATE_COUNT, ONE_HUNDRED);
+			aggregateCountNode.putValue(AGGREGATE_COUNT, ONE_HUNDRED);
 
 			measureNode.addChildNode(aggregateCountNode);
 

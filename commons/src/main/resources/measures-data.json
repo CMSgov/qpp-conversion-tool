@@ -3428,6 +3428,9 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [
+      "001SSP"
+    ],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -3488,6 +3491,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -3542,6 +3546,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -3582,6 +3587,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -3644,6 +3650,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -3699,6 +3706,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "multiPerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -3761,6 +3769,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -3808,6 +3817,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -3857,6 +3867,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -3899,6 +3910,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -3942,6 +3954,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -4009,6 +4022,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -4051,6 +4065,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -4091,6 +4106,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "multiPerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -4140,6 +4156,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -4200,6 +4217,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -4259,6 +4277,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -4310,6 +4329,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -4345,6 +4365,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "M1366"
     ],
@@ -4394,6 +4415,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "pcf"
     ],
@@ -4443,6 +4465,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -4484,6 +4507,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -4536,6 +4560,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -4575,6 +4600,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -4615,6 +4641,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -4651,6 +4678,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "G0055",
       "G0058",
@@ -4703,6 +4731,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -4790,6 +4819,9 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [
+      "134SSP"
+    ],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -4867,6 +4899,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -4902,6 +4935,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -4939,6 +4973,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -4997,6 +5032,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -5034,6 +5070,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -5072,6 +5109,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -5121,6 +5159,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -5156,6 +5195,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -5191,6 +5231,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -5226,6 +5267,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -5266,6 +5308,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -5302,6 +5345,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -5339,6 +5383,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -5376,6 +5421,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -5423,6 +5469,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -5461,11 +5508,14 @@
     "category": "quality",
     "isRegistryMeasure": false,
     "isRiskAdjusted": false,
-    "icdImpacted": [],
+    "icdImpacted": [
+      "registry"
+    ],
     "isClinicalGuidelineChanged": false,
-    "isIcdImpacted": false,
+    "isIcdImpacted": true,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -5501,6 +5551,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -5539,6 +5590,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -5588,6 +5640,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -5638,6 +5691,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -5676,6 +5730,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -5714,6 +5769,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -5753,6 +5809,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -5791,6 +5848,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -5829,6 +5887,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -5867,6 +5926,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "multiPerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -5974,6 +6034,9 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [
+      "236SSP"
+    ],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -6038,6 +6101,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "multiPerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -6122,6 +6186,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "multiPerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -6204,6 +6269,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -6253,6 +6319,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -6292,6 +6359,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -6329,6 +6397,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -6367,6 +6436,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -6403,6 +6473,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -6438,6 +6509,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -6474,6 +6546,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -6511,6 +6584,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -6546,6 +6620,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -6582,6 +6657,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -6617,6 +6693,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -6656,6 +6733,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -6694,6 +6772,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -6746,6 +6825,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -6785,6 +6865,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -6825,6 +6906,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -6865,6 +6947,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -6901,6 +6984,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -6939,6 +7023,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -6975,6 +7060,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -7010,6 +7096,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -7045,6 +7132,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "multiPerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -7120,6 +7208,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -7170,6 +7259,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -7224,6 +7314,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -7296,6 +7387,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -7352,6 +7444,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -7389,6 +7482,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "cahps",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -7430,6 +7524,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -7465,6 +7560,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -7505,6 +7601,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -7547,6 +7644,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -7588,6 +7686,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -7625,6 +7724,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -7662,6 +7762,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -7714,6 +7815,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -7751,6 +7853,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -7789,6 +7892,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -7825,6 +7929,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -7861,6 +7966,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -7896,6 +8002,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -7934,6 +8041,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -7971,6 +8079,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -8010,6 +8119,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -8052,6 +8162,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -8087,6 +8198,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -8122,6 +8234,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "multiPerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -8183,6 +8296,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "multiPerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -8249,6 +8363,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -8318,6 +8433,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -8366,6 +8482,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -8415,6 +8532,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -8462,6 +8580,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -8514,6 +8633,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -8563,6 +8683,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -8602,6 +8723,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -8637,6 +8759,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -8672,6 +8795,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -8708,6 +8832,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -8746,6 +8871,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -8781,6 +8907,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "multiPerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -8840,6 +8967,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -8876,6 +9004,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "multiPerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -8932,6 +9061,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -8969,6 +9099,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -9006,6 +9137,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -9043,6 +9175,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "multiPerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -9115,6 +9248,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "multiPerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -9168,6 +9302,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -9206,6 +9341,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -9242,6 +9378,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -9279,6 +9416,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -9316,6 +9454,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "multiPerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -9364,6 +9503,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -9399,6 +9539,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -9436,6 +9577,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -9472,6 +9614,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -9508,6 +9651,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -9549,6 +9693,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -9585,6 +9730,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -9621,6 +9767,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -9656,6 +9803,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -9694,6 +9842,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -9730,6 +9879,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -9766,6 +9916,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "multiPerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -9834,6 +9985,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -9871,6 +10023,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -9907,6 +10060,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -9944,6 +10098,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -10036,6 +10191,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -10071,6 +10227,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -10107,6 +10264,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -10147,6 +10305,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -10184,6 +10343,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -10219,6 +10379,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -10255,6 +10416,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -10291,6 +10453,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -10327,6 +10490,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -10363,6 +10527,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -10400,6 +10565,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -10437,6 +10603,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "multiPerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -10484,6 +10651,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "multiPerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -10531,6 +10699,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -10581,6 +10750,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -10617,6 +10787,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -10655,6 +10826,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -10690,6 +10862,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -10729,6 +10902,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -10765,6 +10939,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "multiPerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -10812,6 +10987,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -10863,6 +11039,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -10919,6 +11096,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -10969,6 +11147,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -11005,6 +11184,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -11043,6 +11223,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "costScore",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -11092,6 +11273,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "costScore",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -11126,6 +11308,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -11174,6 +11357,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -11210,6 +11394,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "nonProportion",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -11248,6 +11433,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -11283,6 +11469,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -11318,6 +11505,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -11408,6 +11596,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -11464,6 +11653,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -11501,6 +11691,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -11537,6 +11728,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -11572,6 +11764,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "costScore",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -11604,6 +11797,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "multiPerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -11677,6 +11871,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "multiPerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -11689,6 +11884,9 @@
       "internalMedicine",
       "oncology"
     ],
+    "measureSpecification": {
+      "registry": "http://qpp.cms.gov/docs/QPP_quality_measure_specifications/CQM-Measures/2024_Measure_495_MIPSCQM.pdf"
+    },
     "overallAlgorithm": "weightedAverage",
     "strata": [
       {
@@ -11707,10 +11905,7 @@
         "name": "understood",
         "description": "Patient felt this provider and team understood what is important to me in my life"
       }
-    ],
-    "measureSpecification": {
-      "registry": "http://qpp.cms.gov/docs/QPP_quality_measure_specifications/CQM-Measures/2024_Measure_495_MIPSCQM.pdf"
-    }
+    ]
   },
   {
     "title": "Cardiovascular Disease (CVD) Risk Assessment Measure - Proportion of Pregnant/Postpartum Patients that Receive CVD Risk Assessment with a Standardized Instrument",
@@ -11733,6 +11928,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -11770,6 +11966,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "multiPerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -11785,6 +11982,9 @@
       "obstetricsGynecology",
       "preventiveMedicine"
     ],
+    "measureSpecification": {
+      "registry": "http://qpp.cms.gov/docs/QPP_quality_measure_specifications/CQM-Measures/2024_Measure_497_MIPSCQM_Spec_and_Addendum.zip "
+    },
     "overallAlgorithm": "weightedAverage",
     "strata": [
       {
@@ -11815,10 +12015,7 @@
         "name": "HBP",
         "description": "Percentage of visits where patients were screened for high blood pressure with a documented follow-up plan, as indicated"
       }
-    ],
-    "measureSpecification": {
-      "registry": "http://qpp.cms.gov/docs/QPP_quality_measure_specifications/CQM-Measures/2024_Measure_497_MIPSCQM.pdf"
-    }
+    ]
   },
   {
     "title": "Connection to Community Service Provider",
@@ -11841,6 +12038,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -11915,6 +12113,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -11950,6 +12149,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -11985,6 +12185,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf"
@@ -12020,6 +12221,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -12060,6 +12262,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "multiPerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -12092,6 +12295,9 @@
       "rheumatology",
       "urology"
     ],
+    "measureSpecification": {
+      "registry": "http://qpp.cms.gov/docs/QPP_quality_measure_specifications/CQM-Measures/2024_Measure_503_MIPSCQM_Spec_and_Addendum.zip "
+    },
     "overallAlgorithm": "overallStratumOnly",
     "strata": [
       {
@@ -12101,15 +12307,8 @@
       {
         "name": "6points",
         "description": "Percentage of patients aged 14 years and older who achieved a net increase in PAM® score of at least 6 points in a 6 to 12 month period."
-      },
-      {
-        "name": "AveChg",
-        "description": "Average change between baseline PAM® score and the second score within 6 to 12 months of a baseline PAM® score."
       }
-    ],
-    "measureSpecification": {
-      "registry": "http://qpp.cms.gov/docs/QPP_quality_measure_specifications/CQM-Measures/2024_Measure_503_MIPSCQM.pdf"
-    }
+    ]
   },
   {
     "title": "Initiation, Review, And/Or Update To Suicide Safety Plan For Individuals With Suicidal Thoughts, Behavior, Or Suicide Risk",
@@ -12132,6 +12331,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "multiPerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -12149,6 +12349,9 @@
       "mentalBehavioralHealth",
       "obstetricsGynecology"
     ],
+    "measureSpecification": {
+      "registry": "http://qpp.cms.gov/docs/QPP_quality_measure_specifications/CQM-Measures/2024_Measure_504_MIPSCQM.pdf"
+    },
     "overallAlgorithm": "overallStratumOnly",
     "strata": [
       {
@@ -12159,10 +12362,7 @@
         "name": "overall",
         "description": "Percentage of patients for whom a suicide safety plan is initiated, reviewed, or updated in collaboration between the individual and their clinician at the time the suicidal ideation, behavior or risk is identified (concurrent or within 24 hours of clinical encounter) AND reviewed and updated within 120 days after initiation."
       }
-    ],
-    "measureSpecification": {
-      "registry": "http://qpp.cms.gov/docs/QPP_quality_measure_specifications/CQM-Measures/2024_Measure_504_MIPSCQM.pdf"
-    }
+    ]
   },
   {
     "title": "Reduction in Suicidal Ideation or Behavior Symptoms",
@@ -12185,6 +12385,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -12225,6 +12426,9 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [
+      "001"
+    ],
     "allowedPrograms": [
       "app1"
     ],
@@ -12261,6 +12465,9 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [
+      "134"
+    ],
     "allowedPrograms": [
       "app1"
     ],
@@ -12308,6 +12515,9 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [
+      "236"
+    ],
     "allowedPrograms": [
       "app1"
     ],
@@ -12346,6 +12556,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "singlePerformanceRate",
+    "companionMeasureId": [],
     "allowedPrograms": [],
     "submissionMethods": [
       "cmsWebInterface"
@@ -12373,6 +12584,7 @@
     "isIcdImpacted": false,
     "clinicalGuidelineChanged": [],
     "metricType": "costScore",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "pcf",
@@ -12443,7 +12655,7 @@
       "administrativeClaims"
     ],
     "measureSpecification": {
-      "default": "https://qpp.cms.gov/docs/cost_specifications/2023-12-13-mif-tpcc.pdf"
+      "default": "https://qpp.cms.gov/docs/cost_specifications/2023-12-13-mif-tpcc-v2.pdf"
     },
     "allowedPrograms": [
       "mips",
@@ -12601,7 +12813,7 @@
       "administrativeClaims"
     ],
     "measureSpecification": {
-      "default": "https://qpp.cms.gov/docs/cost_specifications/2023-12-05-mif-ebcm-stemi-pci.pdf"
+      "default": "https://qpp.cms.gov/docs/cost_specifications/2023-12-05-mif-ebcm-stemi-pci-v2.pdf"
     },
     "allowedPrograms": [
       "mips",
@@ -12793,7 +13005,7 @@
       "administrativeClaims"
     ],
     "measureSpecification": {
-      "default": "https://qpp.cms.gov/docs/cost_specifications/2023-12-05-mif-ebcm-ne-cabg.pdf"
+      "default": "https://qpp.cms.gov/docs/cost_specifications/2023-12-05-mif-ebcm-ne-cabg-v2.pdf"
     },
     "allowedPrograms": [
       "mips",
@@ -12856,7 +13068,7 @@
       "administrativeClaims"
     ],
     "measureSpecification": {
-      "default": "https://qpp.cms.gov/docs/cost_specifications/2023-12-05-mif-ebcm-mel-rsct.pdf"
+      "default": "https://qpp.cms.gov/docs/cost_specifications/2023-12-05-mif-ebcm-mel-rsct-v2.pdf"
     },
     "allowedPrograms": [
       "mips",
@@ -12947,7 +13159,7 @@
       "M1369"
     ],
     "measureSpecification": {
-      "default": "https://qpp.cms.gov/docs/cost_specifications/2023-12-05-mif-ebcm-psych.pdf"
+      "default": "https://qpp.cms.gov/docs/cost_specifications/2023-12-05-mif-ebcm-psych-v2.pdf"
     }
   },
   {
@@ -12970,7 +13182,7 @@
       "M1369"
     ],
     "measureSpecification": {
-      "default": "https://qpp.cms.gov/docs/cost_specifications/2023-12-05-mif-ebcm-depression.pdf"
+      "default": "https://qpp.cms.gov/docs/cost_specifications/2023-12-05-mif-ebcm-depression-v2.pdf"
     }
   },
   {
@@ -12993,7 +13205,7 @@
       "M0005"
     ],
     "measureSpecification": {
-      "default": "https://qpp.cms.gov/docs/cost_specifications/2023-12-05-mif-ebcm-heart-fail.pdf"
+      "default": "https://qpp.cms.gov/docs/cost_specifications/2023-12-05-mif-ebcm-heart-fail-v2.pdf"
     }
   },
   {
@@ -13015,7 +13227,7 @@
       "M1370"
     ],
     "measureSpecification": {
-      "default": "https://qpp.cms.gov/docs/cost_specifications/2023-12-05-mif-ebcm-low-back.pdf"
+      "default": "https://qpp.cms.gov/docs/cost_specifications/2023-12-05-mif-ebcm-low-back-v2.pdf"
     }
   },
   {
@@ -13037,7 +13249,7 @@
       "G0057"
     ],
     "measureSpecification": {
-      "default": "https://qpp.cms.gov/docs/cost_specifications/2023-12-05-mif-ebcm-emergency.pdf"
+      "default": "https://qpp.cms.gov/docs/cost_specifications/2023-12-05-mif-ebcm-emergency-v2.pdf"
     }
   },
   {
@@ -13057,6 +13269,7 @@
     "isRegistryMeasure": false,
     "isIcdImpacted": false,
     "metricType": "cahps",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "app1"
@@ -13087,6 +13300,7 @@
     "isRegistryMeasure": false,
     "isIcdImpacted": false,
     "metricType": "cahps",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "app1"
@@ -13117,6 +13331,7 @@
     "isRegistryMeasure": false,
     "isIcdImpacted": false,
     "metricType": "cahps",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "app1"
@@ -13147,6 +13362,7 @@
     "isRegistryMeasure": false,
     "isIcdImpacted": false,
     "metricType": "cahps",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "app1"
@@ -13177,6 +13393,7 @@
     "isRegistryMeasure": false,
     "isIcdImpacted": false,
     "metricType": "cahps",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "app1"
@@ -13207,6 +13424,7 @@
     "isRegistryMeasure": false,
     "isIcdImpacted": false,
     "metricType": "cahps",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "app1"
@@ -13237,6 +13455,7 @@
     "isRegistryMeasure": false,
     "isIcdImpacted": false,
     "metricType": "cahps",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "app1"
@@ -13267,6 +13486,7 @@
     "isRegistryMeasure": false,
     "isIcdImpacted": false,
     "metricType": "cahps",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "app1"
@@ -13297,6 +13517,7 @@
     "isRegistryMeasure": false,
     "isIcdImpacted": false,
     "metricType": "cahps",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "app1"
@@ -13327,6 +13548,7 @@
     "isRegistryMeasure": false,
     "isIcdImpacted": false,
     "metricType": "cahps",
+    "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
       "app1"
@@ -14699,7 +14921,7 @@
     "measureSets": [],
     "isRegistryMeasure": true,
     "isIcdImpacted": false,
-    "metricType": "registrySinglePerformanceRate",
+    "metricType": "nonProportion",
     "submissionMethods": [
       "registry"
     ],

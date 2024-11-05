@@ -1,6 +1,8 @@
 package gov.cms.qpp.conversion.encode;
 
 import static com.google.common.truth.Truth.assertThat;
+import static gov.cms.qpp.conversion.model.Constants.PERFORMANCE_END;
+import static gov.cms.qpp.conversion.model.Constants.PERFORMANCE_START;
 
 import java.io.BufferedWriter;
 import java.io.StringWriter;
@@ -12,7 +14,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
@@ -47,8 +48,8 @@ class IaSectionEncoderTest {
 		iaSectionNode.addChildNode(iaMeasureNode);
 
 		iaReportingSectionNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
-		iaReportingSectionNode.putValue(ReportingParametersActDecoder.PERFORMANCE_START, "20170101");
-		iaReportingSectionNode.putValue(ReportingParametersActDecoder.PERFORMANCE_END, "20171231");
+		iaReportingSectionNode.putValue(PERFORMANCE_START, "20170101");
+		iaReportingSectionNode.putValue(PERFORMANCE_END, "20171231");
 		iaSectionNode.addChildNode(iaReportingSectionNode);
 
 		nodes = new ArrayList<>();

@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
@@ -19,6 +18,7 @@ import java.util.List;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
+import static gov.cms.qpp.conversion.model.Constants.*;
 
 public class PcfQualityMeasureIdValidatorTest {
 	private static final String MEASURE_ID = "2c928084-83d3-1b44-0183-ec9f5639051f";
@@ -34,7 +34,7 @@ public class PcfQualityMeasureIdValidatorTest {
 		validator = new PcfQualityMeasureIdValidator();
 
 		clinicalDoc = new Node(TemplateId.CLINICAL_DOCUMENT);
-		clinicalDoc.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.PCF);
+		clinicalDoc.putValue(PROGRAM_NAME, PCF);
 		measureSection = new Node(TemplateId.MEASURE_SECTION_V5, clinicalDoc);
 		testNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V5, measureSection);
 		testNode.putValue(MeasureConfigHelper.MEASURE_ID, MEASURE_ID);
@@ -108,7 +108,7 @@ public class PcfQualityMeasureIdValidatorTest {
 	private void addMeasureDataWithInvalidAggCount() {
 		Node childNode = createMeasureDataNode();
 		Node aggCount = new Node(TemplateId.PI_AGGREGATE_COUNT);
-		aggCount.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "ab1234");
+		aggCount.putValue(AGGREGATE_COUNT, "ab1234");
 
 		testNode.addChildNode(childNode);
 	}

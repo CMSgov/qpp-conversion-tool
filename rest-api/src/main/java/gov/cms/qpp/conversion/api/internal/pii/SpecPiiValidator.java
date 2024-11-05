@@ -4,7 +4,6 @@ import org.springframework.util.StringUtils;
 
 import gov.cms.qpp.conversion.api.model.PcfValidationInfoMap;
 import gov.cms.qpp.conversion.api.model.TinNpiCombination;
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
@@ -17,6 +16,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static gov.cms.qpp.conversion.model.Constants.*;
+
 public class SpecPiiValidator implements PiiValidator {
 
 	private final PcfValidationInfoMap file;
@@ -27,17 +28,21 @@ public class SpecPiiValidator implements PiiValidator {
 
 	@Override
 	public void validateApmTinNpiCombination(Node node, NodeValidator validator) {
-		validateInvalidApmCombinations(node, validator);
-		validateMissingApmCombinations(node, validator);
+		List<String> npiList = Arrays.asList(
+				node.getValue(NATIONAL_PROVIDER_IDENTIFIER).split(","));
+		List<String> tinList = Arrays.asList(
+				node.getValue(TAX_PAYER_IDENTIFICATION_NUMBER).split(","));
+		if (npiList.size() != tinList.size()) {
+			validator.addError(Detail.forProblemAndNode(ProblemCode.INCORRECT_API_NPI_COMBINATION, node));
+		} else {
+			validateInvalidApmCombinations(node, validator, npiList, tinList);
+			validateMissingApmCombinations(node, validator, npiList, tinList);
+		}
 	}
 
-	private void validateInvalidApmCombinations(Node node, NodeValidator validator) {
-		String program = node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME);
+	private void validateInvalidApmCombinations(Node node, NodeValidator validator, List<String> npiList, List<String> tinList) {
+		String program = node.getValue(PROGRAM_NAME);
 		String apm = getApmEntityId(node, program);
-		List<String> npiList = Arrays.asList(
-			node.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER).split(","));
-		List<String> tinList = Arrays.asList(
-			node.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER).split(","));
 
 		Map<String, Map<String, List<String>>> apmToTinNpiMap = file.getApmTinNpiCombinationMap();
 		if (apmToTinNpiMap == null || StringUtils.isEmpty(apm)) {
@@ -58,16 +63,14 @@ public class SpecPiiValidator implements PiiValidator {
 		}
 	}
 
-	private void validateMissingApmCombinations(Node node, NodeValidator validator) {
-		String program = node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME);
+	private void validateMissingApmCombinations(Node node, NodeValidator validator, List<String> npiList, List<String> tinList) {
+		String program = node.getValue(PROGRAM_NAME);
 		String apm = getApmEntityId(node, program);
-		List<String> npiList = Arrays.asList(
-			node.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER).split(","));
-		List<String> tinList = Arrays.asList(
-			node.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER).split(","));
 
 		List<TinNpiCombination> tinNpiCombinations = createTinNpiMap(tinList, npiList);
 
+		// Adding some sonar exclusions, to avoid cognitive complexity.
+		// The conditions here would probably need to be checked in the specific order
 		Map<String, Map<String, List<String>>> apmToTinNpiMap = file.getApmTinNpiCombinationMap();
 		if (apmToTinNpiMap == null || StringUtils.isEmpty(apm)) {
 			validator.addWarning(Detail.forProblemAndNode(ProblemCode.MISSING_API_TIN_NPI_FILE, node));
@@ -76,31 +79,35 @@ public class SpecPiiValidator implements PiiValidator {
 			if (tinNpisMap != null) {
 				for(final Map.Entry<String, List<String>> currentEntry: tinNpisMap.entrySet()) {
 					for (final String currentNpi : currentEntry.getValue()) {
-						boolean combinationExists = false;
-						for (TinNpiCombination currentCombination : tinNpiCombinations) {
-							if (currentEntry.getKey().equalsIgnoreCase((currentCombination.getTin())) &&
-								currentNpi.equalsIgnoreCase(currentCombination.getNpi())) {
-								combinationExists = true;
-								break;
-							}
-						}
-						if (!combinationExists) {
-							LocalizedProblem error = ProblemCode.PCF_MISSING_COMBINATION
-								.format(currentNpi, getMaskedTin(currentEntry.getKey()), apm);
-							validator.addWarning(Detail.forProblemAndNode(error, node));
-						}
+						checkTinNpiCombinations(node, validator, apm, currentEntry, tinNpiCombinations, currentNpi);
 					}
 				}
 			}
 		}
 	}
 
+	private void checkTinNpiCombinations(Node node, NodeValidator validator, String apm, Map.Entry<String, List<String>> currentEntry, List<TinNpiCombination> tinNpiCombinations, String currentNpi) {
+		boolean combinationExists = false;
+		for (TinNpiCombination currentCombination : tinNpiCombinations) {
+			if (currentEntry.getKey().equalsIgnoreCase((currentCombination.getTin())) &&
+					currentNpi.equalsIgnoreCase(currentCombination.getNpi())) {
+				combinationExists = true;
+				break;
+			}
+		}
+		if (!combinationExists) {
+			LocalizedProblem error = ProblemCode.PCF_MISSING_COMBINATION
+					.format(currentNpi, getMaskedTin(currentEntry.getKey()), apm);
+			validator.addWarning(Detail.forProblemAndNode(error, node));
+		}
+	}
+
 	private String getApmEntityId(final Node node, final String program) {
 		String apm;
-		if (ClinicalDocumentDecoder.PCF_PROGRAM_NAME.equalsIgnoreCase(program)) {
-			apm = node.getValue(ClinicalDocumentDecoder.PCF_ENTITY_ID);
-		} else if (ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME.equalsIgnoreCase(program)) {
-			apm = node.getValue(ClinicalDocumentDecoder.PRACTICE_ID);
+		if (PCF_PROGRAM_NAME.equalsIgnoreCase(program)) {
+			apm = node.getValue(PCF_ENTITY_ID);
+		} else if (CPCPLUS_PROGRAM_NAME.equalsIgnoreCase(program)) {
+			apm = node.getValue(PRACTICE_ID);
 		} else {
 			apm = "";
 		}

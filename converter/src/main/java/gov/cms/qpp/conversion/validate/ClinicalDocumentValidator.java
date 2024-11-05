@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion.validate;
 
 import java.util.Optional;
 
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -10,6 +9,8 @@ import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.util.StringHelper;
+
+import static gov.cms.qpp.conversion.model.Constants.*;
 
 /**
  * Validates the Clinical Document.
@@ -45,18 +46,17 @@ public class ClinicalDocumentValidator extends NodeValidator {
 			.childMaximum(ProblemCode.CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_IA_SECTIONS, 1,
 					TemplateId.MEASURE_SECTION_V5)
 			.singleValue(ProblemCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME.format(VALID_PROGRAM_NAMES),
-					ClinicalDocumentDecoder.PROGRAM_NAME);
+					PROGRAM_NAME);
 
 		if (!containsError(Detail.forProblemAndNode(ProblemCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME.format(VALID_PROGRAM_NAMES), node))) {
-			String programName = Optional.ofNullable(node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME)).orElse("<missing>");
-			String entityType = Optional.ofNullable(node.getValue(ClinicalDocumentDecoder.ENTITY_TYPE)).orElse("<missing>");
+			String programName = Optional.ofNullable(node.getValue(PROGRAM_NAME)).orElse("<missing>");
+			String entityType = Optional.ofNullable(node.getValue(ENTITY_TYPE)).orElse("<missing>");
 
 			forceCheckErrors(node).valueIn(ProblemCode.CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME.format(programName, VALID_PROGRAM_NAMES),
-				ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS_PROGRAM_NAME, ClinicalDocumentDecoder.PCF,
-				ClinicalDocumentDecoder.APP_PROGRAM_NAME);
+				PROGRAM_NAME, MIPS_PROGRAM_NAME, PCF, APP_PROGRAM_NAME);
 
-			if (ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP.equals(entityType)) {
-				forceCheckErrors(node).value(ProblemCode.VIRTUAL_GROUP_ID_REQUIRED, ClinicalDocumentDecoder.ENTITY_ID);
+			if (ENTITY_VIRTUAL_GROUP.equals(entityType)) {
+				forceCheckErrors(node).value(ProblemCode.VIRTUAL_GROUP_ID_REQUIRED, ENTITY_ID);
 			}
 		}
 	}

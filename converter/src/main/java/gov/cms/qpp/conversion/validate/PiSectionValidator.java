@@ -12,7 +12,7 @@ import gov.cms.qpp.conversion.model.error.ProblemCode;
 import java.util.Collections;
 import java.util.Set;
 
-import static gov.cms.qpp.conversion.decode.PiNumeratorDenominatorDecoder.MEASURE_ID;
+import static gov.cms.qpp.conversion.model.Constants.MEASURE_ID;
 
 /**
  * Validate the ACI Section.
