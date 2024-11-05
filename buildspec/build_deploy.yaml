@@ -15,7 +15,7 @@ env:
     DOCKERHUB_USER: "/global/dockerhub_user"
     AWS_ACCOUNT : "/global/aws_account"
     REPO_PAT: "/global/scoring_api_repo_pat"
-    BRANCH_STATUS_URL: "/global/branch_status_url"
+    BRANCH_STATUS_URL: "/global/ct_branch_status_url"
     PART_FILE: "/qppar-sf/conversion-tool/CPC_PLUS_FILE_NAME"   
     PART_FILE_BUCKET: "/qppar-sf/$ENV/conversion-tool/CPC_PLUS_BUCKET_NAME"
     OUTPUT_PART_FILE: "/qppar-sf/$ENV/conversion-tool/CPC_PLUS_VALIDATION_FILE"
