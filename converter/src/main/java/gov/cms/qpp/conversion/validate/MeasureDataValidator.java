@@ -37,8 +37,8 @@ public class MeasureDataValidator extends NodeValidator {
 		}
 
 		Checker checker = checkErrors(node)
-				.hasChildren(ProblemCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(populationId, Context.REPORTING_YEAR))
-				.childExact(ProblemCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(populationId, Context.REPORTING_YEAR),
+				.hasChildren(ProblemCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(populationId))
+				.childExact(ProblemCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(populationId),
 					1, TemplateId.PI_AGGREGATE_COUNT);
 
 		if (!checker.shouldShortcut()) {
@@ -48,7 +48,7 @@ public class MeasureDataValidator extends NodeValidator {
 						DuplicationCheckHelper.calculateDuplications(child, AGGREGATE_COUNT)),
 						AGGREGATE_COUNT)
 					.intValue(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER, AGGREGATE_COUNT)
-					.greaterThan(ProblemCode.MEASURE_DATA_VALUE_NOT_INTEGER.format(populationId, Context.REPORTING_YEAR), -1);
+					.greaterThan(ProblemCode.MEASURE_DATA_VALUE_NOT_INTEGER.format(populationId), -1);
 		}
 	}
 }
