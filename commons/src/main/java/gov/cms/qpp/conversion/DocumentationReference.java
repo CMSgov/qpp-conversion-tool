@@ -9,6 +9,7 @@ public enum DocumentationReference {
 	PRACTICE_SITE_ADDRESS(22),
 	REPORTING_PARAMETERS_ACT(17),
 	MEASURE_IDS(43),
+	MEASURE_REFERENCE(36),
 	CEHRT(22);
 
 	private static final String BASE_PATH = "https://ecqi.healthit.gov/sites/default/files/2024-CMS-QRDA-III-EC-IG-v1.1-508.pdf#page=";

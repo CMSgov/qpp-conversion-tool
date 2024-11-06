@@ -54,7 +54,7 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 	}
 
 	private LocalizedProblem format(ProblemCode error) {
-		return error.format(nodeName, nodeName);
+		return error.format(nodeName);
 	}
 
 	private LocalizedProblem format(ProblemCode error, String value) {
