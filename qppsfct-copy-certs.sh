@@ -9,10 +9,10 @@ export ENV_CERT=${ENV_CERT}
 export AWS_REGION=${AWS_REGION}
 
 #Export Passphrase for Environment
-export SSL_PASS=$(aws ssm get-parameters --name /qppar-sf/${ENV_CERT}/conversion_tool/SSL_SECRET --with-decryption --query "Parameters[0].Value" | tr -d '"')
+export SSL_PASS=$(aws ssm get-parameters --name /qppar-sf/${ENV_CERT}/conversion-tool/SSL_SECRET --with-decryption --query "Parameters[0].Value" | tr -d '"')
 
 #Export Certificate ARN for Environment
-export CERT_ARN=$(aws ssm get-parameters --name /qppar-sf/${ENV_CERT}/conversion_tool/CERT_ARN --with-decryption --query "Parameters[0].Value" | tr -d '"')
+export CERT_ARN=$(aws ssm get-parameters --name /qppar-sf/${ENV_CERT}/conversion-tool/CERT_ARN --with-decryption --query "Parameters[0].Value" | tr -d '"')
 
 cd ./${CERT_CP_PATH}
 
