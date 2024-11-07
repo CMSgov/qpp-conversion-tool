@@ -51,7 +51,7 @@ class AciNumeratorValidatorTest {
 				.that(errors)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ProblemCode.NUMERATOR_DENOMINATOR_CHILD_EXACT
-					.format(AciNumeratorValidator.NUMERATOR_NAME, AciNumeratorValidator.NUMERATOR_NAME));
+					.format(AciNumeratorValidator.NUMERATOR_NAME));
 	}
 
 	@Test
@@ -90,7 +90,7 @@ class AciNumeratorValidatorTest {
 		assertWithMessage("Too many children Validation Error not issued")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ProblemCode.NUMERATOR_DENOMINATOR_CHILD_EXACT.format(
-						AciNumeratorValidator.NUMERATOR_NAME, AciNumeratorValidator.NUMERATOR_NAME));
+						AciNumeratorValidator.NUMERATOR_NAME));
 	}
 
 	@Test

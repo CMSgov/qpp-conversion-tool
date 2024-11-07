@@ -59,7 +59,7 @@ public class PcfMeasureDataValidatorTest {
 		List<Detail> errors = validator.validateSingleNode(underTest).getErrors();
 
 		LocalizedProblem expectedError = ProblemCode.PCF_SUPPLEMENTAL_DATA_MISSING_COUNT.format(
-			SupplementalData.MALE.getCode(), SubPopulationLabel.IPOP.name(), MEASURE_ID);
+				MEASURE_ID, SupplementalData.MALE.getCode(), SubPopulationLabel.IPOP.name());
 
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 			.contains(expectedError);
@@ -117,7 +117,7 @@ public class PcfMeasureDataValidatorTest {
 
 				LocalizedProblem expectedError = ProblemCode.PCF_MISSING_SUPPLEMENTAL_CODE
 					.format(supplementalData.getType(), supplementalData, supplementalData.getCode(),
-						MEASURE_ID, SubPopulationLabel.IPOP.name());
+							SubPopulationLabel.IPOP.name(), MEASURE_ID);
 
 				assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 					.contains(expectedError);

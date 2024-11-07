@@ -122,7 +122,7 @@ class PiSectionEncoderTest {
 
 		assertThat(piSectionEncoder.getErrors()).isNotNull();
 		assertThat(piSectionEncoder.getErrors().get(0).getMessage())
-				.isEqualTo(ProblemCode.CT_LABEL + "Failed to find an encoder");
+				.isEqualTo(ProblemCode.ENCODER_MISSING.getMessage());
 	}
 
 	@Test

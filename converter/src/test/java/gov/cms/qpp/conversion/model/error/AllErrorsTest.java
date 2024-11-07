@@ -65,4 +65,17 @@ class AllErrorsTest {
 		assertThat(new AllErrors(errors).getErrors())
 				.containsAtLeastElementsIn(errors);
 	}
+
+	@Test
+	void testGetErrorDuplicateDetails() {
+		AllErrors objectUnderTest = new AllErrors();
+		List<Detail> details = new ArrayList<Detail>();
+		details.add(new Detail("test"));
+		details.add(new Detail("test"));
+		Error error = new Error();
+		error.setDetails(details);
+		objectUnderTest.addError(error);
+		assertWithMessage("The error details should be one")
+				.that(objectUnderTest.getErrors().get(0).getDetails()).hasSize(1);
+	}
 }
