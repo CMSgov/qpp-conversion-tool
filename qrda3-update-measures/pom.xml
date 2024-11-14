@@ -3,7 +3,7 @@
 	<parent>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
 		<groupId>gov.cms.qpp.conversion</groupId>
-		<version>2024.2.3</version>
+		<version>2024.2.4</version>
 		<relativePath>../</relativePath>
 	</parent>
 
