@@ -114,7 +114,7 @@ public class PcfMeasureDataValidator extends NodeValidator {
 		LocalizedProblem error =
 			ProblemCode.PCF_MISSING_SUPPLEMENTAL_CODE.format(
 				supplementalData.getType(), supplementalData, supplementalData.getCode(),
-				measureId, node.getValue(MEASURE_TYPE));
+				node.getValue(MEASURE_TYPE), measureId);
 		addError(Detail.forProblemAndNode(error, node));
 	}
 
@@ -128,7 +128,6 @@ public class PcfMeasureDataValidator extends NodeValidator {
 	 */
 	private LocalizedProblem makeIncorrectCountSizeLocalizedError(Node node, String supplementalCode, String measureId) {
 		return ProblemCode.PCF_SUPPLEMENTAL_DATA_MISSING_COUNT.format(
-			supplementalCode, node.getValue(MEASURE_TYPE),
-			measureId);
+			measureId, supplementalCode, node.getValue(MEASURE_TYPE));
 	}
 }

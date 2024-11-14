@@ -20,200 +20,191 @@ import java.util.stream.IntStream;
  */
 public enum ProblemCode implements LocalizedProblem {
 
-	ENCODER_MISSING(1, "Failed to find an encoder"),
-	NOT_VALID_XML_DOCUMENT(2, "The file is not a valid XML document. The file you are submitting is not a "
-			+ "properly formatted XML document. Please check your document to ensure proper formatting."),
-	UNEXPECTED_ERROR(3, "Unexpected exception occurred during conversion. " + ServiceCenter.MESSAGE),
-	UNEXPECTED_ENCODE_ERROR(4, "Unexpected exception occurred during encoding. " + ServiceCenter.MESSAGE),
-	NOT_VALID_QRDA_DOCUMENT(5, "The file is not a QRDA-III XML document. "
-		+ "Please ensure that the submission complies with the `(Submission year's)` implementation guide. "
-		+ "`(Implementation guide link)`", true),
-	MEASURE_GUID_MISSING(6, "The measure GUID `(Provided measure id)` is invalid. "
-		+ "Please see the Table 15 of the `(Submission year's)` Implementation Guide for valid measure GUIDs: "
-		+ DocumentationReference.MEASURE_IDS, true),
-	CHILD_MEASURE_MISSING(7, "The measure reference results must have at least one measure. "
-			+ "Please review the measures section of your file as it cannot be empty."),
-	AGGREGATE_COUNT_VALUE_NOT_SINGULAR(8, "The `(Parent element)` has `(number of aggregate counts)` aggregate count values."
-		+ " A single aggregate count value is required.", true),
-	AGGREGATE_COUNT_VALUE_NOT_INTEGER(9, "Aggregate count value must be an integer"),
-	PI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT(11, "This PI Reference and Results is missing a required "
-		+ "Measure Performed child"),
-	PI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR(12, "This PI Measure Performed Reference and Results requires "
-		+ "a single Measure ID"),
-	DENOMINATOR_COUNT_INVALID(13, "Denominator count must be less than or equal to Initial Population count "
-		+ "for the measure population `(measure population id)`. Please see the Table 15 of the `(Submission Year)` Implementation guide for valid measure GUIDs: "
-		+ DocumentationReference.MEASURE_IDS, true),
-	POPULATION_CRITERIA_COUNT_INCORRECT(14,
-			"The electronic measure id: `(Current eMeasure ID)` requires `(Number of Subpopulations required)` "
-			+ "`(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`", true),
-	PI_NUMERATOR_DENOMINATOR_PARENT_NOT_PI_SECTION(15, "PI Numerator Denominator element should have a PI "
-			+ "Section element as a parent"),
-	PI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID(16, "PI Numerator Denominator element does not contain a "
-			+ "measure name ID"),
-	PI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN(17, "PI Numerator Denominator element does not have any child "
-			+ "elements"),
-	PI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE(18, "This PI Numerator Denominator "
-			+ "element requires exactly one `(Denominator|Numerator)` element child", true),
-	PI_SECTION_MISSING_REPORTING_PARAMETER_ACT(22, "The PI Section must have one Reporting Parameter Act."
-		+ " Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG)."
-		+ " Here is a link to the IG Reporting Parameter Act section: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
-	CLINICAL_DOCUMENT_MISSING_PI_OR_IA_OR_ECQM_CHILD(23, "Clinical Document element must have at least one child "
-			+ "element of type PI, IA, or Measure section"),
-	CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME(24, "Clinical Document must have one and only one program name."
-		+ " Valid program names are `(list of valid program names)`", true),
-	CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME(25, "The Clinical Document program name `(program name)` is not recognized. Valid "
-		+ "program names are `(list of valid program names)`.", true),
-	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_PI_SECTIONS(26, "Clinical Document contains duplicate PI sections"),
-	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_IA_SECTIONS(27, "Clinical Document contains duplicate IA sections"),
-	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ECQM_SECTIONS(28, "Clinical Document contains duplicate Measure "
-			+ "sections"),
-	REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START(29, "Must have one and only one performance period "
-			+ "start. Please see the Implementation Guide for information on the performance period here: " //NOSONAR
-			+ DocumentationReference.PERFORMANCE_PERIOD),
-	REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_END(30, "Must have one and only one performance period end. "
-			+ "Please see the Implementation Guide for information on the performance period here: " //NOSONAR
-			+ DocumentationReference.PERFORMANCE_PERIOD),
-	REPORTING_PARAMETERS_MISSING_PERFORMANCE_YEAR(31, "Must have a performance year. "
-			+ "Please see the Implementation Guide for information on the performance period here: " //NOSONAR
-			+ DocumentationReference.PERFORMANCE_PERIOD),
-	QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT(32, "The Quality Measure Section must have "
-			+ "exactly one Reporting Parameter Act. "
-			+ "Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). "
-			+ "Here is a link to the IG Reporting Parameter Act section: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
-	PERFORMANCE_RATE_INVALID_VALUE(33, "The Performance Rate `(supplied value)` is invalid. "
-		+ "It must be a decimal between 0 and 1.", true),
-	PCF_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS(34, "PCF submissions must contain a practice site address."
-		+ " Please refer to the `(Submission year's)` IG for more details " + DocumentationReference.PRACTICE_SITE_ADDRESS
-	    + " regarding practice site addresses.", true),
-	PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED(35, "One and only one Alternative Payment Model (APM) Entity "
-			+ "Identifier should be specified. Here is a link to the IG section on identifiers: " + DocumentationReference.IDENTIFIERS),
-	PCF_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED(36, "PCF submissions must contain one Measure section"),
-	PCF_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT(37, "PCF submissions must contain correct number of performance rate(s). "
-			+ "Correct Number is `(Expected value)` for measure `(Given measure id)`", true),
-	NUMERATOR_DENOMINATOR_CHILD_EXACT(39,
-			"This PI `(Numerator or Denominator)` element has an incorrect number of Aggregate Count children. A PI "
-			+ "`(Numerator or Denominator)` must have exactly one Aggregate Count element", true),
-	NUMERATOR_DENOMINATOR_MUST_BE_INTEGER(41,
-			"This PI `(Numerator or Denominator)` element Aggregate Value '`(value)`' is not an integer", true),
-	NUMERATOR_DENOMINATOR_INVALID_VALUE(42,
-			"This PI `(Numerator or Denominator)` element Aggregate Value has an invalid value of '`(value)`'", true),
-	IA_SECTION_MISSING_IA_MEASURE(43, "The IA Section must have at least one Improvement Activity"),
-	IA_SECTION_MISSING_REPORTING_PARAM(44, "The IA Section must have one Reporting Parameter Act. "
-			+ "Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). "
-			+ "Here is a link to the IG Reporting Parameter Act section: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
-	IA_SECTION_WRONG_CHILD(45, "The IA Section must contain only Improvement Activities and a Reporting Parameter Act"),
-	PCF_QUALITY_MEASURE_ID_MISSING_STRATA(48, "Missing strata `(Reporting Stratum UUID)` for "
-			+ "`(Current subpopulation type)` measure `(Current subpopulation UUID)`. "
-			+ "Here is a link to the IG valid Measure Ids section: " + DocumentationReference.MEASURE_IDS, true),
-	PCF_QUALITY_MEASURE_ID_STRATA_MISMATCH(49,"Amount of stratifications `(Current number of "
-			+ "Reporting Stratifiers)` does not meet expectations "
-			+ "`(Number of stratifiers required)` for `(Current subpopulation type)` measure "
-			+ "`(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`. "
-			+ "Please refer to the Implementation Guide for correct stratification UUID's here: "
-			+ DocumentationReference.MEASURE_IDS, true),
-	IA_MEASURE_INCORRECT_CHILDREN_COUNT(50, "An IA performed measure reference and results must "
-			+ "have exactly one measure performed child"),
-	IA_MEASURE_INVALID_TYPE(51, "A single measure performed value is required and must be either a Y or an N."),
-	MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT(52,
-			" The measure data with population id '`(population id)`' must have exactly one Aggregate Count. "
-			+ "Please see the Table 15 of `(Submission year's)` Implementation Guide for valid measure GUIDs: "	//NOSONAR
-			+ DocumentationReference.MEASURE_IDS, true),
-	MEASURE_DATA_VALUE_NOT_INTEGER(53, "Measure data with population id '`(population id)`' "
-			+ "must be a whole number greater than or equal to 0. "
-			+ "Please see the Table 15 of `(Submission year's)` Implementation Guide for valid measure GUIDs: "	//NOSONAR
-			+ DocumentationReference.MEASURE_IDS, true),
-	PCF_PERFORMANCE_PERIOD_START(55, "A `(Program name)` Performance period start must be " + DocumentationReference.PERFORMANCE_START_DATE
-			+ "Please refer to the IG for more information here: " + DocumentationReference.PCF_SUBMISSIONS, true),
-	PCF_PERFORMANCE_PERIOD_END(56, "A `(Program name)` Performance period end must be " + DocumentationReference.PERFORMANCE_END_DATE
-			+ "Please refer to the IG for more information here: " + DocumentationReference.PCF_SUBMISSIONS, true),
-	QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION(57, "The measure reference results must have a single "
-			+ "measure population"),
-	QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_TYPE(58, "The measure reference results must have a single "
-			+ "measure type"),
-	QUALITY_MEASURE_ID_INCORRECT_UUID(59, "The electronic measure id: `(Current eMeasure ID)` requires a "
-			+ "`(Subpopulation type)` with the correct UUID of `(Correct uuid required)`. Here is a link to the IG "
-			+ "containing all the valid measure ids: " + DocumentationReference.MEASURE_IDS, true),
-	QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE(61, "A Performance Rate must contain a single "
-			+ "Numerator UUID reference."),
-	PCF_CLINICAL_DOCUMENT_EMPTY_APM(62, "The Alternative Payment Model (APM) Entity Identifier must not be empty. "
-			+ "Here is a link to the IG section on identifiers: " + DocumentationReference.IDENTIFIERS),
-	PCF_CLINICAL_DOCUMENT_INVALID_APM(63, "The Alternative Payment Model (APM) Entity Identifier is not valid. "
-			+ " Here is a link to the IG section on identifiers: " + DocumentationReference.IDENTIFIERS),
-	PCF_MISSING_SUPPLEMENTAL_CODE(66, "Missing the `(Supplemental Type)` - `(Type Qualification)` supplemental data for code "
-		+ "`(Supplemental Data Code)` for the measure id `(Measure Id)`'s Sub-population `(Sub Population)`", true),
-	PCF_SUPPLEMENTAL_DATA_MISSING_COUNT(67, "Must have one count for Supplemental Data `(Supplemental Data Code)` "
-		+ "on Sub-population `(Sub Population)` for the measure id `(Measure Id)`", true),
-	PCF_SUBMISSION_ENDED(68, "Your `(Program name)` submission was made after the `(Program name)` Measure section submission deadline of "
-		+ "`(Submission end date)`. Your `(Program name)` QRDA III file has not been processed. Please contact `(Program name)` Support at "
-		+ "`(PCF+ contact email)` for assistance.", true),
-	INVALID_PERFORMANCE_PERIOD_FORMAT(69, "`(Performance period start or end date)` is an invalid date format. "
-		+ "Please use a standard ISO date format. "
-		+ "Example valid values are 2019-02-26, 2019/02/26T01:45:23, or 2019-02-26T01:45:23.123. "
-		+ "Please see the Implementation Guide for information on the performance period here: "
-		+ DocumentationReference.PERFORMANCE_PERIOD, true),
-	MISSING_OR_DUPLICATED_MEASURE_GUID(70, "The measure section measure reference and results has an incorrect number of "
-		+ "measure GUID supplied. Please ensure that only one measure GUID is provided per measure."),
-	MEASURES_RNR_WITH_DUPLICATED_MEASURE_GUID(71, "Two or more different measure section measure reference and results have "
-		+ "the same measure GUID. Please ensure that each measure section measure reference and results do not have "
-		+ "the same measure GUID."),
-	PERFORMANCE_RATE_MISSING(72, "The Performance Rate is missing"),
-	VIRTUAL_GROUP_ID_REQUIRED(78, "The Program 'Mips Virtual Group' was found. The required entity id for this "
-		+ "program name was missing. Please provide a virtual group identifier with the 'Mips Virtual Group' program name."),
-	MISSING_PII_VALIDATOR(79, "There is no TIN validator present, so NPI/Alternative Payment Model (APM) "
-		+ "combinations cannot be verified"),
-	INCORRECT_API_NPI_COMBINATION(80, "NPI `(npi)` and TIN `(tin)` are not reported as expected. "
-		+ "This NPI/TIN combination is missing from the QRDA III file or is not in the `(program)` Practitioner Roster for `(apm)`."
-		+ " Please ensure your submission contains all required NPI/TIN combinations and your `(program)` Practitioner Roster is up-to-date.", true),
+	ENCODER_MISSING(1, "The system could not complete the request, please try again."),
+	NOT_VALID_XML_DOCUMENT(2, "Contact you Health IT vendor to review your file and confirm "
+		+ "it's properly formatted as an XML document."),
+	UNEXPECTED_ERROR(3, "There was an unexpected system error during the file conversion. " + ServiceCenter.MESSAGE),
+	UNEXPECTED_ENCODE_ERROR(4, "There was an unexpected error during the file encoding.  " + ServiceCenter.MESSAGE),
+	NOT_VALID_QRDA_DOCUMENT(5, "Verify that your file is a QRDA III XML document and that it "
+		+ "complies with the `(Submission year's)` implementation guide. `(Implementation guide link)`", true),
+	MEASURE_GUID_MISSING(6, "Verify the measure GUID for `(Provided measure id)` against table 15 of the "
+		+ "`(Submission year's)` Implementation Guide for valid measure GUIDs: " + DocumentationReference.MEASURE_IDS, true),
+	CHILD_MEASURE_MISSING(7, "Review the measure section of your file to confirm it contains at least 1 measure. "),
+	AGGREGATE_COUNT_VALUE_NOT_SINGULAR(8, "Review `(Parent element)`. It shows "
+		+ "`(number of aggregate counts)` but it can only have 1.", true),
+	AGGREGATE_COUNT_VALUE_NOT_INTEGER(9, "The aggregate count must be a whole number without decimals."),
+	PI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT(11, "Review this Promoting Interoperability reference "
+		+ "for a missing required measure."),
+	PI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR(12, "Review this Promoting Interoperability measure for "
+		+ "multiple measure IDs. There can only  be 1 measure ID."),
+	DENOMINATOR_COUNT_INVALID(13, "The denominator count must be less than or equal to the initial population "
+		+ "count for the measure population `(measure population id)`. You can check Table 15 of the "
+		+ "`(Submission Year)` Implementation guide for valid measure GUIDs: " + DocumentationReference.MEASURE_IDS, true),
+	POPULATION_CRITERIA_COUNT_INCORRECT(14, "The electronic measure id: `(Current eMeasure ID)` "
+		+ "requires `(Number of Subpopulations required)` `(Type of Subpopulation required)`(s) but "
+		+ "there are `(Number of Subpopulations existing)`", true),
+	PI_NUMERATOR_DENOMINATOR_PARENT_NOT_PI_SECTION(15, "Review the Promoting Interoperability "
+		+ "Numerator Denominator element. It must have a parent Promoting Interoperability Section."),
+	PI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID(16, "Review the Promoting Interoperability "
+		+ "Numerator Denominator element. It must have a measure name ID"),
+	PI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN(17, "Review the Pomoting Interoperability "
+		+ "Numerator Denominator element. it must have a child element."),
+	PI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE(18, "This Promoting "
+		+ "Interoperability Numerator Denominator element requires exactly one `(Denominator|Numerator)` element child", true),
+	PI_SECTION_MISSING_REPORTING_PARAMETER_ACT(22, "Review the Reporting Parameter Act in the "
+		+ "Promoting Interoperability section. It must comply with the Implementation Guide: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
+	CLINICAL_DOCUMENT_MISSING_PI_OR_IA_OR_ECQM_CHILD(23, "Review the element \"Clinical Document.\" It must have "
+		+ "at least one measure section or a child element of type Promoting Interoperability or Improvement Activities."),
+	CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME(24, "Review the QRDA III file. It must only have "
+		+ "one program name from this list: `(list of valid program names)`", true),
+	CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME(25, "Review the Clinical Document for a valid program name "
+		+ "from this list: `(list of valid program names)`.  `(program name)` is not valid.", true),
+	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_PI_SECTIONS(26, "Review the QRDA III file "
+		+ "for duplicate Promoting Interoperability sections."),
+	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_IA_SECTIONS(27, "Review the QRDA III file "
+		+ "for duplicate Improvement Activity sections."),
+	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ECQM_SECTIONS(28, "Review the QRDA III file "
+		+ "for duplicate measure sections."),
+	REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START(29, "The file must only have one performance period start. "
+		+ "You can find more information on performance periods in the Implementation Guide: " + DocumentationReference.PERFORMANCE_PERIOD), //NOSONAR
+	REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_END(30, "The file must only have one performance period end. "
+		+ "You can find more information on performance periods in the Implementation Guide: " + DocumentationReference.PERFORMANCE_PERIOD), //NOSONAR
+	REPORTING_PARAMETERS_MISSING_PERFORMANCE_YEAR(31, "The file must have a performance year. "
+		+ "You can find more information on performance periods in the Implementation Guide: " + DocumentationReference.PERFORMANCE_PERIOD), //NOSONAR
+	QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT(32, "The Quality Measure section must only have one Reporting Parameter Act. "
+		+ "You can find more information on performance periods in the Implementation Guide: " + DocumentationReference.PERFORMANCE_PERIOD), //NOSONAR
+	PERFORMANCE_RATE_INVALID_VALUE(33, "The Performance Rate `(supplied value)` must be a decimal between 0 and 1.", true),
+	PCF_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS(34, "PCF submissions must have a practice site address. You can"
+		+ "find more information on the `(Submission year's)` Implementation Guide: " + DocumentationReference.PRACTICE_SITE_ADDRESS, true),
+	PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED(35, "Review the file. It must only have one Alternative Payment Model (APM) "
+		+ "Entity Identifier. You can find more information in the Implementation Guide: " + DocumentationReference.IDENTIFIERS),
+	PCF_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED(36, "Review the file. It must have at least one measure section."),
+	PCF_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT(37, "Review the performance rate(s) in the file. "
+		+ "The number for measure `(Given measure id)` is `(Expected value)`", true),
+	NUMERATOR_DENOMINATOR_CHILD_EXACT(39, "Review the aggregate count children for the Promoting Interoperability "
+		+ "`(Numerator or Denominator)` element. It must have exactly one aggregate count element", true),
+	NUMERATOR_DENOMINATOR_MUST_BE_INTEGER(41, "Review the Promoting Interoperability `(Numerator or Denominator)` "
+		+ "element's aggregate value. '`(value)`' must be a whole number.", true),
+	NUMERATOR_DENOMINATOR_INVALID_VALUE(42, "Review the Promoting Interoperability `(Numerator or Denominator)` "
+		+ "element's aggregate value. '`(value)`' is not valid.", true),
+	IA_SECTION_MISSING_IA_MEASURE(43, "The Improvement Activities section must have at least one Improvement Activity"),
+	IA_SECTION_MISSING_REPORTING_PARAM(44, "The Improvement Activities section must have one Reporting Parameter Act. "
+		+ "You can find more information on the Implementation Guide: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
+	IA_SECTION_WRONG_CHILD(45, "The Improvement Activities section must only contain "
+		+ "Improvement Activities and a Reporting Parameter Act"),
+	PCF_QUALITY_MEASURE_ID_MISSING_STRATA(48, "There's missing strata `(Reporting Stratum UUID)` for "
+		+ "`(Current subpopulation type)` measure `(Current subpopulation UUID)`. You can find more information "
+		+ "on the Implementation Guide: " + DocumentationReference.MEASURE_IDS, true),
+	PCF_QUALITY_MEASURE_ID_STRATA_MISMATCH(49, "The amount of stratifications "
+		+ "`(Current number of Reporting Stratifiers)` does not meet the `(Number of stratifiers required)` "
+		+ "required for `(Current subpopulation type)` measure `(Current Subpopulation UUID)`. "
+		+ "The strata required is: `(Expected strata uuid list)`. You can find more information "
+		+ "on the Implementation Guide: " + DocumentationReference.MEASURE_IDS, true),
+	IA_MEASURE_INCORRECT_CHILDREN_COUNT(50, "Review your data. An Improvement Activities performed "
+		+ "measure reference and results must have exactly one measure performed child."),
+	IA_MEASURE_INVALID_TYPE(51, "Review your data. The data for a performed measure is required and must be either a Y or an N."),
+	MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT(52, "The measure data with population id `(population id)` must have exactly one "
+		+ "Aggregate Count. You can find more information on GUIDs on the Implementation Guide: " + DocumentationReference.MEASURE_IDS, true),
+	MEASURE_DATA_VALUE_NOT_INTEGER(53, "The measure data with population id '`(population id)`' must be a whole number greater than "
+		+ "or equal to 0. You can find more information on GUIDs on the Implementation Guide: " + DocumentationReference.MEASURE_IDS, true),
+	PCF_PERFORMANCE_PERIOD_START(55, "A `(Program name)` performance period must start on " + DocumentationReference.PERFORMANCE_START_DATE
+		+ ". You can find additional information on the Implementation Guide: " + DocumentationReference.PCF_SUBMISSIONS, true),
+	PCF_PERFORMANCE_PERIOD_END(56, "A `(Program name)` performance period must end on " + DocumentationReference.PERFORMANCE_END_DATE
+		+ ". You can find additional information on the Implementation Guide: " + DocumentationReference.PCF_SUBMISSIONS, true),
+	QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION(57, "The reference results for the measure must have a "
+		+ "single measure population"),
+	QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_TYPE(58, "The reference results for the measure must have "
+		+ "a single measure type"),
+	QUALITY_MEASURE_ID_INCORRECT_UUID(59, "The electronic measure id: `(Current eMeasure ID)` requires "
+		+ "a `(Subpopulation type)` with the correct UUID of `(Correct uuid required)`. You can find additional "
+		+ "information on the implementation guide: " + DocumentationReference.MEASURE_IDS, true),
+	QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE(61, "Review your data. A performance rate must "
+		+ "contain a single numerator UUID reference."),
+	PCF_CLINICAL_DOCUMENT_EMPTY_APM(62, "Review your data. The Alternative Payment Model (APM) Entity Identifier must "
+		+ "not be empty. You can find additional information on the implementation guide: " + DocumentationReference.IDENTIFIERS),
+	PCF_CLINICAL_DOCUMENT_INVALID_APM(63, "Review the Alternative Payment Model (APM) Entity Identifier.  You "
+		+ "can find additional information on the implementation guide: " + DocumentationReference.IDENTIFIERS),
+	PCF_MISSING_SUPPLEMENTAL_CODE(66, "There's missing data. Enter the `(Supplemental Type)` - "
+		+ "`(Type Qualification)` supplemental data for code `(Supplemental Data Code)` for the "
+		+ "Sub-population `(Sub Population)` of measure id `(Measure Id)`.", true),
+	PCF_SUPPLEMENTAL_DATA_MISSING_COUNT(67, "Review measure id `(Measure Id)`. It must have one count for "
+		+ "Supplemental Data `(Supplemental Data Code)` on Sub-population `(Sub Population)`.", true),
+	PCF_SUBMISSION_ENDED(68, "Your submission for `(Program name)` was made after the submission "
+		+ "deadline of `(Submission end date)` for `(Program name)` measure section. Your `(Program name)` QRDA III file "
+		+ "has not been processed. Please contact `(Program name)` Support at `(PCF+ contact email)` for assistance.", true),
+	INVALID_PERFORMANCE_PERIOD_FORMAT(69, "Review the `(Performance period start or end date)` format. "
+		+ "Valid date formats are 2024-02-26, 2024/02/26T01:45:23, or 2024-02-26T01:45:23.123. You cn find more "
+		+ "information on the implementation guide: " + DocumentationReference.PERFORMANCE_PERIOD, true),
+	MISSING_OR_DUPLICATED_MEASURE_GUID(70, "Review the measure GUID for measure section, "
+		+ "measure reference, and results. There must only be one GUID per measure. Refer to page 36 "
+		+ "of the implementation guide: " + DocumentationReference.MEASURE_REFERENCE),
+	MEASURES_RNR_WITH_DUPLICATED_MEASURE_GUID(71, "Review the file for duplicate GUIDs. "
+		+ "Each measure section, measure reference, and results must have its own GUID."),
+	PERFORMANCE_RATE_MISSING(72, "Contact your Health IT vendor. The QRDA III file is missing "
+		+ "a performance rate. Performance rate is required for PCF reporting. You can find more information "
+		+ "on page 17 of the implementation guide: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
+	VIRTUAL_GROUP_ID_REQUIRED(78, "Enter an entity ID for the program 'MIPS Virtual Group'."),
+	MISSING_PII_VALIDATOR(79, "Enter a TIN number to verify the NPI/Alternative Payment Model (APM) combinations."),
+	INCORRECT_API_NPI_COMBINATION(80, "Review NPI `(npi)` and TIN `(tin)`. This NPI/TIN combination is missing "
+		+ "from the QRDA III file or is not in the `(program)` practitioner roster for `(apm)`. Ensure your submission "
+		+ "contains all required NPI/TIN combinations and your `(program)` practitioner roster is up-to-date.", true),
 	MEASURE_SECTION_MISSING_MEASURE(81, "At least one measure is required in a measure section"),
-	TOO_MANY_ERRORS(82, "There are too many errors associated with this QRDA-III file. Showing 100 out of `(Error amount)` errors."
-		+ " Please fix the given errors and re-submit", true),
-	PCF_TIN_REQUIRED(84, "`(Program name)` QRDA-III Submissions require at least one TIN to be present.", true),
-	PCF_INVALID_TIN(85, "`(Program name)` QRDA-III Submission TINs require a 9 digit numerical value", true),
-	PCF_MISSING_TIN(86, "This `(Program name)` QRDA-III submission is missing a TIN. Please ensure there is a TIN associated with every "
-		+ "NPI submitted", true),
-	PCF_NPI_REQUIRED(87, "`(Program name)` QRDA-III Submissions require at least one NPI to be present", true),
-	PCF_INVALID_NPI(88, "`(Program name)` QRDA-III Submission NPIs require a 10 digit numerical value",true ),
-	PCF_MISSING_NPI(89, "This `(Program name)` QRDA-III submission is missing a NPI. Please ensure there is an NPI associated with "
-		+ "every TIN submitted", true),
-	PCF_NO_IA_OR_PI(90, "`(Program name)` QRDA-III submissions should not contain an IA section. IA data will be ignored.", true),
-	PCF_INVALID_NULL_PERFORMANCE_RATE(91, "The performance rate `(performanceRateUuid)` for measure `(measure id)` has an invalid null value. "
-		+ "A performance rate cannot be null unless the performance denominator is 0", true),
-	PCF_PERFORMANCE_DENOM_LESS_THAN_ZERO(92, "The performance denominator for measure `(measureId)` was less than 0. "
-		+ "A performance rate cannot be null unless the performance denominator is 0", true),
-	PCF_NUMERATOR_GREATER_THAN_EITHER_DENOMINATORS(93, "The numerator id `(numeratorUuid)` for measure `(measure id)` has a count value that is "
-		+ "greater than the denominator and/or the performance denominator "
-		+ "(Denominator count - Denominator exclusion count - Denominator Exception count)", true),
-	PCF_DENEX_GREATER_THAN_DENOMINATOR(94, "The denominator exclusion id `(denexUuid)` for measure `(measure id)` has a count value that is greater than the "
-		+ "denominator. The Denominator exclusion cannot be a greater value than the denominator.", true),
-	MEASURE_SECTION_V5_REQUIRES_CATEGORY_SECTION(95, "The Clinical Document must contain one Category Section v5 with the extension 2020-12-01"),
+	TOO_MANY_ERRORS(82, "This QRDA III file shows 100 out of `(Error amount)` errors. Correct and re-submit the file. ", true),
+	PCF_TIN_REQUIRED(84, "`(Program name)` QRDA-III Submissions require at least one TIN number.", true),
+	PCF_INVALID_TIN(85, "`(Program name)` QRDA-III Submission TINs must be 9 numbers long.", true),
+	PCF_MISSING_TIN(86, "The QRDA-III submission for `(Program name)` is missing a TIN. "
+		+ "Ensure there is a TIN associated with every NPI submitted.", true),
+	PCF_NPI_REQUIRED(87, "The QRDA-III submission for `(Program name)` must have at least one NPI number.", true),
+	PCF_INVALID_NPI(88, "The NPIs for `(Program name)`'s QRDA-III submission must be 10 numbers long.",true ),
+	PCF_MISSING_NPI(89, "The QRDA-III submission for `(Program name)` is missing an NPI. "
+		+ "Ensure there is an NPI associated with every TIN submitted.", true),
+	PCF_NO_IA_OR_PI(90, "The QRDA-III submission for `(Program name)` should not contain an "
+		+ "Improvement Activities section. The Improvement Activities data will be ignored.", true),
+	PCF_INVALID_NULL_PERFORMANCE_RATE(91, "Review the performance rate `(performanceRateUuid)` for measure "
+		+ "`(measure id)`. A performance rate cannot be null unless the performance denominator is 0", true),
+	PCF_PERFORMANCE_DENOM_LESS_THAN_ZERO(92, "Review the performance denominator for measure `(measureId)`. "
+		+ "A performance rate cannot be null unless the performance denominator is 0.", true),
+	PCF_NUMERATOR_GREATER_THAN_EITHER_DENOMINATORS(93, "Review numerator ID `(numeratorUuid)` for "
+		+ "measure `(measure id)`. It has a count value that is greater than the denominator and/or the performance "
+		+ "denominator (Denominator count - Denominator exclusion count - Denominator Exception count)", true),
+	PCF_DENEX_GREATER_THAN_DENOMINATOR(94, "Review the denominator exclusion id `(denexUuid)` for "
+		+ "measure `(measure id)`. It cannot have a greater value than the denominator.", true),
+	MEASURE_SECTION_V5_REQUIRES_CATEGORY_SECTION(95, "The QRDA III file must contain one Category Section v5 with the extension 2020-12-01"),
 	MISSING_API_TIN_NPI_FILE(96, "The APM to TIN/NPI Combination file is missing."),
-	PCF_MISSING_CEHRT_ID(97, "`(Program name)` QRDA-III Submissions require a valid CMS EHR Certification ID (Valid Formats: XX15CXXXXXXXXXX)", true),
-	PCF_ZERO_PERFORMANCE_RATE(98, "The performance rate cannot have a value of 0 and must be of value Null Attribute (NA)."),
-	PCF_DUPLICATE_CEHRT(100, "More than one CMS EHR Certification ID was found. Please submit with only one CMS EHR Certification id."),
-	PCF_DENOMINATOR_COUNT_INVALID(101, "Denominator count must be equal to Initial Population count for `(Program name)` measure population `(measure population id)`."
-		+ "Please see the Table 15 of `(Submission year's)` Implementation Guide for valid measure GUIDs: "	//NOSONAR
-		+ DocumentationReference.MEASURE_IDS, true),
-	PI_RESTRICTED_MEASURES(102, "A PI section cannot contain PI_HIE_5 with PI_HIE_1, PI_LVOTC_1, PI_HIE_4, or PI_LVITC_2", false),
-	PCF_TOO_FEW_QUALITY_MEASURE_CATEGORY(103, "PCF Submissions must have the `(PCF Measure minimum)` "
+	PCF_MISSING_CEHRT_ID(97, "The QRDA-III submissions for `(Program name)` must have a valid "
+		+ "CMS EHR Certification ID (Valid Formats: XX15CXXXXXXXXXX)", true),
+	PCF_ZERO_PERFORMANCE_RATE(98, "Review the performance rate. It must be of value Null Attribute (NA), not 0."),
+	PCF_DUPLICATE_CEHRT(100, "Found more than one CMS EHR Certification ID in your file. The submission "
+		+ "must have only one CMS EHR Certification ID."),
+	PCF_DENOMINATOR_COUNT_INVALID(101, "The measure population `(measure population id)` for "
+		+ "`(Program name)` needs the Denominator count to be equal to Initial population count. You can find "
+		+ "additional information on table 15 of the implementation guide:" + DocumentationReference.MEASURE_IDS, true),
+	PI_RESTRICTED_MEASURES(102, "The Promoting Interoperability section cannot contain "
+		+ "PI_HIE_5 with PI_HIE_1, PI_LVOTC_1, PI_HIE_4, or PI_LVITC_2", false),
+	PCF_TOO_FEW_QUALITY_MEASURE_CATEGORY(103, "The PCF submissions must have the `(PCF Measure minimum)` "
 		+ "following measures: `(Listing of valid measure ids)`", true),
-	PCF_MULTI_TIN_NPI_SINGLE_PERFORMER(105, "If multiple TINs/NPIs are submitted, each must be reported within a separate performer"),
-	PCF_NO_PI(106, "PI submissions are not allowed within PCF"),
-	PCF_MISSING_COMBINATION(107,
-		"NPI/TIN Warning: Missing NPI/TIN Combination Identified. NPI/TIN `(npi)`-`(tin)` was active on the PCF practitioner roster for `(apm)` during the performance year but was not found in the file. "
-			+ "Please ensure your submission contains all NPI/TIN combinations that were active on your roster at any point during the performance year. "
-			+ "Your QRDA III file and/or roster may require updates. Note: The QPP website does not have access to roster updates made after " + DocumentationReference.ROSTER_UPDATE_DATE + ". "
-			+ "It is therefore critical that you ensure your roster is up to date and your QRDA III file contains all NPI/TIN values that were active on your roster during the performance year. "
-			+ "Please contact your health IT vendor if your QRDA III file requires updates. "
-			+ "Instructions on how to update your roster are available in the PCF Practice Management Guide (https://cmmi.my.salesforce.com/sfc/p/#i0000000iryR/a/t00000028RsP/dMF_romOmf5VLe7p5lUj8vch11mPmELP6ZuyI16vS.Y).",
-		true),
-	PCF_INVALID_COMBINATION(108,
-		"NPI/TIN Warning: Unexpected NPI/TIN Combination Found. NPI/TIN `(npi)`-`(tin)` was reported in the file but does not exist at the practice or was not active on the PCF practitioner roster for `(apm)` during the performance year. "
-			+ "Please ensure your submission only contains NPI/TIN combinations that were active on your roster at any point during the performance year. "
-			+ "Your QRDA III file and/or roster may require updates. Note: The QPP website does not have access to roster updates made after " + DocumentationReference.ROSTER_UPDATE_DATE + ". "
-			+ "It is therefore critical that you ensure your roster is up to date and your QRDA III file contains all NPI/TIN values that were active on your roster during the performance year. "
-			+ "Please contact your health IT vendor if your QRDA III file requires updates. "
-			+ "Instructions on how to update your roster are available in the PCF Practice Management Guide (https://cmmi.my.salesforce.com/sfc/p/#i0000000iryR/a/t00000028RsP/dMF_romOmf5VLe7p5lUj8vch11mPmELP6ZuyI16vS.Y).",
-		true);
+	PCF_MULTI_TIN_NPI_SINGLE_PERFORMER(105, "If multiple TINs/NPIs are submitted, each must be reported within a separate performer."),
+	PCF_NO_PI(106, "Promoting Interoperability data should not be reported in a PCF QRDA III file."),
+	PCF_MISSING_COMBINATION(107, "There's missing NPI/TIN combination. The NPI/TIN `(npi)`-`(tin)` was "
+		+ "active on the PCF practitioner roster for `(apm)` during the performance year but was not found in the file. "
+		+ "Ensure your submission contains all NPI/TIN combinations that were active on your roster at any point "
+		+ "during the performance year. Your QRDA III file and/or roster may require updates. "
+		+ "The QPP website doesn't have access to roster updates made after " + DocumentationReference.ROSTER_UPDATE_DATE + ". "
+		+ "It's critical to ensure your roster is up to date and your QRDA III file contains all NPI/TIN values that were active "
+		+ "on your roster during the performance year. Contact your health IT vendor if your QRDA III file requires updates. "
+		+ "You can find instructions on updating rosters in the PCF Practice Management Guide: "
+		+ "(https://cmmi.my.salesforce.com/sfc/p/#i0000000iryR/a/t00000028RsP/dMF_romOmf5VLe7p5lUj8vch11mPmELP6ZuyI16vS.Y).", true),
+	PCF_INVALID_COMBINATION(108, "Found an unexpected NPI/TIN combination. The NPI/TIN "
+		+ "`(npi)`-`(tin)` was reported in the file but does not exist at the practice or was not "
+		+ "active on the PCF practitioner roster for `(apm)` during the performance year. "
+		+ "Ensure your submission only contains NPI/TIN combinations that were active on your roster at "
+		+ "any point during the performance year. Your QRDA III file and/or roster may require updates. "
+		+ "Note: The QPP website does not have access to roster updates made after " + DocumentationReference.ROSTER_UPDATE_DATE + ". "
+		+ "It's critical that you ensure your roster is up to date and your QRDA III file contains "
+		+ "all NPI/TIN values that were active on your roster during the performance year. "
+		+ "Please contact your health IT vendor if your QRDA III file requires updates. "
+		+ "You can find instructions on how updating rosters in the PCF Practice Management Guide "
+		+ "(https://cmmi.my.salesforce.com/sfc/p/#i0000000iryR/a/t00000028RsP/dMF_romOmf5VLe7p5lUj8vch11mPmELP6ZuyI16vS.Y).", true);
 
 	private static final Map<Integer, ProblemCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ProblemCode::getCode, Function.identity()));
@@ -294,8 +285,8 @@ public enum ProblemCode implements LocalizedProblem {
 	}
 
 	private static final class ServiceCenter {
-		static final String MESSAGE = "Please contact the Service Center for assistance via phone at "
-				+ "1-866-288-8292 or TTY: 1-877-715-6222, or by emailing QPP@cms.hhs.gov";
+		static final String MESSAGE = "Contact the customer service center for assistance by email at QPP@cms.hhs.gov "
+			+ "or by phone at 288-8292 (TTY: 1-877-715-6222)";
 	}
 
 }

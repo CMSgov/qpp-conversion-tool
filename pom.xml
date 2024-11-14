@@ -6,7 +6,7 @@
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-conversion-tool-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>2024.2.3</version>
+	<version>2024.2.4</version>
 	<name>QPP Conversion Tool</name>
 
 	<properties>
@@ -437,10 +437,20 @@
 				<version>1.1.0.RELEASE</version>
 				<exclusions>
 					<exclusion>
+						<groupId>org.springframework.security</groupId>
+						<artifactId>spring-security-web</artifactId>
+					</exclusion>
+					<exclusion>
 						<groupId>org.bouncycastle</groupId>
 						<artifactId>bcprov-jdk15on</artifactId>
 					</exclusion>
 				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-web</artifactId>
+				<version>5.7.13</version>
 			</dependency>
 
 			<dependency>
