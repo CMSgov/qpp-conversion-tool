@@ -245,7 +245,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 			.incompleteValidation()
 			.intValue(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
 				AGGREGATE_COUNT)
-			.valueIn(ProblemCode.PCF_DENOMINATOR_COUNT_INVALID.format(program, denominatorUuid, Context.REPORTING_YEAR), AGGREGATE_COUNT,
+			.valueIn(ProblemCode.PCF_DENOMINATOR_COUNT_INVALID.format(program, denominatorUuid), AGGREGATE_COUNT,
 				ipopCount.getValue(AGGREGATE_COUNT));
 	}
 

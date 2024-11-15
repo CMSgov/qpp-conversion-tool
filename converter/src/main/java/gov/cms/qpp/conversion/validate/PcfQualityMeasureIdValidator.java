@@ -44,7 +44,7 @@ public class PcfQualityMeasureIdValidator extends QualityMeasureIdValidator {
 			forceCheckErrors(node)
 				.childExact(
 					ProblemCode.PCF_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
-						.format(requiredPerformanceRateCount, MeasureConfigHelper.getPrioritizedId(node)),
+						.format(MeasureConfigHelper.getPrioritizedId(node), requiredPerformanceRateCount),
 					requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
 		}
 

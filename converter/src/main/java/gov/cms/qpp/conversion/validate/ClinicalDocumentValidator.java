@@ -52,7 +52,7 @@ public class ClinicalDocumentValidator extends NodeValidator {
 			String programName = Optional.ofNullable(node.getValue(PROGRAM_NAME)).orElse("<missing>");
 			String entityType = Optional.ofNullable(node.getValue(ENTITY_TYPE)).orElse("<missing>");
 
-			forceCheckErrors(node).valueIn(ProblemCode.CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME.format(programName, VALID_PROGRAM_NAMES),
+			forceCheckErrors(node).valueIn(ProblemCode.CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME.format(VALID_PROGRAM_NAMES, programName),
 				PROGRAM_NAME, MIPS_PROGRAM_NAME, PCF, APP_PROGRAM_NAME);
 
 			if (ENTITY_VIRTUAL_GROUP.equals(entityType)) {
