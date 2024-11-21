@@ -13,7 +13,7 @@ terraform {
             version = "=4.55.0"
         }
     }
-    required_version = "1.5.0"
+    required_version = "1.9.7"
 }
 
 locals {
@@ -61,7 +61,7 @@ resource "aws_iam_policy" "new_relic_budget_policy" {
     {
       "Effect": "Allow",
       "Action": ["budgets:ViewBudget"],
-      "Resource": "arn:aws:${local.myregion}:*:*:*"
+      "Resource": "*"
     }
   ]
 }

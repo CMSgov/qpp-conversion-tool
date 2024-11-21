@@ -12,7 +12,7 @@ terraform {
             version = "=3.70.0"
         }
     }
-    required_version = "1.0.0"
+    required_version = "1.9.7"
 }
 
 provider "aws" {
@@ -26,6 +26,7 @@ data "aws_caller_identity" "current" {}
 resource "aws_cloudwatch_event_rule" "ecs-restart-cronjob" {
   name        = "ecsct-restart-${var.project_name}"
   description = "This Event bridge rule runs on a Schedule"
+  is_enabled  = false
   schedule_expression = var.event_schedule
 }
   
@@ -96,12 +97,7 @@ resource "aws_iam_policy" "lambda_ecs_policy" {
               "ecs:StopTask",
               "ecs:UpdateService"
             ],
-            "Resource": "*",
-            "Condition": {
-                "ArnEquals": { 
-                    "ecs:cluster": "arn:aws:ecs:${var.region}:${data.aws_caller_identity.current.account_id}:cluster/${var.project_name}-conversion-tool-${var.environment}"
-                }
-            }
+            "Resource": "*"
         }
     ]
 }

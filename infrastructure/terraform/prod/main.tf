@@ -15,7 +15,7 @@ terraform {
             version = "4.55.0"
         }
     }
-    required_version = "1.5.0"
+    required_version = "1.9.7"
 }
 
 provider "aws" {
@@ -47,6 +47,7 @@ module "conversion-tool" {
   codebuild_branch_ref = var.codebuild_branch_ref
   team               = var.team
   allow_kms_keys     = var.allow_kms_keys
+  conversion_tool_service_desired_count = var.conversion_tool_service_desired_count
   ## QPPSE-1208
   tags = var.default_tags
 }

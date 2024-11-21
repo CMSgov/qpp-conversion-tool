@@ -593,3 +593,21 @@ resource "aws_ssm_parameter" "cert_arn" {
 # QPPSE-1208
   tags = merge(var.tags,local.ssmctcertarn_tags)
 }
+
+resource "aws_ssm_parameter" "impl_aca_cookie" {
+  name        = "/qppar-sf/${var.environment}/conversion_tool/IMPL_ACA_COOKIE"
+  description = "IMPL_ACA_COOKIE - Only needed for IMPL Env Connection"
+  type        = "SecureString"
+  value       = "secret"
+  overwrite   = true
+  
+
+  lifecycle {
+    ignore_changes = [
+      value
+    ]
+  }
+  
+# QPPSE-1208
+  tags = merge(var.tags,local.ssmctcertarn_tags)
+}

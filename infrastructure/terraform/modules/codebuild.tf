@@ -20,6 +20,7 @@ resource "aws_codebuild_project" "conversion_tool_codebuild_project" {
   description   = "CodeBuild project for ConversionTool, ECR Publish and ECS Deploy"
   build_timeout = "120"
   service_role  = "${aws_iam_role.conversiontool_codebuild_servicerole.arn}"
+  # concurrent_build_limit = 1
     
 
   artifacts {

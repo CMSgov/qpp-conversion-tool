@@ -58,3 +58,4 @@ infrastructure/terraform/dev/dev.qppse1208-v3.plan
 infrastructure/terraform/devpre/.terraform.lock.hcl
 .gitignore
 infrastructure/terraform/prod/.terraform.lock.hcl
+plan-out.txt

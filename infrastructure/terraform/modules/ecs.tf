@@ -71,7 +71,7 @@ resource "aws_ecs_service" "conversion-tool-service" {
   name                               = "conversion-tool-service-${var.environment}"
   cluster                            = aws_ecs_cluster.conversion-tool-ecs-cluster.id
   task_definition                    = aws_ecs_task_definition.conversion-tool.arn
-  desired_count                      = 1
+  desired_count                      = "${var.conversion_tool_service_desired_count}"
   launch_type                        = "FARGATE"
   deployment_maximum_percent         = "100"
   deployment_minimum_healthy_percent = "0"

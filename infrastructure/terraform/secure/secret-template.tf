@@ -94,30 +94,6 @@ resource "aws_ssm_parameter" "newrelic_api_key" {
   }
 }
 
-resource "aws_ssm_parameter" "impl_aca_cookie" {
-  name        = "/qppar-sf/${var.environment}/conversion_tool/IMPL_ACA_COOKIE"
-  description = "IMPL_ACA_COOKIE"
-  type        = "SecureString"
-  value       = "secret"
-  overwrite   = false
-
-  lifecycle {
-    ignore_changes = [
-      value
-    ]
-  }
-  tags = {
-    Name            = "${var.project_name}-ssm-${var.environment}",
-    owner           = var.owner,
-    project         = var.project_name
-    terraform       = "true"
-    pagerduty-email = var.pagerduty_email
-    application     = var.application
-    sensitivity     = var.sensitivity
-    git-origin      = var.git-origin
-  }
-}
-
 resource "aws_ssm_parameter" "nexus_creds" {
   name        = "/qppar-sf/${var.environment}/conversion_tool/NEXUS_CREDS"
   description = "NEXUS_CREDS"
