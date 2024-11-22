@@ -207,7 +207,7 @@ QRDA Category III Measure Section (CMS EP)
           <!--Measure Entry for CMS122v11-->
           <entry>
       			<organizer classCode="CLUSTER" moodCode="EVN">
-      				<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
+      				<templateId root="2.16.840.1.113883.10.20.24.3.98"/>   <!-- used for determining measure -->
       				<!-- Measure Reference Template -->
       				<templateId root="2.16.840.1.113883.10.20.27.3.1" extension="2016-09-01"/>
       				<!-- Measure Reference & Results Template -->
@@ -219,7 +219,7 @@ QRDA Category III Measure Section (CMS EP)
       				<reference typeCode="REFR">
       					<externalDocument classCode="DOC" moodCode="EVN">
       						<id root="2.16.840.1.113883.4.738"
-      							extension="2c928084-83d3-1b44-0183-eb75dc8a03db"/>
+      							extension="2c928084-83d3-1b44-0183-eb75dc8a03db"/> <!-- this root is again used to determine the measure, for UUID -->
       						<code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
       							  codeSystemName="LOINC" displayName="Health Quality Measure Document"/>
       						<text>Diabetes: Hemoglobin A1c (HbA1c) Poor Control (&gt; 9%)</text>
