@@ -148,7 +148,7 @@ resource "aws_lambda_function" "ddb-notification-alerts" {
   environment {
     variables = {
       "channel" = "p-qpp-sub-alerts"
-      "slack_channel_webhook" = "https://hooks.slack.com/services/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"
+      "slack_channel_webhook" = "slack_hook_url"
     }
   }
 
