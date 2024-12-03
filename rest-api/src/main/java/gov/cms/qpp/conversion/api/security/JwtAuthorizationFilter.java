@@ -3,12 +3,10 @@ package gov.cms.qpp.conversion.api.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -25,9 +23,6 @@ public class JwtAuthorizationFilter implements Filter {
 	private static final String TOKEN_PREFIX = "Bearer ";
 
 	protected final Set<String> orgName;
-
-	@Autowired
-	private HttpServletRequest httpRequest;
 
 	/**
 	 * JWT Constructor default
@@ -48,8 +43,12 @@ public class JwtAuthorizationFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-//		HttpServletRequest httpRequest = (HttpServletRequest) request;
-		String tokenHeader = httpRequest.getHeader(HEADER_STRING);
+		HttpServletRequest httpRequest = null;
+		String tokenHeader = null;
+		if (request instanceof HttpServletRequest) {
+			httpRequest = (HttpServletRequest) request;
+			tokenHeader = httpRequest.getHeader(HEADER_STRING);
+		}
 
 		if (tokenHeader == null) {
 			chain.doFilter(request, response);
