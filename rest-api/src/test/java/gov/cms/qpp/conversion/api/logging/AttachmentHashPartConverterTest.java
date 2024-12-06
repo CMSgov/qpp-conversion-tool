@@ -4,8 +4,8 @@ import ch.qos.logback.classic.spi.LoggingEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.Part;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Part;
 import java.io.IOException;
 
 import static com.google.common.truth.Truth.assertWithMessage;

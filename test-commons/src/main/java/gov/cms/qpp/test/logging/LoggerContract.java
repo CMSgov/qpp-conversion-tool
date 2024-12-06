@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import gov.cms.qpp.test.annotations.AroundEach;
-import uk.org.lidalia.slf4jtest.LoggingEvent;
-import uk.org.lidalia.slf4jtest.TestLogger;
-import uk.org.lidalia.slf4jtest.TestLoggerFactory;
+import com.github.valfirst.slf4jtest.TestLoggerFactory;
+import com.github.valfirst.slf4jtest.LoggingEvent;
+import com.github.valfirst.slf4jtest.TestLogger;
 
 public interface LoggerContract {
 

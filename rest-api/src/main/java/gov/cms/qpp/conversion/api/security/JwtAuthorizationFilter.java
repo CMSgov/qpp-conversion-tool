@@ -2,15 +2,11 @@ package gov.cms.qpp.conversion.api.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import org.springframework.security.authentication.AuthenticationManager;
+import jakarta.servlet.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -19,7 +15,7 @@ import java.util.Set;
 /**
  * Filter for checking the Json Web Token (JWT) for the correct Authorization
  */
-public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
+public class JwtAuthorizationFilter implements Filter {
 	public static final String DEFAULT_ORG_NAME = "cpc-test";
 	public static final String DEFAULT_RTI_ORG = "rti-test";
 	public static final Set<String> DEFAULT_ORG_SET = Set.of(DEFAULT_ORG_NAME);
@@ -29,39 +25,30 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 	protected final Set<String> orgName;
 
 	/**
-	 * JWT Constructor with Authentication manager
-	 *
-	 * @param authManager Object to be passed to it's parent constructor
+	 * JWT Constructor default
 	 */
-	public JwtAuthorizationFilter(AuthenticationManager authManager) {
-		this(authManager, DEFAULT_ORG_SET);
+	public JwtAuthorizationFilter() {
+		this(DEFAULT_ORG_SET);
 	}
 
 	/**
-	 * JWT Constructor with Authentication manager
+	 * JWT Constructor with Organization Set
 	 *
-	 * @param authManager Object to be passed to it's parent constructor
 	 * @param orgName The organization name
 	 */
-	public JwtAuthorizationFilter(AuthenticationManager authManager, Set<String> orgName) {
-		super(authManager);
+	public JwtAuthorizationFilter(Set<String> orgName) {
 		this.orgName = orgName;
 	}
 
-	/**
-	 * Internal filter of the Json Web Token (jwt) to determine the organization.
-	 *
-	 * @param request Object holding the token
-	 * @param response Object to hold the parsed token object
-	 * @param chain
-	 * @throws IOException check for IOException occuring
-	 * @throws ServletException check for ServletException occuring
-	 */
 	@Override
-	protected void doFilterInternal(HttpServletRequest request,
-									HttpServletResponse response,
-									FilterChain chain) throws IOException, ServletException {
-		String tokenHeader = request.getHeader(HEADER_STRING);
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+		HttpServletRequest httpRequest = null;
+		String tokenHeader = null;
+		if (request instanceof HttpServletRequest) {
+			httpRequest = (HttpServletRequest) request;
+			tokenHeader = httpRequest.getHeader(HEADER_STRING);
+		}
 
 		if (tokenHeader == null) {
 			chain.doFilter(request, response);
