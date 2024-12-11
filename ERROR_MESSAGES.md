@@ -18,7 +18,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 14 : CT - The electronic measure id: `(Current eMeasure ID)` requires `(Number of Subpopulations required)` `(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`
 * 15 : CT - Review the Promoting Interoperability Numerator Denominator element. It must have a parent Promoting Interoperability Section.
 * 16 : CT - Review the Promoting Interoperability Numerator Denominator element. It must have a measure name ID
-* 17 : CT - Review the Pomoting Interoperability Numerator Denominator element. it must have a child element.
+* 17 : CT - Review the Promoting Interoperability Numerator Denominator element. it must have a child element.
 * 18 : CT - This Promoting Interoperability Numerator Denominator element requires exactly one `(Denominator|Numerator)` element child
 * 22 : CT - Review the Reporting Parameter Act in the Promoting Interoperability section. It must comply with the Implementation Guide: https://ecqi.healthit.gov/sites/default/files/2024-CMS-QRDA-III-EC-IG-v1.1-508.pdf#page=17
 * 23 : CT - Review the element "Clinical Document." It must have at least one measure section or a child element of type Promoting Interoperability or Improvement Activities.
@@ -32,7 +32,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 31 : CT - The file must have a performance year. You can find more information on performance periods in the Implementation Guide: https://ecqi.healthit.gov/sites/default/files/2024-CMS-QRDA-III-EC-IG-v1.1-508.pdf#page=17
 * 32 : CT - The Quality Measure section must only have one Reporting Parameter Act. You can find more information on performance periods in the Implementation Guide: https://ecqi.healthit.gov/sites/default/files/2024-CMS-QRDA-III-EC-IG-v1.1-508.pdf#page=17
 * 33 : CT - The Performance Rate `(supplied value)` must be a decimal between 0 and 1.
-* 34 : CT - PCF submissions must have a practice site address. You canfind more information on the `(Submission year's)` Implementation Guide: https://ecqi.healthit.gov/sites/default/files/2024-CMS-QRDA-III-EC-IG-v1.1-508.pdf#page=22
+* 34 : CT - PCF submissions must have a practice site address. You can find more information on the `(Submission year's)` Implementation Guide: https://ecqi.healthit.gov/sites/default/files/2024-CMS-QRDA-III-EC-IG-v1.1-508.pdf#page=22
 * 35 : CT - Review the file. It must only have one Alternative Payment Model (APM) Entity Identifier. You can find more information in the Implementation Guide: https://ecqi.healthit.gov/sites/default/files/2024-CMS-QRDA-III-EC-IG-v1.1-508.pdf#page=15
 * 36 : CT - Review the file. It must have at least one measure section.
 * 37 : CT - Review the performance rate(s) in the file. The number for measure `(Given measure id)` is `(Expected value)`
@@ -65,7 +65,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 72 : CT - Contact your Health IT vendor. The QRDA III file is missing a performance rate. Performance rate is required for PCF reporting. You can find more information on page 17 of the implementation guide: https://ecqi.healthit.gov/sites/default/files/2024-CMS-QRDA-III-EC-IG-v1.1-508.pdf#page=17
 * 78 : CT - Enter an entity ID for the program 'MIPS Virtual Group'.
 * 79 : CT - Enter a TIN number to verify the NPI/Alternative Payment Model (APM) combinations.
-* 80 : CT - Review NPI `(npi)` and TIN `(tin)`. This NPI/TIN combination is missing from the QRDA III file or is not in the `(program)` practitioner roster for `(apm)`. Ensure your submission contains all required NPI/TIN combinations and your `(program)` practitioner roster is up-to-date.
+* 80 : CT - Review count of TINs(`(tinCount)`) and NPIs(`(npiCount)`).  Ensure your TIN and NPI counts match.
 * 81 : CT - At least one measure is required in a measure section
 * 82 : CT - This QRDA III file shows 100 out of `(Error amount)` errors. Correct and re-submit the file. 
 * 84 : CT - `(Program name)` QRDA-III Submissions require at least one TIN number.
