@@ -286,7 +286,7 @@ public enum ProblemCode implements LocalizedProblem {
 
 	private static final class ServiceCenter {
 		static final String MESSAGE = "Contact the customer service center for assistance by email at QPP@cms.hhs.gov "
-			+ "or by phone at 288-8292 (TTY: 1-877-715-6222)";
+			+ "or by phone at 1-866-288-8292 (TRS: 711)";
 	}
 
 }
