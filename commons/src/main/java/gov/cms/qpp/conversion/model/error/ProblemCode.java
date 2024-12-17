@@ -53,7 +53,7 @@ public enum ProblemCode implements LocalizedProblem {
 		+ "Interoperability Numerator Denominator element requires exactly one `(Denominator|Numerator)` element child", true),
 	PI_SECTION_MISSING_REPORTING_PARAMETER_ACT(22, "Review the Reporting Parameter Act in the "
 		+ "Promoting Interoperability section. It must comply with the Implementation Guide: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
-	CLINICAL_DOCUMENT_MISSING_PI_OR_IA_OR_ECQM_CHILD(23, "Review the element \"Clinical Document.\" It must have "
+	CLINICAL_DOCUMENT_MISSING_PI_OR_IA_OR_ECQM_CHILD(23, "Review the element 'Clinical Document'. It must have "
 		+ "at least one measure section or a child element of type Promoting Interoperability or Improvement Activities."),
 	CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME(24, "Review the QRDA III file. It must only have "
 		+ "one program name from this list: `(list of valid program names)`", true),
