@@ -33,7 +33,7 @@ public class SpecPiiValidator implements PiiValidator {
 		List<String> tinList = Arrays.asList(
 				node.getValue(TAX_PAYER_IDENTIFICATION_NUMBER).split(","));
 		if (npiList.size() != tinList.size()) {
-			validator.addError(Detail.forProblemAndNode(ProblemCode.INCORRECT_API_NPI_COMBINATION, node));
+			validator.addError(Detail.forProblemCode(ProblemCode.INCORRECT_API_NPI_COMBINATION.format(tinList.size(), npiList.size())));
 		} else {
 			validateInvalidApmCombinations(node, validator, npiList, tinList);
 			validateMissingApmCombinations(node, validator, npiList, tinList);
