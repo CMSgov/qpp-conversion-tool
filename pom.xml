@@ -6,7 +6,7 @@
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-conversion-tool-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>2024.2.3</version>
+	<version>2024.2.5-RELEASE</version>
 	<name>QPP Conversion Tool</name>
 
 	<properties>
