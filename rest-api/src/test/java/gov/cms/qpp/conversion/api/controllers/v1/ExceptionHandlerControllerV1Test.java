@@ -80,7 +80,7 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 
 		assertWithMessage("The response entity's status code must be 422.")
 				.that(responseEntity.getStatusCode())
-				.isEquivalentAccordingToCompareTo(HttpStatus.UNPROCESSABLE_ENTITY);
+				.isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@Test
@@ -112,7 +112,7 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 
 		assertWithMessage("The response entity's status code must be 422.")
 				.that(responseEntity.getStatusCode())
-				.isEquivalentAccordingToCompareTo(HttpStatus.UNPROCESSABLE_ENTITY);
+				.isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@Test
@@ -144,7 +144,7 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 
 		assertWithMessage("The response entity's status code must be 422.")
 				.that(responseEntity.getStatusCode())
-				.isEquivalentAccordingToCompareTo(HttpStatus.NOT_FOUND);
+				.isEqualTo(HttpStatus.NOT_FOUND);
 	}
 
 	@Test
@@ -176,7 +176,7 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 
 		assertWithMessage("The response entity's status code must be 422.")
 				.that(responseEntity.getStatusCode())
-				.isEquivalentAccordingToCompareTo(HttpStatus.NOT_FOUND);
+				.isEqualTo(HttpStatus.NOT_FOUND);
 	}
 
 	@Test

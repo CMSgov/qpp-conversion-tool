@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.api.logging;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.Part;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Part;
 
 import java.io.IOException;
 import java.util.Collection;
