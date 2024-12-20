@@ -47,13 +47,13 @@ public enum ProblemCode implements LocalizedProblem {
 		+ "Numerator Denominator element. It must have a parent Promoting Interoperability Section."),
 	PI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID(16, "Review the Promoting Interoperability "
 		+ "Numerator Denominator element. It must have a measure name ID"),
-	PI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN(17, "Review the Pomoting Interoperability "
+	PI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN(17, "Review the Promoting Interoperability "
 		+ "Numerator Denominator element. it must have a child element."),
 	PI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE(18, "This Promoting "
 		+ "Interoperability Numerator Denominator element requires exactly one `(Denominator|Numerator)` element child", true),
 	PI_SECTION_MISSING_REPORTING_PARAMETER_ACT(22, "Review the Reporting Parameter Act in the "
 		+ "Promoting Interoperability section. It must comply with the Implementation Guide: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
-	CLINICAL_DOCUMENT_MISSING_PI_OR_IA_OR_ECQM_CHILD(23, "Review the element \"Clinical Document.\" It must have "
+	CLINICAL_DOCUMENT_MISSING_PI_OR_IA_OR_ECQM_CHILD(23, "Review the element 'Clinical Document'. It must have "
 		+ "at least one measure section or a child element of type Promoting Interoperability or Improvement Activities."),
 	CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME(24, "Review the QRDA III file. It must only have "
 		+ "one program name from this list: `(list of valid program names)`", true),
@@ -74,7 +74,7 @@ public enum ProblemCode implements LocalizedProblem {
 	QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT(32, "The Quality Measure section must only have one Reporting Parameter Act. "
 		+ "You can find more information on performance periods in the Implementation Guide: " + DocumentationReference.PERFORMANCE_PERIOD), //NOSONAR
 	PERFORMANCE_RATE_INVALID_VALUE(33, "The Performance Rate `(supplied value)` must be a decimal between 0 and 1.", true),
-	PCF_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS(34, "PCF submissions must have a practice site address. You can"
+	PCF_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS(34, "PCF submissions must have a practice site address. You can "
 		+ "find more information on the `(Submission year's)` Implementation Guide: " + DocumentationReference.PRACTICE_SITE_ADDRESS, true),
 	PCF_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED(35, "Review the file. It must only have one Alternative Payment Model (APM) "
 		+ "Entity Identifier. You can find more information in the Implementation Guide: " + DocumentationReference.IDENTIFIERS),
@@ -145,9 +145,8 @@ public enum ProblemCode implements LocalizedProblem {
 		+ "on page 17 of the implementation guide: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
 	VIRTUAL_GROUP_ID_REQUIRED(78, "Enter an entity ID for the program 'MIPS Virtual Group'."),
 	MISSING_PII_VALIDATOR(79, "Enter a TIN number to verify the NPI/Alternative Payment Model (APM) combinations."),
-	INCORRECT_API_NPI_COMBINATION(80, "Review NPI `(npi)` and TIN `(tin)`. This NPI/TIN combination is missing "
-		+ "from the QRDA III file or is not in the `(program)` practitioner roster for `(apm)`. Ensure your submission "
-		+ "contains all required NPI/TIN combinations and your `(program)` practitioner roster is up-to-date.", true),
+	INCORRECT_API_NPI_COMBINATION(80, "Review count of TINs (`(tinCount)`) and NPIs (`(npiCount)`).  "
+		+ "Ensure your TIN and NPI counts match.", true),
 	MEASURE_SECTION_MISSING_MEASURE(81, "At least one measure is required in a measure section"),
 	TOO_MANY_ERRORS(82, "This QRDA III file shows 100 out of `(Error amount)` errors. Correct and re-submit the file. ", true),
 	PCF_TIN_REQUIRED(84, "`(Program name)` QRDA-III Submissions require at least one TIN number.", true),
@@ -286,7 +285,7 @@ public enum ProblemCode implements LocalizedProblem {
 
 	private static final class ServiceCenter {
 		static final String MESSAGE = "Contact the customer service center for assistance by email at QPP@cms.hhs.gov "
-			+ "or by phone at 288-8292 (TTY: 1-877-715-6222)";
+			+ "or by phone at 1-866-288-8292 (TRS: 711)";
 	}
 
 }

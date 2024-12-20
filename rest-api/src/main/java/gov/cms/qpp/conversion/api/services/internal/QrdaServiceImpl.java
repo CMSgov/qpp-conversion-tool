@@ -19,7 +19,7 @@ import gov.cms.qpp.conversion.api.services.StorageService;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 

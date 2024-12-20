@@ -15,7 +15,7 @@ public enum DocumentationReference {
 	private static final String BASE_PATH = "https://ecqi.healthit.gov/sites/default/files/2024-CMS-QRDA-III-EC-IG-v1.1-508.pdf#page=";
 	public static final String PERFORMANCE_START_DATE = "01/01/2024";
 	public static final String PERFORMANCE_END_DATE = "12/31/2024";
-	public static final String ROSTER_UPDATE_DATE = "December 1, 2024";
+	public static final String ROSTER_UPDATE_DATE = "December 13, 2024";
 	private final String path;
 
 	DocumentationReference(int page) {
