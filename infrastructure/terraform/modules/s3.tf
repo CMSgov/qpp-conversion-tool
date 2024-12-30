@@ -114,7 +114,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_bucket" {
 
     expiration {
       days                         = 365
-      expired_object_delete_marker = true
+      expired_object_delete_marker = false
     }
 
     filter {}

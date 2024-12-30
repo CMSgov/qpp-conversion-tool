@@ -78,6 +78,9 @@ variable "allow_kms_keys" {
   description = "kms arns to be allowed"
 }
 
+variable "conversion_tool_service_desired_count" {
+}
+
 # QPPSE-1208
 # add default_tags as variable to allow clean merge/override
 variable "tags" {

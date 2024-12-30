@@ -12,7 +12,7 @@ terraform {
             version = "=3.70.0"
         }
     }
-    required_version = "1.0.0"
+    required_version = "1.9.7"
 }
 
 provider "aws" {
@@ -26,6 +26,7 @@ data "aws_caller_identity" "current" {}
 resource "aws_cloudwatch_event_rule" "ecs-task-monitor" {
   name        = "ecsct-task-monitor-${var.project_name}-${var.environment}"
   description = "This Event bridge rule Monitors ECS clusters of prod and impl and triggers upon a Task State Change"
+  is_enabled  = false
 
   event_pattern = <<EOF
 {
@@ -108,14 +109,6 @@ resource "aws_iam_policy" "lambda_publish_to_ses" {
                 "ses:SendEmail",
                 "ses:SendRawEmail"
             ],
-            "Condition": {
-              "StringLike": {
-                "ses:FromAddress": [
-                  "893a0342-571a-43d4-ad5e-f4b0aef7654b+CT-routingkey-nonprod@alert.victorops.com",
-                  "893a0342-571a-43d4-ad5e-f4b0aef7654b+CT-routingkey-prod@alert.victorops.com"
-                ],
-              }
-          }
             "Resource": "*"
         }
     ]

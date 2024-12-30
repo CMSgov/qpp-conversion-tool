@@ -12,7 +12,7 @@ terraform {
             version = "=3.70.0"
         }
     }
-    required_version = "1.0.0"
+    required_version = "1.9.7"
 }
 
 provider "aws" {
@@ -148,7 +148,7 @@ resource "aws_lambda_function" "ddb-notification-alerts" {
   environment {
     variables = {
       "channel" = "p-qpp-sub-alerts"
-      "slack_channel_webhook" = ""
+      "slack_channel_webhook" = "slack_hook_url"
     }
   }
 
