@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>2024.2.6-RELEASE</version>
+		<version>2024.2.7-RELEASE</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -170,7 +170,7 @@
 		<dependency>
 			<groupId>gov.cms.qpp.conversion</groupId>
 			<artifactId>commons</artifactId>
-			<version>2024.2.6-RELEASE</version>
+			<version>2024.2.7-RELEASE</version>
 			<scope>compile</scope>
 		</dependency>
 
