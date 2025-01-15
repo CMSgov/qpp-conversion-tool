@@ -53,10 +53,10 @@ phases:
       - echo ${CODEBUILD_SRC_DIR}
       - ECS_ENV="${ENV}"
       - |
-        if [ "$ENV" = "dev" ] || [ "$ENV" = "impl" ]; then
-          CLUSTER_NAME="${ENV}-api-ecs"
-        else
+        if [ "$ENV" = "prod" ] || [ "$ENV" = "devpre" ]; then
           CLUSTER_NAME="qppa-${ENV}-api-ecs"
+        else
+          CLUSTER_NAME="${ENV}-api-ecs"
         fi
       - echo "${CLUSTER_NAME}"
       - SERVICE_NAME="${ENV}-conversion-tool"
