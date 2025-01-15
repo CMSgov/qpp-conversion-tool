@@ -11,8 +11,8 @@
     "subcategoryId": "expandedPracticeAccess",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
-      "G0056",
       "G0053",
       "G0059",
       "M0001",
@@ -36,6 +36,7 @@
     "subcategoryId": "expandedPracticeAccess",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "G0053",
       "M0001",
@@ -58,6 +59,7 @@
     "subcategoryId": "expandedPracticeAccess",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "M1370"
     ]
@@ -74,6 +76,7 @@
     "subcategoryId": "expandedPracticeAccess",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -89,6 +92,7 @@
     "subcategoryId": "expandedPracticeAccess",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -104,6 +108,7 @@
     "subcategoryId": "populationManagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -119,6 +124,7 @@
     "subcategoryId": "populationManagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -134,6 +140,7 @@
     "subcategoryId": "populationManagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -149,6 +156,7 @@
     "subcategoryId": "populationManagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -164,6 +172,7 @@
     "subcategoryId": "populationManagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "M1366",
       "M1368",
@@ -182,6 +191,7 @@
     "subcategoryId": "populationManagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "M0002",
       "M0003",
@@ -202,6 +212,7 @@
     "subcategoryId": "populationManagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -217,8 +228,8 @@
     "subcategoryId": "populationManagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
-      "G0056",
       "G0054",
       "G0055",
       "M0002",
@@ -237,8 +248,8 @@
     "subcategoryId": "populationManagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
-      "G0056",
       "G0055",
       "M0001",
       "M1368"
@@ -256,6 +267,7 @@
     "subcategoryId": "populationManagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "G0054",
       "M0001"
@@ -273,6 +285,7 @@
     "subcategoryId": "populationManagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "G0053",
       "M0001",
@@ -295,6 +308,7 @@
     "subcategoryId": "populationManagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -310,6 +324,7 @@
     "subcategoryId": "populationManagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -325,6 +340,7 @@
     "subcategoryId": "populationManagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -340,6 +356,7 @@
     "subcategoryId": "populationManagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -355,6 +372,7 @@
     "subcategoryId": "populationManagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "M0001",
       "M0003",
@@ -373,6 +391,7 @@
     "subcategoryId": "careCoordination",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "M0001",
       "M0003",
@@ -393,8 +412,8 @@
     "subcategoryId": "careCoordination",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
-      "G0056",
       "G0054",
       "G0057",
       "G0059",
@@ -414,6 +433,7 @@
     "subcategoryId": "careCoordination",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "G0058"
     ]
@@ -430,6 +450,7 @@
     "subcategoryId": "careCoordination",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "M1370"
     ]
@@ -446,6 +467,7 @@
     "subcategoryId": "careCoordination",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "G0055",
       "G0058",
@@ -464,6 +486,7 @@
     "subcategoryId": "careCoordination",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -479,6 +502,7 @@
     "subcategoryId": "careCoordination",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -494,8 +518,8 @@
     "subcategoryId": "careCoordination",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
-      "G0056",
       "M1370"
     ]
   },
@@ -511,8 +535,8 @@
     "subcategoryId": "careCoordination",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
-      "G0056",
       "G0054",
       "G0058",
       "M0001",
@@ -533,6 +557,7 @@
     "subcategoryId": "careCoordination",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "G0058",
       "G0059"
@@ -550,6 +575,7 @@
     "subcategoryId": "careCoordination",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -565,6 +591,7 @@
     "subcategoryId": "careCoordination",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "G0054",
       "M0001"
@@ -582,6 +609,7 @@
     "subcategoryId": "careCoordination",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -597,6 +625,7 @@
     "subcategoryId": "careCoordination",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "G0059"
     ]
@@ -613,6 +642,7 @@
     "subcategoryId": "beneficiaryEngagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "G0053",
       "G0054"
@@ -630,6 +660,7 @@
     "subcategoryId": "beneficiaryEngagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -645,8 +676,8 @@
     "subcategoryId": "beneficiaryEngagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0057",
@@ -672,6 +703,7 @@
     "subcategoryId": "beneficiaryEngagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -687,6 +719,7 @@
     "subcategoryId": "beneficiaryEngagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "G0053",
       "G0054",
@@ -714,6 +747,7 @@
     "subcategoryId": "beneficiaryEngagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "G0055",
       "G0058",
@@ -733,6 +767,7 @@
     "subcategoryId": "beneficiaryEngagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "M0002"
     ]
@@ -749,6 +784,7 @@
     "subcategoryId": "beneficiaryEngagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "G0053",
       "G0055",
@@ -770,8 +806,8 @@
     "subcategoryId": "beneficiaryEngagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
-      "G0056",
       "M0002",
       "M0003",
       "M0004",
@@ -791,6 +827,7 @@
     "subcategoryId": "beneficiaryEngagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -806,8 +843,8 @@
     "subcategoryId": "beneficiaryEngagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
-      "G0056",
       "G0059"
     ]
   },
@@ -823,6 +860,7 @@
     "subcategoryId": "beneficiaryEngagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "M1369"
     ]
@@ -839,6 +877,7 @@
     "subcategoryId": "beneficiaryEngagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "G0053",
       "G0054",
@@ -860,6 +899,7 @@
     "subcategoryId": "beneficiaryEngagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "G0053",
       "G0055"
@@ -877,6 +917,7 @@
     "subcategoryId": "patientSafetyAndPracticeAssessment",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "G0057",
       "G0059"
@@ -894,6 +935,7 @@
     "subcategoryId": "patientSafetyAndPracticeAssessment",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -909,6 +951,7 @@
     "subcategoryId": "patientSafetyAndPracticeAssessment",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -924,8 +967,8 @@
     "subcategoryId": "patientSafetyAndPracticeAssessment",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
-      "G0056",
       "G0055"
     ]
   },
@@ -941,8 +984,8 @@
     "subcategoryId": "patientSafetyAndPracticeAssessment",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
-      "G0056",
       "G0055",
       "G0057",
       "G0058",
@@ -962,6 +1005,7 @@
     "subcategoryId": "patientSafetyAndPracticeAssessment",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -977,6 +1021,7 @@
     "subcategoryId": "patientSafetyAndPracticeAssessment",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -992,6 +1037,7 @@
     "subcategoryId": "patientSafetyAndPracticeAssessment",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -1007,6 +1053,7 @@
     "subcategoryId": "patientSafetyAndPracticeAssessment",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "M0001"
     ]
@@ -1023,6 +1070,7 @@
     "subcategoryId": "patientSafetyAndPracticeAssessment",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "G0057"
     ]
@@ -1039,6 +1087,7 @@
     "subcategoryId": "patientSafetyAndPracticeAssessment",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "G0059",
       "M0001",
@@ -1058,6 +1107,7 @@
     "subcategoryId": "patientSafetyAndPracticeAssessment",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -1073,6 +1123,7 @@
     "subcategoryId": "patientSafetyAndPracticeAssessment",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "G0058"
     ]
@@ -1089,8 +1140,8 @@
     "subcategoryId": "patientSafetyAndPracticeAssessment",
     "allowedPrograms": [
       "mips",
-      "app1",
-      "G0056"
+      "pcf",
+      "app1"
     ]
   },
   {
@@ -1105,6 +1156,7 @@
     "subcategoryId": "patientSafetyAndPracticeAssessment",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "M0003",
       "M0004",
@@ -1123,6 +1175,7 @@
     "subcategoryId": "patientSafetyAndPracticeAssessment",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -1138,6 +1191,7 @@
     "subcategoryId": "patientSafetyAndPracticeAssessment",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "M1368"
     ]
@@ -1154,6 +1208,7 @@
     "subcategoryId": "patientSafetyAndPracticeAssessment",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -1169,6 +1224,7 @@
     "subcategoryId": "patientSafetyAndPracticeAssessment",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -1184,6 +1240,7 @@
     "subcategoryId": "patientSafetyAndPracticeAssessment",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "G0058"
     ]
@@ -1200,6 +1257,7 @@
     "subcategoryId": "patientSafetyAndPracticeAssessment",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "G0053",
       "M0001"
@@ -1217,6 +1275,7 @@
     "subcategoryId": "patientSafetyAndPracticeAssessment",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -1232,6 +1291,7 @@
     "subcategoryId": "patientSafetyAndPracticeAssessment",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "M1368",
       "M1369"
@@ -1249,6 +1309,7 @@
     "subcategoryId": "patientSafetyAndPracticeAssessment",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -1264,6 +1325,7 @@
     "subcategoryId": "achievingHealthEquity",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "M1366",
       "M1368",
@@ -1282,8 +1344,8 @@
     "subcategoryId": "achievingHealthEquity",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
-      "G0056",
       "G0053",
       "G0058",
       "M0002",
@@ -1308,6 +1370,7 @@
     "subcategoryId": "achievingHealthEquity",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "M1367",
       "M1368",
@@ -1326,6 +1389,7 @@
     "subcategoryId": "achievingHealthEquity",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "M1370"
     ]
@@ -1342,6 +1406,7 @@
     "subcategoryId": "achievingHealthEquity",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -1357,6 +1422,7 @@
     "subcategoryId": "achievingHealthEquity",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -1372,6 +1438,7 @@
     "subcategoryId": "achievingHealthEquity",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "G0054",
       "G0055",
@@ -1394,6 +1461,7 @@
     "subcategoryId": "emergencyResponseAndPreparedness",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -1409,6 +1477,7 @@
     "subcategoryId": "emergencyResponseAndPreparedness",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -1424,6 +1493,7 @@
     "subcategoryId": "emergencyResponseAndPreparedness",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -1439,6 +1509,7 @@
     "subcategoryId": "emergencyResponseAndPreparedness",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "M0001"
     ]
@@ -1455,6 +1526,7 @@
     "subcategoryId": "emergencyResponseAndPreparedness",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -1470,6 +1542,7 @@
     "subcategoryId": "behavioralAndMentalHealth",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -1485,6 +1558,7 @@
     "subcategoryId": "behavioralAndMentalHealth",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "G0053",
       "G0059",
@@ -1503,6 +1577,7 @@
     "subcategoryId": "behavioralAndMentalHealth",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "M0003",
       "M0004"
@@ -1520,6 +1595,7 @@
     "subcategoryId": "behavioralAndMentalHealth",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "M1369"
     ]
@@ -1536,6 +1612,7 @@
     "subcategoryId": "behavioralAndMentalHealth",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "M1369"
     ]
@@ -1552,6 +1629,7 @@
     "subcategoryId": "behavioralAndMentalHealth",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "M0003",
       "M0004"
@@ -1569,6 +1647,7 @@
     "subcategoryId": "behavioralAndMentalHealth",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -1584,6 +1663,7 @@
     "subcategoryId": "behavioralAndMentalHealth",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -1599,6 +1679,7 @@
     "subcategoryId": "behavioralAndMentalHealth",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "M1366"
     ]
@@ -1615,6 +1696,7 @@
     "subcategoryId": "behavioralAndMentalHealth",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "G0057",
       "M0001",
@@ -1633,8 +1715,8 @@
     "subcategoryId": null,
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -1665,6 +1747,7 @@
     "subcategoryId": "achievingHealthEquity",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -1680,6 +1763,7 @@
     "subcategoryId": "achievingHealthEquity",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -1695,6 +1779,7 @@
     "subcategoryId": "expandedPracticeAccess",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -1710,6 +1795,7 @@
     "subcategoryId": "emergencyResponseAndPreparedness",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1"
     ]
   },
@@ -1725,8 +1811,8 @@
     "subcategoryId": "achievingHealthEquity",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
-      "G0056",
       "G0055",
       "G0057",
       "M0005",
@@ -1748,6 +1834,7 @@
     "subcategoryId": "populationManagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "M0005",
       "M1368"
@@ -1764,8 +1851,6 @@
     "weight": "high",
     "subcategoryId": null,
     "allowedPrograms": [
-      "mips",
-      "app1",
       "G0053",
       "G0054",
       "G0055",
@@ -1796,6 +1881,7 @@
     "subcategoryId": "populationManagement",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "M0005",
       "M1366"
@@ -1813,6 +1899,7 @@
     "subcategoryId": "behavioralAndMentalHealth",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "M1366",
       "M1369"
@@ -1830,6 +1917,7 @@
     "subcategoryId": "behavioralAndMentalHealth",
     "allowedPrograms": [
       "mips",
+      "pcf",
       "app1",
       "G0054",
       "M1369",
@@ -1857,7 +1945,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -1898,7 +1985,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -1937,7 +2023,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -1976,7 +2061,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -2019,7 +2103,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -2058,7 +2141,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -2102,7 +2184,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -2148,7 +2229,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -2187,7 +2267,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -2233,7 +2312,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -2272,7 +2350,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -2317,7 +2394,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -2358,7 +2434,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -2399,7 +2474,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -2447,7 +2521,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -2492,7 +2565,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -2534,7 +2606,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -2576,7 +2647,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -2621,7 +2691,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -2666,7 +2735,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -2708,7 +2776,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -2750,7 +2817,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -2791,7 +2857,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -2835,7 +2900,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -2876,7 +2940,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -2914,7 +2977,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -2959,7 +3021,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -2997,7 +3058,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -3037,7 +3097,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -3076,7 +3135,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -3115,7 +3173,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -3154,7 +3211,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -3193,7 +3249,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -3232,7 +3287,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -3271,7 +3325,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -3310,7 +3363,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -3349,7 +3401,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -3388,7 +3439,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -3550,7 +3600,6 @@
     "allowedPrograms": [
       "mips",
       "pcf",
-      "G0056",
       "G0055"
     ],
     "submissionMethods": [
@@ -3958,7 +4007,6 @@
     "allowedPrograms": [
       "mips",
       "pcf",
-      "G0056",
       "G0054",
       "G0055",
       "M0001",
@@ -4564,7 +4612,6 @@
     "allowedPrograms": [
       "mips",
       "pcf",
-      "G0056",
       "G0055"
     ],
     "submissionMethods": [
@@ -6041,7 +6088,6 @@
       "mips",
       "pcf",
       "app1",
-      "G0056",
       "G0054",
       "M0002",
       "M0005"
@@ -7487,7 +7533,6 @@
       "mips",
       "pcf",
       "app1",
-      "G0056",
       "G0057",
       "M0001",
       "M0005"
@@ -9178,8 +9223,7 @@
     "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
-      "pcf",
-      "G0056"
+      "pcf"
     ],
     "submissionMethods": [
       "registry"
@@ -10102,7 +10146,6 @@
     "allowedPrograms": [
       "mips",
       "pcf",
-      "G0056",
       "G0054",
       "M0005"
     ],
@@ -11228,7 +11271,6 @@
       "mips",
       "pcf",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -11398,7 +11440,6 @@
     "allowedPrograms": [
       "mips",
       "pcf",
-      "G0056",
       "M0005"
     ],
     "submissionMethods": [
@@ -11983,7 +12024,7 @@
       "preventiveMedicine"
     ],
     "measureSpecification": {
-      "registry": "http://qpp.cms.gov/docs/QPP_quality_measure_specifications/CQM-Measures/2024_Measure_497_MIPSCQM_Spec_and_Addendum.zip"
+      "registry": "https://qpp.cms.gov/docs/QPP_quality_measure_specifications/CQM-Measures/2024_Measure_497_MIPSCQM_Spec_and_Addendum.zip"
     },
     "overallAlgorithm": "weightedAverage",
     "strata": [
@@ -12296,7 +12337,7 @@
       "urology"
     ],
     "measureSpecification": {
-      "registry": "http://qpp.cms.gov/docs/QPP_quality_measure_specifications/CQM-Measures/2024_Measure_503_MIPSCQM_Spec_and_Addendum.zip"
+      "registry": "https://qpp.cms.gov/docs/QPP_quality_measure_specifications/CQM-Measures/2024_Measure_503_MIPSCQM_Spec_and_Addendum.zip"
     },
     "overallAlgorithm": "overallStratumOnly",
     "strata": [
@@ -12589,7 +12630,6 @@
       "mips",
       "pcf",
       "app1",
-      "G0056",
       "G0053",
       "G0054",
       "G0055",
@@ -12660,7 +12700,6 @@
     "allowedPrograms": [
       "mips",
       "app1",
-      "G0056",
       "G0053",
       "G0055",
       "M0001",
