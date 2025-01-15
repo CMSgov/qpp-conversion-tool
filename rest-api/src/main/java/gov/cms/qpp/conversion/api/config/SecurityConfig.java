@@ -3,11 +3,13 @@ package gov.cms.qpp.conversion.api.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import gov.cms.qpp.conversion.api.security.JwtAuthorizationFilter;
 
@@ -18,37 +20,33 @@ import java.util.Set;
  */
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@CrossOrigin(origins="*")
+@EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
+public class SecurityConfig {
 
-	private static final String PCF_WILDCARD = "/pcf/**";
+    private static final String PCF_WILDCARD = "/pcf/**";
 
-	@Value("${ORG_NAME:" + JwtAuthorizationFilter.DEFAULT_ORG_NAME + "}")
+    @Value("${ORG_NAME:" + JwtAuthorizationFilter.DEFAULT_ORG_NAME + "}")
 	protected String orgName;
 
 	@Value("${RTI_ORG_NAME:" + JwtAuthorizationFilter.DEFAULT_RTI_ORG + "}")
 	protected String rtiOrgName;
 
-	/**
-	 * Configures the path to be authorized by the JWT token
-	 *
-	 * @param http Object that holds configuration
-	 * @throws Exception check for any Exception that may occur
-	 */
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.requestMatchers().antMatchers(PCF_WILDCARD)
-			.and()
-			.authorizeRequests()
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.securityMatcher(PCF_WILDCARD)
+            .authorizeRequests()
 			.anyRequest().authenticated()
 			.and()
-			.addFilter(new JwtAuthorizationFilter(authenticationManager(), Set.of(orgName, rtiOrgName)))
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			.and().cors()
-			.and().csrf().disable()
+            .csrf(csrf -> csrf.disable())
+            .addFilterAt(new JwtAuthorizationFilter(Set.of(orgName, rtiOrgName)), BasicAuthenticationFilter.class)
+            .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.headers(headers -> headers
 				.contentSecurityPolicy(csp -> csp
 					.policyDirectives("script-src 'self'")
 				)
-			);
-	}
+            );
+
+        return http.build();
+    }
 }
