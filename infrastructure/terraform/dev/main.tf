@@ -50,11 +50,3 @@ module "conversion-tool" {
   ## QPPSE-1208
   tags = var.default_tags
 }
-
-# module "conversion-tool-newrelic" {
-#   source = "../modules/newrelic/"
-
-#   environment        = var.environment
-#   application        = var.application
-
-# }
