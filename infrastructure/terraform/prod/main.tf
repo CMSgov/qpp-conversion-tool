@@ -51,19 +51,19 @@ module "conversion-tool" {
   tags = var.default_tags
 }
 
-module "conversion-tool-newrelic" {
-  source = "../modules/newrelic"
+# module "conversion-tool-newrelic" {
+#   source = "../modules/newrelic"
 
-  environment        = var.environment
-  application        = var.application
+#   environment        = var.environment
+#   application        = var.application
 
-}
+# }
 
-module "conversion-tool-newrelic-synthetics" {
-  source = "../modules/newrelic-synthetics"
+# module "conversion-tool-newrelic-synthetics" {
+#   source = "../modules/newrelic-synthetics"
 
-  environment        = var.environment
-  application        = var.application
-  ct_api_url         = var.ct_api_url
+#   environment        = var.environment
+#   application        = var.application
+#   ct_api_url         = var.ct_api_url
 
-}
+# }

@@ -51,10 +51,10 @@ module "conversion-tool" {
   tags = var.default_tags
 }
 
-module "conversion-tool-newrelic" {
-  source = "../modules/newrelic/"
+# module "conversion-tool-newrelic" {
+#   source = "../modules/newrelic/"
 
-  environment        = var.environment
-  application        = var.application
+#   environment        = var.environment
+#   application        = var.application
 
-}
+# }
