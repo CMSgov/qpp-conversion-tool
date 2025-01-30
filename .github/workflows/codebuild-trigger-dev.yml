@@ -1,4 +1,4 @@
-name: Codebuild trigger to deploy it to develop branch
+name: Codebuild trigger to deploy it to develop environment
 on:
   push:
     branches: [ develop ]
@@ -10,16 +10,19 @@ jobs:
       id-token: write
       contents: read
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - name: Print branch name
+        run: |
+          echo "Current branch: ${GITHUB_REF##*/}"
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: arn:aws:iam::730335206644:role/delegatedadmin/developer/qppa-github-actions-role
           aws-region: us-east-1
 
-      - name: Run CodeBuild
-        uses: aws-actions/aws-codebuild-run-build@v1
-        with:
-          project-name: qppa-conversion-tool-dev
+      - name: Execute ssh command
+        run: |
+          aws codebuild start-build --project-name "qppa-conversion-tool-dev" --source-version "${GITHUB_REF##*/}"
