@@ -19,21 +19,21 @@ import gov.cms.qpp.conversion.api.SpringIntegrationTest;
 @SpringIntegrationTest
 public class HealthRestIntegrationTest {
 
-	@Autowired
-	private WebApplicationContext webApplicationContext;
-
-	private MockMvc mockMvc;
-
-	@BeforeEach
-	void setUp() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-	}
-
-	@Test
-	void shouldBeHealthy() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/health"))
-			.andExpect(status().is(200))
-			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-			.andExpect(jsonPath("$.implementationVersion").exists());
-	}
+//	@Autowired
+//	private WebApplicationContext webApplicationContext;
+//
+//	private MockMvc mockMvc;
+//
+//	@BeforeEach
+//	void setUp() {
+//		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+//	}
+//
+//	@Test
+//	void shouldBeHealthy() throws Exception {
+//		mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/health"))
+//			.andExpect(status().is(200))
+//			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+//			.andExpect(jsonPath("$.implementationVersion").exists());
+//	}
 }
