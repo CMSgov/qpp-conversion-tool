@@ -1,0 +1,28 @@
+name: Codebuild trigger to deploy it to devpre environment
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: conversion tool codebuil job
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v3
+      - name: Print branch name
+        run: |
+          echo "Current branch: ${GITHUB_REF##*/}"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::003384571330:role/delegatedadmin/developer/qppa-github-actions-role
+          aws-region: us-east-1
+
+      - name: Execute ssh command
+        run: |
+          aws codebuild start-build --project-name "qppa-conversion-tool-devpre" --source-version "${GITHUB_REF##*/}"
