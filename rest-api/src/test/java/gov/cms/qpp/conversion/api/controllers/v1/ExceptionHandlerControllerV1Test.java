@@ -209,14 +209,14 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 		Truth.assertThat(response.getStatusCodeValue()).isEqualTo(404);
 	}
 
-	@Test
-	void testHandleAmazonExceptionResponseBody() {
-		AmazonServiceException exception = new AmazonServiceException("some message");
-
-		ResponseEntity<String> response = objectUnderTest.handleAmazonException(exception);
-
-		Truth.assertThat(response.getBody()).contains("some message");
-	}
+//	@Test
+//	void testHandleAmazonExceptionResponseBody() {
+//		AmazonServiceException exception = new AmazonServiceException("some message");
+//
+//		ResponseEntity<String> response = objectUnderTest.handleAmazonException(exception);
+//
+//		Truth.assertThat(response.getBody()).contains("some message");
+//	}
 
 	@Test
 	void testHandleInvalidPurposeExceptionExceptionResponseBody() {

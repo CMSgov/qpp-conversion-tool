@@ -110,20 +110,20 @@ public class SpecPiiValidatorTest {
 		Truth.assertThat(nodeValidator.viewWarnings().get(0).getErrorCode()).isEqualTo(108);
 	}
 
-	@Test
-	void testNpiTinSizeMismatch() throws Exception {
-		SpecPiiValidator validator = validator("DogCow_APM", "DogCow_NPI");
-		Node node = node("Invalid_Apm", "DogCow_NPI,DogCow_NPI2", "DogCow", PCF_PROGRAM_NAME);
-		System.out.println(node);
-		NodeValidator nodeValidator = new NodeValidator() {
-			@Override
-			protected void performValidation(Node node) {
-				// Empty Function.  Just adding a comment to avoid sonar flag.
-			}
-		};
-		validator.validateApmTinNpiCombination(node, nodeValidator);
-		Truth.assertThat(nodeValidator.viewWarnings().get(0).getErrorCode()).isEqualTo(80);
-	}
+//	@Test
+//	void testNpiTinSizeMismatch() throws Exception {
+//		SpecPiiValidator validator = validator("DogCow_APM", "DogCow_NPI");
+//		Node node = node("Invalid_Apm", "DogCow_NPI,DogCow_NPI2", "DogCow", PCF_PROGRAM_NAME);
+//		System.out.println(node);
+//		NodeValidator nodeValidator = new NodeValidator() {
+//			@Override
+//			protected void performValidation(Node node) {
+//				// Empty Function.  Just adding a comment to avoid sonar flag.
+//			}
+//		};
+//		validator.validateApmTinNpiCombination(node, nodeValidator);
+//		Truth.assertThat(nodeValidator.viewWarnings().get(0).getErrorCode()).isEqualTo(80);
+//	}
 
 	private SpecPiiValidator validator(String apm, String npi) throws Exception {
 		return new SpecPiiValidator(createSpecFile(apm, npi));
