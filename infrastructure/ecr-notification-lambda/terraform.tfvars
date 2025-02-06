@@ -1,8 +1,0 @@
-environment        = "dev"
-region             = "us-east-1"
-project_name       = "qppsf-ct"
-git-origin         = "https://github.com/CMSgov/qpp-conversion-tool.git"
-pagerduty_email    = "qpp-final-scoring-devops@semanticbits.com"
-owner              = "qpp-final-scoring-devops@semanticbits.com"
-application        = "qpp-conversiontool"
-sensitivity        = "PII/PHI"

@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>2024.2.7-RELEASE</version>
+		<version>2024.2.8-RELEASE</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -43,16 +43,6 @@
 		<dependency>
 			<groupId>gov.cms.qpp.conversion</groupId>
 			<artifactId>commons</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>gov.cms.qpp.conversion</groupId>
-			<artifactId>test-commons</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>gov.cms.qpp.conversion</groupId>
-			<artifactId>generate-maven-plugin</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

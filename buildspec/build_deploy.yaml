@@ -53,7 +53,7 @@ phases:
       - echo ${CODEBUILD_SRC_DIR}
       - ECS_ENV="${ENV}"
       - |
-        if [ "$ENV" = "prod" || "$ENV" = "devpre" ]; then
+        if [ "$ENV" = "prod" ] || [ "$ENV" = "devpre" ]; then
           CLUSTER_NAME="qppa-${ENV}-api-ecs"
         else
           CLUSTER_NAME="${ENV}-api-ecs"
