@@ -76,7 +76,7 @@
 //	@Test(expected = org.junit.Test.None.class)
 //	public void testValidQppFile() {
 //		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
-//		Path path = Paths.get(VALID_FILE);
+//		Path path = Path.of(VALID_FILE);
 //		Converter converter = new Converter(new PathSource(path));
 //
 //		converter.transform();
@@ -86,7 +86,7 @@
 //	@Test(expected = org.junit.Test.None.class)
 //	public void testValidQppStream() {
 //		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
-//		Path path = Paths.get(VALID_FILE);
+//		Path path = Path.of(VALID_FILE);
 //		Converter converter = new Converter(
 //				new InputStreamSupplierSource(path.toString(), NioHelper.fileToStream(path)));
 //
@@ -104,7 +104,7 @@
 //			.withAnyArguments()
 //			.thenReturn(mockQrdaValidator);
 //
-//		Path path = Paths.get(ERROR_FILE);
+//		Path path = Path.of(ERROR_FILE);
 //		Converter converter = new Converter(new PathSource(path), context);
 //
 //		try {
@@ -126,7 +126,7 @@
 //
 //	@Test
 //	public void testInvalidXml() {
-//		Path path = Paths.get(INVALID_XML);
+//		Path path = Path.of(INVALID_XML);
 //		Converter converter = new Converter(new PathSource(path));
 //
 //		try {
@@ -145,7 +145,7 @@
 //		EncodeException ex = new EncodeException("mocked", new RuntimeException());
 //		doThrow(ex).when(encoder).encode();
 //
-//		Path path = Paths.get(EXCEPT_FILE);
+//		Path path = Path.of(EXCEPT_FILE);
 //		Converter converter = new Converter(new PathSource(path));
 //		converter.getContext().setDoValidation(false);
 //
@@ -159,7 +159,7 @@
 //
 //	@Test
 //	public void testInvalidXmlFile() {
-//		Converter converter = new Converter(new PathSource(Paths.get("src/test/resources/not-a-QRDA-III-file.xml")));
+//		Converter converter = new Converter(new PathSource(Path.of("src/test/resources/not-a-QRDA-III-file.xml")));
 //
 //		try {
 //			converter.transform();
@@ -171,7 +171,7 @@
 //
 //	@Test
 //	public void testNotAValidQrdaIIIFile() {
-//		Path path = Paths.get(INVALID_QRDA);
+//		Path path = Path.of(INVALID_QRDA);
 //		Converter converter = new Converter(new PathSource(path));
 //		converter.getContext().setDoValidation(false);
 //
@@ -212,7 +212,7 @@
 //
 //	@Test
 //	public void testSkipDefaults() {
-//		Converter converter = new Converter(new PathSource(Paths.get("src/test/resources/converter/defaultedNode.xml")));
+//		Converter converter = new Converter(new PathSource(Path.of("src/test/resources/converter/defaultedNode.xml")));
 //		converter.getContext().setDoValidation(false);
 //		JsonWrapper qpp = converter.transform();
 //
@@ -254,7 +254,7 @@
 //	public void testTooManyErrorsInQrdaIIIFile() {
 //		LocalizedProblem expectedError = ProblemCode.TOO_MANY_ERRORS.format(110);
 //
-//		Path path = Paths.get(TOO_MANY_ERRORS);
+//		Path path = Path.of(TOO_MANY_ERRORS);
 //		Converter converter = new Converter(new PathSource(path));
 //		try {
 //			converter.transform();

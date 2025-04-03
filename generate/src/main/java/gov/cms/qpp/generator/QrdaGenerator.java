@@ -28,13 +28,14 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
-import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
@@ -137,7 +138,7 @@ public class QrdaGenerator {
 
 	private Result getDestination() throws IOException {
 		Instant instant = Instant.now();
-		Writer writer = new FileWriter("./sample-files/generated" + instant.getEpochSecond() + ".xml", StandardCharsets.UTF_8);
+		BufferedWriter writer = Files.newBufferedWriter(Path.of("./sample-files/generated"+instant.getEpochSecond(),".xml"), StandardCharsets.UTF_8);
 		return new StreamResult(writer);
 	}
 

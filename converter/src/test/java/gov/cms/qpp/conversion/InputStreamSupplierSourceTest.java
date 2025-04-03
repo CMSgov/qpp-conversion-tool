@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ class InputStreamSupplierSourceTest extends SourceTestSuite {
 
 	private static InputStream stream(String path) {
 		try {
-			return Files.newInputStream(Paths.get(path));
+			return Files.newInputStream(Path.of(path));
 		} catch (IOException exception) {
 			throw new UncheckedIOException(exception);
 		}

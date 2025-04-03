@@ -6,7 +6,6 @@ import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.xml.XmlException;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -15,7 +14,7 @@ import org.junit.jupiter.api.Test;
 class XpathJsonPathComparisonTest {
 
 	private static JsonWrapper wrapper = new JsonWrapper();
-	private static Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
+	private static Path path = Path.of("../qrda-files/valid-QRDA-III-latest.xml");
 	private static JsonPathToXpathHelper helper;
 	private static final String EXTENSION = "extension";
 

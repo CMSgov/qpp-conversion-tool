@@ -24,13 +24,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static com.google.common.truth.Truth.assertThat;
 
 class ClinicalDocumentExtensionTest {
 
-	private static final Path DIR = Paths.get("src/test/resources/");
+	private static final Path DIR = Path.of("src/test/resources/");
 	private static final Path VALID = DIR.resolve("Qrda_CatIII_Provider.xml");
 	private static final Path INVALID = DIR.resolve("negative/Qrda_CatIII_Provider_invalid_CD_extension.xml");
 

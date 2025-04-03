@@ -21,7 +21,6 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,13 +34,13 @@ import static com.google.common.truth.Truth.assertThat;
 class PiSectionRoundTripTest {
 
 	private static final Path PI_RESTRICTED_MEASURES =
-		Paths.get("src/test/resources/negative/mipsInvalidPIMeasureIds.xml");
+		Path.of("src/test/resources/negative/mipsInvalidPIMeasureIds.xml");
 	private static final Path APP1_APM_ENTITY_CEHRT =
-			Paths.get("src/test/resources/app/2024/App1-ApmEntity-Qrda-III.xml");
+			Path.of("src/test/resources/app/2024/App1-ApmEntity-Qrda-III.xml");
 	private static final Path APP1_GROUP_CEHRT =
-		Paths.get("src/test/resources/app/2024/App1-Group-QRDA-III.xml");
+		Path.of("src/test/resources/app/2024/App1-Group-QRDA-III.xml");
 	private static final Path APP1_INDIVIDUAL_CEHRT =
-		Paths.get("src/test/resources/app/2024/App1-Indv-QRDA-III.xml");
+		Path.of("src/test/resources/app/2024/App1-Indv-QRDA-III.xml");
 
 	@Test
 	void parseSparsePiSectionAsNode() throws XmlException {

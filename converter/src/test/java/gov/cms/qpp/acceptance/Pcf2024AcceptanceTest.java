@@ -13,7 +13,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -23,7 +22,7 @@ import gov.cms.qpp.CacheBuilder;
 import gov.cms.qpp.model.CacheType;
 
 public class Pcf2024AcceptanceTest {
-    private static final Path BASE = Paths.get("src/test/resources/pcf/acceptance2024");
+    private static final Path BASE = Path.of("src/test/resources/pcf/acceptance2024");
     private static final Path SUCCESS = BASE.resolve("success");
     private static final Path SUCCESS_WARNING = BASE.resolve("warning");
     private static final Path FAILURE = BASE.resolve("failure");

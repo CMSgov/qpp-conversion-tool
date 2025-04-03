@@ -19,7 +19,6 @@ import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -34,7 +33,7 @@ import static gov.cms.qpp.conversion.model.Constants.PCF_PROGRAM_NAME;
  * - Errors caught for invalid apm entity, cehrt id, performance period, missing required measure ids
  */
 public class NegativePcfRoundTripTest {
-	static final Path Y5_NEGATIVE_PCF = Paths.get("src/test/resources/pcf/failure/2021/Y5_Negative_PCF_Sample_QRDA-III.xml");
+	static final Path Y5_NEGATIVE_PCF = Path.of("src/test/resources/pcf/failure/2021/Y5_Negative_PCF_Sample_QRDA-III.xml");
 	ApmEntityIds apmEntityIds;
 
 	static final String[] PCF_MEASURE_IDS = {

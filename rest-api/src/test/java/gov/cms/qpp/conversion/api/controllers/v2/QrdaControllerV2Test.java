@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -47,7 +46,7 @@ class QrdaControllerV2Test {
 
 	private static final String GOOD_FILE_CONTENT = "Good file";
 
-	static final Path validationJsonFilePath = Paths.get("src/test/resources/testCpcPlusValidationFile.json");
+	static final Path validationJsonFilePath = Path.of("src/test/resources/testCpcPlusValidationFile.json");
 
 	private MultipartFile multipartFile;
 

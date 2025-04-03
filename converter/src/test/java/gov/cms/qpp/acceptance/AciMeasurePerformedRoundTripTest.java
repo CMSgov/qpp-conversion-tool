@@ -3,7 +3,6 @@ package gov.cms.qpp.acceptance;
 import static com.google.common.truth.Truth.assertThat;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +17,7 @@ import gov.cms.qpp.conversion.util.JsonHelper;
 
 class AciMeasurePerformedRoundTripTest {
 
-	static final Path JUNK_QRDA3_FILE = Paths.get("src/test/resources/negative/AciMeasurePerformedGarbage.xml");
+	static final Path JUNK_QRDA3_FILE = Path.of("src/test/resources/negative/AciMeasurePerformedGarbage.xml");
 
 	@Test
 	void testGarbage() {

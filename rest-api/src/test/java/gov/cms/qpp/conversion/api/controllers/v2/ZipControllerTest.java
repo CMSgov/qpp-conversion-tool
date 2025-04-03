@@ -13,7 +13,6 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -47,8 +46,8 @@ class ZipControllerTest {
 
 	private static final String GOOD_FILE_CONTENT = "good-file";
 
-	static final Path validationJsonFilePath = Paths.get("src/test/resources/testCpcPlusValidationFile.json");
-	static final Path goodZipFilePath = Paths.get("src/test/resources/good-file.zip");
+	static final Path validationJsonFilePath = Path.of("src/test/resources/testCpcPlusValidationFile.json");
+	static final Path goodZipFilePath = Path.of("src/test/resources/good-file.zip");
 
 	private MultipartFile multipartFile;
 
