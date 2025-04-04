@@ -22,7 +22,6 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.util.JsonHelper;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -33,22 +32,22 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import static gov.cms.qpp.conversion.model.Constants.PERFORMANCE_RATE_ID;
 
 class QualityMeasureIdRoundTripTest {
-	static final Path JUNK_QRDA3_FILE = Paths.get("src/test/resources/negative/junk_in_quality_measure.xml");
+	static final Path JUNK_QRDA3_FILE = Path.of("src/test/resources/negative/junk_in_quality_measure.xml");
 	static final Path INVALID_PERFORMANCE_UUID_FILE =
-			Paths.get("src/test/resources/negative/mipsInvalidPerformanceRateUuid.xml");
+			Path.of("src/test/resources/negative/mipsInvalidPerformanceRateUuid.xml");
 	static final Path INSENSITIVE_TEXT_FILE =
-			Paths.get("src/test/resources/fixtures/textInsensitiveQualityMeasureUuids.xml");
+			Path.of("src/test/resources/fixtures/textInsensitiveQualityMeasureUuids.xml");
 	static final Path CORRECT_MULTI_TO_SINGLE_PERF_RATE_FILE =
-		Paths.get("src/test/resources/correctMultiToSinglePerfMeasureExample.xml");
+		Path.of("src/test/resources/correctMultiToSinglePerfMeasureExample.xml");
 	static final Path INCORRECT_MULTI_TO_SINGLE_PERF_RATE_FILE =
-		Paths.get("src/test/resources/negative/wrongSubPopulationsMeasure135.xml");
+		Path.of("src/test/resources/negative/wrongSubPopulationsMeasure135.xml");
 	static final Path MISSING_COUNT_FOR_PERF_DENOM =
-		Paths.get("src/test/resources/negative/perfDenomAggCountMissing.xml");
+		Path.of("src/test/resources/negative/perfDenomAggCountMissing.xml");
 	static final Path ZERO_COUNT_FOR_PERF_DENOM =
-		Paths.get("src/test/resources/negative/perfRateDenomZero.xml");
+		Path.of("src/test/resources/negative/perfRateDenomZero.xml");
 	static final Path DECIMAL_ZERO_COUNT_FOR_PERF_DENOM =
-		Paths.get("src/test/resources/negative/decimalPerfRateDenomZero.xml");
-	static final Path MIPS_APM_FILE = Paths.get("src/test/resources/Mips-Apm-Entity-2021.xml");
+		Path.of("src/test/resources/negative/decimalPerfRateDenomZero.xml");
+	static final Path MIPS_APM_FILE = Path.of("src/test/resources/Mips-Apm-Entity-2021.xml");
 	ApmEntityIds apmEntityIds;
 
 	@BeforeEach

@@ -22,7 +22,6 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -46,7 +45,7 @@ public class MarkupManipulator {
 
 	public InputStream upsetTheNorm(String xPath, boolean remove) {
 		try {
-			document = dbf.newDocumentBuilder().parse(new File(pathname));
+			document = dbf.newDocumentBuilder().parse(Path.of(pathname).toFile());
 			XPath xpath = xpf.newXPath();
 			XPathExpression expression = xpath.compile(xPath);
 

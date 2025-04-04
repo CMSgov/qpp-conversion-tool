@@ -35,7 +35,6 @@ import gov.cms.qpp.test.MockitoExtension;
 import gov.cms.qpp.test.logging.LoggerContract;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -60,7 +59,7 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 
 	@BeforeAll
 	static void setup() {
-		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
+		Path path = Path.of("../qrda-files/valid-QRDA-III-latest.xml");
 		report = new Converter(new PathSource(path)).getReport();
 		report.setReportDetails(allErrors);
 	}

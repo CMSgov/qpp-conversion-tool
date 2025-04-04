@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +35,7 @@ public class QrdaRestIntegrationTest {
 //
 //	@InternetTest
 //	void testDefaultValidQpp() throws Exception {
-//		MockMultipartFile qrda3File = new MockMultipartFile("file", Files.newInputStream(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
+//		MockMultipartFile qrda3File = new MockMultipartFile("file", Files.newInputStream(Path.of("../qrda-files/valid-QRDA-III-latest.xml")));
 //		mockMvc.perform(MockMvcRequestBuilders
 //			.multipart("/").file(qrda3File))
 //			.andExpect(status().is(201))
@@ -46,7 +45,7 @@ public class QrdaRestIntegrationTest {
 //
 //	@InternetTest
 //	void testValidQpp() throws Exception {
-//		MockMultipartFile qrda3File = new MockMultipartFile("file", Files.newInputStream(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
+//		MockMultipartFile qrda3File = new MockMultipartFile("file", Files.newInputStream(Path.of("../qrda-files/valid-QRDA-III-latest.xml")));
 //		mockMvc.perform(MockMvcRequestBuilders
 //				.multipart("/").file(qrda3File).accept(Constants.V1_API_ACCEPT))
 //				.andExpect(status().is(201))
@@ -56,7 +55,7 @@ public class QrdaRestIntegrationTest {
 //
 //	@Test
 //	void testInvalidQpp() throws Exception {
-//		MockMultipartFile qrda3File = new MockMultipartFile("file", Files.newInputStream(Paths.get("../qrda-files/not-a-QDRA-III-file.xml")));
+//		MockMultipartFile qrda3File = new MockMultipartFile("file", Files.newInputStream(Path.of("../qrda-files/not-a-QDRA-III-file.xml")));
 //		mockMvc.perform(MockMvcRequestBuilders
 //			.multipart("/").file(qrda3File).accept(Constants.V1_API_ACCEPT))
 //			.andExpect(status().is(422))
@@ -66,7 +65,7 @@ public class QrdaRestIntegrationTest {
 //
 //	@Test
 //	void testInvalidAcceptHeader() throws Exception {
-//		MockMultipartFile qrda3File = new MockMultipartFile("file", Files.newInputStream(Paths.get("../qrda-files/not-a-QDRA-III-file.xml")));
+//		MockMultipartFile qrda3File = new MockMultipartFile("file", Files.newInputStream(Path.of("../qrda-files/not-a-QDRA-III-file.xml")));
 //		mockMvc.perform(MockMvcRequestBuilders
 //				.multipart("/").file(qrda3File)
 //				.accept("application/vnd.qpp.cms.gov.INVALID+json"))
@@ -76,7 +75,7 @@ public class QrdaRestIntegrationTest {
 //	@InternetTest
 //	void shouldFailForSubmissionApiValidation() throws Exception {
 //		String file = "../rest-api/src/test/resources/fail_validation.xml";
-//		MockMultipartFile qrda3File = new MockMultipartFile("file", Files.newInputStream(Paths.get(file)));
+//		MockMultipartFile qrda3File = new MockMultipartFile("file", Files.newInputStream(Path.of(file)));
 //		mockMvc.perform(MockMvcRequestBuilders
 //				.multipart("/").file(qrda3File))
 //			.andExpect(status().is(422))

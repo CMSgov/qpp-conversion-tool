@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -137,7 +136,7 @@ class CommandLineRunnerTest implements LoggerContract {
 	
 	@Test
 	void testValidPath_valid() {
-		Path path = Paths.get(VALID_FILE);
+		Path path = Path.of(VALID_FILE);
 		boolean valid = CommandLineRunner.isValid(path);
 		
 		Truth.assertThat(valid).isTrue();
@@ -145,7 +144,7 @@ class CommandLineRunnerTest implements LoggerContract {
 	
 	@Test
 	void testValidPath_invalid() {
-		Path path = Paths.get(INVALID_FILE);
+		Path path = Path.of(INVALID_FILE);
 		boolean invalid = CommandLineRunner.isValid(path);
 		
 		Truth.assertThat(invalid).isFalse();

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.function.BiPredicate;
 
 import org.jdom2.Element;
@@ -33,7 +32,7 @@ class ElementLocationTest {
 	}
 
 	private void runTest(BiPredicate<Located, Node> elementFinder) throws IOException {
-		Path qrdaPath = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
+		Path qrdaPath = Path.of("../qrda-files/valid-QRDA-III-latest.xml");
 		String qrda = new String(Files.readAllBytes(qrdaPath), StandardCharsets.UTF_8);
 
 		Element document = XmlUtils.stringToDom(qrda);

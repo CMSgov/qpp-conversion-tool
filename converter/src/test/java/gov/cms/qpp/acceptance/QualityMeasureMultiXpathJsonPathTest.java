@@ -1,7 +1,6 @@
 package gov.cms.qpp.acceptance;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -17,7 +16,7 @@ import gov.cms.qpp.conversion.xml.XmlException;
 class QualityMeasureMultiXpathJsonPathTest {
 
 	private static JsonWrapper wrapper = new JsonWrapper();
-	private static Path path = Paths.get("src/test/resources/fixtures/multiPerformanceRatePropMeasure.xml");
+	private static Path path = Path.of("src/test/resources/fixtures/multiPerformanceRatePropMeasure.xml");
 	private static JsonPathToXpathHelper helper;
 
 	@BeforeAll

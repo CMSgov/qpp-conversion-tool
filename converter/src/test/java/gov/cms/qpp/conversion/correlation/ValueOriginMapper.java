@@ -4,7 +4,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -185,7 +184,7 @@ class ValueOriginMapper {
 	}
 
 	void writeAssociations() {
-		Path path = Paths.get("qrdaToQppAssociations.txt");
+		Path path = Path.of("qrdaToQppAssociations.txt");
 		try (BufferedWriter writer = Files.newBufferedWriter(path))
 		{
 			for (Association assoc : associations) {
