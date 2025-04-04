@@ -3,7 +3,6 @@ package gov.cms.qpp.acceptance;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +20,7 @@ class IaSectionRoundTripTest {
 
 	@BeforeEach
 	void setUp() {
-		file = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
+		file = Path.of("../qrda-files/valid-QRDA-III-latest.xml");
 	}
 
 	@Test

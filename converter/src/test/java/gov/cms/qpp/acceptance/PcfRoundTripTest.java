@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -41,7 +40,7 @@ public class PcfRoundTripTest {
 		ApmEntityIds apmEntityIds = CacheBuilder.getEntityIds(CacheType.ApmPcfEntityIds);
 		URL sample = PcfRoundTripTest.class.getClassLoader()
 			.getResource("pcf/success/PCF_Sample_QRDA-III.xml");
-		Path path = Paths.get(sample.toURI());
+		Path path = Path.of(sample.toURI());
 		new JsonPathToXpathHelper(path, wrapper, false, new Context(apmEntityIds));
 		json = new ObjectMapper().readValue(wrapper.copyWithoutMetadata().toString(), HashMap.class);
 	}

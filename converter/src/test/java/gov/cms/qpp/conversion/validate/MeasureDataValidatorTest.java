@@ -4,7 +4,6 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import static gov.cms.qpp.conversion.validate.MeasureDataValidator.EMPTY_POPULATION_ID;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -92,7 +91,7 @@ class MeasureDataValidatorTest {
 	@Test
 	void multipleNegativeMeasureDataTest() {
 		//setup
-		Path path = Paths.get("src/test/resources/negative/angerMeasureDataValidations.xml");
+		Path path = Path.of("src/test/resources/negative/angerMeasureDataValidations.xml");
 
 		//execute
 		Converter converter = new Converter(new PathSource(path));

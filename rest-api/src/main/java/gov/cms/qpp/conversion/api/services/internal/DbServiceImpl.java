@@ -93,7 +93,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 					.withExpressionAttributeValues(valueMap)
 					.withConsistentRead(false);
 
-				return mapper.get().query(Metadata.class, metadataQuery).stream().limit(10);
+				return mapper.orElseThrow().query(Metadata.class, metadataQuery).stream().limit(10);
 			}).flatMap(Function.identity()).collect(Collectors.toList());
 		} else {
 			API_LOG.warn("Could not get unprocessed PCF metadata because the dynamodb mapper is absent");
@@ -110,7 +110,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	public Metadata getMetadataById(String uuid) {
 		if (mapper.isPresent()) {
 			API_LOG.info("Read item {} from DynamoDB", uuid);
-			return mapper.get().load(Metadata.class, uuid);
+			return mapper.orElseThrow().load(Metadata.class, uuid);
 		} else {
 			API_LOG.warn("Skipping reading of item from DynamoDB with UUID {} because the dynamodb mapper is absent", uuid);
 			return null;
@@ -126,7 +126,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	@Override
 	protected Metadata asynchronousAction(Metadata meta) {
 		if (mapper.isPresent()) {
-			mapper.get().save(meta);
+			mapper.orElseThrow().save(meta);
 			API_LOG.info("Wrote item to DynamoDB with UUID {}", meta.getUuid());
 		} else {
 			API_LOG.warn("Skipping writing of item to DynamoDB with UUID {} because the dynamodb mapper is absent", meta.getUuid());

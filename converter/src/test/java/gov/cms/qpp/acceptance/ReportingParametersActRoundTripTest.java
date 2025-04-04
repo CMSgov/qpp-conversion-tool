@@ -3,7 +3,6 @@ package gov.cms.qpp.acceptance;
 import static com.google.common.truth.Truth.assertThat;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -17,7 +16,7 @@ import gov.cms.qpp.conversion.util.JsonHelper;
 
 class ReportingParametersActRoundTripTest {
 
-	private static final Path VALID_QRDA_III = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
+	private static final Path VALID_QRDA_III = Path.of("../qrda-files/valid-QRDA-III-latest.xml");
 
 	private static String json;
 

@@ -5,7 +5,6 @@ import java.io.UncheckedIOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 import com.google.common.jimfs.Configuration;
@@ -23,7 +22,7 @@ public class FileTestHelper {
 	}
 
 	private static void copy(String path, FileSystem mock) {
-		Path source = Paths.get(path);
+		Path source = Path.of(path);
 		Path destination = mock.getPath(path);
 
 		try {

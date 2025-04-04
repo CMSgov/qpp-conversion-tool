@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -42,8 +41,8 @@ class QrdaServiceImplTest {
 	private static final String KEY = "key";
 	private static final String MOCK_SUCCESS_QPP_STRING = "Good Qpp";
 	private static final String MOCK_ERROR_SOURCE_IDENTIFIER = "Error Identifier";
-	private static final Path VALIDATION_JSON_FILE_PATH = Paths.get("src/test/resources/testCpcPlusValidationFile.json");
-	private static final Path VALIDATION_APM_FILE_PATH = Paths.get("src/test/resources/test_apm_entity_ids.json");
+	private static final Path VALIDATION_JSON_FILE_PATH = Path.of("src/test/resources/testCpcPlusValidationFile.json");
+	private static final Path VALIDATION_APM_FILE_PATH = Path.of("src/test/resources/test_apm_entity_ids.json");
 	private InputStream MOCK_INPUT_STREAM;
 	private InputStream MOCK_APM_INPUT_STREAM;
 

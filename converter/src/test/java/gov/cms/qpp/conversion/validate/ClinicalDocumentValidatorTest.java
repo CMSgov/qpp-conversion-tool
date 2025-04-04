@@ -7,7 +7,6 @@ import static gov.cms.qpp.conversion.model.Constants.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
@@ -30,7 +29,7 @@ class ClinicalDocumentValidatorTest {
 
 	@AfterEach
 	void cleanup() throws IOException {
-		Files.deleteIfExists(Paths.get(CLINICAL_DOCUMENT_ERROR_FILE));
+		Files.deleteIfExists(Path.of(CLINICAL_DOCUMENT_ERROR_FILE));
 	}
 
 	@Test
@@ -215,7 +214,7 @@ class ClinicalDocumentValidatorTest {
 	@Test
 	void testClinicalDocumentValidationParsesMultipleErrors() {
 		//setup
-		Path path = Paths.get("src/test/resources/negative/angerClinicalDocumentValidations.xml");
+		Path path = Path.of("src/test/resources/negative/angerClinicalDocumentValidations.xml");
 
 		//execute
 		Context context = new Context();

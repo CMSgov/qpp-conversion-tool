@@ -12,7 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import gov.cms.qpp.test.annotations.AcceptanceTest;
 import gov.cms.qpp.test.helper.AwsTestHelper;
 
-import java.nio.file.Paths;
+import java.nio.file.Path;
 
 import static com.google.common.truth.Truth.assertThat;
 import static io.restassured.RestAssured.given;
@@ -36,7 +36,7 @@ class QrdaApiAcceptance {
 	@AcceptanceTest
 	void testWithValid() {
 		given()
-			.multiPart(MULTIPART_FORM_DATA_KEY, Paths.get("../qrda-files/valid-QRDA-III-latest.xml").toFile())
+			.multiPart(MULTIPART_FORM_DATA_KEY, Path.of("../qrda-files/valid-QRDA-III-latest.xml").toFile())
 			.when()
 			.post(QRDA_API_PATH)
 			.then()
@@ -52,7 +52,7 @@ class QrdaApiAcceptance {
 	@AcceptanceTest
 	void testWithConversionError() {
 		given()
-			.multiPart(MULTIPART_FORM_DATA_KEY, Paths.get("../qrda-files/not-a-QDRA-III-file.xml").toFile())
+			.multiPart(MULTIPART_FORM_DATA_KEY, Path.of("../qrda-files/not-a-QDRA-III-file.xml").toFile())
 			.when()
 			.post(QRDA_API_PATH)
 			.then()
@@ -68,7 +68,7 @@ class QrdaApiAcceptance {
 	@AcceptanceTest
 	void testWithValidationError() {
 		given()
-			.multiPart(MULTIPART_FORM_DATA_KEY, Paths.get("../rest-api/src/test/resources/fail_validation.xml").toFile())
+			.multiPart(MULTIPART_FORM_DATA_KEY, Path.of("../rest-api/src/test/resources/fail_validation.xml").toFile())
 			.when()
 			.post(QRDA_API_PATH)
 			.then()

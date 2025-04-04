@@ -3,7 +3,6 @@ package gov.cms.qpp.acceptance;
 import static com.google.common.truth.Truth.assertThat;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import gov.cms.qpp.conversion.Context;
 import org.junit.jupiter.api.Assertions;
@@ -19,7 +18,7 @@ class IaSectionValidatorRoundTripTest {
 
 	@Test
 	void testIaSectionValidatorIncorrectChildren() {
-		Path path = Paths.get("src/test/resources/negative/iaSectionContainsWrongChild.xml");
+		Path path = Path.of("src/test/resources/negative/iaSectionContainsWrongChild.xml");
 		Context context = new Context();
 		Converter converter = new Converter(new PathSource(path), context);
 
@@ -38,7 +37,7 @@ class IaSectionValidatorRoundTripTest {
 
 	@Test
 	void testIaSectionValidatorMissingMeasures() {
-		Path path = Paths.get("src/test/resources/negative/iaSectionMissingMeasures.xml");
+		Path path = Path.of("src/test/resources/negative/iaSectionMissingMeasures.xml");
 		Converter converter = new Converter(new PathSource(path));
 
 		AllErrors errors = new AllErrors();
@@ -56,7 +55,7 @@ class IaSectionValidatorRoundTripTest {
 
 	@Test
 	void testIaSectionValidatorMissingReportingParameters() {
-		Path path = Paths.get("src/test/resources/negative/iaSectionMissingReportingParameter.xml");
+		Path path = Path.of("src/test/resources/negative/iaSectionMissingReportingParameter.xml");
 		Converter converter = new Converter(new PathSource(path));
 
 		AllErrors errors = new AllErrors();
