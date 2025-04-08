@@ -108,14 +108,14 @@ public class DynamoDbConfig {
 				API_LOG.info("Using DynamoDB table name {} and KMS key {}.", tableName, kmsKey);
 				dynamoDbMapper = createDynamoDbMapper(
 					dynamoDbClient,
-					tableNameOverrideConfig(tableName.get()),
-					encryptionTransformer(kmsKey.get()));
+					tableNameOverrideConfig(tableName.orElseThrow()),
+					encryptionTransformer(kmsKey.orElseThrow()));
 			} else if (kmsKey.isPresent()) {
 				API_LOG.warn("Using KMS key {}, but no DynamoDB table name specified.", tableName);
 				dynamoDbMapper = createDynamoDbMapper(
 					dynamoDbClient,
 					getDynamoDbMapperConfig(),
-					encryptionTransformer(kmsKey.get()));
+					encryptionTransformer(kmsKey.orElseThrow()));
 			} else {
 				API_LOG.error(NO_KMS_KEY + " This is a fatal error.");
 				throw new BeanInitializationException(NO_KMS_KEY);

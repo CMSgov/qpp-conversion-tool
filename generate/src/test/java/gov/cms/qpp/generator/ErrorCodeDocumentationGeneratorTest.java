@@ -1,6 +1,7 @@
 package gov.cms.qpp.generator;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,10 +26,10 @@ public class ErrorCodeDocumentationGeneratorTest {
 	@Test
 	public void test_determinOffsetPath_doubledot() {
 		String workingDir = System.getProperty("user.dir");
-		File mockBaseDir = new File(workingDir);
+		File mockBaseDir = Path.of(workingDir).toFile();
 
 		String generate = "/generate";
-		File mockParentDir = new File(workingDir.substring(0, workingDir.length()-generate.length()));
+		File mockParentDir = Path.of(workingDir.substring(0, workingDir.length()-generate.length())).toFile();
 		MavenProject mockParentProject = mock(MavenProject.class);
 		when(mockParentProject.getBasedir()).thenReturn(mockParentDir);
 
@@ -50,13 +51,13 @@ public class ErrorCodeDocumentationGeneratorTest {
 	@Test
 	public void test_determinOffsetPath_dot() {
 		String workingDir = System.getProperty("user.dir");
-		File mockBaseDir = new File(workingDir);
+		File mockBaseDir = Path.of(workingDir).toFile();
 		
 		String generate = "/generate";
 		workingDir = workingDir.substring(0, workingDir.length()-generate.length());
 		System.setProperty("user.dir", workingDir);
 		
-		File mockParentDir = new File(workingDir);
+		File mockParentDir = Path.of(workingDir).toFile();
 		MavenProject mockParentProject = mock(MavenProject.class);
 		when(mockParentProject.getBasedir()).thenReturn(mockParentDir);
 

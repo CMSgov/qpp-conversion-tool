@@ -11,8 +11,8 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 import gov.cms.qpp.test.helper.NioHelper;
 
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +22,7 @@ class DefaultEncoderTest {
 
 	@Test
 	void encodeAllNodes() throws Exception {
-		InputStream stream = NioHelper.fileToStream(Paths.get("../qrda-files/valid-QRDA-III-latest.xml"));
+		InputStream stream = NioHelper.fileToStream(Path.of("../qrda-files/valid-QRDA-III-latest.xml"));
 		String xmlFragment = IOUtils.toString(stream, StandardCharsets.UTF_8);
 
 		Node node = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));

@@ -25,7 +25,6 @@ import com.jayway.jsonpath.TypeRef;
 
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -43,10 +42,10 @@ class QualityMeasureIdMultiRoundTripTest {
 	private static final String ELIGIBLE_POPULATION_EXCLUSION = "eligiblePopulationExclusion";
 
 	private static final Path JUNK_QRDA3_FILE =
-			Paths.get("src/test/resources/fixtures/multiPerformanceRatePropMeasure.xml");
+			Path.of("src/test/resources/fixtures/multiPerformanceRatePropMeasure.xml");
 
 	private static final Path DENOM_GREATER_THAN_IPOP =
-			Paths.get("src/test/resources/negative/mipsDenominatorInitialPopulationFailure.xml");
+			Path.of("src/test/resources/negative/mipsDenominatorInitialPopulationFailure.xml");
 
 	private static MarkupManipulator manipulator;
 

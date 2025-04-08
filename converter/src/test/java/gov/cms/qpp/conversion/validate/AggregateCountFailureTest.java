@@ -3,7 +3,7 @@ package gov.cms.qpp.conversion.validate;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.io.IOException;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ class AggregateCountFailureTest {
 	@Test
 	void testInvalidAggregateCounts() throws IOException {
 		//execute
-		Converter converter = new Converter(new PathSource(Paths.get("src/test/resources/negative/angerTheConverter.xml")));
+		Converter converter = new Converter(new PathSource(Path.of("src/test/resources/negative/angerTheConverter.xml")));
 
 		String errorContent = "";
 		try {

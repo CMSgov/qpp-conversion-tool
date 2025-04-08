@@ -18,7 +18,6 @@ import gov.cms.qpp.test.annotations.AcceptanceTest;
 import gov.cms.qpp.test.helper.NioHelper;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static com.google.common.truth.Truth.assertThat;
 import static io.restassured.RestAssured.given;
@@ -28,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 class ValidationApiAcceptance {
 
 	private static final XPathFactory XPF = XPathFactory.instance();
-	private static final Path PATH = Paths.get("../sample-files/CPCPlus_Validation_API_Errors.xml");
+	private static final Path PATH = Path.of("../sample-files/CPCPlus_Validation_API_Errors.xml");
 	private static final int CANNED_VALUE = 1000;
 
 	@AcceptanceTest

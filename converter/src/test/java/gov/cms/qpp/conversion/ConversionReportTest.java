@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -32,13 +31,13 @@ class ConversionReportTest {
 
 //	@BeforeAll
 //	static void setup() {
-//		inputSource = new PathSource(Paths.get("../qrda-files/valid-QRDA-III-latest.xml"));
+//		inputSource = new PathSource(Path.of("../qrda-files/valid-QRDA-III-latest.xml"));
 //		Converter converter = new Converter(inputSource);
 //		wrapper = converter.transform();
 //		report = converter.getReport();
 //
 //		Converter otherConverter = new Converter(
-//				new PathSource(Paths.get("../qrda-files/QRDA-III-without-required-measure.xml")));
+//				new PathSource(Path.of("../qrda-files/QRDA-III-without-required-measure.xml")));
 //		try {
 //			otherConverter.transform();
 //		} catch (TransformException ex) {
@@ -86,7 +85,7 @@ class ConversionReportTest {
 //			.thenThrow(new JsonMappingException(null, "meep"));
 //
 //		Converter converter = new Converter(
-//			new PathSource(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
+//			new PathSource(Path.of("../qrda-files/valid-QRDA-III-latest.xml")));
 //		ConversionReport badReport = converter.getReport();
 //
 //		Field field = badReport.getClass().getDeclaredField("mapper");
@@ -104,7 +103,7 @@ class ConversionReportTest {
 //	@Test
 //	void getErrorStream() {
 //		Converter converter = new Converter(
-//			new PathSource(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
+//			new PathSource(Path.of("../qrda-files/valid-QRDA-III-latest.xml")));
 //		ConversionReport badReport = converter.getReport();
 //		Error error = new Error();
 //		error.setMessage("meep");
@@ -119,7 +118,7 @@ class ConversionReportTest {
 //	@Test
 //	void rawValidationErrors() throws IOException {
 //		Converter converter = new Converter(
-//				new PathSource(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
+//				new PathSource(Path.of("../qrda-files/valid-QRDA-III-latest.xml")));
 //		ConversionReport aReport = converter.getReport();
 //		aReport.setRawValidationDetails("meep");
 //		String details = IOUtils.toString(aReport.getRawValidationErrorsOrEmptySource().toInputStream(), "UTF-8");

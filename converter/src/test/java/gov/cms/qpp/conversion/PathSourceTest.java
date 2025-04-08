@@ -10,7 +10,6 @@ import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
@@ -22,7 +21,7 @@ import gov.cms.qpp.test.jimfs.JimfsTest;
 class PathSourceTest extends SourceTestSuite {
 
 	PathSourceTest() {
-		super("arbitrary.txt", new PathSource(Paths.get("src/test/resources/arbitrary.txt")));
+		super("arbitrary.txt", new PathSource(Path.of("src/test/resources/arbitrary.txt")));
 	}
 
 	@Test

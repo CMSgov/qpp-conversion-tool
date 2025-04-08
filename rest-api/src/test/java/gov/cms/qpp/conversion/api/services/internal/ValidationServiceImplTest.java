@@ -21,7 +21,6 @@ import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import org.apache.commons.io.FileUtils;
 import org.hamcrest.Matchers;
@@ -78,9 +77,9 @@ class ValidationServiceImplTest {
 	@BeforeAll
 	static void setup() throws IOException {
 		service = new ValidationServiceImpl(null);
-		pathToSubmissionError = Paths.get("src/test/resources/submissionErrorFixture.json");
-		pathToSubmissionDuplicateEntryError = Paths.get("src/test/resources/submissionDuplicateEntryErrorFixture.json");
-		Path toConvert = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
+		pathToSubmissionError = Path.of("src/test/resources/submissionErrorFixture.json");
+		pathToSubmissionDuplicateEntryError = Path.of("src/test/resources/submissionDuplicateEntryErrorFixture.json");
+		Path toConvert = Path.of("../qrda-files/valid-QRDA-III-latest.xml");
 		Context context = new Context();
 		qppWrapper = new Converter(new PathSource(toConvert), context).transform();
 		prepAllErrors();
@@ -220,7 +219,7 @@ class ValidationServiceImplTest {
 
 //	@Test
 //	void testInvalidSubmissionResponseJsonPath() throws IOException {
-//		pathToSubmissionError = Paths.get("src/test/resources/invalidSubmissionErrorFixture.json");
+//		pathToSubmissionError = Path.of("src/test/resources/invalidSubmissionErrorFixture.json");
 //		String errorJson = FileUtils.readFileToString(pathToSubmissionError.toFile(), StandardCharsets.UTF_8);
 //		convertedErrors = service.convertQppValidationErrorsToQrda(errorJson, qppWrapper);
 //

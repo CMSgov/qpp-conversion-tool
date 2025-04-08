@@ -6,7 +6,7 @@
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-conversion-tool-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>2024.2.9-RELEASE</version>
+	<version>2024.2.10-RELEASE</version>
 	<name>QPP Conversion Tool</name>
 
 	<properties>
@@ -64,7 +64,7 @@
 				<plugin>
 					<groupId>org.gaul</groupId>
 					<artifactId>modernizer-maven-plugin</artifactId>
-					<version>2.3.0</version>
+					<version>3.1.0</version>
 					<configuration>
 						<javaVersion>${java.version}</javaVersion>
 					</configuration>
@@ -82,10 +82,10 @@
 				<plugin>
 					<groupId>com.github.spotbugs</groupId>
 					<artifactId>spotbugs-maven-plugin</artifactId>
-					<version>4.2.2</version>
+					<version>4.7.3.6</version>
 					<configuration>
 						<effort>Max</effort>
-						<threshold>Low</threshold>
+						<threshold>High</threshold>
 						<omitVisitors>SerializableIdiom,Naming</omitVisitors>
 					</configuration>
 					<executions>

@@ -3,7 +3,6 @@ package gov.cms.qpp.conversion.correlation;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -22,7 +21,7 @@ class QrdaQppAssociationTest {
 
 //	@BeforeAll
 //	static void setup() {
-//		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
+//		Path path = Path.of("../qrda-files/valid-QRDA-III-latest.xml");
 //		Context context = new Context();
 //		Converter converter = new Converter(new PathSource(path), context);
 //
