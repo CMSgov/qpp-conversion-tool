@@ -199,7 +199,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	/**
 	 * decodes the program name and entity type from the name
 	 *
-	 * @param name String one of MIPS, MIPS_GROUP, MIPS_INDIV, or CPCPLUS
+	 * @param name String one of MIPS, MIPS_GROUP, MIPS_INDIV, SSP_PI_INDIVIDUAL or CPCPLUS
 	 * @return array of String program name, entity type
 	 */
 	private Pair<String, String> getProgramNameEntityPair(String name) {
@@ -243,6 +243,30 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 
 			case MIPS_SUBGROUP:
 				pair = new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_SUBGROUP);
+				break;
+
+			case APP_PLUS_INDIVIDUAL:
+				pair = new ImmutablePair<>(APP_PLUS_INDIVIDUAL, ENTITY_INDIVIDUAL);
+				break;
+
+			case APP_PLUS_GROUP:
+				pair = new ImmutablePair<>(APP_PLUS_GROUP, ENTITY_GROUP);
+				break;
+
+			case APP_PLUS_APM:
+				pair = new ImmutablePair<>(APP_PLUS_APM, ENTITY_APM);
+				break;
+
+			case SSP_PI_INDIVIDUAL:
+				pair = new ImmutablePair<>(SSP_PI_INDIVIDUAL, ENTITY_INDIVIDUAL);
+				break;
+
+			case SSP_PI_GROUP:
+				pair = new ImmutablePair<>(SSP_PI_GROUP, ENTITY_GROUP);
+				break;
+
+			case SSP_PI_APM:
+				pair = new ImmutablePair<>(SSP_PI_APM, ENTITY_APM);
 				break;
 
 			default:
