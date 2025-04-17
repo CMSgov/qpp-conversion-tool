@@ -14,15 +14,15 @@ import gov.cms.qpp.conversion.model.error.ProblemCode;
 public class PcfQualityMeasureSectionValidator extends NodeValidator {
 
 	static final String[] PCF_REQUIRED_MEASURES = {
-		"2c928084-83d3-1b44-0183-eb75dc8a03db", // 122v12
-		"2c928084-82ea-d7c5-0183-6bf2944520dc", // 130v12
-		"2c928085-806c-39a2-0180-7092fa9b0145"  // 165v12
+		"2c928083-8907-ce68-0189-2bc5fa0d0739", // 122v13
+		"2c928083-8907-ce68-0189-2bc134cf06bb", // 130v13
+		"2c928083-8907-ce68-0189-2bbd31d6064e"  // 165v13
 	};
 
 	static final String[] PCF_MEASURE_IDS = {
-		"122v12",
-		"130v12",
-		"165v12"
+		"122v13",
+		"130v13",
+		"165v13"
 	};
 
 	/**

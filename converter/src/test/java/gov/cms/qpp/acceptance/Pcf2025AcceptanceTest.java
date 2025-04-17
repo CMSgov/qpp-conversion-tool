@@ -21,8 +21,8 @@ import static gov.cms.qpp.acceptance.Util.getXml;
 import gov.cms.qpp.CacheBuilder;
 import gov.cms.qpp.model.CacheType;
 
-public class Pcf2024AcceptanceTest {
-    private static final Path BASE = Path.of("src/test/resources/pcf/acceptance2024");
+public class Pcf2025AcceptanceTest {
+    private static final Path BASE = Path.of("src/test/resources/pcf/acceptance2025");
     private static final Path SUCCESS = BASE.resolve("success");
     private static final Path SUCCESS_WARNING = BASE.resolve("warning");
     private static final Path FAILURE = BASE.resolve("failure");
