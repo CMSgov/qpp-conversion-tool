@@ -37,9 +37,9 @@ public class NegativePcfRoundTripTest {
 	ApmEntityIds apmEntityIds;
 
 	static final String[] PCF_MEASURE_IDS = {
-		"122v12",
-		"130v12",
-		"165v12"
+		"122v13",
+		"130v13",
+		"165v13"
 	};
 
 	@BeforeEach

@@ -32,9 +32,9 @@ public class PcfPerformancePeriodValidationTest {
 		measureSection.setParent(clinicalDocument);
 
 		node = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
-		node.putValue(PERFORMANCE_YEAR, "2024");
-		node.putValue(PERFORMANCE_START, "20240101");
-		node.putValue(PERFORMANCE_END, "20241231");
+		node.putValue(PERFORMANCE_YEAR, "2025");
+		node.putValue(PERFORMANCE_START, "20250101");
+		node.putValue(PERFORMANCE_END, "20251231");
 		node.setParent(measureSection);
 	}
 
