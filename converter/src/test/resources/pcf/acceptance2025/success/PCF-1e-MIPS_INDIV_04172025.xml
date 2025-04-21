@@ -2971,8 +2971,8 @@ QRDA Category III Measure Section (CMS EP)
                                  </entryRelationship>
                                  <reference typeCode="REFR">
                                     <externalObservation>
-                                       <!-- Reporting Stratification STRAT_1: 0C8CCBC3-BC5D-45AE-9ADD-4AA70859516C -->
-                                       <id root="0C8CCBC3-BC5D-45AE-9ADD-4AA70859516C"/>
+                                       <!-- Reporting Stratification STRAT_1: 36D178DD-1B4B-4D79-885C-B8D681B1A14D -->
+                                       <id root="36D178DD-1B4B-4D79-885C-B8D681B1A14D"/>
                                     </externalObservation>
                                  </reference>
                               </observation>
@@ -3007,8 +3007,8 @@ QRDA Category III Measure Section (CMS EP)
                                  </entryRelationship>
                                  <reference typeCode="REFR">
                                     <externalObservation>
-                                       <!-- Reporting Stratification STRAT_2: 4874EA9D-3E03-4E4D-8605-264136B3A0B7 -->
-                                       <id root="4874EA9D-3E03-4E4D-8605-264136B3A0B7"/>
+                                       <!-- Reporting Stratification STRAT_2: 9770406F-1571-40B9-839E-2F6E5193E103 -->
+                                       <id root="9770406F-1571-40B9-839E-2F6E5193E103"/>
                                     </externalObservation>
                                  </reference>
                               </observation>
@@ -3564,8 +3564,8 @@ QRDA Category III Measure Section (CMS EP)
                                  </entryRelationship>
                                  <reference typeCode="REFR">
                                     <externalObservation>
-                                       <!-- Reporting Stratification STRAT_1: 0C8CCBC3-BC5D-45AE-9ADD-4AA70859516C -->
-                                       <id root="0C8CCBC3-BC5D-45AE-9ADD-4AA70859516C"/>
+                                       <!-- Reporting Stratification STRAT_1: 36D178DD-1B4B-4D79-885C-B8D681B1A14D -->
+                                       <id root="36D178DD-1B4B-4D79-885C-B8D681B1A14D"/>
                                     </externalObservation>
                                  </reference>
                               </observation>
@@ -3600,8 +3600,8 @@ QRDA Category III Measure Section (CMS EP)
                                  </entryRelationship>
                                  <reference typeCode="REFR">
                                     <externalObservation>
-                                       <!-- Reporting Stratification STRAT_2: 4874EA9D-3E03-4E4D-8605-264136B3A0B7 -->
-                                       <id root="4874EA9D-3E03-4E4D-8605-264136B3A0B7"/>
+                                       <!-- Reporting Stratification STRAT_2: 9770406F-1571-40B9-839E-2F6E5193E103 -->
+                                       <id root="9770406F-1571-40B9-839E-2F6E5193E103"/>
                                     </externalObservation>
                                  </reference>
                               </observation>
@@ -4156,8 +4156,8 @@ QRDA Category III Measure Section (CMS EP)
                                  </entryRelationship>
                                  <reference typeCode="REFR">
                                     <externalObservation>
-                                       <!-- Reporting Stratification STRAT_1: 0C8CCBC3-BC5D-45AE-9ADD-4AA70859516C -->
-                                       <id root="0C8CCBC3-BC5D-45AE-9ADD-4AA70859516C"/>
+                                       <!-- Reporting Stratification STRAT_1: 36D178DD-1B4B-4D79-885C-B8D681B1A14D -->
+                                       <id root="36D178DD-1B4B-4D79-885C-B8D681B1A14D"/>
                                     </externalObservation>
                                  </reference>
                               </observation>
@@ -4192,8 +4192,8 @@ QRDA Category III Measure Section (CMS EP)
                                  </entryRelationship>
                                  <reference typeCode="REFR">
                                     <externalObservation>
-                                       <!-- Reporting Stratification STRAT_2: 4874EA9D-3E03-4E4D-8605-264136B3A0B7 -->
-                                       <id root="4874EA9D-3E03-4E4D-8605-264136B3A0B7"/>
+                                       <!-- Reporting Stratification STRAT_2: 9770406F-1571-40B9-839E-2F6E5193E103 -->
+                                       <id root="9770406F-1571-40B9-839E-2F6E5193E103"/>
                                     </externalObservation>
                                  </reference>
                               </observation>
@@ -4747,8 +4747,8 @@ QRDA Category III Measure Section (CMS EP)
                                  </entryRelationship>
                                  <reference typeCode="REFR">
                                     <externalObservation>
-                                       <!-- Reporting Stratification STRAT_1: 0C8CCBC3-BC5D-45AE-9ADD-4AA70859516C -->
-                                       <id root="0C8CCBC3-BC5D-45AE-9ADD-4AA70859516C"/>
+                                       <!-- Reporting Stratification STRAT_1: 36D178DD-1B4B-4D79-885C-B8D681B1A14D -->
+                                       <id root="36D178DD-1B4B-4D79-885C-B8D681B1A14D"/>
                                     </externalObservation>
                                  </reference>
                               </observation>
@@ -4783,8 +4783,8 @@ QRDA Category III Measure Section (CMS EP)
                                  </entryRelationship>
                                  <reference typeCode="REFR">
                                     <externalObservation>
-                                       <!-- Reporting Stratification STRAT_2: 4874EA9D-3E03-4E4D-8605-264136B3A0B7 -->
-                                       <id root="4874EA9D-3E03-4E4D-8605-264136B3A0B7"/>
+                                       <!-- Reporting Stratification STRAT_2: 9770406F-1571-40B9-839E-2F6E5193E103 -->
+                                       <id root="9770406F-1571-40B9-839E-2F6E5193E103"/>
                                     </externalObservation>
                                  </reference>
                               </observation>

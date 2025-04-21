@@ -108,13 +108,13 @@
    <documentationOf typeCode="DOC">
       <serviceEvent classCode="PCPR">
          <effectiveTime>
-            <low value="20240101"/>
-            <high value="20241231"/>
+            <low value="20250101"/>
+            <high value="20251231"/>
          </effectiveTime>
          <performer typeCode="PRF">
             <time>
-               <low value="20240101"/>
-               <high value="20241231"/>
+               <low value="20250101"/>
+               <high value="20251231"/>
             </time>
             <assignedEntity>
                <id root="2.16.840.1.113883.4.6" extension="2567891421"/>
@@ -126,8 +126,8 @@
          </performer>
          <performer typeCode="PRF">
             <time>
-               <low value="20240101"/>
-               <high value="20241231"/>
+               <low value="20250101"/>
+               <high value="20251231"/>
             </time>
             <assignedEntity>
                <id root="2.16.840.1.113883.4.6" extension="2589654740"/>
@@ -139,8 +139,8 @@
          </performer>
          <performer typeCode="PRF">
             <time>
-               <low value="20240101"/>
-               <high value="20241231"/>
+               <low value="20250101"/>
+               <high value="20251231"/>
             </time>
             <assignedEntity>
                <id root="2.16.840.1.113883.4.6" extension="2357943549"/>
@@ -193,8 +193,8 @@ QRDA Category III Measure Section
                            codeSystem="2.16.840.1.113883.6.96"
                            displayName="Observation Parameters"/>
                      <effectiveTime>
-                        <low value="20240101"/>
-                        <high value="20241231"/>
+                        <low value="20250101"/>
+                        <high value="20251231"/>
                      </effectiveTime>
                   </act>
                </entry>
@@ -211,7 +211,7 @@ QRDA Category III Measure Section
                         <externalDocument classCode="DOC" moodCode="EVN">
                            <!--This is the version-specific identifier for the eCQM-->
                            <id root="2.16.840.1.113883.4.738"
-                              extension="2c928084-83d3-1b44-0183-eb75dc8a03db"/>
+                              extension="2c928083-8907-ce68-0189-2bc5fa0d0739"/>
                            <code code="57024-2" 
                                  codeSystem="2.16.840.1.113883.6.1"
                                  codeSystemName="LOINC" 
@@ -233,7 +233,7 @@ QRDA Category III Measure Section
                            <value xsi:type="REAL" value=".055556"/>
                            <reference typeCode="REFR">
                               <externalObservation classCode="OBS" moodCode="EVN">
-                                 <id root="95BCB9D4-86A8-43C1-BE29-7440A2ECE294"/>
+                                 <id root="10C65EBE-685C-48F8-8B24-351C6F3481E9"/>
                                  <code code="NUMER" 
                                        codeSystem="2.16.840.1.113883.5.4"
                                        codeSystemName="ActCode" 
@@ -759,7 +759,7 @@ QRDA Category III Measure Section
                            <!--IPOP Population ID from eCQM-->
                            <reference typeCode="REFR">
                               <externalObservation classCode="OBS" moodCode="EVN">
-                                 <id root="F09F8D18-F787-46EA-8791-3D3EF50A4C72"/>
+                                 <id root="51D8CA9A-E511-4793-8AD4-EFAE90F3ABA4"/>
                               </externalObservation>
                            </reference>
                         </observation>
@@ -1281,7 +1281,7 @@ QRDA Category III Measure Section
                            <!--DENOM Population ID from eCQM-->
                            <reference typeCode="REFR">
                               <externalObservation classCode="OBS" moodCode="EVN">
-                                 <id root="66505C6C-AAB0-4232-B0CA-15FB438090F4"/>
+                                 <id root="EA65F958-962E-433B-A9A3-CC2EA7B76E26"/>
                               </externalObservation>
                            </reference>
                         </observation>
@@ -1804,7 +1804,7 @@ QRDA Category III Measure Section
                            <!--DENEX Population ID from eCQM-->
                            <reference typeCode="REFR">
                               <externalObservation classCode="OBS" moodCode="EVN">
-                                 <id root="6AD9B271-BBB4-4BB6-95B1-D1A7E50D812F"/>
+                                 <id root="CA386077-1F7A-4C23-85D7-33A4FCED0803"/>
                               </externalObservation>
                            </reference>
                         </observation>
@@ -2324,7 +2324,7 @@ QRDA Category III Measure Section
                            <!--NUMER Population ID from eCQM-->
                            <reference typeCode="REFR">
                               <externalObservation classCode="OBS" moodCode="EVN">
-                                 <id root="95BCB9D4-86A8-43C1-BE29-7440A2ECE294"/>
+                                 <id root="10C65EBE-685C-48F8-8B24-351C6F3481E9"/>
                               </externalObservation>
                            </reference>
                         </observation>
@@ -2344,7 +2344,7 @@ QRDA Category III Measure Section
                         <externalDocument classCode="DOC" moodCode="EVN">
                            <!--This is the version-specific identifier for the eCQM-->
                            <id root="2.16.840.1.113883.4.738"
-                              extension="2c928084-82ea-d7c5-0183-6bf2944520dc"/>
+                              extension="2c928083-8907-ce68-0189-2bc134cf06bb"/>
                            <code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
                               codeSystemName="LOINC" displayName="Health Quality Measure Document"/>
                            <text>Colorectal Cancer Screening</text>
@@ -2365,7 +2365,7 @@ QRDA Category III Measure Section
                                   value=".888889"/>
                            <reference typeCode="REFR">
                               <externalObservation classCode="OBS" moodCode="EVN">
-                                 <id root="D01C8F72-6AA1-4DF9-8458-29DE8F10D4FE"/>
+                                 <id root="1C4A619B-74C1-4C1F-A6C8-3178C7E595AA"/>
                                  <code code="NUMER" 
                                        codeSystem="2.16.840.1.113883.5.4"
                                        codeSystemName="ActCode" 
@@ -2433,8 +2433,8 @@ QRDA Category III Measure Section
                                  </entryRelationship>
                                  <reference typeCode="REFR">
                                     <externalObservation>
-                                       <!-- Reporting Stratification STRAT_1: 0C8CCBC3-BC5D-45AE-9ADD-4AA70859516C -->
-                                       <id root="0C8CCBC3-BC5D-45AE-9ADD-4AA70859516C"/>
+                                       <!-- Reporting Stratification STRAT_1: 36D178DD-1B4B-4D79-885C-B8D681B1A14D -->
+                                       <id root="36D178DD-1B4B-4D79-885C-B8D681B1A14D"/>
                                     </externalObservation>
                                  </reference>
                               </observation>
@@ -2469,8 +2469,8 @@ QRDA Category III Measure Section
                                  </entryRelationship>
                                  <reference typeCode="REFR">
                                     <externalObservation>
-                                       <!-- Reporting Stratification STRAT_2: 4874EA9D-3E03-4E4D-8605-264136B3A0B7 -->
-                                       <id root="4874EA9D-3E03-4E4D-8605-264136B3A0B7"/>
+                                       <!-- Reporting Stratification STRAT_2: 9770406F-1571-40B9-839E-2F6E5193E103 -->
+                                       <id root="9770406F-1571-40B9-839E-2F6E5193E103"/>
                                     </externalObservation>
                                  </reference>
                               </observation>
@@ -2961,7 +2961,7 @@ QRDA Category III Measure Section
                            <!--IPOP Population ID from eCQM-->
                            <reference typeCode="REFR">
                               <externalObservation classCode="OBS" moodCode="EVN">
-                                 <id root="CE7E7820-62A0-430C-93D4-36F096BC66F1"/>
+                                 <id root="F551C910-F688-450C-9C76-88401EDA98FA"/>
                               </externalObservation>
                            </reference>
                         </observation>
@@ -3026,8 +3026,8 @@ QRDA Category III Measure Section
                                  </entryRelationship>
                                  <reference typeCode="REFR">
                                     <externalObservation>
-                                       <!-- Reporting Stratification STRAT_1: 0C8CCBC3-BC5D-45AE-9ADD-4AA70859516C -->
-                                       <id root="0C8CCBC3-BC5D-45AE-9ADD-4AA70859516C"/>
+                                       <!-- Reporting Stratification STRAT_1: 36D178DD-1B4B-4D79-885C-B8D681B1A14D -->
+                                       <id root="36D178DD-1B4B-4D79-885C-B8D681B1A14D"/>
                                     </externalObservation>
                                  </reference>
                               </observation>
@@ -3062,8 +3062,8 @@ QRDA Category III Measure Section
                                  </entryRelationship>
                                  <reference typeCode="REFR">
                                     <externalObservation>
-                                       <!-- Reporting Stratification STRAT_2: 4874EA9D-3E03-4E4D-8605-264136B3A0B7 -->
-                                       <id root="4874EA9D-3E03-4E4D-8605-264136B3A0B7"/>
+                                       <!-- Reporting Stratification STRAT_2: 9770406F-1571-40B9-839E-2F6E5193E103 -->
+                                       <id root="9770406F-1571-40B9-839E-2F6E5193E103"/>
                                     </externalObservation>
                                  </reference>
                               </observation>
@@ -3556,7 +3556,7 @@ QRDA Category III Measure Section
                            <!--DENOM Population ID from eCQM-->
                            <reference typeCode="REFR">
                               <externalObservation classCode="OBS" moodCode="EVN">
-                                 <id root="01CFAAD2-55BE-4F1F-AF0D-58C11583FEFC"/>
+                                 <id root="5B1B895A-CD14-4AE2-9461-D599B5D73D31"/>
                               </externalObservation>
                            </reference>
                         </observation>
@@ -3618,8 +3618,8 @@ QRDA Category III Measure Section
                                  </entryRelationship>
                                  <reference typeCode="REFR">
                                     <externalObservation>
-                                       <!-- Reporting Stratification STRAT_1: 0C8CCBC3-BC5D-45AE-9ADD-4AA70859516C -->
-                                       <id root="0C8CCBC3-BC5D-45AE-9ADD-4AA70859516C"/>
+                                       <!-- Reporting Stratification STRAT_1: 36D178DD-1B4B-4D79-885C-B8D681B1A14D -->
+                                       <id root="36D178DD-1B4B-4D79-885C-B8D681B1A14D"/>
                                     </externalObservation>
                                  </reference>
                               </observation>
@@ -3654,8 +3654,8 @@ QRDA Category III Measure Section
                                  </entryRelationship>
                                  <reference typeCode="REFR">
                                     <externalObservation>
-                                       <!-- Reporting Stratification STRAT_2: 4874EA9D-3E03-4E4D-8605-264136B3A0B7 -->
-                                       <id root="4874EA9D-3E03-4E4D-8605-264136B3A0B7"/>
+                                       <!-- Reporting Stratification STRAT_2: 9770406F-1571-40B9-839E-2F6E5193E103 -->
+                                       <id root="9770406F-1571-40B9-839E-2F6E5193E103"/>
                                     </externalObservation>
                                  </reference>
                               </observation>
@@ -4148,7 +4148,7 @@ QRDA Category III Measure Section
                            <!--DENEX Population ID from eCQM-->
                            <reference typeCode="REFR">
                               <externalObservation classCode="OBS" moodCode="EVN">
-                                 <id root="6B6E3E45-86AA-4AEC-917D-6A7D5D452513"/>
+                                 <id root="7AEB935C-8F1E-47B3-97AE-CEB97C06E4E6"/>
                               </externalObservation>
                            </reference>
                         </observation>
@@ -4209,8 +4209,8 @@ QRDA Category III Measure Section
                                  </entryRelationship>
                                  <reference typeCode="REFR">
                                     <externalObservation>
-                                       <!-- Reporting Stratification STRAT_1: 0C8CCBC3-BC5D-45AE-9ADD-4AA70859516C -->
-                                       <id root="0C8CCBC3-BC5D-45AE-9ADD-4AA70859516C"/>
+                                       <!-- Reporting Stratification STRAT_1: 36D178DD-1B4B-4D79-885C-B8D681B1A14D -->
+                                       <id root="36D178DD-1B4B-4D79-885C-B8D681B1A14D"/>
                                     </externalObservation>
                                  </reference>
                               </observation>
@@ -4245,8 +4245,8 @@ QRDA Category III Measure Section
                                  </entryRelationship>
                                  <reference typeCode="REFR">
                                     <externalObservation>
-                                       <!-- Reporting Stratification STRAT_2: 4874EA9D-3E03-4E4D-8605-264136B3A0B7 -->
-                                       <id root="4874EA9D-3E03-4E4D-8605-264136B3A0B7"/>
+                                       <!-- Reporting Stratification STRAT_2: 9770406F-1571-40B9-839E-2F6E5193E103 -->
+                                       <id root="9770406F-1571-40B9-839E-2F6E5193E103"/>
                                     </externalObservation>
                                  </reference>
                               </observation>
@@ -4739,7 +4739,7 @@ QRDA Category III Measure Section
                            <!--NUMER Population ID from eCQM-->
                            <reference typeCode="REFR">
                               <externalObservation classCode="OBS" moodCode="EVN">
-                                 <id root="D01C8F72-6AA1-4DF9-8458-29DE8F10D4FE"/>
+                                 <id root="1C4A619B-74C1-4C1F-A6C8-3178C7E595AA"/>
                               </externalObservation>
                            </reference>
                         </observation>
@@ -4759,7 +4759,7 @@ QRDA Category III Measure Section
                         <externalDocument classCode="DOC" moodCode="EVN">
                            <!--This is the version-specific identifier for the eCQM-->
                            <id root="2.16.840.1.113883.4.738"
-                              extension="2c928085-806c-39a2-0180-7092fa9b0145"/>
+                              extension="2c928083-8907-ce68-0189-2bbd31d6064e"/>
                            <code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
                               codeSystemName="LOINC" displayName="Health Quality Measure Document"/>
                            <text>Controlling High Blood Pressure</text>
@@ -4777,7 +4777,7 @@ QRDA Category III Measure Section
                            <value xsi:type="REAL" value=".888889"/>
                            <reference typeCode="REFR">
                               <externalObservation classCode="OBS" moodCode="EVN">
-                                 <id root="24803F44-C643-45C7-A2A5-4C58BD540579"/>
+                                 <id root="73661F57-1A94-4982-8136-EDCE51A9AEA8"/>
                                  <code code="NUMER" 
                                        codeSystem="2.16.840.1.113883.5.4"
                                        codeSystemName="ActCode" 
@@ -5302,7 +5302,7 @@ QRDA Category III Measure Section
                            <!--IPOP Population ID from eCQM-->
                            <reference typeCode="REFR">
                               <externalObservation classCode="OBS" moodCode="EVN">
-                                 <id root="F348D767-1BDE-41AB-884D-5F0E19093980"/>
+                                 <id root="A35D89C5-C903-4D4C-BDBC-EA70D1254BEF"/>
                               </externalObservation>
                            </reference>
                         </observation>
@@ -5822,7 +5822,7 @@ QRDA Category III Measure Section
                            <!--DENOM Population ID from eCQM-->
                            <reference typeCode="REFR">
                               <externalObservation classCode="OBS" moodCode="EVN">
-                                 <id root="3E0D40B3-64FC-4998-B371-34978D033116"/>
+                                 <id root="FECE5EB1-842C-42B6-B2BC-7035C79222E4"/>
                               </externalObservation>
                            </reference>
                         </observation>
@@ -6345,7 +6345,7 @@ QRDA Category III Measure Section
                            <!--DENEX Population ID from eCQM-->
                            <reference typeCode="REFR">
                               <externalObservation classCode="OBS" moodCode="EVN">
-                                 <id root="95E1480E-8B61-4777-865D-B2A1D6525E1A"/>
+                                 <id root="8D42520C-8C19-47AF-B3E7-A66EAECA0DBD"/>
                               </externalObservation>
                            </reference>
                         </observation>
@@ -6868,7 +6868,7 @@ QRDA Category III Measure Section
                            <!--NUMER Population ID from eCQM-->
                            <reference typeCode="REFR">
                               <externalObservation classCode="OBS" moodCode="EVN">
-                                 <id root="24803F44-C643-45C7-A2A5-4C58BD540579"/>
+                                 <id root="73661F57-1A94-4982-8136-EDCE51A9AEA8"/>
                               </externalObservation>
                            </reference>
                         </observation>
@@ -6891,7 +6891,7 @@ QRDA Category III Measure Section
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<id root="2.16.840.1.113883.4.738"
-										extension="2c928084-82ea-d7c5-0183-14b6afcb0cc9"/>
+										extension="8a6d0454-8df0-2d9f-018e-1483736a13d7"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
 										codeSystemName="LOINC"
 										displayName="Health Quality Measure Document"/>
@@ -6913,7 +6913,7 @@ QRDA Category III Measure Section
 						         <value xsi:type="REAL" value=".842105"/>
 						         <reference typeCode="REFR">
 						            <externalObservation classCode="OBS" moodCode="EVN">
-						               <id root="718DDAB1-A99D-40B2-9F33-DB0AA5D464A7"/>
+						               <id root="E3DA4ECF-8EE9-4578-B3EB-D269973F8EFB"/>
 						               <code code="NUMER" 
 						                  codeSystem="2.16.840.1.113883.5.4"
 						                  codeSystemName="ActCode" 
@@ -6936,7 +6936,7 @@ QRDA Category III Measure Section
 						         <value xsi:type="REAL" value=".842105"/>
 						         <reference typeCode="REFR">
 						            <externalObservation classCode="OBS" moodCode="EVN">
-						               <id root="EB24BBAB-E314-4A42-8329-E559D0AADAA6"/>
+						               <id root="21D4794A-1450-4C3D-89AE-A4791DF8FA2A"/>
 						               <code code="NUMER" 
 						                  codeSystem="2.16.840.1.113883.5.4"
 						                  codeSystemName="ActCode" 
@@ -6959,7 +6959,7 @@ QRDA Category III Measure Section
 						         <value xsi:type="REAL" value=".842105"/>
 						         <reference typeCode="REFR">
 						            <externalObservation classCode="OBS" moodCode="EVN">
-						               <id root="FAAEB19D-EE61-4F58-970C-933F47B38E34"/>
+						               <id root="333A53EF-9CFF-4AC2-9F71-BA7010DBA9ED"/>
 						               <code code="NUMER" 
 						                  codeSystem="2.16.840.1.113883.5.4"
 						                  codeSystemName="ActCode" 
@@ -7424,7 +7424,7 @@ QRDA Category III Measure Section
 									<!--IPOP 1 Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="8B63E323-F12A-4174-9EB2-FB64A7285C99"/>
+											<id root="AB01AB8C-5200-4C98-94B1-785687A9469F"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -7883,7 +7883,7 @@ QRDA Category III Measure Section
 									<!--DENEX 1 Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-										   <id root="07496BE4-AE52-47FA-8076-337EB1FB8307"/>
+										   <id root="D80F9855-5B82-4EAB-97E7-48F7E5E24510"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -8342,7 +8342,7 @@ QRDA Category III Measure Section
 									<!--DENOM 1 Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="1AF6FBFC-F6BA-4042-BA31-66127FE4CA0A"/>
+											<id root="C13FB76B-61C6-422F-92ED-71D8FFE685FC"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -8801,7 +8801,7 @@ QRDA Category III Measure Section
 									<!--NUMER 1 Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-										   <id root="718DDAB1-A99D-40B2-9F33-DB0AA5D464A7"/>
+										   <id root="E3DA4ECF-8EE9-4578-B3EB-D269973F8EFB"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -9261,7 +9261,7 @@ QRDA Category III Measure Section
 									<!--IPOP 2 Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="F65684D1-43BD-440C-AF43-93F592672854"/>
+											<id root="C508583F-77CE-4004-AC69-13A84B2641D3"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -9720,7 +9720,7 @@ QRDA Category III Measure Section
 									<!--DENEX 2 Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-										   <id root="076BA627-E3B6-40C8-ABA8-9FDE6FF11070"/>
+										   <id root="D323558D-2C59-476C-A6B9-32E5BCF5D2E8"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -10179,7 +10179,7 @@ QRDA Category III Measure Section
 									<!--DENOM 2 Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="26CCD818-574C-4325-9BA8-3992BAB67070"/>
+											<id root="5D9336BB-1759-4FB0-ACAD-C944F28ACD10"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -10638,7 +10638,7 @@ QRDA Category III Measure Section
 									<!--NUMER 2 Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-										   <id root="EB24BBAB-E314-4A42-8329-E559D0AADAA6"/>
+										   <id root="21D4794A-1450-4C3D-89AE-A4791DF8FA2A"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -11098,7 +11098,7 @@ QRDA Category III Measure Section
 									<!--IPOP 3 Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="9434749C-2953-46FF-9C2F-393DDAA96365"/>
+											<id root="D9BEF0F0-26B4-484C-AF92-252622D46734"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -11557,7 +11557,7 @@ QRDA Category III Measure Section
 									<!--DENEX 3 Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-										   <id root="5BC836CA-2EC0-417B-8D55-182CEF941994"/>
+										   <id root="64F71C4C-5F42-479C-9EDF-968EBCCFEDE7"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -12016,7 +12016,7 @@ QRDA Category III Measure Section
 									<!--DENOM 3 Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="7461BAC8-F77B-44BF-ADE6-ED9F599CF3FB"/>
+											<id root="5455BCAD-B7A1-4F2E-85FF-EAE0881B7666"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -12475,7 +12475,7 @@ QRDA Category III Measure Section
 									<!--NUMER 3 Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-										   <id root="FAAEB19D-EE61-4F58-970C-933F47B38E34"/>
+										   <id root="333A53EF-9CFF-4AC2-9F71-BA7010DBA9ED"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -12495,7 +12495,7 @@ QRDA Category III Measure Section
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<id root="2.16.840.1.113883.4.738"
-										extension="2c928084-82ea-d7c5-0183-65e9c0061ec1"/>
+										extension="8a6d0454-8df0-2d9f-018e-38a6aa7820b7"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
 										codeSystemName="LOINC"
 										displayName="Health Quality Measure Document"/>
@@ -12517,7 +12517,7 @@ QRDA Category III Measure Section
 						         <value xsi:type="REAL" value="1"/>
 						         <reference typeCode="REFR">
 						            <externalObservation classCode="OBS" moodCode="EVN">
-						               <id root="D997534A-AF2A-4AEE-9EFC-358EB0273EDB"/>
+						               <id root="AC0D26F8-7DE1-42F6-9CD9-2B96D8383E51"/>
 						               <code code="NUMER" 
 						                  codeSystem="2.16.840.1.113883.5.4"
 						                  codeSystemName="ActCode" 
@@ -12981,7 +12981,7 @@ QRDA Category III Measure Section
 									<!--IPOP Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="BC5D30AA-8AA4-4BA6-9FBE-B52D47CAF292"/>
+											<id root="EF7BEF3F-81C2-475F-96C7-2FC7F741FB4D"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -13440,7 +13440,7 @@ QRDA Category III Measure Section
 									<!--DENEXCEP Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="A3ED0DA1-60C2-4D42-BF86-EDEF350CD369"/>
+											<id root="E3081257-80AD-420A-98D4-EA2629C32C0E"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -13899,7 +13899,7 @@ QRDA Category III Measure Section
 									<!--DENEX Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="C7CFF7D2-0A86-4FB1-BBA7-2A91E65262C8"/>
+											<id root="686A54E2-2D9C-423B-B3C5-31C9AECCFA73"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -14358,7 +14358,7 @@ QRDA Category III Measure Section
 									<!--DENOM Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="F2435FA0-0AF1-4A64-BB27-4E7ED13F387B"/>
+											<id root="2C681E01-0A30-437E-A0C3-953EF766E5E7"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -14817,7 +14817,7 @@ QRDA Category III Measure Section
 									<!--NUMER Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="D997534A-AF2A-4AEE-9EFC-358EB0273EDB"/>
+											<id root="AC0D26F8-7DE1-42F6-9CD9-2B96D8383E51"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -14838,7 +14838,7 @@ QRDA Category III Measure Section
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<id root="2.16.840.1.113883.4.738"
-										extension="2c928084-83d3-1b44-0183-eca0b20c052a"/>
+										extension="8a6d0454-8df0-2d9f-018e-1434289012a6"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
 										codeSystemName="LOINC"
 										displayName="Health Quality Measure Document"/>
@@ -14859,7 +14859,7 @@ QRDA Category III Measure Section
 						         <value xsi:type="REAL" value=".842105"/>
 						         <reference typeCode="REFR">
 						            <externalObservation classCode="OBS" moodCode="EVN">
-						               <id root="BA0D192C-510B-4426-AA90-0835DF0F5F91"/>
+						               <id root="AF945143-9A66-47D6-819A-7C8463EF7E30"/>
 						               <code code="NUMER" 
 						                  codeSystem="2.16.840.1.113883.5.4"
 						                  codeSystemName="ActCode" 
@@ -15323,7 +15323,7 @@ QRDA Category III Measure Section
 									<!--IPOP Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="37671229-ED87-4DA8-A6AC-6F582490677B"/>
+											<id root="2EFD85A8-0F6A-4C9D-B500-B13559B6E000"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -15782,7 +15782,7 @@ QRDA Category III Measure Section
 									<!--DENEX Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="88313CAE-FC20-4EA6-9375-0F5CB0106E63"/>
+											<id root="B58EC200-EE42-4105-A721-EDAFBFC7311C"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -16241,7 +16241,7 @@ QRDA Category III Measure Section
 									<!--DENOM Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="34FE0E39-10FD-4FDE-8153-AA2BA305B932"/>
+											<id root="45522BD1-875C-4C6D-BC3E-8CE25CA84D36"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -16700,7 +16700,7 @@ QRDA Category III Measure Section
 									<!--NUMER Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="BA0D192C-510B-4426-AA90-0835DF0F5F91"/>
+											<id root="AF945143-9A66-47D6-819A-7C8463EF7E30"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -16720,7 +16720,7 @@ QRDA Category III Measure Section
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<id root="2.16.840.1.113883.4.738"
-										extension="2c928083-8651-08a3-0186-c82995a91d28"/>
+										extension="2c928083-8907-ce68-0189-40f8279a0a19"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
 										codeSystemName="LOINC"
 										displayName="Health Quality Measure Document"/>
@@ -16742,7 +16742,7 @@ QRDA Category III Measure Section
 						         <value xsi:type="REAL" value=".888889"/>
 						         <reference typeCode="REFR">
 						            <externalObservation classCode="OBS" moodCode="EVN">
-						               <id root="E2557B71-1B97-413F-BE26-2B037E4D590B"/>
+						               <id root="BD02B228-9DE9-447F-A343-0B3BDE778D22"/>
 						               <code code="NUMER" 
 						                  codeSystem="2.16.840.1.113883.5.4"
 						                  codeSystemName="ActCode" 
@@ -17206,7 +17206,7 @@ QRDA Category III Measure Section
 									<!--IPOP Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="AD83208C-1313-401E-BB62-ABCCE0982B49"/>
+											<id root="30EC0533-2579-4CC6-A86D-5B0051C34604"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -17666,7 +17666,7 @@ QRDA Category III Measure Section
 									<!--DENEX Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="E52F7FAE-96D9-417A-8538-6E3DB4A31D7A"/>
+											<id root="C22233F9-6C86-4C17-B212-3F1BD3312144"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -18125,7 +18125,7 @@ QRDA Category III Measure Section
 									<!--DENEXCEP Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="FBA7B9D9-8588-4CB2-AB72-642CBD980334"/>
+											<id root="21918DA5-4EA0-4B07-B676-6F26CBD3138A"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -18584,7 +18584,7 @@ QRDA Category III Measure Section
 									<!--DENOM Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="696066C7-C558-4849-A325-A3CDDB58CF8F"/>
+											<id root="661C22C5-CAA6-4F30-AE68-6FA59C265128"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -19043,7 +19043,7 @@ QRDA Category III Measure Section
 									<!--NUMER Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="E2557B71-1B97-413F-BE26-2B037E4D590B"/>
+											<id root="BD02B228-9DE9-447F-A343-0B3BDE778D22"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -19064,7 +19064,7 @@ QRDA Category III Measure Section
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<id root="2.16.840.1.113883.4.738"
-										extension="2c928082-86db-6718-0187-0b4977140ad5"/>
+										extension="8a6d0454-8df0-2d9f-018d-f6aeba950637"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
 										codeSystemName="LOINC"
 										displayName="Health Quality Measure Document"/>
@@ -19086,7 +19086,7 @@ QRDA Category III Measure Section
 						         <value xsi:type="REAL" value=".842105"/>
 						         <reference typeCode="REFR">
 						            <externalObservation classCode="OBS" moodCode="EVN">
-						               <id root="A65C0BE1-19D2-40E5-910D-9B95960C4B6C"/>
+						               <id root="C2A96F40-F8F6-47B3-AEE5-157F101D3E6E"/>
 						               <code code="NUMER" 
 						                  codeSystem="2.16.840.1.113883.5.4"
 						                  codeSystemName="ActCode" 
@@ -19550,7 +19550,7 @@ QRDA Category III Measure Section
 									<!--IPOP Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="018818BA-BAEE-4F63-B345-0ECF647B7580"/>
+											<id root="F63CAC5B-9592-4E1E-82EE-739A66D86CC9"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -20009,7 +20009,7 @@ QRDA Category III Measure Section
 									<!--DENEXCEP Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-										   <id root="294E02A5-FBA5-4863-B215-D25B396C3E79"/>
+										   <id root="56553A64-494A-472D-905E-78D1CB7A011A"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -20468,7 +20468,7 @@ QRDA Category III Measure Section
 									<!--DENOM Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="F0F5F489-3AE0-4128-A3D3-7427B5F333A4"/>
+											<id root="0B529CD7-00FB-4CAE-8B1F-B31DE4BB7E40"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -20927,7 +20927,7 @@ QRDA Category III Measure Section
 									<!--NUMER Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="A65C0BE1-19D2-40E5-910D-9B95960C4B6C"/>
+											<id root="C2A96F40-F8F6-47B3-AEE5-157F101D3E6E"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -20948,7 +20948,7 @@ QRDA Category III Measure Section
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<id root="2.16.840.1.113883.4.738"
-										extension="2c928084-8211-3ece-0182-1de98c500310"/>
+										extension="2c928083-8907-ce68-0189-2bbefefe0669"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
 										codeSystemName="LOINC"
 										displayName="Health Quality Measure Document"/>
@@ -20970,7 +20970,7 @@ QRDA Category III Measure Section
 						         <value xsi:type="REAL" value=".926316"/>
 						         <reference typeCode="REFR">
 						            <externalObservation classCode="OBS" moodCode="EVN">
-						               <id root="FD0D1365-F405-4A66-9B7A-2ABE64033E8A"/>
+						               <id root="8AC76953-1D7C-4729-8F96-3AFC552A99EB"/>
 						               <code code="NUMER" 
 						                  codeSystem="2.16.840.1.113883.5.4"
 						                  codeSystemName="ActCode" 
@@ -20993,7 +20993,7 @@ QRDA Category III Measure Section
 						         <value xsi:type="REAL" value=".875"/>
 						         <reference typeCode="REFR">
 						            <externalObservation classCode="OBS" moodCode="EVN">
-						               <id root="0DFDC593-66E3-4532-9F27-6C5C6C947EE5"/>
+						               <id root="53EB472F-C673-4572-99FF-21AE87C9169B"/>
 						               <code code="NUMER" 
 						                  codeSystem="2.16.840.1.113883.5.4"
 						                  codeSystemName="ActCode" 
@@ -21466,7 +21466,7 @@ QRDA Category III Measure Section
 									<!--IPOP Population 1 ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="9B70E808-0E6B-44FB-AC46-0548A1E409DE"/>
+											<id root="B88DD062-C0C1-46D4-A739-C607A37BB261"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -21925,7 +21925,7 @@ QRDA Category III Measure Section
 									<!--DENEX 1 Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="00B7D640-5DD7-41D1-BF47-B95A2C19B6D7"/>
+											<id root="02DD44D5-0DB1-4DC2-81CF-B2A71663280E"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -22385,7 +22385,7 @@ QRDA Category III Measure Section
 									<!--DENOM 1 Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="886B4ABD-BEB6-43DC-90AE-C529F5E07B47"/>
+											<id root="0EBDF7B3-3C2A-4221-8FC6-5CC442975352"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -22844,7 +22844,7 @@ QRDA Category III Measure Section
 									<!-- NUMER 1 Population ID from eCQM -->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="FD0D1365-F405-4A66-9B7A-2ABE64033E8A"/>
+											<id root="8AC76953-1D7C-4729-8F96-3AFC552A99EB"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -23313,7 +23313,7 @@ QRDA Category III Measure Section
 									<!--IPOP Population 2 ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="72606B57-2F1C-40B4-9655-F691A594A611"/>
+											<id root="B36D1E39-517E-48A2-866F-F4A1C7D12726"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -23772,7 +23772,7 @@ QRDA Category III Measure Section
 									<!--DENEX 2 Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="CD78A07D-8D5B-4E22-B05E-9A569B2FC375"/>
+											<id root="E90337E4-28CC-49DE-9FC6-1139B386F21A"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -24231,7 +24231,7 @@ QRDA Category III Measure Section
 									<!--DENOM 2 Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="F6EA0497-C79C-4722-838F-528A8635F1BE"/>
+											<id root="6DC20C09-1A43-4632-8CEB-A3A5FA191E64"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -24690,7 +24690,7 @@ QRDA Category III Measure Section
 									<!-- NUMER 2 Population ID from eCQM -->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="0DFDC593-66E3-4532-9F27-6C5C6C947EE5"/>
+											<id root="53EB472F-C673-4572-99FF-21AE87C9169B"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -24710,9 +24710,9 @@ QRDA Category III Measure Section
                      <statusCode code="completed"/>
                      <reference typeCode="REFR">
                         <externalDocument classCode="DOC" moodCode="EVN">
-                           <!-- eCQM Version Specific ID of CMS159v12 -->
+                           <!-- eCQM Version Specific ID of CMS159v13 -->
                            <id root="2.16.840.1.113883.4.738"
-                           	extension="2c928082-86db-6718-0187-0ad80afa0a7e"/>
+                           	extension="8a6d0454-8df0-2d9f-018e-38c36cb320f0"/>
                            <code code="57024-2"
                                  codeSystem="2.16.840.1.113883.6.1"
                                  codeSystemName="LOINC"
@@ -24734,7 +24734,7 @@ QRDA Category III Measure Section
                             <value xsi:type="REAL" value=".888889"/>
                             <reference typeCode="REFR">
                                <externalObservation classCode="OBS" moodCode="EVN">
-                                  <id root="8A5DE292-E5E6-45CE-99C6-22E6F8E688E4"/>
+                                  <id root="BF66AA4C-0510-43F8-BF08-A95A71A1E50E"/>
                                   <code code="NUMER" 
                                      codeSystem="2.16.840.1.113883.5.4"
                                      codeSystemName="ActCode" 
@@ -24801,8 +24801,8 @@ QRDA Category III Measure Section
                                  </entryRelationship>
                                  <reference typeCode="REFR">
                                     <externalObservation>
-                                    	<!-- Reporting Stratification STRAT_1: 16B03548-4E23-4D9B-B1C6-F7D3DC6F1727 -->
-                                    	<id root="16B03548-4E23-4D9B-B1C6-F7D3DC6F1727"/>
+                                    	<!-- Reporting Stratification STRAT_1: C4A59042-1634-4A8B-812F-BE0A4450D0D2 -->
+                                    	<id root="C4A59042-1634-4A8B-812F-BE0A4450D0D2"/>
                                     </externalObservation>
                                  </reference>
                               </observation>
@@ -24836,8 +24836,8 @@ QRDA Category III Measure Section
                                  </entryRelationship>
                                  <reference typeCode="REFR">
                                     <externalObservation>
-                                    	<!-- Reporting Stratification STRAT_2: B44C46D8-64D6-405B-8283-981CDC1D6E5E -->                                       
-                                    	<id root="B44C46D8-64D6-405B-8283-981CDC1D6E5E"/>
+                                    	<!-- Reporting Stratification STRAT_2: A3418DB5-F6AE-47A4-9F77-EA8B7EA583C9 -->                                       
+                                    	<id root="A3418DB5-F6AE-47A4-9F77-EA8B7EA583C9"/>
                                     </externalObservation>
                                  </reference>
                               </observation>
@@ -25287,10 +25287,10 @@ QRDA Category III Measure Section
                                  </entryRelationship>
                               </observation>
                            </entryRelationship>
-                           <!--IPOP Population ID from CMS159v12 -->			
+                           <!--IPOP Population ID from CMS159v13 -->
                            <reference typeCode="REFR">
                               <externalObservation classCode="OBS" moodCode="EVN">
-                              	<id root="E4E92400-0CE1-403C-818D-EF5C25A952AA"/>
+                              	<id root="B74991E6-6F3A-4A01-A60A-6FEEFC966414"/>
                               </externalObservation>
                            </reference>
                         </observation>
@@ -25351,10 +25351,10 @@ QRDA Category III Measure Section
                                                    displayName="Count"/>
                                     </observation>
                                  </entryRelationship>
-                                 <!-- Reporting Stratification STRAT_1: 16B03548-4E23-4D9B-B1C6-F7D3DC6F1727 -->
+                                 <!-- Reporting Stratification STRAT_1: C4A59042-1634-4A8B-812F-BE0A4450D0D2 -->
                                  <reference typeCode="REFR">
                                     <externalObservation>
-                                       <id root="16B03548-4E23-4D9B-B1C6-F7D3DC6F1727"/>
+                                       <id root="C4A59042-1634-4A8B-812F-BE0A4450D0D2"/>
                                     </externalObservation>
                                  </reference>
                               </observation>
@@ -25386,10 +25386,10 @@ QRDA Category III Measure Section
                                                    displayName="Count"/>
                                     </observation>
                                  </entryRelationship>
-                                 <!-- Reporting Stratification STRAT_2: B44C46D8-64D6-405B-8283-981CDC1D6E5E -->
+                                 <!-- Reporting Stratification STRAT_2: A3418DB5-F6AE-47A4-9F77-EA8B7EA583C9 -->
                                  <reference typeCode="REFR">
                                     <externalObservation>
-                                       <id root="B44C46D8-64D6-405B-8283-981CDC1D6E5E"/>
+                                       <id root="A3418DB5-F6AE-47A4-9F77-EA8B7EA583C9"/>
                                     </externalObservation>
                                  </reference>
                               </observation>
@@ -25834,10 +25834,10 @@ QRDA Category III Measure Section
                                  </entryRelationship>
                               </observation>
                            </entryRelationship>
-                           <!--DENOM Population ID from CMS159v12 -->			
+                           <!--DENOM Population ID from CMS159v13 -->
                            <reference typeCode="REFR">
                               <externalObservation classCode="OBS" moodCode="EVN">
-                              	<id root="4B7B1714-FE42-40EB-A652-7C077636A8BF"/>
+                              	<id root="55D888FB-ADA0-4D51-858F-4E942F0F670E"/>
                               </externalObservation>
                            </reference>
                         </observation>
@@ -25897,10 +25897,10 @@ QRDA Category III Measure Section
                                                    displayName="Count"/>
                                     </observation>
                                  </entryRelationship>
-                                 <!-- Reporting Stratification STRAT_1: 16B03548-4E23-4D9B-B1C6-F7D3DC6F1727-->
+                                 <!-- Reporting Stratification STRAT_1: C4A59042-1634-4A8B-812F-BE0A4450D0D2-->
                                  <reference typeCode="REFR">
                                     <externalObservation>
-                                       <id root="16B03548-4E23-4D9B-B1C6-F7D3DC6F1727"/>
+                                       <id root="C4A59042-1634-4A8B-812F-BE0A4450D0D2"/>
                                     </externalObservation>
                                  </reference>
                               </observation>
@@ -25932,10 +25932,10 @@ QRDA Category III Measure Section
                                                    displayName="Count"/>
                                     </observation>
                                  </entryRelationship>
-                                 <!-- Reporting Stratification STRAT_2: B44C46D8-64D6-405B-8283-981CDC1D6E5E-->
+                                 <!-- Reporting Stratification STRAT_2: A3418DB5-F6AE-47A4-9F77-EA8B7EA583C9-->
                                  <reference typeCode="REFR">
                                     <externalObservation>
-                                       <id root="B44C46D8-64D6-405B-8283-981CDC1D6E5E"/>
+                                       <id root="A3418DB5-F6AE-47A4-9F77-EA8B7EA583C9"/>
                                     </externalObservation>
                                  </reference>
                               </observation>
@@ -26379,10 +26379,10 @@ QRDA Category III Measure Section
                                  </entryRelationship>
                               </observation>
                            </entryRelationship>
-                           <!--DENEX Population ID from CMS159v12-->			
+                           <!--DENEX Population ID from CMS159v13-->
                            <reference typeCode="REFR">
                               <externalObservation classCode="OBS" moodCode="EVN">
-                                 <id root="4539BAD0-93C8-4606-B167-91086446F8D8"/>
+                                 <id root="21908786-DDBF-4121-A704-D2E237A676BB"/>
                               </externalObservation>
                            </reference>
                         </observation>
@@ -26443,10 +26443,10 @@ QRDA Category III Measure Section
                                                    displayName="Count"/>
                                     </observation>
                                  </entryRelationship>
-                                 <!-- Reporting Stratification STRAT_1: 16B03548-4E23-4D9B-B1C6-F7D3DC6F1727-->
+                                 <!-- Reporting Stratification STRAT_1: C4A59042-1634-4A8B-812F-BE0A4450D0D2-->
                                  <reference typeCode="REFR">
                                     <externalObservation>
-                                       <id root="16B03548-4E23-4D9B-B1C6-F7D3DC6F1727"/>
+                                       <id root="C4A59042-1634-4A8B-812F-BE0A4450D0D2"/>
                                     </externalObservation>
                                  </reference>
                               </observation>
@@ -26478,10 +26478,10 @@ QRDA Category III Measure Section
                                                    displayName="Count"/>
                                     </observation>
                                  </entryRelationship>
-                                 <!-- Reporting Stratification STRAT_2: B44C46D8-64D6-405B-8283-981CDC1D6E5E-->
+                                 <!-- Reporting Stratification STRAT_2: A3418DB5-F6AE-47A4-9F77-EA8B7EA583C9-->
                                  <reference typeCode="REFR">
                                     <externalObservation>
-                                       <id root="B44C46D8-64D6-405B-8283-981CDC1D6E5E"/>
+                                       <id root="A3418DB5-F6AE-47A4-9F77-EA8B7EA583C9"/>
                                     </externalObservation>
                                  </reference>
                               </observation>
@@ -26929,7 +26929,7 @@ QRDA Category III Measure Section
                            <!--NUMER Population ID of eCQM -->			
                            <reference typeCode="REFR">
                               <externalObservation classCode="OBS" moodCode="EVN">
-                                 <id root="8A5DE292-E5E6-45CE-99C6-22E6F8E688E4"/>
+                                 <id root="BF66AA4C-0510-43F8-BF08-A95A71A1E50E"/>
                               </externalObservation>
                            </reference>
                         </observation>

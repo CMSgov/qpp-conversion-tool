@@ -2720,7 +2720,7 @@ CDA Header
 						</organizer>
 					</entry>
 
-					<!--Measure Entry for CMS122v12-->
+					<!--Measure Entry for CMS122v13-->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
@@ -2735,7 +2735,7 @@ CDA Header
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<id root="2.16.840.1.113883.4.738"
-										extension="2c928084-83d3-1b44-0183-eb75dc8a03db"/>
+										extension="2c928083-8907-ce68-0189-2bc5fa0d0739"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
 										  codeSystemName="LOINC" displayName="Health Quality Measure Document"/>
 									<text>Diabetes: Hemoglobin A1c (HbA1c) Poor Control (&gt; 9%)</text>
@@ -2756,7 +2756,7 @@ CDA Header
 									<value xsi:type="REAL" value=".888889"/>
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="95BCB9D4-86A8-43C1-BE29-7440A2ECE294"/>
+											<id root="10C65EBE-685C-48F8-8B24-351C6F3481E9"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
 												  codeSystemName="ActCode" displayName="Numerator"/>
 										</externalObservation>
@@ -3171,7 +3171,7 @@ CDA Header
 									<!--IPOP Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="F09F8D18-F787-46EA-8791-3D3EF50A4C72"/>
+											<id root="51D8CA9A-E511-4793-8AD4-EFAE90F3ABA4"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -3584,7 +3584,7 @@ CDA Header
 									<!--DENOM Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="66505C6C-AAB0-4232-B0CA-15FB438090F4"/>
+											<id root="EA65F958-962E-433B-A9A3-CC2EA7B76E26"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -3997,7 +3997,7 @@ CDA Header
 									<!--DENEX Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="6AD9B271-BBB4-4BB6-95B1-D1A7E50D812F"/>
+											<id root="CA386077-1F7A-4C23-85D7-33A4FCED0803"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -4410,7 +4410,7 @@ CDA Header
 									<!--NUMER Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="95BCB9D4-86A8-43C1-BE29-7440A2ECE294"/>
+											<id root="10C65EBE-685C-48F8-8B24-351C6F3481E9"/>
 										</externalObservation>
 									</reference>
 								</observation>
