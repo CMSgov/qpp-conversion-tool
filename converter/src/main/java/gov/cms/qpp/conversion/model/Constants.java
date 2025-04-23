@@ -82,6 +82,14 @@ public class Constants {
     public static final String APP_INDIVIDUAL = "MIPS_APP1_INDIV";
     public static final String APP_APM = "MIPS_APP1_APMENTITY";
 
+    // New XML program name constants for the APP Plus, and SSP PI programs for 2025
+    public static final String APP_PLUS_INDIVIDUAL = "APP_PLUS_INDIV";
+    public static final String APP_PLUS_GROUP = "APP_PLUS_GROUP";
+    public static final String APP_PLUS_APM = "APP_PLUS_APMENTITY";
+    public static final String SSP_PI_INDIVIDUAL = "SSP_PI_INDIV";
+    public static final String SSP_PI_GROUP = "SSP_PI_GROUP";
+    public static final String SSP_PI_APM = "SSP_PI_APMENTITY";
+
     // Library utility class so the constructor is private and empty.
     private Constants() {}
 }

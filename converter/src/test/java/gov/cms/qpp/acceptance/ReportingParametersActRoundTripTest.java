@@ -32,7 +32,7 @@ class ReportingParametersActRoundTripTest {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 		"$.measurementSets[0].performanceStart", new TypeRef<String>() { });
 
-		assertThat(performanceStart).isEqualTo("2024-01-01");
+		assertThat(performanceStart).isEqualTo("2025-01-01");
 	}
 
 	@Test
@@ -40,7 +40,7 @@ class ReportingParametersActRoundTripTest {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 				"$.measurementSets[0].performanceEnd", new TypeRef<String>() { });
 
-		assertThat(performanceStart).isEqualTo("2024-12-31");
+		assertThat(performanceStart).isEqualTo("2025-12-31");
 	}
 
 	@Test
@@ -48,7 +48,7 @@ class ReportingParametersActRoundTripTest {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 				"$.measurementSets[1].performanceStart", new TypeRef<String>() { });
 
-		assertThat(performanceStart).isEqualTo("2024-02-01");
+		assertThat(performanceStart).isEqualTo("2025-02-01");
 	}
 
 	@Test
@@ -56,7 +56,7 @@ class ReportingParametersActRoundTripTest {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 				"$.measurementSets[1].performanceEnd", new TypeRef<String>() { });
 
-		assertThat(performanceStart).isEqualTo("2024-05-31");
+		assertThat(performanceStart).isEqualTo("2025-05-31");
 	}
 
 	@Test
@@ -64,7 +64,7 @@ class ReportingParametersActRoundTripTest {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 				"$.measurementSets[2].performanceStart", new TypeRef<String>() { });
 
-		assertThat(performanceStart).isEqualTo("2024-01-01");
+		assertThat(performanceStart).isEqualTo("2025-01-01");
 	}
 
 	@Test
@@ -72,6 +72,6 @@ class ReportingParametersActRoundTripTest {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 				"$.measurementSets[2].performanceEnd", new TypeRef<String>() { });
 
-		assertThat(performanceStart).isEqualTo("2024-04-30");
+		assertThat(performanceStart).isEqualTo("2025-04-30");
 	}
 }

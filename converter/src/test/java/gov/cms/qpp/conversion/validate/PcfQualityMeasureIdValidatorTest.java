@@ -21,8 +21,8 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import static gov.cms.qpp.conversion.model.Constants.*;
 
 public class PcfQualityMeasureIdValidatorTest {
-	private static final String MEASURE_ID = "2c928084-83d3-1b44-0183-ec9f5639051f";
-	private static final String E_MEASURE_ID = "CMS128v12";
+	private static final String MEASURE_ID = "2c928084-8a90-2af8-018a-98ddac0b02c8";
+	private static final String E_MEASURE_ID = "CMS128v13";
 
 	private PcfQualityMeasureIdValidator validator;
 	private Node testNode;
