@@ -203,7 +203,9 @@ public enum ProblemCode implements LocalizedProblem {
 		+ "all NPI/TIN values that were active on your roster during the performance year. "
 		+ "Please contact your health IT vendor if your QRDA III file requires updates. "
 		+ "You can find instructions on how updating rosters in the PCF Practice Management Guide "
-		+ "(https://cmmi.my.salesforce.com/sfc/p/#i0000000iryR/a/t00000028RsP/dMF_romOmf5VLe7p5lUj8vch11mPmELP6ZuyI16vS.Y).", true);
+		+ "(https://cmmi.my.salesforce.com/sfc/p/#i0000000iryR/a/t00000028RsP/dMF_romOmf5VLe7p5lUj8vch11mPmELP6ZuyI16vS.Y).", true),
+	SSP_PI_ONLY_MEASURE_CATEGORY(109, "SSP submissions may only contain PI measures; found invalid category: `(category)`.", true);
+
 
 	private static final Map<Integer, ProblemCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ProblemCode::getCode, Function.identity()));
