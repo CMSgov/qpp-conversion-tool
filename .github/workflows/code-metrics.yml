@@ -1,0 +1,85 @@
+name: Code Metrics
+
+on:
+  # manual trigger
+  workflow_dispatch:
+  # scheduled trigger: every 2 weeks on Wednesday at 23:59
+  schedule:
+      - cron: '59 23 * * 3/2'
+
+jobs:
+  count-lines-and-coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set Trigger Environment Variable
+      run: |
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          echo "MANUALLY_TRIGGERED=true" >> $GITHUB_ENV
+        else
+          echo "MANUALLY_TRIGGERED=false" >> $GITHUB_ENV
+        fi
+
+    # notify: Nicholas and Nileena using their Slack IDs
+    - name: Set Slack users to notify if this is a scheduled run
+      if: env.MANUALLY_TRIGGERED == 'false'
+      run: |
+        echo "SLACK_USERS=<@U017GV0LRAR> <@UKQ250V26>" >> $GITHUB_ENV
+
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # - name: Set node version
+    #   uses: actions/setup-node@v4
+    #   with:
+    #       node-version: 20
+    #       cache: 'npm'
+
+    # - name: Install dependencies
+    #   run: npm ci
+    #   env:
+    #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+    - name: Count lines of code
+      id: linecount
+      run: |
+        # Install cloc if not already installed
+        sudo apt-get update && sudo apt-get install -y cloc
+        
+        # Run cloc at the HEAD of the repository and capture both JSON and text output
+        echo "Running cloc at HEAD..."
+        # Save text summary to a file
+        cloc --exclude-dir=node_modules,.git . > cloc_text_output.txt
+        # Save JSON output to a file
+        cloc --exclude-dir=node_modules,.git --json . > cloc_output.json
+        
+        # Use jq to parse the JSON properly (install if needed)
+        sudo apt-get install -y jq
+        TOTAL_LINES=$(jq -r '.SUM.code' cloc_output.json)
+        
+        # Format the text summary for Slack - using tr instead of sed for better compatibility
+        TEXT_SUMMARY=$(cat cloc_text_output.txt | tr '\n' '\\n')
+        
+        # Set the environment variables for use in the Slack notification
+        echo "TOTAL_LINES=$TOTAL_LINES" >> $GITHUB_ENV
+        echo "CLOC_TEXT_SUMMARY<<EOF" >> $GITHUB_ENV
+        cat cloc_text_output.txt >> $GITHUB_ENV
+        echo "EOF" >> $GITHUB_ENV
+        
+        echo "Total lines of code: $TOTAL_LINES"
+        
+        # Display full cloc summary for debugging and information
+        echo "Full cloc summary:"
+        cat cloc_text_output.txt
+
+    - name: Slack notification
+      if: always()
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+      uses: slackapi/slack-github-action@v1
+      with:
+        payload: |
+          {
+            "text": "Submissions API Code Metrics\n\nTotal lines in repository: ${{ env.TOTAL_LINES }}\n\nDetailed Code Metrics:\n```\n${{ env.CLOC_TEXT_SUMMARY }}\n```\n\nTest coverage summary:\n  ${{ env.COVERAGE_STATEMENTS }}\n  ${{ env.COVERAGE_BRANCHES }}\n  ${{ env.COVERAGE_FUNCTIONS }}\n  ${{ env.COVERAGE_LINES }}\n${{ env.SLACK_USERS }}"
+          }
