@@ -46,25 +46,15 @@ jobs:
         sudo apt-get install -y jq
         TOTAL_LINES=$(jq -r '.SUM.code' cloc_output.json)
         
-        # Extract just the summary table for Slack
-        # Get lines starting from the table header to end of table
-        sed -n '/^-*$/,/^-*$/p' cloc_text_output.txt > cloc_table.txt
-        
-        # Set the environment variables for use in the Slack notification
+        # Set the total lines environment variable
         echo "TOTAL_LINES=$TOTAL_LINES" >> $GITHUB_ENV
         
-        # Create a simplified summary for Slack
-        {
-          echo "Code metrics summary:"
-          echo "Total lines of code: $TOTAL_LINES"
-          echo ""
-          echo "Language breakdown:"
-          cat cloc_table.txt
-        } > cloc_summary.txt
-        
-        # Set as multiline environment variable
+        # Create and set the cloc summary as a multiline environment variable
         echo "CLOC_SUMMARY<<EOF" >> $GITHUB_ENV
-        cat cloc_summary.txt >> $GITHUB_ENV
+        head -n 1 cloc_text_output.txt >> $GITHUB_ENV  # Version and timing info
+        echo "" >> $GITHUB_ENV
+        echo "Language breakdown:" >> $GITHUB_ENV
+        sed -n '/^-*$/,/^-*$/p' cloc_text_output.txt >> $GITHUB_ENV  # Table with header, content, and footer
         echo "EOF" >> $GITHUB_ENV
         
         echo "Total lines of code: $TOTAL_LINES"
@@ -82,7 +72,7 @@ jobs:
       with:
         payload: |
           {
-            "text": "Submissions API Code Metrics\n\nTotal lines in repository: ${{ env.TOTAL_LINES }}\n\nDetailed Code Metrics:\n```\n${{ env.CLOC_TEXT_SUMMARY }}\n```\n\nTest coverage summary:\n  ${{ env.COVERAGE_STATEMENTS }}\n  ${{ env.COVERAGE_BRANCHES }}\n  ${{ env.COVERAGE_FUNCTIONS }}\n  ${{ env.COVERAGE_LINES }}\n${{ env.SLACK_USERS }}"
+            "text": "Conversion Tool Code Metrics\n\nDetailed Code Metrics:\n```\n${{ env.CLOC_SUMMARY }}\n```\n${{ env.SLACK_USERS }}"
           }
       # Continue even if Slack notification fails
       continue-on-error: true
