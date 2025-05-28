@@ -65,6 +65,8 @@ jobs:
 
     - name: Slack notification
       if: always()
+      # Continue even if Slack notification fails
+      continue-on-error: true
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_QPPSF_ALERTS_WEBHOOK }}
         SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
@@ -72,7 +74,6 @@ jobs:
       with:
         payload: |
           {
-            "text": "Conversion Tool Code Metrics\n\nDetailed Code Metrics:\n```\n${{ env.CLOC_SUMMARY }}\n```\n${{ env.SLACK_USERS }}"
+            "text": "Conversion Tool Code Metrics\n\nDetailed Code Metrics:\n```\n${{ env.CLOC_SUMMARY | replace('\n', '\\n') }}\n```\n${{ env.SLACK_USERS }}"
           }
-      # Continue even if Slack notification fails
-      continue-on-error: true
+
