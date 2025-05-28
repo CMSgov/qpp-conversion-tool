@@ -65,8 +65,8 @@ jobs:
 
     - name: Preprocess CLOC Summary
       run: |
-        # Escape newlines in CLOC_SUMMARY for Slack payload
-        echo "ESCAPED_CLOC_SUMMARY=$(echo \"${{ env.CLOC_SUMMARY }}\" | sed ':a;N;$!ba;s/\n/\\n/g')" >> $GITHUB_ENV
+        # Use jq to properly escape the summary for JSON
+        echo "ESCAPED_CLOC_SUMMARY=$(echo "$CLOC_SUMMARY" | jq -aRs .)" >> $GITHUB_ENV
 
     - name: Slack notification
       if: always()
@@ -77,7 +77,7 @@ jobs:
       with:
         payload: |
           {
-            "text": "Conversion Tool Code Metrics\n\nDetailed Code Metrics:\n```\n${{ env.ESCAPED_CLOC_SUMMARY }}\n```\n${{ env.SLACK_USERS }}"
+            "text": "Conversion Tool Code Metrics\n\nDetailed Code Metrics:\n```\n${{ env.CLOC_SUMMARY }}\n```\n${{ env.SLACK_USERS }}"
           }
       # Continue even if Slack notification fails
       continue-on-error: true
