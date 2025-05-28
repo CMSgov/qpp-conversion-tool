@@ -46,13 +46,25 @@ jobs:
         sudo apt-get install -y jq
         TOTAL_LINES=$(jq -r '.SUM.code' cloc_output.json)
         
-        # Format the text summary for Slack - using tr instead of sed for better compatibility
-        TEXT_SUMMARY=$(cat cloc_text_output.txt | tr '\n' '\\n')
+        # Extract just the summary table for Slack
+        # Get lines starting from the table header to end of table
+        sed -n '/^-*$/,/^-*$/p' cloc_text_output.txt > cloc_table.txt
         
         # Set the environment variables for use in the Slack notification
         echo "TOTAL_LINES=$TOTAL_LINES" >> $GITHUB_ENV
-        echo "CLOC_TEXT_SUMMARY<<EOF" >> $GITHUB_ENV
-        cat cloc_text_output.txt >> $GITHUB_ENV
+        
+        # Create a simplified summary for Slack
+        {
+          echo "Code metrics summary:"
+          echo "Total lines of code: $TOTAL_LINES"
+          echo ""
+          echo "Language breakdown:"
+          cat cloc_table.txt
+        } > cloc_summary.txt
+        
+        # Set as multiline environment variable
+        echo "CLOC_SUMMARY<<EOF" >> $GITHUB_ENV
+        cat cloc_summary.txt >> $GITHUB_ENV
         echo "EOF" >> $GITHUB_ENV
         
         echo "Total lines of code: $TOTAL_LINES"
