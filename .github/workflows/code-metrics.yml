@@ -133,6 +133,23 @@ jobs:
         echo "Subset cloc JSON summary:"
         cat cloc_subset.json
 
+    - name: Format cloc data for Slack
+      run: |
+        # Format the cloc JSON data for better display in Slack
+        echo "CLOC_FORMATTED<<EOF" >> $GITHUB_ENV
+        jq -r '
+          "Total files: \(.header."number of files")\n" +
+          "Total lines: \(.header."number of lines")\n\n" +
+          "Language breakdown:\n" +
+          (to_entries | 
+            sort_by(-(.value.code // 0)) | 
+            map(select(.key != "header" and .key != "SUM")) | 
+            map("• \(.key): \(.value.code // 0) lines in \(.value."number of Files" // 0) files") | 
+            join("\n")
+          )
+        ' cloc_subset.json >> $GITHUB_ENV
+        echo "EOF" >> $GITHUB_ENV
+
     - name: Slack notification
       if: always()
       env:
@@ -162,7 +179,7 @@ jobs:
                 "type": "section",
                 "text": {
                   "type": "mrkdwn",
-                  "text": "```${{ env.CLOC_JSON }}```"
+                  "text": "```\n${{ env.CLOC_FORMATTED }}\n```"
                 }
               },
               {
