@@ -141,11 +141,8 @@ jobs:
           map("• \(.key): \(.value.code // 0) lines in \(.value."number of Files" // 0) files") | 
           join("\\n")' cloc_subset.json)
         
-        # Create the message with proper escaping for JSON
-        MESSAGE="*Code Metrics Summary*\\nTotal files: $FILES\\nTotal lines: $LINES\\n\\n*Language breakdown:*\\n$BREAKDOWN"
-        
-        # Create the JSON payload
-        echo "CLOC_FORMATTED={\"text\":\"$MESSAGE\"}" >> $GITHUB_ENV
+        # Create the complete message
+        echo "CODE_METRICS_SUMMARY=*Code Metrics Summary*\\nTotal files: $FILES\\nTotal lines: $LINES\\n\\n*Language breakdown:*\\n$BREAKDOWN" >> $GITHUB_ENV
 
     - name: Slack notification
       if: always()
@@ -156,7 +153,7 @@ jobs:
       with:
         payload: |
           {
-            "text": "*Conversion Tool Code Metrics*\n\nTotal lines of code: ${{ env.TOTAL_LINES }}\n\n```${{ fromJson(env.CLOC_FORMATTED) }}```${{ env.SLACK_USERS }}"
+            "text": "*Conversion Tool Code Metrics*\n\n${{ env.CODE_METRICS_SUMMARY }}\n\nTotal lines of code: ${{ env.TOTAL_LINES }}\n${{ env.SLACK_USERS }}"
           }
       # Continue even if Slack notification fails
       continue-on-error: true
