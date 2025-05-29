@@ -131,18 +131,18 @@ jobs:
 
     - name: Format cloc data for Slack
       run: |
-        # Create a text summary first
-        cat > cloc_summary.txt << EOF
-        Total files: $(jq -r '.header."number of files"' cloc_subset.json)
-        Total lines: $(jq -r '.header."number of lines"' cloc_subset.json)
-
-        Language breakdown:
-        $(jq -r 'to_entries | sort_by(-(.value.code // 0)) | map(select(.key != "header" and .key != "SUM")) | map("• \(.key): \(.value.code // 0) lines in \(.value."number of Files" // 0) files") | join("\n")' cloc_subset.json)
-        EOF
-
-        # Use jq to properly escape the entire content for JSON
-        ESCAPED_SUMMARY=$(cat cloc_summary.txt | jq -Rs .)
-        echo "CLOC_FORMATTED=${ESCAPED_SUMMARY}" >> $GITHUB_ENV
+        # Create a JSON object with the formatted message
+        # Using jq to construct the entire message as a single JSON string
+        JSON_PAYLOAD=$(jq -n --arg files "$(jq -r '.header."number of files"' cloc_subset.json)" \
+          --arg lines "$(jq -r '.header."number of lines"' cloc_subset.json)" \
+          --arg breakdown "$(jq -r 'to_entries | sort_by(-(.value.code // 0)) | 
+            map(select(.key != "header" and .key != "SUM")) | 
+            map("• \(.key): \(.value.code // 0) lines in \(.value."number of Files" // 0) files") | 
+            join("\\n")' cloc_subset.json)" \
+          '{"text": "*Code Metrics Summary*\nTotal files: \($files)\nTotal lines: \($lines)\n\n*Language breakdown:*\n\($breakdown)"}')
+        
+        # Set the environment variable with the properly formatted JSON
+        echo "CLOC_FORMATTED=${JSON_PAYLOAD}" >> $GITHUB_ENV
 
     - name: Slack notification
       if: always()
