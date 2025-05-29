@@ -159,37 +159,7 @@ jobs:
       with:
         payload: |
           {
-            "text": "Conversion Tool Code Metrics",
-            "blocks": [
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "*Conversion Tool Code Metrics*"
-                }
-              },
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "Total lines of code: ${{ env.TOTAL_LINES }}"
-                }
-              },
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "```\n${{ env.CLOC_FORMATTED }}\n```"
-                }
-              },
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "${{ env.SLACK_USERS }}"
-                }
-              }
-            ]
+            "text": "*Conversion Tool Code Metrics*\n\nTotal lines of code: ${{ env.TOTAL_LINES }}\n\n```\n${{ env.CLOC_FORMATTED }}\n```\n${{ env.SLACK_USERS }}"
           }
       # Continue even if Slack notification fails
       continue-on-error: true
