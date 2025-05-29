@@ -35,50 +35,145 @@ jobs:
         # Install cloc if not already installed
         sudo apt-get update && sudo apt-get install -y cloc
         
-        # Run cloc at the HEAD of the repository and capture both JSON and text output
+        # Run cloc at the HEAD of the repository and capture JSON output
         echo "Running cloc at HEAD..."
-        # Save text summary to a file
-        cloc --exclude-dir=node_modules,.git . > cloc_text_output.txt
-        # Save JSON output to a file
         cloc --exclude-dir=node_modules,.git --json . > cloc_output.json
         
-        # Use jq to parse the JSON properly (install if needed)
+        # Install jq if not already installed
         sudo apt-get install -y jq
-        TOTAL_LINES=$(jq -r '.SUM.code' cloc_output.json)
         
-        # Set the total lines environment variable
+        # Get total lines of code
+        TOTAL_LINES=$(jq -r '.SUM.code' cloc_output.json)
         echo "TOTAL_LINES=$TOTAL_LINES" >> $GITHUB_ENV
         
-        # Create and set the cloc summary as a multiline environment variable
-        echo "CLOC_SUMMARY<<EOF" >> $GITHUB_ENV
-        head -n 1 cloc_text_output.txt >> $GITHUB_ENV  # Version and timing info
-        echo "" >> $GITHUB_ENV
-        echo "Language breakdown:" >> $GITHUB_ENV
-        sed -n '/^-*$/,/^-*$/p' cloc_text_output.txt >> $GITHUB_ENV  # Table with header, content, and footer
+        # Transform the JSON to the subset format for Slack
+        cat <<EOF > transform.jq
+        {
+          "header": {
+            "number of files": .SUM.nFiles,
+            "number of lines": (.SUM.blank + .SUM.comment + .SUM.code)
+          },
+          "XML": {
+            "number of Files": .XML.nFiles,
+            "code": .XML.code
+          },
+          "JSON": {
+            "number of Files": .JSON.nFiles,
+            "code": .JSON.code
+          },
+          "Java": {
+            "number of Files": .Java.nFiles,
+            "code": .Java.code
+          },
+          "Maven": {
+            "number of Files": .Maven.nFiles,
+            "code": .Maven.code
+          },
+          "YAML": {
+            "number of Files": .YAML.nFiles,
+            "code": .YAML.code
+          },
+          "Markdown": {
+            "number of Files": .Markdown.nFiles,
+            "code": .Markdown.code
+          },
+          "Cucumber": {
+            "number of Files": .Cucumber.nFiles,
+            "code": .Cucumber.code
+          },
+          "Bourne Shell": {
+            "number of Files": ."Bourne Shell".nFiles,
+            "code": ."Bourne Shell".code
+          },
+          "Python": {
+            "number of Files": .Python.nFiles,
+            "code": .Python.code
+          },
+          "TOML": {
+            "number of Files": .TOML.nFiles,
+            "code": .TOML.code
+          },
+          "Dockerfile": {
+            "number of Files": .Dockerfile.nFiles,
+            "code": .Dockerfile.code
+          },
+          "Text": {
+            "number of Files": .Text.nFiles,
+            "code": .Text.code
+          },
+          "Properties": {
+            "number of Files": .Properties.nFiles,
+            "code": .Properties.code
+          },
+          "DOS Batch": {
+            "number of Files": ."DOS Batch".nFiles,
+            "code": ."DOS Batch".code
+          },
+          "SUM": {
+            "blank": .SUM.blank,
+            "number of Files": .SUM.nFiles
+          }
+        }
+        EOF
+        
+        # Apply the transformation
+        jq -f transform.jq cloc_output.json > cloc_subset.json
+        
+        # Create a more readable format for the Slack message
+        echo "CLOC_JSON<<EOF" >> $GITHUB_ENV
+        cat cloc_subset.json >> $GITHUB_ENV
         echo "EOF" >> $GITHUB_ENV
         
         echo "Total lines of code: $TOTAL_LINES"
         
         # Display full cloc summary for debugging and information
-        echo "Full cloc summary:"
-        cat cloc_text_output.txt
+        echo "Full cloc JSON summary:"
+        cat cloc_output.json
 
-    - name: Preprocess CLOC Summary
-      run: |
-        # Use jq to properly escape the summary for JSON
-        echo "ESCAPED_CLOC_SUMMARY=$(echo "$CLOC_SUMMARY" | jq -aRs .)" >> $GITHUB_ENV
+        echo "Subset cloc JSON summary:"
+        cat cloc_subset.json
 
-    - name: Slack notification
-      if: always()
-      env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_QPPSF_ALERTS_WEBHOOK }}
-        SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-      uses: slackapi/slack-github-action@v1
-      with:
-        payload: |
-          {
-            "text": "Conversion Tool Code Metrics\n\nDetailed Code Metrics:\n```\n${{ env.CLOC_SUMMARY }}\n```\n${{ env.SLACK_USERS }}"
-          }
-      # Continue even if Slack notification fails
-      continue-on-error: true
+    # - name: Slack notification
+    #   if: always()
+    #   env:
+    #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_QPPSF_ALERTS_WEBHOOK }}
+    #     SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+    #   uses: slackapi/slack-github-action@v1
+    #   with:
+    #     payload: |
+    #       {
+    #         "text": "Conversion Tool Code Metrics",
+    #         "blocks": [
+    #           {
+    #             "type": "section",
+    #             "text": {
+    #               "type": "mrkdwn",
+    #               "text": "*Conversion Tool Code Metrics*"
+    #             }
+    #           },
+    #           {
+    #             "type": "section",
+    #             "text": {
+    #               "type": "mrkdwn",
+    #               "text": "Total lines of code: ${{ env.TOTAL_LINES }}"
+    #             }
+    #           },
+    #           {
+    #             "type": "section",
+    #             "text": {
+    #               "type": "mrkdwn",
+    #               "text": "```${{ env.CLOC_JSON }}```"
+    #             }
+    #           },
+    #           {
+    #             "type": "section",
+    #             "text": {
+    #               "type": "mrkdwn",
+    #               "text": "${{ env.SLACK_USERS }}"
+    #             }
+    #           }
+    #         ]
+    #       }
+    #   # Continue even if Slack notification fails
+    #   continue-on-error: true
 
