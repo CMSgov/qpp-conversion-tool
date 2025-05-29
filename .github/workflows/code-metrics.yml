@@ -133,47 +133,47 @@ jobs:
         echo "Subset cloc JSON summary:"
         cat cloc_subset.json
 
-    # - name: Slack notification
-    #   if: always()
-    #   env:
-    #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_QPPSF_ALERTS_WEBHOOK }}
-    #     SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-    #   uses: slackapi/slack-github-action@v1
-    #   with:
-    #     payload: |
-    #       {
-    #         "text": "Conversion Tool Code Metrics",
-    #         "blocks": [
-    #           {
-    #             "type": "section",
-    #             "text": {
-    #               "type": "mrkdwn",
-    #               "text": "*Conversion Tool Code Metrics*"
-    #             }
-    #           },
-    #           {
-    #             "type": "section",
-    #             "text": {
-    #               "type": "mrkdwn",
-    #               "text": "Total lines of code: ${{ env.TOTAL_LINES }}"
-    #             }
-    #           },
-    #           {
-    #             "type": "section",
-    #             "text": {
-    #               "type": "mrkdwn",
-    #               "text": "```${{ env.CLOC_JSON }}```"
-    #             }
-    #           },
-    #           {
-    #             "type": "section",
-    #             "text": {
-    #               "type": "mrkdwn",
-    #               "text": "${{ env.SLACK_USERS }}"
-    #             }
-    #           }
-    #         ]
-    #       }
-    #   # Continue even if Slack notification fails
-    #   continue-on-error: true
+    - name: Slack notification
+      if: always()
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_QPPSF_ALERTS_WEBHOOK }}
+        SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+      uses: slackapi/slack-github-action@v1
+      with:
+        payload: |
+          {
+            "text": "Conversion Tool Code Metrics",
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "*Conversion Tool Code Metrics*"
+                }
+              },
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "Total lines of code: ${{ env.TOTAL_LINES }}"
+                }
+              },
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "```${{ env.CLOC_JSON }}```"
+                }
+              },
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "${{ env.SLACK_USERS }}"
+                }
+              }
+            ]
+          }
+      # Continue even if Slack notification fails
+      continue-on-error: true
 
