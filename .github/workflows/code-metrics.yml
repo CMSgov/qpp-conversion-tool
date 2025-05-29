@@ -107,7 +107,7 @@ jobs:
           },
           "DOS Batch": {
             "number of Files": ."DOS Batch".nFiles,
-            "code": ."DOS Batch".code
+            "code": ."
           },
           "SUM": {
             "blank": .SUM.blank,
@@ -157,7 +157,7 @@ jobs:
       with:
         payload: |
           {
-            "text": "*Conversion Tool Code Metrics*\n\nTotal lines of code: ${{ env.TOTAL_LINES }}\n\n```${{ env.CLOC_FORMATTED }}```${{ env.SLACK_USERS }}"
+            "text": "*Conversion Tool Code Metrics*\n\nTotal lines of code: ${{ env.TOTAL_LINES }}\n\n```${{ fromJson(env.CLOC_FORMATTED) }}```${{ env.SLACK_USERS }}"
           }
       # Continue even if Slack notification fails
       continue-on-error: true
