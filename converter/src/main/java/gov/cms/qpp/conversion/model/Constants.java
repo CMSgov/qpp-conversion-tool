@@ -38,6 +38,7 @@ public class Constants {
     public static final String TRUE = "true";
     public static final int YEAR_LAST_INDEX = 4;
     public static final String NOT_VALID_QRDA_III_FORMAT = "The file is not a QRDA-III XML document";
+    public static final String IS_SSP_PI_REPORTED = "isSSPPiReported";
 
     /*  Constants for lookups and tests */
     // Identifier constants for: Node(Identifier, Value) and xpathlocation

@@ -190,6 +190,14 @@
 						"relativeXPath": "./*[local-name() = 'documentationOf' and namespace-uri() = '<nsuri>']/*[local-name() = 'serviceEvent' and namespace-uri() = '<nsuri>']/*[local-name() = 'performer' and namespace-uri() = '<nsuri>']/*[local-name() = 'assignedEntity' and namespace-uri() = '<nsuri>']/*[local-name() = 'representedOrganization' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.3.249.5.5']/@extension",
 						"xmltype": "attribute"
 					}
+				},
+				{
+					"decodeLabel": "isSSPPiReported",
+					"encodeLabels": ["isSSPPiReported"],
+					"goods": {
+						"relativeXPath": "./*[local-name() = 'participant' and namespace-uri() = '<nsuri>']/*[local-name() = 'associatedEntity' and namespace-uri() = '<nsuri>' and @classCode='PROG']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.3.249.5.6']/@extension",
+						"xmltype": "attribute"
+					}
 				}
 			]
 		},

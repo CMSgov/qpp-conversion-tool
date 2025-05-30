@@ -61,6 +61,19 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 			}
 		}
 
+		// only decode our new flag when we see <associatedEntity classCode="PROG">… extension="SSP"
+		setOnNode(
+				element,
+				getXpath(IS_SSP_PI_REPORTED),
+				(Consumer<Attribute>) attr -> {
+					if ("SSP".equalsIgnoreCase(attr.getValue())) {
+						thisNode.putValue(IS_SSP_PI_REPORTED, "true", false);
+					}
+				},
+				Filters.attribute(),
+				false
+		);
+
 		return DecodeResult.TREE_CONTINUE;
 	}
 

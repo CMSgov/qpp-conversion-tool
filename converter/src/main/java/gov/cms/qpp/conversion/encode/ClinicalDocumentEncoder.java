@@ -138,6 +138,16 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 					childWrapper.put(PROGRAM_NAME, APP_PROGRAM_NAME.toLowerCase(Locale.getDefault()));
 				}
 
+				boolean isPiSection = TemplateId.PI_SECTION_V3.equals(childType);
+				String rawProgramName = currentNode.getValue(RAW_PROGRAM_NAME);
+				boolean isSspPiProgram =
+						SSP_PI_INDIVIDUAL.equalsIgnoreCase(rawProgramName) ||
+								SSP_PI_GROUP.equalsIgnoreCase(rawProgramName) ||
+								SSP_PI_APM.equalsIgnoreCase(rawProgramName);
+
+				childWrapper.put(IS_SSP_PI_REPORTED, isPiSection && !isSspPiProgram);
+
+
 				measurementSetsWrapper.put(childWrapper);
 			} catch (NullPointerException exc) { //NOSONAR NPE can be deep in method calls
 				String message = "An unexpected error occured for " + child.getType();

@@ -65,7 +65,7 @@ CDA Header
 	</custodian>
 	<informationRecipient>
 		<intendedRecipient>
-			<id root="2.16.840.1.113883.3.249.7" extension="MIPS_APMENTITY"/>
+			<id root="2.16.840.1.113883.3.249.7" extension="SSP_PI_APMENTITY"/>
 		</intendedRecipient>
 	</informationRecipient>
 	<legalAuthenticator>
