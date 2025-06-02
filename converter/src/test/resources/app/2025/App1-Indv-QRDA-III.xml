@@ -65,7 +65,7 @@ CDA Header
     </custodian>
     <informationRecipient>
         <intendedRecipient>
-            <id root="2.16.840.1.113883.3.249.7" extension="MIPS_APP1_INDIV"/>
+            <id root="2.16.840.1.113883.3.249.7" extension="APP_PLUS_INDIV"/>
         </intendedRecipient>
     </informationRecipient>
     <legalAuthenticator>

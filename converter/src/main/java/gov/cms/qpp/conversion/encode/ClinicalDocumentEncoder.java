@@ -136,6 +136,10 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 						&& APP_APM.equalsIgnoreCase(
 						currentNode.getValue(RAW_PROGRAM_NAME))) {
 					childWrapper.put(PROGRAM_NAME, APP_PROGRAM_NAME.toLowerCase(Locale.getDefault()));
+				} else if (TemplateId.MEASURE_SECTION_V5.getRoot().equalsIgnoreCase(childType.getRoot())
+						&& APP_PLUS_APM.equalsIgnoreCase(
+						currentNode.getValue(RAW_PROGRAM_NAME))) {
+					childWrapper.put(PROGRAM_NAME, APP_PLUS_PROGRAM_NAME.toLowerCase(Locale.getDefault()));
 				}
 
 				measurementSetsWrapper.put(childWrapper);
