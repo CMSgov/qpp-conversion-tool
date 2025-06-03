@@ -28,7 +28,7 @@ import static gov.cms.qpp.conversion.model.Constants.ENTITY_APM;
  * Positive Testing Scenarios to check PCF for valid top level attributes and validations
  * Ensures:
  * - valid apm entity
- * - Sample file with valid test tin/npi and measurement sets for 2024 go through without issue.
+ * - Sample file with valid test tin/npi and measurement sets for 2025 go through without issue.
  */
 public class PcfRoundTripTest {
 	private static JsonWrapper wrapper = new JsonWrapper();

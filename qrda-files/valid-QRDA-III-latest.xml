@@ -11,7 +11,7 @@ CDA Header
 	<realmCode code="US"/>
 	<typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
 	<templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01"/>
-	<templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2022-12-01"/>
+	<templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2024-12-01"/>
 	<id root="26a42253-99f5-48e7-9274-b467c6c7f623"/>
 	<code code="55184-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 		  displayName="Quality Reporting Document Architecture Calculated Summary Report"/>
@@ -810,7 +810,7 @@ CDA Header
 						</list>
 					</text>
 
-					<!--Measure Entry for CMS165v12-->
+					<!--Measure Entry for CMS165v13-->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
@@ -821,7 +821,7 @@ CDA Header
 							<!--Measure Reference and Results-->
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
-									<id root="2.16.840.1.113883.4.738" extension="2c928085-806c-39a2-0180-7092fa9b0145"/>
+									<id root="2.16.840.1.113883.4.738" extension="2c928083-8907-ce68-0189-2bbd31d6064e"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 										  displayName="Health Quality Measure Document"/>
 									<text>Controlling High Blood Pressure</text>
@@ -839,7 +839,7 @@ CDA Header
 									<value xsi:type="REAL" value=".888889"/>
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="24803F44-C643-45C7-A2A5-4C58BD540579"/>
+											<id root="73661F57-1A94-4982-8136-EDCE51A9AEA8"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
 												  displayName="Numerator"/>
 										</externalObservation>
@@ -1308,7 +1308,7 @@ CDA Header
 									<!--IPOP Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="F348D767-1BDE-41AB-884D-5F0E19093980"/>
+											<id root="A35D89C5-C903-4D4C-BDBC-EA70D1254BEF"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -1776,7 +1776,7 @@ CDA Header
 									<!--DENOM Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="3E0D40B3-64FC-4998-B371-34978D033116"/>
+											<id root="FECE5EB1-842C-42B6-B2BC-7035C79222E4"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -2244,7 +2244,7 @@ CDA Header
 									<!--DENEX Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="95E1480E-8B61-4777-865D-B2A1D6525E1A"/>
+											<id root="8D42520C-8C19-47AF-B3E7-A66EAECA0DBD"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -2712,7 +2712,7 @@ CDA Header
 									<!--NUMER Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="24803F44-C643-45C7-A2A5-4C58BD540579"/>
+											<id root="73661F57-1A94-4982-8136-EDCE51A9AEA8"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -2720,7 +2720,7 @@ CDA Header
 						</organizer>
 					</entry>
 
-					<!--Measure Entry for CMS122v12-->
+					<!--Measure Entry for CMS122v13-->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
@@ -2735,10 +2735,10 @@ CDA Header
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<id root="2.16.840.1.113883.4.738"
-										extension="2c928084-83d3-1b44-0183-eb75dc8a03db"/>
+										extension="2c928083-8907-ce68-0189-2bc5fa0d0739"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
 										  codeSystemName="LOINC" displayName="Health Quality Measure Document"/>
-									<text>Diabetes: Hemoglobin A1c (HbA1c) Poor Control (&gt; 9%)</text>
+									<text>Diabetes: Glycemic Status Assessment Greater Than 9%</text>
 								</externalDocument>
 							</reference>
 							<!--Performance Rate-->
@@ -2756,7 +2756,7 @@ CDA Header
 									<value xsi:type="REAL" value=".888889"/>
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="95BCB9D4-86A8-43C1-BE29-7440A2ECE294"/>
+											<id root="10C65EBE-685C-48F8-8B24-351C6F3481E9"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
 												  codeSystemName="ActCode" displayName="Numerator"/>
 										</externalObservation>
@@ -3171,7 +3171,7 @@ CDA Header
 									<!--IPOP Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="F09F8D18-F787-46EA-8791-3D3EF50A4C72"/>
+											<id root="51D8CA9A-E511-4793-8AD4-EFAE90F3ABA4"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -3584,7 +3584,7 @@ CDA Header
 									<!--DENOM Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="66505C6C-AAB0-4232-B0CA-15FB438090F4"/>
+											<id root="EA65F958-962E-433B-A9A3-CC2EA7B76E26"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -3997,7 +3997,7 @@ CDA Header
 									<!--DENEX Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="6AD9B271-BBB4-4BB6-95B1-D1A7E50D812F"/>
+											<id root="CA386077-1F7A-4C23-85D7-33A4FCED0803"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -4410,7 +4410,7 @@ CDA Header
 									<!--NUMER Population ID from eCQM-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="95BCB9D4-86A8-43C1-BE29-7440A2ECE294"/>
+											<id root="10C65EBE-685C-48F8-8B24-351C6F3481E9"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -4426,8 +4426,8 @@ CDA Header
 							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
 								  displayName="Observation Parameters"/>
 							<effectiveTime>
-								<low value="20240101"/>
-								<high value="20241231"/>
+								<low value="20250101"/>
+								<high value="20251231"/>
 							</effectiveTime>
 						</act>
 					</entry>
@@ -4579,8 +4579,8 @@ CDA Header
 							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
 								  displayName="Observation Parameters"/>
 							<effectiveTime>
-								<low value="20240201"/>
-								<high value="20240531"/>
+								<low value="20250201"/>
+								<high value="20250531"/>
 							</effectiveTime>
 						</act>
 					</entry>
@@ -4702,8 +4702,8 @@ CDA Header
 							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
 								  displayName="Observation Parameters"/>
 							<effectiveTime>
-								<low value="20240101"/>
-								<high value="20240430"/>
+								<low value="20250101"/>
+								<high value="20250430"/>
 							</effectiveTime>
 						</act>
 					</entry>

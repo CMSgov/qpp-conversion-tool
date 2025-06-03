@@ -36,11 +36,11 @@ class PiSectionRoundTripTest {
 	private static final Path PI_RESTRICTED_MEASURES =
 		Path.of("src/test/resources/negative/mipsInvalidPIMeasureIds.xml");
 	private static final Path APP1_APM_ENTITY_CEHRT =
-			Path.of("src/test/resources/app/2024/App1-ApmEntity-Qrda-III.xml");
+			Path.of("src/test/resources/app/2025/App1-ApmEntity-Qrda-III.xml");
 	private static final Path APP1_GROUP_CEHRT =
-		Path.of("src/test/resources/app/2024/App1-Group-QRDA-III.xml");
+		Path.of("src/test/resources/app/2025/App1-Group-QRDA-III.xml");
 	private static final Path APP1_INDIVIDUAL_CEHRT =
-		Path.of("src/test/resources/app/2024/App1-Indv-QRDA-III.xml");
+		Path.of("src/test/resources/app/2025/App1-Indv-QRDA-III.xml");
 
 	@Test
 	void parseSparsePiSectionAsNode() throws XmlException {
