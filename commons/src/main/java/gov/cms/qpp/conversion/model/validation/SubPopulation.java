@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.model.validation;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -31,20 +32,31 @@ public class SubPopulation {
 	@JsonProperty("denominatorExceptionUuid")
 	private String denominatorExceptionsUuid;
 
+	/**
+	 * Originally: private List<String> strata = Collections.emptyList();
+	 * We keep it private and mutable, but only expose via unmodifiable copy.
+	 */
 	@JsonProperty("strata")
 	private List<String> strata = Collections.emptyList();
 
 	public SubPopulation() {
-		//Empty Constructor for Jackson
+		// Empty Constructor for Jackson
 	}
 
+	/**
+	 * Copy constructor performs a deep-enough copy of the strata list
+	 */
 	public SubPopulation(SubPopulation subPop) {
-		initialPopulationUuid = subPop.getInitialPopulationUuid();
-		denominatorUuid = subPop.getDenominatorUuid();
-		denominatorExclusionsUuid = subPop.getDenominatorExclusionsUuid();
-		numeratorUuid = subPop.getNumeratorUuid();
-		denominatorExceptionsUuid = subPop.getDenominatorExceptionsUuid();
-		strata = subPop.getStrata();
+		this.initialPopulationUuid = subPop.getInitialPopulationUuid();
+		this.denominatorUuid = subPop.getDenominatorUuid();
+		this.denominatorExclusionsUuid = subPop.getDenominatorExclusionsUuid();
+		this.numeratorUuid = subPop.getNumeratorUuid();
+		this.numeratorExclusionUuid = subPop.getNumeratorExclusionUuid();
+		this.denominatorExceptionsUuid = subPop.getDenominatorExceptionsUuid();
+		// Defensive copy of the list
+		this.strata = (subPop.getStrata() == null)
+				? Collections.emptyList()
+				: new ArrayList<>(subPop.getStrata());
 	}
 
 	public String getInitialPopulationUuid() {
@@ -95,17 +107,30 @@ public class SubPopulation {
 		this.denominatorExceptionsUuid = denominatorExceptionsUuid;
 	}
 
+	/**
+	 * Returns an unmodifiable copy of the internal strata list.
+	 */
 	public List<String> getStrata() {
-		return strata;
+		if (strata == null) {
+			return Collections.emptyList();
+		}
+		return Collections.unmodifiableList(new ArrayList<>(strata));
 	}
 
+	/**
+	 * Makes a defensive copy of the incoming list so that external callers
+	 * cannot mutate this SubPopulation's internal list.
+	 */
 	public void setStrata(List<String> strata) {
-		this.strata = strata;
+		if (strata == null) {
+			this.strata = Collections.emptyList();
+		} else {
+			this.strata = new ArrayList<>(strata);
+		}
 	}
 
 	@Override
 	public boolean equals(Object o) {
-		boolean isCool = true;
 		if (this == o) {
 			return true;
 		}
@@ -114,46 +139,25 @@ public class SubPopulation {
 		}
 
 		SubPopulation that = (SubPopulation) o;
-
-		if (initialPopulationUuid != null
-				? !initialPopulationUuid.equals(that.initialPopulationUuid) : (that.initialPopulationUuid != null)) {
-			isCool = false;
-		}
-		if (numeratorUuid != null
-				? !numeratorUuid.equals(that.numeratorUuid) : (that.numeratorUuid != null)) {
-			isCool = false;
-		}
-		if (numeratorExclusionUuid != null
-			? !numeratorExclusionUuid.equals(that.numeratorExclusionUuid) : (that.numeratorExclusionUuid != null)) {
-			isCool = false;
-		}
-		if (strata != null ? !strata.equals(that.strata) : (that.strata != null)) {
-			isCool = false;
-		}
-		return isCool && reduceCognitiveComplexity(that);
-	}
-
-	private boolean reduceCognitiveComplexity(SubPopulation that) {
-		boolean isCool = true;
-		if (denominatorUuid != null
-				? !denominatorUuid.equals(that.denominatorUuid) : (that.denominatorUuid != null)) {
-			isCool = false;
-		}
-		if (denominatorExclusionsUuid != null
-				? !denominatorExclusionsUuid.equals(that.denominatorExclusionsUuid) : (that.denominatorExclusionsUuid != null)) {
-			isCool = false;
-		}
-		if (denominatorExceptionsUuid != null
-				? !denominatorExceptionsUuid.equals(that.denominatorExceptionsUuid) : (that.denominatorExceptionsUuid != null)) {
-			isCool = false;
-		}
-		return isCool;
+		return Objects.equals(initialPopulationUuid, that.initialPopulationUuid)
+				&& Objects.equals(denominatorUuid, that.denominatorUuid)
+				&& Objects.equals(denominatorExclusionsUuid, that.denominatorExclusionsUuid)
+				&& Objects.equals(numeratorUuid, that.numeratorUuid)
+				&& Objects.equals(numeratorExclusionUuid, that.numeratorExclusionUuid)
+				&& Objects.equals(denominatorExceptionsUuid, that.denominatorExceptionsUuid)
+				&& Objects.equals(getStrata(), that.getStrata());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(initialPopulationUuid, denominatorUuid, denominatorExclusionsUuid,
-				numeratorUuid, numeratorExclusionUuid, denominatorExceptionsUuid, strata);
+		return Objects.hash(
+				initialPopulationUuid,
+				denominatorUuid,
+				denominatorExclusionsUuid,
+				numeratorUuid,
+				numeratorExclusionUuid,
+				denominatorExceptionsUuid,
+				getStrata()
+		);
 	}
-
 }

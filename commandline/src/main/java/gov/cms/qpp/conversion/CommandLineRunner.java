@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.lang3.SerializationUtils;  // <-- import for deep‐cloning
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,14 +50,19 @@ public class CommandLineRunner implements Runnable {
 	/**
 	 * Creates a new CommandLineRunner from a given {@link CommandLine} and {@link FileSystem}
 	 *
-	 * @param commandLine command line execute
-	 * @param fileSystem contextual file system to use for path operations
+	 * @param commandLine    command line execute
+	 * @param fileSystem     contextual file system to use for path operations
 	 */
 	public CommandLineRunner(CommandLine commandLine, FileSystem fileSystem) {
 		Objects.requireNonNull(commandLine, "commandLine");
 		Objects.requireNonNull(fileSystem, "fileSystem");
 
-		this.commandLine = commandLine;
+		/*
+		 * Use SerializationUtils.clone(...) to make a deep copy of CommandLine
+		 * (CommandLine implements Serializable, so this will work).
+		 * That way, we avoid storing a direct reference to the caller’s mutable object.
+		 */
+		this.commandLine = SerializationUtils.clone(commandLine);
 		this.fileSystem = fileSystem;
 	}
 
@@ -78,9 +84,9 @@ public class CommandLineRunner implements Runnable {
 				historical = commandLine.hasOption(CommandLineMain.BYGONE);
 
 				convert.parallelStream()
-					.map(ConversionFileWriterWrapper::new)
-					.peek(conversion -> conversion.setContext(createContext()))
-					.forEach(ConversionFileWriterWrapper::transform);
+						.map(ConversionFileWriterWrapper::new)
+						.peek(conversion -> conversion.setContext(createContext()))
+						.forEach(ConversionFileWriterWrapper::transform);
 			} else {
 				DEV_LOG.error("Invalid or missing paths: " + invalid);
 				sendHelpHint();
@@ -202,10 +208,5 @@ public class CommandLineRunner implements Runnable {
 	public static boolean isValid(Path path) {
 		// despite what sonar recommends this is a fine implementation
 		return Files.isRegularFile(path) && Files.isReadable(path); //NOSONAR better than toFile().isFile()
-		// Sonar recommends to change from Files to File impl
-		// The Google JimFS Path impl does not support toFile()
-		// Further more the following code is slower and the sonar warning is a performance flag
-		//		File filePath = new File(path.toString());
-		//		return filePath.exists() && filePath.isFile() && filePath.canRead();
 	}
 }

@@ -43,19 +43,23 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class QrdaGenerator {
-	private static List<MeasureConfig> measureConfigs = MeasureConfigs.getMeasureConfigs();
+/**
+ * Generates QRDA XML files by feeding measure configurations into Mustache templates.
+ */
+public final class QrdaGenerator {
+	private static final List<MeasureConfig> measureConfigs = MeasureConfigs.getMeasureConfigs();
 
-	private Mustache submission;
-	private Mustache subpopulation;
-	private Mustache performanceRate;
+	private final Mustache submission;
+	private final Mustache subpopulation;
+	private final Mustache performanceRate;
 
-	private List<MeasureConfig> quality;
-	private List<MeasureConfig> aci;
-	private List<MeasureConfig> ia;
+	private final List<MeasureConfig> quality;
+	private final List<MeasureConfig> aci;
+	private final List<MeasureConfig> ia;
 
-	public static void main(String... args) throws IOException, TransformerException,
-			SAXException, ParserConfigurationException, XPathExpressionException {
+	public static void main(String... args) throws IOException,
+			TransformerException, SAXException, ParserConfigurationException,
+			XPathExpressionException {
 		QrdaGenerator generator = new QrdaGenerator();
 		generator.generate();
 	}
@@ -66,6 +70,7 @@ public class QrdaGenerator {
 		subpopulation = mf.compile("subpopulation-template.xml");
 		performanceRate = mf.compile("performance-rate-template.xml");
 
+		// Because this class is final, these private methods cannot be overridden.
 		quality = filterQualityMeasures();
 		aci = filterAciMeasures();
 		ia = filterIaMeasures();
@@ -73,50 +78,81 @@ public class QrdaGenerator {
 
 	private List<MeasureConfig> filterQualityMeasures() {
 		return measureConfigs.stream()
-				.filter(measureConfig -> measureConfig.getCategory().equals("quality")
-						&& measureConfig.getElectronicMeasureId() != null
-						&& !measureConfig.getElectronicMeasureId().isEmpty())
+				.filter(measureConfig ->
+						"quality".equals(measureConfig.getCategory())
+								&& measureConfig.getElectronicMeasureId() != null
+								&& !measureConfig.getElectronicMeasureId().isEmpty())
 				.collect(Collectors.toList());
 	}
 
 	private List<MeasureConfig> filterAciMeasures() {
 		return measureConfigs.stream()
-				.filter(measureConfig -> measureConfig.getCategory().equals("aci"))
+				.filter(measureConfig -> "aci".equals(measureConfig.getCategory()))
 				.collect(Collectors.toList());
 	}
 
 	private List<MeasureConfig> filterIaMeasures() {
 		return measureConfigs.stream()
-				.filter(measureConfig -> measureConfig.getCategory().equals("ia"))
+				.filter(measureConfig -> "ia".equals(measureConfig.getCategory()))
 				.collect(Collectors.toList());
 	}
 
+	/**
+	 * Kick off the Mustache rendering and then pretty-print the resulting XML.
+	 *
+	 * @throws IOException
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws TransformerException
+	 * @throws XPathExpressionException
+	 */
 	private void generate() throws IOException, ParserConfigurationException,
 			SAXException, TransformerException, XPathExpressionException {
 		StringWriter writer = new StringWriter();
-
 		submission.execute(writer, new Context(quality, aci, ia)).flush();
 		prettyPrint(writer);
 	}
 
+	/**
+	 * Parses the raw Mustache output, strips empty text nodes, and writes an indented XML file.
+	 *
+	 * @param writer the StringWriter containing the raw Mustache output
+	 * @throws TransformerException
+	 * @throws IOException
+	 * @throws SAXException
+	 * @throws ParserConfigurationException
+	 * @throws XPathExpressionException
+	 */
 	private void prettyPrint(StringWriter writer) throws TransformerException, IOException,
 			SAXException, ParserConfigurationException, XPathExpressionException {
+
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = dbFactory.newDocumentBuilder();
-		InputSource is = new InputSource(new InputStreamReader(
-				new ByteArrayInputStream(writer.toString().getBytes())));
 
-		Document original = documentBuilder.parse(is);
-		removeWhitespace(original);
-		moreThanMeetsTheEye().transform(new DOMSource(original), getDestination());
+		byte[] xmlBytes = writer.toString().getBytes(StandardCharsets.UTF_8);
+		try (InputStreamReader isr = new InputStreamReader(
+				new ByteArrayInputStream(xmlBytes), StandardCharsets.UTF_8)) {
+
+			InputSource is = new InputSource(isr);
+			Document original = documentBuilder.parse(is);
+			removeWhitespace(original);
+
+			Transformer transformer = moreThanMeetsTheEye();
+			transformer.transform(new DOMSource(original), getDestination());
+		}
 	}
 
+	/**
+	 * Removes purely whitespace text nodes from the DOM.
+	 *
+	 * @param document the parsed XML Document
+	 * @throws XPathExpressionException
+	 */
 	private void removeWhitespace(Document document) throws XPathExpressionException {
 		document.normalize();
 		XPath xpath = XPathFactory.newInstance().newXPath();
-		NodeList nodeList = (NodeList) xpath.evaluate("//text()[normalize-space()='']",
-				document,
-				XPathConstants.NODESET);
+		NodeList nodeList = (NodeList) xpath.evaluate(
+				"//text()[normalize-space()='']", document, XPathConstants.NODESET);
 
 		for (int i = 0; i < nodeList.getLength(); ++i) {
 			Node node = nodeList.item(i);
@@ -124,9 +160,14 @@ public class QrdaGenerator {
 		}
 	}
 
+	/**
+	 * Configures an XML Transformer for indentation using UTF-8 encoding.
+	 *
+	 * @return a Transformer that will output indented XML
+	 * @throws TransformerConfigurationException
+	 */
 	private Transformer moreThanMeetsTheEye() throws TransformerConfigurationException {
 		TransformerFactory tf = TransformerFactory.newInstance();
-
 		Transformer transformer = tf.newTransformer();
 		transformer.setOutputProperty(OutputKeys.METHOD, "xml");
 		transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
@@ -136,42 +177,42 @@ public class QrdaGenerator {
 		return transformer;
 	}
 
+	/**
+	 * Creates the output directory (if necessary) and opens a BufferedWriter to a new XML file.
+	 *
+	 * @return a StreamResult wrapping a BufferedWriter in UTF-8
+	 * @throws IOException
+	 */
 	private Result getDestination() throws IOException {
 		Instant instant = Instant.now();
-		BufferedWriter writer = Files.newBufferedWriter(Path.of("./sample-files/generated"+instant.getEpochSecond(),".xml"), StandardCharsets.UTF_8);
+		Path dir = Path.of("./sample-files/generated" + instant.getEpochSecond());
+		Files.createDirectories(dir);
+		BufferedWriter writer = Files.newBufferedWriter(dir.resolve("output.xml"), StandardCharsets.UTF_8);
 		return new StreamResult(writer);
 	}
 
-	private enum PopulationValue {
-		IPOP(SubPopulationLabel.IPOP, 100),
-		DENOM(SubPopulationLabel.DENOM, 100),
-		DENEX(SubPopulationLabel.DENEX, 10),
-		DENEXCEP(SubPopulationLabel.DENEXCEP, 10),
-		NUMER(SubPopulationLabel.NUMER, 80);
-
-		String measure;
-		int value;
-
-		PopulationValue(SubPopulationLabel measure, int factor) {
-			this.measure = measure.name();
-			this.value = factor * getSubPopCount();
-		}
-
-		static int getSubPopCount() {
-			return 12;
-		}
-	}
-
+	/**
+	 * Inner context class whose fields are only accessed by Mustache at runtime.
+	 * SpotBugs cannot see reflective usage, so we suppress URF here.
+	 */
+	@edu.umd.cs.findbugs.annotations.SuppressFBWarnings("URF_UNREAD_FIELD")
 	private class Context {
-		List<MeasureConfig> quality;
-		List<MeasureConfig> aci;
-		List<MeasureConfig> ia;
-		Function<String, Object> generateIpop = uuid -> generateSubpopulation(uuid, PopulationValue.IPOP);
-		Function<String, Object> generateDenom = uuid -> generateSubpopulation(uuid, PopulationValue.DENOM);
-		Function<String, Object> generateDenex = uuid -> generateSubpopulation(uuid, PopulationValue.DENEX);
-		Function<String, Object> generateDenexcep = uuid -> generateSubpopulation(uuid, PopulationValue.DENEXCEP);
-		Function<String, Object> generateNumer = uuid -> generateSubpopulation(uuid, PopulationValue.NUMER);
-		Function<String, Object> generatePerformanceRate = this::generatePerformanceRate;
+		// Mustache will reflectively pull these fields by name.
+		private final List<MeasureConfig> quality;
+		private final List<MeasureConfig> aci;
+		private final List<MeasureConfig> ia;
+
+		private final Function<String, Object> generateIpop =
+				uuid -> generateSubpopulation(uuid, PopulationValue.IPOP);
+		private final Function<String, Object> generateDenom =
+				uuid -> generateSubpopulation(uuid, PopulationValue.DENOM);
+		private final Function<String, Object> generateDenex =
+				uuid -> generateSubpopulation(uuid, PopulationValue.DENEX);
+		private final Function<String, Object> generateDenexcep =
+				uuid -> generateSubpopulation(uuid, PopulationValue.DENEXCEP);
+		private final Function<String, Object> generateNumer =
+				uuid -> generateSubpopulation(uuid, PopulationValue.NUMER);
+		private final Function<String, Object> generatePerformanceRate = this::generatePerformanceRate;
 
 		private Context(List<MeasureConfig> quality, List<MeasureConfig> aci, List<MeasureConfig> ia) {
 			this.quality = quality;
@@ -197,6 +238,26 @@ public class QrdaGenerator {
 			ctx.put("total", type.value);
 
 			return subpopulation.execute(new StringWriter(), ctx).toString();
+		}
+	}
+
+	private enum PopulationValue {
+		IPOP(SubPopulationLabel.IPOP, 100),
+		DENOM(SubPopulationLabel.DENOM, 100),
+		DENEX(SubPopulationLabel.DENEX, 10),
+		DENEXCEP(SubPopulationLabel.DENEXCEP, 10),
+		NUMER(SubPopulationLabel.NUMER, 80);
+
+		private final String measure;
+		private final int value;
+
+		PopulationValue(SubPopulationLabel measure, int factor) {
+			this.measure = measure.name();
+			this.value = factor * getSubPopCount();
+		}
+
+		private static int getSubPopCount() {
+			return 12;
 		}
 	}
 }

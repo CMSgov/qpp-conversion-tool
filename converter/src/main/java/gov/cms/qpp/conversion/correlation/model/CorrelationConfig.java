@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.correlation.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CorrelationConfig {
@@ -17,20 +18,49 @@ public class CorrelationConfig {
 		this.decodeLabel = decodeLabel;
 	}
 
+	/**
+	 * Returns an unmodifiable view of the encodeLabels list.
+	 */
 	public List<String> getEncodeLabels() {
-		return encodeLabels;
+		return Collections.unmodifiableList(encodeLabels);
 	}
 
+	/**
+	 * Stores a defensive copy of the provided list.
+	 */
 	public void setEncodeLabels(List<String> encodeLabels) {
-		this.encodeLabels = encodeLabels;
+		if (encodeLabels == null) {
+			this.encodeLabels = new ArrayList<>();
+		} else {
+			this.encodeLabels = new ArrayList<>(encodeLabels);
+		}
 	}
 
+	/**
+	 * Returns a defensive copy of goods, or null if unset.
+	 * Since Goods lacks a copy constructor or public clone(), we manually copy fields.
+	 */
 	public Goods getGoods() {
-		return goods;
+		if (goods == null) {
+			return null;
+		}
+		Goods copy = new Goods();
+		copy.setRelativeXPath(goods.getRelativeXPath());
+		copy.setXmltype(goods.getXmltype());
+		return copy;
 	}
 
+	/**
+	 * Stores a defensive copy of the provided Goods, or clears if null.
+	 */
 	public void setGoods(Goods goods) {
-		this.goods = goods;
+		if (goods == null) {
+			this.goods = null;
+		} else {
+			Goods copy = new Goods();
+			copy.setRelativeXPath(goods.getRelativeXPath());
+			copy.setXmltype(goods.getXmltype());
+			this.goods = copy;
+		}
 	}
-
 }

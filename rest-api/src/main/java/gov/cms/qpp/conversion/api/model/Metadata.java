@@ -298,7 +298,7 @@ public final class Metadata {
 	/**
 	 * The purpose of the conversion, or null if it's a standard conversion
 	 *
-	 * @return The purpose of the conversion, for example \"Test\"
+	 * @return The purpose of the conversion, for example "Test"
 	 */
 	@DoNotEncrypt
 	@DynamoDBAttribute(attributeName = "Purpose")
@@ -548,54 +548,92 @@ public final class Metadata {
 		return combination;
 	}
 
+	/**
+	 * Returns a defensive copy of the internal Errors object.
+	 */
 	@DoNotEncrypt
 	@DynamoDBTypeConvertedJson
 	@DynamoDBAttribute(attributeName = "Errors")
 	public Details getErrors() {
-		return errors;
+		if (errors == null) {
+			return null;
+		}
+		Details copy = new Details();
+		copy.setDetails(errors.getDetails());
+		return copy;
 	}
 
-	public void setErrors(List<Detail> errors) {
-		if (errors == null) {
-			setErrors((Details) null);
+	/**
+	 * Accepts a list of Detail objects, wraps in a new Details, and stores defensively.
+	 */
+	public void setErrors(List<Detail> errorsList) {
+		if (errorsList == null) {
+			this.errors = null;
 			return;
 		}
-
-		Details details = new Details();
-		details.setDetails(errors);
-		setErrors(details);
+		Details detailsWrapper = new Details();
+		detailsWrapper.setDetails(errorsList);
+		this.errors = detailsWrapper;
 	}
 
+	/**
+	 * Accepts a Details instance, makes a defensive copy, and stores.
+	 */
 	public void setErrors(Details errors) {
-		this.errors = errors;
+		if (errors == null) {
+			this.errors = null;
+			return;
+		}
+		Details copy = new Details();
+		copy.setDetails(errors.getDetails());
+		this.errors = copy;
 	}
 
+	/**
+	 * Returns a defensive copy of the internal Warnings object.
+	 */
 	@DoNotEncrypt
 	@DynamoDBTypeConvertedJson
 	@DynamoDBAttribute(attributeName = "Warnings")
 	public Details getWarnings() {
-		return warnings;
+		if (warnings == null) {
+			return null;
+		}
+		Details copy = new Details();
+		copy.setDetails(warnings.getDetails());
+		return copy;
 	}
 
-	public void setWarnings(List<Detail> warnings) {
-		if (warnings == null) {
-			setWarnings((Details) null);
+	/**
+	 * Accepts a list of Detail objects, wraps in a new Details, and stores defensively.
+	 */
+	public void setWarnings(List<Detail> warningsList) {
+		if (warningsList == null) {
+			this.warnings = null;
 			return;
 		}
-
-		Details details = new Details();
-		details.setDetails(warnings);
-		setWarnings(details);
+		Details detailsWrapper = new Details();
+		detailsWrapper.setDetails(warningsList);
+		this.warnings = detailsWrapper;
 	}
 
+	/**
+	 * Accepts a Details instance, makes a defensive copy, and stores.
+	 */
 	public void setWarnings(Details warnings) {
-		this.warnings = warnings;
+		if (warnings == null) {
+			this.warnings = null;
+			return;
+		}
+		Details copy = new Details();
+		copy.setDetails(warnings.getDetails());
+		this.warnings = copy;
 	}
 
 	/**
 	 * Sets the separate CPC+ processed flag and created date based on the argument
 	 *
-	 * Splits the the processed flag from the date by a {@code #} character.
+	 * Splits the processed flag from the date by a {@code #} character.
 	 * The first field must be {@code true} or {@code false} which represents the CPC+ processed boolean.
 	 * The second field must be an ISO 8601 timestamp string.  For example, {@code 2018-12-08T18:32:54.846Z}.
 	 *
@@ -620,7 +658,7 @@ public final class Metadata {
 	/**
 	 * Sets the separate RTI+ processed flag and created date based on the argument
 	 *
-	 * Splits the the processed flag from the date by a {@code #} character.
+	 * Splits the processed flag from the date by a {@code #} character.
 	 * The first field must be {@code true} or {@code false} which represents the RTI+ processed boolean.
 	 * The second field must be an ISO 8601 timestamp string.  For example, {@code 2018-12-08T18:32:54.846Z}.
 	 *

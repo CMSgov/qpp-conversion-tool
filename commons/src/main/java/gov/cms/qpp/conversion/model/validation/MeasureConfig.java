@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.model.validation;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,10 +34,11 @@ public class MeasureConfig {
 	private String electronicMeasureVerUuid;
 	private String cpcPlusGroup;
 
+	// Internally mutable list; will only be exposed via defensive copies
 	private List<Strata> strata;
 
 	public MeasureConfig() {
-		// empty constructor for jackson
+		// empty constructor for Jackson
 	}
 
 	public String getCategory() {
@@ -155,21 +157,38 @@ public class MeasureConfig {
 		this.electronicMeasureVerUuid = electronicMeasureVerUuid;
 	}
 
+	/**
+	 * Never return the raw mutable list. Instead, return an unmodifiable copy.
+	 */
 	public List<Strata> getStrata() {
-		return strata;
-	}
-
-	public void setStrata(final List<Strata> strata) {
-		this.strata = strata;
-	}
-
-	public List<SubPopulation> getSubPopulation() {
-		List<Strata> stratas = getStrata();
-
-		if (stratas == null) {
+		if (strata == null) {
 			return Collections.emptyList();
 		}
+		return Collections.unmodifiableList(new ArrayList<>(strata));
+	}
 
-		return stratas.stream().map(Strata::getElectronicMeasureUuids).collect(Collectors.toList());
+	/**
+	 * Defensive copy incoming list so that external callers cannot later mutate our internal List.
+	 */
+	public void setStrata(final List<Strata> strata) {
+		if (strata == null) {
+			this.strata = null;
+		} else {
+			this.strata = new ArrayList<>(strata);
+		}
+	}
+
+	/**
+	 * Returns a list of SubPopulation objects by streaming through each Strata.
+	 * Because getStrata() already returns an unmodifiable copy, we can safely map here.
+	 */
+	public List<SubPopulation> getSubPopulation() {
+		List<Strata> stratas = getStrata(); // unmodifiable copy
+		if (stratas.isEmpty()) {
+			return Collections.emptyList();
+		}
+		return stratas.stream()
+				.map(Strata::getElectronicMeasureUuids)
+				.collect(Collectors.toList());
 	}
 }

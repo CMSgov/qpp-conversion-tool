@@ -2,6 +2,8 @@ package gov.cms.qpp.conversion;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,7 +18,7 @@ import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.util.CloneHelper;
 
 /**
- * Report on the stat of a conversion.
+ * Report on the state of a conversion.
  */
 public class ConversionReport {
 	private final ObjectMapper mapper = new ObjectMapper();
@@ -31,11 +33,17 @@ public class ConversionReport {
 	/**
 	 * Construct a conversion report
 	 */
-	ConversionReport(Source source, List<Detail> errors, List<Detail> warnings, Node decoded, JsonWrapper encodedWithMetadata) {
+	ConversionReport(Source source, List<Detail> errors, List<Detail> warnings,
+					 Node decoded, JsonWrapper encodedWithMetadata) {
 		this.source = source;
 		this.decoded = decoded;
 		this.encodedWithMetadata = encodedWithMetadata;
-		this.warnings = warnings;
+		// Defensive copy of warnings list
+		if (warnings == null) {
+			this.warnings = Collections.emptyList();
+		} else {
+			this.warnings = new ArrayList<>(warnings);
+		}
 		reportDetails = constructErrorHierarchy(source.getName(), errors);
 	}
 
@@ -44,10 +52,8 @@ public class ConversionReport {
 	 *
 	 * Currently consists of only a single {@link Error}.
 	 *
-	 * @param inputIdentifier
-	 *            An identifier for a source of QRDA3 XML.
-	 * @param details
-	 *            A list of validation errors.
+	 * @param inputIdentifier An identifier for a source of QRDA3 XML.
+	 * @param details         A list of validation errors.
 	 * @return All the errors.
 	 */
 	private AllErrors constructErrorHierarchy(final String inputIdentifier, final List<Detail> details) {
@@ -60,10 +66,8 @@ public class ConversionReport {
 	 * Constructs an {@link Error} for the given {@code inputIdentifier} from the
 	 * passed in validation errors.
 	 *
-	 * @param inputIdentifier
-	 *            An identifier for a source of QRDA3 XML.
-	 * @param details
-	 *            A list of validation errors.
+	 * @param inputIdentifier An identifier for a source of QRDA3 XML.
+	 * @param details         A list of validation errors.
 	 * @return A single source of validation errors.
 	 */
 	private Error constructErrorSource(final String inputIdentifier, final List<Detail> details) {
@@ -91,27 +95,32 @@ public class ConversionReport {
 	/**
 	 * Retrieve information pertaining to errors generated during the conversion.
 	 *
-	 * @return all errors registered during conversion
+	 * @return AllErrors copy of errors registered during conversion
 	 */
 	public AllErrors getReportDetails() {
-		return reportDetails;
+		if (reportDetails == null) {
+			return null;
+		}
+		return CloneHelper.deepClone(reportDetails);
 	}
 
 	/**
 	 * Mutator for reportDetails
 	 *
-	 * @param details
-	 *            updated errors
+	 * @param details updated errors
 	 */
 	public void setReportDetails(AllErrors details) {
-		reportDetails = details;
+		if (details == null) {
+			reportDetails = null;
+		} else {
+			reportDetails = CloneHelper.deepClone(details);
+		}
 	}
 
 	/**
 	 * Mutator for QPP validation details
 	 *
-	 * @param details
-	 *            QPP validation details
+	 * @param details QPP validation details
 	 */
 	public void setRawValidationDetails(String details) {
 		qppValidationDetails = details;
@@ -143,7 +152,8 @@ public class ConversionReport {
 	public Source getValidationErrorsSource() {
 		try {
 			byte[] validationErrorBytes = mapper.writeValueAsBytes(reportDetails);
-			return new InputStreamSupplierSource("ValidationErrors", new ByteArrayInputStream(validationErrorBytes));
+			return new InputStreamSupplierSource("ValidationErrors",
+					new ByteArrayInputStream(validationErrorBytes));
 		} catch (JsonProcessingException e) {
 			throw new EncodeException("Issue serializing error report details", e);
 		}
@@ -151,19 +161,24 @@ public class ConversionReport {
 
 	/**
 	 * Get the warnings collection
-	 * @return List of warnings details
+	 *
+	 * @return unmodifiable List of warnings details
 	 */
 	public List<Detail> getWarnings() {
-		return warnings;
+		return Collections.unmodifiableList(warnings);
 	}
 
 	/**
 	 * Assign a new list of warnings.
-	 * 
+	 *
 	 * @param warnings new list of warnings details
 	 */
 	public void setWarnings(List<Detail> warnings) {
-		this.warnings = warnings;
+		if (warnings == null) {
+			this.warnings = Collections.emptyList();
+		} else {
+			this.warnings = new ArrayList<>(warnings);
+		}
 	}
 
 	/**
@@ -174,14 +189,15 @@ public class ConversionReport {
 	public Source getRawValidationErrorsOrEmptySource() {
 		String raw = (qppValidationDetails != null) ? qppValidationDetails : "";
 		byte[] rawValidationErrorBytes = raw.getBytes(StandardCharsets.UTF_8);
-		return new InputStreamSupplierSource("RawValidationErrors", new ByteArrayInputStream(rawValidationErrorBytes));
+		return new InputStreamSupplierSource("RawValidationErrors",
+				new ByteArrayInputStream(rawValidationErrorBytes));
 	}
 
 	/**
 	 * Gets the purpose of the conversion
 	 *
-	 * @return The purpose of the conversion, for example \"Test\". Treat null as a
-	 *         standard production call
+	 * @return The purpose of the conversion, for example "Test". Treat null as a
+	 * standard production call
 	 */
 	public String getPurpose() {
 		return source.getPurpose();

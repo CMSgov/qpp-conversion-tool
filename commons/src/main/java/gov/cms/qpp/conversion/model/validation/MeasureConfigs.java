@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -22,141 +23,114 @@ public class MeasureConfigs {
 	public static final String TEST_MEASURE_DATA = "measure-data-static.json";
 
 	private static String measureDataFileName = DEFAULT_MEASURE_DATA_FILE_NAME;
+
+	// These are the internal, mutable structures:
 	private static Map<String, MeasureConfig> configurationMap;
 	private static Map<String, List<MeasureConfig>> cpcPlusGroup;
 
-	/**
-	 * Static initialization
-	 */
 	static {
 		initMeasureConfigs();
 	}
 
-	/**
-	 * Empty private constructor for singleton
-	 */
 	private MeasureConfigs() {
-		//empty and private constructor because this is a singleton
+		// private no-arg constructor; this is effectively a singleton utility class
 	}
 
-	/**
-	 * Method to ensure MeasureConfigs is initialized
-	 */
 	public static void init() {
-		// Hack to load the class without doing any extra work
+		// no-op; just forces class loading
 	}
 
-	/**
-	 * Initialize default measure configurations
-	 */
 	private static void initMeasureConfigs() {
 		configurationMap = grabConfiguration(measureDataFileName);
 		cpcPlusGroup = new HashMap<>();
 		setUpGroups();
 	}
 
-	/**
-	 * Initialize specific measure configurations
-	 * @param filename
-	 */
 	public static void initMeasureConfigs(String filename) {
-		configurationMap = grabConfiguration(filename);
+		measureDataFileName = filename;
+		configurationMap = grabConfiguration(measureDataFileName);
 		cpcPlusGroup = new HashMap<>();
 		setUpGroups();
 	}
 
 	public static Map<String, MeasureConfig> grabConfiguration(String fileName) {
 		ObjectMapper mapper = new ObjectMapper();
-
 		InputStream measuresInput = ClasspathHelper.contextClassLoader().getResourceAsStream(fileName);
 
 		try {
-			TypeReference<List<MeasureConfig>> measureConfigType = new TypeReference<List<MeasureConfig>>() {};
+			TypeReference<List<MeasureConfig>> measureConfigType = new TypeReference<>() {};
 			List<MeasureConfig> configurations = mapper.readValue(measuresInput, measureConfigType);
+
 			return configurations.stream()
 					.collect(Collectors.toMap(MeasureConfigs::getMeasureId, Function.identity()));
 		} catch (IOException e) {
 			String message = "failure to correctly read measures config json";
-			DEV_LOG.error(message);
+			DEV_LOG.error(message, e);
 			throw new IllegalArgumentException(message, e);
 		}
 	}
 
-	public static void setUpGroups() {
+	private static void setUpGroups() {
 		getMeasureConfigs().stream()
-			.filter(config -> config.getCpcPlusGroup() != null)
-			.forEach(config -> cpcPlusGroup.computeIfAbsent(
-				config.getCpcPlusGroup(), key -> new ArrayList<>()).add(config));
+				.filter(config -> config.getCpcPlusGroup() != null)
+				.forEach(config -> {
+					String groupKey = config.getCpcPlusGroup();
+					cpcPlusGroup.computeIfAbsent(groupKey, key -> new ArrayList<>()).add(config);
+				});
 	}
 
-	/**
-	 * Finds the first existing guid, electronicMeasureId, or measureId that exists for an aci, ia, or ecqm section
-	 *
-	 * @param measureConfig Measure configuration that contains the identifiers
-	 * @return An identifier
-	 */
 	private static String getMeasureId(MeasureConfig measureConfig) {
-		String measureId = getMeasureIdFromMeasureConfig(measureConfig);
-		return measureId == null ? null : measureId.toLowerCase(Locale.US);
-	}
-
-	private static String getMeasureIdFromMeasureConfig(MeasureConfig measureConfig) {
 		String guid = measureConfig.getElectronicMeasureVerUuid();
 		String electronicMeasureId = measureConfig.getElectronicMeasureId();
 		String measureId = measureConfig.getMeasureId();
-		String chosenMeasureId = electronicMeasureId != null ? electronicMeasureId : measureId;
-		return guid != null ? guid : chosenMeasureId;
+		String chosen = (electronicMeasureId != null) ? electronicMeasureId : measureId;
+		return (guid != null ? guid : chosen).toLowerCase(Locale.US);
 	}
 
-	/**
-	 * Reconfigures a filename and initializes the measure configurations from that file
-	 *
-	 * @param fileName Name to be used
-	 */
 	public static void setMeasureDataFile(String fileName) {
 		measureDataFileName = fileName;
 		initMeasureConfigs();
 	}
 
 	/**
-	 * Get list of measure configurations.
-	 *
-	 * @return measure configurations
+	 * Returns a fresh List of all MeasureConfig instances.
+	 * Since this is a new ArrayList, callers cannot mutate the internal map.
 	 */
 	public static List<MeasureConfig> getMeasureConfigs() {
 		return new ArrayList<>(configurationMap.values());
 	}
 
 	/**
-	 * Retrieves a mapping of the configurations
-	 *
-	 * @return mapped configurations
+	 * Returns an unmodifiable copy of the internal configurationMap.
+	 * This prevents callers from mutating the original map.
 	 */
 	public static Map<String, MeasureConfig> getConfigurationMap() {
-		return configurationMap;
+		return Collections.unmodifiableMap(new HashMap<>(configurationMap));
 	}
 
 	/**
-	 * Retrieves a mapping of CPC+ measure groups
-	 *
-	 * @return mapped CPC+ measure groups
+	 * Returns an unmodifiable copy of the internal cpcPlusGroup map.
+	 * Each List<MeasureConfig> inside is also defensively copied and wrapped.
 	 */
 	public static Map<String, List<MeasureConfig>> getCpcPlusGroup() {
-		return cpcPlusGroup;
+		if (cpcPlusGroup == null) {
+			return Collections.emptyMap();
+		}
+		Map<String, List<MeasureConfig>> copy = new HashMap<>();
+		for (Map.Entry<String, List<MeasureConfig>> entry : cpcPlusGroup.entrySet()) {
+			// Defensive‐copy each list, then wrap as unmodifiable
+			List<MeasureConfig> originalList = entry.getValue();
+			List<MeasureConfig> listCopy = new ArrayList<>(originalList);
+			copy.put(entry.getKey(), Collections.unmodifiableList(listCopy));
+		}
+		return Collections.unmodifiableMap(copy);
 	}
 
-	/**
-	 * Retrieves a list of required mappings for any given section
-	 *
-	 * @param section Specified section for measures required
-	 * @return The list of required measures
-	 */
 	static List<String> requiredMeasuresForSection(String section) {
-
 		return configurationMap.values().stream()
-			.filter(measureConfig -> measureConfig.isRequired() && section.equals(measureConfig.getCategory()))
-			.map(MeasureConfigs::getMeasureId)
-			.collect(Collectors.toList());
+				.filter(measureConfig -> measureConfig.isRequired()
+						&& section.equals(measureConfig.getCategory()))
+				.map(MeasureConfigs::getMeasureId)
+				.collect(Collectors.toList());
 	}
-
 }

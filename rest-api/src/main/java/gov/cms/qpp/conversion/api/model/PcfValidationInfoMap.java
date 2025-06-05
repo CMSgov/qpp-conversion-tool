@@ -18,8 +18,8 @@ public class PcfValidationInfoMap {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(PcfValidationInfoMap.class);
 	private Map<String, Map<String, List<String>>> apmTinNpiCombinationMap;
 
-	public PcfValidationInfoMap(InputStream pcfNpiToApmJson) {
-		convertJsonToMapOfLists(pcfNpiToApmJson);
+	public PcfValidationInfoMap(InputStream pcfApmNpiTinJson) {
+		convertJsonToMapOfLists(pcfApmNpiTinJson);
 	}
 
 	private void convertJsonToMapOfLists(InputStream pcfApmNpiTinJson) {
@@ -33,45 +33,58 @@ public class PcfValidationInfoMap {
 		List<PcfValidationInfo> pcfValidationInfoList = new ArrayList<>();
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
-			pcfValidationInfoList =
-				Arrays.asList(objectMapper.readValue(new InputStreamReader(pcfApmNpiTinJson, StandardCharsets.UTF_8),
-					PcfValidationInfo[].class));
-		} catch (IOException | NullPointerException exc){
-			DEV_LOG.info("Failed to parse the pcf validation npi to apm list...");
+			pcfValidationInfoList = Arrays.asList(
+					objectMapper.readValue(
+							new InputStreamReader(pcfApmNpiTinJson, StandardCharsets.UTF_8),
+							PcfValidationInfo[].class
+					)
+			);
+		} catch (IOException exc) {
+			DEV_LOG.info("Failed to parse the PCF validation JSON into PcfValidationInfo list.", exc);
 		}
 
 		for (PcfValidationInfo pcfValidationInfo : pcfValidationInfoList) {
+			if (pcfValidationInfo == null) {
+				continue;
+			}
 			String currentApm = pcfValidationInfo.getApm();
 			String currentTin = pcfValidationInfo.getTin();
 			String currentNpi = pcfValidationInfo.getNpi();
 
-			if(apmTinNpiCombinationMap.containsKey(currentApm)) {
-				if (!hasTinKey(currentApm, currentTin)) {
-					List<String> npiList = new ArrayList<>();
-					npiList.add(currentNpi);
-					apmTinNpiCombinationMap.get(currentApm).put(currentTin, npiList);
-				} else if(!isExistingCombination(currentApm, currentTin, pcfValidationInfo.getNpi())) {
-					apmTinNpiCombinationMap.get(currentApm).get(currentTin).add(currentNpi);
-				}
-			} else {
-				Map<String, List<String>> tinNpisMap = new HashMap<>();
-				List<String> npiList = new ArrayList<>();
+			if (currentApm == null || currentTin == null || currentNpi == null) {
+				continue;
+			}
+
+			apmTinNpiCombinationMap
+					.computeIfAbsent(currentApm, k -> new HashMap<>())
+					.computeIfAbsent(currentTin, k -> new ArrayList<>());
+
+			List<String> npiList = apmTinNpiCombinationMap.get(currentApm).get(currentTin);
+			if (!npiList.contains(currentNpi)) {
 				npiList.add(currentNpi);
-				tinNpisMap.put(currentTin, npiList);
-				apmTinNpiCombinationMap.put(currentApm, tinNpisMap);
 			}
 		}
 	}
 
-	private boolean hasTinKey(String apm, String tin) {
-		return (apmTinNpiCombinationMap.get(apm).containsKey(tin));
-	}
-
-	private boolean isExistingCombination(String apm, String tin, String npi) {
-		return (apmTinNpiCombinationMap.get(apm).get(tin)).indexOf(npi) > -1;
-	}
-
+	/**
+	 * Returns a defensive deep copy of the internal map structure.
+	 */
 	public Map<String, Map<String, List<String>>> getApmTinNpiCombinationMap() {
-		return apmTinNpiCombinationMap;
+		if (apmTinNpiCombinationMap == null) {
+			return null;
+		}
+		Map<String, Map<String, List<String>>> topLevelCopy = new HashMap<>();
+		for (Map.Entry<String, Map<String, List<String>>> apmEntry : apmTinNpiCombinationMap.entrySet()) {
+			String apmKey = apmEntry.getKey();
+			Map<String, List<String>> tinMap = apmEntry.getValue();
+			Map<String, List<String>> tinMapCopy = new HashMap<>();
+			for (Map.Entry<String, List<String>> tinEntry : tinMap.entrySet()) {
+				String tinKey = tinEntry.getKey();
+				List<String> npiList = tinEntry.getValue();
+				tinMapCopy.put(tinKey, new ArrayList<>(npiList));
+			}
+			topLevelCopy.put(apmKey, tinMapCopy);
+		}
+		return topLevelCopy;
 	}
 }

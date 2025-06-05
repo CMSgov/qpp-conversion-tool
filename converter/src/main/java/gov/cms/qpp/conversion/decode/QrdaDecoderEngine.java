@@ -38,7 +38,12 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 	public QrdaDecoderEngine(Context context) {
 		Objects.requireNonNull(context, "converter");
 
-		this.context = context;
+		// Defensive copy of incoming Context
+		Context ctxCopy = new Context();
+		ctxCopy.setDoValidation(context.isDoValidation());
+		ctxCopy.setHistorical(context.isHistorical());
+		this.context = ctxCopy;
+
 		this.decoders = context.getRegistry(Decoder.class);
 	}
 
@@ -68,7 +73,10 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 		}
 
 		if (rootDecoder != null) {
-			rootNode = this.decodeTree(rootElement, rootNode).getNode().getChildNodes().get(0);
+			rootNode = this.decodeTree(rootElement, rootNode)
+					.getNode()
+					.getChildNodes()
+					.get(0);
 		} else {
 			rootNode = this.decodeTree(rootElement, rootNode).getNode();
 		}
@@ -79,16 +87,16 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 	/**
 	 * Decodes the element specified and the entire tree of child {@link Element}s below.
 	 *
-	 * @param element The element who's tree to decode.
-	 * @param parentNode The node to add any possible decoded child {@link Node}s.
-	 * @return The tuple of a {@link DecodeResult} and {@link Node} that was decoded from this tree.
+	 * @param element    The element whose tree to decode.
+	 * @param parentNode The node to add any decoded child {@link Node}s.
+	 * @return The tuple of a {@link DecodeData} and {@link Node} that was decoded from this tree.
 	 */
 	private DecodeData decodeTree(final Element element, final Node parentNode) {
 		DecodeData result = decodeSingleElement(element, parentNode);
 		DecodeResult decodedResult = result.getDecodeResult();
 		Node decodedNode = result.getNode();
 
-		decodedNode = decideNewParentNode(decodedNode, parentNode);
+		decodedNode = (decodedNode != null) ? decodedNode : parentNode;
 
 		if (DecodeResult.TREE_FINISHED == decodedResult) {
 			return new DecodeData(DecodeResult.TREE_FINISHED, decodedNode);
@@ -102,15 +110,13 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 	/**
 	 * Decodes the passed in element if it is a {@code templateId} and assigns it to the {@code parentNode}.
 	 *
-	 * @param element The element to decode.
-	 * @param parentNode The node add the child decoded {@link Node} to.
-	 * @return The tuple of a {@link DecodeResult} and {@link Node} that was decoded from the {@link Element}.
+	 * @param element    The element to decode.
+	 * @param parentNode The node to add the child decoded {@link Node} to.
+	 * @return The tuple of a {@link DecodeData} and {@link Node} that was decoded.
 	 */
 	private DecodeData decodeSingleElement(Element element, Node parentNode) {
-
 		QrdaDecoder decoder = decoderForElement(element);
-
-		if (null == decoder) {
+		if (decoder == null) {
 			return new DecodeData(DecodeResult.TREE_CONTINUE, null);
 		}
 
@@ -120,7 +126,6 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 		decoder.setNamespace(element.getNamespace());
 
 		Element parentElement = element.getParentElement();
-
 		DecodeResult decodeResult = decoder.decode(parentElement, childNode);
 
 		if (decodeResult == DecodeResult.TREE_ESCAPED) {
@@ -128,32 +133,27 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 		}
 
 		childNode.setElementForLocation(parentElement);
-
 		addLineAndColumnToNode(element, childNode);
-
 		parentNode.addChildNode(childNode);
 
 		return new DecodeData(decodeResult, childNode);
 	}
 
 	/**
-	 * Iterates over all the children of the passed in {@link Element} and calls {@link #decodeTree(Element, Node)} on them.
+	 * Iterates over all children of the passed in {@link Element} and calls {@link #decodeTree(Element, Node)} on them.
 	 *
-	 * @param element The element who's children will be decoded.
-	 * @param parentNode The parent node
-	 * @return The tuple of a {@link DecodeResult} and {@link Node} that was decoded from the children.
+	 * @param element    The element whose children will be decoded.
+	 * @param parentNode The parent node.
+	 * @return The tuple of a {@link DecodeData} and {@link Node} decoded from the children.
 	 */
 	private DecodeData decodeChildren(final Element element, final Node parentNode) {
-
 		List<Element> filteredChildElements = getUniqueTemplateIdElements(element.getChildren());
 
 		DecodeData decodeData = new DecodeData(DecodeResult.TREE_CONTINUE, parentNode);
-
 		Node currentParentNode = parentNode;
 
 		for (Element childElement : filteredChildElements) {
 			DecodeData childDecodeData = decodeTree(childElement, currentParentNode);
-
 			DecodeResult childDecodeResult = childDecodeData.getDecodeResult();
 			Node childDecodedNode = childDecodeData.getNode();
 
@@ -161,79 +161,54 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 				decodeData = new DecodeData(DecodeResult.TREE_CONTINUE, parentNode);
 				break;
 			}
-
-			currentParentNode = childDecodedNode == null ? currentParentNode : childDecodedNode;
+			currentParentNode = (childDecodedNode == null ? currentParentNode : childDecodedNode);
 		}
 
 		return decodeData;
 	}
 
 	/**
-	 * Reduces the {@code templateId} {@link Element}s so there are no duplicates. All other {@link Element}s are left alone.
+	 * Reduces the {@code templateId} {@link Element}s so there are no duplicates.
 	 *
-	 * @param childElements The elements to filter
-	 * @return A {@link List} of {@link Element}s that are filtered. If no template ids or at least one implemented template id
-	 * appears within the filtered child elements then the filtered children will be returned otherwise an empty list will
-	 * be returned.
+	 * @param childElements The elements to filter.
+	 * @return A {@link List} of filtered {@link Element}s.
 	 */
 	private List<Element> getUniqueTemplateIdElements(final List<Element> childElements) {
 		Set<TemplateId> uniqueTemplates = EnumSet.noneOf(TemplateId.class);
 
 		List<Element> children = childElements.stream()
-			.filter(filterElement -> {
-				boolean isTemplateId = TEMPLATE_ID.equals(filterElement.getName());
-				TemplateId filterTemplateId = getTemplateId(filterElement);
+				.filter(filterElement -> {
+					boolean isTemplateId = TEMPLATE_ID.equals(filterElement.getName());
+					TemplateId filterTemplateId = getTemplateId(filterElement);
 
-				boolean elementWillStay = true;
-
-				if (isTemplateId) {
-					if (getDecoder(filterTemplateId) == null || uniqueTemplates.contains(filterTemplateId)) {
-						elementWillStay = false;
+					boolean elementWillStay = true;
+					if (isTemplateId) {
+						if (getDecoder(filterTemplateId) == null || uniqueTemplates.contains(filterTemplateId)) {
+							elementWillStay = false;
+						}
+						uniqueTemplates.add(filterTemplateId);
 					}
-					uniqueTemplates.add(filterTemplateId);
-				}
-
-				return elementWillStay;
-			})
-			.collect(Collectors.toList());
+					return elementWillStay;
+				})
+				.collect(Collectors.toList());
 
 		return (uniqueTemplates.isEmpty()
-			|| uniqueTemplates.stream().anyMatch(template -> TemplateId.UNIMPLEMENTED != template))
-			? children
-			: new ArrayList<>();
+				|| uniqueTemplates.stream().anyMatch(template -> TemplateId.UNIMPLEMENTED != template))
+				? children
+				: new ArrayList<>();
 	}
 
 	/**
 	 * Get the {@link QrdaDecoder} for the passed in {@link Element}.
 	 *
 	 * @param element The element.
-	 * @return The QRDA decoder.
+	 * @return The QRDA decoder, or null if none.
 	 */
 	private QrdaDecoder decoderForElement(final Element element) {
 		if (!TEMPLATE_ID.equals(element.getName())) {
 			return null;
 		}
-
-		TemplateId templateId = getTemplateId(element);
-
-		return getDecoder(templateId);
-	}
-
-	/**
-	 *  If the {@code decodedNode} is not null, it is returned, else the {@code originalParent} is returned.
-	 *
-	 * @param decodedNode The newly decoded {@link Node}.
-	 * @param originalParent The original parent {@link Node}.
-	 * @return The new parent node.
-	 */
-	private Node decideNewParentNode(final Node decodedNode, final Node originalParent) {
-		Node newParent = originalParent;
-
-		if (null != decodedNode) {
-			newParent = decodedNode;
-		}
-
-		return newParent;
+		return getDecoder(getTemplateId(element));
 	}
 
 	/**
@@ -251,55 +226,37 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 	/**
 	 * Retrieve a permitted {@link Decoder}.
 	 *
-	 * @param templateId string representation of a would be decoder's template id
-	 * @return decoder that corresponds to the given template id
+	 * @param templateId The template ID.
+	 * @return decoder that corresponds to the given template ID.
 	 */
 	private QrdaDecoder getDecoder(TemplateId templateId) {
 		return decoders.get(templateId);
 	}
 
 	/**
-	 * Determines whether the XML Document provided is a valid QRDA-III formatted file
+	 * Determines whether the XML Document provided is a valid QRDA-III formatted file.
 	 *
-	 * @param xmlDoc XML Document to be tested
-	 * @return If the XML document is a correctly QRDA-III formatted file
+	 * @param xmlDoc XML Document to be tested.
+	 * @return true if the XML document is correctly formatted.
 	 */
 	@Override
 	protected boolean accepts(Element xmlDoc) {
-
 		final Element rootElement = xmlDoc.getDocument().getRootElement();
-
 		boolean isValidQrdaFile = containsClinicalDocumentElement(rootElement)
-									&& containsClinicalDocumentTemplateId(rootElement);
-
+				&& containsClinicalDocumentTemplateId(rootElement);
 		if (!isValidQrdaFile) {
 			DEV_LOG.error(NOT_VALID_QRDA_III_FORMAT);
 		}
-		
 		return isValidQrdaFile;
 	}
 
-	/**
-	 * Checks whether the element's name is {@code ClinicalDocument}.
-	 *
-	 * @param rootElement The element to check.
-	 * @return True or false.
-	 */
 	private boolean containsClinicalDocumentElement(Element rootElement) {
 		return "ClinicalDocument".equals(rootElement.getName());
 	}
 
-	/**
-	 * Checks whether the element has a child {@code templateId} element that is the Clinical Document {@link TemplateId}.
-	 *
-	 * @param rootElement The element to check.
-	 * @return True or false.
-	 */
 	private boolean containsClinicalDocumentTemplateId(Element rootElement) {
 		boolean containsTemplateId = false;
-
 		List<Element> clinicalDocumentChildren = rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace());
-
 		for (Element currentChild : clinicalDocumentChildren) {
 			TemplateId templateId = getTemplateId(currentChild);
 			if (templateId == TemplateId.CLINICAL_DOCUMENT) {
@@ -307,7 +264,6 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 				break;
 			}
 		}
-
 		return containsTemplateId;
 	}
 
@@ -320,13 +276,16 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 	}
 
 	/**
-	 * Returns the xpath from the path-correlation.json meta data
+	 * Returns the XPath from the path-correlation.json metadata.
 	 *
-	 * @param attribute Key to the correlation data
-	 * @return xpath expression as a string
+	 * @param attribute Key to the correlation data.
+	 * @return XPath expression as a string.
 	 */
 	protected String getXpath(String attribute) {
-		String template = this.getClass().getAnnotation(Decoder.class).value().name();
+		String template = this.getClass()
+				.getAnnotation(Decoder.class)
+				.value()
+				.name();
 		return PathCorrelator.getXpath(template, attribute, defaultNs.getURI());
 	}
 }

@@ -14,28 +14,30 @@ public class InternetExecutionCondition implements ExecutionCondition {
 
 	static {
 		try {
-			connected = InetAddress.getByName("google.com").isReachable((int) TimeUnit.SECONDS.toMillis(3));
+			connected = InetAddress.getByName("google.com")
+					.isReachable((int) TimeUnit.SECONDS.toMillis(3));
 		} catch (IOException expected) {
+			connected = false;
 		}
 	}
 
 	@Override
 	public ConditionEvaluationResult evaluateExecutionCondition(ExtensionContext context) {
-		if (connected()) {
+		if (checkConnected()) {
 			return ConditionEvaluationResult.enabled("The system is connected to the internet");
 		}
 		return ConditionEvaluationResult.disabled("The system is NOT connected to the internet");
 	}
 
-	private synchronized boolean connected() {
+	private static synchronized boolean checkConnected() {
 		if (connected == null) {
 			try {
-				connected = InetAddress.getByName("google.com").isReachable((int) TimeUnit.SECONDS.toMillis(3));
+				connected = InetAddress.getByName("google.com")
+						.isReachable((int) TimeUnit.SECONDS.toMillis(3));
 			} catch (IOException expected) {
 				connected = false;
 			}
 		}
 		return connected;
 	}
-
 }

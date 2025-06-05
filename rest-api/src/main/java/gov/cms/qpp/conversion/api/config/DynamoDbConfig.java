@@ -11,6 +11,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.encryption.providers.DirectKmsMaterialProvider;
 import com.amazonaws.services.kms.AWSKMS;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanInitializationException;
@@ -35,15 +36,19 @@ public class DynamoDbConfig {
 	private static final Logger API_LOG = LoggerFactory.getLogger(DynamoDbConfig.class);
 	static final String NO_KMS_KEY = "No KMS key specified!";
 
-	private Environment environment;
-	private AWSKMS awsKms;
+	private final Environment environment;
+	private final AWSKMS awsKms;
 
 	/**
 	 * Ensure required dependencies are supplied.
 	 *
 	 * @param environment access to environment variables
-	 * @param awsKms KMS key
+	 * @param awsKms      KMS key
 	 */
+	@SuppressFBWarnings(
+			value = "EI_EXPOSE_REP2",
+			justification = "AWSKMS client is thread-safe and intended to be injected directly"
+	)
 	public DynamoDbConfig(Environment environment, AWSKMS awsKms) {
 		this.environment = environment;
 		this.awsKms = awsKms;
@@ -107,15 +112,15 @@ public class DynamoDbConfig {
 			if (tableName.isPresent() && kmsKey.isPresent()) {
 				API_LOG.info("Using DynamoDB table name {} and KMS key {}.", tableName, kmsKey);
 				dynamoDbMapper = createDynamoDbMapper(
-					dynamoDbClient,
-					tableNameOverrideConfig(tableName.orElseThrow()),
-					encryptionTransformer(kmsKey.orElseThrow()));
+						dynamoDbClient,
+						tableNameOverrideConfig(tableName.orElseThrow()),
+						encryptionTransformer(kmsKey.orElseThrow()));
 			} else if (kmsKey.isPresent()) {
 				API_LOG.warn("Using KMS key {}, but no DynamoDB table name specified.", tableName);
 				dynamoDbMapper = createDynamoDbMapper(
-					dynamoDbClient,
-					getDynamoDbMapperConfig(),
-					encryptionTransformer(kmsKey.orElseThrow()));
+						dynamoDbClient,
+						getDynamoDbMapperConfig(),
+						encryptionTransformer(kmsKey.orElseThrow()));
 			} else {
 				API_LOG.error(NO_KMS_KEY + " This is a fatal error.");
 				throw new BeanInitializationException(NO_KMS_KEY);
@@ -147,9 +152,9 @@ public class DynamoDbConfig {
 	 */
 	DynamoDBMapperConfig tableNameOverrideConfig(String tableName) {
 		return DynamoDBMapperConfig.builder()
-			.withSaveBehavior(DynamoDBMapperConfig.SaveBehavior.PUT)
-			.withTableNameOverride(new DynamoDBMapperConfig.TableNameOverride(tableName))
-			.build();
+				.withSaveBehavior(DynamoDBMapperConfig.SaveBehavior.PUT)
+				.withTableNameOverride(new DynamoDBMapperConfig.TableNameOverride(tableName))
+				.build();
 	}
 
 	/**

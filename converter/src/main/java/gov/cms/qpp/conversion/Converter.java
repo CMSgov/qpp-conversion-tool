@@ -15,6 +15,7 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.ValidationResult;
+import gov.cms.qpp.conversion.util.CloneHelper;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
@@ -26,9 +27,9 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Converter provides the command line processing for QRDA III to QPP json.
- * Expects a list of file names as CLI parameters to be processed
- * Supports wild card characters in paths
+ * Converter provides the command line processing for QRDA III to QPP JSON.
+ * Expects a list of file names as CLI parameters to be processed.
+ * Supports wild card characters in paths.
  */
 public class Converter {
 
@@ -46,9 +47,9 @@ public class Converter {
 	}
 
 	/**
-	 * Constructor for the CLI Converter application
+	 * Constructor for the CLI Converter application.
 	 *
-	 * @param source Source to use for the conversion
+	 * @param source  Source to use for the conversion
 	 * @param context Context to use for the conversion
 	 */
 	public Converter(Source source, Context context) {
@@ -56,15 +57,24 @@ public class Converter {
 		Objects.requireNonNull(context, "context");
 
 		this.source = source;
-		this.context = context;
+
+		// Defensive copy of incoming Context
+		Context ctxCopy = new Context();
+		ctxCopy.setDoValidation(context.isDoValidation());
+		ctxCopy.setHistorical(context.isHistorical());
+		this.context = ctxCopy;
 	}
 
 	/**
 	 * Get the conversion context environment for the converter instance.
-	 * @return context information
+	 *
+	 * @return a defensive copy of context information
 	 */
 	public Context getContext() {
-		return context;
+		Context copy = new Context();
+		copy.setDoValidation(context.isDoValidation());
+		copy.setHistorical(context.isHistorical());
+		return copy;
 	}
 
 	/**
@@ -75,7 +85,9 @@ public class Converter {
 	public JsonWrapper transform() {
 		DEV_LOG.info("Transform invoked");
 		try {
-			encoded = transform(source.toInputStream());
+			JsonWrapper result = transform(source.toInputStream());
+			// Return a defensive clone of the encoded result
+			return CloneHelper.deepClone(result);
 		} catch (XmlInputFileException | XmlException xe) {
 			DEV_LOG.error(ProblemCode.NOT_VALID_XML_DOCUMENT.getMessage(), xe);
 			Detail detail = Detail.forProblemCode(ProblemCode.NOT_VALID_XML_DOCUMENT);
@@ -91,7 +103,7 @@ public class Converter {
 			throw new TransformException("Validation errors exist", null, getReport());
 		}
 
-		return encoded;
+		return null;
 	}
 
 	/**
@@ -105,11 +117,11 @@ public class Converter {
 		Element doc = XmlUtils.parseXmlStream(inStream);
 		decoded = XmlDecoderEngine.decodeXml(context, doc);
 		JsonWrapper qpp = null;
-		if (null != decoded) {
+		if (decoded != null) {
 			DEV_LOG.info("Decoded template ID {}", decoded.getType());
 
 			if (context.isDoValidation()) {
-				QrdaValidator validator = new QrdaValidator(context);
+				QrdaValidator validator = new QrdaValidator(getContext());
 				ValidationResult result = validator.validate(decoded);
 				List<Detail> truncatedErrors = truncateTooManyErrors(result.getErrors());
 				errors.addAll(truncatedErrors);
@@ -120,8 +132,9 @@ public class Converter {
 				qpp = encode();
 			}
 		} else {
-			Detail detail = Detail.forProblemCode(ProblemCode.NOT_VALID_QRDA_DOCUMENT.format(
-				Context.REPORTING_YEAR, DocumentationReference.CLINICAL_DOCUMENT));
+			Detail detail = Detail.forProblemCode(
+					ProblemCode.NOT_VALID_QRDA_DOCUMENT.format(Context.REPORTING_YEAR,
+							DocumentationReference.CLINICAL_DOCUMENT));
 			errors.add(detail);
 		}
 
@@ -133,7 +146,7 @@ public class Converter {
 		if (errors != null && errors.size() > sizeLimit) {
 			List<Detail> truncatedList = errors.subList(0, sizeLimit);
 			truncatedList.add(Detail.forProblemCode(
-				ProblemCode.TOO_MANY_ERRORS.format((errors.size()))));
+					ProblemCode.TOO_MANY_ERRORS.format(errors.size())));
 			return truncatedList;
 		}
 		return errors;
@@ -149,7 +162,8 @@ public class Converter {
 		DEV_LOG.info("Encoding template ID {}", decoded.getType());
 
 		try {
-			encoder.setNodes(Collections.singletonList(decoded));
+			// Defensive copy of decoded node list
+			encoder.setNodes(Collections.singletonList(CloneHelper.deepClone(decoded)));
 			JsonWrapper qpp = encoder.encode();
 			errors.addAll(encoder.getErrors());
 			warnings.addAll(encoder.getWarnings());
@@ -166,7 +180,7 @@ public class Converter {
 	 * @return an encoder
 	 */
 	protected JsonOutputEncoder getEncoder() {
-		return new QppOutputEncoder(context);
+		return new QppOutputEncoder(getContext());
 	}
 
 	/**
@@ -177,5 +191,4 @@ public class Converter {
 	public ConversionReport getReport() {
 		return new ConversionReport(source, errors, warnings, decoded, encoded);
 	}
-
 }

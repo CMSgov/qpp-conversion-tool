@@ -1,6 +1,8 @@
 package gov.cms.qpp.conversion.api.model;
 
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
 
 import gov.cms.qpp.conversion.model.error.Detail;
@@ -46,20 +48,46 @@ public class Report {
 		this.timestamp = timestamp;
 	}
 
+	/**
+	 * Returns a defensive copy of the warnings list (or an empty list if null).
+	 */
 	public List<Detail> getWarnings() {
-		return warnings;
+		if (warnings == null) {
+			return Collections.emptyList();
+		}
+		return new ArrayList<>(warnings);
 	}
 
+	/**
+	 * Stores a defensive copy of the provided list.
+	 */
 	public void setWarnings(List<Detail> warnings) {
-		this.warnings = warnings;
+		if (warnings == null) {
+			this.warnings = null;
+		} else {
+			this.warnings = new ArrayList<>(warnings);
+		}
 	}
 
+	/**
+	 * Returns a defensive copy of the errors list (or an empty list if null).
+	 */
 	public List<Detail> getErrors() {
-		return errors;
+		if (errors == null) {
+			return Collections.emptyList();
+		}
+		return new ArrayList<>(errors);
 	}
 
+	/**
+	 * Stores a defensive copy of the provided list.
+	 */
 	public void setErrors(List<Detail> errors) {
-		this.errors = errors;
+		if (errors == null) {
+			this.errors = null;
+		} else {
+			this.errors = new ArrayList<>(errors);
+		}
 	}
 
 	@Override

@@ -11,11 +11,15 @@ public class Strata {
 
 	private String name;
 
+	/**
+	 * Originally: private SubPopulation electronicMeasureUuids;
+	 * We now store a defensive copy whenever set, and return a copy on get.
+	 */
 	@JsonProperty("eMeasureUuids")
 	private SubPopulation electronicMeasureUuids;
 
 	public Strata() {
-		//empty constructor for jackson
+		// empty constructor for Jackson
 	}
 
 	public String getName() {
@@ -26,11 +30,26 @@ public class Strata {
 		this.name = name;
 	}
 
+	/**
+	 * Returns a defensive copy of the internal SubPopulation.
+	 * If null, returns null.
+	 */
 	public SubPopulation getElectronicMeasureUuids() {
-		return electronicMeasureUuids;
+		if (electronicMeasureUuids == null) {
+			return null;
+		}
+		return new SubPopulation(electronicMeasureUuids);
 	}
 
+	/**
+	 * Stores a defensive copy of the incoming SubPopulation.
+	 * If null, stores null.
+	 */
 	public void setElectronicMeasureUuids(final SubPopulation electronicMeasureUuids) {
-		this.electronicMeasureUuids = electronicMeasureUuids;
+		if (electronicMeasureUuids == null) {
+			this.electronicMeasureUuids = null;
+		} else {
+			this.electronicMeasureUuids = new SubPopulation(electronicMeasureUuids);
+		}
 	}
 }

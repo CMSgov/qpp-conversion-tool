@@ -18,59 +18,81 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A helper class for aws testing
+ * A helper class for AWS testing
  */
 public class AwsTestHelper {
 	public static final String TEST_DYNAMO_TABLE_NAME = "qpp-qrda3converter-acceptance-test";
+	private static final String TEST_S3_BUCKET_NAME    = "qpp-qrda3converter-acceptance-test";
 
-	private static final  AmazonDynamoDB DYNAMO_CLIENT = AmazonDynamoDBClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
-	private static final AmazonS3 S3_CLIENT = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
-	private static final AWSKMS KMS_CLIENT = AWSKMSClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
-	private static final String TEST_S3_BUCKET_NAME = "qpp-qrda3converter-acceptance-test";
-
+	/**
+	 * Always build a new DynamoDB client instead of returning a shared instance.
+	 */
 	public static AmazonDynamoDB getDynamoClient() {
-		return DYNAMO_CLIENT;
-	}
-
-	public static AmazonS3 getS3Client() {
-		return S3_CLIENT;
-	}
-
-	public static AWSKMS getKmsClient() {
-		return KMS_CLIENT;
+		return AmazonDynamoDBClientBuilder
+				.standard()
+				.withRegion(Regions.US_EAST_1)
+				.build();
 	}
 
 	/**
-	 * Cleans dynamodb items until via batch scan and delete for performance purposes
+	 * Always build a new S3 client instead of returning a shared instance.
+	 */
+	public static AmazonS3 getS3Client() {
+		return AmazonS3ClientBuilder
+				.standard()
+				.withRegion(Regions.US_EAST_1)
+				.build();
+	}
+
+	/**
+	 * Always build a new KMS client instead of returning a shared instance.
+	 */
+	public static AWSKMS getKmsClient() {
+		return AWSKMSClientBuilder
+				.standard()
+				.withRegion(Regions.US_EAST_1)
+				.build();
+	}
+
+	/**
+	 * Cleans DynamoDB items via batch scan and delete for performance purposes.
 	 */
 	public static void cleanDynamoDb() {
-		ScanResult scanResult = DYNAMO_CLIENT.scan(TEST_DYNAMO_TABLE_NAME, Lists.newArrayList("Uuid"));
+		AmazonDynamoDB client = getDynamoClient();
+		ScanResult scanResult = client.scan(TEST_DYNAMO_TABLE_NAME, Lists.newArrayList("Uuid"));
 		List<Map<String, AttributeValue>> metadataList = scanResult.getItems();
+
 		while (scanResult.getLastEvaluatedKey() != null && !scanResult.getLastEvaluatedKey().isEmpty()) {
-			scanResult = DYNAMO_CLIENT.scan(new ScanRequest().withTableName(TEST_DYNAMO_TABLE_NAME).withAttributesToGet("Uuid")
-				.withExclusiveStartKey(scanResult.getLastEvaluatedKey()));
+			scanResult = client.scan(
+					new ScanRequest()
+							.withTableName(TEST_DYNAMO_TABLE_NAME)
+							.withAttributesToGet("Uuid")
+							.withExclusiveStartKey(scanResult.getLastEvaluatedKey())
+			);
 			metadataList.addAll(scanResult.getItems());
 		}
 
-		metadataList.forEach(map -> DYNAMO_CLIENT.deleteItem(TEST_DYNAMO_TABLE_NAME, map));
+		metadataList.forEach(map ->
+				client.deleteItem(TEST_DYNAMO_TABLE_NAME, map)
+		);
 	}
 
 	/**
-	 * Cleans up the test s3 bucket by batch for performance purposes
+	 * Cleans up the test S3 bucket by batch for performance purposes.
 	 */
 	public static void cleanS3() {
-		ObjectListing objectListing = S3_CLIENT.listObjects(TEST_S3_BUCKET_NAME);
+		AmazonS3 s3 = getS3Client();
+		ObjectListing objectListing = s3.listObjects(TEST_S3_BUCKET_NAME);
 		boolean firstTimeThrough = true;
 
 		do {
 			if (!firstTimeThrough) {
-				objectListing = S3_CLIENT.listNextBatchOfObjects(objectListing);
+				objectListing = s3.listNextBatchOfObjects(objectListing);
 			}
 
 			for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
-				S3_CLIENT.deleteObject(TEST_S3_BUCKET_NAME, objectSummary.getKey());
+				s3.deleteObject(TEST_S3_BUCKET_NAME, objectSummary.getKey());
 			}
-
 
 			firstTimeThrough = false;
 		} while (objectListing.isTruncated());

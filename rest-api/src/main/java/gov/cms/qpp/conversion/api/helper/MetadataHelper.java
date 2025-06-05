@@ -5,6 +5,7 @@ import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,7 +32,7 @@ public class MetadataHelper {
 	 * Generates a {@link Metadata} object from a {@link Node}.
 	 * This {@link Metadata} does not contain data not found in a standard {@link Node}.
 	 *
-	 * @param node from which to extract metadata
+	 * @param node    from which to extract metadata
 	 * @param outcome to update with metadata
 	 * @return metadata
 	 */
@@ -114,7 +115,7 @@ public class MetadataHelper {
 		}
 
 		Node found = findPossibleChildNode(node, RAW_PROGRAM_NAME,
-			TemplateId.CLINICAL_DOCUMENT);
+				TemplateId.CLINICAL_DOCUMENT);
 
 		return found != null && Program.isPcf(found);
 	}
@@ -122,8 +123,8 @@ public class MetadataHelper {
 	/**
 	 * Recursively searches a node for a value.
 	 *
-	 * @param node to interrogate
-	 * @param key value name
+	 * @param node              to interrogate
+	 * @param key               value name
 	 * @param possibleLocations where the value might reside
 	 * @return the found value or null
 	 */
@@ -141,32 +142,36 @@ public class MetadataHelper {
 	 * Finds all possible children within the given node for each {@link TemplateId} given
 	 * filtered by children with specific keys
 	 *
-	 * @param node Object to search through
-	 * @param key value to filter
+	 * @param node             Object to search through
+	 * @param key              value to filter
 	 * @param possibleLocations areas which the child can exist
 	 * @return A child node with the correct value or null
 	 */
 	private static Node findPossibleChildNode(Node node, String key, TemplateId... possibleLocations) {
 		return Arrays.stream(possibleLocations)
-			.distinct()
-			.map(node::findNode)
-			.flatMap(List::stream)
-			.filter(child -> child.hasValue(key))
-			.findFirst()
-			.orElse(null);
+				.distinct()
+				.map(node::findNode)
+				.flatMap(List::stream)
+				.filter(child -> child.hasValue(key))
+				.findFirst()
+				.orElse(null);
 	}
 
 	/**
 	 * Potential states of conversion outcomes.
 	 */
+	@SuppressFBWarnings(
+			value = "MS_EXPOSE_REP",
+			justification = "Enum values() returns a clone, so exposure is safe"
+	)
 	public enum Outcome {
 		SUCCESS(true, true, true),
 		CONVERSION_ERROR(false, false, false),
 		VALIDATION_ERROR(false, true, false);
 
-		private boolean overall;
-		private boolean conversion;
-		private boolean validation;
+		private final boolean overall;
+		private final boolean conversion;
+		private final boolean validation;
 
 		Outcome(boolean overall, boolean conversion, boolean validation) {
 			this.overall = overall;
@@ -185,5 +190,4 @@ public class MetadataHelper {
 			metadata.setValidationStatus(validation);
 		}
 	}
-
 }
