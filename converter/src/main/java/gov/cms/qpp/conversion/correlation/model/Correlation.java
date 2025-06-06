@@ -3,6 +3,9 @@ package gov.cms.qpp.conversion.correlation.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a correlation with an ID and a list of configurations.
+ */
 public class Correlation {
 
 	private String correlationId;
@@ -16,12 +19,23 @@ public class Correlation {
 		this.correlationId = correlationId;
 	}
 
+	/**
+	 * Returns a defensive copy of the internal list to avoid exposing mutable state.
+	 *
+	 * @return a new List containing the same CorrelationConfig elements
+	 */
 	public List<CorrelationConfig> getConfig() {
-		return config;
+		return new ArrayList<>(config);
 	}
 
+	/**
+	 * Replaces the internal list with a copy of the provided list, preventing external references
+	 * from modifying internal state.
+	 *
+	 * @param config new list of CorrelationConfig
+	 */
 	public void setConfig(List<CorrelationConfig> config) {
-		this.config = config;
+		this.config = new ArrayList<>(config);
 	}
 
 }

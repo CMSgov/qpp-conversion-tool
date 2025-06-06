@@ -4,6 +4,7 @@ import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import gov.cms.qpp.conversion.decode.XmlDecoderEngine;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.encode.EncodeException;
@@ -15,6 +16,7 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.ValidationResult;
+import gov.cms.qpp.conversion.util.CloneHelper;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
@@ -26,9 +28,9 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Converter provides the command line processing for QRDA III to QPP json.
- * Expects a list of file names as CLI parameters to be processed
- * Supports wild card characters in paths
+ * Converter provides the command line processing for QRDA III → QPP JSON.
+ * Expects a list of file names as CLI parameters to be processed.
+ * Supports wildcard characters in paths.
  */
 public class Converter {
 
@@ -46,9 +48,9 @@ public class Converter {
 	}
 
 	/**
-	 * Constructor for the CLI Converter application
+	 * Constructor for the CLI Converter application.
 	 *
-	 * @param source Source to use for the conversion
+	 * @param source  Source to use for the conversion
 	 * @param context Context to use for the conversion
 	 */
 	public Converter(Source source, Context context) {
@@ -61,8 +63,14 @@ public class Converter {
 
 	/**
 	 * Get the conversion context environment for the converter instance.
-	 * @return context information
+	 *
+	 * <p>We suppress EI_EXPOSE_REP here because {@code Context} is mutable and we cannot
+	 * clone it from within this class without modifying {@code Context.java}. If a caller
+	 * mutates the returned {@code Context}, it will affect this Converter’s internal state.
+	 *
+	 * @return the internal Context
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP")
 	public Context getContext() {
 		return context;
 	}
@@ -70,7 +78,10 @@ public class Converter {
 	/**
 	 * Perform conversion.
 	 *
-	 * @return status of conversion
+	 * <p>We return a deep clone of the internal {@code JsonWrapper} so callers cannot
+	 * modify the Converter’s internal state. If {@code encoded} is null, we return null.
+	 *
+	 * @return a deep‐cloned {@code JsonWrapper} result, or null if there was no successful encoding
 	 */
 	public JsonWrapper transform() {
 		DEV_LOG.info("Transform invoked");
@@ -91,11 +102,11 @@ public class Converter {
 			throw new TransformException("Validation errors exist", null, getReport());
 		}
 
-		return encoded;
+		return (encoded == null) ? null : CloneHelper.deepClone(encoded);
 	}
 
 	/**
-	 * Transform the content in a given input stream
+	 * Transform the content in a given input stream.
 	 *
 	 * @param inStream source content
 	 * @return a transformed representation of the source content
@@ -105,7 +116,7 @@ public class Converter {
 		Element doc = XmlUtils.parseXmlStream(inStream);
 		decoded = XmlDecoderEngine.decodeXml(context, doc);
 		JsonWrapper qpp = null;
-		if (null != decoded) {
+		if (decoded != null) {
 			DEV_LOG.info("Decoded template ID {}", decoded.getType());
 
 			if (context.isDoValidation()) {
@@ -120,8 +131,9 @@ public class Converter {
 				qpp = encode();
 			}
 		} else {
-			Detail detail = Detail.forProblemCode(ProblemCode.NOT_VALID_QRDA_DOCUMENT.format(
-				Context.REPORTING_YEAR, DocumentationReference.CLINICAL_DOCUMENT));
+			Detail detail = Detail.forProblemCode(
+					ProblemCode.NOT_VALID_QRDA_DOCUMENT.format(
+							Context.REPORTING_YEAR, DocumentationReference.CLINICAL_DOCUMENT));
 			errors.add(detail);
 		}
 
@@ -133,14 +145,14 @@ public class Converter {
 		if (errors != null && errors.size() > sizeLimit) {
 			List<Detail> truncatedList = errors.subList(0, sizeLimit);
 			truncatedList.add(Detail.forProblemCode(
-				ProblemCode.TOO_MANY_ERRORS.format((errors.size()))));
+					ProblemCode.TOO_MANY_ERRORS.format(errors.size())));
 			return truncatedList;
 		}
 		return errors;
 	}
 
 	/**
-	 * Place transformed content into an input stream
+	 * Place transformed content into an input stream.
 	 *
 	 * @return content resulting from the transformation
 	 */

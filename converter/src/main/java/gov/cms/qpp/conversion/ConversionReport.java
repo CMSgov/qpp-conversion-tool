@@ -7,6 +7,7 @@ import java.util.List;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.Node;
@@ -16,7 +17,7 @@ import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.util.CloneHelper;
 
 /**
- * Report on the stat of a conversion.
+ * Report on the state of a conversion.
  */
 public class ConversionReport {
 	private final ObjectMapper mapper = new ObjectMapper();
@@ -31,7 +32,8 @@ public class ConversionReport {
 	/**
 	 * Construct a conversion report
 	 */
-	ConversionReport(Source source, List<Detail> errors, List<Detail> warnings, Node decoded, JsonWrapper encodedWithMetadata) {
+	ConversionReport(Source source, List<Detail> errors, List<Detail> warnings, Node decoded,
+					 JsonWrapper encodedWithMetadata) {
 		this.source = source;
 		this.decoded = decoded;
 		this.encodedWithMetadata = encodedWithMetadata;
@@ -51,14 +53,14 @@ public class ConversionReport {
 	 * @return All the errors.
 	 */
 	private AllErrors constructErrorHierarchy(final String inputIdentifier, final List<Detail> details) {
-		AllErrors errors = new AllErrors();
-		errors.addError(constructErrorSource(inputIdentifier, details));
-		return errors;
+		AllErrors errs = new AllErrors();
+		errs.addError(constructErrorSource(inputIdentifier, details));
+		return errs;
 	}
 
 	/**
 	 * Constructs an {@link Error} for the given {@code inputIdentifier} from the
-	 * passed in validation errors.
+	 * passed-in validation errors.
 	 *
 	 * @param inputIdentifier
 	 *            An identifier for a source of QRDA3 XML.
@@ -93,6 +95,7 @@ public class ConversionReport {
 	 *
 	 * @return all errors registered during conversion
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP")
 	public AllErrors getReportDetails() {
 		return reportDetails;
 	}
@@ -122,6 +125,7 @@ public class ConversionReport {
 	 *
 	 * @return {@link Source} for the input.
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP")
 	public Source getQrdaSource() {
 		return source;
 	}
@@ -151,15 +155,17 @@ public class ConversionReport {
 
 	/**
 	 * Get the warnings collection
+	 *
 	 * @return List of warnings details
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP")
 	public List<Detail> getWarnings() {
 		return warnings;
 	}
 
 	/**
 	 * Assign a new list of warnings.
-	 * 
+	 *
 	 * @param warnings new list of warnings details
 	 */
 	public void setWarnings(List<Detail> warnings) {
@@ -180,7 +186,7 @@ public class ConversionReport {
 	/**
 	 * Gets the purpose of the conversion
 	 *
-	 * @return The purpose of the conversion, for example \"Test\". Treat null as a
+	 * @return The purpose of the conversion, for example "Test". Treat null as a
 	 *         standard production call
 	 */
 	public String getPurpose() {

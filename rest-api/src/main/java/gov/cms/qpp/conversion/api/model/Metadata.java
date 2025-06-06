@@ -15,6 +15,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConvertedJson;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverter;
 import com.amazonaws.services.dynamodbv2.datamodeling.encryption.DoNotEncrypt;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import gov.cms.qpp.conversion.model.error.Detail;
 
 /**
@@ -298,7 +299,7 @@ public final class Metadata {
 	/**
 	 * The purpose of the conversion, or null if it's a standard conversion
 	 *
-	 * @return The purpose of the conversion, for example \"Test\"
+	 * @return The purpose of the conversion, for example "Test"
 	 */
 	@DoNotEncrypt
 	@DynamoDBAttribute(attributeName = "Purpose")
@@ -548,6 +549,11 @@ public final class Metadata {
 		return combination;
 	}
 
+	/**
+	 * DynamoDB will store the Errors object as JSON.
+	 * Suppress EI_EXPOSE_REP since callers should not modify the returned Details directly.
+	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP")
 	@DoNotEncrypt
 	@DynamoDBTypeConvertedJson
 	@DynamoDBAttribute(attributeName = "Errors")
@@ -570,6 +576,11 @@ public final class Metadata {
 		this.errors = errors;
 	}
 
+	/**
+	 * DynamoDB will store the Warnings object as JSON.
+	 * Suppress EI_EXPOSE_REP since callers should not modify the returned Details directly.
+	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP")
 	@DoNotEncrypt
 	@DynamoDBTypeConvertedJson
 	@DynamoDBAttribute(attributeName = "Warnings")
@@ -595,9 +606,10 @@ public final class Metadata {
 	/**
 	 * Sets the separate CPC+ processed flag and created date based on the argument
 	 *
-	 * Splits the the processed flag from the date by a {@code #} character.
-	 * The first field must be {@code true} or {@code false} which represents the CPC+ processed boolean.
-	 * The second field must be an ISO 8601 timestamp string.  For example, {@code 2018-12-08T18:32:54.846Z}.
+	 * Splits the processed flag from the date by a "#" character.
+	 * The first field must be "true" or "false" which represents the CPC+ processed boolean.
+	 * The second field must be an ISO 8601 timestamp string.
+	 * For example, "2018-12-08T18:32:54.846Z".
 	 *
 	 * @param combination The combined attribute.
 	 */
@@ -620,9 +632,10 @@ public final class Metadata {
 	/**
 	 * Sets the separate RTI+ processed flag and created date based on the argument
 	 *
-	 * Splits the the processed flag from the date by a {@code #} character.
-	 * The first field must be {@code true} or {@code false} which represents the RTI+ processed boolean.
-	 * The second field must be an ISO 8601 timestamp string.  For example, {@code 2018-12-08T18:32:54.846Z}.
+	 * Splits the processed flag from the date by a "#" character.
+	 * The first field must be "true" or "false" which represents the RTI+ processed boolean.
+	 * The second field must be an ISO 8601 timestamp string.
+	 * For example, "2018-12-08T18:32:54.846Z".
 	 *
 	 * @param combination The combined attribute.
 	 */

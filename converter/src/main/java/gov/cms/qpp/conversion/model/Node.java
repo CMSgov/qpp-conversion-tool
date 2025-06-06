@@ -22,6 +22,8 @@ import org.jdom2.xpath.XPathHelper;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Represents a node of data that should be converted. Consists of a key/value
  * Map that holds the data gleaned from an input file.
@@ -55,7 +57,7 @@ public class Node implements Serializable {
 	/**
 	 * Constructor initialized with a Node and a template id String
 	 *
-	 * @param type of node
+	 * @param type   of node
 	 * @param parent this node's parent node
 	 */
 	public Node(TemplateId type, Node parent) {
@@ -100,6 +102,7 @@ public class Node implements Serializable {
 	 * @param name String key for the value
 	 * @return mapped duplicates of target value
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP")
 	public List<String> getDuplicateValues(String name) {
 		return duplicateData.get(name);
 	}
@@ -153,6 +156,7 @@ public class Node implements Serializable {
 	 *
 	 * @return List of child Nodes.
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP")
 	public List<Node> getChildNodes() {
 		return childNodes;
 	}
@@ -236,6 +240,7 @@ public class Node implements Serializable {
 	 *
 	 * @return The keys the value's set on this Node.
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP")
 	public Set<String> getKeys() {
 		return data.keySet();
 	}
