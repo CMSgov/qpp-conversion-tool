@@ -1,0 +1,46 @@
+name: SonarQube Analysis (Java)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - develop
+
+env:
+  PROJECT_NAME: qppa-repos-sonarqube-analysis
+
+jobs:
+  build:
+    name: Java Quality Gate
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      # 1) Check out the repository
+      - uses: actions/checkout@v2
+
+      # 2) Print the PR’s head‐branch
+      - name: Print branch name
+        run: |
+          echo "Current branch: ${GITHUB_HEAD_REF}"
+
+
+      # 3) Configure AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::730335206644:role/delegatedadmin/developer/qppa-github-actions-role
+          aws-region: us-east-1
+
+      # 4) Kick off the CodeBuild project, passing the repo name into GITHUB_REPO_NAME
+      - name: Trigger CodeBuild SonarQube Scan
+        run: |
+          aws codebuild start-build \
+            --project-name "${PROJECT_NAME}" \
+            --source-type-override "GITHUB" \
+            --source-location-override "${{ github.event.repository.html_url }}" \
+            --source-version "${GITHUB_HEAD_REF}" \
+            --environment-variables-override name=GITHUB_REPO_NAME,value="${{ github.event.repository.name }}",type=PLAINTEXT

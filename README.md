@@ -74,7 +74,7 @@ directory.
 
 ```shell
 # Build the Docker image and run the container using docker-compose.
-docker-compose -f ./docker-compose.test.yaml up --build 
+docker compose -f ./docker-compose.test.yaml up --build 
 ```
 
 #### Invoking the Endpoint
