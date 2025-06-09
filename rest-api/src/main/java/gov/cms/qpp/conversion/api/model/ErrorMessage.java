@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.api.model;
 
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import gov.cms.qpp.conversion.model.error.Error;
 
 /**
@@ -15,6 +16,7 @@ public class ErrorMessage {
 		error = theError;
 	}
 
+	@SuppressFBWarnings("EI_EXPOSE_REP")
 	public Error getError() {
 		return error;
 	}
