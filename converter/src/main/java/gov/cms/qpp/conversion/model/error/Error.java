@@ -8,6 +8,7 @@ import com.google.common.base.MoreObjects;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Holds a list of validation errors associated with a single source.
@@ -28,7 +29,7 @@ public class Error implements Serializable {
 	 * Constructs an empty {@code Error}.
 	 */
 	public Error() {
-		//empty on purpose
+		// empty on purpose
 	}
 
 	/**
@@ -98,13 +99,16 @@ public class Error implements Serializable {
 	}
 
 	/**
-	 * getDetails returns the list of ValidationErrors
+	 * getDetails returns a copy of the list of ValidationErrors
+	 * so callers cannot modify the internal list.
 	 *
-	 * @return A list of ValidationErrors.
+	 * @return A new list of {@link Detail}, or null if there are none.
 	 */
 	@JsonProperty("details")
 	public List<Detail> getDetails() {
-		return details;
+		return details == null
+				? null
+				: new ArrayList<>(details);
 	}
 
 	/**
@@ -123,10 +127,9 @@ public class Error implements Serializable {
 	 * @param detail The Detail to add.
 	 */
 	public void addValidationError(final Detail detail) {
-		if (null == details) {
+		if (details == null) {
 			details = new ArrayList<>();
 		}
-
 		details.add(detail);
 	}
 
@@ -138,5 +141,25 @@ public class Error implements Serializable {
 				.add("message", message)
 				.add("details", details)
 				.toString();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof Error)) {
+			return false;
+		}
+		Error that = (Error) o;
+		return Objects.equals(sourceIdentifier, that.sourceIdentifier)
+				&& Objects.equals(type, that.type)
+				&& Objects.equals(message, that.message)
+				&& Objects.equals(details, that.details);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(sourceIdentifier, type, message, details);
 	}
 }

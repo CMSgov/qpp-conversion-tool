@@ -23,21 +23,21 @@ import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import gov.cms.qpp.conversion.Context;
 
 /**
- * This class manages the available transformation handlers. Currently it takes
- * the XPATH that the handler will transform.
- * <p>
+ * This class manages the available transformation handlers.
  * R is the stored and return interface type.
  * V is the key type to access the registered values.
  */
+@SuppressFBWarnings("EI_EXPOSE_REP")
 public class Registry<R> {
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(Registry.class);
 	private static final Map<Class<?>, Function<Context, Object>> CONSTRUCTORS = new IdentityHashMap<>();
 	private static final Map<Class<? extends Annotation>, Map<ComponentKey, Class<?>>> SHARED_REGISTRY_MAP
-		= new ConcurrentHashMap<>();
+			= new ConcurrentHashMap<>();
 
 	private final Context context;
 	private final Map<ComponentKey, Class<?>> registryMap;
@@ -46,7 +46,7 @@ public class Registry<R> {
 	/**
 	 * Registry constructor
 	 *
-	 * @param context The context to use for this registry. Must not be null.
+	 * @param context         The context to use for this registry. Must not be null.
 	 * @param annotationClass The annotation to use for class path searching in this registry. Must not be null.
 	 */
 	public Registry(Context context, Class<? extends Annotation> annotationClass) {
@@ -55,7 +55,9 @@ public class Registry<R> {
 
 		this.context = context;
 		this.annotationClass = annotationClass;
-		this.registryMap = new HashMap<>(SHARED_REGISTRY_MAP.computeIfAbsent(annotationClass, this::lookupAnnotatedClasses));
+		this.registryMap = new HashMap<>(
+				SHARED_REGISTRY_MAP.computeIfAbsent(annotationClass, this::lookupAnnotatedClasses)
+		);
 	}
 
 	/**
@@ -98,9 +100,7 @@ public class Registry<R> {
 	}
 
 	/**
-	 * This method will return a proper top level handler for the given XPATH
-	 * Later iteration will examine the XPATH startsWith and return a most
-	 * appropriate handler
+	 * This method returns a top‐level handler for the given XPATH
 	 *
 	 * @param registryKey template id key
 	 * @return value corresponding to registry key
@@ -120,7 +120,9 @@ public class Registry<R> {
 			return null;
 		}
 
-		return handlerClass.cast(CONSTRUCTORS.computeIfAbsent(handlerClass, this::createHandler).apply(context));
+		return handlerClass.cast(
+				CONSTRUCTORS.computeIfAbsent(handlerClass, this::createHandler).apply(context)
+		);
 	}
 
 	/**
@@ -143,31 +145,36 @@ public class Registry<R> {
 		try {
 			try {
 				constructor = handlerClass.getConstructor(Context.class);
-				MethodHandle handle = MethodHandles.lookup().unreflectConstructor(constructor)
+				MethodHandle handle = MethodHandles.lookup()
+						.unreflectConstructor(constructor)
 						.asType(MethodType.methodType(Object.class, Context.class));
 
 				return constructorContextArgument(handle);
 			} catch (NoSuchMethodException thatsOk) {
 				constructor = getNoArgsConstructor(handlerClass);
-				MethodHandle handle = MethodHandles.lookup().unreflectConstructor(constructor)
+				MethodHandle handle = MethodHandles.lookup()
+						.unreflectConstructor(constructor)
 						.asType(MethodType.methodType(Object.class));
 
 				return constructorNoArgs(handle);
 			}
 		} catch (IllegalAccessException e) {
-			throw new ConstructorNotFoundException("Constructor must be accessible via reflection or " + handlerClass.getName(), e);
+			throw new ConstructorNotFoundException(
+					"Constructor must be accessible via reflection for " + handlerClass.getName(), e
+			);
 		}
 	}
-	
 
 	@SuppressWarnings("unchecked") // suppress cast from wildcard <?> to type <T>
 	private static <T> Constructor<T> getNoArgsConstructor(Class<T> type) {
 		Constructor<T> constructor = getNoArgsConstructor((Constructor<T>[]) type.getConstructors());
 		if (constructor == null) {
 			constructor = getNoArgsConstructor((Constructor<T>[]) type.getDeclaredConstructors());
-			
+
 			if (constructor == null) {
-				throw new ConstructorNotFoundException(type + " does not have a no-args constructor (public OR private)");
+				throw new ConstructorNotFoundException(
+						type + " does not have a no-args constructor (public OR private)"
+				);
 			}
 		}
 		constructor.setAccessible(true);
@@ -180,7 +187,6 @@ public class Registry<R> {
 				return constructor;
 			}
 		}
-
 		return null;
 	}
 
@@ -188,10 +194,10 @@ public class Registry<R> {
 		return passedContext -> {
 			try {
 				return handle.invokeExact(passedContext);
-			} catch (Exception codeProblem) { //NOSONAR the method throws throwable
+			} catch (Exception codeProblem) { // NOSONAR the method throws throwable
 				DEV_LOG.warn("Unable to invoke constructor handle", codeProblem);
 				return null;
-			} catch (Throwable severeRuntimeError) { //NOSONAR the method throws throwable
+			} catch (Throwable severeRuntimeError) { // NOSONAR the method throws throwable
 				throw new SevereRuntimeException(severeRuntimeError);
 			}
 		};
@@ -201,17 +207,17 @@ public class Registry<R> {
 		return ignore -> {
 			try {
 				return handle.invokeExact();
-			} catch (Exception codeProblem) { //NOSONAR the method throws throwable
+			} catch (Exception codeProblem) { // NOSONAR the method throws throwable
 				DEV_LOG.warn("Unable to invoke no-args constructor handle", codeProblem);
 				return null;
-			} catch (Throwable severeRuntimeError) { //NOSONAR the method throws throwable
+			} catch (Throwable severeRuntimeError) { // NOSONAR the method throws throwable
 				throw new SevereRuntimeException(severeRuntimeError);
 			}
 		};
 	}
 
 	/**
-	 * Retrieve handlers that apply generally and specifically to the given template. The
+	 * Retrieve handlers that apply generally and specifically to the given template.
 	 *
 	 * @param registryKey the template for which handlers will be searched
 	 * @return all applicable handlers
@@ -223,10 +229,11 @@ public class Registry<R> {
 	}
 
 	/**
-	 * Get a template specific list that specifies the order in which handler classes will be searched.
+	 * Get a template specific list that specifies the order in which handler
+	 * classes will be searched.
 	 *
-	 * @param registryKey a template id
-	 * @param generalPriority specify the order of specificity i.e. general first or program specific first.
+	 * @param registryKey     a template id
+	 * @param generalPriority specify the order of specificity (general first or program first)
 	 * @return list of component keys
 	 */
 	private List<ComponentKey> getKeys(TemplateId registryKey, boolean generalPriority) {
@@ -237,7 +244,8 @@ public class Registry<R> {
 
 		List<ComponentKey> returnValue = Arrays.asList(
 				new ComponentKey(registryKey, contextProgram),
-				new ComponentKey(registryKey, Program.ALL));
+				new ComponentKey(registryKey, Program.ALL)
+		);
 		if (generalPriority) {
 			Collections.reverse(returnValue);
 		}
@@ -248,7 +256,7 @@ public class Registry<R> {
 	 * Retrieve a handler for the given template id
 	 *
 	 * @param registryKey template id
-	 * @return handler i.e. {@link Validator}, {@link Decoder} or {@link Encoder}
+	 * @return handler class for {@link Validator}, {@link Decoder}, or {@link Encoder}
 	 */
 	private Class<? extends R> findHandler(TemplateId registryKey) {
 		return findHandlers(getKeys(registryKey, false))
@@ -278,19 +286,22 @@ public class Registry<R> {
 	/**
 	 * Means to register a new transformation handler
 	 *
-	 * @param registryKey key that identifies a component i.e. a {@link Validator}, {@link Decoder} or {@link Encoder}
-	 * @param handler the keyed {@link Validator}, {@link Decoder} or {@link Encoder}
+	 * @param registryKey key that identifies a component i.e. {@link Validator}, {@link Decoder}, or {@link Encoder}
+	 * @param handler     the keyed {@link Validator}, {@link Decoder}, or {@link Encoder}
 	 */
 	public void register(ComponentKey registryKey, Class<? extends R> handler) {
-		DEV_LOG.debug("Registering " + handler.getName() + " to '" + registryKey + "' for "
-				+ annotationClass.getSimpleName() + ".");
-		// This could be a class or class name and instantiated on lookup
+		DEV_LOG.debug(
+				"Registering " + handler.getName() + " to '" + registryKey + "' for " +
+						annotationClass.getSimpleName() + "."
+		);
 		if (registryMap.containsKey(registryKey)) {
-			DEV_LOG.error("Duplicate registered handler for " + registryKey
-						+ " both " + registryMap.get(registryKey).getName()
-						+ " and " + handler.getName());
+			DEV_LOG.error(
+					"Duplicate registered handler for " +
+							registryKey + " both " +
+							registryMap.get(registryKey).getName() + " and " + handler.getName()
+			);
 		}
-		
+
 		registryMap.put(registryKey, handler);
 	}
 

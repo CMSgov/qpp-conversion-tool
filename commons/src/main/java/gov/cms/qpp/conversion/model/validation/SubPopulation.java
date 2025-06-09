@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.model.validation;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -35,7 +36,7 @@ public class SubPopulation {
 	private List<String> strata = Collections.emptyList();
 
 	public SubPopulation() {
-		//Empty Constructor for Jackson
+		// Empty Constructor for Jackson
 	}
 
 	public SubPopulation(SubPopulation subPop) {
@@ -43,8 +44,12 @@ public class SubPopulation {
 		denominatorUuid = subPop.getDenominatorUuid();
 		denominatorExclusionsUuid = subPop.getDenominatorExclusionsUuid();
 		numeratorUuid = subPop.getNumeratorUuid();
+		numeratorExclusionUuid = subPop.getNumeratorExclusionUuid();
 		denominatorExceptionsUuid = subPop.getDenominatorExceptionsUuid();
-		strata = subPop.getStrata();
+		List<String> originalStrata = subPop.getStrata();
+		this.strata = (originalStrata == null)
+				? Collections.emptyList()
+				: new ArrayList<>(originalStrata);
 	}
 
 	public String getInitialPopulationUuid() {
@@ -95,17 +100,26 @@ public class SubPopulation {
 		this.denominatorExceptionsUuid = denominatorExceptionsUuid;
 	}
 
+	/**
+	 * Returns a defensive copy of the strata list.
+	 */
 	public List<String> getStrata() {
-		return strata;
+		return new ArrayList<>(strata);
 	}
 
+	/**
+	 * Stores a copy of the provided list rather than keeping the reference directly.
+	 */
 	public void setStrata(List<String> strata) {
-		this.strata = strata;
+		if (strata == null) {
+			this.strata = Collections.emptyList();
+		} else {
+			this.strata = new ArrayList<>(strata);
+		}
 	}
 
 	@Override
 	public boolean equals(Object o) {
-		boolean isCool = true;
 		if (this == o) {
 			return true;
 		}
@@ -115,45 +129,25 @@ public class SubPopulation {
 
 		SubPopulation that = (SubPopulation) o;
 
-		if (initialPopulationUuid != null
-				? !initialPopulationUuid.equals(that.initialPopulationUuid) : (that.initialPopulationUuid != null)) {
-			isCool = false;
-		}
-		if (numeratorUuid != null
-				? !numeratorUuid.equals(that.numeratorUuid) : (that.numeratorUuid != null)) {
-			isCool = false;
-		}
-		if (numeratorExclusionUuid != null
-			? !numeratorExclusionUuid.equals(that.numeratorExclusionUuid) : (that.numeratorExclusionUuid != null)) {
-			isCool = false;
-		}
-		if (strata != null ? !strata.equals(that.strata) : (that.strata != null)) {
-			isCool = false;
-		}
-		return isCool && reduceCognitiveComplexity(that);
-	}
-
-	private boolean reduceCognitiveComplexity(SubPopulation that) {
-		boolean isCool = true;
-		if (denominatorUuid != null
-				? !denominatorUuid.equals(that.denominatorUuid) : (that.denominatorUuid != null)) {
-			isCool = false;
-		}
-		if (denominatorExclusionsUuid != null
-				? !denominatorExclusionsUuid.equals(that.denominatorExclusionsUuid) : (that.denominatorExclusionsUuid != null)) {
-			isCool = false;
-		}
-		if (denominatorExceptionsUuid != null
-				? !denominatorExceptionsUuid.equals(that.denominatorExceptionsUuid) : (that.denominatorExceptionsUuid != null)) {
-			isCool = false;
-		}
-		return isCool;
+		return Objects.equals(initialPopulationUuid, that.initialPopulationUuid)
+				&& Objects.equals(denominatorUuid, that.denominatorUuid)
+				&& Objects.equals(denominatorExclusionsUuid, that.denominatorExclusionsUuid)
+				&& Objects.equals(numeratorUuid, that.numeratorUuid)
+				&& Objects.equals(numeratorExclusionUuid, that.numeratorExclusionUuid)
+				&& Objects.equals(denominatorExceptionsUuid, that.denominatorExceptionsUuid)
+				&& Objects.equals(strata, that.strata);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(initialPopulationUuid, denominatorUuid, denominatorExclusionsUuid,
-				numeratorUuid, numeratorExclusionUuid, denominatorExceptionsUuid, strata);
+		return Objects.hash(
+				initialPopulationUuid,
+				denominatorUuid,
+				denominatorExclusionsUuid,
+				numeratorUuid,
+				numeratorExclusionUuid,
+				denominatorExceptionsUuid,
+				strata
+		);
 	}
-
 }

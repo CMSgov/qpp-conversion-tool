@@ -2,11 +2,12 @@ package gov.cms.qpp.conversion.api.model;
 
 import com.fasterxml.jackson.annotation.JsonRawValue;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 import gov.cms.qpp.conversion.model.error.Detail;
-
 
 public class ConvertResponse {
 
@@ -33,12 +34,22 @@ public class ConvertResponse {
 		this.qpp = qpp;
 	}
 
+	/**
+	 * Returns an unmodifiable copy of the warnings list (never the live list).
+	 */
 	public List<Detail> getWarnings() {
-		return warnings;
+		return (warnings == null)
+				? Collections.emptyList()
+				: new ArrayList<>(warnings);
 	}
 
+	/**
+	 * Stores a copy of the passed‐in list so we never keep a caller’s mutable list.
+	 */
 	public void setWarnings(List<Detail> warnings) {
-		this.warnings = warnings;
+		this.warnings = (warnings == null)
+				? null
+				: new ArrayList<>(warnings);
 	}
 
 	@Override
@@ -55,13 +66,12 @@ public class ConvertResponse {
 
 		boolean equals = Objects.equals(location, that.location);
 		equals &= Objects.equals(qpp, that.qpp);
-		equals &= Objects.equals(warnings, that.warnings);
+		equals &= Objects.equals(getWarnings(), that.getWarnings());
 		return equals;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(location, qpp, warnings);
+		return Objects.hash(location, qpp, getWarnings());
 	}
-
 }
