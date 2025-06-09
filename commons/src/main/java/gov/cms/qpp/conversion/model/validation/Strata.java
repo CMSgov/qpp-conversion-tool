@@ -15,7 +15,7 @@ public class Strata {
 	private SubPopulation electronicMeasureUuids;
 
 	public Strata() {
-		//empty constructor for jackson
+		// empty constructor for Jackson
 	}
 
 	public String getName() {
@@ -26,10 +26,22 @@ public class Strata {
 		this.name = name;
 	}
 
+	/**
+	 * Returns a defensive copy of the internal SubPopulation, so callers
+	 * cannot mutate our internal representation.
+	 */
 	public SubPopulation getElectronicMeasureUuids() {
-		return electronicMeasureUuids;
+		if (this.electronicMeasureUuids == null) {
+			return null;
+		}
+		// SubPopulation has a copy constructor, so we can return a new instance:
+		return new SubPopulation(this.electronicMeasureUuids);
 	}
 
+	/**
+	 * Sets the internal SubPopulation reference. If the caller passes null,
+	 * we store null. Otherwise, we store their object directly (Jackson uses this during deserialization).
+	 */
 	public void setElectronicMeasureUuids(final SubPopulation electronicMeasureUuids) {
 		this.electronicMeasureUuids = electronicMeasureUuids;
 	}

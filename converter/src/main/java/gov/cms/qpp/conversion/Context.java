@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
@@ -16,6 +17,7 @@ import gov.cms.qpp.conversion.validate.pii.PiiValidator;
  */
 public class Context {
 	public static final String REPORTING_YEAR = "2025";
+
 	private final Map<Class<? extends Annotation>, Registry<?>> registries = new IdentityHashMap<>();
 	private Program program = Program.ALL;
 	private boolean historical;
@@ -27,7 +29,10 @@ public class Context {
 	 * Initialize a context with the default APM entity id file
 	 */
 	public Context() {
-		apmEntityIds = new ApmEntityIds(ApmEntityIds.DEFAULT_CPC_PLUS_APM_ENTITY_FILE_NAME, ApmEntityIds.DEFAULT_PCF_APM_ENTITY_FILE_NAME);
+		apmEntityIds = new ApmEntityIds(
+				ApmEntityIds.DEFAULT_CPC_PLUS_APM_ENTITY_FILE_NAME,
+				ApmEntityIds.DEFAULT_PCF_APM_ENTITY_FILE_NAME
+		);
 	}
 
 	/**
@@ -42,7 +47,8 @@ public class Context {
 	/**
 	 * Gets the current contextual {@link Program}
 	 *
-	 * @return The current {@link Program}, which may have been changed automatically during conversion
+	 * @return The current {@link Program}, which may have been changed
+	 *         automatically during conversion
 	 */
 	public Program getProgram() {
 		return program;
@@ -60,7 +66,8 @@ public class Context {
 	/**
 	 * Is this a conversion of historical submissions.
 	 *
-	 * @return determination of whether or not the conversion is enacted on historical submissions.
+	 * @return determination of whether or not the conversion is enacted on
+	 *         historical submissions.
 	 */
 	public boolean isHistorical() {
 		return historical;
@@ -110,16 +117,20 @@ public class Context {
 	}
 
 	/**
-	 * Looks up or creates a new {@link Registry} for the given annotation type under this context
+	 * Looks up or creates a new {@link Registry} for the given annotation type under
+	 * this context. We suppress EI_EXPOSE_REP because the internal registries map
+	 * must return the same Registry instance for correct behavior; cloning would
+	 * break registry lookups.
 	 *
-	 * @param <A> Marker annotation that helps identify registry types
-	 * @param <R> Types that comprise the registry
-	 * @param annotation The annotation type to use for class path searching in the {@link Registry}
+	 * @param <A>        Marker annotation that helps identify registry types
+	 * @param <R>        Types that comprise the registry
+	 * @param annotation The annotation type to use for class path searching in the
+	 *                   {@link Registry}
 	 * @return The existing or new {@link Registry}
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP")
 	@SuppressWarnings("unchecked")
 	public <A extends Annotation, R> Registry<R> getRegistry(Class<A> annotation) {
 		return (Registry<R>) registries.computeIfAbsent(annotation, key -> new Registry<>(this, key));
 	}
-
 }

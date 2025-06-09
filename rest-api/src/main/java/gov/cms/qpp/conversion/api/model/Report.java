@@ -1,18 +1,22 @@
 package gov.cms.qpp.conversion.api.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import gov.cms.qpp.conversion.model.error.Detail;
 
+/**
+ * Represents a conversion report including warnings and errors.
+ */
 public class Report {
 
 	private String programName;
 	private String practiceSiteId;
 	private Status status;
 	private Long timestamp;
-	private List<Detail> warnings;
-	private List<Detail> errors;
+	private final List<Detail> warnings = new ArrayList<>();
+	private final List<Detail> errors = new ArrayList<>();
 
 	public String getProgramName() {
 		return programName;
@@ -46,31 +50,52 @@ public class Report {
 		this.timestamp = timestamp;
 	}
 
+	/**
+	 * Returns an unmodifiable copy of the warnings list to prevent external mutation.
+	 *
+	 * @return a new List of Detail warnings
+	 */
 	public List<Detail> getWarnings() {
-		return warnings;
+		return new ArrayList<>(warnings);
 	}
 
+	/**
+	 * Clears any existing warnings and replaces them with a copy of the provided list.
+	 *
+	 * @param warnings the List of Detail warnings to store
+	 */
 	public void setWarnings(List<Detail> warnings) {
-		this.warnings = warnings;
+		this.warnings.clear();
+		if (warnings != null) {
+			this.warnings.addAll(warnings);
+		}
 	}
 
+	/**
+	 * Returns an unmodifiable copy of the errors list to prevent external mutation.
+	 *
+	 * @return a new List of Detail errors
+	 */
 	public List<Detail> getErrors() {
-		return errors;
+		return new ArrayList<>(errors);
 	}
 
+	/**
+	 * Clears any existing errors and replaces them with a copy of the provided list.
+	 *
+	 * @param errors the List of Detail errors to store
+	 */
 	public void setErrors(List<Detail> errors) {
-		this.errors = errors;
+		this.errors.clear();
+		if (errors != null) {
+			this.errors.addAll(errors);
+		}
 	}
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-
-		if (o == null || o.getClass() != getClass()) {
-			return false;
-		}
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
 
 		Report that = (Report) o;
 
@@ -87,5 +112,4 @@ public class Report {
 	public int hashCode() {
 		return Objects.hash(practiceSiteId, status, timestamp, programName, errors, warnings);
 	}
-
 }
