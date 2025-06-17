@@ -106,10 +106,12 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	 * @param childMapByTemplateId object that represents the document's children
 	 * @return encoded measurement sets
 	 */
-	private JsonWrapper encodeMeasurementSets(Map<TemplateId, Node> childMapByTemplateId, Node currentNode) {
+	private JsonWrapper encodeMeasurementSets(
+			Map<TemplateId, Node> childMapByTemplateId,
+			Node currentNode
+	) {
 		JsonWrapper measurementSetsWrapper = new JsonWrapper();
-		JsonWrapper childWrapper;
-		JsonOutputEncoder sectionEncoder;
+		String measureRoot = TemplateId.MEASURE_SECTION_V5.getRoot();
 
 		for (Node child : childMapByTemplateId.values()) {
 			if (child == null) {
@@ -117,31 +119,44 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 			}
 			try {
 				TemplateId childType = child.getType();
-
-				childWrapper = new JsonWrapper();
-				sectionEncoder = encoders.get(childType);
+				JsonWrapper childWrapper = new JsonWrapper();
+				JsonOutputEncoder sectionEncoder = encoders.get(childType);
 
 				sectionEncoder.encode(childWrapper, child);
 				childWrapper.put("source", "qrda3");
-				String mvpId = currentNode.getValue(MVP_ID);
-				if (TemplateId.MEASURE_SECTION_V5.getRoot().equalsIgnoreCase(childType.getRoot())
-					&& !StringUtils.isEmpty(mvpId)) {
-					childWrapper.put(PROGRAM_NAME, mvpId);
-				}
-				else if (TemplateId.MEASURE_SECTION_V5.getRoot().equalsIgnoreCase(childType.getRoot())
-					&& MIPS_APM.equalsIgnoreCase(
-						currentNode.getValue(RAW_PROGRAM_NAME))) {
-					childWrapper.put(PROGRAM_NAME, MIPS.toLowerCase(Locale.getDefault()));
-				} else if (TemplateId.MEASURE_SECTION_V5.getRoot().equalsIgnoreCase(childType.getRoot())
-						&& APP_APM.equalsIgnoreCase(
-						currentNode.getValue(RAW_PROGRAM_NAME))) {
-					childWrapper.put(PROGRAM_NAME, APP_PROGRAM_NAME.toLowerCase(Locale.getDefault()));
+
+				if (measureRoot.equalsIgnoreCase(childType.getRoot())) {
+					String mvpId = currentNode.getValue(MVP_ID);
+					if (!StringUtils.isEmpty(mvpId)) {
+						childWrapper.put(PROGRAM_NAME, mvpId);
+					} else {
+						String raw = currentNode.getValue(RAW_PROGRAM_NAME);
+						String key = (raw != null ? raw.toUpperCase(Locale.ROOT) : "");
+
+						switch (key) {
+							case MIPS_APM:
+								childWrapper.put(PROGRAM_NAME,
+										MIPS.toLowerCase(Locale.getDefault()));
+								break;
+							case APP_APM:
+								childWrapper.put(PROGRAM_NAME,
+										APP_PROGRAM_NAME.toLowerCase(Locale.getDefault()));
+								break;
+							case APP_PLUS_APM:
+								childWrapper.put(PROGRAM_NAME,
+										APP_PLUS_PROGRAM_NAME.toLowerCase(Locale.getDefault()));
+								break;
+							default:
+								// no matching program
+						}
+					}
 				}
 
 				measurementSetsWrapper.put(childWrapper);
-			} catch (NullPointerException exc) { //NOSONAR NPE can be deep in method calls
-				String message = "An unexpected error occured for " + child.getType();
-				throw new EncodeException(message, exc);
+			} catch (NullPointerException exc) { // NOSONAR
+				throw new EncodeException(
+						"An unexpected error occured for " + child.getType(), exc
+				);
 			}
 		}
 		return measurementSetsWrapper;
