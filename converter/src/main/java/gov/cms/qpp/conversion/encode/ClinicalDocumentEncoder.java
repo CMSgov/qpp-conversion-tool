@@ -141,8 +141,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 					String mvpId = currentNode.getValue(MVP_ID);
 					if (!StringUtils.isEmpty(mvpId)) {
 						childWrapper.put(PROGRAM_NAME, mvpId);
-					}
-					else {
+					} else {
 						String raw = currentNode.getValue(RAW_PROGRAM_NAME);
 						String key = (raw != null ? raw.toUpperCase(Locale.ROOT) : "");
 
@@ -167,10 +166,10 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
 				measurementSetsWrapper.put(childWrapper);
 
-			} catch (EncodeException e) {
-				throw e;
-
 			} catch (RuntimeException e) {
+				if (e instanceof EncodeException) {
+					throw e;
+				}
 				// Wrap any unexpected runtime exception in EncodeException
 				throw new EncodeException(
 						"An unexpected error occurred for template " + childType,
