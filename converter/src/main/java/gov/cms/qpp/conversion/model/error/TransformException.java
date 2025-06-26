@@ -16,6 +16,7 @@ public class TransformException extends RuntimeException {
 	 * @param cause   A Throwable that caused this exception to occur.
 	 * @param report  A report on the detail of the conversion.
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	public TransformException(String message, Throwable cause, ConversionReport report) {
 		super(message, cause);
 		this.conversionReport = report;

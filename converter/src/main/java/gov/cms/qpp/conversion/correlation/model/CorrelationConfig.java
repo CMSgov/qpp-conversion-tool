@@ -3,6 +3,8 @@ package gov.cms.qpp.conversion.correlation.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Configuration object that pairs a decode label with a list of encode labels and some goods data.
  */
@@ -56,6 +58,7 @@ public class CorrelationConfig {
 	 *
 	 * @return the goods
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP")
 	public Goods getGoods() {
 		return goods;
 	}
@@ -65,6 +68,7 @@ public class CorrelationConfig {
 	 *
 	 * @param goods the goods to set
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	public void setGoods(Goods goods) {
 		this.goods = goods;
 	}

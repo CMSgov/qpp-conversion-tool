@@ -15,6 +15,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import gov.cms.qpp.conversion.api.exceptions.UncheckedInterruptedException;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.services.StorageService;
@@ -37,6 +38,10 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 	private final Environment environment;
 	private final AmazonS3 amazonS3;
 
+	/**
+	 * Injected AWS clients and environment are thread-safe and intended for sharing.
+	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	public StorageServiceImpl(TaskExecutor taskExecutor, TransferManager s3TransferManager,
 			Environment environment, AmazonS3 amazonS3) {
 		super(taskExecutor);

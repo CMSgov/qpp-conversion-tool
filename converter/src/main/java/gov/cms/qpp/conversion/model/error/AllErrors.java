@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * Contains a list of error errors.
@@ -26,6 +27,7 @@ public class AllErrors implements Serializable {
 	 *
 	 * @param errors The list of {@code Error}s.
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	public AllErrors(List<Error> errors) {
 		this.errors = errors;
 	}
@@ -57,6 +59,7 @@ public class AllErrors implements Serializable {
 	 *
 	 * @param errors The {@code Error}s to use.
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	public void setErrors(final List<Error> errors) {
 		this.errors = errors;
 	}

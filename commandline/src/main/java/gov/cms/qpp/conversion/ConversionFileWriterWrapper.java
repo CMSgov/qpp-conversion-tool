@@ -8,12 +8,12 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * Calls the {@link Converter} and writes the results to a file.
@@ -23,12 +23,19 @@ public class ConversionFileWriterWrapper {
 
 	private final Source source;
 	private final FileSystem fileSystem;
+
+	/**
+	 * Context for the conversion.
+	 * @SuppressFBWarnings EI_EXPOSE_REP2 because we only hold onto the context
+	 * reference to pass into the Converter; we do not expose it back out or
+	 * mutate it in a way that would expose callers to internal state.
+	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	private Context context;
 
 	public ConversionFileWriterWrapper(Path inFile) {
 		this.source = new PathSource(inFile);
-
-		fileSystem = inFile.getFileSystem();
+		this.fileSystem = inFile.getFileSystem();
 	}
 
 	/**
@@ -109,7 +116,7 @@ public class ConversionFileWriterWrapper {
 	/**
 	 * Determine what the output file's name should be.
 	 *
-	 * @param name base string that helps relate the output file to it's corresponding source
+	 * @param name base string that helps relate the output file to its corresponding source
 	 * @param success Whether the conversion was successful or not.
 	 * @return the output file name
 	 */

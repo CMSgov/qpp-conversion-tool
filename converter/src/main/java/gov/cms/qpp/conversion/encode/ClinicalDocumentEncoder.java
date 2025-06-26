@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 /**
  * Encoder to serialize the root node of the Document-Level Template: QRDA Category III Report (ClinicalDocument).
  */
-
 @Encoder(TemplateId.CLINICAL_DOCUMENT)
 public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
@@ -40,8 +39,14 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	@Override
 	public void internalEncode(JsonWrapper wrapper, Node thisNode) {
 		encodeToplevel(wrapper, thisNode);
-		Map<TemplateId, Node> childMapByTemplateId = thisNode.getChildNodes().stream().collect(
-				Collectors.toMap(Node::getType, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
+
+		Map<TemplateId, Node> childMapByTemplateId = thisNode.getChildNodes().stream()
+				.collect(Collectors.toMap(
+						Node::getType,
+						Function.identity(),
+						(v1, v2) -> v1,
+						LinkedHashMap::new
+				));
 
 		JsonWrapper measurementSets = encodeMeasurementSets(childMapByTemplateId, thisNode);
 		wrapper.put(MEASUREMENT_SETS, measurementSets);
@@ -57,12 +62,13 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		String entityType = thisNode.getValue(ENTITY_TYPE);
 		encodePerformanceYear(wrapper, thisNode);
 		wrapper.put(ENTITY_TYPE, entityType);
+
 		if (!ENTITY_APM.equals(entityType)
-			&& !ENTITY_SUBGROUP.equalsIgnoreCase(entityType)) {
+				&& !ENTITY_SUBGROUP.equalsIgnoreCase(entityType)) {
 			wrapper.put(NATIONAL_PROVIDER_IDENTIFIER,
-				thisNode.getValue(NATIONAL_PROVIDER_IDENTIFIER));
+					thisNode.getValue(NATIONAL_PROVIDER_IDENTIFIER));
 			wrapper.put(TAX_PAYER_IDENTIFICATION_NUMBER,
-				thisNode.getValue(TAX_PAYER_IDENTIFICATION_NUMBER));
+					thisNode.getValue(TAX_PAYER_IDENTIFICATION_NUMBER));
 		}
 
 		if (Program.isPcf(thisNode)) {
@@ -73,8 +79,8 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 			wrapper.put(ENTITY_ID, thisNode.getValue(ENTITY_ID));
 		}
 
-		if ((Program.isApp(thisNode) || Program.isMips(thisNode) &&
-			ENTITY_APM.equalsIgnoreCase(entityType))) {
+		if ((Program.isApp(thisNode) || Program.isMips(thisNode))
+				&& ENTITY_APM.equalsIgnoreCase(entityType)) {
 			wrapper.put(ENTITY_ID, thisNode.getValue(ENTITY_ID));
 		}
 
@@ -101,9 +107,10 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	}
 
 	/**
-	 * Method for encoding each child measurement set
+	 * Method for encoding each child measurement set.
 	 *
 	 * @param childMapByTemplateId object that represents the document's children
+	 * @param currentNode the clinical document node
 	 * @return encoded measurement sets
 	 */
 	private JsonWrapper encodeMeasurementSets(
@@ -117,11 +124,16 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 			if (child == null) {
 				continue;
 			}
-			try {
-				TemplateId childType = child.getType();
-				JsonWrapper childWrapper = new JsonWrapper();
-				JsonOutputEncoder sectionEncoder = encoders.get(childType);
 
+			TemplateId childType = child.getType();
+			JsonOutputEncoder sectionEncoder = encoders.get(childType);
+			if (sectionEncoder == null) {
+				// No encoder for this template → skip
+				continue;
+			}
+
+			try {
+				JsonWrapper childWrapper = new JsonWrapper();
 				sectionEncoder.encode(childWrapper, child);
 				childWrapper.put("source", "qrda3");
 
@@ -129,7 +141,8 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 					String mvpId = currentNode.getValue(MVP_ID);
 					if (!StringUtils.isEmpty(mvpId)) {
 						childWrapper.put(PROGRAM_NAME, mvpId);
-					} else {
+					}
+					else {
 						String raw = currentNode.getValue(RAW_PROGRAM_NAME);
 						String key = (raw != null ? raw.toUpperCase(Locale.ROOT) : "");
 
@@ -153,12 +166,19 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 				}
 
 				measurementSetsWrapper.put(childWrapper);
-			} catch (NullPointerException exc) { // NOSONAR
+
+			} catch (EncodeException e) {
+				throw e;
+
+			} catch (RuntimeException e) {
+				// Wrap any unexpected runtime exception in EncodeException
 				throw new EncodeException(
-						"An unexpected error occured for " + child.getType(), exc
+						"An unexpected error occurred for template " + childType,
+						e
 				);
 			}
 		}
+
 		return measurementSetsWrapper;
 	}
 }

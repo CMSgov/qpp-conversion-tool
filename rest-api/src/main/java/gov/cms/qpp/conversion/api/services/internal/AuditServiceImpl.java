@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.Source;
 import gov.cms.qpp.conversion.api.exceptions.AuditException;
@@ -44,6 +45,7 @@ public class AuditServiceImpl implements AuditService {
 	 * @param dbService save conversion metadata
 	 * @param environment hooks to the environment in which the application runs
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	public AuditServiceImpl(final StorageService storageService, final DbService dbService,
 							final Environment environment) {
 		this.storageService = storageService;

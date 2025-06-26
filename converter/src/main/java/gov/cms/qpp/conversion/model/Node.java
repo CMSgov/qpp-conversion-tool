@@ -60,6 +60,7 @@ public class Node implements Serializable {
 	 * @param type   of node
 	 * @param parent this node's parent node
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	public Node(TemplateId type, Node parent) {
 		this(type);
 		this.parent = parent;
@@ -250,6 +251,7 @@ public class Node implements Serializable {
 	 *
 	 * @return Node
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP")
 	public Node getParent() {
 		return parent;
 	}
@@ -259,6 +261,7 @@ public class Node implements Serializable {
 	 *
 	 * @param parent Node
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	public void setParent(Node parent) {
 		this.parent = parent;
 	}
@@ -335,6 +338,7 @@ public class Node implements Serializable {
 	 *
 	 * @return The element location of the node.
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP")
 	public Element getElementForLocation() {
 		return elementForLocation;
 	}
@@ -344,6 +348,7 @@ public class Node implements Serializable {
 	 *
 	 * @param elementForLocation The element location for the node
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	public void setElementForLocation(Element elementForLocation) {
 		this.elementForLocation = elementForLocation;
 	}

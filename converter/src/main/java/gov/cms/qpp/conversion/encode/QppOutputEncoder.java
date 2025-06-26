@@ -6,6 +6,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * Top level Encoder for serializing into QPP format.
@@ -13,9 +14,12 @@ import org.slf4j.LoggerFactory;
 public class QppOutputEncoder extends JsonOutputEncoder {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QppOutputEncoder.class);
 	protected final Registry<JsonOutputEncoder> encoders;
-
 	protected final Context context;
 
+	/**
+	 * @param context the shared conversion context
+	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	public QppOutputEncoder(Context context) {
 		this.context = context;
 		this.encoders = context.getRegistry(Encoder.class);
@@ -28,7 +32,7 @@ public class QppOutputEncoder extends JsonOutputEncoder {
 	}
 
 	/**
-	 * Top level internalEncode that calls it's children from the registry.
+	 * Top level internalEncode that calls its children from the registry.
 	 * Each encoder calls its child encoder with an encode() method
 	 *
 	 * @param wrapper object to encode into

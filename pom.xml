@@ -85,7 +85,7 @@
 					<version>4.7.3.6</version>
 					<configuration>
 						<effort>Max</effort>
-						<threshold>High</threshold>
+						<threshold>Low</threshold>
 						<omitVisitors>SerializableIdiom,Naming</omitVisitors>
 					</configuration>
 					<executions>

@@ -189,6 +189,7 @@ public class Detail implements Serializable {
 	 *
 	 * @param location The location.
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	public void setLocation(Location location) {
 		this.location = location;
 	}

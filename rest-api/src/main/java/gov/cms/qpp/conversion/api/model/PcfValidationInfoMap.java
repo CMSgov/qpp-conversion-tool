@@ -38,15 +38,14 @@ public class PcfValidationInfoMap {
 		List<PcfValidationInfo> pcfValidationInfoList = new ArrayList<>();
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
-			pcfValidationInfoList =
-					Arrays.asList(
-							objectMapper.readValue(
-									new InputStreamReader(pcfApmNpiTinJson, StandardCharsets.UTF_8),
-									PcfValidationInfo[].class
-							)
-					);
-		} catch (IOException | NullPointerException exc) {
-			DEV_LOG.info("Failed to parse the pcf validation npi to apm list...");
+			pcfValidationInfoList = Arrays.asList(
+					objectMapper.readValue(
+							new InputStreamReader(pcfApmNpiTinJson, StandardCharsets.UTF_8),
+							PcfValidationInfo[].class
+					)
+			);
+		} catch (IOException exc) {
+			DEV_LOG.info("Failed to parse the pcf validation npi to apm list.", exc);
 		}
 
 		for (PcfValidationInfo pcfValidationInfo : pcfValidationInfoList) {

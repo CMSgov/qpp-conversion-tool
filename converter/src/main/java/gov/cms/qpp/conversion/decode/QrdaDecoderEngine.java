@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.model.DecodeData;
@@ -35,6 +36,7 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 	 *
 	 * @param context Establish context for decoder engine
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	public QrdaDecoderEngine(Context context) {
 		Objects.requireNonNull(context, "converter");
 
