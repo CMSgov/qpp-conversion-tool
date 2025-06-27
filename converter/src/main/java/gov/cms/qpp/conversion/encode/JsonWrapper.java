@@ -240,7 +240,7 @@ public class JsonWrapper implements Serializable {
 	public JsonWrapper(Kind kind) {
 		this.kind = kind;
 
-		if (isValue()) {
+		if (kind == Kind.VALUE) {
 			throw new UnsupportedOperationException("To use kind.VALUE, use the constructor JsonWrapper(String)");
 		}
 
@@ -249,7 +249,11 @@ public class JsonWrapper implements Serializable {
 		childrenList = new LinkedList<>();
 
 		// no metadata on metadata
-		metadata = isMetadata() ? null : new JsonWrapper(Kind.METADATA);
+		if (kind == Kind.METADATA) {
+			this.metadata = null;
+		} else {
+			this.metadata = new JsonWrapper(Kind.METADATA);
+		}
 	}
 
 	/**
@@ -306,7 +310,7 @@ public class JsonWrapper implements Serializable {
 		childrenMap = CloneHelper.deepClone(wrapper.childrenMap);
 		childrenList = CloneHelper.deepClone(wrapper.childrenList);
 
-		if (isMetadata()) {
+		if (this.kind == Kind.METADATA) {
 			metadata = null;
 		} else if (withMetadata) {
 			metadata = CloneHelper.deepClone(wrapper.metadata);

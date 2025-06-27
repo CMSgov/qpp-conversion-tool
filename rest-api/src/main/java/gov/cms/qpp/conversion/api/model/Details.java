@@ -22,8 +22,15 @@ public class Details {
 				: new ArrayList<>(details);
 	}
 
+	/**
+	 * Stores a defensive copy of the given list to avoid exposing our internal representation.
+	 *
+	 * @param details the list of Detail instances (or null)
+	 */
 	public void setDetails(List<Detail> details) {
-		this.details = details;
+		this.details = (details == null)
+				? null
+				: new ArrayList<>(details);
 	}
 
 	@Override

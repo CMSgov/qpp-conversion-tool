@@ -40,16 +40,13 @@ public class SubPopulation {
 	}
 
 	public SubPopulation(SubPopulation subPop) {
-		initialPopulationUuid = subPop.getInitialPopulationUuid();
-		denominatorUuid = subPop.getDenominatorUuid();
-		denominatorExclusionsUuid = subPop.getDenominatorExclusionsUuid();
-		numeratorUuid = subPop.getNumeratorUuid();
-		numeratorExclusionUuid = subPop.getNumeratorExclusionUuid();
-		denominatorExceptionsUuid = subPop.getDenominatorExceptionsUuid();
-		List<String> originalStrata = subPop.getStrata();
-		this.strata = (originalStrata == null)
-				? Collections.emptyList()
-				: new ArrayList<>(originalStrata);
+		initialPopulationUuid        = subPop.getInitialPopulationUuid();
+		denominatorUuid             = subPop.getDenominatorUuid();
+		denominatorExclusionsUuid   = subPop.getDenominatorExclusionsUuid();
+		numeratorUuid               = subPop.getNumeratorUuid();
+		numeratorExclusionUuid      = subPop.getNumeratorExclusionUuid();
+		denominatorExceptionsUuid   = subPop.getDenominatorExceptionsUuid();
+		this.strata = new ArrayList<>(subPop.getStrata());
 	}
 
 	public String getInitialPopulationUuid() {

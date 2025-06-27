@@ -167,8 +167,13 @@ public class MeasureConfig {
 		return new ArrayList<>(strata);
 	}
 
-	public void setStrata(final List<Strata> strata) {
-		this.strata = strata;
+	/**
+	 * Defensively copy the incoming list to avoid exposing our internal state.
+	 */
+	public void setStrata(final List<Strata> incomingStrata) {
+		this.strata = (incomingStrata == null)
+				? null
+				: new ArrayList<>(incomingStrata);
 	}
 
 	/**

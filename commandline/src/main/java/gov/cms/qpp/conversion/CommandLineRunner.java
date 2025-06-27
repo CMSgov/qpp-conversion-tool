@@ -21,6 +21,7 @@ import org.apache.commons.cli.CommandLine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import gov.cms.qpp.conversion.util.Finder;
 
 /**
@@ -30,7 +31,14 @@ public class CommandLineRunner implements Runnable {
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(CommandLineRunner.class);
 
+	/**
+	 * Parsed command line.
+	 * @SuppressFBWarnings EI_EXPOSE_REP2 because CommandLine is used read-only
+	 * after parsing and we do not mutate it, making defensive copying impractical.
+	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	private final CommandLine commandLine;
+
 	private final FileSystem fileSystem;
 	private boolean doValidation;
 	private boolean historical;
@@ -78,9 +86,9 @@ public class CommandLineRunner implements Runnable {
 				historical = commandLine.hasOption(CommandLineMain.BYGONE);
 
 				convert.parallelStream()
-					.map(ConversionFileWriterWrapper::new)
-					.peek(conversion -> conversion.setContext(createContext()))
-					.forEach(ConversionFileWriterWrapper::transform);
+						.map(ConversionFileWriterWrapper::new)
+						.peek(conversion -> conversion.setContext(createContext()))
+						.forEach(ConversionFileWriterWrapper::transform);
 			} else {
 				DEV_LOG.error("Invalid or missing paths: " + invalid);
 				sendHelpHint();
@@ -202,10 +210,5 @@ public class CommandLineRunner implements Runnable {
 	public static boolean isValid(Path path) {
 		// despite what sonar recommends this is a fine implementation
 		return Files.isRegularFile(path) && Files.isReadable(path); //NOSONAR better than toFile().isFile()
-		// Sonar recommends to change from Files to File impl
-		// The Google JimFS Path impl does not support toFile()
-		// Further more the following code is slower and the sonar warning is a performance flag
-		//		File filePath = new File(path.toString());
-		//		return filePath.exists() && filePath.isFile() && filePath.canRead();
 	}
 }

@@ -53,6 +53,7 @@ public class Converter {
 	 * @param source  Source to use for the conversion
 	 * @param context Context to use for the conversion
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	public Converter(Source source, Context context) {
 		Objects.requireNonNull(source, "source");
 		Objects.requireNonNull(context, "context");

@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * Holds a list of validation errors associated with a single source.
@@ -39,6 +40,7 @@ public class Error implements Serializable {
 	 * @param sourceIdentifier The identifier of a source that contains the validation errors
 	 * @param details The list of {@code Detail}s.
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	public Error(String sourceIdentifier, List<Detail> details) {
 		this.sourceIdentifier = sourceIdentifier;
 		this.details = details;
@@ -116,6 +118,7 @@ public class Error implements Serializable {
 	 *
 	 * @param details A list of ValidationErrors.
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	@JsonProperty("details")
 	public void setDetails(final List<Detail> details) {
 		this.details = details;

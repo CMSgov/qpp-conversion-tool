@@ -10,32 +10,40 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 
 public class InternetExecutionCondition implements ExecutionCondition {
 
-	private static Boolean connected;
+	// Cache the result of the first reachability check (null = not yet checked)
+	private static volatile Boolean connected;
 
 	static {
 		try {
-			connected = InetAddress.getByName("google.com").isReachable((int) TimeUnit.SECONDS.toMillis(3));
+			connected = InetAddress
+					.getByName("google.com")
+					.isReachable((int) TimeUnit.SECONDS.toMillis(3));
 		} catch (IOException expected) {
 		}
 	}
 
 	@Override
 	public ConditionEvaluationResult evaluateExecutionCondition(ExtensionContext context) {
-		if (connected()) {
+		if (isConnected()) {
 			return ConditionEvaluationResult.enabled("The system is connected to the internet");
 		}
 		return ConditionEvaluationResult.disabled("The system is NOT connected to the internet");
 	}
 
-	private synchronized boolean connected() {
+	/**
+	 * Lazily performs one more reachability check, once, in a thread-safe,
+	 * class-level synchronized method (no instance lock).
+	 */
+	private static synchronized boolean isConnected() {
 		if (connected == null) {
 			try {
-				connected = InetAddress.getByName("google.com").isReachable((int) TimeUnit.SECONDS.toMillis(3));
+				connected = InetAddress
+						.getByName("google.com")
+						.isReachable((int) TimeUnit.SECONDS.toMillis(3));
 			} catch (IOException expected) {
 				connected = false;
 			}
 		}
 		return connected;
 	}
-
 }

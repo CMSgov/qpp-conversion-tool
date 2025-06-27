@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.model;
 
 import gov.cms.qpp.conversion.decode.DecodeResult;
-
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.Objects;
 
 /**
@@ -17,6 +17,7 @@ public class DecodeData {
 	 * @param decodeResult The {@link DecodeResult} to hold.
 	 * @param node The {@link Node} to hold.
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	public DecodeData(final DecodeResult decodeResult, final Node node) {
 		this.decodeResult = decodeResult;
 		this.node = node;
@@ -36,6 +37,7 @@ public class DecodeData {
 	 *
 	 * @return The node.
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP")
 	public Node getNode() {
 		return node;
 	}

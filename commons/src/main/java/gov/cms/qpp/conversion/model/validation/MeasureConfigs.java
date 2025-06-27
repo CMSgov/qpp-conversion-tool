@@ -36,7 +36,7 @@ public class MeasureConfigs {
 	 * Empty private constructor for singleton
 	 */
 	private MeasureConfigs() {
-		//empty and private constructor because this is a singleton
+		// empty and private constructor because this is a singleton
 	}
 
 	/**
@@ -84,9 +84,9 @@ public class MeasureConfigs {
 
 	public static void setUpGroups() {
 		getMeasureConfigs().stream()
-			.filter(config -> config.getCpcPlusGroup() != null)
-			.forEach(config -> cpcPlusGroup.computeIfAbsent(
-				config.getCpcPlusGroup(), key -> new ArrayList<>()).add(config));
+				.filter(config -> config.getCpcPlusGroup() != null)
+				.forEach(config -> cpcPlusGroup.computeIfAbsent(
+						config.getCpcPlusGroup(), key -> new ArrayList<>()).add(config));
 	}
 
 	/**
@@ -133,7 +133,8 @@ public class MeasureConfigs {
 	 * @return mapped configurations
 	 */
 	public static Map<String, MeasureConfig> getConfigurationMap() {
-		return configurationMap;
+		// Return a shallow copy to avoid exposing internal representation
+		return new HashMap<>(configurationMap);
 	}
 
 	/**
@@ -142,7 +143,12 @@ public class MeasureConfigs {
 	 * @return mapped CPC+ measure groups
 	 */
 	public static Map<String, List<MeasureConfig>> getCpcPlusGroup() {
-		return cpcPlusGroup;
+		// Return a deep copy of the map to avoid exposing internal representation
+		Map<String, List<MeasureConfig>> copy = new HashMap<>();
+		for (Map.Entry<String, List<MeasureConfig>> entry : cpcPlusGroup.entrySet()) {
+			copy.put(entry.getKey(), new ArrayList<>(entry.getValue()));
+		}
+		return copy;
 	}
 
 	/**
@@ -152,11 +158,10 @@ public class MeasureConfigs {
 	 * @return The list of required measures
 	 */
 	static List<String> requiredMeasuresForSection(String section) {
-
 		return configurationMap.values().stream()
-			.filter(measureConfig -> measureConfig.isRequired() && section.equals(measureConfig.getCategory()))
-			.map(MeasureConfigs::getMeasureId)
-			.collect(Collectors.toList());
+				.filter(measureConfig -> measureConfig.isRequired() && section.equals(measureConfig.getCategory()))
+				.map(MeasureConfigs::getMeasureId)
+				.collect(Collectors.toList());
 	}
 
 }

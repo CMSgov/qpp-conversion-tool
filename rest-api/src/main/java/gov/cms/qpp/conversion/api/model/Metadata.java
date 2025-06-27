@@ -561,19 +561,34 @@ public final class Metadata {
 		return errors;
 	}
 
+	/**
+	 * Defensive copy: wrap incoming list in a new Details instance to avoid leaking the original list.
+	 *
+	 * @param errors list of Detail
+	 */
 	public void setErrors(List<Detail> errors) {
 		if (errors == null) {
-			setErrors((Details) null);
-			return;
+			this.errors = null;
+		} else {
+			Details d = new Details();
+			d.setDetails(errors);
+			this.errors = d;
 		}
-
-		Details details = new Details();
-		details.setDetails(errors);
-		setErrors(details);
 	}
 
+	/**
+	 * Defensive copy: clone the passed-in Details so we don't store a reference to a mutable object.
+	 *
+	 * @param errors Details to copy
+	 */
 	public void setErrors(Details errors) {
-		this.errors = errors;
+		if (errors == null) {
+			this.errors = null;
+		} else {
+			Details d = new Details();
+			d.setDetails(errors.getDetails());
+			this.errors = d;
+		}
 	}
 
 	/**
@@ -588,20 +603,36 @@ public final class Metadata {
 		return warnings;
 	}
 
+	/**
+	 * Defensive copy: wrap incoming list in a new Details instance to avoid leaking the original list.
+	 *
+	 * @param warnings list of Detail
+	 */
 	public void setWarnings(List<Detail> warnings) {
 		if (warnings == null) {
-			setWarnings((Details) null);
-			return;
+			this.warnings = null;
+		} else {
+			Details d = new Details();
+			d.setDetails(warnings);
+			this.warnings = d;
 		}
-
-		Details details = new Details();
-		details.setDetails(warnings);
-		setWarnings(details);
 	}
 
+	/**
+	 * Defensive copy: clone the passed-in Details so we don't store a reference to a mutable object.
+	 *
+	 * @param warnings Details to copy
+	 */
 	public void setWarnings(Details warnings) {
-		this.warnings = warnings;
+		if (warnings == null) {
+			this.warnings = null;
+		} else {
+			Details d = new Details();
+			d.setDetails(warnings.getDetails());
+			this.warnings = d;
+		}
 	}
+
 
 	/**
 	 * Sets the separate CPC+ processed flag and created date based on the argument

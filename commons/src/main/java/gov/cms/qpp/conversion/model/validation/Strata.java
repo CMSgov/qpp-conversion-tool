@@ -39,10 +39,11 @@ public class Strata {
 	}
 
 	/**
-	 * Sets the internal SubPopulation reference. If the caller passes null,
-	 * we store null. Otherwise, we store their object directly (Jackson uses this during deserialization).
+	 * Defensively copy the provided SubPopulation to avoid exposing internal state.
 	 */
-	public void setElectronicMeasureUuids(final SubPopulation electronicMeasureUuids) {
-		this.electronicMeasureUuids = electronicMeasureUuids;
+	public void setElectronicMeasureUuids(final SubPopulation subPopulation) {
+		this.electronicMeasureUuids = (subPopulation == null)
+				? null
+				: new SubPopulation(subPopulation);
 	}
 }

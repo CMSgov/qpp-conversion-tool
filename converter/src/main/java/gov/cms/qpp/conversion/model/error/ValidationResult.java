@@ -6,15 +6,6 @@ import java.util.List;
 /**
  * This is a dual collection wrapper that will contain
  * all validation warning and error details for a given QPP Node.
- *
- * If this is called from the QrdaValidator.validate(Node) method
- * then it will contain all validation details for all sub-nodes.
- *
- * However, if NodeValidator.validateSingleNode(Node) is called
- * then it will contain only validations for the given node only.
- *
- * Its primary motivation is that only one value may be returned
- * from a method. This wraps both types into one instance.
  */
 public class ValidationResult {
 
@@ -22,29 +13,31 @@ public class ValidationResult {
 	private final List<Detail> warnings;
 
 	/**
-	 * The all attributes constructor.
-	 * @param errors the errors for the node.
-	 * @param warnings the warnings for the node.
+	 * The all-attributes constructor.
+	 * Makes defensive copies of the incoming lists.
 	 */
 	public ValidationResult(List<Detail> errors, List<Detail> warnings) {
-		this.errors = errors;
-		this.warnings = warnings;
+		this.errors = (errors == null)
+				? new ArrayList<>()
+				: new ArrayList<>(errors);
+		this.warnings = (warnings == null)
+				? new ArrayList<>()
+				: new ArrayList<>(warnings);
 	}
 
 	/**
-	 * Get a defensive copy of the errors collection.
-	 * @return node errors collection copy
+	 * Get a mutable copy of the errors.
+	 * Any modifications to the returned list won’t affect the internal state.
 	 */
 	public List<Detail> getErrors() {
 		return new ArrayList<>(errors);
 	}
 
 	/**
-	 * Get a defensive copy of the warnings collection.
-	 * @return node warnings collection copy
+	 * Get a mutable copy of the warnings.
+	 * Any modifications to the returned list won’t affect the internal state.
 	 */
 	public List<Detail> getWarnings() {
 		return new ArrayList<>(warnings);
 	}
-
 }

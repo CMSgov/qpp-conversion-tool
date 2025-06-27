@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -45,8 +46,8 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 	/**
 	 * Encode given node into json
 	 *
-	 * @param wrapper structure that facilitates json serialization
-	 * @param node    structure to be converted to json
+	 * @param wrapper   structure that facilitates json serialization
+	 * @param node      structure to be converted to json
 	 */
 	public void encode(JsonWrapper wrapper, Node node) {
 		encode(wrapper, node, true);
@@ -55,9 +56,9 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 	/**
 	 * Encode given node into json. Optionally include metadata about originating node.
 	 *
-	 * @param wrapper       structure that facilitates json serialization
-	 * @param node          structure to be converted to json
-	 * @param mergeMetadata instruction on whether or not metadata should be included in the wrapper
+	 * @param wrapper        structure that facilitates json serialization
+	 * @param node           structure to be converted to json
+	 * @param mergeMetadata  instruction on whether or not metadata should be included in the wrapper
 	 */
 	public void encode(JsonWrapper wrapper, Node node, boolean mergeMetadata) {
 		try {
@@ -125,11 +126,17 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 
 	/**
 	 * Assign a new list of QPP element nodes.
+	 * Defensive copy to avoid exposing internal representation (EI_EXPOSE_REP2).
 	 *
 	 * @param someNodes the new list of nodes
 	 */
 	public void setNodes(List<Node> someNodes) {
-		this.nodes = someNodes;
+		if (someNodes == null) {
+			this.nodes = Collections.emptyList();
+		} else {
+			// shallow copy is sufficient since Node is immutable in our model
+			this.nodes = new ArrayList<>(someNodes);
+		}
 	}
 
 	/**
