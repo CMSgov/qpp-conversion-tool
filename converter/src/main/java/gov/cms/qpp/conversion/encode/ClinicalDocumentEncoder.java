@@ -118,7 +118,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 			Node currentNode
 	) {
 		JsonWrapper measurementSetsWrapper = new JsonWrapper();
-		String measureRoot = TemplateId.MEASURE_SECTION_V5.getRoot();
+		JsonWrapper childWrapper;
 
 		for (Node child : childMapByTemplateId.values()) {
 			if (child == null) {
@@ -133,35 +133,23 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 			}
 
 			try {
-				JsonWrapper childWrapper = new JsonWrapper();
+				childWrapper = new JsonWrapper();
 				sectionEncoder.encode(childWrapper, child);
 				childWrapper.put("source", "qrda3");
 
-				if (measureRoot.equalsIgnoreCase(childType.getRoot())) {
-					String mvpId = currentNode.getValue(MVP_ID);
-					if (!StringUtils.isEmpty(mvpId)) {
-						childWrapper.put(PROGRAM_NAME, mvpId);
-					} else {
-						String raw = currentNode.getValue(RAW_PROGRAM_NAME);
-						String key = (raw != null ? raw.toUpperCase(Locale.ROOT) : "");
-
-						switch (key) {
-							case MIPS_APM:
-								childWrapper.put(PROGRAM_NAME,
-										MIPS.toLowerCase(Locale.getDefault()));
-								break;
-							case APP_APM:
-								childWrapper.put(PROGRAM_NAME,
-										APP_PROGRAM_NAME.toLowerCase(Locale.getDefault()));
-								break;
-							case APP_PLUS_APM:
-								childWrapper.put(PROGRAM_NAME,
-										APP_PLUS_PROGRAM_NAME.toLowerCase(Locale.getDefault()));
-								break;
-							default:
-								// no matching program
-						}
-					}
+				String mvpId = currentNode.getValue(MVP_ID);
+				if (TemplateId.MEASURE_SECTION_V5.getRoot().equalsIgnoreCase(childType.getRoot())
+					&& !StringUtils.isEmpty(mvpId)) {
+					childWrapper.put(PROGRAM_NAME, mvpId);
+				}
+				else if (TemplateId.MEASURE_SECTION_V5.getRoot().equalsIgnoreCase(childType.getRoot())
+					&& MIPS_APM.equalsIgnoreCase(
+						currentNode.getValue(RAW_PROGRAM_NAME))) {
+					childWrapper.put(PROGRAM_NAME, MIPS.toLowerCase(Locale.getDefault()));
+				} else if (TemplateId.MEASURE_SECTION_V5.getRoot().equalsIgnoreCase(childType.getRoot())
+						&& APP_APM.equalsIgnoreCase(
+						currentNode.getValue(RAW_PROGRAM_NAME))) {
+					childWrapper.put(PROGRAM_NAME, APP_PROGRAM_NAME.toLowerCase(Locale.getDefault()));
 				}
 
 				measurementSetsWrapper.put(childWrapper);
