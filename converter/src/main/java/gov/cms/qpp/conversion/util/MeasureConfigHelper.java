@@ -7,6 +7,8 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -23,7 +25,9 @@ public class MeasureConfigHelper {
 
 	public static final String MEASURE_ID = "measureId";
 	public static final String NO_MEASURE = "No given measure id";
-	private static Set<String> MULTI_TO_SINGLE_PERF_RATE_MEASURE_ID = Set.of("005", "007", "008", "143", "438");
+	// Immutable by default via Set.of(...)
+	private static Set<String> MULTI_TO_SINGLE_PERF_RATE_MEASURE_ID =
+			Collections.unmodifiableSet(Set.of("005", "007", "008", "143", "438"));
 	public final static String SINGLE_TO_MULTI_PERF_RATE_MEASURE_ID = "370";
 	public static final Set<String> CPC_PLUS_MEASURES = Set.of("001", "236");
 
@@ -45,7 +49,7 @@ public class MeasureConfigHelper {
 	/**
 	 * Gets the electronic measure id by uuid or defaults to null if none exists
 	 *
-	 * @param uuid identifier used to fined the electronic measure id
+	 * @param uuid identifier used to find the electronic measure id
 	 * @return electronic measure id
 	 */
 	public static String getMeasureConfigIdByUuidOrDefault(String uuid) {
@@ -91,23 +95,23 @@ public class MeasureConfigHelper {
 		List<Node> subPopNodes = initializeMeasureDataList(subPopCount);
 		Map<String, Integer> mapPopulationIdToSubPopIndex = createSubPopulationIndexMap(measureConfigSubPopulations);
 		node.getChildNodes().stream()
-			.filter(childNode -> TemplateId.MEASURE_DATA_CMS_V4 == childNode.getType())
-			.forEach(childNode -> {
-				String populationId = childNode.getValue(MEASURE_POPULATION);
-				Integer subPopIndex = mapPopulationIdToSubPopIndex.get(populationId.toUpperCase(Locale.ENGLISH));
-				if (subPopIndex != null) {
-					Node newParentNode = subPopNodes.get(subPopIndex);
-					newParentNode.addChildNode(childNode);
-				}
-			});
+				.filter(childNode -> TemplateId.MEASURE_DATA_CMS_V4 == childNode.getType())
+				.forEach(childNode -> {
+					String populationId = childNode.getValue(MEASURE_POPULATION);
+					Integer subPopIndex = mapPopulationIdToSubPopIndex.get(populationId.toUpperCase(Locale.ENGLISH));
+					if (subPopIndex != null) {
+						Node newParentNode = subPopNodes.get(subPopIndex);
+						newParentNode.addChildNode(childNode);
+					}
+				});
 		return subPopNodes;
 	}
 
 	private static List<SubPopulation> setUpSingleToMultiSubPops(List<SubPopulation> measureConfigSubPopulations) {
 		return measureConfigSubPopulations
-			.stream()
-			.filter(Objects::nonNull)
-			.collect(Collectors.toList());
+				.stream()
+				.filter(Objects::nonNull)
+				.collect(Collectors.toList());
 	}
 
 	/**
@@ -118,10 +122,9 @@ public class MeasureConfigHelper {
 	 */
 	private static List<Node> initializeMeasureDataList(int subPopulationCount) {
 		return IntStream.range(0, subPopulationCount)
-			.mapToObj(ignore -> new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V5))
-			.collect(Collectors.toList());
+				.mapToObj(ignore -> new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V5))
+				.collect(Collectors.toList());
 	}
-
 
 	/**
 	 * Creates a map of child uuids to indexes for sub population grouping
@@ -133,7 +136,7 @@ public class MeasureConfigHelper {
 		Map<String, Integer> supPopMap = new HashMap<>();
 		int index = 0;
 		for (SubPopulation subPopulation : subPopulations) {
-			if (null !=subPopulation.getNumeratorUuid()) {
+			if (null != subPopulation.getNumeratorUuid()) {
 				supPopMap.put(subPopulation.getDenominatorUuid(), index);
 				supPopMap.put(subPopulation.getDenominatorExceptionsUuid(), index);
 				supPopMap.put(subPopulation.getDenominatorExclusionsUuid(), index);
@@ -153,10 +156,10 @@ public class MeasureConfigHelper {
 	 */
 	static String getPrioritizedId(MeasureConfig measureConfig) {
 		return Stream.of(measureConfig.getElectronicMeasureId(),
-			measureConfig.getElectronicMeasureVerUuid(), measureConfig.getMeasureId())
-			.filter(Objects::nonNull)
-			.findFirst()
-			.orElse(NO_MEASURE);
+						measureConfig.getElectronicMeasureVerUuid(), measureConfig.getMeasureId())
+				.filter(Objects::nonNull)
+				.findFirst()
+				.orElse(NO_MEASURE);
 	}
 
 	/**
@@ -171,10 +174,12 @@ public class MeasureConfigHelper {
 
 	/**
 	 * Sets multi-performance rate to single performance rate configurations.
+	 * Makes a defensive copy and wraps it unmodifiable to avoid exposing our internal Set.
 	 *
 	 * @param multiToSinglePerfRateMeasureIdSet
 	 */
-	public static void setMultiToSinglePerfRateMeasureId (Set<String> multiToSinglePerfRateMeasureIdSet) {
-		MULTI_TO_SINGLE_PERF_RATE_MEASURE_ID = multiToSinglePerfRateMeasureIdSet;
+	public static void setMultiToSinglePerfRateMeasureId(Set<String> multiToSinglePerfRateMeasureIdSet) {
+		MULTI_TO_SINGLE_PERF_RATE_MEASURE_ID =
+				Collections.unmodifiableSet(new HashSet<>(multiToSinglePerfRateMeasureIdSet));
 	}
 }

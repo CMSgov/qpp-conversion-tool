@@ -1,10 +1,12 @@
 package gov.cms.qpp.conversion.model.error;
 
 import com.google.common.base.MoreObjects;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * Contains a list of error errors.
@@ -17,14 +19,15 @@ public class AllErrors implements Serializable {
 	 * Constructs an {@code AllErrors} with no errors.
 	 */
 	public AllErrors() {
-		//empty on purpose
+		// empty on purpose
 	}
 
 	/**
-	 * Constructs a {@code AllErrors} with the specified {@link Error}s.
+	 * Constructs an {@code AllErrors} with the specified {@link Error}s.
 	 *
 	 * @param errors The list of {@code Error}s.
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	public AllErrors(List<Error> errors) {
 		this.errors = errors;
 	}
@@ -32,17 +35,23 @@ public class AllErrors implements Serializable {
 	/**
 	 * Gets all the {@link Error}s.
 	 *
-	 * @return All the {@code Error}s.
+	 * @return A defensive copy of the list of {@code Error}s (or null if none).
 	 */
 	public List<Error> getErrors() {
-		if (null == errors) return errors;
-		errors.forEach(error -> {
+		if (errors == null) {
+			return null;
+		}
+		// Perform the deduplication logic on the internal list
+		for (Error error : errors) {
 			if (!error.getDetails().isEmpty()) {
-				List<Detail> details = new ArrayList<>(new LinkedHashSet<>(error.getDetails()));
-				error.setDetails(details);
+				List<Detail> deduped = new ArrayList<>(
+						new LinkedHashSet<>(error.getDetails())
+				);
+				error.setDetails(deduped);
 			}
-		});
-		return errors;
+		}
+		// Return a new ArrayList to avoid exposing the internal list directly
+		return new ArrayList<>(errors);
 	}
 
 	/**
@@ -50,6 +59,7 @@ public class AllErrors implements Serializable {
 	 *
 	 * @param errors The {@code Error}s to use.
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	public void setErrors(final List<Error> errors) {
 		this.errors = errors;
 	}
@@ -60,10 +70,9 @@ public class AllErrors implements Serializable {
 	 * @param error The {@code Error} to add.
 	 */
 	public void addError(Error error) {
-		if (null == errors) {
+		if (errors == null) {
 			errors = new ArrayList<>();
 		}
-
 		errors.add(error);
 	}
 

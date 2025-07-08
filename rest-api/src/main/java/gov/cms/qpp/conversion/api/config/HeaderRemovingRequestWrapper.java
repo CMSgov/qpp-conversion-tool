@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Enumeration;
 import java.util.Collections;
+import java.util.Locale;
 
 public class HeaderRemovingRequestWrapper extends HttpServletRequestWrapper {
 
@@ -15,15 +16,16 @@ public class HeaderRemovingRequestWrapper extends HttpServletRequestWrapper {
     public HeaderRemovingRequestWrapper(HttpServletRequest request, Set<String> headersToRemove) {
         super(request);
         this.headersToRemove = new HashSet<>();
-        // Normalize header names to lowercase for case-insensitive match
+        // Normalize header names using a locale‐neutral form for case‐insensitive comparisons
         for (String header : headersToRemove) {
-            this.headersToRemove.add(header.toLowerCase());
+            this.headersToRemove.add(header.toLowerCase(Locale.ROOT));
         }
     }
 
     @Override
     public String getHeader(String name) {
-        if (headersToRemove.contains(name.toLowerCase())) {
+        // Use Locale.ROOT to avoid locale‐specific case mappings
+        if (headersToRemove.contains(name.toLowerCase(Locale.ROOT))) {
             return null;
         }
         return super.getHeader(name);
@@ -31,7 +33,7 @@ public class HeaderRemovingRequestWrapper extends HttpServletRequestWrapper {
 
     @Override
     public Enumeration<String> getHeaders(String name) {
-        if (headersToRemove.contains(name.toLowerCase())) {
+        if (headersToRemove.contains(name.toLowerCase(Locale.ROOT))) {
             return Collections.emptyEnumeration();
         }
         return super.getHeaders(name);
@@ -40,7 +42,8 @@ public class HeaderRemovingRequestWrapper extends HttpServletRequestWrapper {
     @Override
     public Enumeration<String> getHeaderNames() {
         List<String> headerNames = Collections.list(super.getHeaderNames());
-        headerNames.removeIf(name -> headersToRemove.contains(name.toLowerCase()));
+        // Filter out removed headers, using locale‐neutral lowercase
+        headerNames.removeIf(header -> headersToRemove.contains(header.toLowerCase(Locale.ROOT)));
         return Collections.enumeration(headerNames);
     }
 }

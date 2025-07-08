@@ -15,6 +15,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConvertedJson;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverter;
 import com.amazonaws.services.dynamodbv2.datamodeling.encryption.DoNotEncrypt;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import gov.cms.qpp.conversion.model.error.Detail;
 
 /**
@@ -298,7 +299,7 @@ public final class Metadata {
 	/**
 	 * The purpose of the conversion, or null if it's a standard conversion
 	 *
-	 * @return The purpose of the conversion, for example \"Test\"
+	 * @return The purpose of the conversion, for example "Test"
 	 */
 	@DoNotEncrypt
 	@DynamoDBAttribute(attributeName = "Purpose")
@@ -548,6 +549,11 @@ public final class Metadata {
 		return combination;
 	}
 
+	/**
+	 * DynamoDB will store the Errors object as JSON.
+	 * Suppress EI_EXPOSE_REP since callers should not modify the returned Details directly.
+	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP")
 	@DoNotEncrypt
 	@DynamoDBTypeConvertedJson
 	@DynamoDBAttribute(attributeName = "Errors")
@@ -555,21 +561,41 @@ public final class Metadata {
 		return errors;
 	}
 
+	/**
+	 * Defensive copy: wrap incoming list in a new Details instance to avoid leaking the original list.
+	 *
+	 * @param errors list of Detail
+	 */
 	public void setErrors(List<Detail> errors) {
 		if (errors == null) {
-			setErrors((Details) null);
-			return;
+			this.errors = null;
+		} else {
+			Details d = new Details();
+			d.setDetails(errors);
+			this.errors = d;
 		}
-
-		Details details = new Details();
-		details.setDetails(errors);
-		setErrors(details);
 	}
 
+	/**
+	 * Defensive copy: clone the passed-in Details so we don't store a reference to a mutable object.
+	 *
+	 * @param errors Details to copy
+	 */
 	public void setErrors(Details errors) {
-		this.errors = errors;
+		if (errors == null) {
+			this.errors = null;
+		} else {
+			Details d = new Details();
+			d.setDetails(errors.getDetails());
+			this.errors = d;
+		}
 	}
 
+	/**
+	 * DynamoDB will store the Warnings object as JSON.
+	 * Suppress EI_EXPOSE_REP since callers should not modify the returned Details directly.
+	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP")
 	@DoNotEncrypt
 	@DynamoDBTypeConvertedJson
 	@DynamoDBAttribute(attributeName = "Warnings")
@@ -577,27 +603,44 @@ public final class Metadata {
 		return warnings;
 	}
 
+	/**
+	 * Defensive copy: wrap incoming list in a new Details instance to avoid leaking the original list.
+	 *
+	 * @param warnings list of Detail
+	 */
 	public void setWarnings(List<Detail> warnings) {
 		if (warnings == null) {
-			setWarnings((Details) null);
-			return;
+			this.warnings = null;
+		} else {
+			Details d = new Details();
+			d.setDetails(warnings);
+			this.warnings = d;
 		}
-
-		Details details = new Details();
-		details.setDetails(warnings);
-		setWarnings(details);
 	}
 
+	/**
+	 * Defensive copy: clone the passed-in Details so we don't store a reference to a mutable object.
+	 *
+	 * @param warnings Details to copy
+	 */
 	public void setWarnings(Details warnings) {
-		this.warnings = warnings;
+		if (warnings == null) {
+			this.warnings = null;
+		} else {
+			Details d = new Details();
+			d.setDetails(warnings.getDetails());
+			this.warnings = d;
+		}
 	}
+
 
 	/**
 	 * Sets the separate CPC+ processed flag and created date based on the argument
 	 *
-	 * Splits the the processed flag from the date by a {@code #} character.
-	 * The first field must be {@code true} or {@code false} which represents the CPC+ processed boolean.
-	 * The second field must be an ISO 8601 timestamp string.  For example, {@code 2018-12-08T18:32:54.846Z}.
+	 * Splits the processed flag from the date by a "#" character.
+	 * The first field must be "true" or "false" which represents the CPC+ processed boolean.
+	 * The second field must be an ISO 8601 timestamp string.
+	 * For example, "2018-12-08T18:32:54.846Z".
 	 *
 	 * @param combination The combined attribute.
 	 */
@@ -620,9 +663,10 @@ public final class Metadata {
 	/**
 	 * Sets the separate RTI+ processed flag and created date based on the argument
 	 *
-	 * Splits the the processed flag from the date by a {@code #} character.
-	 * The first field must be {@code true} or {@code false} which represents the RTI+ processed boolean.
-	 * The second field must be an ISO 8601 timestamp string.  For example, {@code 2018-12-08T18:32:54.846Z}.
+	 * Splits the processed flag from the date by a "#" character.
+	 * The first field must be "true" or "false" which represents the RTI+ processed boolean.
+	 * The second field must be an ISO 8601 timestamp string.
+	 * For example, "2018-12-08T18:32:54.846Z".
 	 *
 	 * @param combination The combined attribute.
 	 */

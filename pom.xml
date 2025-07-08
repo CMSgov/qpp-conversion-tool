@@ -6,7 +6,7 @@
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-conversion-tool-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>2024.2.13-RELEASE</version>
+	<version>2024.2.14-RELEASE</version>
 	<name>QPP Conversion Tool</name>
 
 	<properties>
@@ -85,7 +85,7 @@
 					<version>4.7.3.6</version>
 					<configuration>
 						<effort>Max</effort>
-						<threshold>High</threshold>
+						<threshold>Low</threshold>
 						<omitVisitors>SerializableIdiom,Naming</omitVisitors>
 					</configuration>
 					<executions>
@@ -465,7 +465,7 @@
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-web</artifactId>
-				<version>6.3.5</version>
+				<version>6.3.8</version>
 			</dependency>
 
 			<dependency>

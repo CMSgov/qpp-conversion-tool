@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -17,6 +18,7 @@ import java.util.List;
  */
 public abstract class JsonOutputEncoder implements OutputEncoder {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(JsonOutputEncoder.class);
+
 	private List<Node> nodes;
 	private List<Detail> errors = new ArrayList<>();
 	private List<Detail> warnings = new ArrayList<>();
@@ -44,8 +46,8 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 	/**
 	 * Encode given node into json
 	 *
-	 * @param wrapper structure that facilitates json serialization
-	 * @param node structure to be converted to json
+	 * @param wrapper   structure that facilitates json serialization
+	 * @param node      structure to be converted to json
 	 */
 	public void encode(JsonWrapper wrapper, Node node) {
 		encode(wrapper, node, true);
@@ -54,9 +56,9 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 	/**
 	 * Encode given node into json. Optionally include metadata about originating node.
 	 *
-	 * @param wrapper structure that facilitates json serialization
-	 * @param node structure to be converted to json
-	 * @param mergeMetadata instruction on whether or not metadata should be included in the wrapper
+	 * @param wrapper        structure that facilitates json serialization
+	 * @param node           structure to be converted to json
+	 * @param mergeMetadata  instruction on whether or not metadata should be included in the wrapper
 	 */
 	public void encode(JsonWrapper wrapper, Node node, boolean mergeMetadata) {
 		try {
@@ -74,6 +76,7 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 
 	/**
 	 * Encodes the nodes as JSON.
+	 *
 	 * @return a custom JSON wrapper class that knows how to process QPP Nodes.
 	 */
 	@Override
@@ -87,6 +90,7 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 
 	/**
 	 * Add a new validation error
+	 *
 	 * @param detail the error information
 	 */
 	public void addValidationError(Detail detail) {
@@ -95,6 +99,7 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 
 	/**
 	 * Add a new validation warning
+	 *
 	 * @param detail the warning information
 	 */
 	public void addValidationWarning(Detail detail) {
@@ -102,37 +107,44 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 	}
 
 	/**
-	 * get the list of all validation errors.
-	 * 
-	 * @return list of error details
+	 * Get the list of all validation errors.
+	 *
+	 * @return a *copy* of the internal list of error details
 	 */
 	public List<Detail> getErrors() {
-		return this.errors;
+		return new ArrayList<>(this.errors);
 	}
 
 	/**
-	 * get the list of all validation earnings.
-	 * 
-	 * @return list of warning details
+	 * Get the list of all validation warnings.
+	 *
+	 * @return a *copy* of the internal list of warning details
 	 */
 	public List<Detail> getWarnings() {
-		return this.warnings;
+		return new ArrayList<>(this.warnings);
 	}
 
 	/**
 	 * Assign a new list of QPP element nodes.
+	 * Defensive copy to avoid exposing internal representation (EI_EXPOSE_REP2).
+	 *
 	 * @param someNodes the new list of nodes
 	 */
 	public void setNodes(List<Node> someNodes) {
-		this.nodes = someNodes;
+		if (someNodes == null) {
+			this.nodes = Collections.emptyList();
+		} else {
+			// shallow copy is sufficient since Node is immutable in our model
+			this.nodes = new ArrayList<>(someNodes);
+		}
 	}
 
 	/**
 	 * Subclasses must implement this method with the
 	 * specific encoding method for its node type handling.
-	 * 
+	 *
 	 * @param wrapper the entire JSON node collection.
-	 * @param node the current node
+	 * @param node    the current node
 	 */
 	protected abstract void internalEncode(JsonWrapper wrapper, Node node);
 }

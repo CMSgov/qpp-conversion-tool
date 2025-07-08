@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 /**
  * Encoder to serialize the root node of the Document-Level Template: QRDA Category III Report (ClinicalDocument).
  */
-
 @Encoder(TemplateId.CLINICAL_DOCUMENT)
 public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
@@ -40,8 +39,14 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	@Override
 	public void internalEncode(JsonWrapper wrapper, Node thisNode) {
 		encodeToplevel(wrapper, thisNode);
-		Map<TemplateId, Node> childMapByTemplateId = thisNode.getChildNodes().stream().collect(
-				Collectors.toMap(Node::getType, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
+
+		Map<TemplateId, Node> childMapByTemplateId = thisNode.getChildNodes().stream()
+				.collect(Collectors.toMap(
+						Node::getType,
+						Function.identity(),
+						(v1, v2) -> v1,
+						LinkedHashMap::new
+				));
 
 		JsonWrapper measurementSets = encodeMeasurementSets(childMapByTemplateId, thisNode);
 		wrapper.put(MEASUREMENT_SETS, measurementSets);
@@ -57,12 +62,13 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		String entityType = thisNode.getValue(ENTITY_TYPE);
 		encodePerformanceYear(wrapper, thisNode);
 		wrapper.put(ENTITY_TYPE, entityType);
+
 		if (!ENTITY_APM.equals(entityType)
-			&& !ENTITY_SUBGROUP.equalsIgnoreCase(entityType)) {
+				&& !ENTITY_SUBGROUP.equalsIgnoreCase(entityType)) {
 			wrapper.put(NATIONAL_PROVIDER_IDENTIFIER,
-				thisNode.getValue(NATIONAL_PROVIDER_IDENTIFIER));
+					thisNode.getValue(NATIONAL_PROVIDER_IDENTIFIER));
 			wrapper.put(TAX_PAYER_IDENTIFICATION_NUMBER,
-				thisNode.getValue(TAX_PAYER_IDENTIFICATION_NUMBER));
+					thisNode.getValue(TAX_PAYER_IDENTIFICATION_NUMBER));
 		}
 
 		if (Program.isPcf(thisNode)) {
@@ -73,8 +79,8 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 			wrapper.put(ENTITY_ID, thisNode.getValue(ENTITY_ID));
 		}
 
-		if ((Program.isApp(thisNode) || Program.isMips(thisNode) &&
-			ENTITY_APM.equalsIgnoreCase(entityType))) {
+		if ((Program.isApp(thisNode) || Program.isMips(thisNode))
+				&& ENTITY_APM.equalsIgnoreCase(entityType)) {
 			wrapper.put(ENTITY_ID, thisNode.getValue(ENTITY_ID));
 		}
 
@@ -101,28 +107,36 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	}
 
 	/**
-	 * Method for encoding each child measurement set
+	 * Method for encoding each child measurement set.
 	 *
 	 * @param childMapByTemplateId object that represents the document's children
+	 * @param currentNode the clinical document node
 	 * @return encoded measurement sets
 	 */
-	private JsonWrapper encodeMeasurementSets(Map<TemplateId, Node> childMapByTemplateId, Node currentNode) {
+	private JsonWrapper encodeMeasurementSets(
+			Map<TemplateId, Node> childMapByTemplateId,
+			Node currentNode
+	) {
 		JsonWrapper measurementSetsWrapper = new JsonWrapper();
 		JsonWrapper childWrapper;
-		JsonOutputEncoder sectionEncoder;
 
 		for (Node child : childMapByTemplateId.values()) {
 			if (child == null) {
 				continue;
 			}
+
+			TemplateId childType = child.getType();
+			JsonOutputEncoder sectionEncoder = encoders.get(childType);
+			if (sectionEncoder == null) {
+				// No encoder for this template → skip
+				continue;
+			}
+
 			try {
-				TemplateId childType = child.getType();
-
 				childWrapper = new JsonWrapper();
-				sectionEncoder = encoders.get(childType);
-
 				sectionEncoder.encode(childWrapper, child);
 				childWrapper.put("source", "qrda3");
+
 				String mvpId = currentNode.getValue(MVP_ID);
 				if (TemplateId.MEASURE_SECTION_V5.getRoot().equalsIgnoreCase(childType.getRoot())
 					&& !StringUtils.isEmpty(mvpId)) {
@@ -139,11 +153,19 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 				}
 
 				measurementSetsWrapper.put(childWrapper);
-			} catch (NullPointerException exc) { //NOSONAR NPE can be deep in method calls
-				String message = "An unexpected error occured for " + child.getType();
-				throw new EncodeException(message, exc);
+
+			} catch (RuntimeException e) {
+				if (e instanceof EncodeException) {
+					throw e;
+				}
+				// Wrap any unexpected runtime exception in EncodeException
+				throw new EncodeException(
+						"An unexpected error occurred for template " + childType,
+						e
+				);
 			}
 		}
+
 		return measurementSetsWrapper;
 	}
 }

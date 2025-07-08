@@ -11,6 +11,7 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ValidationResult;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * The parent class that all validators must inherit from.
@@ -26,6 +27,12 @@ public abstract class NodeValidator {
 		this(null);
 	}
 
+	/**
+	 * Create a validator with the given context.
+	 *
+	 * @param context the validation context
+	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	public NodeValidator(Context context) {
 		this.context = context;
 	}
@@ -43,7 +50,7 @@ public abstract class NodeValidator {
 	 * of {@link Detail}s for that node.
 	 *
 	 * @param node The node to validate.
-	 * @return List of errors determined for the node paramter.
+	 * @return List of errors determined for the node parameter.
 	 * @see #performValidation(Node)
 	 */
 	public final ValidationResult validateSingleNode(Node node) {
@@ -56,8 +63,8 @@ public abstract class NodeValidator {
 	 * Overridden by child classes to validate a specific {@link gov.cms.qpp.conversion.model.Node}.
 	 *
 	 * <p>
-	 * The implementation should validate the {@link gov.cms.qpp.conversion.model.Node} passed in.  If an error is
-	 * found, the child class must call {@link #addError(Detail)} for it to be reported.  The
+	 * The implementation should validate the {@link gov.cms.qpp.conversion.model.Node} passed in. If an error is
+	 * found, the child class must call {@link #addError(Detail)} for it to be reported. The
 	 * Node argument will have the same ID as the templateId of the
 	 * {@link gov.cms.qpp.conversion.model.Validator}.
 	 * </p>
@@ -85,7 +92,8 @@ public abstract class NodeValidator {
 	}
 
 	/**
-	 * Used to determine if a error detail has been added.
+	 * Used to determine if an error detail has been added.
+	 *
 	 * @param detail the error to check exists
 	 * @return True if detail is contained in the errors collection
 	 */
@@ -95,6 +103,7 @@ public abstract class NodeValidator {
 
 	/**
 	 * Returns a checker for implementations of performValidation(Node)
+	 *
 	 * @param node the node for the checker to visit
 	 * @return an instance of Checker for the node and the continuing collection of errors.
 	 */
@@ -104,6 +113,7 @@ public abstract class NodeValidator {
 
 	/**
 	 * Identical use as checkErrors except that the Checker instance is in force mode.
+	 *
 	 * @param node the node for the checker to visit
 	 * @return an instance of Checker for the node and the continuing collection of errors.
 	 */
@@ -113,6 +123,7 @@ public abstract class NodeValidator {
 
 	/**
 	 * Returns a checker for implementations of performValidation(Node)
+	 *
 	 * @param node the node for the checker to visit
 	 * @return an instance of Checker for the node and the continuing collection of warnings.
 	 */

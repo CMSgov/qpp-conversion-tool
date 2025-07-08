@@ -11,6 +11,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.encryption.providers.DirectKmsMaterialProvider;
 import com.amazonaws.services.kms.AWSKMS;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanInitializationException;
@@ -36,7 +37,11 @@ public class DynamoDbConfig {
 	static final String NO_KMS_KEY = "No KMS key specified!";
 
 	private Environment environment;
-	private AWSKMS awsKms;
+	/**
+	 * AWSKMS is thread-safe; suppress EI_EXPOSE_REP2 since we intend to share it.
+	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
+	private final AWSKMS awsKms;
 
 	/**
 	 * Ensure required dependencies are supplied.

@@ -17,12 +17,19 @@ import gov.cms.qpp.conversion.api.services.StorageService;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+
 @Service
 public class AdvancedApmFileServiceImpl implements AdvancedApmFileService {
 
 	private DbService dbService;
 	private StorageService storageService;
 
+	/**
+	 * Spring injects thread-safe service beans; suppress EI_EXPOSE_REP2 since sharing is intentional.
+	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	public AdvancedApmFileServiceImpl(DbService dbService, StorageService storageService) {
 		this.dbService = dbService;
 		this.storageService = storageService;

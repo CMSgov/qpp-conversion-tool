@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.model.Decoder;
@@ -24,6 +25,12 @@ public abstract class QrdaDecoder {
 	protected Namespace xpathNs = Namespace.NO_NAMESPACE;
 	private Namespace defaultNs = Namespace.NO_NAMESPACE;
 
+	/**
+	 * Construct a QRDA decoder with the given context.
+	 *
+	 * @param context conversion context
+	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	public QrdaDecoder(Context context) {
 		this.context = context;
 	}
@@ -37,10 +44,12 @@ public abstract class QrdaDecoder {
 	 *
 	 * @param defaultNs namespace assigned to decoder
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	public void setNamespace(Namespace defaultNs) {
 		this.defaultNs = defaultNs;
 		String defaultNsUri = defaultNs.getURI();
-		xpathNs = StringUtils.isEmpty(defaultNsUri) ? Namespace.NO_NAMESPACE : Namespace.getNamespace("ns", defaultNsUri);
+		xpathNs = StringUtils.isEmpty(defaultNsUri) ?
+				Namespace.NO_NAMESPACE : Namespace.getNamespace("ns", defaultNsUri);
 	}
 
 	/**
@@ -50,40 +59,51 @@ public abstract class QrdaDecoder {
 	 * @return xpath expression as a string
 	 */
 	protected String getXpath(String attribute) {
-		String template = this.getClass().getAnnotation(Decoder.class).value().name();
+		String template = this.getClass()
+				.getAnnotation(Decoder.class)
+				.value().name();
 		return PathCorrelator.getXpath(template, attribute, defaultNs.getURI());
 	}
 
 	/**
-	 * Executes an Xpath for an element and executes the consumer
+	 * Executes an XPath for an element and executes the consumer
 	 *
-	 * @param element Element the xpath is executed against
+	 * @param element      Element the xpath is executed against
 	 * @param expressionStr Xpath
-	 * @param consumer Consumer to execute if the xpath matches
-	 * @param filter Filter to apply for the xpath
-	 * @param selectOne Whether to execute for the first match or multiple matches
+	 * @param consumer     Consumer to execute if the xpath matches
+	 * @param filter       Filter to apply for the xpath
+	 * @param selectOne    Whether to execute for the first match or multiple matches
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void setOnNode(Element element, String expressionStr,
-		Consumer consumer, Filter<?> filter, boolean selectOne) {
-		XPathExpression<?> expression = XPathFactory.instance().compile(expressionStr, filter, null,  xpathNs);
+							 Consumer consumer, Filter<?> filter, boolean selectOne) {
+		XPathExpression<?> expression = XPathFactory.instance()
+				.compile(expressionStr, filter, null, xpathNs);
 
 		if (selectOne) {
 			Optional.ofNullable(expression.evaluateFirst(element)).ifPresent(consumer);
 		} else {
 			List<?> elems = expression.evaluate(element);
 			Optional.ofNullable(elems)
-				.ifPresent(notNullElems -> notNullElems.forEach(consumer));
+					.ifPresent(notNullElems -> notNullElems.forEach(consumer));
 		}
 	}
 
+	/**
+	 * Executes an XPath for attributes and passes values to the consumer
+	 *
+	 * @param element       Element the xpath is executed against
+	 * @param expressionStr Xpath
+	 * @param consumer      Consumer to execute with list of string values
+	 * @param filter        Filter to apply for the xpath
+	 */
 	protected void setMultipleAttributesOnNode(Element element, String expressionStr,
-		Consumer<List<String>> consumer, Filter<Attribute> filter) {
-		XPathExpression<Attribute> expression = XPathFactory.instance().compile(expressionStr, filter, null,  xpathNs);
+											   Consumer<List<String>> consumer, Filter<Attribute> filter) {
+		XPathExpression<Attribute> expression = XPathFactory.instance()
+				.compile(expressionStr, filter, null, xpathNs);
 		List<Attribute> elems = expression.evaluate(element);
 		List<String> values = new ArrayList<>();
 		elems.forEach(attr -> values.add(attr.getValue()));
 		consumer.accept(values);
 	}
-
 }

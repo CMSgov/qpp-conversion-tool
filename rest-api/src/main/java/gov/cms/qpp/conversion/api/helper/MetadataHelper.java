@@ -5,6 +5,7 @@ import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.util.Arrays;
 import java.util.List;
@@ -159,6 +160,7 @@ public class MetadataHelper {
 	/**
 	 * Potential states of conversion outcomes.
 	 */
+	@SuppressFBWarnings("MS_EXPOSE_REP")
 	public enum Outcome {
 		SUCCESS(true, true, true),
 		CONVERSION_ERROR(false, false, false),
@@ -185,5 +187,4 @@ public class MetadataHelper {
 			metadata.setValidationStatus(validation);
 		}
 	}
-
 }

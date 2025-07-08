@@ -1,13 +1,13 @@
 package gov.cms.qpp.conversion.model.error;
 
-import java.io.Serializable;
-import java.util.Objects;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.google.common.base.MoreObjects;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.google.common.base.MoreObjects;
+import java.io.Serializable;
+import java.util.Objects;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.util.MeasureConfigHelper;
@@ -58,24 +58,24 @@ public class Detail implements Serializable {
 	 * Creates a mutable {@link Detail} based on the given {@link LocalizedProblem} and {@link Node}
 	 *
 	 * @param problem error to be added
-	 * @param node node that gives the error context
+	 * @param node    node that gives the error context
 	 * @return detail for given error
 	 */
 	public static Detail forProblemAndNode(LocalizedProblem problem, Node node) {
 		Detail detail = forProblemCode(problem);
 
 		if (node != null) {
-			Location location = detail.getLocation();
+			Location loc = detail.getLocation();
 			if (node.getLine() != Node.DEFAULT_LOCATION_NUMBER) {
-				location.setLine(node.getLine());
+				loc.setLine(node.getLine());
 			}
 
 			if (node.getColumn() != Node.DEFAULT_LOCATION_NUMBER) {
-				location.setColumn(node.getColumn());
+				loc.setColumn(node.getColumn());
 			}
 
-			location.setPath(node.getOrComputePath());
-			location.setLocation(computeLocation(node));
+			loc.setPath(node.getOrComputePath());
+			loc.setLocation(computeLocation(node));
 		}
 
 		return detail;
@@ -97,7 +97,7 @@ public class Detail implements Serializable {
 	}
 
 	private static String computeLocation(Node node) {
-		StringBuilder location = new StringBuilder();
+		StringBuilder locationBuilder = new StringBuilder();
 
 		Node importantParentNode = node.findParentNodeWithHumanReadableTemplateId();
 
@@ -105,21 +105,21 @@ public class Detail implements Serializable {
 			String importantParentTitle = importantParentNode.getType().getHumanReadableTitle();
 			String possibleMeasureId = importantParentNode.getValue("measureId");
 
-			location.append(importantParentTitle);
+			locationBuilder.append(importantParentTitle);
 
 			if (!StringUtils.isEmpty(possibleMeasureId)) {
-				location.append(" ");
-				location.append(possibleMeasureId);
-				String possibleElectronicMeasureId = MeasureConfigHelper.getMeasureConfigIdByUuidOrDefault(possibleMeasureId);
+				locationBuilder.append(" ").append(possibleMeasureId);
+				String possibleElectronicMeasureId =
+						MeasureConfigHelper.getMeasureConfigIdByUuidOrDefault(possibleMeasureId);
 				if (!StringUtils.isEmpty(possibleElectronicMeasureId)) {
-					location.append(" (");
-					location.append(possibleElectronicMeasureId);
-					location.append(")");
+					locationBuilder.append(" (")
+							.append(possibleElectronicMeasureId)
+							.append(")");
 				}
 			}
 		}
 
-		return location.toString();
+		return locationBuilder.toString();
 	}
 
 	/**
@@ -179,6 +179,7 @@ public class Detail implements Serializable {
 	 *
 	 * @return The location.
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP")
 	public Location getLocation() {
 		return location;
 	}
@@ -188,6 +189,7 @@ public class Detail implements Serializable {
 	 *
 	 * @param location The location.
 	 */
+	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	public void setLocation(Location location) {
 		this.location = location;
 	}
@@ -208,7 +210,6 @@ public class Detail implements Serializable {
 		if (this == o) {
 			return true;
 		}
-
 		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
