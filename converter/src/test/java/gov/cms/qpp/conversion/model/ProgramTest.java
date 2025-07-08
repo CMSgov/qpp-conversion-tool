@@ -115,6 +115,27 @@ class ProgramTest implements EnumContract {
 		assertThat(actual).containsAtLeastElementsIn(expected);
 	}
 
+	@Test
+	void testIsAppPlusIndividualIsTrue() {
+		Node node = new Node();
+		node.putValue(RAW_PROGRAM_NAME, "APP_PLUS_INDIV");
+		assertThat(Program.isAppPlus(node)).isTrue();
+	}
+
+	@Test
+	void testIsAppPlusGroupIsTrue() {
+		Node node = new Node();
+		node.putValue(RAW_PROGRAM_NAME, "APP_PLUS_GROUP");
+		assertThat(Program.isAppPlus(node)).isTrue();
+	}
+
+	@Test
+	void testIsAppPlusAppEntityIsTrue() {
+		Node node = new Node();
+		node.putValue(RAW_PROGRAM_NAME, "APP_PLUS_APMENTITY");
+		assertThat(Program.isAppPlus(node)).isTrue();
+	}
+
 	@Override
 	public Class<? extends Enum<?>> getEnumType() {
 		return Program.class;
