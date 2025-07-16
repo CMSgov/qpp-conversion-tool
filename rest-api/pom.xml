@@ -30,7 +30,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>3.3.7</version>
+				<version>3.4.7</version>
 				<executions>
 					<execution>
 						<goals>
@@ -63,7 +63,7 @@
 				<!-- Import dependency management from Spring Boot -->
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
-				<version>3.3.7</version>
+				<version>3.4.7</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -71,6 +71,11 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-webmvc</artifactId>
 				<version>6.1.14</version>
+			</dependency>
+			<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
+			<version>6.3.8</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -122,17 +127,17 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
-			<version>3.3.7</version>
+			<version>3.4.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<version>3.3.7</version>
+			<version>3.4.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
-			<version>6.1.15</version>
+			<version>6.1.21</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -178,7 +183,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>6.1.15</version>
+			<version>6.1.21</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -211,13 +216,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
-			<version>6.1.15</version>
-		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-test</artifactId>
@@ -319,7 +317,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
-			<version>3.3.7</version>
+			<version>3.4.7</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
