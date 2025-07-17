@@ -68,6 +68,7 @@ public class Constants {
     public static final String APP_PROGRAM_NAME = "app1";
     public static final String APP_PLUS_PROGRAM_NAME = "appPlus";
     public static final String MIPS = "MIPS";
+    public static final String SSP_PROGRAM_NAME = "ssp";
     public static final Set<String> MVP_ENTITIES = Set.of(ENTITY_INDIVIDUAL, ENTITY_GROUP, ENTITY_SUBGROUP, ENTITY_APM);
 
     // Program names in XML format

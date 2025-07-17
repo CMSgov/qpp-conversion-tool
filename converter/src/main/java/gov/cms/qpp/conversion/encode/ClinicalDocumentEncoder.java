@@ -79,7 +79,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 			wrapper.put(ENTITY_ID, thisNode.getValue(ENTITY_ID));
 		}
 
-		if ((Program.isApp(thisNode) || Program.isMips(thisNode) || Program.isAppPlus(thisNode))
+		if ((Program.isApp(thisNode) || Program.isMips(thisNode) || Program.isAppPlus(thisNode) || Program.isSsp(thisNode))
 				&& ENTITY_APM.equalsIgnoreCase(entityType)) {
 			wrapper.put(ENTITY_ID, thisNode.getValue(ENTITY_ID));
 		}
@@ -153,6 +153,10 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 							case APP_APM:
 								childWrapper.put(PROGRAM_NAME,
 										APP_PROGRAM_NAME.toLowerCase(Locale.getDefault()));
+								break;
+							case SSP_PI_APM:
+								childWrapper.put(PROGRAM_NAME,
+										SSP_PROGRAM_NAME.toLowerCase(Locale.getDefault()));
 								break;
 							default:
 								// no matching program

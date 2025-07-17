@@ -134,8 +134,11 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 		Consumer<? super Attribute> consumer = p -> {
 			Pair<String, String> nameEntityPair = getProgramNameEntityPair(p.getValue());
 			thisNode.putValue(PROGRAM_NAME, nameEntityPair.getLeft(), false);
+			System.out.println("Program name: " + PROGRAM_NAME);
 			thisNode.putValue(ENTITY_TYPE, nameEntityPair.getRight(), false);
+			System.out.println("Entity Type: " + ENTITY_TYPE);
 			thisNode.putValue(RAW_PROGRAM_NAME, p.getValue(), false);
+			System.out.println("Raw Program name: " + RAW_PROGRAM_NAME);
 		};
 		setOnNode(element, getXpath(PROGRAM_NAME), consumer, Filters.attribute(), false);
 		context.setProgram(Program.extractProgram(thisNode));
@@ -258,15 +261,15 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 				break;
 
 			case SSP_PI_INDIVIDUAL:
-				pair = new ImmutablePair<>(SSP_PI_INDIVIDUAL, ENTITY_INDIVIDUAL);
+				pair = new ImmutablePair<>(SSP_PROGRAM_NAME, ENTITY_INDIVIDUAL);
 				break;
 
 			case SSP_PI_GROUP:
-				pair = new ImmutablePair<>(SSP_PI_GROUP, ENTITY_GROUP);
+				pair = new ImmutablePair<>(SSP_PROGRAM_NAME, ENTITY_GROUP);
 				break;
 
 			case SSP_PI_APM:
-				pair = new ImmutablePair<>(SSP_PI_APM, ENTITY_APM);
+				pair = new ImmutablePair<>(SSP_PROGRAM_NAME, ENTITY_APM);
 				break;
 
 			default:

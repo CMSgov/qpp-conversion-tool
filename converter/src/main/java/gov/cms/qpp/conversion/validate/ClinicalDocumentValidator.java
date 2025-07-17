@@ -35,6 +35,7 @@ public class ClinicalDocumentValidator extends NodeValidator {
 	 */
 	@Override
 	protected void performValidation(final Node node) {
+		System.out.println("Starting validation for ClinicalDocument node: " + node.getType());
 
 		forceCheckErrors(node)
 			.childMinimum(ProblemCode.CLINICAL_DOCUMENT_MISSING_PI_OR_IA_OR_ECQM_CHILD, 1,
@@ -51,9 +52,13 @@ public class ClinicalDocumentValidator extends NodeValidator {
 		if (!containsError(Detail.forProblemAndNode(ProblemCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME.format(VALID_PROGRAM_NAMES), node))) {
 			String programName = Optional.ofNullable(node.getValue(PROGRAM_NAME)).orElse("<missing>");
 			String entityType = Optional.ofNullable(node.getValue(ENTITY_TYPE)).orElse("<missing>");
+			System.out.println("Program name: " + programName);
+			System.out.println("Valid program names " + VALID_PROGRAM_NAMES);
+			System.out.println("Entity type: " + entityType);
+			
 
 			forceCheckErrors(node).valueIn(ProblemCode.CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME.format(VALID_PROGRAM_NAMES, programName),
-				PROGRAM_NAME, MIPS_PROGRAM_NAME, PCF, APP_PROGRAM_NAME, APP_PLUS_PROGRAM_NAME);
+				PROGRAM_NAME, MIPS_PROGRAM_NAME, PCF, APP_PROGRAM_NAME, APP_PLUS_PROGRAM_NAME, SSP_PROGRAM_NAME);
 
 			if (ENTITY_VIRTUAL_GROUP.equals(entityType)) {
 				forceCheckErrors(node).value(ProblemCode.VIRTUAL_GROUP_ID_REQUIRED, ENTITY_ID);
