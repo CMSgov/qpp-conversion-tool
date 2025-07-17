@@ -6,12 +6,12 @@
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-conversion-tool-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>2024.2.14-RELEASE</version>
+	<version>2025.07.16.01-RELEASE</version>
 	<name>QPP Conversion Tool</name>
 
 	<properties>
 		<java.version>17</java.version>
-		<aws.version>1.12.316</aws.version>
+		<aws.version>1.12.787</aws.version>
 		<junit.version>5.8.1</junit.version>
 		<jjwt.version>0.10.7</jjwt.version>
 
@@ -431,13 +431,13 @@
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-classic</artifactId>
-				<version>1.5.12</version>
+				<version>1.5.13</version>
 			</dependency>
 
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-core</artifactId>
-				<version>1.5.12</version>
+				<version>1.5.13</version>
 			</dependency>
 
 			<dependency>
