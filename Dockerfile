@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17
+FROM eclipse-temurin:17 AS builder
 
 ARG MAVEN_VERSION=3.9.6
 ARG USER_HOME_DIR="/root"
@@ -18,19 +18,17 @@ ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 COPY mvn-entrypoint.sh /usr/local/bin/mvn-entrypoint.sh
 COPY settings-docker.xml /usr/share/maven/ref/
 
-ENTRYPOINT ["/usr/local/bin/mvn-entrypoint.sh"]
-CMD ["mvn"]
-
-RUN mkdir -p /usr/src/app/
-RUN mkdir -p /usr/src/run/
-
 COPY ./ /usr/src/app/
-
 WORKDIR /usr/src/app/
 
-RUN cp -r ./tools/docker/docker-artifacts/* /usr/src/run/
-RUN mvn install -Dmaven.test.skip -Djacoco.skip=true > /dev/null
-RUN cp ./rest-api/target/rest-api.jar /usr/src/run/
+RUN /usr/local/bin/mvn-entrypoint.sh mvn install -Dmaven.test.skip -Djacoco.skip=true > /dev/null
+
+# Final stage
+FROM eclipse-temurin:17-jre
+
+RUN mkdir -p /usr/src/run/
+COPY --from=builder /usr/src/app/tools/docker/docker-artifacts/* /usr/src/run/
+COPY --from=builder /usr/src/app/rest-api/target/rest-api.jar /usr/src/run/
 
 WORKDIR /usr/src/run/
 
