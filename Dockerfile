@@ -18,7 +18,16 @@ ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 COPY mvn-entrypoint.sh /usr/local/bin/mvn-entrypoint.sh
 COPY settings-docker.xml /usr/share/maven/ref/
 
-COPY ./ /usr/src/app/
+# Copy src files needed for build
+COPY pom.xml /usr/src/app/
+COPY commons/ /usr/src/app/commons/
+COPY test-commons/ /usr/src/app/test-commons/
+COPY converter/ /usr/src/app/converter/
+COPY commandline/ /usr/src/app/commandline/
+COPY rest-api/ /usr/src/app/rest-api/
+COPY generate/ /usr/src/app/generate/
+COPY test-coverage/ /usr/src/app/test-coverage/
+COPY tools/docker/docker-artifacts/ /usr/src/app/tools/docker/docker-artifacts/
 WORKDIR /usr/src/app/
 
 RUN /usr/local/bin/mvn-entrypoint.sh mvn install -Dmaven.test.skip -Djacoco.skip=true > /dev/null
