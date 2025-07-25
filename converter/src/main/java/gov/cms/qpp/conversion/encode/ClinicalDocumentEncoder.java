@@ -79,7 +79,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 			wrapper.put(ENTITY_ID, thisNode.getValue(ENTITY_ID));
 		}
 
-		if ((Program.isApp(thisNode) || Program.isMips(thisNode) || Program.isAppPlus(thisNode))
+		if ((Program.isApp(thisNode) || Program.isMips(thisNode) || Program.isAppPlus(thisNode) || Program.isSsp(thisNode))
 				&& ENTITY_APM.equalsIgnoreCase(entityType)) {
 			wrapper.put(ENTITY_ID, thisNode.getValue(ENTITY_ID));
 		}
