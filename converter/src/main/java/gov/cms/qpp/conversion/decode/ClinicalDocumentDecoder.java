@@ -258,15 +258,15 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 				break;
 
 			case SSP_PI_INDIVIDUAL:
-				pair = new ImmutablePair<>(SSP_PI_INDIVIDUAL, ENTITY_INDIVIDUAL);
+				pair = new ImmutablePair<>(SSP_PROGRAM_NAME, ENTITY_INDIVIDUAL);
 				break;
 
 			case SSP_PI_GROUP:
-				pair = new ImmutablePair<>(SSP_PI_GROUP, ENTITY_GROUP);
+				pair = new ImmutablePair<>(SSP_PROGRAM_NAME, ENTITY_GROUP);
 				break;
 
 			case SSP_PI_APM:
-				pair = new ImmutablePair<>(SSP_PI_APM, ENTITY_APM);
+				pair = new ImmutablePair<>(SSP_PROGRAM_NAME, ENTITY_APM);
 				break;
 
 			default:
