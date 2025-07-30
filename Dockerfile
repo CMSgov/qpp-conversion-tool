@@ -36,7 +36,6 @@ RUN /usr/local/bin/mvn-entrypoint.sh mvn install -Dmaven.test.skip -Djacoco.skip
 FROM eclipse-temurin:17-jre
 
 RUN mkdir -p /usr/src/run/
-
 COPY --from=builder /usr/src/app/tools/docker/docker-artifacts /usr/src/run/
 COPY --from=builder /usr/src/app/rest-api/target/rest-api.jar /usr/src/run/
 
