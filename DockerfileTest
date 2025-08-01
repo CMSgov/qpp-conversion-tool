@@ -1,16 +1,18 @@
-FROM maven:3.9.6-eclipse-temurin-17
-
-RUN mkdir -p /usr/src/app/
-RUN mkdir -p /usr/src/run/
-RUN apt-get update && apt-get install dos2unix
+FROM maven:3.9.6-eclipse-temurin-17 AS builder
 
 COPY ./ /usr/src/app/
-
 WORKDIR /usr/src/app/
 
 RUN mvn install -Dmaven.test.skip -Djacoco.skip=true > /dev/null
-RUN cp ./rest-api/target/rest-api.jar /usr/src/run/
-RUN cp -r ./tools/docker/docker-test-artifacts/* /usr/src/run/
+
+# Final stage
+FROM eclipse-temurin:17-jre
+
+RUN apt-get update && apt-get install -y dos2unix && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /usr/src/run/
+COPY --from=builder /usr/src/app/rest-api/target/rest-api.jar /usr/src/run/
+COPY --from=builder /usr/src/app/tools/docker/docker-test-artifacts/* /usr/src/run/
 RUN dos2unix /usr/src/run/qppConverterTest.sh
 
 WORKDIR /usr/src/run/

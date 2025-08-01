@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>2025.07.16.01-RELEASE</version>
+		<version>2025.07.31.01-RELEASE</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -18,7 +18,7 @@
 	<properties>
 		<requiredCodeCoverage>0.90</requiredCodeCoverage>
 
-		<tomcat.version>10.1.42</tomcat.version>
+		<tomcat.version>11.0.9</tomcat.version>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/../test-coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 		<io.rest-assured.version>4.1.2</io.rest-assured.version>
 		<junit.version>5.7.0</junit.version>

@@ -136,6 +136,41 @@ class ProgramTest implements EnumContract {
 		assertThat(Program.isAppPlus(node)).isTrue();
 	}
 
+	@Test
+	void testIsSspIndividualIsTrue() {
+		Node node = new Node();
+		node.putValue(RAW_PROGRAM_NAME, "SSP_PI_INDIV");
+		assertThat(Program.isSsp(node)).isTrue();
+	}
+
+	@Test
+	void testIsSspGroupIsTrue() {
+		Node node = new Node();
+		node.putValue(RAW_PROGRAM_NAME, "SSP_PI_GROUP");
+		assertThat(Program.isSsp(node)).isTrue();
+	}
+
+	@Test
+	void testIsSspAppEntityIsTrue() {
+		Node node = new Node();
+		node.putValue(RAW_PROGRAM_NAME, "SSP_PI_APMENTITY");
+		assertThat(Program.isSsp(node)).isTrue();
+	}
+
+	@Test
+	void testIsSspReturnsFalseForMips() {
+		Node node = new Node();
+		node.putValue(RAW_PROGRAM_NAME, "MIPS_INDIV");
+		assertThat(Program.isSsp(node)).isFalse();
+	}
+
+	@Test
+	void testIsSspReturnsFalseForNullValue() {
+		Node node = new Node();
+		node.putValue(RAW_PROGRAM_NAME, null);
+		assertThat(Program.isSsp(node)).isFalse();
+	}
+
 	@Override
 	public Class<? extends Enum<?>> getEnumType() {
 		return Program.class;
