@@ -1,0 +1,5 @@
+ignore:
+  "com.github.spotbugs:spotbugs-maven-plugin":
+    - "*":
+        reason: "SpotBugs is a build-time plugin and does not impact runtime security."
+        expires: "2025-12-31"
