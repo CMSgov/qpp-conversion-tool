@@ -25,22 +25,6 @@ phases:
     runtime-versions:
       python: 3.8
     commands:
-      - |
-          CURL_PAYLOAD=$( jq -n \
-            --arg state "pending" \
-            --arg target_url "https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#logEvent:group=/aws/codebuild/${ENV}-conversion-tool;stream=${CODEBUILD_LOG_PATH}" \
-            --arg description "The build job has started." \
-            --arg context "CodeBuild Status" \
-            '{state: $state, target_url: $target_url, description: $description, context: $context}' )
-
-          echo "$CURL_PAYLOAD"
-
-          curl \
-            -X POST \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${REPO_PAT}" \
-            "${BRANCH_STATUS_URL}/${CODEBUILD_RESOLVED_SOURCE_VERSION}" \
-            -d "${CURL_PAYLOAD}"
       - docker --version
       - aws --version
       - jq --version
@@ -87,13 +71,7 @@ phases:
       - echo "Build started on `date`..."
       - echo "Building the Docker image for conversion tool..."
       - docker build -t $TAG_LATEST -t $TAG_GIT .;
-      - echo "Pushing the Docker image to AWS ECR..."
-      - docker push $TAG_LATEST;
-      - docker push $TAG_GIT;
-      - echo "Branch is ${ENV}, Deploying to ${ENV}-conversion-tool service..."
-      - ecs deploy $CLUSTER_NAME $SERVICE_NAME -t $BRANCH-$COMMIT_SHORT_SHA --no-deregister --region us-east-1 --timeout 900 --task $SERVICE_NAME;
-      - aws ecs wait services-stable --cluster $CLUSTER_NAME --services $SERVICE_NAME --region us-east-1;
-      - echo "Branch is ${ENV}, Deployment to ${ENV}-conversion-tool service completed..."  
+      - echo "It's time to kill the build"
 
   post_build:
     commands:
@@ -101,28 +79,3 @@ phases:
       - echo "Code build exit number (1 is success) = $CODEBUILD_BUILD_SUCCEEDING"
       - if [ $CODEBUILD_BUILD_SUCCEEDING = 0 ]; then SLACK_COLOR="danger" && BUILD_STATUS="FAILED"; fi
       - TEXT_VALUE="Deployment of branch ${BRANCH} to QPP Conversion Tool service in $ENV-conversion-tool $BUILD_STATUS"
-      - curl -X POST --fail --data-urlencode "payload={\"text\":\"Deployment Status\",\"channel\":\"${SLACK_CHANNEL}\",\"username\":\"CodeBuild\",\"icon_url\":\"${CODEBUILD_ICON}\",\"attachments\":[{\"title\":\"${TEXT_VALUE}\",\"color\":\"${SLACK_COLOR}\"}]}" ${SLACK_URL}
-      - |
-          if [ "${CODEBUILD_BUILD_SUCCEEDING}" = 1 ]; then
-            STATE="success"
-            DESCRIPTION="The build succeeded!"
-          else
-            STATE="failure"
-            DESCRIPTION="The build failed. Click Details for the logs."
-          fi
-
-          CURL_PAYLOAD=$( jq -n \
-            --arg state "$STATE" \
-            --arg target_url "https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#logEvent:group=/aws/codebuild/${ENV}-conversion-tool;stream=${CODEBUILD_LOG_PATH}" \
-            --arg description "$DESCRIPTION" \
-            --arg context "CodeBuild Status" \
-            '{state: $state, target_url: $target_url, description: $description, context: $context}' )
-
-          echo "$CURL_PAYLOAD"
-
-          curl \
-            -X POST \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${REPO_PAT}" \
-            "${BRANCH_STATUS_URL}/${CODEBUILD_RESOLVED_SOURCE_VERSION}" \
-            -d "${CURL_PAYLOAD}"
