@@ -18257,7 +18257,7 @@
     "measureType": "process",
     "isHighPriority": true,
     "primarySteward": "AAOS Orthopaedic Quality Resource Center",
-    "isInverse": false,
+    "isInverse": true,
     "isRiskAdjusted": false,
     "isIcdImpacted": false,
     "icdImpacted": [],

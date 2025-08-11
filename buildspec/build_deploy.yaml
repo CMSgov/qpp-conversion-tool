@@ -1,4 +1,5 @@
 version: 0.2
+
 env:
   variables:
     SLACK_COLOR: "good"
@@ -7,6 +8,7 @@ env:
     CODEBUILD_ICON: "https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg"
     AWS_DEFAULT_REGION: "us-east-1"
     TEXT_VALUE: ""
+
   parameter-store:
     SLACK_URL: "/slack/p-qppsf-deploys"
     DOCKERHUB_TOKEN: "/global/dockerhub_token"
@@ -17,6 +19,7 @@ env:
     PART_FILE: "/qppar-sf/conversion-tool/CPC_PLUS_FILE_NAME"   
     PART_FILE_BUCKET: "/qppar-sf/$ENV/conversion-tool/CPC_PLUS_BUCKET_NAME"
     OUTPUT_PART_FILE: "/qppar-sf/$ENV/conversion-tool/CPC_PLUS_VALIDATION_FILE"
+
 phases:
   install:
     runtime-versions:
@@ -42,6 +45,7 @@ phases:
       - pip install ecs-deploy
       - pwd
       - ls -la
+
   pre_build:
     commands:
       - echo ${CODEBUILD_SRC_DIR}
@@ -74,6 +78,7 @@ phases:
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT}.dkr.ecr.us-east-1.amazonaws.com
       - TEXT_VALUE="Deploying QPP conversion tool service branch ${BRANCH} to ${ECS_ENV}-conversion-tool..."
       - curl -X POST --fail --data-urlencode "payload={\"text\":\"Deployment Status\",\"channel\":\"${SLACK_CHANNEL}\",\"username\":\"CodeBuild\",\"icon_url\":\"${CODEBUILD_ICON}\",\"attachments\":[{\"title\":\"${TEXT_VALUE}\",\"color\":\"${SLACK_COLOR}\"}]}" ${SLACK_URL}
+
   build:
     commands:
       - echo "Deploying..."
@@ -87,7 +92,6 @@ phases:
       - ecs deploy $CLUSTER_NAME $SERVICE_NAME -t $BRANCH-$COMMIT_SHORT_SHA --no-deregister --region us-east-1 --timeout 900 --task $SERVICE_NAME;
       - aws ecs wait services-stable --cluster $CLUSTER_NAME --services $SERVICE_NAME --region us-east-1;
       - echo "Branch is ${ENV}, Deployment to ${ENV}-conversion-tool service completed..."  
-
   post_build:
     commands:
       # Check the build status and set the slack message to reflect pass or fail status
@@ -113,6 +117,3 @@ phases:
           curl \
             -X POST \
             -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${REPO_PAT}" \
-            "${BRANCH_STATUS_URL}/${CODEBUILD_RESOLVED_SOURCE_VERSION}" \
-            -d "${CURL_PAYLOAD}"
