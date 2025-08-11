@@ -8,7 +8,11 @@ ARG BASE_URL=https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/bina
 RUN echo "we are in the QPPA-10640 branch"
 
 RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
-  && curl -fsSL -o /tmp/apache-maven.tar.gz ${BASE_URL}/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
+  && for i in 1 2 3; do \
+       echo "Attempt $i to download Maven..." && \
+       curl -fsSL --connect-timeout 300 --max-time 600 -o /tmp/apache-maven.tar.gz ${BASE_URL}/apache-maven-${MAVEN_VERSION}-bin.tar.gz && break || \
+       (echo "Download failed, attempt $i of 3" && sleep 10); \
+     done \
   && echo "${SHA}  /tmp/apache-maven.tar.gz" | sha512sum -c - \
   && tar -xzf /tmp/apache-maven.tar.gz -C /usr/share/maven --strip-components=1 \
   && rm -f /tmp/apache-maven.tar.gz \
