@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>2025.07.31.01-RELEASE</version>
+		<version>2025.08.13.01-RELEASE</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -30,7 +30,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>3.4.7</version>
+				<version>3.4.8</version>
 				<executions>
 					<execution>
 						<goals>
@@ -63,7 +63,7 @@
 				<!-- Import dependency management from Spring Boot -->
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
-				<version>3.4.7</version>
+				<version>3.4.8</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -127,12 +127,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
-			<version>3.4.7</version>
+			<version>3.4.8</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<version>3.4.7</version>
+			<version>3.4.8</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -317,7 +317,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
-			<version>3.4.7</version>
+			<version>3.4.8</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
