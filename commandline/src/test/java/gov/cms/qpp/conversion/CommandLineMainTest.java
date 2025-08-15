@@ -36,4 +36,32 @@ class CommandLineMainTest implements LoggerContract {
 	public Class<?> getLoggerType() {
 		return CommandLineMain.class;
 	}
+
+	@Test
+	void testCliValidOption() {
+		CommandLine line = CommandLineMain.cli("-" + CommandLineMain.SKIP_VALIDATION);
+		Truth.assertThat(line).isNotNull();
+		Truth.assertThat(line.hasOption(CommandLineMain.SKIP_VALIDATION)).isTrue();
+	}
+
+	@Test
+	void testMainWithValidCli() {
+		CommandLineMain.main("-" + CommandLineMain.SKIP_VALIDATION);
+		Truth.assertThat(getLogs()).isEmpty();
+	}
+
+	@Test
+	void testCliHelpOption() {
+		CommandLine line = CommandLineMain.cli("-" + CommandLineMain.HELP);
+		Truth.assertThat(line).isNotNull();
+		Truth.assertThat(line.hasOption(CommandLineMain.HELP)).isTrue();
+	}
+
+	@Test
+	void testOptionsContainExpectedFlags() {
+		Truth.assertThat(CommandLineMain.OPTIONS.hasOption(CommandLineMain.BYGONE)).isTrue();
+		Truth.assertThat(CommandLineMain.OPTIONS.hasOption(CommandLineMain.SKIP_VALIDATION)).isTrue();
+		Truth.assertThat(CommandLineMain.OPTIONS.hasOption(CommandLineMain.RECURSIVE)).isTrue();
+		Truth.assertThat(CommandLineMain.OPTIONS.hasOption(CommandLineMain.HELP)).isTrue();
+	}
 }

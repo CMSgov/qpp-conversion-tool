@@ -4,9 +4,12 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Comparator;
 
+import gov.cms.qpp.conversion.encode.JsonWrapper;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -120,6 +123,37 @@ public class ConversionFileWriterWrapperTest {
 		assertThat(secondDetail.getMessage()).isEqualTo(secondError.getMessage());
 		assertThat(secondDetail.getLocation().getPath()).isNotNull();
 	}
+
+	@Test
+	public void testTransformWithDefaultContext() {
+		Path path = Path.of("src/test/resources/valid-QRDA-III-latest.xml");
+		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
+
+		// No setContext() here
+		converterWrapper.transform();
+
+		assertFileExists("valid-QRDA-III-latest-qpp.json");
+	}
+
+	@Test
+	public void testTransformQppWriteFails() throws IOException {
+		Path tempDir = Files.createTempDirectory("readonly-dir");
+		try {
+			tempDir.toFile().setWritable(false);
+
+			Path unwritableOutput = tempDir.resolve("valid-QRDA-III-latest.xml");
+			ConversionFileWriterWrapper wrapper =
+					new ConversionFileWriterWrapper(unwritableOutput);
+
+			wrapper.transform(); // triggers IOException branch
+		} finally {
+			tempDir.toFile().setWritable(true); // reset so deletion works
+			Files.walk(tempDir)
+					.sorted(Comparator.reverseOrder())
+					.forEach(p -> p.toFile().delete());
+		}
+	}
+
 
 	private void assertFileExists(final String fileName) {
 		Path possibleFile = Path.of(fileName);

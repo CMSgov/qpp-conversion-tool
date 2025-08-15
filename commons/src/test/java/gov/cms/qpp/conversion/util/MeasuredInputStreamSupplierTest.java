@@ -1,13 +1,13 @@
 package gov.cms.qpp.conversion.util;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import com.google.common.truth.Truth;
+import org.junit.jupiter.api.Test;
+
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
-import com.google.common.truth.Truth;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 class MeasuredInputStreamSupplierTest {
 
@@ -30,7 +30,8 @@ class MeasuredInputStreamSupplierTest {
 	@Test
 	void testSize() {
 		InputStream use = stream("mock");
-		Truth.assertThat(MeasuredInputStreamSupplier.terminallyTransformInputStream(use).size()).isEqualTo("mock".length());
+		Truth.assertThat(MeasuredInputStreamSupplier.terminallyTransformInputStream(use).size())
+				.isEqualTo("mock".length());
 	}
 
 	@Test
@@ -42,8 +43,40 @@ class MeasuredInputStreamSupplierTest {
 		Truth.assertThat(count).isEqualTo(expected);
 	}
 
+	@Test
+	void testGetInputStreamContentIsSameEachTime() throws IOException {
+		InputStream use = stream("data");
+		MeasuredInputStreamSupplier supplier = MeasuredInputStreamSupplier.terminallyTransformInputStream(use);
+
+		for (int i = 0; i < 3; i++) {
+			try (InputStream in = supplier.get()) {
+				String content = new String(in.readAllBytes(), StandardCharsets.UTF_8);
+				assertEquals("data", content);
+			}
+		}
+	}
+
+	@Test
+	void testNullSourceThrowsNpe() {
+		NullPointerException ex = assertThrows(NullPointerException.class,
+				() -> MeasuredInputStreamSupplier.terminallyTransformInputStream(null));
+		assertEquals("source", ex.getMessage());
+	}
+
+	@Test
+	void testIOExceptionWrapsInUncheckedIOException() {
+		InputStream brokenStream = new InputStream() {
+			@Override
+			public int read() throws IOException {
+				throw new IOException("boom");
+			}
+		};
+		UncheckedIOException ex = assertThrows(UncheckedIOException.class,
+				() -> MeasuredInputStreamSupplier.terminallyTransformInputStream(brokenStream));
+		assertEquals("boom", ex.getCause().getMessage());
+	}
+
 	private InputStream stream(String data) {
 		return new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
 	}
-
 }
