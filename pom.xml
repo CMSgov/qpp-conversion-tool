@@ -185,6 +185,26 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- NEW: make surefire active everywhere -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.2.5</version>
+				<configuration>
+					<useSystemClassLoader>false</useSystemClassLoader>
+					<trimStackTrace>false</trimStackTrace>
+					<useFile>false</useFile>
+					<failIfNoTests>true</failIfNoTests>
+					<properties>
+						<excludeGroups>${junit.excludes}</excludeGroups>
+						<groups>${junit.includes}</groups>
+					</properties>
+					<systemPropertyVariables>
+						<org.springframework.boot.logging.LoggingSystem>none</org.springframework.boot.logging.LoggingSystem>
+					</systemPropertyVariables>
+					<argLine>${argLine}</argLine>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
