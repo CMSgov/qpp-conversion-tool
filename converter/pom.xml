@@ -55,9 +55,9 @@
 
 	<dependencies>
 		<dependency>
-		    <groupId>com.google.code.findbugs</groupId>
-		    <artifactId>annotations</artifactId>
-		    <scope>compile</scope>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>annotations</artifactId>
+			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
@@ -107,11 +107,11 @@
 			<version>${project.version}</version>
 		</dependency>
 
-        <dependency>
-             <groupId>org.junit.jupiter</groupId>
-             <artifactId>junit-jupiter-api</artifactId>
-             <scope>test</scope>
-         </dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -149,11 +149,11 @@
 			<scope>test</scope>
 		</dependency>
 
-        <dependency>
-             <groupId>org.junit.platform</groupId>
-             <artifactId>junit-platform-launcher</artifactId>
-             <scope>test</scope>
-         </dependency>
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-launcher</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>commons-collections</groupId>

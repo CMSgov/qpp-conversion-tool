@@ -2,6 +2,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <!--
+      ===== Maintenance notes =====
+      - Spring versions are controlled via BOMs in <dependencyManagement>.
+      - We pin a few artifacts for CVE hygiene and to keep Enforcer happy.
+      - Starters (spring-boot-starter-*) must NOT have explicit <version>; they inherit from Boot BOM.
+      - When bumping Boot, re-check Security + Tomcat pins and run the Enforcer rule.
+
+      Safe update sequence:
+      1) Update org.springframework.boot:spring-boot-dependencies (Boot BOM).
+      2) If Boot pulls a vulnerable spring-* or tomcat-embed, override via their BOM / explicit pins below.
+      3) mvn -U -DskipTests enforcer:enforce dependency:tree ; then run tests + coverage.
+    -->
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -18,9 +30,12 @@
 
     <properties>
         <requiredCodeCoverage>0.90</requiredCodeCoverage>
-        <tomcat.version>11.0.9</tomcat.version>
 
-        <!-- Test stack -->
+        <!-- For documentation only; actual coordination is done by the BOMs below -->
+        <spring-framework.version>6.2.10</spring-framework.version>
+        <tomcat.version>10.1.44</tomcat.version>
+
+        <!-- Test stack kept explicit so CI is deterministic across JDK updates -->
         <junit.jupiter.version>5.10.3</junit.jupiter.version>
         <junit.platform.version>1.10.3</junit.platform.version>
         <io.rest-assured.version>5.5.2</io.rest-assured.version>
@@ -29,9 +44,10 @@
         <mockito.version>3.9.0</mockito.version>
         <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
 
-        <!-- Align to what Boot 3.4.8 uses -->
+        <!-- Spring Security aligned with Boot 3.4.8 to avoid split versions -->
         <spring.security.version>6.4.8</spring.security.version>
 
+        <!-- JaCoCo aggregated report path used by Sonar -->
         <sonar.coverage.jacoco.xmlReportPaths>
             ${project.basedir}/../test-coverage/target/site/jacoco-aggregate/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
@@ -39,6 +55,7 @@
 
     <build>
         <plugins>
+            <!-- Boot repackage builds a runnable fat JAR -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -48,22 +65,21 @@
                 </executions>
             </plugin>
 
+            <!-- Static analysis helpers (inherit configuration from parent) -->
             <plugin>
                 <groupId>org.gaul</groupId>
                 <artifactId>modernizer-maven-plugin</artifactId>
             </plugin>
-
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
             </plugin>
 
-            <!-- Keep the tree clean -->
+            <!-- Enforce a single version per GA to catch dependency drift early -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
@@ -80,7 +96,7 @@
                 </executions>
             </plugin>
 
-            <!-- JaCoCo -->
+            <!-- Coverage: attach agent + generate module report -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -103,11 +119,12 @@
                 </executions>
             </plugin>
 
-            <!-- Tests -->
+            <!-- Surefire: JUnit 5 on JPMS needs add-opens for some libs; include test naming pattern -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
+                    <!-- If a module truly has no unit tests, flip failIfNoTests at the module level -->
                     <includes combine.self="override">
                         <include>**/*Test.java</include>
                     </includes>
@@ -134,7 +151,7 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- Boot BOM (brings Security 6.4.8) -->
+            <!-- Base BOM: centralizes versions for starters & most transitive libs -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -143,7 +160,46 @@
                 <scope>import</scope>
             </dependency>
 
-            <!-- Explicitly override parent’s 6.3.8 for these two so Enforcer is happy -->
+            <!-- These two lines are redundant when importing spring-framework-bom but kept for clarity.
+                 You can safely remove them later if desired. -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>6.2.10</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
+                <version>6.2.10</version>
+            </dependency>
+
+            <!-- Framework BOM import: lifts ALL spring-* modules to 6.2.10 (security fix) -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>6.2.10</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Tomcat pins: keep embeds on patched line even if Boot lags -->
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-core</artifactId>
+                <version>10.1.44</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-el</artifactId>
+                <version>10.1.44</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-websocket</artifactId>
+                <version>10.1.44</version>
+            </dependency>
+
+            <!-- Security aligned with Boot’s expectations; avoids split 6.3.x/6.4.x graphs -->
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-web</artifactId>
@@ -155,7 +211,7 @@
                 <version>${spring.security.version}</version>
             </dependency>
 
-            <!-- Convergence pins from earlier errors -->
+            <!-- Misc small pins that commonly drift; keep them stable for reproducible builds -->
             <dependency>
                 <groupId>com.google.code.findbugs</groupId>
                 <artifactId>jsr305</artifactId>
@@ -186,6 +242,7 @@
             <artifactId>springdoc-openapi-ui</artifactId>
         </dependency>
 
+        <!-- Pre-Jakarta plugin; exclude old spring-beans to prevent javax.* clashes -->
         <dependency>
             <groupId>org.springframework.plugin</groupId>
             <artifactId>spring-plugin-core</artifactId>
@@ -198,23 +255,25 @@
             </exclusions>
         </dependency>
 
+        <!-- Logging -->
         <dependency><groupId>com.fasterxml.jackson.module</groupId><artifactId>jackson-module-jaxb-annotations</artifactId></dependency>
         <dependency><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></dependency>
         <dependency><groupId>ch.qos.logback</groupId><artifactId>logback-classic</artifactId></dependency>
         <dependency><groupId>net.logstash.logback</groupId><artifactId>logstash-logback-encoder</artifactId></dependency>
 
+        <!-- Dev tools are optional to keep them out of transitive consumers -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
 
-        <!-- JWT -->
+        <!-- JWT stack -->
         <dependency><groupId>io.jsonwebtoken</groupId><artifactId>jjwt-api</artifactId></dependency>
         <dependency><groupId>io.jsonwebtoken</groupId><artifactId>jjwt-impl</artifactId><scope>runtime</scope></dependency>
         <dependency><groupId>io.jsonwebtoken</groupId><artifactId>jjwt-jackson</artifactId><scope>runtime</scope></dependency>
 
-        <!-- Internal -->
+        <!-- Internal modules -->
         <dependency>
             <groupId>gov.cms.qpp.conversion</groupId>
             <artifactId>converter</artifactId>
@@ -222,22 +281,22 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- Spring starters -->
+        <!-- Starters: never set versions here, they come from Boot BOM -->
         <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-web</artifactId></dependency>
         <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-security</artifactId></dependency>
 
-        <!-- (No explicit spring-security-web/config with versions here; Boot + DM above handle it) -->
-
+        <!-- Misc -->
         <dependency><groupId>org.springframework.retry</groupId><artifactId>spring-retry</artifactId></dependency>
         <dependency><groupId>com.jcabi</groupId><artifactId>jcabi-manifests</artifactId></dependency>
 
-        <!-- AWS v1 -->
+        <!-- AWS v1 clients (monitor for CVEs periodically) -->
         <dependency><groupId>com.amazonaws</groupId><artifactId>aws-java-sdk-core</artifactId></dependency>
         <dependency><groupId>com.amazonaws</groupId><artifactId>aws-dynamodb-encryption-java</artifactId></dependency>
 
         <!-- ===================== Tests ===================== -->
         <dependency><groupId>org.springframework.security</groupId><artifactId>spring-security-test</artifactId><scope>test</scope></dependency>
 
+        <!-- Keep junit/mocking stack explicit to avoid random upgrades in CI images -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -262,7 +321,7 @@
         <dependency><groupId>org.junit.platform</groupId><artifactId>junit-platform-commons</artifactId><version>${junit.platform.version}</version><scope>test</scope></dependency>
         <dependency><groupId>org.junit.platform</groupId><artifactId>junit-platform-launcher</artifactId><version>${junit.platform.version}</version><scope>test</scope></dependency>
 
-        <!-- Vintage only if you still have JUnit4 tests -->
+        <!-- Vintage bridge only if you still have JUnit4 tests -->
         <dependency><groupId>org.junit.vintage</groupId><artifactId>junit-vintage-engine</artifactId><version>${junit.jupiter.version}</version><scope>test</scope></dependency>
         <dependency><groupId>junit</groupId><artifactId>junit</artifactId><version>4.13.2</version><scope>test</scope></dependency>
 
@@ -271,7 +330,7 @@
         <dependency><groupId>org.powermock</groupId><artifactId>powermock-module-junit4</artifactId><scope>test</scope></dependency>
         <dependency><groupId>org.powermock</groupId><artifactId>powermock-api-mockito2</artifactId><scope>test</scope></dependency>
 
-        <!-- Shared test utils -->
+        <!-- Shared test utilities from sibling module; we exclude groovy/rest-assured to avoid duplicate versions -->
         <dependency>
             <groupId>gov.cms.qpp.conversion</groupId>
             <artifactId>test-commons</artifactId>
@@ -287,7 +346,7 @@
             </exclusions>
         </dependency>
 
-        <!-- Mustache for tests -->
+        <!-- Tests: rest-assured, hamcrest, servlet API, and misc helpers -->
         <dependency>
             <groupId>com.github.spullara.mustache.java</groupId>
             <artifactId>compiler</artifactId>
@@ -295,20 +354,15 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Rest-Assured 5.x -->
         <dependency><groupId>io.rest-assured</groupId><artifactId>rest-assured</artifactId><version>${io.rest-assured.version}</version><scope>test</scope></dependency>
         <dependency><groupId>io.rest-assured</groupId><artifactId>json-path</artifactId><version>${io.rest-assured.version}</version><scope>test</scope></dependency>
         <dependency><groupId>io.rest-assured</groupId><artifactId>xml-path</artifactId><version>${io.rest-assured.version}</version><scope>test</scope></dependency>
 
-        <!-- Hamcrest -->
         <dependency><groupId>org.hamcrest</groupId><artifactId>hamcrest</artifactId><version>${io.hamcrest.version}</version><scope>test</scope></dependency>
 
-        <!-- Servlet API for tests -->
         <dependency><groupId>jakarta.servlet</groupId><artifactId>jakarta.servlet-api</artifactId><version>${jakarta.servlet.version}</version><scope>test</scope></dependency>
 
-        <!-- For AuditServiceImplTest -->
         <dependency><groupId>net.jodah</groupId><artifactId>concurrentunit</artifactId><version>0.4.6</version><scope>test</scope></dependency>
-
         <dependency><groupId>org.awaitility</groupId><artifactId>awaitility</artifactId><scope>test</scope></dependency>
         <dependency><groupId>nl.jqno.equalsverifier</groupId><artifactId>equalsverifier</artifactId><scope>test</scope></dependency>
     </dependencies>
