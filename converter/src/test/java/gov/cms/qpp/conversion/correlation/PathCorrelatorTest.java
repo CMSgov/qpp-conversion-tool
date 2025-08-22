@@ -75,4 +75,32 @@ class PathCorrelatorTest {
 		String actual = PathCorrelator.prepPath("$.mawp", wrapper);
 		assertThat(actual).isEmpty();
 	}
+
+	@Test
+	void getXpathReturnsNullForUnknownKey() {
+		// A template/attribute combination that will not exist in pathCorrelationMap
+		String result = PathCorrelator.getXpath("UNKNOWN_TEMPLATE", "unknown_attribute", "ns");
+		assertThat(result).isNull();
+	}
+
+	@Test
+	void prepPathReturnsFullXpathWhenMatchFound() {
+		// Build metadata with matching template + encoding label
+		JsonWrapper metadata = new JsonWrapper();
+		metadata.putMetadata("template", TemplateId.CLINICAL_DOCUMENT.name());
+		metadata.putMetadata("nsuri", "testns");
+		metadata.putMetadata(JsonWrapper.ENCODING_KEY, PROGRAM_NAME);
+		metadata.putMetadata("path", "/ClinicalDocument");
+
+		// Wrap in JsonWrapper that mimics QPP JSON
+		JsonWrapper wrapper = new JsonWrapper();
+		wrapper.addMetadata(metadata);
+		wrapper.put(PROGRAM_NAME, "TestValue");
+
+		// Use a jsonPath that matches the encoding key above
+		String xpath = PathCorrelator.prepPath("$." + PROGRAM_NAME, wrapper);
+
+		assertThat(xpath).isNotEmpty();
+		assertThat(xpath).contains("/ClinicalDocument");
+	}
 }

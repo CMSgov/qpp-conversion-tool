@@ -1,0 +1,12 @@
+{
+  "errors" : [ {
+    "sourceIdentifier" : "valid-QRDA-III-latest.xml",
+    "details" : [ {
+      "errorCode" : 3,
+      "message" : "CT - There was an unexpected system error during the file conversion. Contact the customer service center for assistance by email at QPP@cms.hhs.gov or by phone at 1-866-288-8292 (TRS: 711)",
+      "location" : {
+        "path" : ""
+      }
+    } ]
+  } ]
+}

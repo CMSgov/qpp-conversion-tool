@@ -5,6 +5,10 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.List;
 import java.util.Map;
 
@@ -73,6 +77,55 @@ class JsonHelperTest implements HelperContract {
 		} catch(Exception exception) {
 			Assertions.fail("Incorrect exception was thrown.");
 		}
+	}
+
+	@Test
+	void readJsonFromPathWithClass() throws Exception {
+		// create temp file
+		Path tempFile = Files.createTempFile("jsonhelper-test", ".json");
+		Files.writeString(tempFile, "{\"key\":\"value\"}");
+
+		Map<String, String> result = JsonHelper.readJson(tempFile, Map.class);
+		assertWithMessage("Expect to read key from file").that(result.get("key")).isEqualTo("value");
+
+		Files.deleteIfExists(tempFile);
+	}
+
+	@Test
+	void readJsonFromInputStreamWithTypeReference() {
+		String json = "[{\"key\":\"value\"}]";
+		InputStream is = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+
+		List<Map<String, String>> result = JsonHelper.readJson(is, new TypeReference<List<Map<String, String>>>() {});
+		assertWithMessage("Expect first element to have key=value").that(result.get(0).get("key")).isEqualTo("value");
+	}
+
+	@Test
+	void readJsonFromPathWithTypeReference() throws Exception {
+		Path tempFile = Files.createTempFile("jsonhelper-test-typeRef", ".json");
+		Files.writeString(tempFile, "[{\"key\":\"value\"}]");
+
+		List<Map<String, String>> result = JsonHelper.readJson(tempFile, new TypeReference<List<Map<String, String>>>() {});
+		assertWithMessage("Expect first element to have key=value").that(result.get(0).get("key")).isEqualTo("value");
+
+		Files.deleteIfExists(tempFile);
+	}
+
+	@Test
+	void readJsonAtJsonPathFromString() {
+		String json = "{ \"measurements\": { \"measures\": [" +
+				"{\"measureId\":\"ACI_INFBLO_1\", \"value\":100}," +
+				"{\"measureId\":\"ACI_INFBLO_2\", \"value\":80}" +
+				"] } }";
+
+		List<Map<String, Object>> measures = JsonHelper.readJsonAtJsonPath(
+				json,
+				"$.measurements.measures[*]",
+				new TypeRef<List<Map<String, Object>>>() {}
+		);
+
+		assertWithMessage("Should contain 2 measures").that(measures).hasSize(2);
+		assertWithMessage("First measure ID").that(measures.get(0).get("measureId")).isEqualTo("ACI_INFBLO_1");
 	}
 
 	@Override
