@@ -71,6 +71,46 @@ class EnvironmentHelperTest implements LoggerContract {
 		assertThat(getLogs()).doesNotContain(message);
 	}
 
+	@Test
+	void testGetOrDefaultWhenPresent() {
+		String key = UUID.randomUUID().toString();
+		String expectedValue = "expected";
+		System.setProperty(key, expectedValue);
+
+		String result = EnvironmentHelper.getOrDefault(key, "defaultValue");
+		assertThat(result).isEqualTo(expectedValue);
+	}
+
+	@Test
+	void testGetOrDefaultWhenMissingUsesDefault() {
+		String key = UUID.randomUUID().toString();
+		String defaultValue = "defaultValue";
+
+		String result = EnvironmentHelper.getOrDefault(key, defaultValue);
+		assertThat(result).isEqualTo(defaultValue);
+	}
+
+	@Test
+	void testGetWhenPresentNoWarning() {
+		String key = UUID.randomUUID().toString();
+		String expectedValue = "someValue";
+		System.setProperty(key, expectedValue);
+
+		String result = EnvironmentHelper.get(key);
+		assertThat(result).isEqualTo(expectedValue);
+
+		// Ensure warning log is not present
+		assertThat(getLogs()).doesNotContain(String.format(EnvironmentHelper.NOT_FOUND, key));
+	}
+
+	@Test
+	void testPrivateConstructorForCoverage() throws Exception {
+		var constructor = EnvironmentHelper.class.getDeclaredConstructor();
+		constructor.setAccessible(true);
+		constructor.newInstance(); // just to hit the private constructor
+	}
+
+
 	@Override
 	public Class<?> getLoggerType() {
 		return EnvironmentHelper.class;
