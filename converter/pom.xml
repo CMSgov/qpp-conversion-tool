@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>2025.08.13.01-RELEASE</version>
+		<version>2025.09.03.01-RELEASE</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -55,9 +55,9 @@
 
 	<dependencies>
 		<dependency>
-		    <groupId>com.google.code.findbugs</groupId>
-		    <artifactId>annotations</artifactId>
-		    <scope>compile</scope>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>annotations</artifactId>
+			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
@@ -107,11 +107,11 @@
 			<version>${project.version}</version>
 		</dependency>
 
-        <dependency>
-             <groupId>org.junit.jupiter</groupId>
-             <artifactId>junit-jupiter-api</artifactId>
-             <scope>test</scope>
-         </dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -149,11 +149,11 @@
 			<scope>test</scope>
 		</dependency>
 
-        <dependency>
-             <groupId>org.junit.platform</groupId>
-             <artifactId>junit-platform-launcher</artifactId>
-             <scope>test</scope>
-         </dependency>
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-launcher</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>commons-collections</groupId>
@@ -170,7 +170,7 @@
 		<dependency>
 			<groupId>gov.cms.qpp.conversion</groupId>
 			<artifactId>commons</artifactId>
-			<version>2025.08.13.01-RELEASE</version>
+			<version>2025.09.03.01-RELEASE</version>
 			<scope>compile</scope>
 		</dependency>
 
