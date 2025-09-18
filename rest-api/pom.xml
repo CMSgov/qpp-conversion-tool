@@ -45,7 +45,7 @@
         <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
 
         <!-- Spring Security aligned with Boot 3.4.8 to avoid split versions -->
-        <spring.security.version>6.4.8</spring.security.version>
+        <spring.security.version>6.4.10</spring.security.version>
 
         <!-- JaCoCo aggregated report path used by Sonar -->
         <sonar.coverage.jacoco.xmlReportPaths>
@@ -165,19 +165,19 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
-                <version>6.2.10</version>
+                <version>6.2.11</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-beans</artifactId>
-                <version>6.2.10</version>
+                <version>6.2.11</version>
             </dependency>
 
-            <!-- Framework BOM import: lifts ALL spring-* modules to 6.2.10 (security fix) -->
+            <!-- Framework BOM import: lifts ALL spring-* modules to 6.2.11 (security fix) -->
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-framework-bom</artifactId>
-                <version>6.2.10</version>
+                <version>6.2.11</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
