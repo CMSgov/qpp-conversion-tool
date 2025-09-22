@@ -38,7 +38,7 @@ public class InputStreamSupplierSource extends SkeletalSource {
 	 *
 	 * @param name The name of the source.
 	 * @param source an {@link InputStream}.
-	 * @param test Whether the source is a test
+	 * @param purpose Whether the purpose of the source is for testing or production use.
 	 */
 	public InputStreamSupplierSource(String name, InputStream source, String purpose) {
 		super(name);
