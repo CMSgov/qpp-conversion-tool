@@ -30,6 +30,8 @@
 
     <properties>
         <requiredCodeCoverage>0.90</requiredCodeCoverage>
+        <!-- Allow disabling inclusion of Javadoc static resources -->
+        <skipJavadocResources>false</skipJavadocResources>
 
         <!-- For documentation only; actual coordination is done by the BOMs below -->
         <spring-framework.version>6.2.10</spring-framework.version>
@@ -64,6 +66,63 @@
                     <execution><goals><goal>repackage</goal></goals></execution>
                 </executions>
             </plugin>
+            <!-- Generate unified Javadoc (all modules) and copy into static /v3/javadoc. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unified-site</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>javadoc</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skipJavadocResources}</skip>
+                            <doctitle>QPP Conversion Tool API</doctitle>
+                            <windowtitle>QPP Conversion Tool API</windowtitle>
+                            <quiet>true</quiet>
+                            <doclint>none</doclint>
+                            <failOnError>false</failOnError>
+                            <!-- Explicitly stitch modules together. Order does not matter; colon separated. -->
+                            <sourcepath>${project.basedir}/../commons/src/main/java:${project.basedir}/../converter/src/main/java:${project.basedir}/../commandline/src/main/java:${project.basedir}/src/main/java</sourcepath>
+                            <!-- Limit to our Java package namespace -->
+                            <subpackages>gov.cms.qpp.conversion</subpackages>
+                            <encoding>UTF-8</encoding>
+                            <!-- For the 'javadoc' goal the correct parameter is outputDirectory (reportOutputDirectory is ignored). -->
+                            <outputDirectory>${project.build.directory}/aggregated-javadoc</outputDirectory>
+                            <additionalJOptions>
+                                <!-- Avoid overly strict doclint on JDK17 while legacy comments are cleaned up -->
+                                <additionalJOption>-Xdoclint:none</additionalJOption>
+                            </additionalJOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-aggregated-javadoc</id>
+                        <!-- Must run AFTER aggregate javadoc (prepare-package) so we copy the freshly generated index.html, not a stale or previous custom landing page. -->
+                        <phase>prepare-package</phase>
+                        <goals><goal>copy-resources</goal></goals>
+                        <configuration>
+                            <skip>${skipJavadocResources}</skip>
+                            <outputDirectory>${project.build.outputDirectory}/public/v3/javadoc</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <!-- The javadoc goal writes into aggregated-javadoc/apidocs -->
+                                    <directory>${project.build.directory}/aggregated-javadoc/apidocs</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
             <!-- Static analysis helpers (inherit configuration from parent) -->
             <plugin>
@@ -73,10 +132,6 @@
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
             </plugin>
 
             <!-- Enforce a single version per GA to catch dependency drift early -->
