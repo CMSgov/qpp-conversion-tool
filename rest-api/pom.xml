@@ -34,7 +34,7 @@
         <skipJavadocResources>false</skipJavadocResources>
 
         <!-- For documentation only; actual coordination is done by the BOMs below -->
-        <spring-framework.version>6.2.10</spring-framework.version>
+        <spring-framework.version>6.2.11</spring-framework.version>
         <tomcat.version>10.1.44</tomcat.version>
 
         <!-- Test stack kept explicit so CI is deterministic across JDK updates -->
@@ -47,7 +47,7 @@
         <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
 
         <!-- Spring Security aligned with Boot 3.4.8 to avoid split versions -->
-        <spring.security.version>6.4.8</spring.security.version>
+        <spring.security.version>6.4.10</spring.security.version>
 
         <!-- JaCoCo aggregated report path used by Sonar -->
         <sonar.coverage.jacoco.xmlReportPaths>
@@ -206,33 +206,26 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- Base BOM: centralizes versions for starters & most transitive libs -->
             <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>3.4.8</version>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>6.2.11</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
 
-            <!-- These two lines are redundant when importing spring-framework-bom but kept for clarity.
-                 You can safely remove them later if desired. -->
             <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-webmvc</artifactId>
-                <version>6.2.10</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-beans</artifactId>
-                <version>6.2.10</version>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-bom</artifactId>
+                <version>${spring.security.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
-            <!-- Framework BOM import: lifts ALL spring-* modules to 6.2.10 (security fix) -->
             <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-framework-bom</artifactId>
-                <version>6.2.10</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>3.4.8</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -254,7 +247,6 @@
                 <version>10.1.44</version>
             </dependency>
 
-            <!-- Security aligned with Boot’s expectations; avoids split 6.3.x/6.4.x graphs -->
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-web</artifactId>
@@ -263,6 +255,16 @@
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-config</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-crypto</artifactId>
                 <version>${spring.security.version}</version>
             </dependency>
 
@@ -297,16 +299,17 @@
             <artifactId>springdoc-openapi-ui</artifactId>
         </dependency>
 
-        <!-- Pre-Jakarta plugin; exclude old spring-beans to prevent javax.* clashes -->
+        <!-- Pre-Jakarta plugin; exclude ALL old Spring 4.x bits it drags -->
         <dependency>
             <groupId>org.springframework.plugin</groupId>
             <artifactId>spring-plugin-core</artifactId>
             <version>1.2.0.RELEASE</version>
             <exclusions>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-beans</artifactId>
-                </exclusion>
+                <exclusion><groupId>org.springframework</groupId><artifactId>spring-beans</artifactId></exclusion>
+                <exclusion><groupId>org.springframework</groupId><artifactId>spring-core</artifactId></exclusion>
+                <exclusion><groupId>org.springframework</groupId><artifactId>spring-context</artifactId></exclusion>
+                <exclusion><groupId>org.springframework</groupId><artifactId>spring-aop</artifactId></exclusion>
+                <exclusion><groupId>org.springframework</groupId><artifactId>spring-expression</artifactId></exclusion>
             </exclusions>
         </dependency>
 
