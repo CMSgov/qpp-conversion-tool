@@ -427,7 +427,7 @@
 				<artifactId>commons-text</artifactId>
 				<version>1.13.1</version>
 			</dependency>
-           
+            
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
