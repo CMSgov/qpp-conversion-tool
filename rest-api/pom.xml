@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <!--
       ===== Maintenance notes =====
       - Spring versions are controlled via BOMs in <dependencyManagement>.
@@ -61,7 +60,11 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>3.4.8</version>
                 <executions>
-                    <execution><goals><goal>repackage</goal></goals></execution>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -77,6 +80,28 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.6.3</version>
+                <configuration>
+                    <source>17</source>
+                    <target>17</target>
+                    <show>public</show>
+                    <nohelp>true</nohelp>
+                    <failOnError>false</failOnError>
+                    <outputDirectory>${project.build.outputDirectory}/static/v3/api</outputDirectory>
+                    <reportOutputDirectory>${project.build.outputDirectory}/static/v3/api</reportOutputDirectory>
+                    <additionalJOptions>
+                        <additionalJOption>-Xdoclint:none</additionalJOption>
+                    </additionalJOptions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>javadoc-html</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>javadoc</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- Enforce a single version per GA to catch dependency drift early -->
@@ -87,9 +112,13 @@
                 <executions>
                     <execution>
                         <id>enforce-dep-convergence</id>
-                        <goals><goal>enforce</goal></goals>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
                         <configuration>
-                            <rules><DependencyConvergence/></rules>
+                            <rules>
+                                <DependencyConvergence/>
+                            </rules>
                             <fail>true</fail>
                         </configuration>
                     </execution>
@@ -104,7 +133,9 @@
                 <executions>
                     <execution>
                         <id>jacoco-prepare-agent-rest</id>
-                        <goals><goal>prepare-agent</goal></goals>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
                         <configuration>
                             <propertyName>jacocoArgLine</propertyName>
                             <destFile>${project.build.directory}/jacoco.exec</destFile>
@@ -114,7 +145,9 @@
                     <execution>
                         <id>jacoco-report-rest</id>
                         <phase>verify</phase>
-                        <goals><goal>report</goal></goals>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -256,10 +289,22 @@
         </dependency>
 
         <!-- Logging -->
-        <dependency><groupId>com.fasterxml.jackson.module</groupId><artifactId>jackson-module-jaxb-annotations</artifactId></dependency>
-        <dependency><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></dependency>
-        <dependency><groupId>ch.qos.logback</groupId><artifactId>logback-classic</artifactId></dependency>
-        <dependency><groupId>net.logstash.logback</groupId><artifactId>logstash-logback-encoder</artifactId></dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-jaxb-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+        </dependency>
 
         <!-- Dev tools are optional to keep them out of transitive consumers -->
         <dependency>
@@ -269,9 +314,20 @@
         </dependency>
 
         <!-- JWT stack -->
-        <dependency><groupId>io.jsonwebtoken</groupId><artifactId>jjwt-api</artifactId></dependency>
-        <dependency><groupId>io.jsonwebtoken</groupId><artifactId>jjwt-impl</artifactId><scope>runtime</scope></dependency>
-        <dependency><groupId>io.jsonwebtoken</groupId><artifactId>jjwt-jackson</artifactId><scope>runtime</scope></dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 
         <!-- Internal modules -->
         <dependency>
@@ -282,19 +338,41 @@
         </dependency>
 
         <!-- Starters: never set versions here, they come from Boot BOM -->
-        <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-web</artifactId></dependency>
-        <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-security</artifactId></dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
 
         <!-- Misc -->
-        <dependency><groupId>org.springframework.retry</groupId><artifactId>spring-retry</artifactId></dependency>
-        <dependency><groupId>com.jcabi</groupId><artifactId>jcabi-manifests</artifactId></dependency>
+        <dependency>
+            <groupId>org.springframework.retry</groupId>
+            <artifactId>spring-retry</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.jcabi</groupId>
+            <artifactId>jcabi-manifests</artifactId>
+        </dependency>
 
         <!-- AWS v1 clients (monitor for CVEs periodically) -->
-        <dependency><groupId>com.amazonaws</groupId><artifactId>aws-java-sdk-core</artifactId></dependency>
-        <dependency><groupId>com.amazonaws</groupId><artifactId>aws-dynamodb-encryption-java</artifactId></dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-dynamodb-encryption-java</artifactId>
+        </dependency>
 
         <!-- ===================== Tests ===================== -->
-        <dependency><groupId>org.springframework.security</groupId><artifactId>spring-security-test</artifactId><scope>test</scope></dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
 
         <!-- Keep junit/mocking stack explicit to avoid random upgrades in CI images -->
         <dependency>
@@ -302,33 +380,108 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
             <exclusions>
-                <exclusion><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter</artifactId></exclusion>
-                <exclusion><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter-api</artifactId></exclusion>
-                <exclusion><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter-params</artifactId></exclusion>
-                <exclusion><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter-engine</artifactId></exclusion>
-                <exclusion><groupId>org.junit.vintage</groupId><artifactId>junit-vintage-engine</artifactId></exclusion>
-                <exclusion><groupId>org.junit.platform</groupId><artifactId>junit-platform-commons</artifactId></exclusion>
-                <exclusion><groupId>org.junit.platform</groupId><artifactId>junit-platform-launcher</artifactId></exclusion>
-                <exclusion><groupId>org.mockito</groupId><artifactId>mockito-core</artifactId></exclusion>
-                <exclusion><groupId>org.mockito</groupId><artifactId>mockito-junit-jupiter</artifactId></exclusion>
+                <exclusion>
+                    <groupId>org.junit.jupiter</groupId>
+                    <artifactId>junit-jupiter</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.junit.jupiter</groupId>
+                    <artifactId>junit-jupiter-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.junit.jupiter</groupId>
+                    <artifactId>junit-jupiter-params</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.junit.jupiter</groupId>
+                    <artifactId>junit-jupiter-engine</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.junit.platform</groupId>
+                    <artifactId>junit-platform-commons</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.junit.platform</groupId>
+                    <artifactId>junit-platform-launcher</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mockito</groupId>
+                    <artifactId>mockito-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mockito</groupId>
+                    <artifactId>mockito-junit-jupiter</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
         <!-- JUnit 5 + platform -->
-        <dependency><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter-api</artifactId><version>${junit.jupiter.version}</version><scope>test</scope></dependency>
-        <dependency><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter-params</artifactId><version>${junit.jupiter.version}</version><scope>test</scope></dependency>
-        <dependency><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter-engine</artifactId><version>${junit.jupiter.version}</version><scope>test</scope></dependency>
-        <dependency><groupId>org.junit.platform</groupId><artifactId>junit-platform-commons</artifactId><version>${junit.platform.version}</version><scope>test</scope></dependency>
-        <dependency><groupId>org.junit.platform</groupId><artifactId>junit-platform-launcher</artifactId><version>${junit.platform.version}</version><scope>test</scope></dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-commons</artifactId>
+            <version>${junit.platform.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <version>${junit.platform.version}</version>
+            <scope>test</scope>
+        </dependency>
 
         <!-- Vintage bridge only if you still have JUnit4 tests -->
-        <dependency><groupId>org.junit.vintage</groupId><artifactId>junit-vintage-engine</artifactId><version>${junit.jupiter.version}</version><scope>test</scope></dependency>
-        <dependency><groupId>junit</groupId><artifactId>junit</artifactId><version>4.13.2</version><scope>test</scope></dependency>
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
 
         <!-- Mockito / PowerMock -->
-        <dependency><groupId>org.mockito</groupId><artifactId>mockito-core</artifactId><version>${mockito.version}</version><scope>test</scope></dependency>
-        <dependency><groupId>org.powermock</groupId><artifactId>powermock-module-junit4</artifactId><scope>test</scope></dependency>
-        <dependency><groupId>org.powermock</groupId><artifactId>powermock-api-mockito2</artifactId><scope>test</scope></dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito2</artifactId>
+            <scope>test</scope>
+        </dependency>
 
         <!-- Shared test utilities from sibling module; we exclude groovy/rest-assured to avoid duplicate versions -->
         <dependency>
@@ -337,12 +490,30 @@
             <version>${project.version}</version>
             <scope>test</scope>
             <exclusions>
-                <exclusion><groupId>io.rest-assured</groupId><artifactId>rest-assured</artifactId></exclusion>
-                <exclusion><groupId>io.rest-assured</groupId><artifactId>json-path</artifactId></exclusion>
-                <exclusion><groupId>io.rest-assured</groupId><artifactId>xml-path</artifactId></exclusion>
-                <exclusion><groupId>org.codehaus.groovy</groupId><artifactId>groovy</artifactId></exclusion>
-                <exclusion><groupId>org.codehaus.groovy</groupId><artifactId>groovy-json</artifactId></exclusion>
-                <exclusion><groupId>org.codehaus.groovy</groupId><artifactId>groovy-xml</artifactId></exclusion>
+                <exclusion>
+                    <groupId>io.rest-assured</groupId>
+                    <artifactId>rest-assured</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.rest-assured</groupId>
+                    <artifactId>json-path</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.rest-assured</groupId>
+                    <artifactId>xml-path</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-json</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-xml</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -354,16 +525,54 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency><groupId>io.rest-assured</groupId><artifactId>rest-assured</artifactId><version>${io.rest-assured.version}</version><scope>test</scope></dependency>
-        <dependency><groupId>io.rest-assured</groupId><artifactId>json-path</artifactId><version>${io.rest-assured.version}</version><scope>test</scope></dependency>
-        <dependency><groupId>io.rest-assured</groupId><artifactId>xml-path</artifactId><version>${io.rest-assured.version}</version><scope>test</scope></dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${io.rest-assured.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>json-path</artifactId>
+            <version>${io.rest-assured.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>xml-path</artifactId>
+            <version>${io.rest-assured.version}</version>
+            <scope>test</scope>
+        </dependency>
 
-        <dependency><groupId>org.hamcrest</groupId><artifactId>hamcrest</artifactId><version>${io.hamcrest.version}</version><scope>test</scope></dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <version>${io.hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
 
-        <dependency><groupId>jakarta.servlet</groupId><artifactId>jakarta.servlet-api</artifactId><version>${jakarta.servlet.version}</version><scope>test</scope></dependency>
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>${jakarta.servlet.version}</version>
+            <scope>test</scope>
+        </dependency>
 
-        <dependency><groupId>net.jodah</groupId><artifactId>concurrentunit</artifactId><version>0.4.6</version><scope>test</scope></dependency>
-        <dependency><groupId>org.awaitility</groupId><artifactId>awaitility</artifactId><scope>test</scope></dependency>
-        <dependency><groupId>nl.jqno.equalsverifier</groupId><artifactId>equalsverifier</artifactId><scope>test</scope></dependency>
+        <dependency>
+            <groupId>net.jodah</groupId>
+            <artifactId>concurrentunit</artifactId>
+            <version>0.4.6</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>nl.jqno.equalsverifier</groupId>
+            <artifactId>equalsverifier</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

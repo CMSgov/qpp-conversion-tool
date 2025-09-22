@@ -177,7 +177,7 @@ public class MeasureConfig {
 	}
 
 	/**
-	 * Build a List<SubPopulation> from our strata.
+	 * Build a {@code List<SubPopulation>} from our strata.
 	 * If there are no strata, returns an empty list.
 	 */
 	public List<SubPopulation> getSubPopulation() {
