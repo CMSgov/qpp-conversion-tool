@@ -220,7 +220,7 @@ public class JsonWrapper implements Serializable {
 
 	/**
 	 * This is the key on the JsonWrapper that was used to store it in the parent wrapper.
-	 * This allows for a single streaming implementation and avoids reference to {@code Map.Entry<K,V>}
+	 * This allows for a single streaming implementation and avoids reference to Map.Entry<K,V>
 	 * It is set upon put(String name, JsonWrapper value) calls to emulate an entity.
 	 */
 	private String keyForMapStream;
@@ -672,7 +672,7 @@ public class JsonWrapper implements Serializable {
 	}
 
 	/**
-	 * Removes the named key and value from the children map
+	 * Removes the named key & value from the children map
 	 *
 	 * @param name key that needs to be removed
 	 * @return <i><b>this</b></i> reference for chaining

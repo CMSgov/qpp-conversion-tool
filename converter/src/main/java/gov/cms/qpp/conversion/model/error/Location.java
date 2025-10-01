@@ -69,7 +69,7 @@ public class Location implements Serializable {
 	/**
 	 * Sets the line of the submitted document that caused this error
 	 *
-	 * @param line The line of the submitted document that caused this error
+	 * @param path The line of the submitted document that caused this error
 	 */
 	public void setLine(Integer line) {
 		this.line = line;
@@ -87,7 +87,7 @@ public class Location implements Serializable {
 	/**
 	 * Sets the column of the submitted document that caused this error
 	 *
-	 * @param column The column of the submitted document that caused this error
+	 * @param path The column of the submitted document that caused this error
 	 */
 	public void setColumn(Integer column) {
 		this.column = column;

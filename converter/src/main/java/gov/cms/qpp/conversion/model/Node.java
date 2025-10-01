@@ -230,7 +230,7 @@ public class Node implements Serializable {
 	 * Delete a child {@code Node} of this {@code Node}.
 	 *
 	 * @param childNode The {@code Node} to be deleted.
-	 * @return <code>true</code> if a child matched such that it was deleted.
+	 * @return <tt>true</tt> if a child matched such that it was deleted.
 	 */
 	public boolean removeChildNode(Node childNode) {
 		return this.childNodes.remove(childNode);

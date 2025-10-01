@@ -82,7 +82,7 @@ public class PcfValidationInfoMap {
 	/**
 	 * Returns a deep copy of the internal APM→(TIN→NPIs) mapping.
 	 *
-	 * @return a new {@code Map<String, Map<String, List<String>>>} containing copies of all nested structures,
+	 * @return a new Map<String, Map<String, List<String>>> containing copies of all nested structures,
 	 *         or null if the internal map is null.
 	 */
 	public Map<String, Map<String, List<String>>> getApmTinNpiCombinationMap() {
