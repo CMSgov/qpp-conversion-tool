@@ -14081,8 +14081,10 @@
     "primarySteward": "College of American Pathologists",
     "isInverse": false,
     "isRiskAdjusted": false,
-    "isIcdImpacted": false,
-    "icdImpacted": [],
+    "isIcdImpacted": true,
+    "icdImpacted": [
+      "registry"
+    ],
     "isClinicalGuidelineChanged": false,
     "clinicalGuidelineChanged": [],
     "companionMeasureId": [],
@@ -19221,7 +19223,8 @@
     "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
-      "app1"
+      "app1",
+      "appPlus"
     ],
     "submissionMethods": [
       "certifiedSurveyVendor"
@@ -19260,7 +19263,8 @@
     "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
-      "app1"
+      "app1",
+      "appPlus"
     ],
     "submissionMethods": [
       "certifiedSurveyVendor"
@@ -19299,7 +19303,8 @@
     "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
-      "app1"
+      "app1",
+      "appPlus"
     ],
     "submissionMethods": [
       "certifiedSurveyVendor"
@@ -19338,7 +19343,8 @@
     "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
-      "app1"
+      "app1",
+      "appPlus"
     ],
     "submissionMethods": [
       "certifiedSurveyVendor"
@@ -19377,7 +19383,8 @@
     "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
-      "app1"
+      "app1",
+      "appPlus"
     ],
     "submissionMethods": [
       "certifiedSurveyVendor"
@@ -19416,7 +19423,8 @@
     "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
-      "app1"
+      "app1",
+      "appPlus"
     ],
     "submissionMethods": [
       "certifiedSurveyVendor"
@@ -19455,7 +19463,8 @@
     "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
-      "app1"
+      "app1",
+      "appPlus"
     ],
     "submissionMethods": [
       "certifiedSurveyVendor"
@@ -19494,7 +19503,8 @@
     "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
-      "app1"
+      "app1",
+      "appPlus"
     ],
     "submissionMethods": [
       "certifiedSurveyVendor"
@@ -19533,7 +19543,8 @@
     "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
-      "app1"
+      "app1",
+      "appPlus"
     ],
     "submissionMethods": [
       "certifiedSurveyVendor"
@@ -19572,7 +19583,8 @@
     "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
-      "app1"
+      "app1",
+      "appPlus"
     ],
     "submissionMethods": [
       "certifiedSurveyVendor"
