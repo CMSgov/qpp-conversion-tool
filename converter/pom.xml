@@ -34,24 +34,39 @@
 				<artifactId>spotbugs-maven-plugin</artifactId>
 			</plugin>
 
-			<plugin>
-				<groupId>gov.cms.qpp.conversion</groupId>
-				<artifactId>generate-maven-plugin</artifactId>
-				<version>${project.version}</version>
-				<configuration>
-					<baseDir>${basedir}/../tools/docker/docker-artifacts/</baseDir>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>${maven.generate.phase}</phase>
-						<goals>
-							<goal>generateErrorCodeDoc</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>with-generate-plugin</id>
+			<activation>
+				<property>
+					<name>!skip.generate</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>gov.cms.qpp.conversion</groupId>
+						<artifactId>generate-maven-plugin</artifactId>
+						<version>${project.version}</version>
+						<configuration>
+							<baseDir>${basedir}/../tools/docker/docker-artifacts/</baseDir>
+						</configuration>
+						<executions>
+							<execution>
+								<phase>${maven.generate.phase}</phase>
+								<goals>
+									<goal>generateErrorCodeDoc</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<dependencies>
 		<dependency>

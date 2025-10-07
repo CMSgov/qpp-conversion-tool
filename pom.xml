@@ -25,15 +25,16 @@
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<io.rest-assured.version>4.1.2</io.rest-assured.version>
 		<argLine/>
+		<javadoc.skip>false</javadoc.skip>
 	</properties>
 
 	<modules>
 		<module>commons</module>
 		<module>test-commons</module>
+		<module>generate</module>
 		<module>converter</module>
 		<module>commandline</module>
 		<module>rest-api</module>
-		<module>generate</module>
 		<module>test-coverage</module>
 	</modules>
 
@@ -200,6 +201,18 @@
 							<doclint>none</doclint>
 							<failOnError>false</failOnError>
 							<quiet>true</quiet>
+						</configuration>
+					</execution>
+					<execution>
+						<id>aggregate</id>
+						<goals>
+							<goal>aggregate</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<doclint>none</doclint>
+							<quiet>true</quiet>
+							<skip>${javadoc.skip}</skip>
 						</configuration>
 					</execution>
 				</executions>
