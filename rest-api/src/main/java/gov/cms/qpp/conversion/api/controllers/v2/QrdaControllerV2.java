@@ -40,15 +40,37 @@ public class QrdaControllerV2 extends SkeletalQrdaController<ConvertResponse> {
 	@Override
 	protected ConvertResponse respond(MultipartFile file, String checkedPurpose, HttpHeaders httpHeaders) {
 		ConversionReport conversionReport = buildReport(file.getOriginalFilename(), inputStream(file), checkedPurpose);
-		ConvertResponse response = new ConvertResponse();
-		response.setQpp(conversionReport.getEncodedWithMetadata().copyWithoutMetadata().toString());
-		response.setWarnings(conversionReport.getWarnings());
+		ConvertResponse response = toConvertResponse(conversionReport);
 		Metadata metadata = audit(conversionReport);
-		if (null != metadata) {
-			httpHeaders.add("Location", metadata.getUuid());
+		applyLocationIfPresent(metadata, httpHeaders, response);
+		return response;
+	}
+
+	/**
+	 * Creates a ConvertResponse from a ConversionReport.
+	 * 
+	 * @param report the conversion report
+	 * @return the convert response with QPP data and warnings
+	 */
+	private ConvertResponse toConvertResponse(ConversionReport report) {
+		ConvertResponse response = new ConvertResponse();
+		response.setQpp(report.getEncodedWithMetadata().copyWithoutMetadata().toString());
+		response.setWarnings(report.getWarnings());
+		return response;
+	}
+
+	/**
+	 * Applies location header and response field when metadata is present.
+	 * 
+	 * @param metadata the audit metadata (may be null)
+	 * @param headers the HTTP headers to modify
+	 * @param response the convert response to modify
+	 */
+	private void applyLocationIfPresent(Metadata metadata, HttpHeaders headers, ConvertResponse response) {
+		if (metadata != null) {
+			headers.add("Location", metadata.getUuid());
 			response.setLocation(metadata.getUuid());
 		}
-		return response;
 	}
 
 }
