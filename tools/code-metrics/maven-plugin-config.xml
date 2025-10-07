@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Maven Plugin Configuration for Code Metrics Generation
+  
+  Add this plugin configuration to your pom.xml file to automatically
+  generate code metrics during the Maven build process.
+  
+  Usage:
+  1. Copy this plugin configuration to your pom.xml <plugins> section
+  2. Run: mvn verify
+  3. Check target/code-metrics/ for generated reports
+-->
+
+<plugin>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>exec-maven-plugin</artifactId>
+    <version>3.1.0</version>
+    <configuration>
+        <executable>bash</executable>
+        <workingDirectory>${project.basedir}</workingDirectory>
+        <arguments>
+            <argument>tools/code-metrics/generate-code-metrics.sh</argument>
+            <argument>.</argument>
+            <argument>target/code-metrics</argument>
+        </arguments>
+    </configuration>
+    <executions>
+        <execution>
+            <id>generate-code-metrics</id>
+            <phase>verify</phase>
+            <goals>
+                <goal>exec</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+
+<!--
+  Alternative: Run manually with specific profile
+  
+  Add this profile to your pom.xml <profiles> section:
+-->
+
+<profile>
+    <id>code-metrics</id>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <executable>bash</executable>
+                    <workingDirectory>${project.basedir}</workingDirectory>
+                    <arguments>
+                        <argument>tools/code-metrics/generate-code-metrics.sh</argument>
+                        <argument>.</argument>
+                        <argument>target/code-metrics</argument>
+                    </arguments>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>generate-code-metrics</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</profile>
+
+<!--
+  Then run: mvn compile -Pcode-metrics
+-->
