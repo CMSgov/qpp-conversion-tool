@@ -5,10 +5,11 @@ This directory contains tools for analyzing code metrics (Lines of Code and Cycl
 ## Tools Included
 
 ### 1. CyclomaticComplexityCalculator.java
-A Java-based analyzer that calculates McCabe's Cyclomatic Complexity for Java source files.
+A Java-based analyzer that calculates SonarCloud-style Cyclomatic Complexity using the M = E − N + 2P formula.
 
 **Features:**
-- Counts decision points: if, while, for, case, catch, &&, ||, ?, do
+- Uses SonarCloud formula: M = E − N + 2P (Edges - Nodes + 2×Connected Components)
+- Counts decision points: if, while, for, case, catch, &&, ||, ?, do, else if, switch
 - Calculates complexity per method and per file
 - Provides detailed reporting with complexity distribution
 - Removes comments and strings to avoid false positives
@@ -92,13 +93,13 @@ The tools generate the following reports:
 - **Comment Ratio**: Percentage of non-blank lines that are comments
 
 ### Cyclomatic Complexity
-Based on McCabe's Cyclomatic Complexity metric:
+Based on SonarCloud's Cyclomatic Complexity formula (M = E − N + 2P):
 
 - **1-10**: Low complexity, easy to maintain
 - **11-20**: Moderate complexity, requires attention
 - **21+**: High complexity, difficult to maintain and test
 
-**Formula**: CC = Decision Points + 1 (per method)
+**Formula**: M = E − N + 2P where E=edges, N=nodes, P=connected components
 
 ## Best Practices
 

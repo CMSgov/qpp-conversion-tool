@@ -122,9 +122,9 @@ The REST API module demonstrates **good code quality** with well-structured, mai
 
 ### Cyclomatic Complexity Analysis  
 - **Tool**: Custom Java analyzer
-- **Algorithm**: McCabe's Cyclomatic Complexity
-- **Decision Points**: if, while, for, case, catch, &&, ||, ?, do
-- **Base Complexity**: 1 per method
+- **Algorithm**: SonarCloud formula (M = E − N + 2P)
+- **Decision Points**: if, while, for, case, catch, &&, ||, ?, do, else if, switch
+- **Formula**: M = Edges - Nodes + 2 × Connected Components
 
 ### Usage Instructions
 
@@ -138,7 +138,7 @@ sudo apt install cloc
 cloc rest-api/src/main/java --json > loc-report.json
 cloc rest-api/src/main/java --by-file > loc-detailed.txt
 
-# Generate Cyclomatic Complexity (using provided analyzer)
+# Generate SonarCloud Cyclomatic Complexity (M = E − N + 2P)
 javac CyclomaticComplexityCalculator.java
 java CyclomaticComplexityCalculator rest-api/src/main/java
 ```
