@@ -20,7 +20,8 @@ import gov.cms.qpp.conversion.util.CloneHelper;
  * Report on the state of a conversion.
  */
 public class ConversionReport {
-	private static final ObjectMapper MAPPER = new ObjectMapper();
+	private static final ObjectMapper SHARED_MAPPER = new ObjectMapper();
+	private final ObjectMapper mapper;
 	private Source source;
 	private Node decoded;
 	private JsonWrapper encodedWithMetadata;
@@ -38,6 +39,7 @@ public class ConversionReport {
 		this.decoded = decoded;
 		this.encodedWithMetadata = encodedWithMetadata;
 		this.warnings = warnings;
+		this.mapper = SHARED_MAPPER; // Use shared instance instead of creating new one each time
 		reportDetails = constructErrorHierarchy(source.getName(), errors);
 	}
 
@@ -141,7 +143,7 @@ public class ConversionReport {
 	 */
 	public Source getValidationErrorsSource() {
 		try {
-			byte[] validationErrorBytes = MAPPER.writeValueAsBytes(reportDetails);
+			byte[] validationErrorBytes = mapper.writeValueAsBytes(reportDetails);
 			return new InputStreamSupplierSource(
 					"ValidationErrors",
 					new ByteArrayInputStream(validationErrorBytes)
