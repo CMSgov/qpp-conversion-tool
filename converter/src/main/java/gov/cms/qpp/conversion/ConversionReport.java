@@ -20,7 +20,7 @@ import gov.cms.qpp.conversion.util.CloneHelper;
  * Report on the state of a conversion.
  */
 public class ConversionReport {
-	private final ObjectMapper mapper = new ObjectMapper();
+	private static final ObjectMapper MAPPER = new ObjectMapper();
 	private Source source;
 	private Node decoded;
 	private JsonWrapper encodedWithMetadata;
@@ -141,7 +141,7 @@ public class ConversionReport {
 	 */
 	public Source getValidationErrorsSource() {
 		try {
-			byte[] validationErrorBytes = mapper.writeValueAsBytes(reportDetails);
+			byte[] validationErrorBytes = MAPPER.writeValueAsBytes(reportDetails);
 			return new InputStreamSupplierSource(
 					"ValidationErrors",
 					new ByteArrayInputStream(validationErrorBytes)

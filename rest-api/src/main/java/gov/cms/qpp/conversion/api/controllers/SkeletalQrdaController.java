@@ -95,9 +95,19 @@ public abstract class SkeletalQrdaController<T> {
 	}
 
 	protected ConversionReport buildReport(String filename, InputStream inputStream, String purpose) {
+		long startTime = System.currentTimeMillis();
 		ConversionReport conversionReport = qrdaService.convertQrda3ToQpp(
 				new InputStreamSupplierSource(filename, inputStream, purpose));
+		if (API_LOG.isDebugEnabled()) {
+			API_LOG.debug("qrdaService.convertQrda3ToQpp took {} ms", System.currentTimeMillis() - startTime);
+		}
+		
+		startTime = System.currentTimeMillis();
 		validationService.validateQpp(conversionReport);
+		if (API_LOG.isDebugEnabled()) {
+			API_LOG.debug("validationService.validateQpp took {} ms", System.currentTimeMillis() - startTime);
+		}
+		
 		return conversionReport;
 	}
 
@@ -117,8 +127,13 @@ public abstract class SkeletalQrdaController<T> {
 
 	protected Metadata audit(ConversionReport conversionReport) {
 		try {
+			long startTime = System.currentTimeMillis();
 			CompletableFuture<Metadata> metadata = auditService.success(conversionReport);
-			return metadata == null ? null : metadata.get();
+			Metadata result = metadata == null ? null : metadata.get();
+			if (API_LOG.isDebugEnabled()) {
+				API_LOG.debug("auditService.success().get() took {} ms", System.currentTimeMillis() - startTime);
+			}
+			return result;
 		} catch (InterruptedException | ExecutionException exception) { //NOSONAR
 			throw new AuditException(exception);
 		}

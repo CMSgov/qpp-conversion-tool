@@ -83,18 +83,19 @@ public class ValidationServiceImpl implements ValidationService {
 	 */
 	@Override
 	public void validateQpp(ConversionReport conversionReport) {
+		// Cheap check first: environment variable
 		String validationUrl = environment.getProperty(Constants.VALIDATION_URL_ENV_VARIABLE);
-
 		if (StringUtils.isEmpty(validationUrl)) {
 			return;
 		}
 
+		// More expensive operation: get wrapper and make network call
 		JsonWrapper wrapper = conversionReport.getEncodedWithMetadata();
 		ResponseEntity<String> validationResponse = callValidationEndpoint(validationUrl, wrapper.copyWithoutMetadata());
 		API_LOG.info("Submission Validation Response Code - " + validationResponse.getStatusCode());
 
+		// Most expensive operations only if validation failed
 		if (HttpStatus.UNPROCESSABLE_ENTITY == validationResponse.getStatusCode()) {
-
 			API_LOG.warn("Failed QPP validation");
 
 			AllErrors convertedErrors = convertQppValidationErrorsToQrda(validationResponse.getBody(), wrapper);

@@ -70,8 +70,8 @@ public class QrdaServiceImpl implements QrdaService {
 	 */
 	@Override
 	public ConversionReport convertQrda3ToQpp(Source source) {
-		Converter converter = initConverter(source);
 		API_LOG.info("Performing QRDA3 to QPP conversion");
+		Converter converter = initConverter(source);
 		converter.transform();
 		return converter.getReport();
 	}
