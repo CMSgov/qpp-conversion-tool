@@ -23,10 +23,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
-import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
 import gov.cms.qpp.conversion.api.exceptions.InvalidPurposeException;
-import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
-import gov.cms.qpp.conversion.api.helper.AdvancedApmHelper;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.QppValidationException;
@@ -132,70 +129,6 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 
 		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleQppValidationException(exception);
 		assertThat(responseEntity.getBody()).isEqualTo(allErrors);
-	}
-
-	@Test
-	void testFileNotFoundExceptionStatusCode() {
-		NoFileInDatabaseException exception =
-				new NoFileInDatabaseException(AdvancedApmHelper.FILE_NOT_FOUND);
-
-		ResponseEntity<String> responseEntity = objectUnderTest.handleFileNotFoundException(exception);
-
-		assertWithMessage("The response entity's status code must be 422.")
-				.that(responseEntity.getStatusCode())
-				.isEqualTo(HttpStatus.NOT_FOUND);
-	}
-
-	@Test
-	void testFileNotFoundExceptionHeaderContentType() {
-		NoFileInDatabaseException exception =
-				new NoFileInDatabaseException(AdvancedApmHelper.FILE_NOT_FOUND);
-
-		ResponseEntity<String> responseEntity = objectUnderTest.handleFileNotFoundException(exception);
-
-		assertThat(responseEntity.getHeaders().getContentType())
-				.isEquivalentAccordingToCompareTo(MediaType.TEXT_PLAIN);
-	}
-
-	@Test
-	void testFileNotFoundExceptionBody() {
-		NoFileInDatabaseException exception =
-				new NoFileInDatabaseException(AdvancedApmHelper.FILE_NOT_FOUND);
-
-		ResponseEntity<String> responseEntity = objectUnderTest.handleFileNotFoundException(exception);
-		assertThat(responseEntity.getBody()).isEqualTo(AdvancedApmHelper.FILE_NOT_FOUND);
-	}
-
-	@Test
-	void testInvalidFileTypeExceptionStatusCode() {
-		InvalidFileTypeException exception =
-				new InvalidFileTypeException(AdvancedApmHelper.FILE_NOT_FOUND);
-
-		ResponseEntity<String> responseEntity = objectUnderTest.handleInvalidFileTypeException(exception);
-
-		assertWithMessage("The response entity's status code must be 422.")
-				.that(responseEntity.getStatusCode())
-				.isEqualTo(HttpStatus.NOT_FOUND);
-	}
-
-	@Test
-	void testInvalidFileTypeExceptionHeaderContentType() {
-		InvalidFileTypeException exception =
-				new InvalidFileTypeException(AdvancedApmHelper.FILE_NOT_FOUND);
-
-		ResponseEntity<String> responseEntity = objectUnderTest.handleInvalidFileTypeException(exception);
-
-		assertThat(responseEntity.getHeaders().getContentType())
-				.isEquivalentAccordingToCompareTo(MediaType.TEXT_PLAIN);
-	}
-
-	@Test
-	void testInvalidFileTypeExceptionBody() {
-		InvalidFileTypeException exception =
-				new InvalidFileTypeException(AdvancedApmHelper.FILE_NOT_FOUND);
-
-		ResponseEntity<String> responseEntity = objectUnderTest.handleInvalidFileTypeException(exception);
-		assertThat(responseEntity.getBody()).isEqualTo(AdvancedApmHelper.FILE_NOT_FOUND);
 	}
 
 	@Test

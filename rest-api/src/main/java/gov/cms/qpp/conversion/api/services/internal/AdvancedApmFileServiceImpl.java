@@ -3,13 +3,10 @@ package gov.cms.qpp.conversion.api.services.internal;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 
-import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
 import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
-import gov.cms.qpp.conversion.api.helper.AdvancedApmHelper;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.FileStatusUpdateRequest;
 import gov.cms.qpp.conversion.api.model.Metadata;
-import gov.cms.qpp.conversion.api.model.UnprocessedFileData;
 import gov.cms.qpp.conversion.api.services.AdvancedApmFileService;
 import gov.cms.qpp.conversion.api.services.DbService;
 import gov.cms.qpp.conversion.api.services.StorageService;
@@ -22,6 +19,10 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @Service
 public class AdvancedApmFileServiceImpl implements AdvancedApmFileService {
+	public static final String FILE_NOT_FOUND = "File not found!";
+	public static final String FILE_FOUND_PROCESSED = "The file was found and will be updated as processed.";
+	public static final String FILE_FOUND_UNPROCESSED = "The file was found and will be updated as unprocessed.";
+
 
 	private DbService dbService;
 	private StorageService storageService;
@@ -33,21 +34,6 @@ public class AdvancedApmFileServiceImpl implements AdvancedApmFileService {
 	public AdvancedApmFileServiceImpl(DbService dbService, StorageService storageService) {
 		this.dbService = dbService;
 		this.storageService = storageService;
-	}
-
-	@Override
-	public List<UnprocessedFileData> getUnprocessedPcfFiles(String orgAttribute) {
-		List<Metadata> metadata = dbService.getUnprocessedPcfMetaData(orgAttribute);
-		return AdvancedApmHelper.transformMetaDataToUnprocessedFileData(metadata);
-	}
-
-	@Override
-	public InputStreamResource getPcfFileById(String fileId) {
-		Metadata metadata = getMetadataById(fileId);
-		if (AdvancedApmHelper.isAValidUnprocessedFile(metadata)) {
-			return new InputStreamResource(storageService.getFileByLocationId(metadata.getSubmissionLocator()));
-		}
-		throw new NoFileInDatabaseException(AdvancedApmHelper.FILE_NOT_FOUND);
 	}
 
 	@Override
@@ -74,14 +60,14 @@ public class AdvancedApmFileServiceImpl implements AdvancedApmFileService {
 			metadata.setCpcProcessed(true);
 			CompletableFuture<Metadata> metadataFuture = dbService.write(metadata);
 			metadataFuture.join();
-			return AdvancedApmHelper.FILE_FOUND_PROCESSED;
+			return FILE_FOUND_PROCESSED;
 		} else if (Constants.RTI_ORG.equalsIgnoreCase(orgName)) {
 			metadata.setRtiProcessed(true);
 			CompletableFuture<Metadata> metadataFuture = dbService.write(metadata);
 			metadataFuture.join();
-			return AdvancedApmHelper.FILE_FOUND_PROCESSED;
+			return FILE_FOUND_PROCESSED;
 		} else {
-			return AdvancedApmHelper.FILE_NOT_FOUND;
+			return FILE_NOT_FOUND;
 		}
 	}
 
@@ -91,14 +77,14 @@ public class AdvancedApmFileServiceImpl implements AdvancedApmFileService {
 			metadata.setCpcProcessed(false);
 			CompletableFuture<Metadata> metadataFuture = dbService.write(metadata);
 			metadataFuture.join();
-			return AdvancedApmHelper.FILE_FOUND_UNPROCESSED;
+			return FILE_FOUND_UNPROCESSED;
 		} else if (Constants.RTI_ORG.equalsIgnoreCase(orgName)) {
 			metadata.setRtiProcessed(false);
 			CompletableFuture<Metadata> metadataFuture = dbService.write(metadata);
 			metadataFuture.join();
-			return AdvancedApmHelper.FILE_FOUND_UNPROCESSED;
+			return FILE_FOUND_UNPROCESSED;
 		} else {
-			return AdvancedApmHelper.FILE_NOT_FOUND;
+			return FILE_NOT_FOUND;
 		}
 	}
 
@@ -106,9 +92,7 @@ public class AdvancedApmFileServiceImpl implements AdvancedApmFileService {
 	public Metadata getMetadataById(String fileId) {
 		Metadata metadata = dbService.getMetadataById(fileId);
 		if (metadata == null) {
-			throw new NoFileInDatabaseException(AdvancedApmHelper.FILE_NOT_FOUND);
-		} else if (!AdvancedApmHelper.isPcfFile(metadata)) {
-			throw new InvalidFileTypeException(AdvancedApmHelper.INVALID_FILE);
+			throw new NoFileInDatabaseException(FILE_NOT_FOUND);
 		}
 		return metadata;
 	}

@@ -27,7 +27,6 @@ import static gov.cms.qpp.conversion.model.Constants.*;
 class ClinicalDocumentDecoderTest {
 
 	private static final String ENTITY_ID_VALUE = "AR000000";
-	public static final String PCF_PRACTICE_ROOT = "2.16.840.1.113883.3.249.5.3";
 	public static final String CPC_PRACTICE_ROOT = "2.16.840.1.113883.3.249.5.1";
 	private static String xmlFragment;
 	private Node clinicalDocument;
@@ -300,100 +299,6 @@ class ClinicalDocumentDecoderTest {
 		assertWithMessage("Clinical Document doesn't contain taxpayer id number")
 				.that(testParentNode.getValue(TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
-	}
-
-	@Test
-	void decodePcfPracticeSiteAddressTest() {
-		Element clinicalDocument = makeClinicalDocument(PCF_PROGRAM_NAME, false, false);
-		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), CPC_PRACTICE_ROOT, ENTITY_ID_VALUE));
-		Node testParentNode = new Node();
-		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
-		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
-		objectUnderTest.decode(clinicalDocument, testParentNode);
-		assertWithMessage("Clinical Document contains the Entity Id")
-				.that(testParentNode.getValue(PRACTICE_SITE_ADDR))
-				.isEqualTo("testing123");
-	}
-
-	@Test
-	void decodePcfTinTest() {
-		Element clinicalDocument = makeClinicalDocument(CPCPLUS_PROGRAM_NAME, false, false);
-		clinicalDocument.addContent( prepareParticipant(clinicalDocument.getNamespace(), CPC_PRACTICE_ROOT, ENTITY_ID_VALUE));
-		Node testParentNode = new Node();
-		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
-		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
-		objectUnderTest.decode(clinicalDocument, testParentNode);
-		List<String> tinNumbers =
-			Arrays.asList(testParentNode.getValue(TAX_PAYER_IDENTIFICATION_NUMBER).split(","));
-		tinNumbers.forEach(tinNumber -> assertThat(tinNumber).isNotEmpty());
-	}
-
-	@Test
-	void testClinicalDocumentDecodeProgramPcf() {
-		Element clinicalDocument = makeClinicalDocument(PCF, false, false);
-		Node testParentNode = new Node();
-		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
-		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
-		objectUnderTest.decode(clinicalDocument, testParentNode);
-
-		assertWithMessage("Clinical Document doesn't contain program name")
-			.that(testParentNode.getValue(PROGRAM_NAME))
-			.isEqualTo(PCF_PROGRAM_NAME);
-		assertWithMessage("Clinical Document doesn't contain entity type")
-			.that(testParentNode.getValue(ENTITY_TYPE))
-			.isEqualTo(ENTITY_APM);
-	}
-
-	@Test
-	void testClinicalDocumentDecodePcfTin() {
-		Element clinicalDocument = makeClinicalDocument(PCF, false, false);
-		clinicalDocument.addContent( prepareParticipant(clinicalDocument.getNamespace(), CPC_PRACTICE_ROOT, ENTITY_ID_VALUE));
-		Node testParentNode = new Node();
-		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
-		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
-		objectUnderTest.decode(clinicalDocument, testParentNode);
-		List<String> tinNumbers =
-			Arrays.asList(testParentNode.getValue(TAX_PAYER_IDENTIFICATION_NUMBER).split(","));
-		tinNumbers.forEach(tinNumber -> assertThat(tinNumber).isNotEmpty());
-	}
-
-	@Test
-	void testClinicalDocumentDecodePcfNpi() {
-		Element clinicalDocument = makeClinicalDocument(PCF, false, false);
-		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), PCF_PRACTICE_ROOT, ENTITY_ID_VALUE));
-		Node testParentNode = new Node();
-		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
-		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
-		objectUnderTest.decode(clinicalDocument, testParentNode);
-		List<String> npiNumbers =
-			Arrays.asList(testParentNode.getValue(NATIONAL_PROVIDER_IDENTIFIER).split(","));
-		npiNumbers.forEach(npiNumber -> assertThat(npiNumber).isNotEmpty());
-	}
-
-	@Test
-	void testClinicalDocumentDecodePcfEntityId() {
-		Element clinicalDocument = makeClinicalDocument(PCF, false, false);
-		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), PCF_PRACTICE_ROOT, ENTITY_ID_VALUE));
-		Node testParentNode = new Node();
-		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
-		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
-		objectUnderTest.decode(clinicalDocument, testParentNode);
-		assertWithMessage("Clinical Document contains the Entity Id")
-			.that(testParentNode.getValue(PCF_ENTITY_ID))
-			.isEqualTo(ENTITY_ID_VALUE);
-	}
-
-	@Test
-	void testClinicalDocumentDecodePcfPracticeSiteAddress() {
-		Element clinicalDocument = makeClinicalDocument(PCF, false, false);
-		clinicalDocument.addContent(prepareParticipant(clinicalDocument.getNamespace(), PCF_PRACTICE_ROOT, ENTITY_ID_VALUE));
-		Node testParentNode = new Node();
-		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
-		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
-		objectUnderTest.decode(clinicalDocument, testParentNode);
-		assertWithMessage("Clinical Document contains the Entity Id")
-			.that(testParentNode.getValue(PRACTICE_SITE_ADDR))
-			.isEqualTo("testing123");
 	}
 
 	@Test

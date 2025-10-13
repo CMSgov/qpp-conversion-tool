@@ -3,7 +3,6 @@ package gov.cms.qpp.conversion.api.helper;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -46,10 +45,6 @@ public class MetadataHelper {
 			metadata.setNpi(findNpi(node));
 			metadata.setProgramName(findProgramName(node));
 			metadata.setApm(findApm(node));
-			if (isPcf(node)) {
-				metadata.setPcf(deriveHash(Constants.PCF_DYNAMO_PARTITION_START));
-			}
-			metadata.setCpcProcessed(false);
 			metadata.setRtiProcessed(false);
 		}
 
@@ -59,27 +54,13 @@ public class MetadataHelper {
 	}
 
 	/**
-	 * Retrieves the random hash for the CPC/PCF field if this is a CPC+ or PCF conversion respectively.
-	 *
-	 * @param partitionStart partition type to use
-	 * @return Cpc field randomly hashed or null if this isn't a CPC+ or PCF conversion
-	 */
-	private static String deriveHash(String partitionStart) {
-		return partitionStart + RANDOM_HASH.nextInt(Constants.CPC_DYNAMO_PARTITIONS);
-	}
-
-	/**
 	 * Retrieves the APM Entity Id from the given node
 	 *
 	 * @param node to interrogate
 	 * @return Apm Entity ID value
 	 */
 	private static String findApm(Node node) {
-		if (isPcf(node)) {
-			return findValue(node, PCF_ENTITY_ID, TemplateId.CLINICAL_DOCUMENT);
-		} else {
-			return findValue(node, PRACTICE_ID, TemplateId.CLINICAL_DOCUMENT);
-		}
+		return findValue(node, PRACTICE_ID, TemplateId.CLINICAL_DOCUMENT);
 	}
 
 	/**
@@ -107,17 +88,6 @@ public class MetadataHelper {
 	private static String findProgramName(Node node) {
 		return findValue(node, PROGRAM_NAME,
 				TemplateId.CLINICAL_DOCUMENT);
-	}
-
-	private static boolean isPcf(Node node) {
-		if (Program.isPcf(node)) {
-			return true;
-		}
-
-		Node found = findPossibleChildNode(node, RAW_PROGRAM_NAME,
-			TemplateId.CLINICAL_DOCUMENT);
-
-		return found != null && Program.isPcf(found);
 	}
 
 	/**

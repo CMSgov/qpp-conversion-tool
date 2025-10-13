@@ -12,22 +12,6 @@ import java.util.List;
 public interface AdvancedApmFileService {
 
 	/**
-	 * Retrieves all unprocessed pcf metadata
-	 *
-	 * @return {@link Metadata} extracted as {@link UnprocessedFileData}.
-	 */
-	List<UnprocessedFileData> getUnprocessedPcfFiles(String org);
-
-	/**
-	 * Retrieves the file location id by metadata id and uses it to retrieve the file
-	 *
-	 * @param fileId {@link Metadata} identifier
-	 * @return file contents parsed as a {@link String}
-	 * @throws IOException for invalid IOUtils usage
-	 */
-	InputStreamResource getPcfFileById(String fileId) throws IOException;
-
-	/**
 	 * Retrieves the file location id by metadata id and uses it to retrieve the submission's QPP
 	 *
 	 * @param fileId {@link Metadata} identifier

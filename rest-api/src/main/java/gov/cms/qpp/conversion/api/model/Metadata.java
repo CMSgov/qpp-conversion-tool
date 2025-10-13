@@ -357,51 +357,6 @@ public final class Metadata {
 	}
 
 	/**
-	 * Whether the conversion was for the CPC+ program.
-	 *
-	 * This is set to a {@link String} that contains "CPC_" plus a number for DynamoDB partitioning of the GSI.
-	 * If this method returns {@code null}, this was not a CPC+ conversion.
-	 *
-	 * @return A {@link String} for a CPC+ conversion, null otherwise.
-	 */
-	@DoNotEncrypt
-	@DynamoDBAttribute(attributeName = Constants.DYNAMO_CPC_ATTRIBUTE)
-	public String getCpc() {
-		return cpc;
-	}
-
-	/**
-	 * Sets whether the conversion was for the CPC+ program.
-	 *
-	 * If not {@code null}, must be of the form "CPC_" plus a number.
-	 * Setting this to {@code null}, indicates this was not a CPC+ conversion.
-	 *
-	 * @param cpc A CPC+ conversion or not.
-	 */
-	public void setCpc(String cpc) {
-		this.cpc = cpc;
-	}
-
-	/**
-	 * Determines if conversion was for PCF program
-	 *
-	 * @return
-	 */
-	@DoNotEncrypt
-	@DynamoDBAttribute(attributeName = Constants.DYNAMO_PCF_ATTRIBUTE)
-	public String getPcf() {
-		return pcf;
-	}
-
-	/**
-	 * Manage if program is PCF
-	 * @param pcf
-	 */
-	public void setPcf(final String pcf) {
-		this.pcf = pcf;
-	}
-
-	/**
 	 * A location to where the conversion error JSON can be found.
 	 *
 	 * For example, for AWS, this could be an ARN.
@@ -510,26 +465,6 @@ public final class Metadata {
 	}
 
 	/**
-	 * Returns an attribute that combines the CPC+ processed state and the date of creation.
-	 *
-	 * This is mostly useful in the CPC+ global secondary index.
-	 *
-	 * @return The combined attribute.
-	 */
-	@DoNotEncrypt
-	@DynamoDBAttribute(attributeName = Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE)
-	public String getCpcProcessedCreateDate() {
-		String combination = null;
-
-		if (cpcProcessed != null) {
-			DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
-			combination = cpcProcessed.toString() + "#" + formatter.format(createdDate);
-		}
-
-		return combination;
-	}
-
-	/**
 	 * Returns an attribute that combines the RTI+ processed state and the date of creation.
 	 *
 	 * This is mostly useful in the RTI+ global secondary index.
@@ -631,33 +566,6 @@ public final class Metadata {
 			d.setDetails(warnings.getDetails());
 			this.warnings = d;
 		}
-	}
-
-
-	/**
-	 * Sets the separate CPC+ processed flag and created date based on the argument
-	 *
-	 * Splits the processed flag from the date by a "#" character.
-	 * The first field must be "true" or "false" which represents the CPC+ processed boolean.
-	 * The second field must be an ISO 8601 timestamp string.
-	 * For example, "2018-12-08T18:32:54.846Z".
-	 *
-	 * @param combination The combined attribute.
-	 */
-	public void setCpcProcessedCreateDate(String combination) {
-
-		String[] split = combination.split("#");
-
-		if (split.length < CPC_PROCESSED_CREATE_DATE_NUM_FIELDS) {
-			return;
-		}
-
-		String isProcessed = split[CPC_PROCESSED_INDEX];
-		String creationDate = split[CPC_CREATE_DATE_INDEX];
-		Instant instant = Instant.parse(creationDate);
-
-		setCpcProcessed(Boolean.valueOf(isProcessed));
-		setCreatedDate(instant);
 	}
 
 	/**

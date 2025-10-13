@@ -32,44 +32,6 @@ class MetadataTest {
 	}
 
 	@Test
-	void testGetCpcProcessedCreateDateWithNullProcessed() {
-		Metadata metadata = Metadata.create();
-		assertThat(metadata.getCpcProcessedCreateDate()).isNull();
-	}
-
-	@Test
-	void testGetCpcProcessedCreateDateWithNonNullProcessed() {
-		Metadata metadata = Metadata.create();
-		Boolean processed = false;
-		metadata.setCpcProcessed(processed);
-		assertThat(metadata.getCpcProcessedCreateDate()).startsWith(processed + "#");
-	}
-
-	@Test
-	void testSetCpcProcessedCreateDateWithoutHash() {
-		Metadata metadata = Metadata.create();
-		Boolean processedBefore = metadata.getCpcProcessed();
-		Instant createDateBefore = metadata.getCreatedDate();
-
-		metadata.setCpcProcessedCreateDate("DogCow");
-
-		assertThat(metadata.getCpcProcessed()).isEqualTo(processedBefore);
-		assertThat(metadata.getCreatedDate()).isEqualTo(createDateBefore);
-	}
-
-	@Test
-	void testSetCpcProcessedCreateDateWithHash() {
-		Metadata metadata = Metadata.create();
-		metadata.setCpcProcessed(false);
-		Instant createDateBefore = metadata.getCreatedDate();
-
-		metadata.setCpcProcessedCreateDate("true#2017-12-08T18:32:54.846Z");
-
-		assertThat(metadata.getCpcProcessed()).isTrue();
-		assertThat(metadata.getCreatedDate()).isLessThan(createDateBefore);
-	}
-
-	@Test
 	void plumbing() {
 		Consumer<Method> consumer = harness(Metadata.create());
 

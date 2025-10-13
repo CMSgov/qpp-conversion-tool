@@ -175,19 +175,11 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	protected void validateDenomCountToIpopCount(Node node, SubPopulation subPopulation, String measureId) {
 		Node denomNode = getDenominatorNodeFromCurrentSubPopulation(node, subPopulation);
 		Node ipopNode = getIpopNodeFromCurrentSubPopulation(node, subPopulation);
-		String program = node.getParent().getParent().getValue(PROGRAM_NAME);
 
 		if (denomNode != null && ipopNode != null) {
 			Node denomCount = denomNode.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
 			Node ipopCount = ipopNode.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
-
-			if ((CPCPLUS_PROGRAM_NAME.equalsIgnoreCase(program)
-				&& MeasureConfigHelper.CPC_PLUS_MEASURES.contains(measureId))
-					|| PCF_PROGRAM_NAME.equalsIgnoreCase(program)) {
-				validateCpcDenominatorCount(denomCount, ipopCount, subPopulation.getDenominatorUuid(), program);
-			} else {
-				validateDenominatorCount(denomCount, ipopCount, subPopulation.getDenominatorUuid());
-			}
+			validateDenominatorCount(denomCount, ipopCount, subPopulation.getDenominatorUuid());
 		}
 	}
 
@@ -232,21 +224,6 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 						AGGREGATE_COUNT)
 				.lessThanOrEqualTo(ProblemCode.DENOMINATOR_COUNT_INVALID.format(denominatorUuid, Context.REPORTING_YEAR),
 					Integer.parseInt(ipopCount.getValue(AGGREGATE_COUNT)));
-	}
-
-	/**
-	 * Performs a validation on a CPC Denominator node's aggregate count to the Initial Population node's aggregate count
-	 *
-	 * @param denomCount Aggregate Count node of denominator
-	 * @param ipopCount Aggregate Count node of initial population
-	 */
-	private void validateCpcDenominatorCount(Node denomCount, Node ipopCount, String denominatorUuid, String program) {
-		forceCheckErrors(denomCount)
-			.incompleteValidation()
-			.intValue(ProblemCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
-				AGGREGATE_COUNT)
-			.valueIn(ProblemCode.PCF_DENOMINATOR_COUNT_INVALID.format(program, denominatorUuid), AGGREGATE_COUNT,
-				ipopCount.getValue(AGGREGATE_COUNT));
 	}
 
 	/**

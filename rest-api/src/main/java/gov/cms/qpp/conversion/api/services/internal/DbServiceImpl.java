@@ -67,41 +67,6 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	}
 
 	/**
-	 * Paginated Query of DynamoDb to limit items received as to remove issues with slowness/timeouts
-	 *
-	 * @param orgAttribute controls organizational choice when retrieving data
-	 * @return
-	 */
-	public List<Metadata> getUnprocessedPcfMetaData(String orgAttribute) {
-		if (mapper.isPresent()) {
-			API_LOG.info("Getting list of unprocessed Pcf metadata...");
-
-			String cpcConversionStartDate = Optional.ofNullable(
-				environment.getProperty(Constants.CPC_PLUS_UNPROCESSED_FILE_SEARCH_DATE_VARIABLE)).orElse("");
-			String year = cpcConversionStartDate.substring(0, 4);
-			String indexName = Constants.DYNAMO_PCF_ATTRIBUTE + "-" + orgAttribute + "-index";
-
-			return IntStream.range(0, Constants.CPC_DYNAMO_PARTITIONS).mapToObj(partition -> {
-				Map<String, AttributeValue> valueMap = new HashMap<>();
-				valueMap.put(":pcfValue", new AttributeValue().withS(Constants.PCF_DYNAMO_PARTITION_START + partition));
-				valueMap.put(":pcfProcessedValue", new AttributeValue().withS("false#"+year));
-
-				DynamoDBQueryExpression<Metadata> metadataQuery = new DynamoDBQueryExpression<Metadata>()
-					.withIndexName(indexName)
-					.withKeyConditionExpression(Constants.DYNAMO_PCF_ATTRIBUTE + " = :pcfValue and begins_with("
-						+ orgAttribute + ", :pcfProcessedValue)")
-					.withExpressionAttributeValues(valueMap)
-					.withConsistentRead(false);
-
-				return mapper.orElseThrow().query(Metadata.class, metadataQuery).stream().limit(10);
-			}).flatMap(Function.identity()).collect(Collectors.toList());
-		} else {
-			API_LOG.warn("Could not get unprocessed PCF metadata because the dynamodb mapper is absent");
-			return Collections.emptyList();
-		}
-	}
-
-	/**
 	 * Queries the database table for a {@link Metadata} with a specific uuid
 	 *
 	 * @param uuid Identifier to query on
