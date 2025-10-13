@@ -43,10 +43,6 @@ class QualityMeasureIdRoundTripTest {
 		Path.of("src/test/resources/negative/wrongSubPopulationsMeasure135.xml");
 	static final Path MISSING_COUNT_FOR_PERF_DENOM =
 		Path.of("src/test/resources/negative/perfDenomAggCountMissing.xml");
-	static final Path ZERO_COUNT_FOR_PERF_DENOM =
-		Path.of("src/test/resources/negative/perfRateDenomZero.xml");
-	static final Path DECIMAL_ZERO_COUNT_FOR_PERF_DENOM =
-		Path.of("src/test/resources/negative/decimalPerfRateDenomZero.xml");
 	static final Path MIPS_APM_FILE = Path.of("src/test/resources/Mips-Apm-Entity-2021.xml");
 	ApmEntityIds apmEntityIds;
 
@@ -212,23 +208,6 @@ class QualityMeasureIdRoundTripTest {
 	}
 
 	@Test
-	void testZeroPerfRateDenom() {
-		Converter converter = new Converter(new PathSource(ZERO_COUNT_FOR_PERF_DENOM), new Context(apmEntityIds));
-		List<Detail> details = new ArrayList<>();
-
-		try {
-			converter.transform();
-		} catch (TransformException exception) {
-			AllErrors errors = exception.getDetails();
-			details.addAll(errors.getErrors().get(0).getDetails());
-		}
-
-		LocalizedProblem error = ProblemCode.PCF_ZERO_PERFORMANCE_RATE;
-		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(error);
-	}
-
-	@Test
 	void testTopLevelMipsApmSampleFile() {
 		Converter converter = new Converter(new PathSource(MIPS_APM_FILE), new Context(apmEntityIds));
 		JsonWrapper qpp = converter.transform();
@@ -252,22 +231,5 @@ class QualityMeasureIdRoundTripTest {
 		assertThat(entityId).isEqualTo("TEST_APM");
 		assertThat(source).contains("qrda3");
 		assertThat(measurements).hasSize(1);
-	}
-
-	@Test
-	void testDecimalZeroPerfRateDenom() {
-		Converter converter = new Converter(new PathSource(DECIMAL_ZERO_COUNT_FOR_PERF_DENOM), new Context(apmEntityIds));
-		List<Detail> details = new ArrayList<>();
-
-		try {
-			converter.transform();
-		} catch (TransformException exception) {
-			AllErrors errors = exception.getDetails();
-			details.addAll(errors.getErrors().get(0).getDetails());
-		}
-
-		LocalizedProblem error = ProblemCode.PCF_ZERO_PERFORMANCE_RATE;
-		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(error);
 	}
 }

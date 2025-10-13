@@ -58,8 +58,6 @@ public class Constants {
 
     //QPP Json value constants for: Node(Identifier, value)
     public static final String MIPS_PROGRAM_NAME = "mips";
-    public static final String PCF_PROGRAM_NAME = "pcf";
-    public static final String CPCPLUS_PROGRAM_NAME = "cpcPlus";
     public static final String ENTITY_APM = "apm";
     public static final String ENTITY_GROUP = "group";
     public static final String ENTITY_INDIVIDUAL = "individual";
@@ -72,9 +70,7 @@ public class Constants {
     public static final Set<String> MVP_ENTITIES = Set.of(ENTITY_INDIVIDUAL, ENTITY_GROUP, ENTITY_SUBGROUP, ENTITY_APM);
 
     // Program names in XML format
-    public static final String PCF = "PCF";
     public static final String APP = "APP";
-    public static final String CPCPLUS = "CPCPLUS";
     public static final String MIPS_GROUP = "MIPS_GROUP";
     public static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
     public static final String MIPS_APM = "MIPS_APMENTITY";
