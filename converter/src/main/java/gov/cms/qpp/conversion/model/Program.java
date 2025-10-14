@@ -14,7 +14,6 @@ import static gov.cms.qpp.conversion.model.Constants.RAW_PROGRAM_NAME;
  */
 public enum Program {
 	MIPS("MIPS_GROUP", "MIPS_INDIV", "MIPS_VIRTUALGROUP", "MIPS", "MIPS_APMENTITY", "MIPS_SUBGROUP"),
-	PCF("PCF"),
 	APP("MIPS_APP1_INDIV", "MIPS_APP1_GROUP", "MIPS_APP1_APMENTITY"),
 	APP_PLUS("APP_PLUS_INDIV", "APP_PLUS_GROUP", "APP_PLUS_APMENTITY"),
 	SSP("SSP_PI_INDIV", "SSP_PI_GROUP", "SSP_PI_APMENTITY"),
@@ -29,16 +28,6 @@ public enum Program {
 	 */
 	Program(String... value) {
 		this.aliases = Arrays.stream(value).collect(Collectors.toSet());
-	}
-
-	/**
-	 * Checks if a node is using the PCF program
-	 *
-	 * @param node to check
-	 * @return result of check
-	 */
-	public static boolean isPcf(Node node) {
-		return extractProgram(node) == Program.PCF;
 	}
 
 	/**

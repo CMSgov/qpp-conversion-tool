@@ -42,7 +42,7 @@
 			<id>with-generate-plugin</id>
 			<activation>
 				<property>
-					<name>!skip.generate</name>
+					<name>generate</name>
 				</property>
 			</activation>
 			<build>

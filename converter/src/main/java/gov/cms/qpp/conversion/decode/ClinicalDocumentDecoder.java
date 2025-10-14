@@ -38,7 +38,6 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	@Override
 	protected DecodeResult decode(Element element, Node thisNode) {
 		setProgramNameOnNode(element, thisNode);
-		setPracticeSiteAddress(element, thisNode);
 		setCehrtOnNode(element, thisNode);
 		String entityType = thisNode.getValueOrDefault(ENTITY_TYPE, "");
 		if (MVP_ENTITIES.contains(entityType) && Program.isMips(thisNode)) {
@@ -72,32 +71,12 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	 * @param thisNode The output internal representation of the document
 	 */
 	private void setEntityIdOnNode(Element element, Node thisNode) {
-		if (Program.isPcf(thisNode)) {
-			Consumer<Attribute> consumer = id ->
-				thisNode.putValue(PCF_ENTITY_ID, id.getValue(), false);
-			setOnNode(element, getXpath(PCF_ENTITY_ID), consumer, Filters.attribute(), false);
-		} else {
-			setEntityIdOnNode(element, thisNode, APM_ENTITY_ID);
-		}
+		setEntityIdOnNode(element, thisNode, APM_ENTITY_ID);
 	}
 
 	private void setEntityIdOnNode(Element element, Node thisNode, String entityLocationId) {
 		Consumer<? super Attribute> consumer = p -> thisNode.putValue(ENTITY_ID, p.getValue());
 		setOnNode(element, getXpath(entityLocationId), consumer, Filters.attribute(), true);
-	}
-
-	/**
-	 * Looks up the Practice Site address from the element if the program name is CPC+
-	 *
-	 * @param element Xml fragment being parsed.
-	 * @param thisNode The output internal representation of the document
-	 */
-	private void setPracticeSiteAddress(Element element, Node thisNode) {
-		if (Program.isPcf(thisNode)) {
-			Consumer<Element> consumer = p ->
-					thisNode.putValue(PRACTICE_SITE_ADDR, p.getValue().trim(), false);
-			setOnNode(element, getXpath(PRACTICE_SITE_ADDR), consumer, Filters.element(), false);
-		}
 	}
 
 	/**
@@ -221,10 +200,6 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 				pair = new ImmutablePair<>(APP_PROGRAM_NAME, ENTITY_GROUP);
 				break;
 
- 			case CPCPLUS:
-				pair = new ImmutablePair<>(CPCPLUS_PROGRAM_NAME, ENTITY_APM);
-				break;
-
 			case MIPS_VIRTUAL_GROUP:
 				pair = new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_VIRTUAL_GROUP);
 				break;
@@ -235,10 +210,6 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 
 			case APP_APM:
 				pair = new ImmutablePair<>(APP_PROGRAM_NAME, ENTITY_APM);
-				break;
-
-			case PCF:
-				pair = new ImmutablePair<>(PCF_PROGRAM_NAME, ENTITY_APM);
 				break;
 
 			case MIPS_SUBGROUP:

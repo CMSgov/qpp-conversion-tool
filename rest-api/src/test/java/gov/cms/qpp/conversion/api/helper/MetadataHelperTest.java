@@ -40,15 +40,6 @@ class MetadataHelperTest implements HelperContract {
 	}
 
 	@Test
-	void testExtractsPcfProgramType() {
-		Node node = new Node();
-		node.putValue(RAW_PROGRAM_NAME, "PCF");
-
-		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
-		assertThat(metadata.getPcf()).startsWith(Constants.PCF_DYNAMO_PARTITION_START);
-	}
-
-	@Test
 	void testChildLacksCpcPlus() {
 		Node node = new Node();
 		Node child = new Node();
@@ -63,16 +54,6 @@ class MetadataHelperTest implements HelperContract {
 	void testExtractsApm() {
 		Node node = new Node();
 		node.putValue(PRACTICE_ID, MOCK_STRING);
-
-		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
-		assertThat(metadata.getApm()).isEqualTo(MOCK_STRING);
-	}
-
-	@Test
-	void testExtractsPcfApm() {
-		Node node = new Node();
-		node.putValue(PCF_ENTITY_ID, MOCK_STRING);
-		node.putValue(RAW_PROGRAM_NAME, PCF_PROGRAM_NAME);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
 		assertThat(metadata.getApm()).isEqualTo(MOCK_STRING);
