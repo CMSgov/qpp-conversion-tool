@@ -14081,8 +14081,10 @@
     "primarySteward": "College of American Pathologists",
     "isInverse": false,
     "isRiskAdjusted": false,
-    "isIcdImpacted": false,
-    "icdImpacted": [],
+    "isIcdImpacted": true,
+    "icdImpacted": [
+      "registry"
+    ],
     "isClinicalGuidelineChanged": false,
     "clinicalGuidelineChanged": [],
     "companionMeasureId": [],
@@ -14820,10 +14822,6 @@
       {
         "name": "6points",
         "description": "Percentage of patients aged 14 years and older who achieved a net increase in PAM® score of at least 6 points in a 6 to 12 month period."
-      },
-      {
-        "name": "aveChg",
-        "description": "Average change between baseline PAM® score and the second score within 6 to 12 months of a baseline PAM® score."
       }
     ]
   },
@@ -15142,8 +15140,7 @@
     "measureId": "510",
     "title": "First Year Standardized Waitlist Ratio (FYSWR)",
     "description": "The number of newly initiated patients on dialysis in a practitioner group who are under the age of 75 and were either listed on the kidney or kidney-pancreas transplant waitlist or received a living donor transplant within the first year of initiating dialysis. The practitioner group is inclusive of physicians and advanced practice providers. The measure is the ratio-observed number of waitlist events in a practitioner group to its expected number of waitlist events. The measure uses the expected waitlist events calculated from a Cox model, which is adjusted for age, patient comorbidities, and other risk factors at the time of dialysis.",
-    "metricType": "multiPerformanceRate",
-    "overallAlgorithm": "split",
+    "metricType": "nonProportion",
     "isRegistryMeasure": false,
     "firstPerformanceYear": 2025,
     "lastPerformanceYear": null,
@@ -15180,16 +15177,6 @@
       "group",
       "subgroup",
       "individual"
-    ],
-    "strata": [
-      {
-        "name": "reporting",
-        "description": "Percentage of patients in their first year of dialysis who had documentation of waitlist status at the end of the performance period"
-      },
-      {
-        "name": "performance",
-        "description": "Ratio of the observed number of waitlist events to the number of expected waitlist events"
-      }
     ]
   },
   {
@@ -19236,7 +19223,8 @@
     "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
-      "app1"
+      "app1",
+      "appPlus"
     ],
     "submissionMethods": [
       "certifiedSurveyVendor"
@@ -19275,7 +19263,8 @@
     "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
-      "app1"
+      "app1",
+      "appPlus"
     ],
     "submissionMethods": [
       "certifiedSurveyVendor"
@@ -19314,7 +19303,8 @@
     "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
-      "app1"
+      "app1",
+      "appPlus"
     ],
     "submissionMethods": [
       "certifiedSurveyVendor"
@@ -19353,7 +19343,8 @@
     "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
-      "app1"
+      "app1",
+      "appPlus"
     ],
     "submissionMethods": [
       "certifiedSurveyVendor"
@@ -19392,7 +19383,8 @@
     "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
-      "app1"
+      "app1",
+      "appPlus"
     ],
     "submissionMethods": [
       "certifiedSurveyVendor"
@@ -19431,7 +19423,8 @@
     "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
-      "app1"
+      "app1",
+      "appPlus"
     ],
     "submissionMethods": [
       "certifiedSurveyVendor"
@@ -19470,7 +19463,8 @@
     "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
-      "app1"
+      "app1",
+      "appPlus"
     ],
     "submissionMethods": [
       "certifiedSurveyVendor"
@@ -19509,7 +19503,8 @@
     "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
-      "app1"
+      "app1",
+      "appPlus"
     ],
     "submissionMethods": [
       "certifiedSurveyVendor"
@@ -19548,7 +19543,8 @@
     "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
-      "app1"
+      "app1",
+      "appPlus"
     ],
     "submissionMethods": [
       "certifiedSurveyVendor"
@@ -19587,7 +19583,8 @@
     "companionMeasureId": [],
     "allowedPrograms": [
       "mips",
-      "app1"
+      "app1",
+      "appPlus"
     ],
     "submissionMethods": [
       "certifiedSurveyVendor"
