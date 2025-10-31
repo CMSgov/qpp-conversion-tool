@@ -17,7 +17,7 @@ if [ ! -z "$DD_API_KEY" ]; then
     # Method tracing: auto-trace Spring web controllers
     # Security: disable principal collection, enable obfuscation
     # Performance: exclude query strings, set async timeout
-    DATADOG_OPTS="-Ddd.service.name=${DD_SERVICE:-unknown-service-name} \
+    DATADOG_OPTS="-Ddd.service.name=${DD_SERVICE:-qpp-conversion-tool} \
         -Ddd.env=${APP_ENV:-test} \
         -Ddd.version=${DD_VERSION:-unknown} \
         -Ddd.trace.enabled=true \
