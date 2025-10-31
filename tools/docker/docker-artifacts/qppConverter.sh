@@ -10,8 +10,6 @@ fi
 # Datadog configuration with New Relic feature parity
 if [ ! -z "$DD_API_KEY" ]; then
     DATADOG_AGENT="-javaagent:./datadog/dd-java-agent.jar"
-    
-    
     # Tracing: enabled with 100% sampling and analytics
     # Profiling: continuous profiling and traceId log injection for correlation
     # HTTP monitoring: error status definitions for server/client

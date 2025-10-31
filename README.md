@@ -153,7 +153,7 @@ curl -Lo dd-java-agent.jar 'https://dtdg.co/latest-java-tracer'
 cp dd-java-agent.jar tools/docker/docker-artifacts/datadog/
 
 # Verify the file placement
-ls -la tools/docker/docker-artifacts/dd-java-agent.jar
+ls -la tools/docker/docker-artifacts/datadog/dd-java-agent.jar
 ```
 
 **Step 4**: Restart the Application and Verify in Datadog
