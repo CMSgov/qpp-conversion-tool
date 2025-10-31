@@ -133,6 +133,41 @@ cp newrelic-latest/newrelic/newrelic.jar tools/docker/docker-artifacts/newrelic/
 docker-compose -f ./docker-compose.test.yaml up --build
 ```
 
+### Updating the Datadog Java Agent
+
+**Step 1**: Check the Current Datadog Agent Version in Datadog dashboard
+
+* APM > Services or Infrastructure section
+
+**Step 2**: Download the Latest Datadog Java Agent
+
+```bash
+# Download the latest Datadog Java agent
+curl -Lo dd-java-agent.jar 'https://dtdg.co/latest-java-tracer'
+```
+
+**Step 3**: Replace the Existing Files
+
+```bash
+# Place the Datadog agent in the docker artifacts directory
+cp dd-java-agent.jar tools/docker/docker-artifacts/datadog/
+
+# Verify the file placement
+ls -la tools/docker/docker-artifacts/dd-java-agent.jar
+```
+
+**Step 4**: Restart the Application and Verify in Datadog
+
+```bash
+# Rebuild and restart the application
+docker-compose -f ./docker-compose.test.yaml up --build
+```
+
+**Step 5**: Deploy and Confirm Agent Status in Datadog Dashboard
+
+* APM > Services or Infrastructure section for version
+* APM > Services > qpp-conversion-tool for trace data
+
 ### Command Line
 
 For the examples below, make sure you're in the `qpp-conversion-tool` directory.
