@@ -164,7 +164,7 @@ can be found in the [sample-files](sample-files/README.md) folder.
 
 ## Swagger Info
 
-Swagger will be enabled under `/swagger-ui/index.html#/` path.  And the api docs are avilable under `v3/api-docs`.
+Swagger documentation logic for the CT is handled in the Submissions API codebase.
 
 ## Want to Contribute?
 
