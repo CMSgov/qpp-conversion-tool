@@ -32,7 +32,7 @@
         <requiredCodeCoverage>0.90</requiredCodeCoverage>
 
         <!-- For documentation only; actual coordination is done by the BOMs below -->
-        <spring-framework.version>6.2.11</spring-framework.version>
+        <spring-framework.version>6.2.12</spring-framework.version>
         <tomcat.version>10.1.45</tomcat.version>
 
         <!-- Test stack kept explicit so CI is deterministic across JDK updates -->
@@ -195,7 +195,29 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>3.4.8</version>
+                <version>3.4.11</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- These two lines are redundant when importing spring-framework-bom but kept for clarity.
+                 You can safely remove them later if desired. -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>6.2.12</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
+                <version>6.2.12</version>
+            </dependency>
+
+            <!-- Framework BOM import: lifts ALL spring-* modules to 6.2.12 (security fix) -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>6.2.12</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -253,11 +275,6 @@
                 <groupId>org.yaml</groupId>
                 <artifactId>snakeyaml</artifactId>
                 <version>2.3</version>
-            </dependency>
-            <dependency>
-                <groupId>io.swagger.core.v3</groupId>
-                <artifactId>swagger-annotations</artifactId>
-                <version>2.2.9</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

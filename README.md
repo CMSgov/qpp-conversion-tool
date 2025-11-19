@@ -199,7 +199,7 @@ can be found in the [sample-files](sample-files/README.md) folder.
 
 ## Swagger Info
 
-Swagger will be enabled under `/swagger-ui/index.html#/` path.
+Swagger documentation logic for the CT is handled in the Submissions API codebase.
 
 ## Javadoc
 
