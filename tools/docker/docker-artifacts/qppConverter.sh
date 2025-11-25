@@ -23,7 +23,7 @@ if [ ! -z "$DD_API_KEY" ]; then
         -Ddd.trace.enabled=true \
         -Ddd.trace.sample.rate=1.0 \
         -Ddd.trace.analytics.enabled=true \
-        -Ddd.profiling.enabled=true \
+        -Ddd.profiling.enabled=false \
         -Ddd.logs.injection=true \
         -Ddd.trace.http.server.error.statuses=500-599 \
         -Ddd.trace.http.client.error.statuses=500-599 \
