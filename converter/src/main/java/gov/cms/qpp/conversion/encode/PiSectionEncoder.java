@@ -56,7 +56,7 @@ public class PiSectionEncoder extends QppOutputEncoder {
 		wrapper.put(SUBMISSION_METHOD, "electronicHealthRecord");
 		Node topLevelParent = node.getParent();
 		if ((TemplateId.PI_SECTION_V3 == node.getType() || TemplateId.MEASURE_SECTION_V5 == node.getType())
-				&& (Program.isMips(topLevelParent) || Program.isApp(topLevelParent) || Program.isAppPlus(topLevelParent) || Program.isSsp(topLevelParent))) {
+				&& (Program.isMips(topLevelParent) || Program.isApp(topLevelParent) || Program.isAppPlus(topLevelParent))) {
 			wrapper.put(CEHRT, topLevelParent.getValue(CEHRT));
 		}
 	}
