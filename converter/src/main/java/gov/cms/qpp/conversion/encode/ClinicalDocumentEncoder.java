@@ -71,10 +71,6 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 					thisNode.getValue(TAX_PAYER_IDENTIFICATION_NUMBER));
 		}
 
-		if (Program.isPcf(thisNode)) {
-			wrapper.put(ENTITY_ID, thisNode.getValue(PCF_ENTITY_ID));
-		}
-
 		if (ENTITY_VIRTUAL_GROUP.equals(entityType)) {
 			wrapper.put(ENTITY_ID, thisNode.getValue(ENTITY_ID));
 		}

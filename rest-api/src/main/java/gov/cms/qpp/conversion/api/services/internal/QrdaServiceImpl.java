@@ -11,9 +11,7 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.Source;
-import gov.cms.qpp.conversion.api.internal.pii.SpecPiiValidator;
 import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.api.model.PcfValidationInfoMap;
 import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.api.services.StorageService;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
@@ -33,14 +31,11 @@ public class QrdaServiceImpl implements QrdaService {
 
 	private final StorageService storageService;
 
-	private Supplier<PcfValidationInfoMap> cpcValidationData;
-
 	private Supplier<ApmEntityIds> apmData;
 
 	@Autowired
 	QrdaServiceImpl(StorageService storageService) {
 		this.storageService = storageService;
-		this.cpcValidationData = () -> null;
 		this.apmData = () -> null;
 	}
 
@@ -50,11 +45,6 @@ public class QrdaServiceImpl implements QrdaService {
 	@PostConstruct
 	public void preloadMeasureConfigs() {
 		MeasureConfigs.init();
-	}
-
-	@PostConstruct
-	public void loadCpcValidationData() {
-		cpcValidationData = Suppliers.memoizeWithExpiration(this::retrieveCpcValidationInfoMap, 2, TimeUnit.HOURS);
 	}
 
 	@PostConstruct
@@ -74,17 +64,6 @@ public class QrdaServiceImpl implements QrdaService {
 		API_LOG.info("Performing QRDA3 to QPP conversion");
 		converter.transform();
 		return converter.getReport();
-	}
-
-	private PcfValidationInfoMap retrieveCpcValidationInfoMap() {
-		API_LOG.info("Fetching CPC+ validations APM/NPI/TIN file");
-		PcfValidationInfoMap file = new PcfValidationInfoMap(retrieveCpcPlusValidationFile());
-		if (file.getApmTinNpiCombinationMap() != null) {
-			API_LOG.info("Fetched CPC+ validations APM/NPI/TIN file");
-		} else {
-			API_LOG.info("Could not fetch CPC+ validations APM/NPI/TIN file");
-		}
-		return file;
 	}
 
 	private ApmEntityIds retrieveApmEntityValidationFile() {
@@ -116,10 +95,6 @@ public class QrdaServiceImpl implements QrdaService {
 	 */
 	Converter initConverter(Source source) {
 		Context context = new Context(apmData.get());
-		PcfValidationInfoMap apmToNpiValidationFile = cpcValidationData.get();
-		if (apmToNpiValidationFile != null && apmToNpiValidationFile.getApmTinNpiCombinationMap() != null) {
-			context.setPiiValidator(new SpecPiiValidator(apmToNpiValidationFile));
-		}
 		return new Converter(source, context);
 	}
 }

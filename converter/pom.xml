@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>2025.09.03.01-RELEASE</version>
+		<version>2025.11.19.01-RELEASE</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -34,24 +34,39 @@
 				<artifactId>spotbugs-maven-plugin</artifactId>
 			</plugin>
 
-			<plugin>
-				<groupId>gov.cms.qpp.conversion</groupId>
-				<artifactId>generate-maven-plugin</artifactId>
-				<version>${project.version}</version>
-				<configuration>
-					<baseDir>${basedir}/../tools/docker/docker-artifacts/</baseDir>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>${maven.generate.phase}</phase>
-						<goals>
-							<goal>generateErrorCodeDoc</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>with-generate-plugin</id>
+			<activation>
+				<property>
+					<name>generate</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>gov.cms.qpp.conversion</groupId>
+						<artifactId>generate-maven-plugin</artifactId>
+						<version>${project.version}</version>
+						<configuration>
+							<baseDir>${basedir}/../tools/docker/docker-artifacts/</baseDir>
+						</configuration>
+						<executions>
+							<execution>
+								<phase>${maven.generate.phase}</phase>
+								<goals>
+									<goal>generateErrorCodeDoc</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<dependencies>
 		<dependency>
@@ -170,7 +185,7 @@
 		<dependency>
 			<groupId>gov.cms.qpp.conversion</groupId>
 			<artifactId>commons</artifactId>
-			<version>2025.09.03.01-RELEASE</version>
+			<version>2025.11.19.01-RELEASE</version>
 			<scope>compile</scope>
 		</dependency>
 

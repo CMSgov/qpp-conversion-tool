@@ -19,7 +19,7 @@
     <parent>
         <groupId>gov.cms.qpp.conversion</groupId>
         <artifactId>qpp-conversion-tool-parent</artifactId>
-        <version>2025.09.03.01-RELEASE</version>
+        <version>2025.11.19.01-RELEASE</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -32,8 +32,8 @@
         <requiredCodeCoverage>0.90</requiredCodeCoverage>
 
         <!-- For documentation only; actual coordination is done by the BOMs below -->
-        <spring-framework.version>6.2.10</spring-framework.version>
-        <tomcat.version>10.1.44</tomcat.version>
+        <spring-framework.version>6.2.12</spring-framework.version>
+        <tomcat.version>10.1.45</tomcat.version>
 
         <!-- Test stack kept explicit so CI is deterministic across JDK updates -->
         <junit.jupiter.version>5.10.3</junit.jupiter.version>
@@ -45,7 +45,7 @@
         <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
 
         <!-- Spring Security aligned with Boot 3.4.8 to avoid split versions -->
-        <spring.security.version>6.4.8</spring.security.version>
+        <spring.security.version>6.4.10</spring.security.version>
 
         <!-- JaCoCo aggregated report path used by Sonar -->
         <sonar.coverage.jacoco.xmlReportPaths>
@@ -77,6 +77,31 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+
+            <!-- Copy aggregated javadoc from parent to rest-api resources -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-javadoc</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.outputDirectory}/static/v3/javadoc</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/../target/reports/apidocs</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- Enforce a single version per GA to catch dependency drift early -->
@@ -151,11 +176,26 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- Base BOM: centralizes versions for starters & most transitive libs -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>6.2.11</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-bom</artifactId>
+                <version>${spring.security.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>3.4.8</version>
+                <version>3.4.11</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -165,19 +205,19 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
-                <version>6.2.10</version>
+                <version>6.2.12</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-beans</artifactId>
-                <version>6.2.10</version>
+                <version>6.2.12</version>
             </dependency>
 
-            <!-- Framework BOM import: lifts ALL spring-* modules to 6.2.10 (security fix) -->
+            <!-- Framework BOM import: lifts ALL spring-* modules to 6.2.12 (security fix) -->
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-framework-bom</artifactId>
-                <version>6.2.10</version>
+                <version>6.2.12</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -186,20 +226,19 @@
             <dependency>
                 <groupId>org.apache.tomcat.embed</groupId>
                 <artifactId>tomcat-embed-core</artifactId>
-                <version>10.1.44</version>
+                <version>10.1.45</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.tomcat.embed</groupId>
                 <artifactId>tomcat-embed-el</artifactId>
-                <version>10.1.44</version>
+                <version>10.1.45</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.tomcat.embed</groupId>
                 <artifactId>tomcat-embed-websocket</artifactId>
-                <version>10.1.44</version>
+                <version>10.1.45</version>
             </dependency>
 
-            <!-- Security aligned with Boot’s expectations; avoids split 6.3.x/6.4.x graphs -->
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-web</artifactId>
@@ -208,6 +247,16 @@
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-config</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-crypto</artifactId>
                 <version>${spring.security.version}</version>
             </dependency>
 
@@ -227,11 +276,6 @@
                 <artifactId>snakeyaml</artifactId>
                 <version>2.3</version>
             </dependency>
-            <dependency>
-                <groupId>io.swagger.core.v3</groupId>
-                <artifactId>swagger-annotations</artifactId>
-                <version>2.2.9</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -242,16 +286,17 @@
             <artifactId>springdoc-openapi-ui</artifactId>
         </dependency>
 
-        <!-- Pre-Jakarta plugin; exclude old spring-beans to prevent javax.* clashes -->
+        <!-- Pre-Jakarta plugin; exclude ALL old Spring 4.x bits it drags -->
         <dependency>
             <groupId>org.springframework.plugin</groupId>
             <artifactId>spring-plugin-core</artifactId>
             <version>1.2.0.RELEASE</version>
             <exclusions>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-beans</artifactId>
-                </exclusion>
+                <exclusion><groupId>org.springframework</groupId><artifactId>spring-beans</artifactId></exclusion>
+                <exclusion><groupId>org.springframework</groupId><artifactId>spring-core</artifactId></exclusion>
+                <exclusion><groupId>org.springframework</groupId><artifactId>spring-context</artifactId></exclusion>
+                <exclusion><groupId>org.springframework</groupId><artifactId>spring-aop</artifactId></exclusion>
+                <exclusion><groupId>org.springframework</groupId><artifactId>spring-expression</artifactId></exclusion>
             </exclusions>
         </dependency>
 

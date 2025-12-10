@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 
 /**

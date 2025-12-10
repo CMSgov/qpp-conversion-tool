@@ -133,6 +133,41 @@ cp newrelic-latest/newrelic/newrelic.jar tools/docker/docker-artifacts/newrelic/
 docker-compose -f ./docker-compose.test.yaml up --build
 ```
 
+### Updating the Datadog Java Agent
+
+**Step 1**: Check the Current Datadog Agent Version in Datadog dashboard
+
+* APM > Services or Infrastructure section
+
+**Step 2**: Download the Latest Datadog Java Agent
+
+```bash
+# Download the latest Datadog Java agent
+curl -Lo dd-java-agent.jar 'https://dtdg.co/latest-java-tracer'
+```
+
+**Step 3**: Replace the Existing Files
+
+```bash
+# Place the Datadog agent in the docker artifacts directory
+cp dd-java-agent.jar tools/docker/docker-artifacts/datadog/
+
+# Verify the file placement
+ls -la tools/docker/docker-artifacts/datadog/dd-java-agent.jar
+```
+
+**Step 4**: Restart the Application and Verify in Datadog
+
+```bash
+# Rebuild and restart the application
+docker-compose -f ./docker-compose.test.yaml up --build
+```
+
+**Step 5**: Deploy and Confirm Agent Status in Datadog Dashboard
+
+* APM > Services or Infrastructure section for version
+* APM > Services > qpp-conversion-tool for trace data
+
 ### Command Line
 
 For the examples below, make sure you're in the `qpp-conversion-tool` directory.
@@ -164,7 +199,11 @@ can be found in the [sample-files](sample-files/README.md) folder.
 
 ## Swagger Info
 
-Swagger will be enabled under `/swagger-ui/index.html#/` path.  And the api docs are avilable under `v3/api-docs`.
+Swagger documentation logic for the CT is handled in the Submissions API codebase.
+
+## Javadoc
+
+Generated Java API documentation (aggregated across core modules) is bundled with the REST API build and exposed as static content at `/v3/javadoc/index.html`.
 
 ## Want to Contribute?
 
@@ -174,11 +213,13 @@ Want to file a bug or contribute some code? Read up on our guidelines for [contr
 [contributing]: /.github/CONTRIBUTING.md
 [developer]: /DEVELOPER.md
 
+ 
 ## Public Domain
+
 This project is in the public domain within the United States, and copyright and related rights in the work worldwide are waived
-through the CC0 1.0 Universal public domain dedication.		
+through the CC0 1.0 Universal public domain dedication.
 
 All contributions to this project will be released under the CC0 dedication. By submitting a pull request, you are agreeing to
-comply with this waiver of copyright interest.		
+comply with this waiver of copyright interest.
 
 See the [formal LICENSE file](/LICENSE).

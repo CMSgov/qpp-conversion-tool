@@ -34,7 +34,7 @@ COPY test-coverage/ /usr/src/app/test-coverage/
 COPY tools/docker/docker-artifacts/ /usr/src/app/tools/docker/docker-artifacts/
 WORKDIR /usr/src/app/
 
-RUN /usr/local/bin/mvn-entrypoint.sh mvn install -Dmaven.test.skip -Djacoco.skip=true > /dev/null
+RUN /usr/local/bin/mvn-entrypoint.sh mvn install -Dmaven.test.skip -Djacoco.skip=true -Dskip.generate=true > /dev/null
 
 # Final stage
 FROM eclipse-temurin:17-jre
