@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>2025.11.19.01-RELEASE</version>
+		<version>2025.12.16.01-RELEASE</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 

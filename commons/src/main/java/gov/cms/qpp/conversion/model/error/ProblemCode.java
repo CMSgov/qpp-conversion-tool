@@ -121,10 +121,7 @@ public enum ProblemCode implements LocalizedProblem {
 	MEASURE_SECTION_V5_REQUIRES_CATEGORY_SECTION(95, "The QRDA III file must contain one Category Section v5 with the extension 2020-12-01"),
 	MISSING_API_TIN_NPI_FILE(96, "The APM to TIN/NPI Combination file is missing."),
 	PI_RESTRICTED_MEASURES(102, "The Promoting Interoperability section cannot contain "
-		+ "PI_HIE_5 with PI_HIE_1, PI_LVOTC_1, PI_HIE_4, or PI_LVITC_2", false),
-	SSP_PI_ONLY_MEASURE_CATEGORY(109, "Review the Clinical Document for program `(program name)`. "
-		+ "Only the Promoting Interoperability (PI) measure category is permitted; "
-		+ "found `(provided category)`.", true);
+		+ "PI_HIE_5 with PI_HIE_1, PI_LVOTC_1, PI_HIE_4, or PI_LVITC_2", false);
 
 	private static final Map<Integer, ProblemCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ProblemCode::getCode, Function.identity()));
