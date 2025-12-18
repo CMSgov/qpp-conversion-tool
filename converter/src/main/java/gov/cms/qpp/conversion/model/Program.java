@@ -16,7 +16,6 @@ public enum Program {
 	MIPS("MIPS_GROUP", "MIPS_INDIV", "MIPS_VIRTUALGROUP", "MIPS", "MIPS_APMENTITY", "MIPS_SUBGROUP"),
 	APP("MIPS_APP1_INDIV", "MIPS_APP1_GROUP", "MIPS_APP1_APMENTITY"),
 	APP_PLUS("APP_PLUS_INDIV", "APP_PLUS_GROUP", "APP_PLUS_APMENTITY"),
-	SSP("SSP_PI_INDIV", "SSP_PI_GROUP", "SSP_PI_APMENTITY"),
 	ALL;
 
 	private final Set<String> aliases;
@@ -58,16 +57,6 @@ public enum Program {
 	 */
 	public static boolean isAppPlus(Node node) {
 		return extractProgram(node) == Program.APP_PLUS;
-	}
-
-	/**
-	 * Checks if a node is using the ssp program
-	 *
-	 * @param node
-	 * @return
-	 */
-	public static boolean isSsp(Node node) {
-		return extractProgram(node) == Program.SSP;
 	}
 
 	/**

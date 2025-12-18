@@ -58,4 +58,3 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 53 : CT - The QRDA III file must contain one Category Section v5 with the extension 2020-12-01
 * 54 : CT - The APM to TIN/NPI Combination file is missing.
 * 55 : CT - The Promoting Interoperability section cannot contain PI_HIE_5 with PI_HIE_1, PI_LVOTC_1, PI_HIE_4, or PI_LVITC_2
-* 56 : CT - Review the Clinical Document for program `(program name)`. Only the Promoting Interoperability (PI) measure category is permitted; found `(provided category)`.
