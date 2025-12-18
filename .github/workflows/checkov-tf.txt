@@ -7,17 +7,17 @@ on:
 
 env:
   CHECKOV_OUTPUT_CODE_LINE_LIMIT: 255
-  
+
 jobs:
   build:
 
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python 3.8
+      - name: Set up Python 3.14
         uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: 3.14
       - name: Test with Checkov
         id: checkov
         uses: bridgecrewio/checkov-action@master
