@@ -16,14 +16,14 @@ env:
     AWS_ACCOUNT : "/global/aws_account"
     REPO_PAT: "/global/scoring_api_repo_pat"
     BRANCH_STATUS_URL: "/global/ct_branch_status_url"
-    PART_FILE: "/qppar-sf/conversion-tool/CPC_PLUS_FILE_NAME"   
+    PART_FILE: "/qppar-sf/conversion-tool/CPC_PLUS_FILE_NAME"
     PART_FILE_BUCKET: "/qppar-sf/$ENV/conversion-tool/CPC_PLUS_BUCKET_NAME"
     OUTPUT_PART_FILE: "/qppar-sf/$ENV/conversion-tool/CPC_PLUS_VALIDATION_FILE"
 
 phases:
   install:
     runtime-versions:
-      python: 3.8
+      python: 3.14
     commands:
       - |
           CURL_PAYLOAD=$( jq -n \
@@ -91,9 +91,9 @@ phases:
       - docker push $TAG_LATEST;
       - docker push $TAG_GIT;
       - echo "Branch is ${ENV}, Deploying to ${ENV}-conversion-tool service..."
-      - ecs deploy $CLUSTER_NAME $SERVICE_NAME -t $BRANCH-$COMMIT_SHORT_SHA --no-deregister --region us-east-1 --timeout 900 --task $SERVICE_NAME;
+      - ecs deploy $CLUSTER_NAME $SERVICE_NAME -t latest --no-deregister --region us-east-1 --timeout 900 --task $SERVICE_NAME;
       - aws ecs wait services-stable --cluster $CLUSTER_NAME --services $SERVICE_NAME --region us-east-1;
-      - echo "Branch is ${ENV}, Deployment to ${ENV}-conversion-tool service completed..."  
+      - echo "Branch is ${ENV}, Deployment to ${ENV}-conversion-tool service completed..."
 
   post_build:
     commands:
