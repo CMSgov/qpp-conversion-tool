@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# Configure New Relic
-if [ ! -z "$NEWRELIC_API_KEY" ]; then
-    sed -i -e "s/NEWRELIC_API_KEY/$NEWRELIC_API_KEY/g" ./newrelic/newrelic.yml
-    sed -i -e "s/APP_ENV/$APP_ENV/g" ./newrelic/newrelic.yml
-    NEW_RELIC_AGENT="-javaagent:./newrelic/newrelic.jar"
-fi
-
 # Datadog configuration with New Relic feature parity
 if [ ! -z "$DD_API_KEY" ]; then
     DATADOG_AGENT="-javaagent:./datadog/dd-java-agent.jar"
