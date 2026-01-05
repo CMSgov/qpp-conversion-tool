@@ -102,37 +102,6 @@ To enable the public submission validation API, modify the `.env` file with
 
 Ensure the environment variable `CPC_END_DATE` is set to a valid date, in the format `YYYY-MM-DD`, or a validation error may be thrown.
 
-### Updating the New Relic Agent
-
-**Step 1**: Check the Current New Relic Agent Version in new relic dashboard using metadata
-
-**Step 2**: Download the Latest New Relic Agent
-```bash
-# Download the latest New Relic Java agent.
-curl -O https://download.newrelic.com/newrelic/java-agent/newrelic-java.zip
-```
-
-**Step 3**: Replace the Existing Files
-```bash
-# Extract the downloaded New Relic agent files.
-unzip newrelic-java.zip -d newrelic-latest
-
-# Replace the existing newrelic.jar file.
-cp newrelic-latest/newrelic/newrelic.jar tools/docker/docker-artifacts/newrelic/
-
-
-# Update the newrelic.yml file:
-- Compare the existing file with the newly downloaded one.
-- Merge any new configurations while retaining custom settings such as license_key and app_name.
-````
-
-
-**Step 4**: Restart the Application and Check in New Relic dashboard
-```bash
-# Rebuild and restart the application:
-docker-compose -f ./docker-compose.test.yaml up --build
-```
-
 ### Updating the Datadog Java Agent
 
 **Step 1**: Check the Current Datadog Agent Version in Datadog dashboard
