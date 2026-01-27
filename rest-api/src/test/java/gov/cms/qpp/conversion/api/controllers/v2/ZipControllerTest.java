@@ -10,7 +10,6 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -32,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.Source;
 import gov.cms.qpp.conversion.api.exceptions.AuditException;
+import gov.cms.qpp.conversion.api.exceptions.BadZipException;
 import gov.cms.qpp.conversion.api.model.ConvertResponse;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.services.AuditService;
@@ -120,7 +120,7 @@ class ZipControllerTest {
 
 	@Test
 	void uploadNullQrdaFile() {
-		Assertions.assertThrows(UncheckedIOException.class, () -> {
+		Assertions.assertThrows(BadZipException.class, () -> {
 			objectUnderTest.uploadQrdaFile(new MockMultipartFile("null.zip", new byte[0]), "Test");
 		});
 	}
