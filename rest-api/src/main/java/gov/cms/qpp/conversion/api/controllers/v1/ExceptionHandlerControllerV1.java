@@ -107,11 +107,11 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 	}
 
 	/**
-	 * "Catch" the {@link InvalidFileTypeException}.
+	 * "Catch" the {@link BadZipException}.
 	 * Return the {@link AllErrors} with an HTTP status 400.
 	 *
-	 * @param exception The InvalidFileTypeException that was "caught".
-	 * @return The InvalidFileTypeException message
+	 * @param exception The BadZipException that was "caught".
+	 * @return The BadZipException message
 	 */
 	@ExceptionHandler(BadZipException.class)
 	@ResponseBody
