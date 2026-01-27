@@ -7,6 +7,7 @@ import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.api.controllers.SkeletalQrdaController;
+import gov.cms.qpp.conversion.api.exceptions.BadZipException;
 import gov.cms.qpp.conversion.api.model.ConvertResponse;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.services.AuditService;
@@ -53,6 +55,9 @@ public class ZipController extends SkeletalQrdaController<List<ConvertResponse>>
 			}
 			return responses;
 		} catch (IOException e) {
+			if (e instanceof ZipException) {
+				throw new BadZipException("Zip file is corrupt, incomplete, or invalid.");
+			}
 			throw new UncheckedIOException(e);
 		}
 	}
