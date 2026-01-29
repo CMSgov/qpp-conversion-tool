@@ -16,7 +16,7 @@ Before you can use the qpp-conversion-tool application, you must install and con
 
   [GitHub's Guide to Installing Git](https://help.github.com/articles/set-up-git) is a good source of information.
 
-* [Java Runtime](https://java.com/download) (version `>= 17`).
+* [Java Runtime](https://java.com/download) (version `17`).
 
   It is important that you have the right version of `java` on your path.
 
@@ -31,13 +31,13 @@ Before you can use the qpp-conversion-tool application, you must install and con
   the [Java Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (version `>= 17`). The JDK is
   better at updating your path.
 
-* [Maven](https://maven.apache.org) (version `>= 3.9.6`).
+* [Maven](https://maven.apache.org) (version `3.9.6`).
 
   Maven is used to build the application, manage dependencies, and run tests. After you unzip the Maven archive, you need to add
   the `bin` directory to your path, as described the [Maven installation instructions](https://maven.apache.org/install.html).
 
   ```shell
-  # When you run 'mvn -v', you should get 3.8.4. For example:
+  # When you run 'mvn -v', you should get 3.9.6. For example:
   mvn -v
   Apache Maven 3.9.6
   ...
@@ -60,17 +60,16 @@ cd ./qpp-conversion-tool
 
 ## Running the Converter
 
-### Disable HTTPS
-
-In order to run converter locally, HTTPS may need to be disabled.  It can be done by removing or commenting server.port and server.ssl.key-store-type in application.properties file under `rest-api/src/main/resources`
-
-### ReST API via Docker
-
-The Conversion Tool can be executed through a ReST API. Using the ReST API has the added benefit of having the
-[QPP validated](#submission-validation) if you so choose. For the examples below, make sure you're in the `qpp-conversion-tool`
-directory.
-
 #### Starting the API Endpoint
+
+In order to run converter locally, HTTPS may need to be disabled.  It can be done by removing or commenting server.port and server.ssl.key-store-type in `rest-api/src/main/resources/application.properties`
+
+```shell
+...
+# server.port=8443
+# server.ssl.key-store-type=PKCS12
+...
+```
 
 ```shell
 # Build the Docker image and run the container using docker-compose.
@@ -101,37 +100,6 @@ To enable the public submission validation API, modify the `.env` file with
 [restart the ReST API endpoint](#starting-the-api-endpoint).
 
 Ensure the environment variable `CPC_END_DATE` is set to a valid date, in the format `YYYY-MM-DD`, or a validation error may be thrown.
-
-### Updating the New Relic Agent
-
-**Step 1**: Check the Current New Relic Agent Version in new relic dashboard using metadata
-
-**Step 2**: Download the Latest New Relic Agent
-```bash
-# Download the latest New Relic Java agent.
-curl -O https://download.newrelic.com/newrelic/java-agent/newrelic-java.zip
-```
-
-**Step 3**: Replace the Existing Files
-```bash
-# Extract the downloaded New Relic agent files.
-unzip newrelic-java.zip -d newrelic-latest
-
-# Replace the existing newrelic.jar file.
-cp newrelic-latest/newrelic/newrelic.jar tools/docker/docker-artifacts/newrelic/
-
-
-# Update the newrelic.yml file:
-- Compare the existing file with the newly downloaded one.
-- Merge any new configurations while retaining custom settings such as license_key and app_name.
-````
-
-
-**Step 4**: Restart the Application and Check in New Relic dashboard
-```bash
-# Rebuild and restart the application:
-docker-compose -f ./docker-compose.test.yaml up --build
-```
 
 ### Updating the Datadog Java Agent
 

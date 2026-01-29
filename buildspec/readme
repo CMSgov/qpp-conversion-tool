@@ -39,4 +39,4 @@ artifacsts :
   location for build output artifacts
 
 
-#ecs deploy $CLUSTER_NAME $SERVICE_NAME --newrelic-apikey ${NR_API_KEY} --newrelic-appid ${APP_ID} -t $BRANCH-$COMMIT_SHORT_SHA --newrelic-revision 1.0.0
+# ecs deploy $CLUSTER_NAME $SERVICE_NAME -t $BRANCH-$COMMIT_SHORT_SHA

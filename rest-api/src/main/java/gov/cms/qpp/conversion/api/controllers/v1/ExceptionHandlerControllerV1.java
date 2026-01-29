@@ -9,6 +9,7 @@ import gov.cms.qpp.conversion.model.error.QppValidationException;
 import gov.cms.qpp.conversion.model.error.TransformException;
 
 import com.amazonaws.AmazonServiceException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -18,7 +19,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import gov.cms.qpp.conversion.api.exceptions.BadZipException;
 
 /**
  * Modify the controller to send back different responses for exceptions
@@ -102,6 +106,23 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 		return new ResponseEntity<>(exception.getMessage(), httpHeaders, HttpStatus.NOT_FOUND);
 	}
 
+	/**
+	 * "Catch" the {@link BadZipException}.
+	 * Return the {@link AllErrors} with an HTTP status 400.
+	 *
+	 * @param exception The BadZipException that was "caught".
+	 * @return The BadZipException message
+	 */
+	@ExceptionHandler(BadZipException.class)
+	@ResponseBody
+	ResponseEntity<String> handleBadZipException(BadZipException exception) {
+		API_LOG.error("Zip file is corrupt, incomplete, or invalid.", exception);
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setContentType(MediaType.TEXT_PLAIN);
+
+		return new ResponseEntity<>(exception.getMessage(), httpHeaders, HttpStatus.BAD_REQUEST);
+	}
+
 	@ExceptionHandler(AmazonServiceException.class)
 	@ResponseBody
 	ResponseEntity<String> handleAmazonException(AmazonServiceException exception) {
@@ -120,6 +141,26 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 		return ResponseEntity.badRequest()
 			.contentType(MediaType.TEXT_PLAIN)
 			.body(exception.getMessage());
+	}
+
+	/**
+	 * "Catch" the {@link MultipartException}.
+	 * Return an error message with an HTTP status 400.
+	 *
+	 * @param exception The MultipartException that was "caught".
+	 * @return The error message explaining the malformed multipart request
+	 */
+	@ExceptionHandler(MultipartException.class)
+	@ResponseBody
+	ResponseEntity<String> handleMultipartException(MultipartException exception) {
+		API_LOG.error("Malformed multipart request", exception);
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setContentType(MediaType.TEXT_PLAIN);
+
+		String message = "Invalid multipart request: " + 
+			(exception.getCause() != null ? exception.getCause().getMessage() : exception.getMessage());
+		
+		return new ResponseEntity<>(message, httpHeaders, HttpStatus.BAD_REQUEST);
 	}
 
 	private ResponseEntity<AllErrors> cope(TransformException exception) {
