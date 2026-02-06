@@ -1,154 +1,138 @@
 package gov.cms.qpp.conversion.api.security;
 
-import com.google.common.truth.Truth;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.jupiter.api.Test;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-
-import gov.cms.qpp.conversion.api.helper.JwtPayloadHelper;
-import gov.cms.qpp.conversion.api.helper.JwtTestHelper;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import java.io.IOException;
-import java.util.Set;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
-//Using jUnit 4 for power mock
-//@RunWith(PowerMockRunner.class)
-//@PrepareForTest({SecurityContextHolder.class})
-@PowerMockIgnore({"org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*", "com.sun.org.apache.xerces.*", "javax.crypto.*"})
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
-public class JwtAuthorizationFilterTest {
+import gov.cms.qpp.test.MockitoExtension;
 
-	private static final String ORG_TYPE = "registry";
+@ExtendWith(MockitoExtension.class)
+class JwtAuthorizationFilterTest {
 
-	private MockHttpServletRequest request;
-	private MockHttpServletResponse response;
-	private FilterChain filterChain;
+	@Mock
+	private HttpServletRequest request;
 
-//	@Before
-//	public void setUp() {
-//		request = new MockHttpServletRequest();
-//		response = new MockHttpServletResponse();
-//		filterChain = mock(FilterChain.class);
-//	}
-//
-//	@Test
-//	public void testdoFilter() throws IOException, ServletException {
-//		JwtPayloadHelper payload = new JwtPayloadHelper()
-//				.withName(JwtAuthorizationFilter.DEFAULT_ORG_NAME)
-//				.withOrgType(ORG_TYPE);
-//
-//		request.addHeader("Authorization", JwtTestHelper.createJwt(payload));
-//		JwtAuthorizationFilter testJwtAuthFilter = new JwtAuthorizationFilter();
-//
-//		PowerMockito.mockStatic(SecurityContextHolder.class);
-//		SecurityContext mockSecurityContext = PowerMockito.mock(SecurityContext.class);
-//
-//		PowerMockito.when(SecurityContextHolder.getContext()).thenReturn(mockSecurityContext);
-//
-//		testJwtAuthFilter.doFilter(request, response, filterChain);
-//
-//		verify(filterChain, times(1)).doFilter(any(MockHttpServletRequest.class), any(MockHttpServletResponse.class));
-//		verify(SecurityContextHolder.getContext(), times(1)).setAuthentication(any(UsernamePasswordAuthenticationToken.class));
-//	}
-//
-//	@Test
-//	public void testdoFilterWithInvalidOrgName() throws IOException, ServletException {
-//		JwtPayloadHelper payload = new JwtPayloadHelper()
-//				.withName("invalid-name")
-//				.withOrgType(ORG_TYPE);
-//
-//		request.addHeader("Authorization", JwtTestHelper.createJwt(payload));
-//		JwtAuthorizationFilter testJwtAuthFilter = new JwtAuthorizationFilter();
-//
-//		PowerMockito.mockStatic(SecurityContextHolder.class);
-//		SecurityContext mockSecurityContext = PowerMockito.mock(SecurityContext.class);
-//
-//		PowerMockito.when(SecurityContextHolder.getContext()).thenReturn(mockSecurityContext);
-//
-//		testJwtAuthFilter.doFilter(request, response, filterChain);
-//
-//		verify(filterChain, times(1)).doFilter(any(MockHttpServletRequest.class), any(MockHttpServletResponse.class));
-//		verify(SecurityContextHolder.getContext(), times(0)).setAuthentication(any(UsernamePasswordAuthenticationToken.class));
-//	}
-//
-//	@Test
-//	public void testdoFilterWithNoOrgId() throws IOException, ServletException {
-//		JwtPayloadHelper payload = new JwtPayloadHelper()
-//				.withOrgType(ORG_TYPE);
-//
-//		request.addHeader("Authorization", JwtTestHelper.createJwt(payload));
-//		JwtAuthorizationFilter testJwtAuthFilter = new JwtAuthorizationFilter();
-//
-//		PowerMockito.mockStatic(SecurityContextHolder.class);
-//		SecurityContext mockSecurityContext = PowerMockito.mock(SecurityContext.class);
-//
-//		PowerMockito.when(SecurityContextHolder.getContext()).thenReturn(mockSecurityContext);
-//
-//		testJwtAuthFilter.doFilter(request, response, filterChain);
-//
-//		verify(filterChain, times(1)).doFilter(any(MockHttpServletRequest.class), any(MockHttpServletResponse.class));
-//		verify(SecurityContextHolder.getContext(), times(0)).setAuthentication(any(UsernamePasswordAuthenticationToken.class));
-//	}
-//
-//	@Test
-//	public void testdoFilterWithNoOrgType() throws IOException, ServletException {
-//		JwtPayloadHelper payload = new JwtPayloadHelper()
-//				.withName(JwtAuthorizationFilter.DEFAULT_ORG_NAME);
-//
-//		request.addHeader("Authorization", JwtTestHelper.createJwt(payload));
-//		JwtAuthorizationFilter testJwtAuthFilter = new JwtAuthorizationFilter();
-//
-//		PowerMockito.mockStatic(SecurityContextHolder.class);
-//		SecurityContext mockSecurityContext = PowerMockito.mock(SecurityContext.class);
-//
-//		PowerMockito.when(SecurityContextHolder.getContext()).thenReturn(mockSecurityContext);
-//
-//		testJwtAuthFilter.doFilter(request, response, filterChain);
-//
-//		verify(filterChain, times(1)).doFilter(any(MockHttpServletRequest.class), any(MockHttpServletResponse.class));
-//		verify(SecurityContextHolder.getContext(), times(0)).setAuthentication(any(UsernamePasswordAuthenticationToken.class));
-//	}
-//
-//	@Test
-//	public void testdoFilterWithNoHeader() throws IOException, ServletException {
-//		JwtAuthorizationFilter testJwtAuthFilter = new JwtAuthorizationFilter();
-//
-//		PowerMockito.mockStatic(SecurityContextHolder.class);
-//		SecurityContext mockSecurityContext = PowerMockito.mock(SecurityContext.class);
-//
-//		PowerMockito.when(SecurityContextHolder.getContext()).thenReturn(mockSecurityContext);
-//
-//		testJwtAuthFilter.doFilter(request, response, filterChain);
-//
-//		verify(filterChain, times(1)).doFilter(any(MockHttpServletRequest.class), any(MockHttpServletResponse.class));
-//		verify(SecurityContextHolder.getContext(), times(0)).setAuthentication(any(UsernamePasswordAuthenticationToken.class));
-//	}
-//
-//	@Test
-//	public void testDefaultOrgName() {
-//		JwtAuthorizationFilter testJwtAuthFilter = new JwtAuthorizationFilter(JwtAuthorizationFilter.DEFAULT_ORG_SET);
-//		Truth.assertThat(testJwtAuthFilter.orgName).contains(JwtAuthorizationFilter.DEFAULT_ORG_NAME);
-//	}
-//
-//	@Test
-//	public void testGivenOrgName() {
-//		Set<String> expected = Set.of("some org name");
-//		JwtAuthorizationFilter testJwtAuthFilter = new JwtAuthorizationFilter(expected);
-//		Truth.assertThat(testJwtAuthFilter.orgName).isEqualTo(expected);
-//	}
+	@Mock
+	private ServletResponse response;
+
+	@Mock
+	private FilterChain chain;
+
+	@AfterEach
+	void cleanupSecurityContext() {
+		SecurityContextHolder.clearContext();
+	}
+
+	@Test
+	void doFilter_validTokenAndOrg_setsAuthentication_andContinuesChain() throws Exception {
+		JwtAuthorizationFilter filter = new JwtAuthorizationFilter();
+
+		String jwt = jwtWithData(Map.of(
+				"id", "user-123",
+				"name", JwtAuthorizationFilter.DEFAULT_ORG_NAME,   // "cpc-test"
+				"orgType", "CPC"
+		));
+
+		when(request.getHeader("Authorization")).thenReturn("Bearer " + jwt);
+
+		filter.doFilter(request, response, chain);
+
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		assertEquals("user-123", auth.getPrincipal());
+		verify(chain).doFilter(request, response);
+	}
+
+	@Test
+	void doFilter_invalidOrg_doesNotSetAuthentication_andContinuesChain() throws Exception {
+		JwtAuthorizationFilter filter = new JwtAuthorizationFilter();
+
+		String jwt = jwtWithData(Map.of(
+				"id", "user-123",
+				"name", "not-allowed-org",
+				"orgType", "CPC"
+		));
+
+		when(request.getHeader("Authorization")).thenReturn("Bearer " + jwt);
+
+		filter.doFilter(request, response, chain);
+
+		assertNull(SecurityContextHolder.getContext().getAuthentication());
+		verify(chain).doFilter(request, response);
+	}
+
+	@Test
+	void doFilter_missingHeader_doesNotSetAuthentication_andContinuesChain() throws Exception {
+		JwtAuthorizationFilter filter = new JwtAuthorizationFilter();
+
+		when(request.getHeader("Authorization")).thenReturn(null);
+
+		filter.doFilter(request, response, chain);
+
+		assertNull(SecurityContextHolder.getContext().getAuthentication());
+		verify(chain).doFilter(request, response);
+	}
+
+	@Test
+	void doFilter_nonHttpRequest_doesNotSetAuthentication_andContinuesChain() throws Exception {
+		JwtAuthorizationFilter filter = new JwtAuthorizationFilter();
+
+		ServletRequest nonHttp = org.mockito.Mockito.mock(ServletRequest.class);
+
+		filter.doFilter(nonHttp, response, chain);
+
+		assertNull(SecurityContextHolder.getContext().getAuthentication());
+		verify(chain).doFilter(nonHttp, response);
+	}
+
+	/**
+	 * Builds a compact JWT string "header.payload.signature" where header/payload are base64url JSON.
+	 * Your filter strips the signature and parses it using parseClaimsJwt("header.payload.").
+	 */
+	private static String jwtWithData(Map<String, String> data) {
+		String headerJson = "{\"alg\":\"none\",\"typ\":\"JWT\"}";
+
+		// payload contains: { "data": { ... } }
+		StringBuilder dataJson = new StringBuilder();
+		dataJson.append("{\"data\":{");
+		boolean first = true;
+		for (Map.Entry<String, String> e : data.entrySet()) {
+			if (!first) dataJson.append(",");
+			first = false;
+			dataJson.append("\"").append(escape(e.getKey())).append("\":")
+					.append("\"").append(escape(e.getValue())).append("\"");
+		}
+		dataJson.append("}}");
+
+		String header = base64Url(headerJson);
+		String payload = base64Url(dataJson.toString());
+
+		// signature can be anything; filter removes it
+		return header + "." + payload + ".sig";
+	}
+
+	private static String base64Url(String s) {
+		return java.util.Base64.getUrlEncoder()
+				.withoutPadding()
+				.encodeToString(s.getBytes(StandardCharsets.UTF_8));
+	}
+
+	private static String escape(String s) {
+		return s.replace("\\", "\\\\").replace("\"", "\\\"");
+	}
 }

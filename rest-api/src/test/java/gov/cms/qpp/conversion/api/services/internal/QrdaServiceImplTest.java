@@ -1,12 +1,14 @@
 package gov.cms.qpp.conversion.api.services.internal;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Spy;
 
 import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.Converter;
@@ -20,108 +22,111 @@ import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.test.MockitoExtension;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
-import static com.google.common.truth.Truth.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 @ExtendWith(MockitoExtension.class)
 class QrdaServiceImplTest {
-	private static final Source MOCK_SUCCESS_QRDA_SOURCE =
-			new InputStreamSupplierSource("Good Qrda", new ByteArrayInputStream("Good Qrda".getBytes()));
-	private static final Source MOCK_ERROR_QRDA_SOURCE =
-			new InputStreamSupplierSource("Error Qrda", new ByteArrayInputStream("Error Qrda".getBytes()));
+
+	private static final Source GOOD_SOURCE =
+			new InputStreamSupplierSource("Good Qrda", new ByteArrayInputStream("<xml/>".getBytes()));
+	private static final Source ERROR_SOURCE =
+			new InputStreamSupplierSource("Error Qrda", new ByteArrayInputStream("<xml/>".getBytes()));
 
 	private static final String KEY = "key";
-	private static final String MOCK_SUCCESS_QPP_STRING = "Good Qpp";
-	private static final String MOCK_ERROR_SOURCE_IDENTIFIER = "Error Identifier";
-	private static final Path VALIDATION_JSON_FILE_PATH = Path.of("src/test/resources/testCpcPlusValidationFile.json");
-	private static final Path VALIDATION_APM_FILE_PATH = Path.of("src/test/resources/test_apm_entity_ids.json");
-	private InputStream MOCK_INPUT_STREAM;
-	private InputStream MOCK_APM_INPUT_STREAM;
-
-	@Spy
-	@InjectMocks
-	private QrdaServiceImpl objectUnderTest;
-
-	@Mock
-	private StorageService storageService;
-
-	@BeforeEach
-	void mockConverter() throws IOException {
-		MOCK_INPUT_STREAM = Files.newInputStream(VALIDATION_JSON_FILE_PATH);
-		MOCK_APM_INPUT_STREAM = Files.newInputStream(VALIDATION_APM_FILE_PATH);
-		Converter success = successConverter();
-		when(objectUnderTest.initConverter(MOCK_SUCCESS_QRDA_SOURCE))
-				.thenReturn(success);
-
-		when(objectUnderTest.retrieveCpcPlusValidationFile())
-				.thenReturn(MOCK_INPUT_STREAM);
-
-		when(objectUnderTest.retrieveApmValidationFile(Constants.CPC_PLUS_APM_FILE_NAME_KEY))
-			.thenReturn(MOCK_APM_INPUT_STREAM);
-
-		Converter error = errorConverter();
-		when(objectUnderTest.initConverter(MOCK_ERROR_QRDA_SOURCE))
-				.thenReturn(error);
-	}
-
-	@AfterEach
-	void tearDown() throws IOException {
-		MOCK_APM_INPUT_STREAM.close();
-		MOCK_APM_INPUT_STREAM.close();
-	}
+	private static final String GOOD_QPP = "Good Qpp";
 
 	@Test
-	void testConvertQrda3ToQppSuccess() {
-		JsonWrapper qpp = objectUnderTest.convertQrda3ToQpp(MOCK_SUCCESS_QRDA_SOURCE).getEncodedWithMetadata();
-		assertThat(qpp.getString(KEY)).isSameInstanceAs(MOCK_SUCCESS_QPP_STRING);
-	}
+	void convertQrda3ToQpp_success_callsTransform_andReturnsReport() {
+		StorageService storage = mock(StorageService.class);
+		QrdaServiceImpl service = spy(new QrdaServiceImpl(storage));
 
-//	@Test
-//	void testConvertQrda3ToQppError() {
-//		TransformException exception = assertThrows(TransformException.class,
-//				() -> objectUnderTest.convertQrda3ToQpp(MOCK_ERROR_QRDA_SOURCE));
-//		AllErrors allErrors = exception.getDetails();
-//		assertThat(allErrors.getErrors().get(0).getSourceIdentifier()).isSameInstanceAs(MOCK_ERROR_SOURCE_IDENTIFIER);
-//	}
-
-	@Test
-	void testPostConstructForCoverage() {
-		objectUnderTest.preloadMeasureConfigs();
-	}
-
-	private Converter successConverter() {
-		Converter mockConverter = mock(Converter.class);
-
-		JsonWrapper qpp = new JsonWrapper();
-		qpp.put(KEY, MOCK_SUCCESS_QPP_STRING);
-
+		Converter converter = mock(Converter.class);
 		ConversionReport report = mock(ConversionReport.class);
 
-		when(report.getEncodedWithMetadata()).thenReturn(qpp);
-		when(mockConverter.getReport()).thenReturn(report);
+		JsonWrapper wrapper = new JsonWrapper();
+		wrapper.put(KEY, GOOD_QPP);
 
-		return mockConverter;
+		when(service.initConverter(GOOD_SOURCE)).thenReturn(converter);
+
+		when(converter.transform()).thenReturn(wrapper);
+
+		when(converter.getReport()).thenReturn(report);
+		when(report.getEncodedWithMetadata()).thenReturn(wrapper);
+
+		ConversionReport result = service.convertQrda3ToQpp(GOOD_SOURCE);
+
+		verify(converter).transform();
+		verify(converter).getReport();
+		assertThat(result.getEncodedWithMetadata().getString(KEY)).isEqualTo(GOOD_QPP);
 	}
 
-	private Converter errorConverter() {
-		Converter mockConverter = mock(Converter.class);
+	@Test
+	void convertQrda3ToQpp_whenTransformThrows_propagatesTransformException() {
+		StorageService storage = mock(StorageService.class);
+		QrdaServiceImpl service = spy(new QrdaServiceImpl(storage));
+
+		Converter converter = mock(Converter.class);
+
 		AllErrors allErrors = new AllErrors();
-		allErrors.addError(new Error(MOCK_ERROR_SOURCE_IDENTIFIER, null));
+		allErrors.addError(new Error("Error Identifier", null));
 
 		ConversionReport report = mock(ConversionReport.class);
 		when(report.getReportDetails()).thenReturn(allErrors);
 
-		TransformException transformException = new TransformException("mock problem", new NullPointerException(), report);
-		when(mockConverter.transform()).thenThrow(transformException);
+		TransformException boom = new TransformException("mock problem", new NullPointerException(), report);
 
-		return mockConverter;
+		when(service.initConverter(ERROR_SOURCE)).thenReturn(converter);
+		when(converter.transform()).thenThrow(boom);
+
+		assertThrows(TransformException.class, () -> service.convertQrda3ToQpp(ERROR_SOURCE));
+	}
+
+	@Test
+	void retrieveCpcPlusValidationFile_delegatesToStorageService() {
+		StorageService storage = mock(StorageService.class);
+		QrdaServiceImpl service = new QrdaServiceImpl(storage);
+
+		InputStream expected = new ByteArrayInputStream("x".getBytes());
+		when(storage.getCpcPlusValidationFile()).thenReturn(expected);
+
+		InputStream actual = service.retrieveCpcPlusValidationFile();
+
+		assertThat(actual).isSameInstanceAs(expected);
+		verify(storage).getCpcPlusValidationFile();
+	}
+
+	@Test
+	void retrieveApmValidationFile_delegatesToStorageService() {
+		StorageService storage = mock(StorageService.class);
+		QrdaServiceImpl service = new QrdaServiceImpl(storage);
+
+		InputStream expected = new ByteArrayInputStream("{}".getBytes());
+		when(storage.getApmValidationFile("file.json")).thenReturn(expected);
+
+		InputStream actual = service.retrieveApmValidationFile("file.json");
+
+		assertThat(actual).isSameInstanceAs(expected);
+		verify(storage).getApmValidationFile("file.json");
+	}
+
+	@Test
+	void loadApmData_thenInitConverter_fetchesApmFile_once_dueToMemoization() {
+		StorageService storage = mock(StorageService.class);
+		QrdaServiceImpl service = new QrdaServiceImpl(storage);
+
+		when(storage.getApmValidationFile(Constants.PCF_APM_FILE_NAME_KEY)).thenReturn(null);
+
+		service.loadApmData();
+
+		assertThat(service.initConverter(GOOD_SOURCE)).isNotNull();
+		assertThat(service.initConverter(GOOD_SOURCE)).isNotNull();
+
+		verify(storage, times(1)).getApmValidationFile(Constants.PCF_APM_FILE_NAME_KEY);
+	}
+
+	@Test
+	void preloadMeasureConfigs_forCoverage() {
+		StorageService storage = mock(StorageService.class);
+		QrdaServiceImpl service = new QrdaServiceImpl(storage);
+
+		service.preloadMeasureConfigs();
 	}
 }
