@@ -1,19 +1,13 @@
 package gov.cms.qpp.conversion.api;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.Assert.assertNotNull;
 
-@SpringTest
-class RestApiApplicationTest {
+import org.junit.Test;
 
-//	@Test
-//	void contextLoads() {
-//	}
-//
-//	@Test
-//	void testMain() {
-//		RestApiApplication.main();
-//
-//
-//	}
+public class RestApiApplicationTest {
 
+    @Test
+    public void mainMethodExists() throws Exception {
+        assertNotNull(RestApiApplication.class.getMethod("main", String[].class));
+    }
 }
