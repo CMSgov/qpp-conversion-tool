@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    name: conversion tool codebuil job
+    name: conversion tool codebuild job
     permissions:
       id-token: write
       contents: read
@@ -25,4 +25,4 @@ jobs:
 
       - name: Execute ssh command
         run: |
-          aws codebuild start-build --project-name "qppa-conversion-tool-impl" --source-version "${GITHUB_REF##*/}"
+          aws codebuild start-build --project-name "qppa-conversion-tool-impl" --source-version "release/${GITHUB_REF##*/}"

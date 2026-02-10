@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    name: conversion tool codebuil job
+    name: conversion tool codebuild job
     permissions:
       id-token: write
       contents: read
