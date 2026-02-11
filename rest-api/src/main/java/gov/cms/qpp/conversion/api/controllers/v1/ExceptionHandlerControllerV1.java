@@ -14,13 +14,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import gov.cms.qpp.conversion.api.exceptions.BadZipException;
 
@@ -33,52 +36,48 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 
 	private AuditService auditService;
 
-	/**
-	 * initialize controller
-	 *
-	 * @param auditService {@link AuditService} facilitates persistence of conversion results
-	 */
 	public ExceptionHandlerControllerV1(final AuditService auditService) {
 		this.auditService = auditService;
 	}
 
-	/**
-	 * "Catch" the {@link TransformException}.
-	 * Return the {@link AllErrors} with an HTTP status 422.
-	 *
-	 * @param exception The TransformException that was "caught".
-	 * @return The AllErrors dto that details the TransformException.
-	 */
 	@ExceptionHandler(TransformException.class)
 	@ResponseBody
 	ResponseEntity<AllErrors> handleTransformException(TransformException exception) {
-		API_LOG.error("Transform exception occurred", exception);
+		API_LOG.info("Transform failed validation (422): {}", exception.getMessage());
+		API_LOG.debug("TransformException details", exception);
+
 		auditService.failConversion(exception.getConversionReport());
 		return cope(exception);
 	}
 
-	/**
-	 * "Catch" the {@link QppValidationException}.
-	 * Return the {@link AllErrors} with an HTTP status 422.
-	 *
-	 * @param exception The QppValidationException that was "caught".
-	 * @return The AllErrors dto that details the QppValidationException.
-	 */
 	@ExceptionHandler(QppValidationException.class)
 	@ResponseBody
 	ResponseEntity<AllErrors> handleQppValidationException(QppValidationException exception) {
-		API_LOG.error("Validation exception occurred", exception);
+		API_LOG.info("Submission validation failed (422): {}", exception.getMessage());
+		API_LOG.debug("QppValidationException details", exception);
+
 		auditService.failValidation(exception.getConversionReport());
 		return cope(exception);
 	}
 
 	/**
-	 * "Catch" the {@link NoFileInDatabaseException}.
-	 * Return the {@link AllErrors} with an HTTP status 404.
+	 * Catch Spring static resource misses (hitting random paths).
+	 * Return 404 without logging as ERROR.
 	 *
-	 * @param exception The NoFileInDatabaseException that was "caught".
-	 * @return The NoFileInDatabaseException message
 	 */
+	@Override
+	protected ResponseEntity<Object> handleNoResourceFoundException(
+			NoResourceFoundException exception,
+			HttpHeaders headers,
+			HttpStatusCode status,
+			WebRequest request) {
+
+		API_LOG.debug("No resource found (404): {}", exception.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.contentType(MediaType.TEXT_PLAIN)
+				.body("Not found");
+	}
+
 	@ExceptionHandler(NoFileInDatabaseException.class)
 	@ResponseBody
 	ResponseEntity<String> handleFileNotFoundException(NoFileInDatabaseException exception) {
@@ -89,13 +88,6 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 		return new ResponseEntity<>(exception.getMessage(), httpHeaders, HttpStatus.NOT_FOUND);
 	}
 
-	/**
-	 * "Catch" the {@link InvalidFileTypeException}.
-	 * Return the {@link AllErrors} with an HTTP status 404.
-	 *
-	 * @param exception The InvalidFileTypeException that was "caught".
-	 * @return The InvalidFileTypeException message
-	 */
 	@ExceptionHandler(InvalidFileTypeException.class)
 	@ResponseBody
 	ResponseEntity<String> handleInvalidFileTypeException(InvalidFileTypeException exception) {
@@ -106,13 +98,6 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 		return new ResponseEntity<>(exception.getMessage(), httpHeaders, HttpStatus.NOT_FOUND);
 	}
 
-	/**
-	 * "Catch" the {@link BadZipException}.
-	 * Return the {@link AllErrors} with an HTTP status 400.
-	 *
-	 * @param exception The BadZipException that was "caught".
-	 * @return The BadZipException message
-	 */
 	@ExceptionHandler(BadZipException.class)
 	@ResponseBody
 	ResponseEntity<String> handleBadZipException(BadZipException exception) {
@@ -129,8 +114,8 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 		API_LOG.error("An AWS error occured", exception);
 
 		return ResponseEntity.status(exception.getStatusCode())
-			.contentType(MediaType.TEXT_PLAIN)
-			.body(exception.getMessage());
+				.contentType(MediaType.TEXT_PLAIN)
+				.body(exception.getMessage());
 	}
 
 	@ExceptionHandler(InvalidPurposeException.class)
@@ -139,17 +124,10 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 		API_LOG.error("An invalid purpose error occured", exception);
 
 		return ResponseEntity.badRequest()
-			.contentType(MediaType.TEXT_PLAIN)
-			.body(exception.getMessage());
+				.contentType(MediaType.TEXT_PLAIN)
+				.body(exception.getMessage());
 	}
 
-	/**
-	 * "Catch" the {@link MultipartException}.
-	 * Return an error message with an HTTP status 400.
-	 *
-	 * @param exception The MultipartException that was "caught".
-	 * @return The error message explaining the malformed multipart request
-	 */
 	@ExceptionHandler(MultipartException.class)
 	@ResponseBody
 	ResponseEntity<String> handleMultipartException(MultipartException exception) {
@@ -157,9 +135,9 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.TEXT_PLAIN);
 
-		String message = "Invalid multipart request: " + 
-			(exception.getCause() != null ? exception.getCause().getMessage() : exception.getMessage());
-		
+		String message = "Invalid multipart request: " +
+				(exception.getCause() != null ? exception.getCause().getMessage() : exception.getMessage());
+
 		return new ResponseEntity<>(message, httpHeaders, HttpStatus.BAD_REQUEST);
 	}
 
@@ -169,5 +147,4 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 
 		return new ResponseEntity<>(exception.getDetails(), httpHeaders, HttpStatus.UNPROCESSABLE_ENTITY);
 	}
-
 }

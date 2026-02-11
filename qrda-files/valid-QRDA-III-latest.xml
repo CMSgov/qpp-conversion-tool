@@ -108,7 +108,7 @@ CDA Header
 					<low value="20170101"/>
 					<high value="20171231"/>
 				</time>
-				<assignedEntity>
+				<assignedEntity
 					<id root="2.16.840.1.113883.4.6" extension="0777777777"/>
 					<representedOrganization>
 						<id root="2.16.840.1.113883.4.2" extension="000777777"/>
@@ -118,6 +118,7 @@ CDA Header
 			</performer>
 		</serviceEvent>
 	</documentationOf>
+
 	<authorization>
 		<consent>
 			<id root="da2c8a32-d76b-4c37-a1f4-137485387650"/>
