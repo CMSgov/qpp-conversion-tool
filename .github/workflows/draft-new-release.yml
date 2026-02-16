@@ -61,7 +61,7 @@ jobs:
         id: make-commit
         run: echo "commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
-      - name: Commit changelog and manifest files
+      - name: Commit pom files
         run: |
           git add '**/pom.xml' pom.xml
           git commit --message "Prepare release v${{ github.event.inputs.version }}"
