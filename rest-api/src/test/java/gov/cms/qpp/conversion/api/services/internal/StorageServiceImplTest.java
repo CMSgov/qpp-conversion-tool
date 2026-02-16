@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -13,6 +14,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -222,6 +224,28 @@ class StorageServiceImplTest {
 	}
 
 	@Test
+	void managedInputStream_closeAddsSuppressedWhenSuperAndS3CloseFail() throws IOException {
+		byte[] bytes = "Mock Contents".getBytes(StandardCharsets.UTF_8);
+		S3ObjectInputStream expectedStream = new S3ObjectInputStream(new CloseFailingInputStream(bytes), null);
+		S3Object mockS3Obj = mock(S3Object.class);
+		Mockito.when(mockS3Obj.getObjectContent()).thenReturn(expectedStream);
+		doThrow(new IOException("S3 close failure")).when(mockS3Obj).close();
+		
+		Mockito.when(environment.getProperty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE)).thenReturn("Mock_Bucket");
+		Mockito.when(environment.getProperty(Constants.CPC_PLUS_FILENAME_VARIABLE)).thenReturn("Mock_Filename");
+		Mockito.when(amazonS3Client.getObject(any(GetObjectRequest.class))).thenReturn(mockS3Obj);
+		
+		InputStream managedStream = underTest.getCpcPlusValidationFile();
+		assertThat(managedStream).isNotNull();
+		IOException thrown = assertThrows(IOException.class, managedStream::close);
+		
+		assertThat(thrown.getMessage()).contains("Input stream close failure");
+		assertThat(thrown.getSuppressed()).hasLength(1);
+		assertThat(thrown.getSuppressed()[0].getMessage()).contains("S3 close failure");
+		verify(mockS3Obj, times(1)).close();
+	}
+
+	@Test
 	void test_getApmValidationFile() throws IOException {
 		byte[] expectedBytes = "APM".getBytes(StandardCharsets.UTF_8);
 		S3ObjectInputStream expectedStream = new S3ObjectInputStream(new ByteArrayInputStream(expectedBytes), null);
@@ -249,5 +273,16 @@ class StorageServiceImplTest {
 			buffer.write(data, 0, bytesRead);
 		}
 		return buffer.toByteArray();
+	}
+
+	private static final class CloseFailingInputStream extends FilterInputStream {
+		CloseFailingInputStream(byte[] data) {
+			super(new ByteArrayInputStream(data));
+		}
+
+		@Override
+		public void close() throws IOException {
+			throw new IOException("Input stream close failure");
+		}
 	}
 }

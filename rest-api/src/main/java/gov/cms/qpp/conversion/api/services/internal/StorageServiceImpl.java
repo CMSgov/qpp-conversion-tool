@@ -192,10 +192,22 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 
 		@Override
 		public void close() throws IOException {
+			IOException firstException = null;
 			try {
 				super.close();
+			} catch (IOException e) {
+				firstException = e;
+				throw e;
 			} finally {
-				s3Object.close();
+				try {
+					s3Object.close();
+				} catch (IOException e) {
+					if (firstException != null) {
+						firstException.addSuppressed(e);
+					} else {
+						throw e;
+					}
+				}
 			}
 		}
 	}
