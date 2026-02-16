@@ -12,12 +12,12 @@ jobs:
     name: "Draft a new release"
     runs-on: ubuntu-latest
     if: github.ref_name == 'develop'
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     outputs:
           commitSha: ${{ steps.make-commit.outputs.commit }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.ACTIONS_NICHOLAS_PAT }}
 
       - name: Create release branch
         run: |
@@ -33,7 +33,7 @@ jobs:
           prerelease: false
           publish: false
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_NICHOLAS_PAT }}
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -63,14 +63,14 @@ jobs:
           git config user.name "GitHub actions"
           git config user.email noreply@github.com
 
-      - name: Fetch commit hash
-        id: make-commit
-        run: echo "commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
-
       - name: Commit pom files
         run: |
           git add '**/pom.xml' pom.xml
           git commit --message "Prepare release v${{ github.event.inputs.version }}"
+
+      - name: Fetch commit hash
+        id: make-commit
+        run: echo "commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
       - name: Push new branch
         run: |
