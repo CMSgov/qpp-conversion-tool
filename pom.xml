@@ -36,6 +36,8 @@
 		<module>commandline</module>
 		<module>rest-api</module>
 		<module>test-coverage</module>
+		<module>generate-race-cpcplus</module>
+		<module>qrda3-update-measures</module>
 	</modules>
 
 	<build>
