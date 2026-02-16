@@ -48,6 +48,9 @@ jobs:
           # Update all pom.xml files using Maven versions plugin
           echo "Updating version in all pom.xml files to ${{ github.event.inputs.version }}-RELEASE..."
           mvn versions:set -DnewVersion=${{ github.event.inputs.version }}-RELEASE -DgenerateBackupPoms=false
+          mvn versions:set -DnewVersion=${{ github.event.inputs.version }}-RELEASE -DgenerateBackupPoms=false -f acceptance-tests/pom.xml
+          mvn versions:set -DnewVersion=${{ github.event.inputs.version }}-RELEASE -DgenerateBackupPoms=false -f generate-race-cpcplus/pom.xml
+          mvn versions:set -DnewVersion=${{ github.event.inputs.version }}-RELEASE -DgenerateBackupPoms=false -f qrda3-update-measures/pom.xml
           echo "Version update complete."
 
       # In order to make a commit, we need to initialize a user.
@@ -61,7 +64,7 @@ jobs:
         id: make-commit
         run: echo "commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
-      - name: Commit changelog and manifest files
+      - name: Commit pom files
         run: |
           git add '**/pom.xml' pom.xml
           git commit --message "Prepare release v${{ github.event.inputs.version }}"
@@ -71,9 +74,10 @@ jobs:
           git push origin release/v${{ github.event.inputs.version }}
 
       - name: Create pull request to master branch
-        uses: thomaseizinger/create-pull-request@1.4.0       
+        uses: thomaseizinger/create-pull-request@1.4.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_NICHOLAS_PAT }} # MUST use a PAT here in order to trigger the next workflow: CodeBuild Trigger; see https://docs.github.com/en/actions/using-workflows/triggering-a-workflow
         with:
-          github_token: ${{ secrets.ACTIONS_NICHOLAS_PAT }} # MUST use a PAT here in order to trigger the next workflow: CodeBuild Trigger; see https://docs.github.com/en/actions/using-workflows/triggering-a-workflow
           head: release/v${{ github.event.inputs.version }}
           base: master
           draft: true
