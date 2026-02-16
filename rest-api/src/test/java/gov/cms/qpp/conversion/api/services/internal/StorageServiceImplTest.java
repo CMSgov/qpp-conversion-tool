@@ -12,7 +12,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
@@ -144,7 +147,8 @@ class StorageServiceImplTest {
 	@Test
 	void envVariablesPresent() {
 		S3Object s3ObjectMock = mock(S3Object.class);
-		s3ObjectMock.setObjectContent(new ByteArrayInputStream("1234".getBytes()));
+		S3ObjectInputStream objectContent = new S3ObjectInputStream(new ByteArrayInputStream("1234".getBytes(StandardCharsets.UTF_8)), null);
+		when(s3ObjectMock.getObjectContent()).thenReturn(objectContent);
 		Mockito.when(amazonS3Client.getObject(any(GetObjectRequest.class))).thenReturn(s3ObjectMock);
 		Mockito.when(environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE)).thenReturn("meep");
 		underTest.getFileByLocationId("meep");
@@ -197,31 +201,53 @@ class StorageServiceImplTest {
 	}
 	
 	@Test
-	void test_getCpcPlusValidationFile() {
-		S3ObjectInputStream expected = new S3ObjectInputStream(null, null);
+	void test_getCpcPlusValidationFile() throws IOException {
+		byte[] expectedBytes = "Mock Contents".getBytes(StandardCharsets.UTF_8);
+		S3ObjectInputStream expectedStream = new S3ObjectInputStream(new ByteArrayInputStream(expectedBytes), null);
 		S3Object mockS3Obj = mock(S3Object.class);
-		Mockito.when(mockS3Obj.getObjectContent()).thenReturn(expected);
+		Mockito.when(mockS3Obj.getObjectContent()).thenReturn(expectedStream);
 		
 		Mockito.when(environment.getProperty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE)).thenReturn("Mock_Bucket");
 		Mockito.when(environment.getProperty(Constants.CPC_PLUS_FILENAME_VARIABLE)).thenReturn("Mock_Filename");
-		Mockito.when(amazonS3Client.getObject( any(GetObjectRequest.class) )).thenReturn(mockS3Obj);
+		Mockito.when(amazonS3Client.getObject(any(GetObjectRequest.class))).thenReturn(mockS3Obj);
 		
-		InputStream actual = underTest.getCpcPlusValidationFile();
+		byte[] actualBytes;
+		try (InputStream actual = underTest.getCpcPlusValidationFile()) {
+			assertThat(actual).isNotNull();
+			actualBytes = toByteArray(actual);
+		}
 		
-		assertThat(actual).isEqualTo(expected);
+		assertThat(actualBytes).isEqualTo(expectedBytes);
+		verify(mockS3Obj, times(1)).close();
 	}
 
 	@Test
-	void test_getApmValidationFile() {
-		S3ObjectInputStream expected = new S3ObjectInputStream(null, null);
+	void test_getApmValidationFile() throws IOException {
+		byte[] expectedBytes = "APM".getBytes(StandardCharsets.UTF_8);
+		S3ObjectInputStream expectedStream = new S3ObjectInputStream(new ByteArrayInputStream(expectedBytes), null);
 		S3Object mockS3Obj = mock(S3Object.class);
-		Mockito.when(mockS3Obj.getObjectContent()).thenReturn(expected);
+		Mockito.when(mockS3Obj.getObjectContent()).thenReturn(expectedStream);
 
 		Mockito.when(environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE)).thenReturn("Mock_Bucket");
-		Mockito.when(amazonS3Client.getObject( any(GetObjectRequest.class) )).thenReturn(mockS3Obj);
+		Mockito.when(amazonS3Client.getObject(any(GetObjectRequest.class))).thenReturn(mockS3Obj);
 
-		InputStream actual = underTest.getApmValidationFile(Constants.CPC_PLUS_APM_FILE_NAME_KEY);
+		byte[] actualBytes;
+		try (InputStream actual = underTest.getApmValidationFile(Constants.CPC_PLUS_APM_FILE_NAME_KEY)) {
+			assertThat(actual).isNotNull();
+			actualBytes = toByteArray(actual);
+		}
 
-		assertThat(actual).isEqualTo(expected);
+		assertThat(actualBytes).isEqualTo(expectedBytes);
+		verify(mockS3Obj, times(1)).close();
+	}
+
+	private byte[] toByteArray(InputStream inputStream) throws IOException {
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		byte[] data = new byte[1024];
+		int bytesRead;
+		while ((bytesRead = inputStream.read(data)) != -1) {
+			buffer.write(data, 0, bytesRead);
+		}
+		return buffer.toByteArray();
 	}
 }
