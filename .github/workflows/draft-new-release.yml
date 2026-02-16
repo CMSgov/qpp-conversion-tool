@@ -71,9 +71,10 @@ jobs:
           git push origin release/v${{ github.event.inputs.version }}
 
       - name: Create pull request to master branch
-        uses: thomaseizinger/create-pull-request@1.4.0       
+        uses: thomaseizinger/create-pull-request@1.4.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_NICHOLAS_PAT }} # MUST use a PAT here in order to trigger the next workflow: CodeBuild Trigger; see https://docs.github.com/en/actions/using-workflows/triggering-a-workflow
         with:
-          github_token: ${{ secrets.ACTIONS_NICHOLAS_PAT }} # MUST use a PAT here in order to trigger the next workflow: CodeBuild Trigger; see https://docs.github.com/en/actions/using-workflows/triggering-a-workflow
           head: release/v${{ github.event.inputs.version }}
           base: master
           draft: true
