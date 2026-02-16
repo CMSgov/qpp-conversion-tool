@@ -51,6 +51,9 @@ jobs:
           mvn versions:set -DnewVersion=${{ github.event.inputs.version }}-RELEASE -DgenerateBackupPoms=false -f acceptance-tests/pom.xml
           mvn versions:set -DnewVersion=${{ github.event.inputs.version }}-RELEASE -DgenerateBackupPoms=false -f generate-race-cpcplus/pom.xml
           mvn versions:set -DnewVersion=${{ github.event.inputs.version }}-RELEASE -DgenerateBackupPoms=false -f qrda3-update-measures/pom.xml
+          echo "Version update complete."
+
+      # In order to make a commit, we need to initialize a user.
       # You may choose to write something less generic here if you want, it doesn't matter functionality-wise.
       - name: Initialize mandatory git config
         run: |
