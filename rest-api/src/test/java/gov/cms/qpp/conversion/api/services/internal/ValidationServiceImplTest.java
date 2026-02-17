@@ -217,14 +217,21 @@ class ValidationServiceImplTest {
 		Mockito.verify(objectUnderTest, Mockito.times(1)).apiLog(Constants.VALIDATION_URL_ENV_VARIABLE + " is unset");
 	}
 
-//	@Test
-//	void testInvalidSubmissionResponseJsonPath() throws IOException {
-//		pathToSubmissionError = Path.of("src/test/resources/invalidSubmissionErrorFixture.json");
-//		String errorJson = FileUtils.readFileToString(pathToSubmissionError.toFile(), StandardCharsets.UTF_8);
-//		convertedErrors = service.convertQppValidationErrorsToQrda(errorJson, qppWrapper);
-//
-//		convertedErrors.getErrors().stream().flatMap(error -> error.getDetails().stream())
-//			.map(Detail::getLocation).map(Location::getPath)
-//			.forEach(path -> assertThat(path, is(ValidationServiceImpl.UNABLE_PROVIDE_XPATH)));
-//	}
+	@Test
+	void testNoHandlingErrorHandlerDoesNothing() throws IOException {
+		try {
+			Class<?> innerClass = Class.forName("gov.cms.qpp.conversion.api.services.internal.ValidationServiceImpl$NoHandlingErrorHandler");
+			java.lang.reflect.Constructor<?> constructor = innerClass.getDeclaredConstructor();
+			constructor.setAccessible(true);
+			Object errorHandler = constructor.newInstance();
+
+			java.lang.reflect.Method method = innerClass.getDeclaredMethod("handleError", org.springframework.http.client.ClientHttpResponse.class);
+			method.setAccessible(true);
+
+			// This should not throw an exception
+			method.invoke(errorHandler, mock(org.springframework.http.client.ClientHttpResponse.class));
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to test private NoHandlingErrorHandler", e);
+		}
+	}
 }

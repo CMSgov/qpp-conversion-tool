@@ -1,0 +1,94 @@
+name: "Draft new release"
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "The version you want to release."
+        required: true
+
+jobs:
+  draft-new-release:
+    name: "Draft a new release"
+    runs-on: ubuntu-latest
+    if: github.ref_name == 'develop'
+    outputs:
+          commitSha: ${{ steps.make-commit.outputs.commit }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.ACTIONS_NICHOLAS_PAT }}
+
+      - name: Create release branch
+        run: |
+          git checkout -b release/v${{ github.event.inputs.version }};
+
+      - name: Create draft release
+        uses: release-drafter/release-drafter@v6
+        with:
+          config-name: release-draft.yml
+          version: v${{ github.event.inputs.version }}
+          tag: v${{ github.event.inputs.version }}
+          name: v${{ github.event.inputs.version }}
+          prerelease: false
+          publish: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_NICHOLAS_PAT }}
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "corretto"
+          cache: 'maven'
+
+      - name: Bump version in pom.xml files
+        run: |
+          
+          # Update parent and child module pom.xml files
+          echo "Updating version in parent and module pom.xml files to ${{ github.event.inputs.version }}-RELEASE..."
+          mvn versions:set -DnewVersion=${{ github.event.inputs.version }}-RELEASE -DgenerateBackupPoms=false
+          
+          # Update standalone module pom.xml files
+          echo "Updating standalone module versions..."
+          mvn versions:set -DnewVersion=${{ github.event.inputs.version }}-RELEASE -DgenerateBackupPoms=false -f acceptance-tests/pom.xml
+          mvn versions:set -DnewVersion=${{ github.event.inputs.version }}-RELEASE -DgenerateBackupPoms=false -f generate-race-cpcplus/pom.xml
+          mvn versions:set -DnewVersion=${{ github.event.inputs.version }}-RELEASE -DgenerateBackupPoms=false -f qrda3-update-measures/pom.xml
+          echo "Version update complete."
+
+      # In order to make a commit, we need to initialize a user.
+      # You may choose to write something less generic here if you want, it doesn't matter functionality-wise.
+      - name: Initialize mandatory git config
+        run: |
+          git config user.name "GitHub actions"
+          git config user.email noreply@github.com
+
+      - name: Commit pom files
+        run: |
+          git add '**/pom.xml' pom.xml
+          git commit --message "Prepare release v${{ github.event.inputs.version }}"
+
+      - name: Fetch commit hash
+        id: make-commit
+        run: echo "commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Push new branch
+        run: |
+          git push origin release/v${{ github.event.inputs.version }}
+
+      - name: Create pull request to master branch
+        uses: thomaseizinger/create-pull-request@1.4.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_NICHOLAS_PAT }} # MUST use a PAT here in order to trigger the next workflow: CodeBuild Trigger; see https://docs.github.com/en/actions/using-workflows/triggering-a-workflow
+        with:
+          head: release/v${{ github.event.inputs.version }}
+          base: master
+          draft: true
+          title: Deploy Release version v${{ github.event.inputs.version }} to Prod
+          body: |
+            Hi @${{ github.actor }}!
+
+            This PR was created in response to a manual trigger of the release workflow here: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.
+            The changelog was updated and the version was bumped in the manifest files in this commit: ${{ steps.make-commit.outputs.commit }}.
+
+            Merging this PR will create a GitHub release.

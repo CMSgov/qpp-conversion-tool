@@ -20,6 +20,8 @@ import gov.cms.qpp.conversion.api.exceptions.UncheckedInterruptedException;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.services.StorageService;
 
+import java.io.FilterInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -99,12 +101,11 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 		API_LOG.info("Retrieving file {} from bucket {}", fileLocationId, bucketName);
 
 		GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, fileLocationId);
-
-		S3Object s3Object = amazonS3.getObject(getObjectRequest);
+		InputStream objectContent = retrieveManagedContentStream(getObjectRequest);
 
 		API_LOG.info("Successfully retrieved file {} from S3 bucket {}", getObjectRequest.getKey(), getObjectRequest.getBucketName());
 
-		return s3Object.getObjectContent();
+		return objectContent;
 	}
 
 	/**
@@ -123,9 +124,7 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 		API_LOG.info("Retrieving CPC+ validation file from bucket {}", bucketName);
 
 		GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, key);
-		S3Object s3Object = amazonS3.getObject(getObjectRequest);
-
-		return s3Object.getObjectContent();
+		return retrieveManagedContentStream(getObjectRequest);
 	}
 
 	/**
@@ -143,9 +142,15 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 		API_LOG.info("Retrieving APM validation file from bucket {}", bucketName);
 
 		GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, fileName);
-		S3Object s3Object = amazonS3.getObject(getObjectRequest);
+		return retrieveManagedContentStream(getObjectRequest);
+	}
 
-		return s3Object.getObjectContent();
+	/**
+	 * Provides an {@link InputStream} whose close also closes the backing {@link S3Object}.
+	 */
+	private InputStream retrieveManagedContentStream(GetObjectRequest getObjectRequest) {
+		S3Object s3Object = amazonS3.getObject(getObjectRequest);
+		return new ManagedS3InputStream(s3Object);
 	}
 
 	/**
@@ -175,5 +180,35 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 	@Override
 	protected String getActionName() {
 		return "Write to Storage";
+	}
+
+	private static final class ManagedS3InputStream extends FilterInputStream {
+		private final S3Object s3Object;
+
+		ManagedS3InputStream(S3Object s3Object) {
+			super(s3Object.getObjectContent());
+			this.s3Object = s3Object;
+		}
+
+		@Override
+		public void close() throws IOException {
+			IOException firstException = null;
+			try {
+				super.close();
+			} catch (IOException e) {
+				firstException = e;
+				throw e;
+			} finally {
+				try {
+					s3Object.close();
+				} catch (IOException e) {
+					if (firstException != null) {
+						firstException.addSuppressed(e);
+					} else {
+						throw e;
+					}
+				}
+			}
+		}
 	}
 }

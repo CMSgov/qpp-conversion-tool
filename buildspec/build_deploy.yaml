@@ -60,7 +60,8 @@ phases:
         fi
       - echo "${CLUSTER_NAME}"
       - SERVICE_NAME="${ENV}-conversion-tool"
-      - BRANCH=$(echo "${CODEBUILD_SOURCE_VERSION}")
+      # Extract the branch name from the CodeBuild source version. The source version is in the format "branch/branch-name" for GitHub source, so we can use 'sed' to remove the "branch/" prefix and get just the branch name.
+      - BRANCH=$(echo "${CODEBUILD_SOURCE_VERSION}" | sed 's/.*\///')
       - echo ${CODEBUILD_RESOLVED_SOURCE_VERSION}
       - echo "${BRANCH}"
       - COMMIT_SHORT_SHA=$(echo "${CODEBUILD_RESOLVED_SOURCE_VERSION}" | cut -c1-7)

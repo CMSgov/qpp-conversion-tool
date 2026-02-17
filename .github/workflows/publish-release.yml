@@ -1,0 +1,67 @@
+name: Publish GitHub Release and Backfill
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish_and_backfill:
+    name: Publish GitHub release and create backfill PR
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Checkout codebase
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get latest draft release
+        id: get_release
+        run: |
+          # Get the latest draft release
+          RELEASE_DATA=$(gh release list --limit 1 --json isDraft,tagName,name | jq -r '.[0]')
+          IS_DRAFT=$(echo "$RELEASE_DATA" | jq -r '.isDraft')
+          TAG_NAME=$(echo "$RELEASE_DATA" | jq -r '.tagName')
+          
+          echo "is_draft=${IS_DRAFT}" >> $GITHUB_OUTPUT
+          echo "tag_name=${TAG_NAME}" >> $GITHUB_OUTPUT
+          echo "Found release: ${TAG_NAME} (draft: ${IS_DRAFT})"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish draft release
+        if: steps.get_release.outputs.is_draft == 'true'
+        run: |
+          gh release edit ${{ steps.get_release.outputs.tag_name }} --draft=false --latest
+          echo "Published release ${{ steps.get_release.outputs.tag_name }} as latest"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create backfill PR to develop
+        run: |
+          # Check if a PR already exists
+          EXISTING_PR=$(gh pr list --base develop --head master --json number --jq '.[0].number' || echo "")
+          
+          if [ -n "$EXISTING_PR" ]; then
+            echo "PR #${EXISTING_PR} already exists for master -> develop"
+            exit 0
+          fi
+          
+          # Create the backfill PR
+          gh pr create \
+            --base develop \
+            --head master \
+            --title "Backfill master into develop" \
+            --body "This PR backfills changes from master into develop after production deployment.
+          
+          ## Changes
+          This includes all changes that were merged to master.
+          
+          ## Notes
+          - Review for any conflicts
+          - Merge after verifying all changes are appropriate for develop branch"
+          
+          echo "Created backfill PR from master to develop"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

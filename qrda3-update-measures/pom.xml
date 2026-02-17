@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<parent>
-		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<groupId>gov.cms.qpp.conversion</groupId>
-		<version>2026.01.28.01-RELEASE</version>
-		<relativePath>../</relativePath>
-	</parent>
-
-	<artifactId>qpp-update-measures</artifactId>
-	<packaging>jar</packaging>
 	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>gov.cms.qpp.conversion</groupId>
+	<artifactId>qpp-update-measures</artifactId>
+	<version>2026.02.17.01-RELEASE</version>
+	<name>qrda3-update-measures</name>
+	<packaging>jar</packaging>
+
+	<properties>
+		<java.version>17</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+	</properties>
 
 	<build>
 		<plugins>
