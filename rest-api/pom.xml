@@ -199,14 +199,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            
-            <dependency>
-                <groupId>org.apache.tomcat.embed</groupId>
-                <artifactId>tomcat-embed-core</artifactId>
-                <version>10.1.52</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
 
             <!-- These two lines are redundant when importing spring-framework-bom but kept for clarity.
                  You can safely remove them later if desired. -->
@@ -234,7 +226,7 @@
             <dependency>
                 <groupId>org.apache.tomcat.embed</groupId>
                 <artifactId>tomcat-embed-core</artifactId>
-                <version>10.1.47</version>
+                <version>10.1.52</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.tomcat.embed</groupId>
