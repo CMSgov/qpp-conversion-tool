@@ -1,13 +1,26 @@
-package gov.cms.qpp.conversion.api.controllers.v1;
+package gov.cms.qpp.conversion.api.exceptions;
 
 import com.amazonaws.AmazonServiceException;
 import com.google.common.truth.Truth;
+import gov.cms.qpp.conversion.ConversionReport;
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathSource;
+import gov.cms.qpp.conversion.api.controllers.v1.QrdaControllerV1;
+import gov.cms.qpp.conversion.api.helper.AdvancedApmHelper;
+import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.services.AuditService;
+import gov.cms.qpp.conversion.api.services.QrdaService;
+import gov.cms.qpp.conversion.api.services.ValidationService;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.QppValidationException;
+import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.test.MockitoExtension;
+import gov.cms.qpp.test.logging.LoggerContract;
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -20,20 +33,6 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import gov.cms.qpp.conversion.ConversionReport;
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathSource;
-import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
-import gov.cms.qpp.conversion.api.exceptions.InvalidPurposeException;
-import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
-import gov.cms.qpp.conversion.api.helper.AdvancedApmHelper;
-import gov.cms.qpp.conversion.api.services.AuditService;
-import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.QppValidationException;
-import gov.cms.qpp.conversion.model.error.TransformException;
-import gov.cms.qpp.test.MockitoExtension;
-import gov.cms.qpp.test.logging.LoggerContract;
-
 import java.nio.file.Path;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -41,24 +40,23 @@ import java.util.concurrent.CompletableFuture;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-
 @ExtendWith(MockitoExtension.class)
-class ExceptionHandlerControllerV1Test implements LoggerContract {
+class GlobalExceptionHandlerTest implements LoggerContract {
 
 	private static ConversionReport report;
-	private static AllErrors allErrors = new AllErrors();
+	private static final AllErrors allErrors = new AllErrors();
 
 	@InjectMocks
-	private ExceptionHandlerControllerV1 objectUnderTest;
+	private GlobalExceptionHandler objectUnderTest;
 
 	@Mock
 	private AuditService auditService;
 
 	@BeforeAll
 	static void setup() {
+		// NOTE: If this path is flaky in CI, move the file to src/test/resources and load via classpath.
 		Path path = Path.of("../qrda-files/valid-QRDA-III-latest.xml");
 		report = new Converter(new PathSource(path)).getReport();
 		report.setReportDetails(allErrors);
@@ -67,6 +65,8 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 	@BeforeEach
 	void before() {
 		when(auditService.failConversion(any(ConversionReport.class)))
+				.thenReturn(CompletableFuture.completedFuture(null));
+		when(auditService.failValidation(any(ConversionReport.class)))
 				.thenReturn(CompletableFuture.completedFuture(null));
 	}
 
@@ -99,13 +99,14 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 				new TransformException("test transform exception", new NullPointerException(), report);
 
 		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleTransformException(exception);
+
 		assertThat(responseEntity.getBody()).isEqualTo(allErrors);
 	}
 
 	@Test
 	void testQppValidationExceptionStatusCode() {
 		QppValidationException exception =
-				new QppValidationException("test transform exception", new NullPointerException(), report);
+				new QppValidationException("test validation exception", new NullPointerException(), report);
 
 		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleQppValidationException(exception);
 
@@ -117,7 +118,7 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 	@Test
 	void testQppValidationExceptionHeaderContentType() {
 		QppValidationException exception =
-				new QppValidationException("test transform exception", new NullPointerException(), report);
+				new QppValidationException("test validation exception", new NullPointerException(), report);
 
 		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleQppValidationException(exception);
 
@@ -128,9 +129,10 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 	@Test
 	void testQppValidationExceptionBody() {
 		QppValidationException exception =
-				new QppValidationException("test transform exception", new NullPointerException(), report);
+				new QppValidationException("test validation exception", new NullPointerException(), report);
 
 		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleQppValidationException(exception);
+
 		assertThat(responseEntity.getBody()).isEqualTo(allErrors);
 	}
 
@@ -141,7 +143,7 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 
 		ResponseEntity<String> responseEntity = objectUnderTest.handleFileNotFoundException(exception);
 
-		assertWithMessage("The response entity's status code must be 422.")
+		assertWithMessage("The response entity's status code must be 404.")
 				.that(responseEntity.getStatusCode())
 				.isEqualTo(HttpStatus.NOT_FOUND);
 	}
@@ -163,6 +165,7 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 				new NoFileInDatabaseException(AdvancedApmHelper.FILE_NOT_FOUND);
 
 		ResponseEntity<String> responseEntity = objectUnderTest.handleFileNotFoundException(exception);
+
 		assertThat(responseEntity.getBody()).isEqualTo(AdvancedApmHelper.FILE_NOT_FOUND);
 	}
 
@@ -173,7 +176,7 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 
 		ResponseEntity<String> responseEntity = objectUnderTest.handleInvalidFileTypeException(exception);
 
-		assertWithMessage("The response entity's status code must be 422.")
+		assertWithMessage("The response entity's status code must be 404.")
 				.that(responseEntity.getStatusCode())
 				.isEqualTo(HttpStatus.NOT_FOUND);
 	}
@@ -195,6 +198,7 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 				new InvalidFileTypeException(AdvancedApmHelper.FILE_NOT_FOUND);
 
 		ResponseEntity<String> responseEntity = objectUnderTest.handleInvalidFileTypeException(exception);
+
 		assertThat(responseEntity.getBody()).isEqualTo(AdvancedApmHelper.FILE_NOT_FOUND);
 	}
 
@@ -208,15 +212,6 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 		Truth.assertThat(response.getStatusCodeValue()).isEqualTo(404);
 	}
 
-//	@Test
-//	void testHandleAmazonExceptionResponseBody() {
-//		AmazonServiceException exception = new AmazonServiceException("some message");
-//
-//		ResponseEntity<String> response = objectUnderTest.handleAmazonException(exception);
-//
-//		Truth.assertThat(response.getBody()).contains("some message");
-//	}
-
 	@Test
 	void testHandleInvalidPurposeExceptionExceptionResponseBody() {
 		InvalidPurposeException exception = new InvalidPurposeException("some message");
@@ -228,23 +223,32 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 
 	@Test
 	void testHandleInvalidPurposeExceptionResponseBodyDoesInterception() throws Exception {
-		QrdaControllerV1 mock = Mockito.mock(QrdaControllerV1.class);
-		MockMvc mvc = MockMvcBuilders.standaloneSetup(mock)
-				.setControllerAdvice(new ExceptionHandlerControllerV1(auditService))
+		// Use a real controller instance (with mocked deps) so Spring MVC can route to it reliably.
+		QrdaService qrdaService = Mockito.mock(QrdaService.class);
+		ValidationService validationService = Mockito.mock(ValidationService.class);
+
+		QrdaControllerV1 controller = new QrdaControllerV1(qrdaService, validationService, auditService);
+
+		MockMvc mvc = MockMvcBuilders.standaloneSetup(controller)
+				.setControllerAdvice(new GlobalExceptionHandler(auditService))
 				.build();
-		when(mock.uploadQrdaFile(ArgumentMatchers.any(), ArgumentMatchers.anyString())).thenCallRealMethod();
 
 		String purpose = "this is an invalid purpose because it's too long" + UUID.randomUUID();
+
 		RequestBuilder builder = MockMvcRequestBuilders.multipart("/")
-			.file("file", ArrayUtils.EMPTY_BYTE_ARRAY)
-			.header("Purpose", purpose);
+				.file("file", ArrayUtils.EMPTY_BYTE_ARRAY)
+				.header("Purpose", purpose)
+				.header("Accept", Constants.V1_API_ACCEPT);
+
 		MvcResult result = mvc.perform(builder).andReturn();
-		Truth.assertThat(result.getResponse().getContentAsString()).isEqualTo("Given Purpose (header) is too large. Max length is "
-										     + "25, yours was " + purpose.length());
+
+		Truth.assertThat(result.getResponse().getStatus()).isEqualTo(400);
+		Truth.assertThat(result.getResponse().getContentAsString())
+				.isEqualTo("Given Purpose (header) is too large. Max length is 25, yours was " + purpose.length());
 	}
 
 	@Override
 	public Class<?> getLoggerType() {
-		return ExceptionHandlerControllerV1.class;
+		return GlobalExceptionHandler.class;
 	}
 }
