@@ -10,12 +10,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 /**
  * Modify the controller to send back different responses for exceptions
@@ -67,6 +70,25 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 		auditService.failValidation(exception.getConversionReport());
 		return cope(exception);
+	}
+
+	/**
+	 * Handles {@link NoResourceFoundException} for requests to non-existent paths/resources.
+	 * Returns a clean 404 and logs at DEBUG/TRACE to avoid ERROR-level noise.
+	 */
+	@Override
+	protected ResponseEntity<Object> handleNoResourceFoundException(
+			NoResourceFoundException ex,
+			HttpHeaders headers,
+			HttpStatusCode status,
+			WebRequest request) {
+
+		API_LOG.debug("No resource found ({}): {}", status.value(), ex.getMessage());
+		API_LOG.trace("NoResourceFoundException details", ex);
+
+		return ResponseEntity.status(status)
+				.contentType(MediaType.TEXT_PLAIN)
+				.body("Not found");
 	}
 
 	/**

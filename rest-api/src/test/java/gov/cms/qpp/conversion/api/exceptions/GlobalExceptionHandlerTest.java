@@ -27,11 +27,15 @@ import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.nio.file.Path;
 import java.util.UUID;
@@ -245,6 +249,32 @@ class GlobalExceptionHandlerTest implements LoggerContract {
 		Truth.assertThat(result.getResponse().getStatus()).isEqualTo(400);
 		Truth.assertThat(result.getResponse().getContentAsString())
 				.isEqualTo("Given Purpose (header) is too large. Max length is 25, yours was " + purpose.length());
+	}
+
+	@Test
+	void testHandleNoResourceFoundExceptionReturnsPlain404() throws Exception {
+		NoResourceFoundException ex;
+		try {
+			ex = NoResourceFoundException.class
+					.getConstructor(HttpMethod.class, String.class)
+					.newInstance(HttpMethod.GET, "/test");
+		} catch (NoSuchMethodException ignore) {
+			ex = NoResourceFoundException.class
+					.getConstructor(HttpMethod.class, String.class, String.class)
+					.newInstance(HttpMethod.GET, "/test", "/test");
+		}
+
+		ResponseEntity<Object> response = objectUnderTest.handleNoResourceFoundException(
+				ex,
+				new HttpHeaders(),
+				HttpStatus.NOT_FOUND,
+				Mockito.mock(WebRequest.class)
+		);
+
+		Truth.assertThat(response.getStatusCodeValue()).isEqualTo(404);
+		Truth.assertThat(response.getHeaders().getContentType())
+				.isEquivalentAccordingToCompareTo(MediaType.TEXT_PLAIN);
+		Truth.assertThat(response.getBody()).isEqualTo("Not found");
 	}
 
 	@Override
