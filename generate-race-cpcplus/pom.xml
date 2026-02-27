@@ -6,7 +6,7 @@
 
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>generateRaceCpcPlus</artifactId>
-	<version>2026.02.17.01-RELEASE</version>
+	<version>2026.02.27.01-RELEASE</version>
 	<name>generate-race-cpcplus</name>
 	<packaging>jar</packaging>
 

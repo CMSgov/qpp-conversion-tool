@@ -6,7 +6,7 @@
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-conversion-tool-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>2026.02.17.01-RELEASE</version>
+	<version>2026.02.27.01-RELEASE</version>
 	<name>QPP Conversion Tool</name>
 
 	<properties>
@@ -469,13 +469,13 @@
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-classic</artifactId>
-				<version>1.5.13</version>
+				<version>1.5.25</version>
 			</dependency>
 
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-core</artifactId>
-				<version>1.5.13</version>
+				<version>1.5.25</version>
 			</dependency>
 
 			<dependency>
