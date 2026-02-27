@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 	<artifactId>acceptance-tests</artifactId>
 	<groupId>gov.cms.qpp.conversion</groupId>
-	<version>2026.02.17.01-RELEASE</version>
+	<version>v2026.02.27.01-RELEASE</version>
 	<name>conversion-tests</name>
 	<packaging>jar</packaging>
 	<properties>
