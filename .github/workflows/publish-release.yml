@@ -37,31 +37,45 @@ jobs:
           echo "Published release ${{ steps.get_release.outputs.tag_name }} as latest"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create backfill PR to develop
+  backfill:
+    name: Backfill master to develop branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check params
         run: |
-          # Check if a PR already exists
-          EXISTING_PR=$(gh pr list --base develop --head master --json number --jq '.[0].number' || echo "")
-          
-          if [ -n "$EXISTING_PR" ]; then
-            echo "PR #${EXISTING_PR} already exists for master -> develop"
-            exit 0
-          fi
-          
-          # Create the backfill PR
-          gh pr create \
-            --base develop \
-            --head master \
-            --title "Backfill master into develop" \
-            --body "This PR backfills changes from master into develop after production deployment.
-          
-          ## Changes
-          This includes all changes that were merged to master.
-          
-          ## Notes
-          - Review for any conflicts
-          - Merge after verifying all changes are appropriate for develop branch"
-          
-          echo "Created backfill PR from master to develop"
+          echo "head.ref = ${{github.event.pull_request.head.ref}}"
+          echo "base.ref = ${{github.event.pull_request.base.ref}}"
+
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          token: ${{ secrets.ACTIONS_NICHOLAS_PAT }}
+
+      - name: Create backfill branch
+        run: git checkout -b backfill/master;
+
+      # In order to make a commit, we need to initialize a user.
+      - name: Initialize mandatory git config
+        run: |
+          git config user.name "GitHub actions"
+          git config user.email noreply@github.com
+
+      - name: Push backfill branch
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_NICHOLAS_PAT }}
+        run: |
+          git push origin backfill/master
+
+      - name: Create backfill pull request to develop branch
+        uses: thomaseizinger/create-pull-request@1.4.0
+        with:
+          github_token: ${{ secrets.ACTIONS_NICHOLAS_PAT }}
+          head: backfill/master
+          base: develop
+          draft: true
+          title: Backfill ${{ github.event.pull_request.base.ref }} branch to develop branch
+          body: |
+            Hi @${{ github.actor }}!
+
+            This PR was created in response to a trigger of the release workflow here: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.
+            Following a release, this is a backfill from the main branch to the develop branch.

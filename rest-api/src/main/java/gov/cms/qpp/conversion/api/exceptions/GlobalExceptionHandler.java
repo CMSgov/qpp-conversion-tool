@@ -1,35 +1,31 @@
-package gov.cms.qpp.conversion.api.controllers.v1;
+package gov.cms.qpp.conversion.api.exceptions;
 
-import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
-import gov.cms.qpp.conversion.api.exceptions.InvalidPurposeException;
-import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
+import com.amazonaws.AmazonServiceException;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.QppValidationException;
 import gov.cms.qpp.conversion.model.error.TransformException;
-
-import com.amazonaws.AmazonServiceException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import gov.cms.qpp.conversion.api.exceptions.BadZipException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 /**
  * Modify the controller to send back different responses for exceptions
  */
 @ControllerAdvice
-public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler {
-	private static final Logger API_LOG = LoggerFactory.getLogger(ExceptionHandlerControllerV1.class);
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+	private static final Logger API_LOG = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
 	private AuditService auditService;
 
@@ -38,7 +34,7 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 	 *
 	 * @param auditService {@link AuditService} facilitates persistence of conversion results
 	 */
-	public ExceptionHandlerControllerV1(final AuditService auditService) {
+	public GlobalExceptionHandler(final AuditService auditService) {
 		this.auditService = auditService;
 	}
 
@@ -52,7 +48,9 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 	@ExceptionHandler(TransformException.class)
 	@ResponseBody
 	ResponseEntity<AllErrors> handleTransformException(TransformException exception) {
-		API_LOG.error("Transform exception occurred", exception);
+		API_LOG.info("Transform failed validation (422): {}", exception.getMessage());
+		API_LOG.debug("TransformException details", exception);
+
 		auditService.failConversion(exception.getConversionReport());
 		return cope(exception);
 	}
@@ -67,9 +65,30 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 	@ExceptionHandler(QppValidationException.class)
 	@ResponseBody
 	ResponseEntity<AllErrors> handleQppValidationException(QppValidationException exception) {
-		API_LOG.error("Validation exception occurred", exception);
+		API_LOG.info("Submission validation failed (422): {}", exception.getMessage());
+		API_LOG.debug("QppValidationException details", exception);
+
 		auditService.failValidation(exception.getConversionReport());
 		return cope(exception);
+	}
+
+	/**
+	 * Handles {@link NoResourceFoundException} for requests to non-existent paths/resources.
+	 * Returns a clean 404 and logs at DEBUG/TRACE to avoid ERROR-level noise.
+	 */
+	@Override
+	protected ResponseEntity<Object> handleNoResourceFoundException(
+			NoResourceFoundException ex,
+			HttpHeaders headers,
+			HttpStatusCode status,
+			WebRequest request) {
+
+		API_LOG.debug("No resource found ({}): {}", status.value(), ex.getMessage());
+		API_LOG.trace("NoResourceFoundException details", ex);
+
+		return ResponseEntity.status(status)
+				.contentType(MediaType.TEXT_PLAIN)
+				.body("Not found");
 	}
 
 	/**
