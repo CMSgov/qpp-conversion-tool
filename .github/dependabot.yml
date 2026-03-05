@@ -1,0 +1,65 @@
+version: 2
+updates:
+  # Maven dependencies
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    # Group related dependency updates
+    groups:
+      aws-sdk:
+        patterns:
+          - "com.amazonaws:aws-java-sdk-*"
+        exclude-patterns:
+          - "com.amazonaws:aws-dynamodb-encryption-java"
+      aws-encryption:
+        patterns:
+          - "com.amazonaws:aws-dynamodb-encryption-java"
+      spring:
+        patterns:
+          - "org.springframework*:*"
+      jackson:
+        patterns:
+          - "com.fasterxml.jackson.*:*"
+      testing:
+        patterns:
+          - "org.junit.*:*"
+          - "org.mockito:*"
+          - "com.google.truth:*"
+      build-tools:
+        patterns:
+          - "org.apache.maven.plugins:*"
+          - "org.jacoco:*"
+          - "com.github.spotbugs:*"
+    # Security updates get higher priority
+    labels:
+      - "dependencies"
+      - "security"
+    # Ignore major version updates for critical dependencies
+    ignore:
+      - dependency-name: "org.junit.*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "com.amazonaws:aws-dynamodb-encryption-java"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "*"
+        # Ignore Java version updates (handle manually)
+        versions: ["18.*", "19.*", "20.*", "21.*"]
+
+  # GitHub Actions dependencies
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "10:00"
+    commit-message:
+      prefix: "ci"
+    labels:
+      - "dependencies"
+      - "github-actions"
