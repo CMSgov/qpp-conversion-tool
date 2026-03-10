@@ -108,7 +108,7 @@ public class DynamoDbConfig {
 		final Optional<String> tableName = getOptionalProperty(Constants.DYNAMO_TABLE_NAME_ENV_VARIABLE);
 		final Optional<String> noAudit = getOptionalProperty(Constants.NO_AUDIT_ENV_VARIABLE);
 
-		if (!noAudit.isPresent()) {
+		if (noAudit.isEmpty()) {
 			if (tableName.isPresent() && kmsKey.isPresent()) {
 				API_LOG.info("Using DynamoDB table name {} and KMS key {}.", tableName, kmsKey);
 				dynamoDbMapper = createDynamoDbMapper(

@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.model.error;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -12,7 +13,7 @@ import com.google.common.base.MoreObjects;
  */
 public class Location implements Serializable {
 
-	private static final long serialVersionUID = 1812341767532590176L;
+	@Serial private static final long serialVersionUID = 1812341767532590176L;
 
 	private String location; //NOSONAR location field is desired. 
 	private String path = "";

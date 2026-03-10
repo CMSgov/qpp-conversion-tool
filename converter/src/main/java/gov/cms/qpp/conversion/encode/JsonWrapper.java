@@ -39,7 +39,7 @@ import java.util.stream.Stream;
 public class JsonWrapper implements Serializable {
 
 	public static enum Kind {
-		CONTAINER, VALUE, METADATA;
+		CONTAINER, VALUE, METADATA
 	}
 
 	public static enum Type {
@@ -1011,8 +1011,7 @@ public class JsonWrapper implements Serializable {
 	 */
 	public Object stripWrapper(Object value) { // TODO only used in unit tests
 		Object internalValue = value;
-		if (value instanceof JsonWrapper) {
-			JsonWrapper wrapper = (JsonWrapper) value;
+		if (value instanceof JsonWrapper wrapper) {
 			internalValue = wrapper.toObject();
 		}
 		return internalValue;

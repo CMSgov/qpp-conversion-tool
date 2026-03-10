@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public interface HelperContract {
 
 	@Test
-	default void testConstructorWorks() throws Exception {
+	default void testConstructorWorks() throws ReflectiveOperationException {
 		Class<?> type = getHelperClass();
 		Constructor<?> constructor = type.getDeclaredConstructors()[0];
 		constructor.setAccessible(true);

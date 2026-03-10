@@ -17,23 +17,27 @@ class AciProportionDenominatorRoundTripTest {
 
 	@Test
 	void parseAciNumeratorDenominatorAsNode() throws Exception {
-		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-				+ "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
-				+ "	<observation classCode=\"OBS\" moodCode=\"EVN\">\n"
-				+ "		<!-- ACI Numerator Denominator Type Measure Denominator Data templateId -->\n"
-				+ "		<templateId root=\"2.16.840.1.113883.10.20.27.3.32\" extension=\"2016-09-01\" />\n"
-				+ "		<code code=\"ASSERTION\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"Assertion\" />\n"
-				+ "		<statusCode code=\"completed\" />\n"
-				+ "		<value xsi:type=\"CD\" code=\"DENOM\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" />\n"
-				+ "		<!-- Denominator Count -->\n"
-				+ "		<entryRelationship typeCode=\"SUBJ\" inversionInd=\"true\">\n"
-				+ "			<observation classCode=\"OBS\" moodCode=\"EVN\">\n"
-				+ "				<templateId root=\"2.16.840.1.113883.10.20.27.3.3\" />\n"
-				+ "				<code code=\"MSRAGG\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"rate aggregation\" />\n"
-				+ "				<statusCode code=\"completed\" />\n"
-				+ "				<value xsi:type=\"INT\" value=\"600\" />\n"
-				+ "				<methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\" />\n"
-				+ "			</observation>" + "		</entryRelationship>\n" + "	</observation>\n" + "</component>";
+		String xmlFragment = """
+				<?xml version="1.0" encoding="utf-8"?>
+				<component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3">
+					<observation classCode="OBS" moodCode="EVN">
+						<!-- ACI Numerator Denominator Type Measure Denominator Data templateId -->
+						<templateId root="2.16.840.1.113883.10.20.27.3.32" extension="2016-09-01" />
+						<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion" />
+						<statusCode code="completed" />
+						<value xsi:type="CD" code="DENOM" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
+						<!-- Denominator Count -->
+						<entryRelationship typeCode="SUBJ" inversionInd="true">
+							<observation classCode="OBS" moodCode="EVN">
+								<templateId root="2.16.840.1.113883.10.20.27.3.3" />
+								<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation" />
+								<statusCode code="completed" />
+								<value xsi:type="INT" value="600" />
+								<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count" />
+							</observation>\
+						</entryRelationship>
+					</observation>
+				</component>""";
 
 		Context context = new Context();
 		Node numDenomNode = new QrdaDecoderEngine(context).decode(XmlUtils.stringToDom(xmlFragment));

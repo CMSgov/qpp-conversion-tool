@@ -34,7 +34,7 @@ class MeasureConfigTest {
 			throw new IllegalArgumentException("failure to correctly read measures config json", e);
 		}
 
-		theConfig = measureConfigs.get(0);
+		theConfig = measureConfigs.getFirst();
 	}
 
 	@Test

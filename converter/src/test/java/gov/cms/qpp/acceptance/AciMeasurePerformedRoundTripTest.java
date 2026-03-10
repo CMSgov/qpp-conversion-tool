@@ -29,7 +29,7 @@ class AciMeasurePerformedRoundTripTest {
 
 		assertThat(piMeasures)
 				.hasSize(1);
-		assertThat((piMeasures.get(0).get("measureId")))
+		assertThat((piMeasures.getFirst().get("measureId")))
 				.isEqualTo("TEST_MEASURE_ID");
 	}
 }

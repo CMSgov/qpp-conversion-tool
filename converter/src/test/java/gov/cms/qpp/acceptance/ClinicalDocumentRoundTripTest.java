@@ -55,14 +55,15 @@ class ClinicalDocumentRoundTripTest {
 
 	@Test
 	void checkCorrectClinicalDocumentTemplateIdWins() throws XmlException {
-		String similarClinicalDocumentBlob = "<ClinicalDocument xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
-			+ "\t\t\t\t  xsi:schemaLocation=\"urn:hl7-org:v3 ../CDA_Schema_Files/infrastructure/cda/CDA_SDTC.xsd\"\n"
-			+ "\t\t\t\t  xmlns=\"urn:hl7-org:v3\" xmlns:voc=\"urn:hl7-org:v3/voc\">\n"
-			+ "\t<realmCode code=\"US\"/>\n"
-			+ "\t<typeId root=\"2.16.840.1.113883.1.3\" extension=\"POCD_HD000040\"/>\n"
-			+ "\t<templateId root=\"2.16.840.1.113883.10.20.27.1.2\"/>\n"
-			+ "\t<templateId root=\"2.16.840.1.113883.10.20.27.1.2\" extension=\"2024-12-01\"/>\n"
-			+ "</ClinicalDocument>";
+		String similarClinicalDocumentBlob = """
+			<ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+							  xsi:schemaLocation="urn:hl7-org:v3 ../CDA_Schema_Files/infrastructure/cda/CDA_SDTC.xsd"
+							  xmlns="urn:hl7-org:v3" xmlns:voc="urn:hl7-org:v3/voc">
+				<realmCode code="US"/>
+				<typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
+				<templateId root="2.16.840.1.113883.10.20.27.1.2"/>
+				<templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2024-12-01"/>
+			</ClinicalDocument>""";
 
 		Node root = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(similarClinicalDocumentBlob));
 

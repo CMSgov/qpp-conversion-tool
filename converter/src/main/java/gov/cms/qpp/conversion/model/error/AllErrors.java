@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.model.error;
 
 import com.google.common.base.MoreObjects;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -12,7 +13,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * Contains a list of error errors.
  */
 public class AllErrors implements Serializable {
-	private static final long serialVersionUID = -223805249639231357L;
+	@Serial private static final long serialVersionUID = -223805249639231357L;
 	private List<Error> errors;
 
 	/**

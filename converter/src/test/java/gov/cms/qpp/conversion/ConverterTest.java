@@ -153,7 +153,7 @@ public class ConverterTest {
 		List<Error> errors = allErrors.getErrors();
 		assertWithMessage("There must only be one error source.")
 				.that(errors).hasSize(1);
-		List<Detail> details = errors.get(0).getDetails();
+		List<Detail> details = errors.getFirst().getDetails();
 		assertWithMessage("There must be only one validation error.")
 				.that(details).hasSize(1);
 		assertWithMessage("The validation error was incorrect")

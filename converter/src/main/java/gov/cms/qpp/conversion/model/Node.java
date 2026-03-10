@@ -422,7 +422,7 @@ public class Node implements Serializable {
 	 */
 	public Node findFirstNode(TemplateId templateId) {
 		List<Node> nodes = this.findNode(templateId, Node::foundNode);
-		return nodes.isEmpty() ? null : nodes.get(0);
+		return nodes.isEmpty() ? null : nodes.getFirst();
 	}
 
 	/**
