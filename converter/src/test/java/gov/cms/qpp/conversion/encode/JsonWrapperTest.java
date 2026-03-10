@@ -1173,12 +1173,14 @@ class JsonWrapperTest {
 		
 		Mockito.doThrow(IOException.class).when(gen).writeObject(item1);
 		
-		assertThrows(RuntimeException.class, () -> {Type.LIST.metadata(value, gen);});
+		assertThrows(EncodeException.class, () -> {Type.LIST.metadata(value, gen);});
 	}
 	
 	@Test
-	void Constructor_throwsUnsupported() throws Exception {
-		assertThrows(UnsupportedOperationException.class, () -> {new JsonWrapper(Kind.VALUE);});
+	void constructor_allowsValueKind() {
+		JsonWrapper wrapper = new JsonWrapper(Kind.VALUE);
+		assertThat(wrapper.getKind()).isEqualTo(Kind.VALUE);
+		assertThat(wrapper.isValue()).isTrue();
 	}
 	
 	@Test

@@ -103,9 +103,9 @@ public class Node implements Serializable {
 	 * @param name String key for the value
 	 * @return mapped duplicates of target value
 	 */
-	@SuppressFBWarnings("EI_EXPOSE_REP")
 	public List<String> getDuplicateValues(String name) {
-		return duplicateData.get(name);
+		List<String> values = duplicateData.get(name);
+		return values == null ? null : new ArrayList<>(values);
 	}
 
 	/**
@@ -241,9 +241,8 @@ public class Node implements Serializable {
 	 *
 	 * @return The keys the value's set on this Node.
 	 */
-	@SuppressFBWarnings("EI_EXPOSE_REP")
 	public Set<String> getKeys() {
-		return data.keySet();
+		return Collections.unmodifiableSet(data.keySet());
 	}
 
 	/**

@@ -128,7 +128,6 @@ public class Context {
 	 *                   {@link Registry}
 	 * @return The existing or new {@link Registry}
 	 */
-	@SuppressFBWarnings("EI_EXPOSE_REP")
 	@SuppressWarnings("unchecked")
 	public <A extends Annotation, R> Registry<R> getRegistry(Class<A> annotation) {
 		return (Registry<R>) registries.computeIfAbsent(annotation, key -> new Registry<>(this, key));

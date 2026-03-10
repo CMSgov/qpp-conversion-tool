@@ -15,6 +15,10 @@ public abstract class XmlDecoderEngine implements InputDecoderEngine {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(XmlDecoderEngine.class);
 	Namespace defaultNs;
 
+	protected XmlDecoderEngine() {
+		defaultNs = Namespace.NO_NAMESPACE;
+	}
+
 	/**
 	 * decodeXml Determines what formats of xml we accept and decode to
 	 *
