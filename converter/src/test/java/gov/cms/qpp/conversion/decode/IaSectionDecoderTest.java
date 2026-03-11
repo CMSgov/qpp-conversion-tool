@@ -34,13 +34,13 @@ class IaSectionDecoderTest {
 
 	@Test
 	void testDecodeIaSectionIgnoresGarbage() throws XmlException {
-		xmlFragment = xmlFragment.replaceAll("<statusCode ",
+		xmlFragment = xmlFragment.replace("<statusCode code=\"completed\"/>",
 				"""
-				
-				<Stuff arbitrary="123"><newnode>Some extra stuff</newnode></Stuff>\
+
+				<Stuff arbitrary=\"123\"><newnode>Some extra stuff</newnode></Stuff>
 				Unexpected stuff appears here
-				
-				<statusCode """);
+
+				<statusCode code=\"completed\"/>""");
 
 		Node root = executeDecoderWithoutDefaults();
 		Node iaSectionNode = root.findFirstNode(TemplateId.IA_SECTION_V3);
