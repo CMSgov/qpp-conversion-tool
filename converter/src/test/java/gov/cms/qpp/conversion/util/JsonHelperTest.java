@@ -97,7 +97,7 @@ class JsonHelperTest implements HelperContract {
 		InputStream is = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
 		List<Map<String, String>> result = JsonHelper.readJson(is, new TypeReference<List<Map<String, String>>>() {});
-		assertWithMessage("Expect first element to have key=value").that(result.get(0).get("key")).isEqualTo("value");
+		assertWithMessage("Expect first element to have key=value").that(result.getFirst().get("key")).isEqualTo("value");
 	}
 
 	@Test
@@ -106,7 +106,7 @@ class JsonHelperTest implements HelperContract {
 		Files.writeString(tempFile, "[{\"key\":\"value\"}]");
 
 		List<Map<String, String>> result = JsonHelper.readJson(tempFile, new TypeReference<List<Map<String, String>>>() {});
-		assertWithMessage("Expect first element to have key=value").that(result.get(0).get("key")).isEqualTo("value");
+		assertWithMessage("Expect first element to have key=value").that(result.getFirst().get("key")).isEqualTo("value");
 
 		Files.deleteIfExists(tempFile);
 	}
@@ -125,7 +125,7 @@ class JsonHelperTest implements HelperContract {
 		);
 
 		assertWithMessage("Should contain 2 measures").that(measures).hasSize(2);
-		assertWithMessage("First measure ID").that(measures.get(0).get("measureId")).isEqualTo("ACI_INFBLO_1");
+		assertWithMessage("First measure ID").that(measures.getFirst().get("measureId")).isEqualTo("ACI_INFBLO_1");
 	}
 
 	@Override

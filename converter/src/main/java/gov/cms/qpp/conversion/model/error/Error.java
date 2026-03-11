@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.google.common.base.MoreObjects;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Error implements Serializable {
-	private static final long serialVersionUID = 1596644641404778774L;
+	@Serial private static final long serialVersionUID = 1596644641404778774L;
 	private String sourceIdentifier;
 	private String type;
 	private String message;

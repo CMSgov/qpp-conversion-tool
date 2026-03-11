@@ -16,19 +16,19 @@ Before you can use the qpp-conversion-tool application, you must install and con
 
   [GitHub's Guide to Installing Git](https://help.github.com/articles/set-up-git) is a good source of information.
 
-* [Java Runtime](https://java.com/download) (version `17`).
+* [Java Runtime](https://java.com/download) (version `21`).
 
   It is important that you have the right version of `java` on your path.
 
   ```shell
-  # When you run 'java -version', you should get 17. For example:
+  # When you run 'java -version', you should get 21. For example:
   java -version
-  java version "17"
+  java version "21"
   ...
   ```
 
   Sometimes the Java Runtime installer doesn't update your path. So you must do it manually. Alternatively, download and install
-  the [Java Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (version `>= 17`). The JDK is
+  the [Java Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (version `>= 21`). The JDK is
   better at updating your path.
 
 * [Maven](https://maven.apache.org) (version `3.9.6`).

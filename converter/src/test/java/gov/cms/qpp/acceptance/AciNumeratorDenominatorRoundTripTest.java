@@ -17,76 +17,91 @@ class AciNumeratorDenominatorRoundTripTest {
 
 	@Test
 	void parseAciNumeratorDenominatorAsNode() throws Exception {
-		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-				+ "<entry xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
-				+ "	<organizer classCode=\"CLUSTER\" moodCode=\"EVN\">\n"
-				+ "		<!-- Implied template Measure Reference templateId -->\n"
-				+ "		<!-- ACI Numerator Denominator Type Measure Reference and Results templateId -->\n"
-				+ "		<templateId root=\"2.16.840.1.113883.10.20.27.3.28\" extension=\"2017-06-01\"/>\n"
-				+ "		<id root=\"ac575aef-7062-4ea2-b723-df517cfa470a\"/>\n"
-				+ "		<statusCode code=\"completed\"/>\n" + "		<reference typeCode=\"REFR\">\n"
-				+ "			<!-- Reference to a particular ACI measure's unique identifier. -->\n"
-				+ "			<externalDocument classCode=\"DOC\" moodCode=\"EVN\">\n"
-				+ "				<!-- This is a temporary root OID that indicates this is an ACI measure identifier -->\n"
-				+ "				<!-- extension is the unique identifier for an ACI measure. \"ACI-PEA-1\" is for illustration only. -->\n"
-				+ "				<id root=\"2.16.840.1.113883.3.7031\" extension=\"ACI-PEA-1\"/>\n"
-				+ "				<!-- ACI measure title -->\n" + "				<text>Patient Access</text>\n"
-				+ "			</externalDocument>\n" + "		</reference>\n" + "		<component>\n"
-				+ "			<observation classCode=\"OBS\" moodCode=\"EVN\">\n"
-				+ "				<!-- Performance Rate templateId -->\n"
-				+ "				<templateId root=\"2.16.840.1.113883.10.20.27.3.30\"\n"
-				+ "					extension=\"2016-09-01\"/>\n"
-				+ "				<code code=\"72510-1\" codeSystem=\"2.16.840.1.113883.6.1\" codeSystemName=\"LOINC\" displayName=\"Performance Rate\"/>\n"
-				+ "				<statusCode code=\"completed\"/>\n"
-				+ "				<value xsi:type=\"REAL\" value=\"0.750000\"/>\n" + "			</observation>\n"
-				+ "		</component>\n" + "		<component>\n"
-				+ "			<observation classCode=\"OBS\" moodCode=\"EVN\">\n"
-				+ "				<!-- ACI Numerator Denominator Type Measure Numerator Data templateId -->\n"
-				+ "				<templateId root=\"2.16.840.1.113883.10.20.27.3.31\"\n"
-				+ "					extension=\"2016-09-01\"/>\n"
-				+ "				<code code=\"ASSERTION\" codeSystem=\"2.16.840.1.113883.5.4\"\n"
-				+ "					codeSystemName=\"ActCode\" displayName=\"Assertion\"/>\n"
-				+ "				<statusCode code=\"completed\"/>\n"
-				+ "				<value xsi:type=\"CD\" code=\"NUMER\"\n"
-				+ "					codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\"/>\n"
-				+ "				<!-- Numerator Count-->\n"
-				+ "				<entryRelationship typeCode=\"SUBJ\" inversionInd=\"true\">\n"
-				+ "					<observation classCode=\"OBS\" moodCode=\"EVN\">\n"
-				+ "						<templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>\n"
-				+ "						<code code=\"MSRAGG\" codeSystem=\"2.16.840.1.113883.5.4\"\n"
-				+ "							codeSystemName=\"ActCode\"\n"
-				+ "							displayName=\"rate aggregation\"/>\n"
-				+ "						<statusCode code=\"completed\"/>\n"
-				+ "						<value xsi:type=\"INT\" value=\"600\"/>\n"
-				+ "						<methodCode code=\"COUNT\"\n"
-				+ "							codeSystem=\"2.16.840.1.113883.5.84\"\n"
-				+ "							codeSystemName=\"ObservationMethod\"\n"
-				+ "							displayName=\"Count\"/>\n" + "					</observation>\n"
-				+ "				</entryRelationship>\n" + "			</observation>\n" + "		</component>\n"
-				+ "		<component>\n" + "			<observation classCode=\"OBS\" moodCode=\"EVN\">\n"
-				+ "				<!-- ACI Numerator Denominator Type Measure Denominator Data templateId -->\n"
-				+ "				<templateId root=\"2.16.840.1.113883.10.20.27.3.32\"\n"
-				+ "					extension=\"2016-09-01\"/>\n"
-				+ "				<code code=\"ASSERTION\" codeSystem=\"2.16.840.1.113883.5.4\"\n"
-				+ "					codeSystemName=\"ActCode\" displayName=\"Assertion\"/>\n"
-				+ "				<statusCode code=\"completed\"/>\n"
-				+ "				<value xsi:type=\"CD\" code=\"DENOM\"\n"
-				+ "					codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\"/>\n"
-				+ "				<!-- Denominator Count-->\n"
-				+ "				<entryRelationship typeCode=\"SUBJ\" inversionInd=\"true\">\n"
-				+ "					<observation classCode=\"OBS\" moodCode=\"EVN\">\n"
-				+ "						<templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>\n"
-				+ "						<code code=\"MSRAGG\" codeSystem=\"2.16.840.1.113883.5.4\"\n"
-				+ "							codeSystemName=\"ActCode\"\n"
-				+ "							displayName=\"rate aggregation\"/>\n"
-				+ "						<statusCode code=\"completed\"/>\n"
-				+ "						<value xsi:type=\"INT\" value=\"800\"/>\n"
-				+ "						<methodCode code=\"COUNT\"\n"
-				+ "							codeSystem=\"2.16.840.1.113883.5.84\"\n"
-				+ "							codeSystemName=\"ObservationMethod\"\n"
-				+ "							displayName=\"Count\"/>\n" + "					</observation>\n"
-				+ "				</entryRelationship>\n" + "			</observation>\n" + "		</component>\n"
-				+ "	</organizer>\n" + "</entry>";
+		String xmlFragment = """
+				<?xml version="1.0" encoding="utf-8"?>
+				<entry xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3">
+					<organizer classCode="CLUSTER" moodCode="EVN">
+						<!-- Implied template Measure Reference templateId -->
+						<!-- ACI Numerator Denominator Type Measure Reference and Results templateId -->
+						<templateId root="2.16.840.1.113883.10.20.27.3.28" extension="2017-06-01"/>
+						<id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
+						<statusCode code="completed"/>
+						<reference typeCode="REFR">
+							<!-- Reference to a particular ACI measure's unique identifier. -->
+							<externalDocument classCode="DOC" moodCode="EVN">
+								<!-- This is a temporary root OID that indicates this is an ACI measure identifier -->
+								<!-- extension is the unique identifier for an ACI measure. "ACI-PEA-1" is for illustration only. -->
+								<id root="2.16.840.1.113883.3.7031" extension="ACI-PEA-1"/>
+								<!-- ACI measure title -->
+								<text>Patient Access</text>
+							</externalDocument>
+						</reference>
+						<component>
+							<observation classCode="OBS" moodCode="EVN">
+								<!-- Performance Rate templateId -->
+								<templateId root="2.16.840.1.113883.10.20.27.3.30"
+									extension="2016-09-01"/>
+								<code code="72510-1" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Performance Rate"/>
+								<statusCode code="completed"/>
+								<value xsi:type="REAL" value="0.750000"/>
+							</observation>
+						</component>
+						<component>
+							<observation classCode="OBS" moodCode="EVN">
+								<!-- ACI Numerator Denominator Type Measure Numerator Data templateId -->
+								<templateId root="2.16.840.1.113883.10.20.27.3.31"
+									extension="2016-09-01"/>
+								<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+									codeSystemName="ActCode" displayName="Assertion"/>
+								<statusCode code="completed"/>
+								<value xsi:type="CD" code="NUMER"
+									codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"/>
+								<!-- Numerator Count-->
+								<entryRelationship typeCode="SUBJ" inversionInd="true">
+									<observation classCode="OBS" moodCode="EVN">
+										<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+										<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+											codeSystemName="ActCode"
+											displayName="rate aggregation"/>
+										<statusCode code="completed"/>
+										<value xsi:type="INT" value="600"/>
+										<methodCode code="COUNT"
+											codeSystem="2.16.840.1.113883.5.84"
+											codeSystemName="ObservationMethod"
+											displayName="Count"/>
+									</observation>
+								</entryRelationship>
+							</observation>
+						</component>
+						<component>
+							<observation classCode="OBS" moodCode="EVN">
+								<!-- ACI Numerator Denominator Type Measure Denominator Data templateId -->
+								<templateId root="2.16.840.1.113883.10.20.27.3.32"
+									extension="2016-09-01"/>
+								<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+									codeSystemName="ActCode" displayName="Assertion"/>
+								<statusCode code="completed"/>
+								<value xsi:type="CD" code="DENOM"
+									codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"/>
+								<!-- Denominator Count-->
+								<entryRelationship typeCode="SUBJ" inversionInd="true">
+									<observation classCode="OBS" moodCode="EVN">
+										<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+										<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+											codeSystemName="ActCode"
+											displayName="rate aggregation"/>
+										<statusCode code="completed"/>
+										<value xsi:type="INT" value="800"/>
+										<methodCode code="COUNT"
+											codeSystem="2.16.840.1.113883.5.84"
+											codeSystemName="ObservationMethod"
+											displayName="Count"/>
+									</observation>
+								</entryRelationship>
+							</observation>
+						</component>
+					</organizer>
+				</entry>""";
 
 		Context context = new Context();
 		Node numeratorDenominatorNode = new QrdaDecoderEngine(context).decode(XmlUtils.stringToDom(xmlFragment));
@@ -106,7 +121,7 @@ class AciNumeratorDenominatorRoundTripTest {
 		String jsonExpected = "{\n  \"measureId\" : \"ACI-PEA-1\",\n  \"value\" : {\n    \"numerator\" : 600,\n    \"denominator\" : 800\n  }\n}";
 
 		assertWithMessage("The XPath of the numerator denominator node is incorrect")
-				.that(numeratorDenominatorNode.getChildNodes().get(0).getOrComputePath())
+				.that(numeratorDenominatorNode.getChildNodes().getFirst().getOrComputePath())
 				.isEqualTo(xPathExpected);
 
 		assertWithMessage("expected encoder to return a representation of a measure")

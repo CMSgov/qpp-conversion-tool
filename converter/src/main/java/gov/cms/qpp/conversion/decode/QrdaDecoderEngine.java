@@ -70,7 +70,7 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 		}
 
 		if (rootDecoder != null) {
-			rootNode = this.decodeTree(rootElement, rootNode).getNode().getChildNodes().get(0);
+			rootNode = this.decodeTree(rootElement, rootNode).getNode().getChildNodes().getFirst();
 		} else {
 			rootNode = this.decodeTree(rootElement, rootNode).getNode();
 		}
@@ -314,8 +314,7 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 	}
 
 	private void addLineAndColumnToNode(Element element, Node node) {
-		if (element instanceof Located) {
-			Located located = (Located) element;
+		if (element instanceof Located located) {
 			node.setLine(located.getLine());
 			node.setColumn(located.getColumn());
 		}

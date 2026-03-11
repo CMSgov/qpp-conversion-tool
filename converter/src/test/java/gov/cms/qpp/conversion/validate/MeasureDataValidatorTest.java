@@ -112,7 +112,7 @@ class MeasureDataValidatorTest {
 	}
 
 	private List<Detail> getErrors(AllErrors content) {
-		return content.getErrors().get(0).getDetails();
+		return content.getErrors().getFirst().getDetails();
 	}
 
 }

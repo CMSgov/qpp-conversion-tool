@@ -1,11 +1,13 @@
 package gov.cms.qpp.conversion.encode;
 
+import java.io.Serial;
+
 /**
  * This exception indicates an issue encountered during the encoding (json serialization) process.
  */
 public class EncodeException extends RuntimeException {
 
-	private static final long serialVersionUID = 4L;
+	@Serial private static final long serialVersionUID = 4L;
 	private final String templateId;
 
 	/**

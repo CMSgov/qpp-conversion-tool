@@ -15,7 +15,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
 import gov.cms.qpp.conversion.Source;
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.util.CloneHelper;
 import gov.cms.qpp.conversion.util.FormatHelper;
 
 import java.io.ByteArrayInputStream;
@@ -39,7 +38,7 @@ import java.util.stream.Stream;
 public class JsonWrapper implements Serializable {
 
 	public static enum Kind {
-		CONTAINER, VALUE, METADATA;
+		CONTAINER, VALUE, METADATA
 	}
 
 	public static enum Type {
@@ -92,7 +91,7 @@ public class JsonWrapper implements Serializable {
 					try {
 						gen.writeObjectField(entry.getKey(), entry);
 					} catch (IOException e) {
-						throw new RuntimeException(e);
+						throw new EncodeException("Issue writing JSON metadata.", e);
 					}
 				});
 				gen.writeEndObject();
@@ -114,7 +113,7 @@ public class JsonWrapper implements Serializable {
 					try {
 						gen.writeObject(entry);
 					} catch (IOException e) {
-						throw new RuntimeException(e);
+						throw new EncodeException("Issue writing JSON metadata.", e);
 					}
 				});
 				gen.writeEndArray();
@@ -241,7 +240,12 @@ public class JsonWrapper implements Serializable {
 		this.kind = kind;
 
 		if (kind == Kind.VALUE) {
-			throw new UnsupportedOperationException("To use kind.VALUE, use the constructor JsonWrapper(String)");
+			type = Type.UNKNOWN;
+			value = null;
+			childrenMap = null;
+			childrenList = null;
+			metadata = null;
+			return;
 		}
 
 		value = null;
@@ -307,17 +311,46 @@ public class JsonWrapper implements Serializable {
 		type = wrapper.type;
 		value = wrapper.value;
 
-		childrenMap = CloneHelper.deepClone(wrapper.childrenMap);
-		childrenList = CloneHelper.deepClone(wrapper.childrenList);
+		childrenMap = copyChildrenMap(wrapper.childrenMap, withMetadata);
+		childrenList = copyChildrenList(wrapper.childrenList, withMetadata);
 
 		if (this.kind == Kind.METADATA) {
 			metadata = null;
-		} else if (withMetadata) {
-			metadata = CloneHelper.deepClone(wrapper.metadata);
+		} else if (withMetadata && wrapper.metadata != null) {
+			metadata = new JsonWrapper(wrapper.metadata, true);
 		} else {
 			// instance allows for new metadata to be added
 			metadata = new JsonWrapper(Kind.METADATA);
 		}
+	}
+
+	private static Map<String, JsonWrapper> copyChildrenMap(
+			Map<String, JsonWrapper> source,
+			boolean withMetadata
+	) {
+		if (source == null) {
+			return null;
+		}
+		Map<String, JsonWrapper> copy = new LinkedHashMap<>(source.size());
+		source.forEach((key, value) -> copy.put(
+			key,
+			value == null ? null : new JsonWrapper(value, withMetadata)
+		));
+		return copy;
+	}
+
+	private static List<JsonWrapper> copyChildrenList(
+			List<JsonWrapper> source,
+			boolean withMetadata
+	) {
+		if (source == null) {
+			return null;
+		}
+		List<JsonWrapper> copy = new LinkedList<>();
+		for (JsonWrapper value : source) {
+			copy.add(value == null ? null : new JsonWrapper(value, withMetadata));
+		}
+		return copy;
 	}
 
 	/**
@@ -958,7 +991,6 @@ public class JsonWrapper implements Serializable {
 	 *
 	 * @return JSON
 	 */
-	@SuppressFBWarnings("EI_EXPOSE_REP")  // toObject() returns internal List or Map
 	@Override
 	public String toString() {
 		try {
@@ -974,7 +1006,6 @@ public class JsonWrapper implements Serializable {
 	 *
 	 * @return JSON with metadata
 	 */
-	@SuppressFBWarnings("EI_EXPOSE_REP")  // writeValueAsString may expose internal structures
 	public String toStringWithMetadata() {
 		try {
 			return withMetadataWriter.writeValueAsString(this);
@@ -1011,8 +1042,7 @@ public class JsonWrapper implements Serializable {
 	 */
 	public Object stripWrapper(Object value) { // TODO only used in unit tests
 		Object internalValue = value;
-		if (value instanceof JsonWrapper) {
-			JsonWrapper wrapper = (JsonWrapper) value;
+		if (value instanceof JsonWrapper wrapper) {
 			internalValue = wrapper.toObject();
 		}
 		return internalValue;
@@ -1198,7 +1228,6 @@ public class JsonWrapper implements Serializable {
 	 * @param name key for value
 	 * @return T retrieved keyed value
 	 */
-	@SuppressFBWarnings("EI_EXPOSE_REP")
 	public JsonWrapper get(String name) {
 		return childrenMap.get(name);
 	}
@@ -1209,7 +1238,6 @@ public class JsonWrapper implements Serializable {
 	 * @param index integer element number starting with zero
 	 * @return the wrapper at given index or null
 	 */
-	@SuppressFBWarnings("EI_EXPOSE_REP")
 	public JsonWrapper get(int index) {
 		if (index >= 0 && index < childrenList.size()) {
 			return childrenList.get(index);

@@ -22,12 +22,11 @@ public class CacheBuilder {
     public static ApmEntityIds getEntityIds(CacheType value) {
         if (entityIdsCache == null) buildEntityIdsCache();
         if (entityIdsCache.getIfPresent(value) == null) {
-            ApmEntityIds entityData = null;
-            switch(value) {
-                case ApmEntityId -> entityData = new ApmEntityIds("test_apm_entity_ids.json");
-                case ApmEntityIds -> entityData = new ApmEntityIds("test_apm_entity_ids.json","test_apm_entity_ids.json");
-                case ApmPcfEntityIds -> entityData = new ApmEntityIds("test_apm_entity_ids.json","test_pcf_apm_entity_ids.json");
-            }
+            ApmEntityIds entityData = switch(value) {
+                case ApmEntityId -> new ApmEntityIds("test_apm_entity_ids.json");
+                case ApmEntityIds -> new ApmEntityIds("test_apm_entity_ids.json","test_apm_entity_ids.json");
+                case ApmPcfEntityIds -> new ApmEntityIds("test_apm_entity_ids.json","test_pcf_apm_entity_ids.json");
+            };
             entityIdsCache.put(value, entityData);
         }
         return entityIdsCache.getIfPresent(value);

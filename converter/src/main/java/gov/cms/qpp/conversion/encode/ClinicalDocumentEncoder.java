@@ -158,10 +158,9 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
 				measurementSetsWrapper.put(childWrapper);
 
+			} catch (EncodeException e) {
+				throw e;
 			} catch (RuntimeException e) {
-				if (e instanceof EncodeException) {
-					throw e;
-				}
 				// Wrap any unexpected runtime exception in EncodeException
 				throw new EncodeException(
 						"An unexpected error occurred for template " + childType,

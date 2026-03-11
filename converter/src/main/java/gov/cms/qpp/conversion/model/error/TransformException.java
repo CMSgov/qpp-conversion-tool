@@ -33,7 +33,6 @@ public class TransformException extends RuntimeException {
 	/**
 	 * Exposing the internal AllErrors is intentional.
 	 */
-	@SuppressFBWarnings("EI_EXPOSE_REP")
 	public AllErrors getDetails() {
 		return conversionReport.getReportDetails();
 	}

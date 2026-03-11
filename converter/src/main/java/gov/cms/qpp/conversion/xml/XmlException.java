@@ -1,11 +1,13 @@
 package gov.cms.qpp.conversion.xml;
 
+import java.io.Serial;
+
 /**
  * Exception used during the JDom parsing.
  *
  */
 public class XmlException extends RuntimeException {
-	private static final long serialVersionUID = 1L;
+	@Serial private static final long serialVersionUID = 1L;
 
 	/**
 	 * Creates a named Exception

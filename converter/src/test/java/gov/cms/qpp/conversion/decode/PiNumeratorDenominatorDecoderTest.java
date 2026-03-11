@@ -33,7 +33,7 @@ class PiNumeratorDenominatorDecoderTest {
 
 		Node aggregateCountNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
-		assertThat(aggregateCountNode.getChildNodes().get(0).getValue("aggregateCount"))
+		assertThat(aggregateCountNode.getChildNodes().getFirst().getValue("aggregateCount"))
 				.isEqualTo("600");
 	}
 
@@ -50,7 +50,7 @@ class PiNumeratorDenominatorDecoderTest {
 		Node numDenomNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		assertWithMessage("pi numerator/denominator value should be null")
-				.that(numDenomNode.getChildNodes().get(0).getValue("aggregateCount")).isNull();
+				.that(numDenomNode.getChildNodes().getFirst().getValue("aggregateCount")).isNull();
 	}
 
 	@Test
@@ -65,26 +65,26 @@ class PiNumeratorDenominatorDecoderTest {
 		Node numDenomNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		assertWithMessage("po numerator/denominator value should be null")
-				.that(numDenomNode.getChildNodes().get(0).getValue("aggregateCount")).isNull();
+				.that(numDenomNode.getChildNodes().getFirst().getValue("aggregateCount")).isNull();
 	}
 
 	@Test
 	void decodeValidAciNumeratorDenominatorTest() throws XmlException {
 		Node piMeasureNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(getValidXmlFragment()));
-		Node numeratorDenominatorNode = piMeasureNode.getChildNodes().get(0);
+		Node numeratorDenominatorNode = piMeasureNode.getChildNodes().getFirst();
 		int numberNodes = countNodes(piMeasureNode);
 		List<Node> nodeList = piMeasureNode.findNode(TemplateId.PI_NUMERATOR);
 
 		assertThat(numeratorDenominatorNode.getValue("measureId"))
 				.isEqualTo(MEASURE_ID);
 
-		assertThat(numeratorDenominatorNode.getChildNodes().get(0).getType())
+		assertThat(numeratorDenominatorNode.getChildNodes().getFirst().getType())
 				.isEqualTo(TemplateId.PI_NUMERATOR);
 
 		assertThat(numeratorDenominatorNode.getChildNodes().get(1).getType())
 				.isEqualTo(TemplateId.PI_DENOMINATOR);
 
-		nodeList = nodeList.get(0).findNode(TemplateId.PI_AGGREGATE_COUNT);
+		nodeList = nodeList.getFirst().findNode(TemplateId.PI_AGGREGATE_COUNT);
 
 		assertWithMessage("Decoded xml fragment %s should contain %s",
 				TemplateId.PI_NUMERATOR.name(), TemplateId.PI_AGGREGATE_COUNT.name())
@@ -94,7 +94,7 @@ class PiNumeratorDenominatorDecoderTest {
 		assertWithMessage("Decoded xml fragment should contain %s", TemplateId.PI_DENOMINATOR.name())
 				.that(nodeList).hasSize(1);
 
-		nodeList = nodeList.get(0).findNode(TemplateId.PI_AGGREGATE_COUNT);
+		nodeList = nodeList.getFirst().findNode(TemplateId.PI_AGGREGATE_COUNT);
 		assertWithMessage("Decoded xml fragment %s should contain %s",
 				TemplateId.PI_NUMERATOR.name(), TemplateId.PI_AGGREGATE_COUNT.name())
 				.that(nodeList).hasSize(1);
@@ -122,7 +122,7 @@ class PiNumeratorDenominatorDecoderTest {
 		assertWithMessage("Decoded xml fragment should contain %s", TemplateId.PI_NUMERATOR.name())
 				.that(nodeList).hasSize(1);
 
-		nodeList = nodeList.get(0).findNode(TemplateId.PI_AGGREGATE_COUNT);
+		nodeList = nodeList.getFirst().findNode(TemplateId.PI_AGGREGATE_COUNT);
 		assertWithMessage("Decoded xml fragment %s should contain %s",
 				TemplateId.PI_NUMERATOR.name(), TemplateId.PI_AGGREGATE_COUNT.name())
 				.that(nodeList).hasSize(1);
@@ -131,7 +131,7 @@ class PiNumeratorDenominatorDecoderTest {
 		assertWithMessage("Decoded xml fragment should contain %s", TemplateId.PI_DENOMINATOR.name())
 				.that(nodeList).hasSize(1);
 
-		nodeList = nodeList.get(0).findNode(TemplateId.PI_AGGREGATE_COUNT);
+		nodeList = nodeList.getFirst().findNode(TemplateId.PI_AGGREGATE_COUNT);
 		assertWithMessage("Decoded xml fragment %s should contain %s",
 				TemplateId.PI_NUMERATOR.name(), TemplateId.PI_AGGREGATE_COUNT.name())
 				.that(nodeList).hasSize(1);

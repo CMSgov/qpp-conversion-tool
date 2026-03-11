@@ -10,9 +10,10 @@
 	<name>QPP Conversion Tool</name>
 
 	<properties>
-		<java.version>17</java.version>
+		<java.version>21</java.version>
 		<aws.version>1.12.787</aws.version>
-		<junit.version>5.8.1</junit.version>
+		<junit.version>5.11.4</junit.version>
+		<junit.platform.version>1.11.4</junit.platform.version>
 		<jjwt.version>0.10.7</jjwt.version>
 
 		<requiredCodeCoverage>0.90</requiredCodeCoverage>
@@ -47,11 +48,10 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.14.0</version>
+					<version>3.15.0</version>
 					<configuration>
 						<forceJavacCompilerUse>true</forceJavacCompilerUse>
-						<source>${java.version}</source>
-						<target>${java.version}</target>
+						<release>${java.version}</release>
 					</configuration>
 					<dependencies>
 						<dependency>
@@ -83,7 +83,7 @@
 				<plugin>
 					<groupId>com.github.spotbugs</groupId>
 					<artifactId>spotbugs-maven-plugin</artifactId>
-					<version>4.7.3.6</version>
+					<version>4.9.8.2</version>
 					<configuration>
 						<effort>Max</effort>
 						<threshold>Low</threshold>
@@ -176,7 +176,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.12</version>
+				<version>0.8.14</version>
 				<executions>
 					<execution>
 						<id>jacoco-initialize</id>
@@ -321,7 +321,7 @@
 			<dependency>
 				<groupId>org.junit.platform</groupId>
 				<artifactId>junit-platform-launcher</artifactId>
-				<version>1.5.2</version>
+				<version>${junit.platform.version}</version>
 			</dependency>
 
 			<dependency>
@@ -351,7 +351,7 @@
 			<dependency>
 				<groupId>nl.jqno.equalsverifier</groupId>
 				<artifactId>equalsverifier</artifactId>
-				<version>3.6.1</version>
+				<version>4.4.1</version>
 			</dependency>
 
 			<dependency>
@@ -411,7 +411,7 @@
 			<dependency>
 				<groupId>commons-codec</groupId>
 				<artifactId>commons-codec</artifactId>
-				<version>1.14</version>
+				<version>1.17.2</version>
 			</dependency>
 
 			<dependency>
@@ -497,25 +497,39 @@
 						<groupId>org.bouncycastle</groupId>
 						<artifactId>bcprov-jdk15on</artifactId>
 					</exclusion>
+					<exclusion>
+						<groupId>org.bouncycastle</groupId>
+						<artifactId>bcprov-jdk15to18</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.bouncycastle</groupId>
+						<artifactId>bcprov-jdk18on</artifactId>
+					</exclusion>
 				</exclusions>
 			</dependency>
 
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-web</artifactId>
-				<version>6.3.8</version>
+				<version>6.4.12</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
-				<artifactId>bcprov-jdk15on</artifactId>
-				<version>1.69</version>
+				<artifactId>bcprov-jdk18on</artifactId>
+				<version>1.83</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.fasterxml.jackson.module</groupId>
 				<artifactId>jackson-module-jaxb-annotations</artifactId>
 				<version>2.18.6</version>
+			</dependency>
+
+			<dependency>
+				<groupId>jakarta.activation</groupId>
+				<artifactId>jakarta.activation-api</artifactId>
+				<version>2.1.4</version>
 			</dependency>
 
 			<dependency>
@@ -592,6 +606,36 @@
 				<groupId>com.google.code.findbugs</groupId>
 				<artifactId>annotations</artifactId>
 				<version>3.0.1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.google.code.findbugs</groupId>
+				<artifactId>jsr305</artifactId>
+				<version>3.0.2</version>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>1.2</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.hamcrest</groupId>
+				<artifactId>hamcrest-core</artifactId>
+				<version>2.2</version>
+			</dependency>
+
+			<dependency>
+				<groupId>net.bytebuddy</groupId>
+				<artifactId>byte-buddy</artifactId>
+				<version>1.15.11</version>
+			</dependency>
+
+			<dependency>
+				<groupId>net.bytebuddy</groupId>
+				<artifactId>byte-buddy-agent</artifactId>
+				<version>1.15.11</version>
 			</dependency>
 
 			<dependency>

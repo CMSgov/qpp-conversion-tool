@@ -23,19 +23,20 @@ class PiProportionDenominatorDecoderTest {
 	 */
 	@Test
 	void decodePIProportionDenominatorAsNode() throws Exception {
-		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-				+ "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
-				+ " <observation classCode=\"OBS\" moodCode=\"EVN\">\n"
-				+ "     <!-- PI Numerator Denominator Type Measure Denominator Data templateId -->\n"
-				+ "     <templateId root=\"2.16.840.1.113883.10.20.27.3.32\" extension=\"2016-09-01\" />\n"
-				+ "     <!-- Denominator Count -->\n"
-				+ "     <entryRelationship typeCode=\"SUBJ\" inversionInd=\"true\">\n"
-				+ "         <qed resultName=\"aggregateCount\" resultValue=\"800\">\n"
-				+ "             <templateId root=\"Q.E.D\"/>\n"
-				+ "         </qed>"
-				+ "     </entryRelationship>\n"
-				+ " </observation>\n"
-				+ "</component>";
+		String xmlFragment = """
+				<?xml version="1.0" encoding="utf-8"?>
+				<component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3">
+				 <observation classCode="OBS" moodCode="EVN">
+				     <!-- PI Numerator Denominator Type Measure Denominator Data templateId -->
+				     <templateId root="2.16.840.1.113883.10.20.27.3.32" extension="2016-09-01" />
+				     <!-- Denominator Count -->
+				     <entryRelationship typeCode="SUBJ" inversionInd="true">
+				         <qed resultName="aggregateCount" resultValue="800">
+				             <templateId root="Q.E.D"/>
+				         </qed>\
+				     </entryRelationship>
+				 </observation>
+				</component>""";
 		Node root = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		// For all decoders this should be either a value or child node
@@ -43,12 +44,12 @@ class PiProportionDenominatorDecoderTest {
 				.hasSize(1);
 
 		// This is the child node that is produced by the intended decoder
-		Node piProportionDenominatorNode = root.getChildNodes().get(0);
+		Node piProportionDenominatorNode = root.getChildNodes().getFirst();
 		// Should have a aggregate count node
 		assertThat(piProportionDenominatorNode.getChildNodes())
 				.hasSize(1);
 		// This is stubbed node with the test value
-		Node target = piProportionDenominatorNode.getChildNodes().get(0);
+		Node target = piProportionDenominatorNode.getChildNodes().getFirst();
 		// Get the test value
 		assertThat(target.getValue("aggregateCount"))
 				.isEqualTo("800");
@@ -56,36 +57,37 @@ class PiProportionDenominatorDecoderTest {
 
 	@Test
 	void decodeInvalidPIProportionDenominatorAsNode() throws Exception {
-		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-			+ "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
-			+ " <observation classCode=\"OBS\" moodCode=\"EVN\">\n"
-			+ "     <!-- PI Numerator Denominator Type Measure Denominator Data templateId -->\n"
-			+ "     <templateId root=\"2.16.840.1.113883.10.20.27.3.32\" extension=\"2016-09-01\" />\n"
-			+ "     <!-- Denominator Count -->\n"
-			+ "     <entryRelationship typeCode=\"SUBJ\" inversionInd=\"true\">\n"
-			+ "         <qed resultName=\"aggregateCount\" resultValue=\"800\">\n"
-			+ "             <templateId root=\"Q.E.D\"/>\n"
-			+ "         </qed>"
-			+ "     </entryRelationship>\n"
-			+ " </observation>\n"
-			+ "  <observation classCode=\"OBS\" moodCode=\"EVN\">"
-			+ "    <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>"
-			+ "    <code code=\"MSRAGG\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"rate aggregation\"/>"
-			+ "    <statusCode code=\"completed\"/>"
-		    + "    <value xsi:type=\"INT\" value=\"600\"/>"
-			+ "    <methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\"/>"
-			+ "  </observation>"
-			+ " </component>";
+		String xmlFragment = """
+			<?xml version="1.0" encoding="utf-8"?>
+			<component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3">
+			 <observation classCode="OBS" moodCode="EVN">
+			     <!-- PI Numerator Denominator Type Measure Denominator Data templateId -->
+			     <templateId root="2.16.840.1.113883.10.20.27.3.32" extension="2016-09-01" />
+			     <!-- Denominator Count -->
+			     <entryRelationship typeCode="SUBJ" inversionInd="true">
+			         <qed resultName="aggregateCount" resultValue="800">
+			             <templateId root="Q.E.D"/>
+			         </qed>\
+			     </entryRelationship>
+			 </observation>
+			  <observation classCode="OBS" moodCode="EVN">\
+			    <templateId root="2.16.840.1.113883.10.20.27.3.3"/>\
+			    <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation"/>\
+			    <statusCode code="completed"/>\
+			    <value xsi:type="INT" value="600"/>\
+			    <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count"/>\
+			  </observation>\
+			 </component>""";
 		Node root = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		// For all decoders this should be either a value or child node
 		assertThat(root.getChildNodes()).hasSize(2);
 		// This is the child node that is produced by the intended decoder
-		Node piProportionDenominatorNode = root.getChildNodes().get(0);
+		Node piProportionDenominatorNode = root.getChildNodes().getFirst();
 		// Should have a aggregate count node
 		assertThat(piProportionDenominatorNode.getChildNodes()).hasSize(1);
 		// This is stubbed node with the test value
-		Node target = piProportionDenominatorNode.getChildNodes().get(0);
+		Node target = piProportionDenominatorNode.getChildNodes().getFirst();
 		// Get the test value
 		assertThat(target.getValue("aggregateCount"))
 				.isEqualTo("800");

@@ -79,7 +79,7 @@ class ZipControllerTest {
 				objectUnderTest.uploadQrdaFile(multipartFile, null);
 
 		assertThat(response.getBody()).hasSize(2);
-		assertThat(response.getBody().get(0).getQpp()).isNotNull();
+		assertThat(response.getBody().getFirst().getQpp()).isNotNull();
 		verify(qrdaService, atLeastOnce()).convertQrda3ToQpp(any(Source.class));
 	}
 
@@ -139,7 +139,7 @@ class ZipControllerTest {
 				objectUnderTest.uploadQrdaFile(multipartFile, null);
 
 		assertThat(response.getBody()).hasSize(1);
-		assertThat(response.getBody().get(0).getLocation()).isEqualTo("uuid-123");
+		assertThat(response.getBody().getFirst().getLocation()).isEqualTo("uuid-123");
 	}
 
 	private static ZipSpec entry(String name, byte[] bytes) {

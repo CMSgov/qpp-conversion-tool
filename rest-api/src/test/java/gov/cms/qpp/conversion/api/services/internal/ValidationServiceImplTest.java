@@ -192,14 +192,14 @@ class ValidationServiceImplTest {
 
 		assertThat(convertedErrors.getErrors().size(), is(1));
 
-		assertThat(convertedErrors.getErrors().get(0).getDetails().get(0).getMessage(),
+		assertThat(convertedErrors.getErrors().getFirst().getDetails().getFirst().getMessage(),
 			startsWith(ValidationServiceImpl.SV_LABEL));
 	}
 
 	@Test
 	void testQppToQrdaErrorPathConversion() {
-		Detail detail = submissionError.getError().getDetails().get(0);
-		Detail mappedDetails = convertedErrors.getErrors().get(0).getDetails().get(0);
+		Detail detail = submissionError.getError().getDetails().getFirst();
+		Detail mappedDetails = convertedErrors.getErrors().getFirst().getDetails().getFirst();
 
 		assertNotEquals(mappedDetails.getLocation().getPath(), detail.getLocation().getPath());
 	}
