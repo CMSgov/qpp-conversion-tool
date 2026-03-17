@@ -19,7 +19,7 @@
     <parent>
         <groupId>gov.cms.qpp.conversion</groupId>
         <artifactId>qpp-conversion-tool-parent</artifactId>
-        <version>2026.02.27.01-RELEASE</version>
+        <version>2026.03.13.01-RELEASE</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -33,7 +33,7 @@
 
         <!-- For documentation only; actual coordination is done by the BOMs below -->
         <spring-framework.version>6.2.12</spring-framework.version>
-        <tomcat.version>10.1.45</tomcat.version>
+        <tomcat.version>10.1.52</tomcat.version>
 
         <!-- Test stack kept explicit so CI is deterministic across JDK updates -->
         <junit.jupiter.version>5.10.3</junit.jupiter.version>
