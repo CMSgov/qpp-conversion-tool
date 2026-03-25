@@ -79,7 +79,7 @@ class AdvancedApmHelperTest {
                 AdvancedApmHelper.transformMetaDataToUnprocessedFileData(Arrays.asList(m1, m2));
 
         assertThat(result).hasSize(2);
-        assertThat(result.get(0)).isInstanceOf(UnprocessedFileData.class);
+        assertThat(result.getFirst()).isInstanceOf(UnprocessedFileData.class);
         assertThat(result.get(1)).isInstanceOf(UnprocessedFileData.class);
     }
 

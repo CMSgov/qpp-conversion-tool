@@ -40,7 +40,7 @@ public class CloneHelper {
 			throw new UncheckedIOException(ex);
 		} catch(ClassNotFoundException ex) {
 			DEV_LOG.error("Error cloning object - " + ex.getMessage(), ex);
-			throw new RuntimeException(ex);
+			throw new IllegalStateException("Error cloning object", ex);
 		}
 		return copy;
 	}

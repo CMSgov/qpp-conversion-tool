@@ -19,14 +19,35 @@ import gov.cms.qpp.conversion.model.TemplateId;
 
 class IaSectionEncoderTest {
 
-	private static final String EXPECTED = "{\n  \"category\" : \"ia\",\n  \"submissionMethod\" : \"electronicHealthRecord\",\n  \"measurements\" : [ "
-			+ "{\n    \"measureId\" : \"IA_EPA_1\",\n    \"value\" : true\n  } ],\n  \"performanceStart\" : \"2017-01-01\",\n  \"performanceEnd\" : \"2017-12-31\"\n}";
+	private static final String EXPECTED = """
+			{
+			  "category" : "ia",
+			  "submissionMethod" : "electronicHealthRecord",
+			  "measurements" : [ \
+			{
+			    "measureId" : "IA_EPA_1",
+			    "value" : true
+			  } ],
+			  "performanceStart" : "2017-01-01",
+			  "performanceEnd" : "2017-12-31"
+			}\
+			""";
 
 	private static final String EXPECTED_NO_MEASURE = "{\n  \"category\" : \"ia\",\n  \"submissionMethod\" : \"electronicHealthRecord\",\n  \"performanceStart\" : \"2017-01-01\",\n  \"performanceEnd\" : \"2017-12-31\"\n}";
 
-	private static final String EXPECTED_NO_MEASURE_VALUE_1 = "{\n  \"category\" : \"ia\",\n  "
-			+ "\"submissionMethod\" : \"electronicHealthRecord\",\n  \"measurements\" : [ "
-			+ "{\n    \"measureId\" : \"IA_EPA_1\"\n  } ],\n  \"performanceStart\" : \"2017-01-01\",\n  \"performanceEnd\" : \"2017-12-31\"\n}";
+	private static final String EXPECTED_NO_MEASURE_VALUE_1 = """
+			{
+			  "category" : "ia",
+			  \
+			"submissionMethod" : "electronicHealthRecord",
+			  "measurements" : [ \
+			{
+			    "measureId" : "IA_EPA_1"
+			  } ],
+			  "performanceStart" : "2017-01-01",
+			  "performanceEnd" : "2017-12-31"
+			}\
+			""";
 
 	private Node iaSectionNode;
 	private Node iaMeasureNode;

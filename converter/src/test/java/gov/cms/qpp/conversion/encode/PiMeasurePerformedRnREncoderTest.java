@@ -101,7 +101,7 @@ class PiMeasurePerformedRnREncoderTest {
 		//set-up
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		PiMeasurePerformedRnREncoder objectUnderTest = new PiMeasurePerformedRnREncoder(new Context());
-		piMeasurePerformedRnR.getChildNodes().get(0).putValue("measurePerformed", "Y");
+		piMeasurePerformedRnR.getChildNodes().getFirst().putValue("measurePerformed", "Y");
 		//execute
 		objectUnderTest.internalEncode(jsonWrapper, piMeasurePerformedRnR);
 
@@ -117,7 +117,7 @@ class PiMeasurePerformedRnREncoderTest {
 		//set-up
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		PiMeasurePerformedRnREncoder objectUnderTest = new PiMeasurePerformedRnREncoder(new Context());
-		piMeasurePerformedRnR.getChildNodes().get(0).putValue("measurePerformed","N");
+		piMeasurePerformedRnR.getChildNodes().getFirst().putValue("measurePerformed","N");
 		//execute
 		objectUnderTest.internalEncode(jsonWrapper, piMeasurePerformedRnR);
 
@@ -134,7 +134,7 @@ class PiMeasurePerformedRnREncoderTest {
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		PiMeasurePerformedRnREncoder objectUnderTest = new PiMeasurePerformedRnREncoder(new Context());
 		String unknownValue = "Some unknown value";
-		piMeasurePerformedRnR.getChildNodes().get(0).putValue("measurePerformed",unknownValue);
+		piMeasurePerformedRnR.getChildNodes().getFirst().putValue("measurePerformed",unknownValue);
 		//execute
 		objectUnderTest.internalEncode(jsonWrapper, piMeasurePerformedRnR);
 

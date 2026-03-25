@@ -84,16 +84,13 @@ public class Registry<R> {
 		Annotation annotation = annotatedClass.getAnnotation(annotationClass);
 		Set<ComponentKey> values = new HashSet<>();
 
-		if (annotation instanceof Decoder) {
-			Decoder decoder = (Decoder) annotation;
+		if (annotation instanceof Decoder decoder) {
 			values.add(new ComponentKey(decoder.value(), decoder.program()));
 		}
-		if (annotation instanceof Encoder) {
-			Encoder encoder = (Encoder) annotation;
+		if (annotation instanceof Encoder encoder) {
 			values.add(new ComponentKey(encoder.value(), encoder.program()));
 		}
-		if (annotation instanceof Validator) {
-			Validator validator = (Validator) annotation;
+		if (annotation instanceof Validator validator) {
 			values.add(new ComponentKey(validator.value(), validator.program()));
 		}
 		return values;

@@ -19,7 +19,7 @@ import java.util.List;
 public abstract class JsonOutputEncoder implements OutputEncoder {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(JsonOutputEncoder.class);
 
-	private List<Node> nodes;
+	private List<Node> nodes = Collections.emptyList();
 	private List<Detail> errors = new ArrayList<>();
 	private List<Detail> warnings = new ArrayList<>();
 

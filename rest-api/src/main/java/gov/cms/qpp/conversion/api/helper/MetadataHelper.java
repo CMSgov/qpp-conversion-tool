@@ -130,7 +130,6 @@ public class MetadataHelper {
 	/**
 	 * Potential states of conversion outcomes.
 	 */
-	@SuppressFBWarnings("MS_EXPOSE_REP")
 	public enum Outcome {
 		SUCCESS(true, true, true),
 		CONVERSION_ERROR(false, false, false),

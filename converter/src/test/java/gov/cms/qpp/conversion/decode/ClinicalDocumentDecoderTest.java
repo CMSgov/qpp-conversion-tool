@@ -82,28 +82,28 @@ class ClinicalDocumentDecoderTest {
 
 	@Test
 	void testAciCategory() {
-		Node aciSectionNode = clinicalDocument.getChildNodes().get(0);
+		Node aciSectionNode = clinicalDocument.getChildNodes().getFirst();
 		assertThat(aciSectionNode.getValue("category"))
 				.isEqualTo("pi");
 	}
 
 	@Test
 	void testAciPea1MeasureId() {
-		Node aciSectionNode = clinicalDocument.getChildNodes().get(0);
-		assertThat(aciSectionNode.getChildNodes().get(0).getValue("measureId"))
+		Node aciSectionNode = clinicalDocument.getChildNodes().getFirst();
+		assertThat(aciSectionNode.getChildNodes().getFirst().getValue("measureId"))
 				.isEqualTo("PI-PEA-1");
 	}
 
 	@Test
 	void testAciEp1MeasureId() {
-		Node aciSectionNode = clinicalDocument.getChildNodes().get(0);
+		Node aciSectionNode = clinicalDocument.getChildNodes().getFirst();
 		assertThat(aciSectionNode.getChildNodes().get(1).getValue("measureId"))
 				.isEqualTo("PI_EP_1");
 	}
 
 	@Test
 	void testAciCctpe3MeasureId() {
-		Node aciSectionNode = clinicalDocument.getChildNodes().get(0);
+		Node aciSectionNode = clinicalDocument.getChildNodes().getFirst();
 		assertThat(aciSectionNode.getChildNodes().get(2).getValue("measureId"))
 				.isEqualTo("PI_CCTPE_3");
 	}
@@ -118,7 +118,7 @@ class ClinicalDocumentDecoderTest {
 	@Test
 	void testIaMeasureId() {
 		Node iaSectionNode = clinicalDocument.getChildNodes().get(1);
-		Node iaMeasureNode = iaSectionNode.getChildNodes().get(0);
+		Node iaMeasureNode = iaSectionNode.getChildNodes().getFirst();
 		assertThat(iaMeasureNode.getValue("measureId"))
 				.isEqualTo("IA_EPA_1");
 	}
@@ -142,8 +142,8 @@ class ClinicalDocumentDecoderTest {
 	@Test
 	void testIaMeasurePerformed() {
 		Node iaSectionNode = clinicalDocument.getChildNodes().get(1);
-		Node iaMeasureNode = iaSectionNode.getChildNodes().get(0);
-		Node iaMeasurePerformedNode = iaMeasureNode.getChildNodes().get(0);
+		Node iaMeasureNode = iaSectionNode.getChildNodes().getFirst();
+		Node iaMeasurePerformedNode = iaMeasureNode.getChildNodes().getFirst();
 		assertThat(iaMeasurePerformedNode.getValue("measurePerformed"))
 				.isEqualTo("Y");
 	}

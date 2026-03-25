@@ -106,7 +106,7 @@ class PiNumeratorDenominatorEncoderTest {
 		assertThat(objectUnderTest.getErrors())
 				.hasSize(1);
 		assertWithMessage("The validation error must be the inability to find an encoder")
-				.that(objectUnderTest.getErrors().get(0).getMessage())
+				.that(objectUnderTest.getErrors().getFirst().getMessage())
 				.isEqualTo(ProblemCode.ENCODER_MISSING.getMessage());
 	}
 }

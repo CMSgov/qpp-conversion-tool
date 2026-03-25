@@ -277,9 +277,13 @@ class JsonWrapperTest {
 
 		String json = ow.writeValueAsString(map);
 
-		String expect = "{\n  \"name1\" : \"value1\",\n"+
-				"  \"name2\" : [ \"A\", \"B\", \"C\" ],\n" +
-				"  \"name3\" : \"value3\"\n}";
+		String expect = """
+				{
+				  "name1" : "value1",
+				  "name2" : [ "A", "B", "C" ],
+				  "name3" : "value3"
+				}\
+				""";
 		assertWithMessage("expect array to use [] rather than {} block")
 				.that(json)
 				.isEqualTo(expect);
@@ -299,9 +303,13 @@ class JsonWrapperTest {
 
 		String json = ow.writeValueAsString(map);
 
-		String expect = "{\n  \"name1\" : \"value1\",\n"+
-				"  \"name2\" : [ \"A\", \"B\", \"C\" ],\n" +
-				"  \"name3\" : \"value3\"\n}";
+		String expect = """
+				{
+				  "name1" : "value1",
+				  "name2" : [ "A", "B", "C" ],
+				  "name3" : "value3"
+				}\
+				""";
 		assertWithMessage("expect list to look like array")
 				.that(json)
 				.isEqualTo(expect);
@@ -319,9 +327,16 @@ class JsonWrapperTest {
 
 		String json = ow.writeValueAsString(map);
 		
-		String expect = "{\n  \"name1\" : \"value1\",\n"+
-				"  \"name2\" : {\n    \"obj1\" : \"A\",\n    \"obj2\" : \"B\"\n  },\n" +
-				"  \"name3\" : \"value3\"\n}";
+		String expect = """
+				{
+				  "name1" : "value1",
+				  "name2" : {
+				    "obj1" : "A",
+				    "obj2" : "B"
+				  },
+				  "name3" : "value3"
+				}\
+				""";
 		assertWithMessage("expect comma after child and no comma after last value pair")
 				.that(json)
 				.isEqualTo(expect);
@@ -339,9 +354,16 @@ class JsonWrapperTest {
 
 		String json = ow.writeValueAsString(map);
 
-		String expect = "{\n  \"name1\" : \"value1\",\n"+
-				"  \"name3\" : \"value3\",\n" +
-				"  \"name2\" : {\n    \"obj1\" : \"A\",\n    \"obj2\" : \"B\"\n  }\n}";
+		String expect = """
+				{
+				  "name1" : "value1",
+				  "name3" : "value3",
+				  "name2" : {
+				    "obj1" : "A",
+				    "obj2" : "B"
+				  }
+				}\
+				""";
 		assertWithMessage("expect no comma expected after the child and order as inserted")
 				.that(json)
 				.isEqualTo(expect);
@@ -477,9 +499,13 @@ class JsonWrapperTest {
 
 		String json = objectObjWrapper.toString();
 
-		String expect = "{\n  \"name1\" : \"value1\",\n"+
-				"  \"name2\" : [ \"A\", \"B\", \"C\" ],\n" +
-				"  \"name3\" : \"value3\"\n}";
+		String expect = """
+				{
+				  "name1" : "value1",
+				  "name2" : [ "A", "B", "C" ],
+				  "name3" : "value3"
+				}\
+				""";
 		assertWithMessage("expect array to use [] rather than {} block")
 				.that(json)
 				.isEqualTo(expect);
@@ -558,9 +584,13 @@ class JsonWrapperTest {
 		objectObjWrapper.put("name3", "value3");
 
 		String actual = objectObjWrapper.toString();
-		String expect = "{\n  \"name1\" : \"value1\",\n"+
-				"  \"name2\" : [ \"A\", \"B\", \"C\" ],\n" +
-				"  \"name3\" : \"value3\"\n}";
+		String expect = """
+				{
+				  "name1" : "value1",
+				  "name2" : [ "A", "B", "C" ],
+				  "name3" : "value3"
+				}\
+				""";
 		assertWithMessage("expect list to look like array")
 				.that(actual)
 				.isEqualTo(expect);
@@ -577,9 +607,16 @@ class JsonWrapperTest {
 
 		String json = objectObjWrapper.toString();
 
-		String expect = "{\n  \"name1\" : \"value1\",\n"+
-				"  \"name2\" : {\n    \"obj1\" : \"A\",\n    \"obj2\" : \"B\"\n  },\n" +
-				"  \"name3\" : \"value3\"\n}";
+		String expect = """
+				{
+				  "name1" : "value1",
+				  "name2" : {
+				    "obj1" : "A",
+				    "obj2" : "B"
+				  },
+				  "name3" : "value3"
+				}\
+				""";
 		assertWithMessage("expect comma after child and no comma after last value pair")
 				.that(json)
 				.isEqualTo(expect);
@@ -596,9 +633,16 @@ class JsonWrapperTest {
 
 		String json = objectObjWrapper.toString();
 
-		String expect = "{\n  \"name1\" : \"value1\",\n"+
-				"  \"name3\" : \"value3\",\n" +
-				"  \"name2\" : {\n    \"obj1\" : \"A\",\n    \"obj2\" : \"B\"\n  }\n}";
+		String expect = """
+				{
+				  "name1" : "value1",
+				  "name3" : "value3",
+				  "name2" : {
+				    "obj1" : "A",
+				    "obj2" : "B"
+				  }
+				}\
+				""";
 		assertWithMessage("expect no comma expected after the child and order as inserted")
 				.that(json)
 				.isEqualTo(expect);
@@ -1057,7 +1101,7 @@ class JsonWrapperTest {
 		JsonGenerator gen = mock(JsonGenerator.class);
 		InOrder order = Mockito.inOrder(gen);
 		
-		JsonWrapper value = new JsonWrapper().put("name","value").putMetadata("meta", "data");;
+		JsonWrapper value = new JsonWrapper().put("name","value").putMetadata("meta", "data");
 		
 		Type.MAP.metadata(value, gen);
 
@@ -1103,7 +1147,7 @@ class JsonWrapperTest {
 		JsonGenerator gen = mock(JsonGenerator.class);
 		InOrder order = Mockito.inOrder(gen);
 		
-		JsonWrapper value = new JsonWrapper().put("value").putMetadata("meta", "data");;
+		JsonWrapper value = new JsonWrapper().put("value").putMetadata("meta", "data");
 		
 		JsonWrapper item1 = value.get(0);
 		
@@ -1129,12 +1173,14 @@ class JsonWrapperTest {
 		
 		Mockito.doThrow(IOException.class).when(gen).writeObject(item1);
 		
-		assertThrows(RuntimeException.class, () -> {Type.LIST.metadata(value, gen);});
+		assertThrows(EncodeException.class, () -> {Type.LIST.metadata(value, gen);});
 	}
 	
 	@Test
-	void Constructor_throwsUnsupported() throws Exception {
-		assertThrows(UnsupportedOperationException.class, () -> {new JsonWrapper(Kind.VALUE);});
+	void constructor_allowsValueKind() {
+		JsonWrapper wrapper = new JsonWrapper(Kind.VALUE);
+		assertThat(wrapper.getKind()).isEqualTo(Kind.VALUE);
+		assertThat(wrapper.isValue()).isTrue();
 	}
 	
 	@Test
@@ -1505,7 +1551,7 @@ class JsonWrapperTest {
 		mockWrapper.get(jsonPath);
 		
 		// expect the same order as the path notation
-		Truth.assertThat(paths[0].get(0)).isEqualTo("a");
+		Truth.assertThat(paths[0].getFirst()).isEqualTo("a");
 		Truth.assertThat(paths[0].get(1)).isEqualTo("b");
 		Truth.assertThat(paths[0].get(2)).isEqualTo("[0");
 		Truth.assertThat(paths[0].get(3)).isEqualTo("c");
@@ -1528,7 +1574,7 @@ class JsonWrapperTest {
 		mockWrapper.getByJsonPath(dotPath);
 		
 		// expect the same order as the path notation
-		Truth.assertThat(paths[0].get(0)).isEqualTo("a");
+		Truth.assertThat(paths[0].getFirst()).isEqualTo("a");
 		Truth.assertThat(paths[0].get(1)).isEqualTo("b");
 		Truth.assertThat(paths[0].get(2)).isEqualTo("[0");
 		Truth.assertThat(paths[0].get(3)).isEqualTo("c");

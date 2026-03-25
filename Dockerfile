@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17 AS builder
+FROM eclipse-temurin:21 AS builder
 
 ARG MAVEN_VERSION=3.9.6
 ARG USER_HOME_DIR="/root"
@@ -37,7 +37,7 @@ WORKDIR /usr/src/app/
 RUN /usr/local/bin/mvn-entrypoint.sh mvn install -Dmaven.test.skip -Djacoco.skip=true -Dskip.generate=true > /dev/null
 
 # Final stage
-FROM eclipse-temurin:17-jre
+FROM eclipse-temurin:21-jre
 
 RUN mkdir -p /usr/src/run/
 COPY --from=builder /usr/src/app/tools/docker/docker-artifacts /usr/src/run/

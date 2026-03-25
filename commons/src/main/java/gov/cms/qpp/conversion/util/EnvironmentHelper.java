@@ -39,7 +39,7 @@ public class EnvironmentHelper {
 		String value = getIfPresent(variable);
 		if (value == null) {
 			LOG.warn(
-				String.format(NOT_FOUND, variable));
+					NOT_FOUND.formatted(variable));
 		}
 		return value;
 	}

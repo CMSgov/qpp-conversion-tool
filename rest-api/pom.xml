@@ -34,10 +34,9 @@
         <!-- For documentation only; actual coordination is done by the BOMs below -->
         <spring-framework.version>6.2.12</spring-framework.version>
         <tomcat.version>10.1.52</tomcat.version>
-
         <!-- Test stack kept explicit so CI is deterministic across JDK updates -->
-        <junit.jupiter.version>5.10.3</junit.jupiter.version>
-        <junit.platform.version>1.10.3</junit.platform.version>
+        <junit.jupiter.version>5.11.4</junit.jupiter.version>
+        <junit.platform.version>1.11.4</junit.platform.version>
         <io.rest-assured.version>5.5.2</io.rest-assured.version>
         <groovy.version>4.0.28</groovy.version>
         <io.hamcrest.version>2.2</io.hamcrest.version>
@@ -45,7 +44,7 @@
         <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
 
         <!-- Spring Security aligned with Boot 3.4.8 to avoid split versions -->
-        <spring.security.version>6.4.10</spring.security.version>
+        <spring.security.version>6.4.12</spring.security.version>
 
         <!-- JaCoCo aggregated report path used by Sonar -->
         <sonar.coverage.jacoco.xmlReportPaths>
@@ -109,14 +108,14 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
                 <version>3.5.0</version>
+                <configuration>
+                    <rules><DependencyConvergence/></rules>
+                    <fail>true</fail>
+                </configuration>
                 <executions>
                     <execution>
                         <id>enforce-dep-convergence</id>
                         <goals><goal>enforce</goal></goals>
-                        <configuration>
-                            <rules><DependencyConvergence/></rules>
-                            <fail>true</fail>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -125,7 +124,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.12</version>
+                <version>0.8.14</version>
                 <executions>
                     <execution>
                         <id>jacoco-prepare-agent-rest</id>
@@ -176,14 +175,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-framework-bom</artifactId>
-                <version>6.2.11</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-bom</artifactId>

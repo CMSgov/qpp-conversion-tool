@@ -36,7 +36,7 @@ class JsonOutputEncoderTest {
 		joe.addValidationError(detail2);
 		List<Detail> validations = joe.getErrors();
 		assertThat(validations).hasSize(2);
-		assertThat(validations.get(0).getMessage()).isEqualTo("error");
+		assertThat(validations.getFirst().getMessage()).isEqualTo("error");
 		assertThat(validations.get(1).getMessage()).isEqualTo("another");
 	}
 
@@ -52,7 +52,7 @@ class JsonOutputEncoderTest {
 		validations = joe.getErrors();
 		assertThat(validations).isNotNull();
 		assertThat(validations).hasSize(1);
-		assertThat(validations.get(0).getMessage()).isEqualTo("err");
+		assertThat(validations.getFirst().getMessage()).isEqualTo("err");
 	}
 
 	@Test

@@ -18,15 +18,41 @@ import gov.cms.qpp.conversion.model.TemplateId;
 
 class PiSectionEncoderMultiMeasureTest {
 
-	private static final String EXPECTED = "{\n  \"category\" : \"pi\",\n  \"submissionMethod\" : \"electronicHealthRecord\",\n  "
-			+ "\"cehrtId\" : \"xxxxxxxxxx12345\",\n  "
-			+ "\"measurements\" : [ "
-			+ "{\n    \"measureId\" : \"PI-PEA-1\",\n    \"value\" : {\n"
-			+ "      \"numerator\" : 400,\n      \"denominator\" : 600\n    }\n  }, "
-			+ "{\n    \"measureId\" : \"PI_EP_1\",\n    \"value\" : {\n"
-			+ "      \"numerator\" : 500,\n      \"denominator\" : 700\n    }\n  }, "
-			+ "{\n    \"measureId\" : \"PI_CCTPE_3\",\n    \"value\" : {\n"
-			+ "      \"numerator\" : 400,\n      \"denominator\" : 600\n    }\n  }" + " ],\n  \"programName\" : \"mips\",\n  \"performanceStart\" : \"2017-01-01\",\n  \"performanceEnd\" : \"2017-12-31\"\n}";
+	private static final String EXPECTED = """
+			{
+			  "category" : "pi",
+			  "submissionMethod" : "electronicHealthRecord",
+			  \
+			"cehrtId" : "xxxxxxxxxx12345",
+			  \
+			"measurements" : [ \
+			{
+			    "measureId" : "PI-PEA-1",
+			    "value" : {
+			      "numerator" : 400,
+			      "denominator" : 600
+			    }
+			  }, \
+			{
+			    "measureId" : "PI_EP_1",
+			    "value" : {
+			      "numerator" : 500,
+			      "denominator" : 700
+			    }
+			  }, \
+			{
+			    "measureId" : "PI_CCTPE_3",
+			    "value" : {
+			      "numerator" : 400,
+			      "denominator" : 600
+			    }
+			  }\
+			 ],
+			  "programName" : "mips",
+			  "performanceStart" : "2017-01-01",
+			  "performanceEnd" : "2017-12-31"
+			}\
+			""";
 
 	private Node aciSectionNode;
 	private Node reportingParametersNode;

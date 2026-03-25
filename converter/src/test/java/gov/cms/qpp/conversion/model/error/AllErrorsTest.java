@@ -76,6 +76,6 @@ class AllErrorsTest {
 		error.setDetails(details);
 		objectUnderTest.addError(error);
 		assertWithMessage("The error details should be one")
-				.that(objectUnderTest.getErrors().get(0).getDetails()).hasSize(1);
+				.that(objectUnderTest.getErrors().getFirst().getDetails()).hasSize(1);
 	}
 }

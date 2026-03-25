@@ -67,7 +67,7 @@ class QualityMeasureIdRoundTripTest {
 
 		assertThat(qualityMeasures).hasSize(1);
 		assertWithMessage("The measureId in the quality measure should still populate given the junk stuff in the measure.")
-				.that(qualityMeasures.get(0).get("measureId"))
+				.that(qualityMeasures.getFirst().get("measureId"))
 				.isEqualTo("236");
 	}
 
@@ -80,7 +80,7 @@ class QualityMeasureIdRoundTripTest {
 		List<String> measureId = JsonHelper.readJsonAtJsonPath(qpp.toString(),
 			"$.measurementSets[?(@.category=='quality')].measurements[*].measureId", new TypeRef<List<String>>() { });
 
-		assertThat(measureId.get(0)).isEqualTo("236");
+		assertThat(measureId.getFirst()).isEqualTo("236");
 		assertThat(containsUnwantedValueList).isEmpty();
 	}
 
@@ -93,12 +93,12 @@ class QualityMeasureIdRoundTripTest {
 			converter.transform();
 		} catch (TransformException exception) {
 			AllErrors errors = exception.getDetails();
-			details.addAll(errors.getErrors().get(0).getDetails());
+			details.addAll(errors.getErrors().getFirst().getDetails());
 		}
 
 		String measureId = "CMS68v8";
 		String correctId = MeasureConfigs.getConfigurationMap()
-			.get("40280382-5fa6-fe85-0160-0ea3e0012376").getSubPopulation().get(0).getNumeratorUuid();
+			.get("40280382-5fa6-fe85-0160-0ea3e0012376").getSubPopulation().getFirst().getNumeratorUuid();
 
 		LocalizedProblem error = ProblemCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(measureId,
 				PERFORMANCE_RATE_ID, correctId);
@@ -116,7 +116,7 @@ class QualityMeasureIdRoundTripTest {
 			converter.transform();
 		} catch (TransformException exception) {
 			AllErrors errors = exception.getDetails();
-			details.addAll(errors.getErrors().get(0).getDetails());
+			details.addAll(errors.getErrors().getFirst().getDetails());
 		}
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -132,7 +132,7 @@ class QualityMeasureIdRoundTripTest {
 			converter.transform();
 		} catch (TransformException exception) {
 			AllErrors errors = exception.getDetails();
-			details.addAll(errors.getErrors().get(0).getDetails());
+			details.addAll(errors.getErrors().getFirst().getDetails());
 		}
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -151,7 +151,7 @@ class QualityMeasureIdRoundTripTest {
 			converter.transform();
 		} catch (TransformException exception) {
 			AllErrors errors = exception.getDetails();
-			details.addAll(errors.getErrors().get(0).getDetails());
+			details.addAll(errors.getErrors().getFirst().getDetails());
 		}
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -179,7 +179,7 @@ class QualityMeasureIdRoundTripTest {
 			converter.transform();
 		} catch (TransformException exception) {
 			AllErrors errors = exception.getDetails();
-			details.addAll(errors.getErrors().get(0).getDetails());
+			details.addAll(errors.getErrors().getFirst().getDetails());
 		}
 
 		assertThat(details.size()).isEqualTo(2);
@@ -197,7 +197,7 @@ class QualityMeasureIdRoundTripTest {
 			converter.transform();
 		} catch (TransformException exception) {
 			AllErrors errors = exception.getDetails();
-			details.addAll(errors.getErrors().get(0).getDetails());
+			details.addAll(errors.getErrors().getFirst().getDetails());
 		}
 
 		String populationId = "F50E5334-415D-482F-A30D-0623C082B602";
