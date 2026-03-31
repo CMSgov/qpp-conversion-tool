@@ -32,7 +32,7 @@
         <requiredCodeCoverage>0.90</requiredCodeCoverage>
 
         <!-- For documentation only; actual coordination is done by the BOMs below -->
-        <spring-framework.version>6.2.12</spring-framework.version>
+        <spring-framework.version>6.2.17</spring-framework.version>
         <tomcat.version>10.1.52</tomcat.version>
         <!-- Test stack kept explicit so CI is deterministic across JDK updates -->
         <junit.jupiter.version>5.11.4</junit.jupiter.version>
@@ -43,8 +43,8 @@
         <mockito.version>3.9.0</mockito.version>
         <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
 
-        <!-- Spring Security aligned with Boot 3.4.8 to avoid split versions -->
-        <spring.security.version>6.4.12</spring.security.version>
+        <!-- Spring Security aligned with Boot BOM to avoid split versions -->
+        <spring.security.version>6.5.9</spring.security.version>
 
         <!-- JaCoCo aggregated report path used by Sonar -->
         <sonar.coverage.jacoco.xmlReportPaths>
@@ -196,19 +196,19 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
-                <version>6.2.12</version>
+                <version>6.2.17</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-beans</artifactId>
-                <version>6.2.12</version>
+                <version>6.2.17</version>
             </dependency>
 
-            <!-- Framework BOM import: lifts ALL spring-* modules to 6.2.12 (security fix) -->
+            <!-- Framework BOM import: lifts ALL spring-* modules to 6.2.17 (security fix) -->
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-framework-bom</artifactId>
-                <version>6.2.12</version>
+                <version>6.2.17</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
