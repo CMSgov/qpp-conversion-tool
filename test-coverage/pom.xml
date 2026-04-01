@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>2026.03.13.01-RELEASE</version>
+		<version>2026.03.31.01-RELEASE</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -52,7 +52,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.7</version>
+				<version>0.8.14</version>
 				<configuration>
 					<excludes>
 						<exclude>**/gov/cms/qpp/conversion/api/config/**</exclude>

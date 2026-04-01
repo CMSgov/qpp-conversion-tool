@@ -35,9 +35,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.securityMatcher(PCF_WILDCARD)
-            .authorizeRequests()
-			.anyRequest().authenticated()
-			.and()
+            .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
             .csrf(csrf -> csrf.disable())
             .addFilterAt(new JwtAuthorizationFilter(Set.of(orgName, rtiOrgName)), BasicAuthenticationFilter.class)
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -40,7 +40,7 @@ class XmlUtilsTest {
 	void stringToDomOtherDescendants() throws Exception {
 		Element dom = XmlUtils.stringToDom(xmlFragment);
 		List<Element> childElement = dom.getChildren();
-		List<Element> leafElements = childElement.get(0).getChildren();
+		List<Element> leafElements = childElement.getFirst().getChildren();
 
 		assertWithMessage("test observation has five children")
 				.that(leafElements).hasSize(5);

@@ -56,9 +56,9 @@ class PiMeasurePerformedRnRDecoderTest {
 	@Test
 	void testUpperLevel() throws XmlException, IOException {
 		String needsFormattingXml = TestHelper.getFixture("AciMeasurePerformedIsolated.xml");
-		String xml = String.format(needsFormattingXml, MEASURE_ID);
+		String xml = needsFormattingXml.formatted(MEASURE_ID);
 		Node wrapperNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xml));
-		Node piMeasurePerformedNode = wrapperNode.getChildNodes().get(0);
+		Node piMeasurePerformedNode = wrapperNode.getChildNodes().getFirst();
 
 		String actualMeasureId = piMeasurePerformedNode.getValue("measureId");
 

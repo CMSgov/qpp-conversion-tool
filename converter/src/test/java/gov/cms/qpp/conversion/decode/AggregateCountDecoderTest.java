@@ -57,44 +57,45 @@ class AggregateCountDecoderTest {
 			+ "    <methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\"/>\n"
 			+ "</observation>";
 
-	private static final String DUPLICATE_AGGREGATE_COUNT = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-		+ "<entry xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
-		+ "<component>\n"
-		+ "<observation classCode=\"OBS\" moodCode=\"EVN\">\n"
-		+ "        <templateId root=\"2.16.840.1.113883.10.20.27.3.5\" extension=\"2016-09-01\"/>\n"
-		+ "        <templateId root=\"2.16.840.1.113883.10.20.27.3.31\" extension=\"2016-09-01\"/>\n"
-		+ "        <code code=\"ASSERTION\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"Assertion\"/>\n"
-		+ "        <statusCode code=\"completed\"/>\n"
-		+ "        <value xsi:type=\"CD\" code=\"DENOM\" codeSystem=\"2.16.840.1.113883.5.1063\" codeSystemName=\"ObservationValue\"/>\n"
-		+ "        <entryRelationship typeCode=\"COMP\">\n"
-		+ "        <observation classCode=\"OBS\" moodCode=\"EVN\">\n"
-		+ "                <value xsi:type=\"CD\" code=\"M\" codeSystem=\"2.16.840.1.113883.5.1\" codeSystemName=\"AdministrativeGenderCode\" displayName=\"Male\"/>\n"
-		+ "                <entryRelationship typeCode=\"SUBJ\" inversionInd=\"true\">\n"
-		+ "                        <observation classCode=\"OBS\" moodCode=\"EVN\">\n"
-		+ "                                <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>\n"
-		+ "                                <code code=\"MSRAGG\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"rate aggregation\"/>\n"
-		+ "                                <statusCode code=\"completed\"/>\n"
-		+ "                                <value xsi:type=\"INT\" value=\"400\"/>\n"
-		+ "                                <methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\"/>\n"
-		+ "                        </observation>\n"
-		+ "                </entryRelationship>\n"
-		+ "        </observation>\n"
-		+ "        <observation classCode=\"OBS\" moodCode=\"EVN\">\n"
-		+ "                <value xsi:type=\"CD\" code=\"M\" codeSystem=\"2.16.840.1.113883.5.1\" codeSystemName=\"AdministrativeGenderCode\" displayName=\"Male\"/>\n"
-		+ "                <entryRelationship typeCode=\"SUBJ\" inversionInd=\"true\">\n"
-		+ "                        <observation classCode=\"OBS\" moodCode=\"EVN\">\n"
-		+ "                                <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>\n"
-		+ "                                <code code=\"MSRAGG\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"rate aggregation\"/>\n"
-		+ "                                <statusCode code=\"completed\"/>\n"
-		+ "                                <value xsi:type=\"INT\" value=\"400\"/>\n"
-		+ "                                <methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\"/>\n"
-		+ "                        </observation>\n"
-		+ "                </entryRelationship>\n"
-		+ "        </observation>\n"
-		+ "</entryRelationship>\n"
-		+ "</observation>\n"
-		+ "</component>"
-		+ "</entry>";
+	private static final String DUPLICATE_AGGREGATE_COUNT = """
+		<?xml version="1.0" encoding="utf-8"?>\
+		<entry xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3">
+		<component>
+		<observation classCode="OBS" moodCode="EVN">
+		        <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
+		        <templateId root="2.16.840.1.113883.10.20.27.3.31" extension="2016-09-01"/>
+		        <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion"/>
+		        <statusCode code="completed"/>
+		        <value xsi:type="CD" code="DENOM" codeSystem="2.16.840.1.113883.5.1063" codeSystemName="ObservationValue"/>
+		        <entryRelationship typeCode="COMP">
+		        <observation classCode="OBS" moodCode="EVN">
+		                <value xsi:type="CD" code="M" codeSystem="2.16.840.1.113883.5.1" codeSystemName="AdministrativeGenderCode" displayName="Male"/>
+		                <entryRelationship typeCode="SUBJ" inversionInd="true">
+		                        <observation classCode="OBS" moodCode="EVN">
+		                                <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+		                                <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation"/>
+		                                <statusCode code="completed"/>
+		                                <value xsi:type="INT" value="400"/>
+		                                <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count"/>
+		                        </observation>
+		                </entryRelationship>
+		        </observation>
+		        <observation classCode="OBS" moodCode="EVN">
+		                <value xsi:type="CD" code="M" codeSystem="2.16.840.1.113883.5.1" codeSystemName="AdministrativeGenderCode" displayName="Male"/>
+		                <entryRelationship typeCode="SUBJ" inversionInd="true">
+		                        <observation classCode="OBS" moodCode="EVN">
+		                                <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+		                                <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation"/>
+		                                <statusCode code="completed"/>
+		                                <value xsi:type="INT" value="400"/>
+		                                <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count"/>
+		                        </observation>
+		                </entryRelationship>
+		        </observation>
+		</entryRelationship>
+		</observation>
+		</component>\
+		</entry>""";
 
 	@Test
 	void testInternalDecode() {
@@ -122,15 +123,15 @@ class AggregateCountDecoderTest {
 	void testAggregateCountDecoderIgnoresInvalidElements() throws XmlException {
 
 		Node root = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(XML_FRAGMENT));
-		Node node = root.getChildNodes().get(0);
+		Node node = root.getChildNodes().getFirst();
 
 		assertThat(node.getChildNodes()).hasSize(1);
 
-		assertThat(node.getChildNodes().get(0).getValue("aggregateCount"))
+		assertThat(node.getChildNodes().getFirst().getValue("aggregateCount"))
 				.isEqualTo("400");
 
 		assertWithMessage("Should have template id")
-				.that(node.getChildNodes().get(0).getType())
+				.that(node.getChildNodes().getFirst().getType())
 				.isEqualTo(TemplateId.PI_AGGREGATE_COUNT);
 	}
 
@@ -150,6 +151,6 @@ class AggregateCountDecoderTest {
 	@Test
 	void testDuplicateAggregateCountDecodesToDuplicateAggregateCount() throws XmlException {
 		Node root = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(DUPLICATE_AGGREGATE_COUNT));
-		assertThat(root.getChildNodes().get(0).getChildNodes(TemplateId.PI_AGGREGATE_COUNT).count()).isEqualTo(2);
+		assertThat(root.getChildNodes().getFirst().getChildNodes(TemplateId.PI_AGGREGATE_COUNT).count()).isEqualTo(2);
 	}
 }

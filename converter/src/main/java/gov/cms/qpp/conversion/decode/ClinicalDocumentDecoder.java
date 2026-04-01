@@ -182,56 +182,30 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	 * @return array of String program name, entity type
 	 */
 	private Pair<String, String> getProgramNameEntityPair(String name) {
-		Pair<String, String> pair;
-		switch (name.toUpperCase(Locale.ENGLISH)) {
-			case MIPS_INDIVIDUAL:
-				pair = new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_INDIVIDUAL);
-				break;
+		return switch (name.toUpperCase(Locale.ENGLISH)) {
+			case MIPS_INDIVIDUAL -> new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_INDIVIDUAL);
 
-			case APP_INDIVIDUAL:
-				pair = new ImmutablePair<>(APP_PROGRAM_NAME, ENTITY_INDIVIDUAL);
-				break;
+			case APP_INDIVIDUAL -> new ImmutablePair<>(APP_PROGRAM_NAME, ENTITY_INDIVIDUAL);
 
-			case MIPS_GROUP:
-				pair = new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_GROUP);
-				break;
+			case MIPS_GROUP -> new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_GROUP);
 
-			case APP_GROUP:
-				pair = new ImmutablePair<>(APP_PROGRAM_NAME, ENTITY_GROUP);
-				break;
+			case APP_GROUP -> new ImmutablePair<>(APP_PROGRAM_NAME, ENTITY_GROUP);
 
-			case MIPS_VIRTUAL_GROUP:
-				pair = new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_VIRTUAL_GROUP);
-				break;
+			case MIPS_VIRTUAL_GROUP -> new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_VIRTUAL_GROUP);
 
-			case MIPS_APM:
-				pair = new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_APM);
-				break;
+			case MIPS_APM -> new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_APM);
 
-			case APP_APM:
-				pair = new ImmutablePair<>(APP_PROGRAM_NAME, ENTITY_APM);
-				break;
+			case APP_APM -> new ImmutablePair<>(APP_PROGRAM_NAME, ENTITY_APM);
 
-			case MIPS_SUBGROUP:
-				pair = new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_SUBGROUP);
-				break;
+			case MIPS_SUBGROUP -> new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_SUBGROUP);
 
-			case APP_PLUS_INDIVIDUAL:
-				pair = new ImmutablePair<>(APP_PLUS_PROGRAM_NAME, ENTITY_INDIVIDUAL);
-				break;
+			case APP_PLUS_INDIVIDUAL -> new ImmutablePair<>(APP_PLUS_PROGRAM_NAME, ENTITY_INDIVIDUAL);
 
-			case APP_PLUS_GROUP:
-				pair = new ImmutablePair<>(APP_PLUS_PROGRAM_NAME, ENTITY_GROUP);
-				break;
+			case APP_PLUS_GROUP -> new ImmutablePair<>(APP_PLUS_PROGRAM_NAME, ENTITY_GROUP);
 
-			case APP_PLUS_APM:
-				pair = new ImmutablePair<>(APP_PLUS_PROGRAM_NAME, ENTITY_APM);
-				break;
+			case APP_PLUS_APM -> new ImmutablePair<>(APP_PLUS_PROGRAM_NAME, ENTITY_APM);
 
-			default:
-				pair = new ImmutablePair<>(name.toLowerCase(Locale.ENGLISH), ENTITY_INDIVIDUAL);
-				break;
-		}
-		return pair;
+			default -> new ImmutablePair<>(name.toLowerCase(Locale.ENGLISH), ENTITY_INDIVIDUAL);
+		};
 	}
 }

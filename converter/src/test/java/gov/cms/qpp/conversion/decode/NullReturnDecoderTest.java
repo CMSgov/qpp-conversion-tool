@@ -12,12 +12,13 @@ class NullReturnDecoderTest {
 
 	@Test
 	void decodeReturnNullNode() throws Exception {
-		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-				+ "<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
-				+ "	<null resultName=\"result\" resultValue=\"mytestvalue\">\n"
-				+ "		<templateId root=\"null.return\"/>\n"
-				+ "	</null>"
-				+ "</root>";
+		String xmlFragment = """
+				<?xml version="1.0" encoding="utf-8"?>
+				<root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3">
+					<null resultName="result" resultValue="mytestvalue">
+						<templateId root="null.return"/>
+					</null>\
+				</root>""";
 
 		// Get the root wrapper node
 		Node root = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));

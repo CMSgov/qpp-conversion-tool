@@ -120,7 +120,6 @@ public class ConversionReport {
 	 *
 	 * @return {@link Source} for the input.
 	 */
-	@SuppressFBWarnings("EI_EXPOSE_REP")
 	public Source getQrdaSource() {
 		return source;
 	}

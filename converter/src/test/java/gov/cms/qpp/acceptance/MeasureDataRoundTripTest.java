@@ -27,8 +27,14 @@ import org.junit.jupiter.params.provider.EnumSource;
 class MeasureDataRoundTripTest {
 
 	private static final String EXPECTED =
-			"{\n  \"eligiblePopulation\" : 950,\n  \"performanceMet\" : 900,\n" +
-			"  \"eligiblePopulationException\" : 50,\n  \"eligiblePopulationExclusion\" : 50\n}";
+			"""
+			{
+			  "eligiblePopulation" : 950,
+			  "performanceMet" : 900,
+			  "eligiblePopulationException" : 50,
+			  "eligiblePopulationExclusion" : 50
+			}\
+			""";
 	private static String happy;
 
 	@BeforeAll
@@ -53,7 +59,7 @@ class MeasureDataRoundTripTest {
 
 		//then
 		assertThat(measure).isNotNull();
-		assertThat(measure.getChildNodes().get(0).getType())
+		assertThat(measure.getChildNodes().getFirst().getType())
 				.isEquivalentAccordingToCompareTo(TemplateId.PI_AGGREGATE_COUNT);
 		assertThat(sw.toString())
 				.isEqualTo(EXPECTED);

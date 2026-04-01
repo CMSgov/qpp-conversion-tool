@@ -47,8 +47,8 @@ public class JwtAuthorizationFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		String tokenHeader = null;
-		if (request instanceof HttpServletRequest) {
-			tokenHeader = ((HttpServletRequest) request).getHeader(HEADER_STRING);
+		if (request instanceof HttpServletRequest servletRequest) {
+			tokenHeader = servletRequest.getHeader(HEADER_STRING);
 		}
 
 		if (tokenHeader != null) {

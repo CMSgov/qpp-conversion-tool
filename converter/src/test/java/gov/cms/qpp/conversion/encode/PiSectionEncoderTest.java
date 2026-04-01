@@ -121,7 +121,7 @@ class PiSectionEncoderTest {
 		piSectionEncoder.internalEncode(testWrapper, piSectionNode);
 
 		assertThat(piSectionEncoder.getErrors()).isNotNull();
-		assertThat(piSectionEncoder.getErrors().get(0).getMessage())
+		assertThat(piSectionEncoder.getErrors().getFirst().getMessage())
 				.isEqualTo(ProblemCode.ENCODER_MISSING.getMessage());
 	}
 

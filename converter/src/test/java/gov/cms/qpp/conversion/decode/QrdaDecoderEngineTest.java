@@ -74,7 +74,7 @@ class QrdaDecoderEngineTest {
 		Node node = objectUnderTest.decode(testElement);
 
 		assertThat(node.getType()).isEqualTo(TemplateId.PLACEHOLDER);
-		assertThat(node.getChildNodes().get(0).getType()).isEqualTo(TemplateId.IA_SECTION_V3);
+		assertThat(node.getChildNodes().getFirst().getType()).isEqualTo(TemplateId.IA_SECTION_V3);
 	}
 
 	@Test

@@ -51,7 +51,7 @@ class NodeTest {
 		node.addChildNode(childNode);
 
 		assertWithMessage("Did not retrieve expected node")
-				.that(node.getChildNodes().get(0)).isSameInstanceAs(childNode);
+				.that(node.getChildNodes().getFirst()).isSameInstanceAs(childNode);
 	}
 
 	@Test
@@ -149,7 +149,7 @@ class NodeTest {
 		assertWithMessage("should find first node that has the searched id")
 			.that(results).hasSize(2);
 		assertWithMessage("should search self first")
-			.that(results.get(0)).isSameInstanceAs(parent);
+			.that(results.getFirst()).isSameInstanceAs(parent);
 	}
 
 	@Test

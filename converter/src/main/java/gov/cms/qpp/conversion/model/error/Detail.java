@@ -6,6 +6,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -18,7 +19,7 @@ import gov.cms.qpp.conversion.util.MeasureConfigHelper;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Detail implements Serializable {
-	private static final long serialVersionUID = 8818544157552598922L;
+	@Serial private static final long serialVersionUID = 8818544157552598922L;
 
 	private Integer errorCode;
 	private String message;

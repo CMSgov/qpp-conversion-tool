@@ -84,7 +84,7 @@ class QualityMeasureIdMultiRoundTripTest {
 				"The measureId in the quality measure should still populate given the junk stuff in the measure.";
 
 		assertWithMessage(message)
-				.that(qualityMeasures.get(0).get("measureId"))
+				.that(qualityMeasures.getFirst().get("measureId"))
 				.isEqualTo("009");
 
 		assertFirstSubPopulation(subPopulation);
@@ -160,7 +160,7 @@ class QualityMeasureIdMultiRoundTripTest {
 			converter.transform();
 		} catch (TransformException exception) {
 			AllErrors errors = exception.getDetails();
-			details.addAll(errors.getErrors().get(0).getDetails());
+			details.addAll(errors.getErrors().getFirst().getDetails());
 		}
 
 		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -184,20 +184,20 @@ class QualityMeasureIdMultiRoundTripTest {
 			converter.transform();
 		} catch (TransformException exception) {
 			AllErrors errors = exception.getDetails();
-			details.addAll(errors.getErrors().get(0).getDetails());
+			details.addAll(errors.getErrors().getFirst().getDetails());
 		}
 		return details;
 	}
 
 	private void assertFirstSubPopulation(List<Map<String, ?>> subPopulation) {
 		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_TOTAL)
-				.that(subPopulation.get(0).get(ELIGIBLE_POPULATION))
+				.that(subPopulation.getFirst().get(ELIGIBLE_POPULATION))
 				.isEqualTo(600);
 		assertWithMessage(REQUIRE_PERFORMANCE_MET)
-				.that(subPopulation.get(0).get(PERFORMANCE_MET))
+				.that(subPopulation.getFirst().get(PERFORMANCE_MET))
 				.isEqualTo(486);
 		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_EXCLUSIONS)
-				.that(subPopulation.get(0).get(ELIGIBLE_POPULATION_EXCLUSION))
+				.that(subPopulation.getFirst().get(ELIGIBLE_POPULATION_EXCLUSION))
 				.isEqualTo(35);
 	}
 

@@ -36,7 +36,7 @@ class EnvironmentHelperTest implements LoggerContract {
 	@Test
 	void testLogEntryForFailures() {
 		String random = UUID.randomUUID().toString();
-		String message = String.format(EnvironmentHelper.NOT_FOUND, random);
+		String message = EnvironmentHelper.NOT_FOUND.formatted(random);
 		EnvironmentHelper.get(random);
 
 		assertThat(getLogs()).contains(message);
@@ -65,7 +65,7 @@ class EnvironmentHelperTest implements LoggerContract {
 		String someKey = UUID.randomUUID().toString();
 		String value = "";
 		System.setProperty(someKey, value);
-		String message = String.format(EnvironmentHelper.NOT_FOUND, someKey);
+		String message = EnvironmentHelper.NOT_FOUND.formatted(someKey);
 		EnvironmentHelper.isPresent(someKey);
 
 		assertThat(getLogs()).doesNotContain(message);
@@ -100,7 +100,7 @@ class EnvironmentHelperTest implements LoggerContract {
 		assertThat(result).isEqualTo(expectedValue);
 
 		// Ensure warning log is not present
-		assertThat(getLogs()).doesNotContain(String.format(EnvironmentHelper.NOT_FOUND, key));
+		assertThat(getLogs()).doesNotContain(EnvironmentHelper.NOT_FOUND.formatted(key));
 	}
 
 	@Test
