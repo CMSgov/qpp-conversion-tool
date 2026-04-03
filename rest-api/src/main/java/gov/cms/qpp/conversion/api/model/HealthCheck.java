@@ -11,9 +11,7 @@ public class HealthCheck {
 	private String implementationVersion;
 	private HttpStatus status;
 	private String javaVersion;
-	private String pcfClose;
 	private String validationUrl;
-	private String validationFile;
 
 	public String getImplementationVersion() {
 		return implementationVersion;
@@ -31,16 +29,6 @@ public class HealthCheck {
 	public String getValidationUrl() { return validationUrl; }
 	public void setValidationUrl(String validationUrl) {
 		this.validationUrl = validationUrl;
-	}
-
-	public String getValidationFile() { return validationFile; }
-	public void setValidationFile(String validationFile) {
-		this.validationFile = validationFile;
-	}
-
-	public String getPcfClose() { return pcfClose; }
-	public void setPcfClose(String pcfClose) {
-		this.pcfClose = pcfClose;
 	}
 
 	public HttpStatus getStatus() { return status; }
@@ -63,15 +51,13 @@ public class HealthCheck {
 		boolean equals = Objects.equals(implementationVersion, that.implementationVersion);
 		equals &= Objects.equals(status, that.status);
 		equals &= Objects.equals(javaVersion, that.javaVersion);
-		equals &= Objects.equals(pcfClose, that.pcfClose);
 		equals &= Objects.equals(validationUrl, that.validationUrl);
-		equals &= Objects.equals(validationFile, that.validationFile);
 
 		return equals;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(implementationVersion, status, javaVersion, pcfClose, validationUrl, validationFile);
+		return Objects.hash(implementationVersion, status, javaVersion, validationUrl);
 	}
 }

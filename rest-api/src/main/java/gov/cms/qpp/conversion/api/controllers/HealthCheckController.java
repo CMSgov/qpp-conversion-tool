@@ -39,8 +39,6 @@ public class HealthCheckController {
 		HealthCheck healthCheck = new HealthCheck();
 		healthCheck.setImplementationVersion(version.getImplementationVersion());
 		healthCheck.setValidationUrl(System.getenv("VALIDATION_URL"));
-		healthCheck.setPcfClose(System.getenv("CPC_END_DATE") + " EST");
-		healthCheck.setValidationFile(System.getenv("CPC_PLUS_VALIDATION_FILE"));
 		healthCheck.setJavaVersion(System.getProperty("java.version"));
 		healthCheck.setStatus(HttpStatus.OK);
 
