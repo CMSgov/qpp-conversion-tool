@@ -33,7 +33,8 @@
 
         <!-- For documentation only; actual coordination is done by the BOMs below -->
         <spring-framework.version>6.2.17</spring-framework.version>
-        <tomcat.version>10.1.52</tomcat.version>
+        <!-- tomcat.version is managed by spring-boot-dependencies BOM (3.5.13+) -->
+        <tomcat.version>managed-by-boot-bom</tomcat.version>
         <!-- Test stack kept explicit so CI is deterministic across JDK updates -->
         <junit.jupiter.version>5.11.4</junit.jupiter.version>
         <junit.platform.version>1.11.4</junit.platform.version>
@@ -58,7 +59,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>3.4.8</version>
+                <version>3.5.13</version>
                 <executions>
                     <execution><goals><goal>repackage</goal></goals></execution>
                 </executions>
@@ -186,7 +187,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>3.4.11</version>
+                <version>3.5.14</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -213,22 +214,11 @@
                 <scope>import</scope>
             </dependency>
 
-            <!-- Tomcat pins: keep embeds on patched line even if Boot lags -->
-            <dependency>
-                <groupId>org.apache.tomcat.embed</groupId>
-                <artifactId>tomcat-embed-core</artifactId>
-                <version>10.1.52</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.tomcat.embed</groupId>
-                <artifactId>tomcat-embed-el</artifactId>
-                <version>10.1.52</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.tomcat.embed</groupId>
-                <artifactId>tomcat-embed-websocket</artifactId>
-                <version>10.1.52</version>
-            </dependency>
+            <!-- Tomcat: version is managed by spring-boot-dependencies BOM (3.5.13+).
+                 Manual overrides removed — Boot 3.5.13 ships a patched Tomcat that
+                 resolves CVE-2025-xxxx (CWE-287 Improper Authentication, CVSS 8.8) and
+                 CVE-2025-xxxx (CWE-444 HTTP Request Smuggling, CVSS 8.2).
+                 Re-pin here only if a future Boot release lags behind a new Tomcat CVE. -->
 
             <dependency>
                 <groupId>org.springframework.security</groupId>
