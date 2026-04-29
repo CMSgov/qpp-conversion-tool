@@ -41,8 +41,9 @@ RUN mvn -B -ntp \
 # -----------------------------
 # Final runtime stage
 # -----------------------------
-# Uses a smaller Alpine-based Java 21 JRE image for runtime.
-# This helps reduce image size and avoids the Ubuntu OS package vulnerabilities reported by Snyk.
+# Uses a pinned Alpine-based Java 21 JRE image.
+# This avoids the Ubuntu-based OS package vulnerabilities reported by Snyk
+# while keeping the runtime image smaller and more reproducible.
 FROM eclipse-temurin:21.0.10_7-jre-alpine-3.23
 
 # Set the directory where the application will run.
@@ -51,14 +52,23 @@ WORKDIR /usr/src/run/
 # Copy only the runtime artifacts from the builder stage.
 # This keeps Maven, source code, and build dependencies out of the final image.
 COPY --from=builder /usr/src/app/tools/docker/docker-artifacts /usr/src/run/
-COPY --from=builder /usr/src/app/rest-api/target/rest-api.jar /usr/src/run/
+COPY --from=builder /usr/src/app/rest-api/target/rest-api.jar /usr/src/run/rest-api.jar
 
-# Patch Alpine packages and make the startup script executable.
-# Bash is installed only when qppConverter.sh explicitly uses a bash shebang.
-# This keeps the runtime image minimal while still supporting scripts that require /bin/bash.
-RUN apk upgrade --no-cache \
-    && if head -n 1 /usr/src/run/qppConverter.sh | grep -q "bash"; then apk add --no-cache bash; fi \
-    && chmod +x /usr/src/run/qppConverter.sh
+# Prepare the startup script for the Alpine runtime.
+# 1. Remove Windows CRLF line endings if present.
+# 2. Replace a bash shebang with sh because Alpine includes /bin/sh by default,
+#    but does not include /bin/bash unless bash is installed separately.
+# 3. Make the script executable.
+# 4. Validate that the required runtime files exist during image build.
+#
+# We intentionally do not run "apk upgrade" here.
+# The runtime image is pinned, so OS package versions come from the selected base image.
+# This keeps builds more reproducible and avoids transient failures from Alpine package repos.
+RUN sed -i 's/\r$//' /usr/src/run/qppConverter.sh \
+    && sed -i '1s|^#!/bin/bash|#!/bin/sh|' /usr/src/run/qppConverter.sh \
+    && chmod +x /usr/src/run/qppConverter.sh \
+    && test -f /usr/src/run/rest-api.jar \
+    && test -f /usr/src/run/qppConverter.sh
 
 # Application listens on 8443.
 EXPOSE 8443

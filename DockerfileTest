@@ -3,7 +3,7 @@
 # -----------------------------
 # Uses Maven with Eclipse Temurin Java 21 on Alpine.
 # This stage builds the application jar only.
-FROM maven:3.9.6-eclipse-temurin-21-alpine AS builder
+FROM maven:3.9.15-eclipse-temurin-21-alpine AS builder
 
 # Copy the full project into the build container.
 COPY ./ /usr/src/app/
@@ -17,7 +17,8 @@ WORKDIR /usr/src/app/
 # Tests and JaCoCo are skipped because this image only needs the built runtime jar.
 RUN mvn -B -ntp install \
     -Dmaven.test.skip=true \
-    -Djacoco.skip=true > /dev/null
+    -Djacoco.skip=true \
+    -Dskip.generate=true > /dev/null
 
 
 # -----------------------------
