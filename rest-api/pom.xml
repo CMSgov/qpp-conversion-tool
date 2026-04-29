@@ -32,7 +32,7 @@
         <requiredCodeCoverage>0.90</requiredCodeCoverage>
 
         <!-- For documentation only; actual coordination is done by the BOMs below -->
-        <spring-framework.version>6.2.17</spring-framework.version>
+        <spring-framework.version>6.2.18</spring-framework.version>
         <!-- tomcat.version is managed by spring-boot-dependencies BOM (3.5.13+) -->
         <tomcat.version>managed-by-boot-bom</tomcat.version>
         <!-- Test stack kept explicit so CI is deterministic across JDK updates -->
@@ -197,19 +197,19 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
-                <version>6.2.17</version>
+                <version>6.2.18</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-beans</artifactId>
-                <version>6.2.17</version>
+                <version>6.2.18</version>
             </dependency>
 
-            <!-- Framework BOM import: lifts ALL spring-* modules to 6.2.17 (security fix) -->
+            <!-- Framework BOM import: lifts ALL spring-* modules to 6.2.18 (security fix) -->
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-framework-bom</artifactId>
-                <version>6.2.17</version>
+                <version>6.2.18</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
