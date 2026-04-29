@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.encode;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.jayway.jsonpath.TypeRef;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -67,6 +68,11 @@ class QualityMeasureIdEncoderTest {
 		wrapper = new JsonWrapper();
 
 		MeasureConfigs.initMeasureConfigs(MeasureConfigs.TEST_MEASURE_DATA);
+	}
+
+	@AfterEach
+	void tearDown() {
+		MeasureConfigs.initMeasureConfigs(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 	}
 
 	@Test
