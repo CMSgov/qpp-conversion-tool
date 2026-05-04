@@ -19,7 +19,7 @@
     <parent>
         <groupId>gov.cms.qpp.conversion</groupId>
         <artifactId>qpp-conversion-tool-parent</artifactId>
-        <version>2026.03.31.01-RELEASE</version>
+        <version>2026.05.01.01-RELEASE</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -32,8 +32,9 @@
         <requiredCodeCoverage>0.90</requiredCodeCoverage>
 
         <!-- For documentation only; actual coordination is done by the BOMs below -->
-        <spring-framework.version>6.2.17</spring-framework.version>
-        <tomcat.version>10.1.52</tomcat.version>
+        <spring-framework.version>6.2.18</spring-framework.version>
+        <!-- tomcat.version is managed by spring-boot-dependencies BOM (3.5.13+) -->
+        <tomcat.version>managed-by-boot-bom</tomcat.version>
         <!-- Test stack kept explicit so CI is deterministic across JDK updates -->
         <junit.jupiter.version>5.11.4</junit.jupiter.version>
         <junit.platform.version>1.11.4</junit.platform.version>
@@ -44,7 +45,7 @@
         <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
 
         <!-- Spring Security aligned with Boot BOM to avoid split versions -->
-        <spring.security.version>6.5.9</spring.security.version>
+        <spring.security.version>6.5.10</spring.security.version>
 
         <!-- JaCoCo aggregated report path used by Sonar -->
         <sonar.coverage.jacoco.xmlReportPaths>
@@ -58,7 +59,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>3.4.8</version>
+                <version>3.5.13</version>
                 <executions>
                     <execution><goals><goal>repackage</goal></goals></execution>
                 </executions>
@@ -186,7 +187,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>3.4.11</version>
+                <version>3.5.14</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -196,39 +197,28 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
-                <version>6.2.17</version>
+                <version>6.2.18</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-beans</artifactId>
-                <version>6.2.17</version>
+                <version>6.2.18</version>
             </dependency>
 
-            <!-- Framework BOM import: lifts ALL spring-* modules to 6.2.17 (security fix) -->
+            <!-- Framework BOM import: lifts ALL spring-* modules to 6.2.18 (security fix) -->
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-framework-bom</artifactId>
-                <version>6.2.17</version>
+                <version>6.2.18</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
 
-            <!-- Tomcat pins: keep embeds on patched line even if Boot lags -->
-            <dependency>
-                <groupId>org.apache.tomcat.embed</groupId>
-                <artifactId>tomcat-embed-core</artifactId>
-                <version>10.1.52</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.tomcat.embed</groupId>
-                <artifactId>tomcat-embed-el</artifactId>
-                <version>10.1.52</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.tomcat.embed</groupId>
-                <artifactId>tomcat-embed-websocket</artifactId>
-                <version>10.1.52</version>
-            </dependency>
+            <!-- Tomcat: version is managed by spring-boot-dependencies BOM (3.5.13+).
+                 Manual overrides removed — Boot 3.5.13 ships a patched Tomcat that
+                 resolves CVE-2025-xxxx (CWE-287 Improper Authentication, CVSS 8.8) and
+                 CVE-2025-xxxx (CWE-444 HTTP Request Smuggling, CVSS 8.2).
+                 Re-pin here only if a future Boot release lags behind a new Tomcat CVE. -->
 
             <dependency>
                 <groupId>org.springframework.security</groupId>
