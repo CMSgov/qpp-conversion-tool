@@ -5,16 +5,36 @@ on:
     branches:
       - master
 
+permissions:
+  id-token: write  # required for OIDC token exchange
+  contents: read
+
 jobs:
   publish_and_backfill:
     name: Publish GitHub release and create backfill PR
     runs-on: ubuntu-latest
     steps:
-    
+      - name: Configure AWS Credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: arn:aws:iam::730335206644:role/delegatedadmin/developer/qppa-github-actions-role
+          aws-region: us-east-1
+
+      - name: Retrieve GitHub service account token from secops account
+        id: get-token
+        run: |
+          SECRET_VALUE=$(aws secretsmanager get-secret-value \
+            --secret-id "arn:aws:secretsmanager:us-east-1:863249929524:secret:qpp/qppa/github/token/automation-bhLO2e" \
+            --query SecretString \
+            --output text | jq -r ".GITHUB_TOKEN")
+          echo "::add-mask::$SECRET_VALUE"
+          echo "GITHUB_TOKEN=$SECRET_VALUE" >> $GITHUB_OUTPUT
+
       - name: Checkout codebase
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ steps.get-token.outputs.GITHUB_TOKEN }}
 
       - name: Get latest draft release
         id: get_release
@@ -23,12 +43,12 @@ jobs:
           RELEASE_DATA=$(gh release list --limit 1 --json isDraft,tagName,name | jq -r '.[0]')
           IS_DRAFT=$(echo "$RELEASE_DATA" | jq -r '.isDraft')
           TAG_NAME=$(echo "$RELEASE_DATA" | jq -r '.tagName')
-          
+
           echo "is_draft=${IS_DRAFT}" >> $GITHUB_OUTPUT
           echo "tag_name=${TAG_NAME}" >> $GITHUB_OUTPUT
           echo "Found release: ${TAG_NAME} (draft: ${IS_DRAFT})"
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.get-token.outputs.GITHUB_TOKEN }}
 
       - name: Publish draft release
         if: steps.get_release.outputs.is_draft == 'true'
@@ -36,11 +56,27 @@ jobs:
           gh release edit ${{ steps.get_release.outputs.tag_name }} --draft=false --latest
           echo "Published release ${{ steps.get_release.outputs.tag_name }} as latest"
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.get-token.outputs.GITHUB_TOKEN }}
   backfill:
     name: Backfill master to develop branch
     runs-on: ubuntu-latest
     steps:
+      - name: Configure AWS Credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: arn:aws:iam::730335206644:role/delegatedadmin/developer/qppa-github-actions-role
+          aws-region: us-east-1
+
+      - name: Retrieve GitHub service account token from secops account
+        id: get-token
+        run: |
+          SECRET_VALUE=$(aws secretsmanager get-secret-value \
+            --secret-id "arn:aws:secretsmanager:us-east-1:863249929524:secret:qpp/qppa/github/token/automation-bhLO2e" \
+            --query SecretString \
+            --output text | jq -r ".GITHUB_TOKEN")
+          echo "::add-mask::$SECRET_VALUE"
+          echo "GITHUB_TOKEN=$SECRET_VALUE" >> $GITHUB_OUTPUT
+
       - name: Check params
         run: |
           echo "head.ref = ${{github.event.pull_request.head.ref}}"
@@ -49,7 +85,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: master
-          token: ${{ secrets.ACTIONS_NICHOLAS_PAT }}
+          token: ${{ steps.get-token.outputs.GITHUB_TOKEN }}
 
       - name: Create backfill branch
         run: git checkout -b backfill/master;
@@ -62,14 +98,14 @@ jobs:
 
       - name: Push backfill branch
         env:
-          GITHUB_TOKEN: ${{ secrets.ACTIONS_NICHOLAS_PAT }}
+          GITHUB_TOKEN: ${{ steps.get-token.outputs.GITHUB_TOKEN }}
         run: |
           git push origin backfill/master
 
       - name: Create backfill pull request to develop branch
         uses: thomaseizinger/create-pull-request@1.4.0
         with:
-          github_token: ${{ secrets.ACTIONS_NICHOLAS_PAT }}
+          github_token: ${{ steps.get-token.outputs.GITHUB_TOKEN }}
           head: backfill/master
           base: develop
           draft: true
