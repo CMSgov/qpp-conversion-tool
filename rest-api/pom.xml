@@ -31,8 +31,8 @@
     <properties>
         <requiredCodeCoverage>0.90</requiredCodeCoverage>
 
-        <!-- For documentation only; actual coordination is done by the BOMs below -->
-        <spring-framework.version>6.2.19</spring-framework.version>
+        <!-- Alias the parent Spring Framework version so module references stay local. -->
+        <spring-framework.version>${spring.framework.version}</spring-framework.version>
         <!-- tomcat.version is managed by spring-boot-dependencies BOM (3.5.13+) -->
         <tomcat.version>managed-by-boot-bom</tomcat.version>
         <!-- Test stack kept explicit so CI is deterministic across JDK updates -->
