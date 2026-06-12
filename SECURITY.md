@@ -6,8 +6,8 @@ We always recommend users to upgrade to the latest revision. All security vulner
 
 | Version | Supported |
 | ------- | --------- |
-| >= 2026.03.31.01-RELEASE | :white_check_mark: |
-| < 2026.03.31.01-RELEASE  | :x: |
+| >= 2026.03.31.01-RELEASE | ✅ |
+| < 2026.03.31.01-RELEASE  | ❌ |
 
 ## Reporting a Vulnerability
 
