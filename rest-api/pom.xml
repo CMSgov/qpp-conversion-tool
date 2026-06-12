@@ -31,8 +31,8 @@
     <properties>
         <requiredCodeCoverage>0.90</requiredCodeCoverage>
 
-        <!-- For documentation only; actual coordination is done by the BOMs below -->
-        <spring-framework.version>6.2.18</spring-framework.version>
+        <!-- Alias the parent Spring Framework version so module references stay local. -->
+        <spring-framework.version>${spring.framework.version}</spring-framework.version>
         <!-- tomcat.version is managed by spring-boot-dependencies BOM (3.5.13+) -->
         <tomcat.version>managed-by-boot-bom</tomcat.version>
         <!-- Test stack kept explicit so CI is deterministic across JDK updates -->
@@ -45,7 +45,8 @@
         <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
 
         <!-- Spring Security aligned with Boot BOM to avoid split versions -->
-        <spring.security.version>6.5.10</spring.security.version>
+        <spring.security.version>6.5.11</spring.security.version>
+        <spring.retry.version>2.0.13</spring.retry.version>
 
         <!-- JaCoCo aggregated report path used by Sonar -->
         <sonar.coverage.jacoco.xmlReportPaths>
@@ -59,7 +60,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>3.5.13</version>
+                <version>3.5.15</version>
                 <executions>
                     <execution><goals><goal>repackage</goal></goals></execution>
                 </executions>
@@ -187,7 +188,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>3.5.14</version>
+                <version>3.5.15</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -197,21 +198,27 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
-                <version>6.2.18</version>
+                <version>${spring-framework.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-beans</artifactId>
-                <version>6.2.18</version>
+                <version>${spring-framework.version}</version>
             </dependency>
 
-            <!-- Framework BOM import: lifts ALL spring-* modules to 6.2.18 (security fix) -->
+            <!-- Framework BOM import: lifts spring-* modules to the patched framework line. -->
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-framework-bom</artifactId>
-                <version>6.2.18</version>
+                <version>${spring-framework.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.retry</groupId>
+                <artifactId>spring-retry</artifactId>
+                <version>${spring.retry.version}</version>
             </dependency>
 
             <!-- Tomcat: version is managed by spring-boot-dependencies BOM (3.5.13+).
@@ -310,6 +317,10 @@
         <!-- Starters: never set versions here, they come from Boot BOM -->
         <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-web</artifactId></dependency>
         <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-security</artifactId></dependency>
+
+        <!-- Keep these direct to force the patched framework version during mediation. -->
+        <dependency><groupId>org.springframework</groupId><artifactId>spring-core</artifactId><version>${spring-framework.version}</version></dependency>
+        <dependency><groupId>org.springframework</groupId><artifactId>spring-expression</artifactId><version>${spring-framework.version}</version></dependency>
 
         <!-- Misc -->
         <dependency><groupId>org.springframework.retry</groupId><artifactId>spring-retry</artifactId></dependency>
