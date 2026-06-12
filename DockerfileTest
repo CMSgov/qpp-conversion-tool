@@ -56,8 +56,5 @@ RUN sed -i 's/\r$//' /usr/src/run/qppConverterTest.sh \
 # Application test container listens on 8080.
 EXPOSE 8080
 
-# Set Spring profile to 'test' so the application uses test configuration with SSL keystore
-ENV SPRING_PROFILES_ACTIVE=test
-
 # Start the test application using the startup script.
 ENTRYPOINT ["/usr/src/run/qppConverterTest.sh"]
