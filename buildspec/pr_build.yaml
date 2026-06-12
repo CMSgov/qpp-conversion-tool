@@ -9,7 +9,9 @@ env:
   parameter-store:
     DOCKERHUB_TOKEN: "/global/dockerhub_token"
     DOCKERHUB_USER: "/global/dockerhub_user"
-    SCORING_REPO_PAT: "/global/scoring_api_repo_pat"
+
+  secrets-manager:
+    REPO_PAT: "arn:aws:secretsmanager:us-east-1:863249929524:secret:qpp/qppa/github/token/automation-bhLO2e:GITHUB_TOKEN"
 
 phases:
   install:
@@ -27,7 +29,7 @@ phases:
           curl \
             -X POST \
             -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${SCORING_REPO_PAT}" \
+            -H "Authorization: Bearer ${REPO_PAT}" \
             ${BRANCH_STATUSES_URL} \
             -d "${CURL_PAYLOAD}"
       - node -v
@@ -69,6 +71,6 @@ phases:
           curl \
             -X POST \
             -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${SCORING_REPO_PAT}" \
+            -H "Authorization: Bearer ${REPO_PAT}" \
             ${BRANCH_STATUSES_URL} \
             -d "${CURL_PAYLOAD}"

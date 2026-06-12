@@ -12,6 +12,17 @@
 		<cucumber.version>4.2.5</cucumber.version>
 	</properties>
 
+	<dependencyManagement>
+		<dependencies>
+			<!-- Override Selenium's vulnerable transitive OpenTelemetry API version. -->
+			<dependency>
+				<groupId>io.opentelemetry</groupId>
+				<artifactId>opentelemetry-api</artifactId>
+				<version>1.62.0</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -49,7 +60,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-            <version>6.2.18</version>
+			<version>6.2.19</version>
         </dependency>
 
         <dependency>
