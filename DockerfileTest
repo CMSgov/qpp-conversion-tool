@@ -38,6 +38,10 @@ COPY --from=builder /usr/src/app/rest-api/target/rest-api.jar /usr/src/run/rest-
 # Copy test runtime artifacts, including qppConverterTest.sh.
 COPY --from=builder /usr/src/app/tools/docker/docker-test-artifacts/ /usr/src/run/
 
+# Copy test profile config and SSL keystore so Spring Boot can load external test settings.
+COPY --from=builder /usr/src/app/rest-api/src/test/resources/application.properties /usr/src/run/application-test.properties
+COPY --from=builder /usr/src/app/rest-api/src/test/resources/test-keystore.p12 /usr/src/run/
+
 # Fix the startup script for Alpine runtime:
 # 1. Remove Windows CRLF line endings if present.
 # 2. Replace #!/bin/bash with #!/bin/sh because Alpine does not include bash by default.
