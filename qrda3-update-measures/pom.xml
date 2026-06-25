@@ -4,7 +4,7 @@
 
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-update-measures</artifactId>
-	<version>2026.06.15.01-RELEASE</version>
+	<version>2026.06.25.01-RELEASE</version>
 	<name>qrda3-update-measures</name>
 	<packaging>jar</packaging>
 
