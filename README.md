@@ -16,14 +16,14 @@ Before you can use the qpp-conversion-tool application, you must install and con
 
   [GitHub's Guide to Installing Git](https://help.github.com/articles/set-up-git) is a good source of information.
 
-* [Java Runtime](https://java.com/download) (version `21`).
+* [Java Runtime](https://java.com/download) (version `21.0.11` or later).
 
   It is important that you have the right version of `java` on your path.
 
   ```shell
-  # When you run 'java -version', you should get 21. For example:
+  # When you run 'java -version', you should get 21.0.11 or later. For example:
   java -version
-  java version "21"
+  java version "21.0.11"
   ...
   ```
 

@@ -6,12 +6,12 @@
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-conversion-tool-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>2026.06.15.01-RELEASE</version>
+	<version>2026.06.25.01-RELEASE</version>
 	<name>QPP Conversion Tool</name>
 
 	<properties>
 		<java.version>21</java.version>
-		<aws.version>1.12.787</aws.version>
+		<aws.version>1.12.797</aws.version>
 		<junit.version>5.11.4</junit.version>
 		<junit.platform.version>1.11.4</junit.platform.version>
 		<jjwt.version>0.10.7</jjwt.version>
@@ -240,7 +240,7 @@
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-core</artifactId>
-				<version>2.21.2</version>
+				<version>2.21.4</version>
 			</dependency>
 
 			<dependency>
@@ -252,13 +252,13 @@
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-databind</artifactId>
-				<version>2.21.2</version>
+				<version>2.21.4</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.fasterxml.jackson.dataformat</groupId>
 				<artifactId>jackson-dataformat-xml</artifactId>
-				<version>2.21.2</version>
+				<version>2.21.4</version>
 			</dependency>
 
 			<dependency>
@@ -546,7 +546,7 @@
 			<dependency>
 				<groupId>com.fasterxml.jackson.module</groupId>
 				<artifactId>jackson-module-jaxb-annotations</artifactId>
-				<version>2.21.2</version>
+				<version>2.21.4</version>
 			</dependency>
 
 			<dependency>
