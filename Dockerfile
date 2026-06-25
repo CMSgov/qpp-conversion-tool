@@ -44,7 +44,7 @@ RUN mvn -B -ntp \
 # Uses a pinned Alpine-based Java 21 JRE image.
 # This avoids the Ubuntu-based OS package vulnerabilities reported by Snyk
 # while keeping the runtime image smaller and more reproducible.
-FROM eclipse-temurin:21.0.10_7-jre-alpine-3.23
+FROM eclipse-temurin:21.0.11_7-jre-alpine-3.23
 
 # Set the directory where the application will run.
 WORKDIR /usr/src/run/

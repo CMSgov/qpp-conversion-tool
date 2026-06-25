@@ -26,7 +26,7 @@ RUN mvn -B -ntp install \
 # -----------------------------
 # Uses a smaller Alpine-based Eclipse Temurin Java 21 JRE image.
 # This avoids the Ubuntu-based OS package vulnerabilities reported by Snyk.
-FROM eclipse-temurin:21.0.10_7-jre-alpine-3.23
+FROM eclipse-temurin:21.0.11_7-jre-alpine-3.23
 
 # Set the runtime directory.
 WORKDIR /usr/src/run/
@@ -37,6 +37,10 @@ COPY --from=builder /usr/src/app/rest-api/target/rest-api.jar /usr/src/run/rest-
 
 # Copy test runtime artifacts, including qppConverterTest.sh.
 COPY --from=builder /usr/src/app/tools/docker/docker-test-artifacts/ /usr/src/run/
+
+# Copy test profile config and SSL keystore so Spring Boot can load external test settings.
+COPY --from=builder /usr/src/app/rest-api/src/test/resources/application.properties /usr/src/run/application-test.properties
+COPY --from=builder /usr/src/app/rest-api/src/test/resources/test-keystore.p12 /usr/src/run/
 
 # Fix the startup script for Alpine runtime:
 # 1. Remove Windows CRLF line endings if present.
