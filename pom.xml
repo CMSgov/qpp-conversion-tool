@@ -17,7 +17,7 @@
 		<jjwt.version>0.10.7</jjwt.version>
 		<spring.framework.version>6.2.19</spring.framework.version>
 		<spring.security.version>6.5.11</spring.security.version>
-		<tomcat.embed.version>10.1.55</tomcat.embed.version>
+		<tomcat.embed.version>10.1.56</tomcat.embed.version>
 
 		<requiredCodeCoverage>0.90</requiredCodeCoverage>
 		<verificationsPhase>verify</verificationsPhase>
@@ -472,13 +472,13 @@
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-classic</artifactId>
-				<version>1.5.25</version>
+				<version>1.5.36</version>
 			</dependency>
 
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-core</artifactId>
-				<version>1.5.25</version>
+				<version>1.5.36</version>
 			</dependency>
 
 			<dependency>
