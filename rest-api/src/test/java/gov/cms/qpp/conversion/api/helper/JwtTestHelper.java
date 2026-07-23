@@ -10,12 +10,8 @@ import javax.crypto.SecretKey;
 
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 
 public class JwtTestHelper {
-
-	private static final SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
 
 	public static String createJwt(JwtPayloadHelper payload) {
 		Map<String, Object> claimMap = createClaimMap(payload);
@@ -46,15 +42,15 @@ public class JwtTestHelper {
 	}
 
 	private static JwtBuilder createJwtBuilderWithClaimMap(Map<String, Object> claimMap) {
-		SecretKey signingKey = Keys.secretKeyFor(SIGNATURE_ALGORITHM); // TEST KEY
+		SecretKey signingKey = Jwts.SIG.HS256.key().build(); // TEST KEY
 
 		LocalDate now = LocalDate.now();
-		LocalDate expirationDate = LocalDate.of(2025, 12, 31);
+		LocalDate expirationDate = LocalDate.of(2030, 12, 31);
 		return Jwts.builder()
-				.setIssuedAt(valueOf(now))
-				.setClaims(claimMap)
-				.setIssuer("testing-org")
-				.setExpiration(valueOf(expirationDate))
-				.signWith(signingKey, SIGNATURE_ALGORITHM);
+				.issuedAt(valueOf(now))
+				.claims(claimMap)
+				.issuer("testing-org")
+				.expiration(valueOf(expirationDate))
+				.signWith(signingKey);
 	}
 }

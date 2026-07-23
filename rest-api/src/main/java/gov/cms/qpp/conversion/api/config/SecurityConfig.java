@@ -33,7 +33,7 @@ public class SecurityConfig {
 	protected String rtiOrgName;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) {
         http.securityMatcher(PCF_WILDCARD)
             .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
             .csrf(csrf -> csrf.disable())
