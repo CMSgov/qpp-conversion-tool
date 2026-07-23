@@ -35,9 +35,10 @@
         <spring-framework.version>${spring.framework.version}</spring-framework.version>
         <!-- tomcat.version is managed by spring-boot-dependencies BOM (3.5.13+) -->
         <tomcat.version>managed-by-boot-bom</tomcat.version>
-        <!-- Test stack kept explicit so CI is deterministic across JDK updates -->
-        <junit.jupiter.version>5.11.4</junit.jupiter.version>
-        <junit.platform.version>1.11.4</junit.platform.version>
+        <!-- JUnit 6 unified versioning: platform and jupiter share the same version number.
+             Boot 4.0.0 ships junit-jupiter 6.0.1 / junit-platform 6.0.1. -->
+        <junit.jupiter.version>6.0.1</junit.jupiter.version>
+        <junit.platform.version>6.0.1</junit.platform.version>
         <io.rest-assured.version>5.5.2</io.rest-assured.version>
         <groovy.version>4.0.28</groovy.version>
         <io.hamcrest.version>2.2</io.hamcrest.version>
@@ -45,7 +46,7 @@
         <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
 
         <!-- Spring Security aligned with Boot BOM to avoid split versions -->
-        <spring.security.version>6.5.11</spring.security.version>
+        <spring.security.version>7.0.0</spring.security.version>
         <spring.retry.version>2.0.13</spring.retry.version>
 
         <!-- JaCoCo aggregated report path used by Sonar -->
@@ -60,7 +61,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>3.5.15</version>
+                <version>4.0.0</version>
                 <executions>
                     <execution><goals><goal>repackage</goal></goals></execution>
                 </executions>
@@ -188,7 +189,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>3.5.15</version>
+                <version>4.0.0</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -271,21 +272,7 @@
         <!-- API / Docs -->
         <dependency>
             <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-        </dependency>
-
-        <!-- Pre-Jakarta plugin; exclude ALL old Spring 4.x bits it drags -->
-        <dependency>
-            <groupId>org.springframework.plugin</groupId>
-            <artifactId>spring-plugin-core</artifactId>
-            <version>1.2.0.RELEASE</version>
-            <exclusions>
-                <exclusion><groupId>org.springframework</groupId><artifactId>spring-beans</artifactId></exclusion>
-                <exclusion><groupId>org.springframework</groupId><artifactId>spring-core</artifactId></exclusion>
-                <exclusion><groupId>org.springframework</groupId><artifactId>spring-context</artifactId></exclusion>
-                <exclusion><groupId>org.springframework</groupId><artifactId>spring-aop</artifactId></exclusion>
-                <exclusion><groupId>org.springframework</groupId><artifactId>spring-expression</artifactId></exclusion>
-            </exclusions>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>
 
         <!-- Logging -->

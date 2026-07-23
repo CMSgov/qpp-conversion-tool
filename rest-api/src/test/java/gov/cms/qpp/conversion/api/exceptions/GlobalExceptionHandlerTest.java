@@ -213,7 +213,7 @@ class GlobalExceptionHandlerTest implements LoggerContract {
 
 		ResponseEntity<String> response = objectUnderTest.handleAmazonException(exception);
 
-		Truth.assertThat(response.getStatusCodeValue()).isEqualTo(404);
+		Truth.assertThat(response.getStatusCode().value()).isEqualTo(404);
 	}
 
 	@Test
@@ -271,7 +271,7 @@ class GlobalExceptionHandlerTest implements LoggerContract {
 				Mockito.mock(WebRequest.class)
 		);
 
-		Truth.assertThat(response.getStatusCodeValue()).isEqualTo(404);
+		Truth.assertThat(response.getStatusCode().value()).isEqualTo(404);
 		Truth.assertThat(response.getHeaders().getContentType())
 				.isEquivalentAccordingToCompareTo(MediaType.TEXT_PLAIN);
 		Truth.assertThat(response.getBody()).isEqualTo("Not found");

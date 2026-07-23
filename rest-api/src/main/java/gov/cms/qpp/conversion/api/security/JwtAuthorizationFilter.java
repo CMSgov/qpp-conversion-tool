@@ -1,14 +1,16 @@
 package gov.cms.qpp.conversion.api.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -63,19 +65,31 @@ public class JwtAuthorizationFilter implements Filter {
 		chain.doFilter(request, response);
 	}
 
+	/** Reusable Jackson mapper for JWT payload decoding. */
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+	private static final TypeReference<Map<String, Object>> MAP_TYPE = new TypeReference<>() {};
+
 	@SuppressWarnings("unchecked")
 	private Map<String, String> getPayload(String tokenHeader) {
-		String tokenWithoutBearer = tokenHeader.replace(TOKEN_PREFIX, "");
-		String tokenWithoutSignatureAndBearer = removeSignature(tokenWithoutBearer);
-		Claims body = Jwts.parser()
-				.parseClaimsJwt(tokenWithoutSignatureAndBearer)
-				.getBody();
-		return body.get("data", Map.class);
-	}
-
-	private String removeSignature(String jws) {
-		int i = jws.lastIndexOf('.');
-		return jws.substring(0, i + 1);
+		String token = tokenHeader.replace(TOKEN_PREFIX, "");
+		String[] parts = token.split("\\.");
+		if (parts.length < 2) {
+			return Collections.emptyMap();
+		}
+		try {
+			// Decode the payload (second part) directly — no signature verification needed.
+			// This works regardless of the alg header (HS256, RS256, none, etc.).
+			byte[] payloadBytes = Base64.getUrlDecoder().decode(parts[1]);
+			Map<String, Object> claims = OBJECT_MAPPER.readValue(
+					new String(payloadBytes, StandardCharsets.UTF_8), MAP_TYPE);
+			Object data = claims.get("data");
+			if (data instanceof Map) {
+				return (Map<String, String>) data;
+			}
+		} catch (IOException | IllegalArgumentException e) {
+			// Malformed token — treat as unauthenticated
+		}
+		return Collections.emptyMap();
 	}
 
 	private boolean isValidCpcPlusOrg(Map<String, String> payloadMap) {
