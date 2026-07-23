@@ -15,9 +15,9 @@
 		<junit.version>6.0.1</junit.version>
 		<junit.platform.version>6.0.1</junit.platform.version>
 		<jjwt.version>0.12.6</jjwt.version>
-		<spring.framework.version>7.0.1</spring.framework.version>
-		<spring.security.version>7.0.0</spring.security.version>
-		<tomcat.embed.version>11.0.8</tomcat.embed.version>
+<spring.framework.version>7.0.8</spring.framework.version>
+	<spring.security.version>7.0.5</spring.security.version>
+	<tomcat.embed.version>11.0.23</tomcat.embed.version>
 
 		<requiredCodeCoverage>0.90</requiredCodeCoverage>
 		<verificationsPhase>verify</verificationsPhase>
@@ -252,13 +252,7 @@
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-databind</artifactId>
-				<version>2.21.4</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.fasterxml.jackson.dataformat</groupId>
-				<artifactId>jackson-dataformat-xml</artifactId>
-				<version>2.21.4</version>
+			<version>2.21.5</version>
 			</dependency>
 
 			<dependency>
@@ -565,17 +559,28 @@
 				<version>9.0</version>
 			</dependency>
 
-			<dependency>
-				<groupId>com.jcabi</groupId>
-				<artifactId>jcabi-manifests</artifactId>
-				<version>1.1</version>
-			</dependency>
+		<!-- Override tools.jackson.core (Jackson 3.x) transitive deps from logstash to fix CVEs -->
+		<dependency>
+			<groupId>tools.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>3.1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>tools.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>3.1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>tools.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>3.1.4</version>
+		</dependency>
 
-			<dependency>
-				<groupId>org.junit.jupiter</groupId>
-				<artifactId>junit-jupiter-api</artifactId>
-				<version>${junit.version}</version>
-			</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>${junit.version}</version>
+		</dependency>
 
 			<dependency>
 				<groupId>net.jodah</groupId>
