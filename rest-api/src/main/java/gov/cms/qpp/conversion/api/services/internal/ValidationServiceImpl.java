@@ -18,10 +18,9 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.DefaultResponseErrorHandler;
+import org.springframework.web.client.NoOpResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
 import jakarta.annotation.PostConstruct;
@@ -52,6 +51,7 @@ public class ValidationServiceImpl implements ValidationService {
 	public ValidationServiceImpl(final Environment environment) {
 		this.environment = environment;
 		this.restTemplate = new RestTemplate();
+		this.restTemplate.setErrorHandler(new NoOpResponseErrorHandler());
 	}
 
 	/**
@@ -114,7 +114,6 @@ public class ValidationServiceImpl implements ValidationService {
 	 * @return The response from the validation API end-point.
 	 */
 	private ResponseEntity<String> callValidationEndpoint(String url, JsonWrapper qpp) {
-		restTemplate.setErrorHandler(new NoHandlingErrorHandler());
 		HttpEntity<String> request = new HttpEntity<>(qpp.toString(), getHeaders());
 
 		API_LOG.info("Calling QPP validation API {}", url);
@@ -187,20 +186,5 @@ public class ValidationServiceImpl implements ValidationService {
 		return JsonHelper.readJson(new ByteArrayInputStream(response.getBytes(StandardCharsets.UTF_8)),
 				ErrorMessage.class)
 				.getError();
-	}
-
-	/**
-	 * A private static class that tells the {@link RestTemplate} to not throw an exception on HTTP status 3xx and 4xx.
-	 */
-	private static class NoHandlingErrorHandler extends DefaultResponseErrorHandler {
-		/**
-		 * Empty so it doesn't throw an exception.
-		 *
-		 * @param response The ClientHttpResponse.
-		 */
-		@Override
-		public void handleError(final ClientHttpResponse response) {
-			//do nothing
-		}
 	}
 }

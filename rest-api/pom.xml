@@ -19,7 +19,7 @@
     <parent>
         <groupId>gov.cms.qpp.conversion</groupId>
         <artifactId>qpp-conversion-tool-parent</artifactId>
-        <version>2026.06.25.01-RELEASE</version>
+        <version>2026.07.23.01-RELEASE</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -35,9 +35,10 @@
         <spring-framework.version>${spring.framework.version}</spring-framework.version>
         <!-- tomcat.version is managed by spring-boot-dependencies BOM (3.5.13+) -->
         <tomcat.version>managed-by-boot-bom</tomcat.version>
-        <!-- Test stack kept explicit so CI is deterministic across JDK updates -->
-        <junit.jupiter.version>5.11.4</junit.jupiter.version>
-        <junit.platform.version>1.11.4</junit.platform.version>
+        <!-- JUnit 6 unified versioning: platform and jupiter share the same version number.
+             Boot 4.0.0 ships junit-jupiter 6.0.1 / junit-platform 6.0.1. -->
+        <junit.jupiter.version>6.0.1</junit.jupiter.version>
+        <junit.platform.version>6.0.1</junit.platform.version>
         <io.rest-assured.version>5.5.2</io.rest-assured.version>
         <groovy.version>4.0.28</groovy.version>
         <io.hamcrest.version>2.2</io.hamcrest.version>
@@ -45,7 +46,7 @@
         <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
 
         <!-- Spring Security aligned with Boot BOM to avoid split versions -->
-        <spring.security.version>6.5.11</spring.security.version>
+        <spring.security.version>7.0.5</spring.security.version>
         <spring.retry.version>2.0.13</spring.retry.version>
 
         <!-- JaCoCo aggregated report path used by Sonar -->
@@ -60,7 +61,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>3.5.15</version>
+                <version>4.0.6</version>
                 <executions>
                     <execution><goals><goal>repackage</goal></goals></execution>
                 </executions>
@@ -177,6 +178,16 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- Framework BOM import: MUST be first to override Boot 4.0.6's Framework 7.0.7 with 7.0.8.
+                 Maven uses "first declaration wins" for BOM imports. -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>${spring-framework.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-bom</artifactId>
@@ -188,29 +199,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>3.5.15</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <!-- These two lines are redundant when importing spring-framework-bom but kept for clarity.
-                 You can safely remove them later if desired. -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-webmvc</artifactId>
-                <version>${spring-framework.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-beans</artifactId>
-                <version>${spring-framework.version}</version>
-            </dependency>
-
-            <!-- Framework BOM import: lifts spring-* modules to the patched framework line. -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-framework-bom</artifactId>
-                <version>${spring-framework.version}</version>
+                <version>4.0.6</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -271,21 +260,7 @@
         <!-- API / Docs -->
         <dependency>
             <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-        </dependency>
-
-        <!-- Pre-Jakarta plugin; exclude ALL old Spring 4.x bits it drags -->
-        <dependency>
-            <groupId>org.springframework.plugin</groupId>
-            <artifactId>spring-plugin-core</artifactId>
-            <version>1.2.0.RELEASE</version>
-            <exclusions>
-                <exclusion><groupId>org.springframework</groupId><artifactId>spring-beans</artifactId></exclusion>
-                <exclusion><groupId>org.springframework</groupId><artifactId>spring-core</artifactId></exclusion>
-                <exclusion><groupId>org.springframework</groupId><artifactId>spring-context</artifactId></exclusion>
-                <exclusion><groupId>org.springframework</groupId><artifactId>spring-aop</artifactId></exclusion>
-                <exclusion><groupId>org.springframework</groupId><artifactId>spring-expression</artifactId></exclusion>
-            </exclusions>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>
 
         <!-- Logging -->
@@ -321,10 +296,12 @@
         <!-- Keep these direct to force the patched framework version during mediation. -->
         <dependency><groupId>org.springframework</groupId><artifactId>spring-core</artifactId><version>${spring-framework.version}</version></dependency>
         <dependency><groupId>org.springframework</groupId><artifactId>spring-expression</artifactId><version>${spring-framework.version}</version></dependency>
+        <dependency><groupId>org.springframework</groupId><artifactId>spring-context</artifactId><version>${spring-framework.version}</version></dependency>
+        <dependency><groupId>org.springframework</groupId><artifactId>spring-beans</artifactId><version>${spring-framework.version}</version></dependency>
 
         <!-- Misc -->
         <dependency><groupId>org.springframework.retry</groupId><artifactId>spring-retry</artifactId></dependency>
-        <dependency><groupId>com.jcabi</groupId><artifactId>jcabi-manifests</artifactId></dependency>
+        <dependency><groupId>com.jcabi</groupId><artifactId>jcabi-manifests</artifactId><version>1.1</version></dependency>
 
         <!-- AWS v1 clients (monitor for CVEs periodically) -->
         <dependency><groupId>com.amazonaws</groupId><artifactId>aws-java-sdk-core</artifactId></dependency>

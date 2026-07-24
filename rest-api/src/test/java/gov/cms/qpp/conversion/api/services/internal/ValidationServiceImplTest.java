@@ -218,20 +218,18 @@ class ValidationServiceImplTest {
 	}
 
 	@Test
-	void testNoHandlingErrorHandlerDoesNothing() throws IOException {
-		try {
-			Class<?> innerClass = Class.forName("gov.cms.qpp.conversion.api.services.internal.ValidationServiceImpl$NoHandlingErrorHandler");
-			java.lang.reflect.Constructor<?> constructor = innerClass.getDeclaredConstructor();
-			constructor.setAccessible(true);
-			Object errorHandler = constructor.newInstance();
+	void testNoOpResponseErrorHandlerDoesNothing() throws Exception {
+		// NoHandlingErrorHandler was replaced with Spring's built-in NoOpResponseErrorHandler.
+		// Verify it never flags a response as an error regardless of status code.
+		org.springframework.web.client.NoOpResponseErrorHandler handler =
+				new org.springframework.web.client.NoOpResponseErrorHandler();
 
-			java.lang.reflect.Method method = innerClass.getDeclaredMethod("handleError", org.springframework.http.client.ClientHttpResponse.class);
-			method.setAccessible(true);
+		org.springframework.http.client.ClientHttpResponse mockResponse =
+				mock(org.springframework.http.client.ClientHttpResponse.class);
+		when(mockResponse.getStatusCode())
+				.thenReturn(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR);
 
-			// This should not throw an exception
-			method.invoke(errorHandler, mock(org.springframework.http.client.ClientHttpResponse.class));
-		} catch (Exception e) {
-			throw new RuntimeException("Failed to test private NoHandlingErrorHandler", e);
-		}
+		assertThat("NoOpResponseErrorHandler must not flag errors",
+				handler.hasError(mockResponse), is(false));
 	}
 }

@@ -1,21 +1,8 @@
 package gov.cms.qpp.conversion.api.config;
 
-
-import com.amazonaws.SdkClientException;
-import com.amazonaws.services.kms.AWSKMS;
-import com.amazonaws.services.kms.AWSKMSClientBuilder;
-import org.mockito.Mockito;
-import org.mockito.Spy;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
 
-@PowerMockIgnore({"org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*", "com.sun.org.apache.xerces.*" })
+@SuppressWarnings("unused") // Tests commented out pending PowerMock -> Mockito.mockStatic migration
 public class KmsConfigTest {
 
 //	@Spy
