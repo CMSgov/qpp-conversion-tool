@@ -3,9 +3,9 @@ name: Code Metrics
 on:
   # manual trigger
   workflow_dispatch:
-  # scheduled trigger: every 2 weeks on Wednesday at 23:59
+  # scheduled trigger: every week on Wednesday at 23:00 UTC
   schedule:
-      - cron: '59 23 * * 3/2'
+      - cron: '0 23 * * 3'
 
 jobs:
   count-lines-and-coverage:
