@@ -46,7 +46,7 @@
         <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
 
         <!-- Spring Security aligned with Boot BOM to avoid split versions -->
-        <spring.security.version>7.0.5</spring.security.version>
+        <spring.security.version>7.0.6</spring.security.version>
         <spring.retry.version>2.0.13</spring.retry.version>
 
         <!-- JaCoCo aggregated report path used by Sonar -->
