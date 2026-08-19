@@ -47,7 +47,6 @@ public abstract class QrdaDecoder {
 	 *
 	 * @param defaultNs namespace assigned to decoder
 	 */
-	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	public void setNamespace(Namespace defaultNs) {
 		String defaultNsUri = defaultNs.getURI();
 		xpathNs = StringUtils.isEmpty(defaultNsUri) ?
