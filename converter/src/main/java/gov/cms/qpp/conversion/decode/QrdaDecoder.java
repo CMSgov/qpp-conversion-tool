@@ -27,7 +27,6 @@ public abstract class QrdaDecoder {
 
 	protected final Context context;
 	protected Namespace xpathNs = Namespace.NO_NAMESPACE;
-	private Namespace defaultNs = Namespace.NO_NAMESPACE;
 
 	/**
 	 * Construct a QRDA decoder with the given context.
@@ -50,7 +49,6 @@ public abstract class QrdaDecoder {
 	 */
 	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	public void setNamespace(Namespace defaultNs) {
-		this.defaultNs = defaultNs;
 		String defaultNsUri = defaultNs.getURI();
 		xpathNs = StringUtils.isEmpty(defaultNsUri) ?
 				Namespace.NO_NAMESPACE : Namespace.getNamespace("ns", defaultNsUri);
