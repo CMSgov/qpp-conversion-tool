@@ -1,5 +1,5 @@
 {
-	"uriSubstitution": "<nsuri>",
+	"uriSubstitution": "$nsuri",
 	"templates": [
 		{
 			"templateId": "CLINICAL_DOCUMENT",
@@ -64,7 +64,7 @@
 						"programName"
 					],
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'informationRecipient' and namespace-uri() = '<nsuri>']/*[local-name() = 'intendedRecipient' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.3.249.7']/@extension",
+						"relativeXPath": "./*[local-name() = 'informationRecipient' and namespace-uri() = $nsuri]/*[local-name() = 'intendedRecipient' and namespace-uri() = $nsuri]/*[local-name() = 'id' and namespace-uri() = $nsuri][@root='2.16.840.1.113883.3.249.7']/@extension",
 						"xmltype": "attribute"
 					}
 				},
@@ -73,7 +73,7 @@
 						"entityType"
 					],
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'informationRecipient' and namespace-uri() = '<nsuri>']/*[local-name() = 'intendedRecipient' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.3.249.7']/@extension",
+						"relativeXPath": "./*[local-name() = 'informationRecipient' and namespace-uri() = $nsuri]/*[local-name() = 'intendedRecipient' and namespace-uri() = $nsuri]/*[local-name() = 'id' and namespace-uri() = $nsuri][@root='2.16.840.1.113883.3.249.7']/@extension",
 						"xmltype": "attribute"
 					}
 				},
@@ -83,7 +83,7 @@
 						"nationalProviderIdentifier"
 					],
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'documentationOf' and namespace-uri() = '<nsuri>']/*[local-name() = 'serviceEvent' and namespace-uri() = '<nsuri>']/*[local-name() = 'performer' and namespace-uri() = '<nsuri>']/*[local-name() = 'assignedEntity' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.4.6']/@extension",
+						"relativeXPath": "./*[local-name() = 'documentationOf' and namespace-uri() = $nsuri]/*[local-name() = 'serviceEvent' and namespace-uri() = $nsuri]/*[local-name() = 'performer' and namespace-uri() = $nsuri]/*[local-name() = 'assignedEntity' and namespace-uri() = $nsuri]/*[local-name() = 'id' and namespace-uri() = $nsuri][@root='2.16.840.1.113883.4.6']/@extension",
 						"xmltype": "attribute"
 					}
 				},
@@ -93,7 +93,7 @@
 						"taxpayerIdentificationNumber"
 					],
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'documentationOf' and namespace-uri() = '<nsuri>']/*[local-name() = 'serviceEvent' and namespace-uri() = '<nsuri>']/*[local-name() = 'performer' and namespace-uri() = '<nsuri>']/*[local-name() = 'assignedEntity' and namespace-uri() = '<nsuri>']/*[local-name() = 'representedOrganization' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.4.2']/@extension",
+						"relativeXPath": "./*[local-name() = 'documentationOf' and namespace-uri() = $nsuri]/*[local-name() = 'serviceEvent' and namespace-uri() = $nsuri]/*[local-name() = 'performer' and namespace-uri() = $nsuri]/*[local-name() = 'assignedEntity' and namespace-uri() = $nsuri]/*[local-name() = 'representedOrganization' and namespace-uri() = $nsuri]/*[local-name() = 'id' and namespace-uri() = $nsuri][@root='2.16.840.1.113883.4.2']/@extension",
 						"xmltype": "attribute"
 					}
 				},
@@ -103,7 +103,7 @@
 						"practiceId"
 					],
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'participant' and namespace-uri() = '<nsuri>']/*[local-name() = 'associatedEntity' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.3.249.5.1']/@extension",
+						"relativeXPath": "./*[local-name() = 'participant' and namespace-uri() = $nsuri]/*[local-name() = 'associatedEntity' and namespace-uri() = $nsuri]/*[local-name() = 'id' and namespace-uri() = $nsuri][@root='2.16.840.1.113883.3.249.5.1']/@extension",
 						"xmltype": "attribute"
 					}
 				},
@@ -113,7 +113,7 @@
 						"pcfEntityId"
 					],
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'participant' and namespace-uri() = '<nsuri>']/*[local-name() = 'associatedEntity' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.3.249.5.3']/@extension",
+						"relativeXPath": "./*[local-name() = 'participant' and namespace-uri() = $nsuri]/*[local-name() = 'associatedEntity' and namespace-uri() = $nsuri]/*[local-name() = 'id' and namespace-uri() = $nsuri][@root='2.16.840.1.113883.3.249.5.3']/@extension",
 						"xmltype": "attribute"
 					}
 				},
@@ -123,14 +123,14 @@
 						"cehrtId"
 					],
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'participant' and namespace-uri() = '<nsuri>']/*[local-name() = 'associatedEntity' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.3.2074.1']/@extension",
+						"relativeXPath": "./*[local-name() = 'participant' and namespace-uri() = $nsuri]/*[local-name() = 'associatedEntity' and namespace-uri() = $nsuri]/*[local-name() = 'id' and namespace-uri() = $nsuri][@root='2.16.840.1.113883.3.2074.1']/@extension",
 						"xmltype": "attribute"
 					}
 				},
 				{
 					"decodeLabel": "practiceSiteAddr",
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'participant' and namespace-uri() = '<nsuri>']/*[local-name() = 'associatedEntity' and namespace-uri() = '<nsuri>']/*[local-name() = 'addr' and namespace-uri() = '<nsuri>']",
+						"relativeXPath": "./*[local-name() = 'participant' and namespace-uri() = $nsuri]/*[local-name() = 'associatedEntity' and namespace-uri() = $nsuri]/*[local-name() = 'addr' and namespace-uri() = $nsuri]",
 						"xmltype": "element"
 					}
 				},
@@ -140,7 +140,7 @@
 						"performanceYear"
 					],
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'effectiveTime' and namespace-uri() = '<nsuri>']/@value",
+						"relativeXPath": "./*[local-name() = 'effectiveTime' and namespace-uri() = $nsuri]/@value",
 						"xmltype": "attribute"
 					}
 				},
@@ -150,7 +150,7 @@
 						"virtualGroupId"
 					],
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'documentationOf' and namespace-uri() = '<nsuri>']/*[local-name() = 'serviceEvent' and namespace-uri() = '<nsuri>']/*[local-name() = 'performer' and namespace-uri() = '<nsuri>']/*[local-name() = 'assignedEntity' and namespace-uri() = '<nsuri>']/*[local-name() = 'representedOrganization' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.3.249.5.2']/@extension",
+						"relativeXPath": "./*[local-name() = 'documentationOf' and namespace-uri() = $nsuri]/*[local-name() = 'serviceEvent' and namespace-uri() = $nsuri]/*[local-name() = 'performer' and namespace-uri() = $nsuri]/*[local-name() = 'assignedEntity' and namespace-uri() = $nsuri]/*[local-name() = 'representedOrganization' and namespace-uri() = $nsuri]/*[local-name() = 'id' and namespace-uri() = $nsuri][@root='2.16.840.1.113883.3.249.5.2']/@extension",
 						"xmltype": "attribute"
 					}
 				},
@@ -160,7 +160,7 @@
 						"apmEntityId"
 					],
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'documentationOf' and namespace-uri() = '<nsuri>']/*[local-name() = 'serviceEvent' and namespace-uri() = '<nsuri>']/*[local-name() = 'performer' and namespace-uri() = '<nsuri>']/*[local-name() = 'assignedEntity' and namespace-uri() = '<nsuri>']/*[local-name() = 'representedOrganization' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.3.249.5.4']/@extension",
+						"relativeXPath": "./*[local-name() = 'documentationOf' and namespace-uri() = $nsuri]/*[local-name() = 'serviceEvent' and namespace-uri() = $nsuri]/*[local-name() = 'performer' and namespace-uri() = $nsuri]/*[local-name() = 'assignedEntity' and namespace-uri() = $nsuri]/*[local-name() = 'representedOrganization' and namespace-uri() = $nsuri]/*[local-name() = 'id' and namespace-uri() = $nsuri][@root='2.16.840.1.113883.3.249.5.4']/@extension",
 						"xmltype": "attribute"
 					}
 				},
@@ -177,7 +177,7 @@
 						"mvpId"
 					],
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'participant' and namespace-uri() = '<nsuri>']/*[local-name() = 'associatedEntity' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.3.249.5.6']/@extension",
+						"relativeXPath": "./*[local-name() = 'participant' and namespace-uri() = $nsuri]/*[local-name() = 'associatedEntity' and namespace-uri() = $nsuri]/*[local-name() = 'id' and namespace-uri() = $nsuri][@root='2.16.840.1.113883.3.249.5.6']/@extension",
 						"xmltype": "attribute"
 					}
 				},
@@ -187,7 +187,7 @@
 						"subgroupId"
 					],
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'documentationOf' and namespace-uri() = '<nsuri>']/*[local-name() = 'serviceEvent' and namespace-uri() = '<nsuri>']/*[local-name() = 'performer' and namespace-uri() = '<nsuri>']/*[local-name() = 'assignedEntity' and namespace-uri() = '<nsuri>']/*[local-name() = 'representedOrganization' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.3.249.5.5']/@extension",
+						"relativeXPath": "./*[local-name() = 'documentationOf' and namespace-uri() = $nsuri]/*[local-name() = 'serviceEvent' and namespace-uri() = $nsuri]/*[local-name() = 'performer' and namespace-uri() = $nsuri]/*[local-name() = 'assignedEntity' and namespace-uri() = $nsuri]/*[local-name() = 'representedOrganization' and namespace-uri() = $nsuri]/*[local-name() = 'id' and namespace-uri() = $nsuri][@root='2.16.840.1.113883.3.249.5.5']/@extension",
 						"xmltype": "attribute"
 					}
 				}
@@ -203,7 +203,7 @@
 						"value"
 					],
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'reference' and namespace-uri() = '<nsuri>']/*[local-name() = 'externalDocument' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>']/@extension",
+						"relativeXPath": "./*[local-name() = 'reference' and namespace-uri() = $nsuri]/*[local-name() = 'externalDocument' and namespace-uri() = $nsuri]/*[local-name() = 'id' and namespace-uri() = $nsuri]/@extension",
 						"xmltype": "attribute"
 					}
 				}
@@ -215,7 +215,7 @@
 				{
 					"decodeLabel": "measureId",
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'reference' and namespace-uri() = '<nsuri>']/*[local-name() = 'externalDocument' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.4.738']/@extension",
+						"relativeXPath": "./*[local-name() = 'reference' and namespace-uri() = $nsuri]/*[local-name() = 'externalDocument' and namespace-uri() = $nsuri]/*[local-name() = 'id' and namespace-uri() = $nsuri][@root='2.16.840.1.113883.4.738']/@extension",
 						"xmltype": "attribute"
 					}
 				}
@@ -237,7 +237,7 @@
 						"eligiblePopulationException"
 					],
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = '<nsuri>']/@value",
+						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = $nsuri]/@value",
 						"xmltype": "attribute"
 					}
 				}
@@ -252,7 +252,7 @@
 						"value"
 					],
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = '<nsuri>']/@code",
+						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = $nsuri]/@code",
 						"xmltype": "attribute"
 					}
 				}
@@ -264,7 +264,7 @@
 				{
 					"decodeLabel": "type",
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = '<nsuri>']/@code",
+						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = $nsuri]/@code",
 						"xmltype": "attribute"
 					}
 				}
@@ -279,7 +279,7 @@
 						"stratum"
 					],
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'reference' and namespace-uri() = '<nsuri>']/*[local-name() = 'externalObservation' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>']/@root",
+						"relativeXPath": "./*[local-name() = 'reference' and namespace-uri() = $nsuri]/*[local-name() = 'externalObservation' and namespace-uri() = $nsuri]/*[local-name() = 'id' and namespace-uri() = $nsuri]/@root",
 						"xmltype": "attribute"
 					}
 				}
@@ -291,21 +291,21 @@
 				{
 					"decodeLabel": "rate",
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = '<nsuri>']/@value",
+						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = $nsuri]/@value",
 						"xmltype": "attribute"
 					}
 				},
 				{
 					"decodeLabel": "nullRate",
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = '<nsuri>']/@nullFlavor",
+						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = $nsuri]/@nullFlavor",
 						"xmltype": "attribute"
 					}
 				},
 				{
 					"decodeLabel": "performanceRateUuid",
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'reference' and namespace-uri() = '<nsuri>']/*[local-name() = 'externalObservation' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>']/@root",
+						"relativeXPath": "./*[local-name() = 'reference' and namespace-uri() = $nsuri]/*[local-name() = 'externalObservation' and namespace-uri() = $nsuri]/*[local-name() = 'id' and namespace-uri() = $nsuri]/@root",
 						"xmltype": "attribute"
 					}
 				}
@@ -317,14 +317,14 @@
 				{
 					"decodeLabel": "code",
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = '<nsuri>']/@code",
+						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = $nsuri]/@code",
 						"xmltype": "attribute"
 					}
 				},
 				{
 					"decodeLabel": "payerCode",
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = '<nsuri>']/*[local-name() = 'translation' and namespace-uri() = '<nsuri>']/@code",
+						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = $nsuri]/*[local-name() = 'translation' and namespace-uri() = $nsuri]/@code",
 						"xmltype": "attribute"
 					}
 				}
@@ -340,7 +340,7 @@
 						"performanceYear"
 					],
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'effectiveTime' and namespace-uri() = '<nsuri>']/*[local-name() = 'low' and namespace-uri() = '<nsuri>']/@value",
+						"relativeXPath": "./*[local-name() = 'effectiveTime' and namespace-uri() = $nsuri]/*[local-name() = 'low' and namespace-uri() = $nsuri]/@value",
 						"xmltype": "attribute"
 					}
 				},
@@ -350,7 +350,7 @@
 						"performanceEnd"
 					],
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'effectiveTime' and namespace-uri() = '<nsuri>']/*[local-name() = 'high' and namespace-uri() = '<nsuri>']/@value",
+						"relativeXPath": "./*[local-name() = 'effectiveTime' and namespace-uri() = $nsuri]/*[local-name() = 'high' and namespace-uri() = $nsuri]/@value",
 						"xmltype": "attribute"
 					}
 				}
@@ -362,7 +362,7 @@
 				{
 					"decodeLabel": "clinicalDocumentV5",
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'templateId' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.10.20.27.2.1']/@extension",
+						"relativeXPath": "./*[local-name() = 'templateId' and namespace-uri() = $nsuri][@root='2.16.840.1.113883.10.20.27.2.1']/@extension",
 						"xmltype": "attribute"
 					}
 				}

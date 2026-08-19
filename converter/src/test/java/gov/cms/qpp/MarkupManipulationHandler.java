@@ -45,9 +45,9 @@ public class MarkupManipulationHandler {
 	}
 
 	public String getPath(String templateId, String attribute) {
-		String path = PathCorrelator.getXpath(templateId, attribute, NAMESPACE_URI);
+		String path = PathCorrelator.getXpath(templateId, attribute);
 		assertWithMessage("Bad combo templateId: %s attribute: %s", templateId, attribute).that(path).isNotNull();
-		return "//" + path;
+		return "//" + path.replace("$nsuri", "'" + NAMESPACE_URI + "'");
 	}
 
 	public String getCannedPath(CannedPath cannedPath) {
