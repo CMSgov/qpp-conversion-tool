@@ -328,6 +328,6 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 	 */
 	protected String getXpath(String attribute) {
 		String template = this.getClass().getAnnotation(Decoder.class).value().name();
-		return PathCorrelator.getXpath(template, attribute, defaultNs.getURI());
+		return PathCorrelator.getXpath(template, attribute);
 	}
 }

@@ -103,18 +103,18 @@ public class PathCorrelator {
 	}
 
 	/**
-	 * Assemble an xpath for a given base template and leaf attribute.
+	 * Retrieve the xpath template for a given base template and leaf attribute.
+	 * The namespace URI is NEVER text-substituted; templates reference it as the
+	 * XPath variable {@code $nsuri}, bound by the caller at compile time.
 	 *
 	 * @param base base template name
 	 * @param attribute leaf attribute name
-	 * @param uri URI to substitute
-	 * @return xpath expression
+	 * @return xpath expression containing a {@code $nsuri} variable reference
 	 */
-	public static String getXpath(String base, String attribute, String uri) {
+	public static String getXpath(String base, String attribute) {
 		String key = PathCorrelator.getKey(base, attribute);
 		Goods goods = pathCorrelationMap.get(key);
-		return (goods == null) ? null :
-				goods.getRelativeXPath().replace(uriSubstitution, uri);
+		return (goods == null) ? null : goods.getRelativeXPath();
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class PathCorrelator {
 					String encodeLabel = entry.get(JsonWrapper.ENCODING_KEY);
 					if (encodeLabel.equals(leaf)) {
 						return leaf.isEmpty()
-								|| PathCorrelator.getXpath(entry.get("template"), leaf, entry.get("nsuri")) != null;
+								|| PathCorrelator.getXpath(entry.get("template"), leaf) != null;
 					}
 					return encodeLabel.isEmpty();
 				})
@@ -196,7 +196,28 @@ public class PathCorrelator {
 		String nsUri = metadata.get("nsuri");
 		String baseTemplate = metadata.get("template");
 		String baseXpath = metadata.get("path");
-		String relativeXpath = PathCorrelator.getXpath(baseTemplate, leaf, nsUri);
-		return (relativeXpath != null) ? (baseXpath + "/" + relativeXpath) : baseXpath;
+		String relativeXpath = PathCorrelator.getXpath(baseTemplate, leaf);
+		return (relativeXpath != null)
+				? (baseXpath + "/"
+					+ relativeXpath.replace(uriSubstitution, quoteAsXPathLiteral(nsUri)))
+				: baseXpath;
+	}
+
+	/**
+	 * Quote a value as an XPath 1.0 string literal such that it can never alter
+	 * the surrounding expression. Quote-free values render exactly as before;
+	 * values containing both quote styles use {@code concat()}.
+	 *
+	 * @param value raw value
+	 * @return safe XPath string literal or concat() expression
+	 */
+	private static String quoteAsXPathLiteral(String value) {
+		if (!value.contains("'")) {
+			return "'" + value + "'";
+		}
+		if (!value.contains("\"")) {
+			return "\"" + value + "\"";
+		}
+		return "concat('" + value.replace("'", "', \"'\", '") + "')";
 	}
 }

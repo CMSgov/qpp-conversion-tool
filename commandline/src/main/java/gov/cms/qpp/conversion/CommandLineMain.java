@@ -8,6 +8,8 @@ import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import gov.cms.qpp.conversion.xml.XmlUtils;
+
 /**
  * Entry point for the converter when ran from the command line
  */
@@ -39,6 +41,7 @@ public class CommandLineMain {
 	 * @param arguments options and files to run with the converter
 	 */
 	public static void main(String... arguments) {
+		XmlUtils.installSecurityHardening();
 		CommandLine commandLine = cli(arguments);
 
 		if (commandLine != null) {

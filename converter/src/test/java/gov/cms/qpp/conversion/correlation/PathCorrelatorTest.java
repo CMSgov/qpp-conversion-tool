@@ -23,22 +23,19 @@ class PathCorrelatorTest {
 	@Test
 	void pathCorrelatorInitilization() {
 		String xpath = PathCorrelator.getXpath(TemplateId.CLINICAL_DOCUMENT.name(),
-				PROGRAM_NAME, "meep");
+				PROGRAM_NAME);
 		assertThat(xpath).isNotNull();
 	}
 
 	@Test
-	void verifyXpathNsSubstitution() {
-		String meep = "meep";
+	void xpathTemplateIsNeverTextSubstituted() {
 		String path = PathCorrelator.getXpath(
-				TemplateId.CLINICAL_DOCUMENT.name(), PROGRAM_NAME, meep);
+				TemplateId.CLINICAL_DOCUMENT.name(), PROGRAM_NAME);
 
-		int meepCount = (path.length() - path.replace(meep, "").length()) / meep.length();
-
-		assertThat(meepCount).isEqualTo(3);
-		assertWithMessage("No substitution placeholders should remain")
-				.that(path.indexOf(PathCorrelator.getUriSubstitution()))
-				.isEqualTo(-1);
+		assertThat(path).isNotNull();
+		assertWithMessage("the namespace must be bound as an xpath variable, never text-substituted")
+				.that(path)
+				.contains(PathCorrelator.getUriSubstitution());
 	}
 
 	@Test
@@ -79,7 +76,7 @@ class PathCorrelatorTest {
 	@Test
 	void getXpathReturnsNullForUnknownKey() {
 		// A template/attribute combination that will not exist in pathCorrelationMap
-		String result = PathCorrelator.getXpath("UNKNOWN_TEMPLATE", "unknown_attribute", "ns");
+		String result = PathCorrelator.getXpath("UNKNOWN_TEMPLATE", "unknown_attribute");
 		assertThat(result).isNull();
 	}
 

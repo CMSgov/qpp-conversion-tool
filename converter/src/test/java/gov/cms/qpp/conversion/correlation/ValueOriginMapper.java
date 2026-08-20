@@ -112,7 +112,9 @@ class ValueOriginMapper {
 			(current, meta) -> {
 				String label = meta.getString(JsonWrapper.ENCODING_KEY);
 				if (label.equals(key)) {
-					String relative = PathCorrelator.getXpath(meta.getString("template"), label, meta.getString("nsuri"));
+					String relative = PathCorrelator.getXpath(meta.getString("template"), label);
+					relative = (relative == null) ? null
+							: relative.replace("$nsuri", "'" + meta.getString("nsuri") + "'");
 					String axPath = (relative == null) ? meta.getString("path") : meta.getString("path") + "/" + relative;
 					return new JsonWrapper().put("xPath", axPath);
 				}
@@ -134,7 +136,9 @@ class ValueOriginMapper {
 		for (Map<String, String> metaMap : metadataSet) {
 			String label = metaMap.get(JsonWrapper.ENCODING_KEY);
 			if (label.equals(key)) {
-				String relative = PathCorrelator.getXpath(metaMap.get("template"), label, metaMap.get("nsuri"));
+				String relative = PathCorrelator.getXpath(metaMap.get("template"), label);
+				relative = (relative == null) ? null
+						: relative.replace("$nsuri", "'" + metaMap.get("nsuri") + "'");
 				xPath = (relative == null) ? metaMap.get("path") : metaMap.get("path") + "/" + relative;
 				break;
 			}
@@ -155,7 +159,9 @@ class ValueOriginMapper {
 		for (JsonWrapper metaMap : metadataSet) {
 			String label = metaMap.getString(JsonWrapper.ENCODING_KEY);
 			if (label.equals(key)) {
-				String relative = PathCorrelator.getXpath(metaMap.getString("template"), label, metaMap.getString("nsuri"));
+				String relative = PathCorrelator.getXpath(metaMap.getString("template"), label);
+				relative = (relative == null) ? null
+						: relative.replace("$nsuri", "'" + metaMap.getString("nsuri") + "'");
 				xPath = (relative == null) ? metaMap.getString("path") : metaMap.getString("path") + "/" + relative;
 				break;
 			}
