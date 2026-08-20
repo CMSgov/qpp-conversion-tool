@@ -7,7 +7,9 @@ import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -21,9 +23,10 @@ import org.jdom2.xpath.XPathFactory;
 
 public abstract class QrdaDecoder {
 
+	private static final String NSURI_VARIABLE = "nsuri";
+
 	protected final Context context;
 	protected Namespace xpathNs = Namespace.NO_NAMESPACE;
-	private Namespace defaultNs = Namespace.NO_NAMESPACE;
 
 	/**
 	 * Construct a QRDA decoder with the given context.
@@ -44,12 +47,18 @@ public abstract class QrdaDecoder {
 	 *
 	 * @param defaultNs namespace assigned to decoder
 	 */
-	@SuppressFBWarnings("EI_EXPOSE_REP2")
 	public void setNamespace(Namespace defaultNs) {
-		this.defaultNs = defaultNs;
 		String defaultNsUri = defaultNs.getURI();
 		xpathNs = StringUtils.isEmpty(defaultNsUri) ?
 				Namespace.NO_NAMESPACE : Namespace.getNamespace("ns", defaultNsUri);
+	}
+
+	/**
+	 * Variables bound for every converter xpath. The namespace URI is data, never
+	 * expression text, which makes xpath injection through xmlns impossible.
+	 */
+	private Map<String, Object> xpathVariables() {
+		return Collections.singletonMap(NSURI_VARIABLE, xpathNs.getURI());
 	}
 
 	/**
@@ -62,7 +71,7 @@ public abstract class QrdaDecoder {
 		String template = this.getClass()
 				.getAnnotation(Decoder.class)
 				.value().name();
-		return PathCorrelator.getXpath(template, attribute, defaultNs.getURI());
+		return PathCorrelator.getXpath(template, attribute);
 	}
 
 	/**
@@ -78,7 +87,7 @@ public abstract class QrdaDecoder {
 	protected void setOnNode(Element element, String expressionStr,
 							 Consumer consumer, Filter<?> filter, boolean selectOne) {
 		XPathExpression<?> expression = XPathFactory.instance()
-				.compile(expressionStr, filter, null, xpathNs);
+				.compile(expressionStr, filter, xpathVariables(), xpathNs);
 
 		if (selectOne) {
 			Optional.ofNullable(expression.evaluateFirst(element)).ifPresent(consumer);
@@ -100,7 +109,7 @@ public abstract class QrdaDecoder {
 	protected void setMultipleAttributesOnNode(Element element, String expressionStr,
 											   Consumer<List<String>> consumer, Filter<Attribute> filter) {
 		XPathExpression<Attribute> expression = XPathFactory.instance()
-				.compile(expressionStr, filter, null, xpathNs);
+				.compile(expressionStr, filter, xpathVariables(), xpathNs);
 		List<Attribute> elems = expression.evaluate(element);
 		List<String> values = new ArrayList<>();
 		elems.forEach(attr -> values.add(attr.getValue()));

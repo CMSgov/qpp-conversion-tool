@@ -11,6 +11,7 @@ import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -56,7 +57,8 @@ public class QualityMeasureIdDecoder extends QrdaDecoder {
 		String expressionStr = getXpath(MEASURE_ID);
 
 		XPathExpression<Attribute> expression = XPathFactory.instance()
-			.compile(expressionStr, Filters.attribute(), null, xpathNs);
+			.compile(expressionStr, Filters.attribute(),
+				Collections.singletonMap("nsuri", xpathNs.getURI()), xpathNs);
 		return expression.evaluate(element).stream()
 			.map(Attribute::getValue)
 			.collect(Collectors.toList());
