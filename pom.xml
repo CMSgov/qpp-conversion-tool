@@ -15,8 +15,8 @@
 		<junit.version>6.0.1</junit.version>
 		<junit.platform.version>6.0.1</junit.platform.version>
 		<jjwt.version>0.12.6</jjwt.version>
-<spring.framework.version>7.0.8</spring.framework.version>
-	<spring.security.version>7.0.5</spring.security.version>
+<spring.framework.version>7.0.9</spring.framework.version>
+	<spring.security.version>7.0.7</spring.security.version>
 	<tomcat.embed.version>11.0.23</tomcat.embed.version>
 
 		<requiredCodeCoverage>0.90</requiredCodeCoverage>
@@ -503,6 +503,16 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-framework-bom</artifactId>
 				<version>${spring.framework.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- Manage the full Spring Security stack so all modules 
+			 	 resolve a patched version and avoid CVE drift. -->
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-bom</artifactId>
+				<version>${spring.security.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
