@@ -507,6 +507,16 @@
 				<scope>import</scope>
 			</dependency>
 
+			<!-- Manage the full Spring Security stack so all modules 
+			 	 resolve a patched version and avoid CVE drift. -->
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-bom</artifactId>
+				<version>${spring.security.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
 				<artifactId>bcprov-jdk18on</artifactId>
