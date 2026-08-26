@@ -46,6 +46,9 @@ RUN mvn -B -ntp \
 # while keeping the runtime image smaller and more reproducible.
 FROM eclipse-temurin:21.0.11_10-jre-alpine-3.23
 
+# Install curl for health checks
+RUN apk add --no-cache curl
+
 # Set the directory where the application will run.
 WORKDIR /usr/src/run/
 
