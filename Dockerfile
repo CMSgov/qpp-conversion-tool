@@ -46,6 +46,15 @@ RUN mvn -B -ntp \
 # while keeping the runtime image smaller and more reproducible.
 FROM eclipse-temurin:21.0.11_10-jre-alpine-3.23
 
+# Install curl for health checks
+RUN apk add --no-cache curl
+# Targeted Vuln Remediation - may be removed in future versions of the base
+# image which is currently eclipse-temurin:21.0.11_10-jre-alpine-3.23
+RUN apk update && apk add --no-cache --upgrade \
+    "sqlite-libs>=3.53.4-r0" \
+    "p11-kit>=0.26.2-r0" \
+    "p11-kit-trust>=0.26.2-r0"
+
 # Set the directory where the application will run.
 WORKDIR /usr/src/run/
 
