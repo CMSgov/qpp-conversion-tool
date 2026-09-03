@@ -17,7 +17,7 @@
 		<jjwt.version>0.12.6</jjwt.version>
 <spring.framework.version>7.0.9</spring.framework.version>
 	<spring.security.version>7.0.7</spring.security.version>
-	<tomcat.embed.version>11.0.23</tomcat.embed.version>
+	<tomcat.embed.version>11.0.25</tomcat.embed.version>
 
 		<requiredCodeCoverage>0.90</requiredCodeCoverage>
 		<verificationsPhase>verify</verificationsPhase>
