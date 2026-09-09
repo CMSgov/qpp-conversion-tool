@@ -66,7 +66,7 @@ class QualitySectionEncoderTest {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue(CEHRT, "xxxxxxxxxx12345");
 		clinicalDocumentNode.putValue(PROGRAM_NAME, MIPS_PROGRAM_NAME);
-		Node qualitySectionNode = new Node(TemplateId.MEASURE_SECTION_V5, clinicalDocumentNode);
+		Node qualitySectionNode = new Node(TemplateId.MEASURE_SECTION_V6, clinicalDocumentNode);
 		qualitySectionNode.putValue("category", "quality");
 		qualitySectionNode.putValue("submissionMethod", "electronicHealthRecord");
 		Node reportingParameterNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);

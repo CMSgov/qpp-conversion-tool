@@ -11,7 +11,7 @@ import gov.cms.qpp.conversion.util.SubPopulationHelper;
 /**
  * Encoder for CMS V2 Measure Data
  */
-@Encoder(TemplateId.MEASURE_DATA_CMS_V4)
+@Encoder(TemplateId.MEASURE_DATA_CMS_V5)
 public class MeasureDataEncoder extends QppOutputEncoder {
 
 	public MeasureDataEncoder(Context context) {

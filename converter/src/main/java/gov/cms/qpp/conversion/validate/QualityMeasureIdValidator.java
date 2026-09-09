@@ -57,7 +57,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		//This should not be an error
 		forceCheckErrors(node)
 				.singleValue(ProblemCode.MISSING_OR_DUPLICATED_MEASURE_GUID, MeasureConfigHelper.MEASURE_ID)
-				.childMinimum(ProblemCode.CHILD_MEASURE_MISSING, 1, TemplateId.MEASURE_DATA_CMS_V4);
+				.childMinimum(ProblemCode.CHILD_MEASURE_MISSING, 1, TemplateId.MEASURE_DATA_CMS_V5);
 		validateMeasureConfigs(node);
 	}
 
@@ -126,7 +126,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 			.count();
 
 		Predicate<Node> childTypeFinder = makeTypeChildFinder(key.getAliases());
-		long actualChildTypeCount = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V4).filter(childTypeFinder).count();
+		long actualChildTypeCount = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V5).filter(childTypeFinder).count();
 
 		if (expectedChildTypeCount != actualChildTypeCount) {
 			LocalizedProblem error =
@@ -190,7 +190,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @return the denominator node filtered by sub population or null if not found
 	 */
 	private Node getDenominatorNodeFromCurrentSubPopulation(Node node, SubPopulation subPopulation) {
-		return node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V4).filter(thisNode ->
+		return node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V5).filter(thisNode ->
 				SubPopulationLabel.DENOM.hasAlias(thisNode.getValue(MEASURE_TYPE))
 						&& subPopulation.getDenominatorUuid().equals(thisNode.getValue(MEASURE_POPULATION)))
 				.findFirst().orElse(null);
@@ -204,7 +204,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @return the initial population node filtered by sub population or null if not found
 	 */
 	private Node getIpopNodeFromCurrentSubPopulation(Node node, SubPopulation subPopulation) {
-		return node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V4).filter(thisNode ->
+		return node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V5).filter(thisNode ->
 				(IPOP.contains(thisNode.getValue(MEASURE_TYPE)))
 						&& subPopulation.getInitialPopulationUuid().equals(thisNode.getValue(MEASURE_POPULATION)))
 				.findFirst().orElse(null);
@@ -244,7 +244,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 								MEASURE_POPULATION);
 
 				Node existingUuidChild = node
-						.getChildNodes(TemplateId.MEASURE_DATA_CMS_V4)
+						.getChildNodes(TemplateId.MEASURE_DATA_CMS_V5)
 						.filter(childTypeFinder)
 						.filter(childUuidFinder)
 						.findFirst()
@@ -262,7 +262,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	/**
 	 * Validator hook to allow implementor the opportunity to perform sub population validations.
 	 *
-	 * @param node a {@link TemplateId#MEASURE_DATA_CMS_V4} node
+	 * @param node a {@link TemplateId#MEASURE_DATA_CMS_V5} node
 	 * @param sub corresponding sub population
 	 */
 	protected void followUpHook(Node node, SubPopulation sub){

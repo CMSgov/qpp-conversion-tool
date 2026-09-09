@@ -11,7 +11,7 @@ CDA Header
 	<realmCode code="US"/>
 	<typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
 	<templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01"/>
-	<templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2024-12-01"/>
+	<templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2025-05-01"/>
 	<id root="26a42253-99f5-48e7-9274-b467c6c7f623"/>
 	<code code="55184-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 		  displayName="Quality Reporting Document Architecture Calculated Summary Report"/>
@@ -146,7 +146,7 @@ CDA Header
 					<!-- QRDA Category Report Section (V5) -->
 					<templateId root="2.16.840.1.113883.10.20.27.2.1" extension="2020-12-01"/>
 					<!-- QRDA Category III Measure Section (V5) -->
-					<templateId root="2.16.840.1.113883.10.20.27.2.3" extension="2022-05-01"/>
+					<templateId root="2.16.840.1.113883.10.20.27.2.3" extension="2025-05-01"/>
 					<code code="55186-1" codeSystem="2.16.840.1.113883.6.1"
 						  displayName="measure section"/>
 					<title>Measure Section</title>
@@ -810,18 +810,18 @@ CDA Header
 						</list>
 					</text>
 
-					<!--Measure Entry for CMS165v13-->
+					<!--Measure Entry for CMS165v14-->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
 							<templateId root="2.16.840.1.113883.10.20.27.3.1" extension="2016-09-01"/>
-							<templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2016-11-01"/>
+							<templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2025-05-01"/>
 							<id root="D5E68474-5760-11E7-1256-09173F13E4C5"/>
 							<statusCode code="completed"/>
 							<!--Measure Reference and Results-->
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
-									<id root="2.16.840.1.113883.4.738" extension="2c928083-8907-ce68-0189-2bbd31d6064e"/>
+									<id root="2.16.840.1.113883.4.738" extension="cd9a5c8e-ac16-4e10-a1f4-4dfe48e02cab"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 										  displayName="Health Quality Measure Document"/>
 									<text>Controlling High Blood Pressure</text>
@@ -850,7 +850,7 @@ CDA Header
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
-									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2025-05-01"/>
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
 										  displayName="Assertion"/>
 									<statusCode code="completed"/>
@@ -1317,7 +1317,7 @@ CDA Header
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
-									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2025-05-01"/>
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
 										  displayName="Assertion"/>
 									<statusCode code="completed"/>
@@ -1785,7 +1785,7 @@ CDA Header
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
-									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2025-05-01"/>
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
 										  displayName="Assertion"/>
 									<statusCode code="completed"/>
@@ -2253,7 +2253,7 @@ CDA Header
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
-									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2025-05-01"/>
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"
 										  displayName="Assertion"/>
 									<statusCode code="completed"/>
@@ -2720,14 +2720,14 @@ CDA Header
 						</organizer>
 					</entry>
 
-					<!--Measure Entry for CMS122v13-->
+					<!--Measure Entry for CMS122v14-->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
 							<!-- Measure Reference Template -->
 							<templateId root="2.16.840.1.113883.10.20.27.3.1" extension="2016-09-01"/>
 							<!-- Measure Reference & Results Template -->
-							<templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2018-05-01"/>
+							<templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2025-05-01"/>
 							<!-- CMS Measure Reference & Results Template -->
 							<id root="D5E68229-5760-11E7-1256-09173F13E4C5"/>
 							<statusCode code="completed"/>
@@ -2735,7 +2735,7 @@ CDA Header
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<id root="2.16.840.1.113883.4.738"
-										extension="2c928083-8907-ce68-0189-2bc5fa0d0739"/>
+										extension="9700a8b9-9f65-41a8-8464-1da26cda857b"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
 										  codeSystemName="LOINC" displayName="Health Quality Measure Document"/>
 									<text>Diabetes: Glycemic Status Assessment Greater Than 9%</text>
@@ -2768,7 +2768,7 @@ CDA Header
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
 									<!-- Measure Data Template -->
-									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2025-05-01"/>
 									<!-- CMS Measure Data Template -->
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
 										  codeSystemName="ActCode" displayName="Assertion"/>
@@ -2792,6 +2792,7 @@ CDA Header
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.6"
 														extension="2016-09-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.21" extension="2025-05-01"/>
 											<id root="D5E6822A-5760-11E7-1256-09173F13E4C5"/>
 											<code code="76689-9" codeSystem="2.16.840.1.113883.6.1"
 												  codeSystemName="LOINC" displayName="Sex assigned at birth"/>
@@ -2817,6 +2818,7 @@ CDA Header
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.6"
 														extension="2016-09-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.21" extension="2025-05-01"/>
 											<id root="D5E6822B-5760-11E7-1256-09173F13E4C5"/>
 											<code code="76689-9" codeSystem="2.16.840.1.113883.6.1"
 												  codeSystemName="LOINC" displayName="Sex assigned at birth"/>
@@ -3181,7 +3183,7 @@ CDA Header
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
 									<!-- Measure Data Template -->
-									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2025-05-01"/>
 									<!-- CMS Measure Data Template -->
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
 										  codeSystemName="ActCode" displayName="Assertion"/>
@@ -3205,6 +3207,7 @@ CDA Header
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.6"
 														extension="2016-09-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.21" extension="2025-05-01"/>
 											<id root="D5E6822A-5760-11E7-1256-09173F13E4C5"/>
 											<code code="76689-9" codeSystem="2.16.840.1.113883.6.1"
 												  codeSystemName="LOINC" displayName="Sex assigned at birth"/>
@@ -3230,6 +3233,7 @@ CDA Header
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.6"
 														extension="2016-09-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.21" extension="2025-05-01"/>
 											<id root="D5E6822B-5760-11E7-1256-09173F13E4C5"/>
 											<code code="76689-9" codeSystem="2.16.840.1.113883.6.1"
 												  codeSystemName="LOINC" displayName="Sex assigned at birth"/>
@@ -3594,7 +3598,7 @@ CDA Header
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
 									<!-- Measure Data Template -->
-									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2025-05-01"/>
 									<!-- CMS Measure Data Template -->
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
 										  codeSystemName="ActCode" displayName="Assertion"/>
@@ -3618,6 +3622,7 @@ CDA Header
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.6"
 														extension="2016-09-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.21" extension="2025-05-01"/>
 											<id root="D5E6822A-5760-11E7-1256-09173F13E4C5"/>
 											<code code="76689-9" codeSystem="2.16.840.1.113883.6.1"
 												  codeSystemName="LOINC" displayName="Sex assigned at birth"/>
@@ -3643,6 +3648,7 @@ CDA Header
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.6"
 														extension="2016-09-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.21" extension="2025-05-01"/>
 											<id root="D5E6822B-5760-11E7-1256-09173F13E4C5"/>
 											<code code="76689-9" codeSystem="2.16.840.1.113883.6.1"
 												  codeSystemName="LOINC" displayName="Sex assigned at birth"/>
@@ -4007,7 +4013,7 @@ CDA Header
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
 									<!-- Measure Data Template -->
-									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2018-05-01"/>
+									<templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2025-05-01"/>
 									<!-- CMS Measure Data Template -->
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
 										  codeSystemName="ActCode" displayName="Assertion"/>
@@ -4031,6 +4037,7 @@ CDA Header
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.6"
 														extension="2016-09-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.21" extension="2025-05-01"/>
 											<id root="D5E6822A-5760-11E7-1256-09173F13E4C5"/>
 											<code code="76689-9" codeSystem="2.16.840.1.113883.6.1"
 												  codeSystemName="LOINC" displayName="Sex assigned at birth"/>
@@ -4056,6 +4063,7 @@ CDA Header
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.6"
 														extension="2016-09-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.21" extension="2025-05-01"/>
 											<id root="D5E6822B-5760-11E7-1256-09173F13E4C5"/>
 											<code code="76689-9" codeSystem="2.16.840.1.113883.6.1"
 												  codeSystemName="LOINC" displayName="Sex assigned at birth"/>
