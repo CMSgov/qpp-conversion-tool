@@ -3,7 +3,7 @@ package gov.cms.qpp.conversion.validate;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static gov.cms.qpp.conversion.model.Constants.CATEGORY_SECTION_V5;
-import static gov.cms.qpp.conversion.model.TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V5;
+import static gov.cms.qpp.conversion.model.TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V6;
 
 import java.util.List;
 
@@ -34,8 +34,8 @@ class QualityMeasureSectionValidatorTest {
 	@BeforeEach
 	void setUpQualityMeasureSection() {
 		reportingParameterNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
-		qualityMeasureSectionNode = new Node(TemplateId.MEASURE_SECTION_V5);
-		measure = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V5);
+		qualityMeasureSectionNode = new Node(TemplateId.MEASURE_SECTION_V6);
+		measure = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V6);
 	}
 
 	@Test
@@ -97,7 +97,7 @@ class QualityMeasureSectionValidatorTest {
 	@Test
 	void duplicateEcqMeasure() {
 		List<Detail> errorDetails = manipulatorHandler
-				.executeScenario(MEASURE_REFERENCE_RESULTS_CMS_V5.name(), "measureId", false);
+				.executeScenario(MEASURE_REFERENCE_RESULTS_CMS_V6.name(), "measureId", false);
 		assertThat(errorDetails)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(ProblemCode.MISSING_OR_DUPLICATED_MEASURE_GUID);
@@ -121,7 +121,7 @@ class QualityMeasureSectionValidatorTest {
 
 		assertThat(errors)
 			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(ProblemCode.MEASURE_SECTION_V5_REQUIRES_CATEGORY_SECTION);
+			.contains(ProblemCode.MEASURE_SECTION_V6_REQUIRES_CATEGORY_SECTION);
 	}
 
 	private List<Detail> validateQualityMeasureSection() {

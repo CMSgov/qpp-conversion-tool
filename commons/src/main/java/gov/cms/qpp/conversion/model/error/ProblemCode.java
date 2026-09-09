@@ -118,7 +118,7 @@ public enum ProblemCode implements LocalizedProblem {
 		+ "Ensure your TIN and NPI counts match.", true),
 	MEASURE_SECTION_MISSING_MEASURE(81, "At least one measure is required in a measure section"),
 	TOO_MANY_ERRORS(82, "This QRDA III file shows 100 out of `(Error amount)` errors. Correct and re-submit the file. ", true),
-	MEASURE_SECTION_V5_REQUIRES_CATEGORY_SECTION(95, "The QRDA III file must contain one Category Section v5 with the extension 2020-12-01"),
+	MEASURE_SECTION_V6_REQUIRES_CATEGORY_SECTION(95, "The QRDA III file must contain one Category Section v5 with the extension 2020-12-01"),
 	MISSING_API_TIN_NPI_FILE(96, "The APM to TIN/NPI Combination file is missing."),
 	PI_RESTRICTED_MEASURES(102, "The Promoting Interoperability section cannot contain "
 		+ "PI_HIE_5 with PI_HIE_1, PI_LVOTC_1, PI_HIE_4, or PI_LVITC_2", false);
