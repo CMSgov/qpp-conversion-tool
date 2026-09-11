@@ -17,6 +17,8 @@
             <includeMdcKeyName>statusCode</includeMdcKeyName>
             <includeMdcKeyName>durationMs</includeMdcKeyName>
             <includeMdcKeyName>requestStage</includeMdcKeyName>
+            <includeMdcKeyName>protocol</includeMdcKeyName>
+            <includeMdcKeyName>queryString</includeMdcKeyName>
             <includeMdcKeyName>attachment</includeMdcKeyName>
 
             <!-- Timestamp format matching current pattern -->

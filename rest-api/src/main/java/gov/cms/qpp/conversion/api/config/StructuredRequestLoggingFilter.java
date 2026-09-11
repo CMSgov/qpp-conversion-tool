@@ -21,9 +21,13 @@ import java.util.Locale;
 /**
  * Structured request logging filter that logs request lifecycle events
  * with rich metadata for observability.
+ *
+ * Ordered to run after Spring Security's filter chain (registered at order -100) so that
+ * unauthenticated/rejected requests are turned away before this filter materializes the
+ * multipart body to compute the attachment hash.
  */
 @Component
-@Order(Ordered.HIGHEST_PRECEDENCE + 1) // After RequestTracingFilter
+@Order(Ordered.LOWEST_PRECEDENCE)
 public class StructuredRequestLoggingFilter implements Filter {
 
     private static final Logger LOG = LoggerFactory.getLogger(StructuredRequestLoggingFilter.class);
@@ -51,30 +55,38 @@ public class StructuredRequestLoggingFilter implements Filter {
 
         long startTime = System.currentTimeMillis();
 
+        // Populate MDC with request metadata
+        populateRequestMdc(httpRequest);
+
+        // Log STARTED event
+        MDC.put(MDC_REQUEST_STAGE, "STARTED");
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Request processing started");
+        }
+
         try {
-            // Populate MDC with request metadata
-            populateRequestMdc(httpRequest);
-
-            // Log STARTED event
-            MDC.put(MDC_REQUEST_STAGE, "STARTED");
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Request processing started");
-            }
-
             chain.doFilter(request, response);
-
+            logCompletion(httpResponse, startTime, "COMPLETED");
+        } catch (IOException | ServletException | RuntimeException e) {
+            // Distinguish a request that errored out from one that genuinely completed, since the
+            // container hasn't necessarily set the final error status on httpResponse yet at this point.
+            logCompletion(httpResponse, startTime, "FAILED");
+            throw e;
         } finally {
-            long duration = System.currentTimeMillis() - startTime;
-
-            // Log COMPLETED event with response metadata
-            MDC.put(MDC_REQUEST_STAGE, "COMPLETED");
-            MDC.put(MDC_STATUS_CODE, String.valueOf(httpResponse.getStatus()));
-            MDC.put(MDC_DURATION_MS, String.valueOf(duration));
-
-            LOG.info("Request processing completed");
-
-            // Clean up MDC
             clearRequestMdc();
+        }
+    }
+
+    private void logCompletion(HttpServletResponse httpResponse, long startTime, String stage) {
+        long duration = System.currentTimeMillis() - startTime;
+        MDC.put(MDC_REQUEST_STAGE, stage);
+        MDC.put(MDC_STATUS_CODE, String.valueOf(httpResponse.getStatus()));
+        MDC.put(MDC_DURATION_MS, String.valueOf(duration));
+
+        if ("FAILED".equals(stage)) {
+            LOG.error("Request processing failed");
+        } else {
+            LOG.info("Request processing completed");
         }
     }
 
