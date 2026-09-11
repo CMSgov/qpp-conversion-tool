@@ -14,7 +14,7 @@ import static gov.cms.qpp.conversion.model.Constants.MEASURE_POPULATION;
 /**
  * Validates Measure Data - an Aggregate Count child
  */
-@Validator(TemplateId.MEASURE_DATA_CMS_V4)
+@Validator(TemplateId.MEASURE_DATA_CMS_V5)
 public class MeasureDataValidator extends NodeValidator {
 	protected static final String EMPTY_POPULATION_ID = "empty population id";
 

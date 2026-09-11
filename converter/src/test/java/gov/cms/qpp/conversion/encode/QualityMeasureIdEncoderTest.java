@@ -33,7 +33,7 @@ class QualityMeasureIdEncoderTest {
 
 	@BeforeEach
 	void setUp() {
-		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V5);
+		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V6);
 		qualityMeasureId.putValue("measureId", "40280382-6258-7581-0162-92d6e6db1680");
 
 		aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
@@ -42,24 +42,24 @@ class QualityMeasureIdEncoderTest {
 		Node paymentNode = new Node(TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2);
 		paymentNode.putValue("place", "holder");
 
-		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V4);
+		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V5);
 		populationNode.putValue(type, SubPopulationLabel.IPOP.name());
 		populationNode.addChildNode(aggregateCountNode);
 
-		denomExclusionNode = new Node(TemplateId.MEASURE_DATA_CMS_V4);
+		denomExclusionNode = new Node(TemplateId.MEASURE_DATA_CMS_V5);
 		denomExclusionNode.putValue(type, SubPopulationLabel.DENEX.name());
 		denomExclusionNode.addChildNode(aggregateCountNode);
 
-		denominatorExceptionNode = new Node(TemplateId.MEASURE_DATA_CMS_V4);
+		denominatorExceptionNode = new Node(TemplateId.MEASURE_DATA_CMS_V5);
 		denominatorExceptionNode.putValue(type, SubPopulationLabel.DENEXCEP.name());
 		denominatorExceptionNode.addChildNode(aggregateCountNode);
 
-		numeratorNode = new Node(TemplateId.MEASURE_DATA_CMS_V4);
+		numeratorNode = new Node(TemplateId.MEASURE_DATA_CMS_V5);
 		numeratorNode.putValue(type, SubPopulationLabel.NUMER.name());
 		numeratorNode.addChildNode(aggregateCountNode);
 		numeratorNode.addChildNode(paymentNode);
 
-		denominatorNode = new Node(TemplateId.MEASURE_DATA_CMS_V4);
+		denominatorNode = new Node(TemplateId.MEASURE_DATA_CMS_V5);
 		denominatorNode.putValue(type, SubPopulationLabel.DENOM.name());
 		denominatorNode.addChildNode(paymentNode);
 		denominatorNode.addChildNode(aggregateCountNode);
@@ -104,7 +104,7 @@ class QualityMeasureIdEncoderTest {
 
 	@Test
 	void testPopulationAltTotalIsEncoded() {
-		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V4);
+		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V5);
 		populationNode.putValue(type, "IPP");
 		populationNode.addChildNode(aggregateCountNode);
 		executeInternalEncode();
