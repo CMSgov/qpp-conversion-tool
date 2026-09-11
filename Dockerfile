@@ -44,16 +44,14 @@ RUN mvn -B -ntp \
 # Uses a pinned Alpine-based Java 21 JRE image.
 # This avoids the Ubuntu-based OS package vulnerabilities reported by Snyk
 # while keeping the runtime image smaller and more reproducible.
-FROM eclipse-temurin:21.0.11_10-jre-alpine-3.23
+FROM eclipse-temurin:21.0.12_8-jre-alpine-3.23
 
 # Install curl for health checks
 RUN apk add --no-cache curl
 # Targeted Vuln Remediation - may be removed in future versions of the base
-# image which is currently eclipse-temurin:21.0.11_10-jre-alpine-3.23
+# image which is currently eclipse-temurin:21.0.12_8-jre-alpine-3.23
 RUN apk update && apk add --no-cache --upgrade \
-    "sqlite-libs>=3.53.4-r0" \
-    "p11-kit>=0.26.2-r0" \
-    "p11-kit-trust>=0.26.2-r0"
+    "expat>=2.8.4-r0"
 
 # Set the directory where the application will run.
 WORKDIR /usr/src/run/

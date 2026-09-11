@@ -61,7 +61,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>4.0.6</version>
+                <version>4.0.7</version>
                 <executions>
                     <execution><goals><goal>repackage</goal></goals></execution>
                 </executions>
@@ -196,10 +196,20 @@
                 <scope>import</scope>
             </dependency>
 
+            <!-- Log4j BOM import: MUST precede spring-boot-dependencies to override Boot 4.0.7's
+                 bundled log4j2 2.25.4 with 2.25.5, fixing an Improper Encoding/Escaping of Output CVE. -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-bom</artifactId>
+                <version>2.25.5</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>4.0.6</version>
+                <version>4.0.7</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
