@@ -66,25 +66,25 @@ public class StructuredRequestLoggingFilter implements Filter {
 
         try {
             chain.doFilter(request, response);
-            logCompletion(httpResponse, startTime, "COMPLETED");
+            logCompletion(httpResponse, startTime, "COMPLETED", null);
         } catch (IOException | ServletException | RuntimeException e) {
             // Distinguish a request that errored out from one that genuinely completed, since the
             // container hasn't necessarily set the final error status on httpResponse yet at this point.
-            logCompletion(httpResponse, startTime, "FAILED");
+            logCompletion(httpResponse, startTime, "FAILED", e);
             throw e;
         } finally {
             clearRequestMdc();
         }
     }
 
-    private void logCompletion(HttpServletResponse httpResponse, long startTime, String stage) {
+    private void logCompletion(HttpServletResponse httpResponse, long startTime, String stage, Throwable failure) {
         long duration = System.currentTimeMillis() - startTime;
         MDC.put(MDC_REQUEST_STAGE, stage);
         MDC.put(MDC_STATUS_CODE, String.valueOf(httpResponse.getStatus()));
         MDC.put(MDC_DURATION_MS, String.valueOf(duration));
 
         if ("FAILED".equals(stage)) {
-            LOG.error("Request processing failed");
+            LOG.error("Request processing failed", failure);
         } else {
             LOG.info("Request processing completed");
         }
