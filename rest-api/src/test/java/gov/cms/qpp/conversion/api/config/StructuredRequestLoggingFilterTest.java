@@ -98,5 +98,27 @@ class StructuredRequestLoggingFilterTest {
 		assertThat(thrown).isSameInstanceAs(boom);
 		assertThat(MDC.get("requestStage")).isNull();
 	}
+
+	@Test
+	void fallsBackTo500WhenFailedResponseIsUncommittedAndStillDefaultStatus() {
+		HttpServletResponse response = mock(HttpServletResponse.class);
+		when(response.getStatus()).thenReturn(HttpServletResponse.SC_OK);
+		when(response.isCommitted()).thenReturn(false);
+
+		int resolved = filter.resolveStatusCode(response, "FAILED");
+
+		assertThat(resolved).isEqualTo(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	}
+
+	@Test
+	void preservesAlreadySetErrorStatusOnFailure() {
+		HttpServletResponse response = mock(HttpServletResponse.class);
+		when(response.getStatus()).thenReturn(HttpServletResponse.SC_BAD_REQUEST);
+		when(response.isCommitted()).thenReturn(true);
+
+		int resolved = filter.resolveStatusCode(response, "FAILED");
+
+		assertThat(resolved).isEqualTo(HttpServletResponse.SC_BAD_REQUEST);
+	}
 }
 

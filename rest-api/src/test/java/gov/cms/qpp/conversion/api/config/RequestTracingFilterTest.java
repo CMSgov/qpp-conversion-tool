@@ -64,4 +64,19 @@ class RequestTracingFilterTest {
 		verify(response).setHeader(anyString(), anyString());
 		verify(chain).doFilter(request, response);
 	}
+
+	@Test
+	void generatesNewRequestIdWhenHeaderIsLowEntropyButHexLike() throws Exception {
+		HttpServletRequest request = mock(HttpServletRequest.class);
+		HttpServletResponse response = mock(HttpServletResponse.class);
+		FilterChain chain = mock(FilterChain.class);
+		String lowEntropyId = "deadbeef";
+		when(request.getHeader(RequestTracingFilter.REQUEST_ID_HEADER)).thenReturn(lowEntropyId);
+
+		filter.doFilter(request, response, chain);
+
+		verify(response, org.mockito.Mockito.never()).setHeader(RequestTracingFilter.REQUEST_ID_HEADER, lowEntropyId);
+		verify(response).setHeader(anyString(), anyString());
+		verify(chain).doFilter(request, response);
+	}
 }

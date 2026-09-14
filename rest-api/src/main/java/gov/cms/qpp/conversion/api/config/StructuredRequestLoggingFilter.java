@@ -80,7 +80,7 @@ public class StructuredRequestLoggingFilter implements Filter {
     private void logCompletion(HttpServletResponse httpResponse, long startTime, String stage, Throwable failure) {
         long duration = System.currentTimeMillis() - startTime;
         MDC.put(MDC_REQUEST_STAGE, stage);
-        MDC.put(MDC_STATUS_CODE, String.valueOf(httpResponse.getStatus()));
+        MDC.put(MDC_STATUS_CODE, String.valueOf(resolveStatusCode(httpResponse, stage)));
         MDC.put(MDC_DURATION_MS, String.valueOf(duration));
 
         if ("FAILED".equals(stage)) {
@@ -90,10 +90,20 @@ public class StructuredRequestLoggingFilter implements Filter {
         }
     }
 
+    // The container reports its default 200 for an uncommitted response even when the chain
+    // threw before setting a real error status, so surface 500 in that specific case only.
+    int resolveStatusCode(HttpServletResponse httpResponse, String stage) {
+        int status = httpResponse.getStatus();
+        if ("FAILED".equals(stage) && !httpResponse.isCommitted() && status == HttpServletResponse.SC_OK) {
+            return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+        }
+        return status;
+    }
+
     private void populateRequestMdc(HttpServletRequest request) {
         MDC.put(MDC_HTTP_METHOD, request.getMethod());
         MDC.put(MDC_REQUEST_URI, request.getRequestURI());
-        MDC.put(MDC_REMOTE_ADDR, getClientIpAddress(request));
+        MDC.put(MDC_REMOTE_ADDR, request.getRemoteAddr());
         MDC.put(MDC_USER_AGENT, sanitizeHeader(request.getHeader("User-Agent")));
         MDC.put(MDC_PROTOCOL, request.getProtocol());
 
@@ -131,16 +141,6 @@ public class StructuredRequestLoggingFilter implements Filter {
     private boolean isMultipart(HttpServletRequest request) {
         return request.getContentType() != null
                 && request.getContentType().toLowerCase(Locale.ENGLISH).startsWith("multipart/");
-    }
-
-    private String getClientIpAddress(HttpServletRequest request) {
-        // Check for forwarded IP from load balancer
-        String xForwardedFor = request.getHeader("X-Forwarded-For");
-        if (xForwardedFor != null && !xForwardedFor.isBlank()) {
-            // Take first IP in chain (original client)
-            return xForwardedFor.split(",")[0].trim();
-        }
-        return request.getRemoteAddr();
     }
 
     private String sanitizeHeader(String value) {

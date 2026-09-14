@@ -29,8 +29,10 @@ public class RequestTracingFilter implements Filter {
     public static final String REQUEST_ID_HEADER = "X-Request-ID";
     public static final String REQUEST_ID_MDC_KEY = "requestId";
 
-    // Only accept UUID-shaped inbound ids to prevent header/log injection via a client-supplied value
-    private static final Pattern VALID_REQUEST_ID = Pattern.compile("^[a-fA-F0-9-]{1,64}$");
+    // Only accept canonical UUID-shaped inbound ids to prevent header/log injection and to stop
+    // callers from forcing low-entropy/colliding correlation ids via a client-supplied value
+    private static final Pattern VALID_REQUEST_ID = Pattern.compile(
+            "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
 
     @Override
     @SuppressFBWarnings(value = {"BC_UNCONFIRMED_CAST", "HRS_REQUEST_PARAMETER_TO_HTTP_HEADER"},
