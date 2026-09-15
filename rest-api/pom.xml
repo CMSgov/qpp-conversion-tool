@@ -46,7 +46,7 @@
         <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
 
         <!-- Spring Security aligned with Boot BOM to avoid split versions -->
-        <spring.security.version>7.0.7</spring.security.version>
+        <spring.security.version>7.1.1</spring.security.version>
         <spring.retry.version>2.0.13</spring.retry.version>
 
         <!-- JaCoCo aggregated report path used by Sonar -->
@@ -61,7 +61,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>4.0.7</version>
+                <version>4.1.1</version>
                 <executions>
                     <execution><goals><goal>repackage</goal></goals></execution>
                 </executions>
@@ -209,7 +209,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>4.0.7</version>
+                <version>4.1.1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
