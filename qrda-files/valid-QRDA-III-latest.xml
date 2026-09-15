@@ -872,7 +872,7 @@ CDA Header
 									<entryRelationship typeCode="COMP">
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.6" extension="2016-09-01"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.21" extension="2016-11-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.21" extension="2025-05-01"/>
 											<id root="D5E68475-5760-11E7-1256-09173F13E4C5"/>
 											<code code="76689-9" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 												  displayName="Sex assigned at birth"/>
@@ -902,7 +902,7 @@ CDA Header
 									<entryRelationship typeCode="COMP">
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.6" extension="2016-09-01"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.21" extension="2016-11-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.21" extension="2025-05-01"/>
 											<id root="D5E68476-5760-11E7-1256-09173F13E4C5"/>
 											<code code="76689-9" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 												  displayName="Sex assigned at birth"/>
@@ -1340,7 +1340,7 @@ CDA Header
 									<entryRelationship typeCode="COMP">
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.6" extension="2016-09-01"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.21" extension="2016-11-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.21" extension="2025-05-01"/>
 											<id root="D5E68481-5760-11E7-1256-09173F13E4C5"/>
 											<code code="76689-9" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 												  displayName="Sex assigned at birth"/>
@@ -1370,7 +1370,7 @@ CDA Header
 									<entryRelationship typeCode="COMP">
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.6" extension="2016-09-01"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.21" extension="2016-11-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.21" extension="2025-05-01"/>
 											<id root="D5E68482-5760-11E7-1256-09173F13E4C5"/>
 											<code code="76689-9" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 												  displayName="Sex assigned at birth"/>
@@ -1808,7 +1808,7 @@ CDA Header
 									<entryRelationship typeCode="COMP">
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.6" extension="2016-09-01"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.21" extension="2016-11-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.21" extension="2025-05-01"/>
 											<id root="D5E6848D-5760-11E7-1256-09173F13E4C5"/>
 											<code code="76689-9" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 												  displayName="Sex assigned at birth"/>
@@ -1838,7 +1838,7 @@ CDA Header
 									<entryRelationship typeCode="COMP">
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.6" extension="2016-09-01"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.21" extension="2016-11-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.21" extension="2025-05-01"/>
 											<id root="D5E6848E-5760-11E7-1256-09173F13E4C5"/>
 											<code code="76689-9" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 												  displayName="Sex assigned at birth"/>
@@ -2276,7 +2276,7 @@ CDA Header
 									<entryRelationship typeCode="COMP">
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.6" extension="2016-09-01"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.21" extension="2016-11-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.21" extension="2025-05-01"/>
 											<id root="D5E68499-5760-11E7-1256-09173F13E4C5"/>
 											<code code="76689-9" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 												  displayName="Sex assigned at birth"/>
@@ -2306,7 +2306,7 @@ CDA Header
 									<entryRelationship typeCode="COMP">
 										<observation classCode="OBS" moodCode="EVN">
 											<templateId root="2.16.840.1.113883.10.20.27.3.6" extension="2016-09-01"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.21" extension="2016-11-01"/>
+											<templateId root="2.16.840.1.113883.10.20.27.3.21" extension="2025-05-01"/>
 											<id root="D5E6849A-5760-11E7-1256-09173F13E4C5"/>
 											<code code="76689-9" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
 												  displayName="Sex assigned at birth"/>
