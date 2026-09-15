@@ -7,8 +7,7 @@ AWS_REGION=$4
 
 export AWS_REGION=${AWS_REGION}
 
-pip install openpyxl
-pip install simplejson
+pip install -r requirements.txt
 
 aws s3 cp s3://${PART_FILE_BUCKET}/${PART_FILE} .
 #chmod +x ./tools/scripts/retrieve-fms-file.py
