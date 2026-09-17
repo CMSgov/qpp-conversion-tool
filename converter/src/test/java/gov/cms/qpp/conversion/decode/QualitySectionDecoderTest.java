@@ -54,7 +54,7 @@ class QualitySectionDecoderTest {
 		String xmlFragment = IOUtils.toString(stream, StandardCharsets.UTF_8);
 
 		Node root = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
-		Node measureSection = root.findFirstNode(TemplateId.MEASURE_SECTION_V5);
+		Node measureSection = root.findFirstNode(TemplateId.MEASURE_SECTION_V6);
 
 		assertThat(measureSection.getValue(CATEGORY_SECTION_V5))
 			.isEqualTo(TemplateId.CATEGORY_REPORT_V5.getExtension());

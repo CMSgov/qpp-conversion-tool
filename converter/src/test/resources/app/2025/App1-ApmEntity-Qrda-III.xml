@@ -11,7 +11,7 @@ CDA Header
     <realmCode code="US"/>
     <typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
     <templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01"/>
-    <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2024-12-01"/>
+    <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2025-05-01"/>
     <id root="26a42253-99f5-48e7-9274-b467c6c7f623"/>
     <code code="55184-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
           displayName="Quality Reporting Document Architecture Calculated Summary Report"/>
@@ -149,7 +149,7 @@ CDA Header
                             <!--Measure Reference and Results-->
                             <reference typeCode="REFR">
                                 <externalDocument classCode="DOC" moodCode="EVN">
-                                    <id root="2.16.840.1.113883.4.738" extension="2c928083-8907-ce68-0189-40f8279a0a19"/>
+                                    <id root="2.16.840.1.113883.4.738" extension="cd9a5c8e-ac16-4e10-a1f4-4dfe48e02cab"/>
                                     <code code="57024-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
                                           displayName="Health Quality Measure Document"/>
                                     <text>Controlling High Blood Pressure</text>

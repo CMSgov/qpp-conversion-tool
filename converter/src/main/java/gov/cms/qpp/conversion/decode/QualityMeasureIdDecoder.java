@@ -21,7 +21,7 @@ import static gov.cms.qpp.conversion.model.Constants.MEASURE_ID;
 /**
  * Decoder to read XML Data for an Quality Measure Identifier (eCQM).
  */
-@Decoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V5)
+@Decoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V6)
 public class QualityMeasureIdDecoder extends QrdaDecoder {
 
 	public QualityMeasureIdDecoder(Context context) {

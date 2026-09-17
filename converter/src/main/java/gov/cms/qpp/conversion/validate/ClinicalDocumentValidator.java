@@ -38,13 +38,13 @@ public class ClinicalDocumentValidator extends NodeValidator {
 
 		forceCheckErrors(node)
 			.childMinimum(ProblemCode.CLINICAL_DOCUMENT_MISSING_PI_OR_IA_OR_ECQM_CHILD, 1,
-					TemplateId.PI_SECTION_V3, TemplateId.IA_SECTION_V3, TemplateId.MEASURE_SECTION_V5)
+					TemplateId.PI_SECTION_V3, TemplateId.IA_SECTION_V3, TemplateId.MEASURE_SECTION_V6)
 			.childMaximum(ProblemCode.CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_PI_SECTIONS, 1,
 					TemplateId.PI_SECTION_V3)
 			.childMaximum(ProblemCode.CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_IA_SECTIONS, 1,
 					TemplateId.IA_SECTION_V3)
 			.childMaximum(ProblemCode.CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_IA_SECTIONS, 1,
-					TemplateId.MEASURE_SECTION_V5)
+					TemplateId.MEASURE_SECTION_V6)
 			.singleValue(ProblemCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME.format(VALID_PROGRAM_NAMES),
 					PROGRAM_NAME);
 

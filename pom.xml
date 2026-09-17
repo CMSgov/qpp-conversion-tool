@@ -6,7 +6,7 @@
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-conversion-tool-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>2026.08.31.01-RELEASE</version>
+	<version>2026.09.16.01-RELEASE</version>
 	<name>QPP Conversion Tool</name>
 
 	<properties>
@@ -17,7 +17,7 @@
 		<jjwt.version>0.12.6</jjwt.version>
 <spring.framework.version>7.0.9</spring.framework.version>
 	<spring.security.version>7.0.7</spring.security.version>
-	<tomcat.embed.version>11.0.23</tomcat.embed.version>
+	<tomcat.embed.version>11.0.25</tomcat.embed.version>
 
 		<requiredCodeCoverage>0.90</requiredCodeCoverage>
 		<verificationsPhase>verify</verificationsPhase>
@@ -252,7 +252,7 @@
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-databind</artifactId>
-			<version>2.21.5</version>
+			<version>2.21.6</version>
 			</dependency>
 
 			<dependency>
@@ -578,7 +578,7 @@
 		<dependency>
 			<groupId>tools.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>3.1.5</version>
+			<version>3.1.6</version>
 		</dependency>
 		<dependency>
 			<groupId>tools.jackson.core</groupId>

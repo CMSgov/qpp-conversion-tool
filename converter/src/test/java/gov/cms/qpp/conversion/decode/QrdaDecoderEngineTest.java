@@ -33,7 +33,7 @@ class QrdaDecoderEngineTest {
 		context = new Context();
 		TestHelper.mockDecoder(context, TestChildContinue.class, new ComponentKey(TemplateId.PI_SECTION_V3, Program.ALL));
 		TestHelper.mockDecoder(context, TestChildFinish.class, new ComponentKey(TemplateId.IA_SECTION_V3, Program.ALL));
-		TestHelper.mockDecoder(context, TestChildEscape.class, new ComponentKey(TemplateId.MEASURE_SECTION_V5, Program.ALL));
+		TestHelper.mockDecoder(context, TestChildEscape.class, new ComponentKey(TemplateId.MEASURE_SECTION_V6, Program.ALL));
 	}
 
 	@BeforeEach
@@ -381,7 +381,7 @@ class QrdaDecoderEngineTest {
 
 	private Element createEscapeElement() {
 		Element element = new Element(TEMPLATE_ID);
-		element.setAttribute(ROOT, TemplateId.MEASURE_SECTION_V5.getRoot());
+		element.setAttribute(ROOT, TemplateId.MEASURE_SECTION_V6.getRoot());
 
 		return element;
 	}
@@ -422,7 +422,7 @@ class QrdaDecoderEngineTest {
 	private void assertNodeCount(final Node rootNode, final int continueCount, final int finishCount, final int escapeCount) {
 		assertThat(countChildNodes(rootNode, TemplateId.PI_SECTION_V3)).isEqualTo(continueCount);
 		assertThat(countChildNodes(rootNode, TemplateId.IA_SECTION_V3)).isEqualTo(finishCount);
-		assertThat(countChildNodes(rootNode, TemplateId.MEASURE_SECTION_V5)).isEqualTo(escapeCount);
+		assertThat(countChildNodes(rootNode, TemplateId.MEASURE_SECTION_V6)).isEqualTo(escapeCount);
 	}
 
 	private Long countChildNodes(final Node node, final TemplateId templateId) {

@@ -87,13 +87,13 @@ class XpathJsonPathComparisonTest {
 	@Test
 	void compareIaMeasurePerformanceEnd() throws XmlException {
 		String jsonPath = "measurementSets[2].performanceEnd";
-		helper.executeAttributeTest(jsonPath, "value", "20250430");
+		helper.executeAttributeTest(jsonPath, "value", "20260430");
 	}
 
 	@Test
 	void compareIaMeasurePerformanceStart() throws XmlException {
 		String jsonPath = "measurementSets[2].performanceStart";
-		helper.executeAttributeTest(jsonPath, "value", "20250101");
+		helper.executeAttributeTest(jsonPath, "value", "20260101");
 	}
 
 	@Test

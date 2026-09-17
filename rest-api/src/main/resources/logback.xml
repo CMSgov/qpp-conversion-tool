@@ -1,24 +1,42 @@
 <?xml version="1.0"?>
 <configuration>
-	<conversionRule conversionWord="attachment" converterClass="gov.cms.qpp.conversion.api.logging.AttachmentHashPartConverter"/>
+    <appender name="STDOUT_JSON" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <!-- Standard field names for Splunk compatibility -->
+            <fieldNames>
+                <timestamp>timestamp</timestamp>
+                <version>[ignore]</version>
+            </fieldNames>
 
-	<property name="defaultPattern"
-			  value='{"timestamp": "%d{yyyy-MM-dd HH:mm:ss.SSS}", "thread": "%thread", "attachment": "%attachment", "level": "%-5level", "logger": "%logger{36}", "message": "%msg"}%n'/>
+            <!-- Include MDC fields automatically (requestId, httpMethod, etc.) -->
+            <includeMdcKeyName>requestId</includeMdcKeyName>
+            <includeMdcKeyName>httpMethod</includeMdcKeyName>
+            <includeMdcKeyName>requestUri</includeMdcKeyName>
+            <includeMdcKeyName>remoteAddr</includeMdcKeyName>
+            <includeMdcKeyName>userAgent</includeMdcKeyName>
+            <includeMdcKeyName>statusCode</includeMdcKeyName>
+            <includeMdcKeyName>durationMs</includeMdcKeyName>
+            <includeMdcKeyName>requestStage</includeMdcKeyName>
+            <includeMdcKeyName>protocol</includeMdcKeyName>
+            <includeMdcKeyName>queryString</includeMdcKeyName>
+            <includeMdcKeyName>attachment</includeMdcKeyName>
 
-	<appender name="STDOUT_DETAIL" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder>
-			<pattern>
-				<pattern>
-					${defaultPattern}
-				</pattern>
-			</pattern>
-			<stackTrace/>
-		</encoder>
-	</appender>
-	<root level="INFO">
-		<appender-ref ref="STDOUT_DETAIL"/>
-	</root>
-	<logger name="org.springframework.web.filter.CommonsRequestLoggingFilter">
-		<level value="DEBUG" />
-	</logger>
+            <!-- Timestamp format matching current pattern -->
+            <timestampPattern>yyyy-MM-dd HH:mm:ss.SSS</timestampPattern>
+
+            <!-- Shorten logger names -->
+            <shortenedLoggerNameLength>36</shortenedLoggerNameLength>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT_JSON"/>
+    </root>
+
+    <!-- Application-level logging at INFO -->
+    <logger name="gov.cms.qpp" level="INFO"/>
+
+    <!-- Suppress verbose framework logs -->
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.apache" level="WARN"/>
 </configuration>

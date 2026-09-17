@@ -12,7 +12,7 @@ public enum DocumentationReference {
 	MEASURE_REFERENCE(36),
 	CEHRT(22);
 
-	private static final String BASE_PATH = "https://ecqi.healthit.gov/sites/default/files/2025-CMS-QRDA-III-EC-IG-v1.1.pdf#page=";
+	private static final String BASE_PATH = "https://ecqi.healthit.gov/sites/default/files/2026-CMS-QRDA-III-EC-IG-v1.1.pdf#page=";
 	public static final String PERFORMANCE_START_DATE = "01/01/2025";
 	public static final String PERFORMANCE_END_DATE = "12/31/2025";
 	public static final String ROSTER_UPDATE_DATE = "December 13, 2025";

@@ -449,11 +449,11 @@ class QualityMeasureIdValidatorTest {
 	private static class MeasureReferenceBuilder {
 		Node measureReferenceResultsNode;
 		Node clinicalDoc = new Node(TemplateId.CLINICAL_DOCUMENT);
-		Node measureSection = new Node(TemplateId.MEASURE_SECTION_V5, clinicalDoc);
+		Node measureSection = new Node(TemplateId.MEASURE_SECTION_V6, clinicalDoc);
 
 		MeasureReferenceBuilder() {
 			clinicalDoc.putValue(PROGRAM_NAME, MIPS_PROGRAM_NAME);
-			measureReferenceResultsNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V5, measureSection);
+			measureReferenceResultsNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V6, measureSection);
 		}
 
 		MeasureReferenceBuilder addMeasureId(String measureId) {
@@ -487,7 +487,7 @@ class QualityMeasureIdValidatorTest {
 		}
 
 		MeasureReferenceBuilder addSubPopulationMeasureDataWithCounts(String type, String populationId, String count) {
-			Node measureNode = new Node(TemplateId.MEASURE_DATA_CMS_V4);
+			Node measureNode = new Node(TemplateId.MEASURE_DATA_CMS_V5);
 			measureNode.putValue(MEASURE_TYPE, type);
 			measureNode.putValue(MEASURE_POPULATION, populationId);
 
@@ -502,7 +502,7 @@ class QualityMeasureIdValidatorTest {
 		}
 
 		MeasureReferenceBuilder removeSubPopulationMeasureData(String type, String populationId) {
-			Node measureNode = new Node(TemplateId.MEASURE_DATA_CMS_V4);
+			Node measureNode = new Node(TemplateId.MEASURE_DATA_CMS_V5);
 			measureNode.putValue(MEASURE_TYPE, type);
 			measureNode.putValue(MEASURE_POPULATION, populationId);
 

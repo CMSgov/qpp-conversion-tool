@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
 		<groupId>gov.cms.qpp.conversion</groupId>
-		<version>2026.08.31.01-RELEASE</version>
+		<version>2026.09.16.01-RELEASE</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
@@ -19,8 +19,8 @@
 		</sonar.coverage.jacoco.xmlReportPaths>
 
 		<!-- Testing stack -->
-		<junit.jupiter.version>5.10.3</junit.jupiter.version>
-		<mockito.version>3.9.0</mockito.version>
+		<junit.jupiter.version>6.1.3</junit.jupiter.version>
+		<mockito.version>5.23.0</mockito.version>
 		<truth.version>1.1.5</truth.version>
 	</properties>
 
@@ -105,7 +105,7 @@
 			<version>${project.version}</version>
 		</dependency>
 
-		<!-- JUnit 5 -->
+		<!-- JUnit 6 -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>

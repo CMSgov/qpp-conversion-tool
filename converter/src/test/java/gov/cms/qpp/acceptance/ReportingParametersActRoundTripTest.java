@@ -64,7 +64,7 @@ class ReportingParametersActRoundTripTest {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 				"$.measurementSets[2].performanceStart", new TypeRef<String>() { });
 
-		assertThat(performanceStart).isEqualTo("2025-01-01");
+		assertThat(performanceStart).isEqualTo("2026-01-01");
 	}
 
 	@Test
@@ -72,6 +72,6 @@ class ReportingParametersActRoundTripTest {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 				"$.measurementSets[2].performanceEnd", new TypeRef<String>() { });
 
-		assertThat(performanceStart).isEqualTo("2025-04-30");
+		assertThat(performanceStart).isEqualTo("2026-04-30");
 	}
 }

@@ -29,7 +29,7 @@ import java.util.Optional;
 /**
  * Encoder to serialize Quality Measure Identifier and Measure Sections
  */
-@Encoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V5)
+@Encoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V6)
 public class QualityMeasureIdEncoder extends QppOutputEncoder {
 
 	public QualityMeasureIdEncoder(Context context) {
@@ -117,7 +117,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @return
 	 */
 	private int calculateSubPopulationSum(Node measureReferenceNode, SubPopulationLabel label) {
-		return measureReferenceNode.getChildNodes(TemplateId.MEASURE_DATA_CMS_V4)
+		return measureReferenceNode.getChildNodes(TemplateId.MEASURE_DATA_CMS_V5)
 			.filter(childNode ->
 				label.hasAlias(childNode.getValue(MEASURE_TYPE)))
 			.mapToInt(ipopNode ->
@@ -230,7 +230,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		this.encodePerformanceNotMet(childWrapper, parentNode);
 
 		for (Node childNode : parentNode.getChildNodes()) {
-			if (TemplateId.MEASURE_DATA_CMS_V4 == childNode.getType()) {
+			if (TemplateId.MEASURE_DATA_CMS_V5 == childNode.getType()) {
 				JsonOutputEncoder measureDataEncoder = encoders.get(childNode.getType());
 				measureDataEncoder.encode(childWrapper, childNode);
 			}

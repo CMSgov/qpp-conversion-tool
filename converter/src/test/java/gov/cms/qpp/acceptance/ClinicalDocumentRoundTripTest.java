@@ -62,8 +62,8 @@ class ClinicalDocumentRoundTripTest {
 				<realmCode code="US"/>
 				<typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
 				<templateId root="2.16.840.1.113883.10.20.27.1.2"/>
-				<templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2024-12-01"/>
-			</ClinicalDocument>""";
+			<templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2025-05-01"/>
+		</ClinicalDocument>""";
 
 		Node root = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(similarClinicalDocumentBlob));
 

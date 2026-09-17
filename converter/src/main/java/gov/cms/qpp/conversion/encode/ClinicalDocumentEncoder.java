@@ -114,7 +114,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 			Node currentNode
 	) {
 		JsonWrapper measurementSetsWrapper = new JsonWrapper();
-		String measureRoot = TemplateId.MEASURE_SECTION_V5.getRoot();
+		String measureRoot = TemplateId.MEASURE_SECTION_V6.getRoot();
 
 		for (Node child : childMapByTemplateId.values()) {
 			if (child == null) {

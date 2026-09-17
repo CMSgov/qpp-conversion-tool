@@ -1,0 +1,5 @@
+boto3==1.43.94
+openpyxl==3.1.5
+python-dotenv==1.2.3
+requests==2.34.2
+simplejson==4.1.2

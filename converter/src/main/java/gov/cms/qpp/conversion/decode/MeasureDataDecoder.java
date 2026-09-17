@@ -20,7 +20,7 @@ import static gov.cms.qpp.conversion.model.Constants.MEASURE_TYPE;
 /**
  * Decoder for CMS V2 Measure Data eCQM
  */
-@Decoder(TemplateId.MEASURE_DATA_CMS_V4)
+@Decoder(TemplateId.MEASURE_DATA_CMS_V5)
 public class MeasureDataDecoder extends QrdaDecoder {
 
 	static final Set<String> MEASURES = Stream.of("IPP", "IPOP", "DENEX", "DENOM", "DENEXCEP", "NUMER", "NUMEX")
