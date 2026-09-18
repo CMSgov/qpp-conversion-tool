@@ -52,7 +52,12 @@ public class ReportingParametersActDecoder extends QrdaDecoder {
 					String start = p.getValue();
 					thisNode.putValue(PERFORMANCE_START, start, false);
 					//start is formatted as follows: yyyyMMddHHmmss
-					thisNode.putValue(PERFORMANCE_YEAR, start.substring(0, YEAR_LAST_INDEX));
+					//A shorter value is malformed input rather than a broken invariant, and
+					//ReportingParametersActValidator reports it as an invalid performance
+					//period. Taking the substring regardless throws before it gets there.
+					if (start.length() >= YEAR_LAST_INDEX) {
+						thisNode.putValue(PERFORMANCE_YEAR, start.substring(0, YEAR_LAST_INDEX));
+					}
 				};
 		Consumer<? super Attribute> performanceEndConsumer =
 				p -> thisNode.putValue(PERFORMANCE_END, p.getValue(), false);
