@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 	<artifactId>acceptance-tests</artifactId>
 	<groupId>gov.cms.qpp.conversion</groupId>
-	<version>2026.09.16.01-RELEASE</version>
+	<version>2026.09.17.01-RELEASE</version>
 	<name>conversion-tests</name>
 	<packaging>jar</packaging>
 	<properties>
@@ -122,7 +122,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-shade-plugin</artifactId>
-					<version>3.5.1</version>
+					<version>3.6.2</version>
 					<executions>
 						<execution>
 							<id>shade</id>
