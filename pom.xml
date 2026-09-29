@@ -27,7 +27,7 @@
 		<maven.generate.phase>generate-sources</maven.generate.phase>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
-		<io.rest-assured.version>4.1.2</io.rest-assured.version>
+		<io.rest-assured.version>6.0.1</io.rest-assured.version>
 		<argLine/>
 		<javadoc.skip>false</javadoc.skip>
 	</properties>
