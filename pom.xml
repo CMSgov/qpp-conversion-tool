@@ -342,7 +342,7 @@
 			<dependency>
 				<groupId>org.javassist</groupId>
 				<artifactId>javassist</artifactId>
-				<version>3.24.1-GA</version>
+				<version>3.33.0-GA</version>
 			</dependency>
 
 			<dependency>
