@@ -1,0 +1,44 @@
+version: 0.2
+
+env:
+  variables:
+    GITHUB_REPOSITORY: "qpp-conversion-tool"
+  parameter-store:
+    DOCKERHUB_TOKEN: "/global/dockerhub_token"
+    DOCKERHUB_USER: "/global/dockerhub_user"
+  secrets-manager:
+    GITHUB_TOKEN: "arn:aws:secretsmanager:us-east-1:863249929524:secret:qpp/qppa/github/token/automation-bhLO2e:GITHUB_TOKEN"
+
+phases:
+  install:
+    commands:
+      - apt-get update
+      - apt-get install -y xmlstarlet jq
+
+  pre_build:
+    commands:
+      - printf '%s' "$DOCKERHUB_TOKEN" | docker login --username "$DOCKERHUB_USER" --password-stdin
+      - mkdir -p /root/.m2/repository
+
+  build:
+    commands:
+      - docker compose --project-name "conversion-tool-coverage-${CODEBUILD_BUILD_NUMBER}" -f docker-compose.coverage.yaml run --rm coverage
+    finally:
+      - docker compose --project-name "conversion-tool-coverage-${CODEBUILD_BUILD_NUMBER}" -f docker-compose.coverage.yaml down
+
+  post_build:
+    commands:
+      - bash buildspec/scripts/post-code-coverage.sh
+
+reports:
+  conversion-tool-unit-tests:
+    files:
+      - "**/target/surefire-reports/TEST-*.xml"
+    base-directory: .
+    file-format: JUNITXML
+
+  conversion-tool-jacoco-coverage:
+    files:
+      - jacoco.xml
+    base-directory: test-coverage/target/site/jacoco-aggregate
+    file-format: JACOCOXML

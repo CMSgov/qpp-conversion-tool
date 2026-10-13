@@ -1,0 +1,15 @@
+services:
+  coverage:
+    image: maven:3.9.15-eclipse-temurin-21-alpine
+    working_dir: /usr/src/app
+    volumes:
+      - type: bind
+        source: .
+        target: /usr/src/app
+      - type: bind
+        source: ${HOME}/.m2/repository
+        target: /usr/share/maven/ref/repository
+    command: >-
+      mvn --batch-mode --no-transfer-progress
+      --settings settings-docker.xml
+      clean verify -Dskip.generate=true
