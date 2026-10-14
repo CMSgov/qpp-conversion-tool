@@ -14,6 +14,10 @@ if [ ! -f "$JACOCO_REPORT_PATH" ]; then
   exit 1
 fi
 
+# JaCoCo references an external DTD that is not needed to read coverage counters.
+sed 's/<!DOCTYPE report PUBLIC "-\/\/JACOCO\/\/DTD Report 1\.1\/\/EN" "report\.dtd">//g' \
+  "$JACOCO_REPORT_PATH" > "$WORK_DIR/report.xml"
+
 xmlstarlet sel -T -t \
   -m '/report/counter | /report//package/sourcefile/counter' \
   -i 'parent::report' -o total -b \
@@ -21,7 +25,7 @@ xmlstarlet sel -T -t \
   -o $'\t' -v '@type' \
   -o $'\t' -v '@missed' \
   -o $'\t' -v '@covered' -n \
-  "$JACOCO_REPORT_PATH" > "$WORK_DIR/counters.tsv"
+  "$WORK_DIR/report.xml" > "$WORK_DIR/counters.tsv"
 
 jq -Rn '
   def percentage($counters; $type):
