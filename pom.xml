@@ -60,7 +60,7 @@
 						<dependency>
 							<groupId>org.reflections</groupId>
 							<artifactId>reflections</artifactId>
-							<version>0.9.9</version>
+							<version>0.10.2</version>
 						</dependency>
 					</dependencies>
 				</plugin>
@@ -454,7 +454,7 @@
 			<dependency>
 				<groupId>org.reflections</groupId>
 				<artifactId>reflections</artifactId>
-				<version>0.9.9</version>
+				<version>0.10.2</version>
 			</dependency>
 
 			<dependency>
