@@ -1,0 +1,33 @@
+version: 0.2
+
+env:
+  variables:
+    GITHUB_REPOSITORY: "qpp-conversion-tool"
+  parameter-store:
+    DOCKERHUB_TOKEN: "/global/dockerhub_token"
+    DOCKERHUB_USER: "/global/dockerhub_user"
+  secrets-manager:
+    GITHUB_TOKEN: "arn:aws:secretsmanager:us-east-1:863249929524:secret:qpp/qppa/github/token/automation-bhLO2e:GITHUB_TOKEN"
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto21
+    commands:
+      - apt-get update
+      - apt-get install -y xmlstarlet jq
+
+  pre_build:
+    commands:
+      - mkdir -p /root/.m2/repository
+
+  build:
+    commands:
+      - docker compose --project-name "conversion-tool-coverage-${CODEBUILD_BUILD_NUMBER}" -f docker-compose.coverage.yaml run --rm coverage
+      - docker compose --project-name "conversion-tool-coverage-${CODEBUILD_BUILD_NUMBER}" -f docker-compose.coverage.yaml down
+
+  post_build:
+    commands:
+      - test -f test-coverage/target/site/jacoco-aggregate/jacoco.xml
+      - 'aws s3 cp test-coverage/target/site/jacoco-aggregate/ "s3://${CODE_COVERAGE_BUCKET}/code-coverage-report/${GITHUB_REPOSITORY}/${CODEBUILD_BUILD_ID}/coverage/" --recursive'
+      - bash buildspec/scripts/post-code-coverage.sh
