@@ -48,6 +48,9 @@ Code coverage:
   CodeBuild host. The post-build PR comment script runs on the host.
   PR coverage tables show statements (JaCoCo instructions), branches, functions
   (Java methods), and lines for the overall report and changed Java files.
+  The post-build script requires each of the four overall metrics to be at least
+  85%, including on non-PR builds. Missing or unavailable overall metrics fail
+  the gate. PR builds publish the coverage comment before checking the gate.
   The coverage service is defined in docker-compose.coverage.yaml, separate
   from the application test server in docker-compose.test.yaml.
   Maven dependencies are bind-mounted from /root/.m2/repository and declared
