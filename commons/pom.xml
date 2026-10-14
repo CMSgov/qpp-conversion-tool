@@ -55,7 +55,7 @@
 					<plugin>
 						<groupId>io.github.download-maven-plugin</groupId>
 						<artifactId>download-maven-plugin</artifactId>
-						<version>2.0.0</version>
+						<version>2.1.0</version>
 						<executions>
 							<execution>
 								<id>get-measure-data</id>
@@ -118,13 +118,13 @@
 		<dependency>
 			<groupId>net.minidev</groupId>
 			<artifactId>json-smart</artifactId>
-			<version>2.4.9</version>
+			<version>2.6.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.reflections</groupId>
 			<artifactId>reflections</artifactId>
-			<version>0.9.12</version>
+			<version>0.10.2</version>
 		</dependency>
 
 		<dependency>
