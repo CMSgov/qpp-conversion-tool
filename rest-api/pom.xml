@@ -311,7 +311,7 @@
 
         <!-- Misc -->
         <dependency><groupId>org.springframework.retry</groupId><artifactId>spring-retry</artifactId></dependency>
-        <dependency><groupId>com.jcabi</groupId><artifactId>jcabi-manifests</artifactId><version>1.1</version></dependency>
+        <dependency><groupId>com.jcabi</groupId><artifactId>jcabi-manifests</artifactId><version>2.2.0</version></dependency>
 
         <!-- AWS v1 clients (monitor for CVEs periodically) -->
         <dependency><groupId>com.amazonaws</groupId><artifactId>aws-java-sdk-core</artifactId></dependency>
