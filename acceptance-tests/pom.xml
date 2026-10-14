@@ -9,7 +9,7 @@
 	<properties>
 		<java.version>21</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<cucumber.version>4.2.5</cucumber.version>
+		<cucumber.version>8.0.4</cucumber.version>
 	</properties>
 
 	<dependencyManagement>
