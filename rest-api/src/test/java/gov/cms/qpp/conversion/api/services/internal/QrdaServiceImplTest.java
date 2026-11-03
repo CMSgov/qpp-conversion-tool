@@ -14,7 +14,6 @@ import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
 import gov.cms.qpp.conversion.Source;
-import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.services.StorageService;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
@@ -91,35 +90,6 @@ class QrdaServiceImplTest {
 
 		assertThat(actual).isSameInstanceAs(expected);
 		verify(storage).getCpcPlusValidationFile();
-	}
-
-	@Test
-	void retrieveApmValidationFile_delegatesToStorageService() {
-		StorageService storage = mock(StorageService.class);
-		QrdaServiceImpl service = new QrdaServiceImpl(storage);
-
-		InputStream expected = new ByteArrayInputStream("{}".getBytes());
-		when(storage.getApmValidationFile("file.json")).thenReturn(expected);
-
-		InputStream actual = service.retrieveApmValidationFile("file.json");
-
-		assertThat(actual).isSameInstanceAs(expected);
-		verify(storage).getApmValidationFile("file.json");
-	}
-
-	@Test
-	void loadApmData_thenInitConverter_fetchesApmFile_once_dueToMemoization() {
-		StorageService storage = mock(StorageService.class);
-		QrdaServiceImpl service = new QrdaServiceImpl(storage);
-
-		when(storage.getApmValidationFile(Constants.PCF_APM_FILE_NAME_KEY)).thenReturn(null);
-
-		service.loadApmData();
-
-		assertThat(service.initConverter(GOOD_SOURCE)).isNotNull();
-		assertThat(service.initConverter(GOOD_SOURCE)).isNotNull();
-
-		verify(storage, times(1)).getApmValidationFile(Constants.PCF_APM_FILE_NAME_KEY);
 	}
 
 	@Test

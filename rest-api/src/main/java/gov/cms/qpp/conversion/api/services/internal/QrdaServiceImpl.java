@@ -1,7 +1,5 @@
 package gov.cms.qpp.conversion.api.services.internal;
 
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +9,12 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.Source;
-import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.api.services.StorageService;
-import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 
 import jakarta.annotation.PostConstruct;
 import java.io.InputStream;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Implementation of the QRDA-III to QPP conversion service
@@ -31,12 +26,9 @@ public class QrdaServiceImpl implements QrdaService {
 
 	private final StorageService storageService;
 
-	private Supplier<ApmEntityIds> apmData;
-
 	@Autowired
 	QrdaServiceImpl(StorageService storageService) {
 		this.storageService = storageService;
-		this.apmData = () -> null;
 	}
 
 	/**
@@ -45,11 +37,6 @@ public class QrdaServiceImpl implements QrdaService {
 	@PostConstruct
 	public void preloadMeasureConfigs() {
 		MeasureConfigs.init();
-	}
-
-	@PostConstruct
-	public void loadApmData() {
-		apmData = Suppliers.memoizeWithExpiration(this::retrieveApmEntityValidationFile, 2, TimeUnit.HOURS);
 	}
 
 	/**
@@ -66,13 +53,6 @@ public class QrdaServiceImpl implements QrdaService {
 		return converter.getReport();
 	}
 
-	private ApmEntityIds retrieveApmEntityValidationFile() {
-		API_LOG.info("Trying to fetch the Pcf APM Validation file");
-		InputStream pcfApmInputStream = retrieveApmValidationFile(Constants.PCF_APM_FILE_NAME_KEY);
-
-		return pcfApmInputStream != null ? new ApmEntityIds(pcfApmInputStream) : new ApmEntityIds();
-	}
-
 	/**
 	 * Opens a stream to retrieve the CPC+ Validation file for the QPP Service
 	 *
@@ -83,10 +63,6 @@ public class QrdaServiceImpl implements QrdaService {
 		return storageService.getCpcPlusValidationFile();
 	}
 
-	protected InputStream retrieveApmValidationFile(String fileName) {
-		return storageService.getApmValidationFile(fileName);
-	}
-
 	/**
 	 * Instantiate a {@link Converter} with a given {@link Source}
 	 *
@@ -94,7 +70,7 @@ public class QrdaServiceImpl implements QrdaService {
 	 * @return converter instance
 	 */
 	Converter initConverter(Source source) {
-		Context context = new Context(apmData.get());
+		Context context = new Context();
 		return new Converter(source, context);
 	}
 }

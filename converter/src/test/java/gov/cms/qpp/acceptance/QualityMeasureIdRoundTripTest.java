@@ -1,8 +1,6 @@
 package gov.cms.qpp.acceptance;
 
 import com.jayway.jsonpath.TypeRef;
-import gov.cms.qpp.CacheBuilder;
-import gov.cms.qpp.model.CacheType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +15,6 @@ import gov.cms.qpp.conversion.model.error.LocalizedProblem;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
-import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.util.JsonHelper;
 
@@ -44,11 +41,9 @@ class QualityMeasureIdRoundTripTest {
 	static final Path MISSING_COUNT_FOR_PERF_DENOM =
 		Path.of("src/test/resources/negative/perfDenomAggCountMissing.xml");
 	static final Path MIPS_APM_FILE = Path.of("src/test/resources/Mips-Apm-Entity-2021.xml");
-	ApmEntityIds apmEntityIds;
 
 	@BeforeEach
 	void setup() {
-		apmEntityIds = CacheBuilder.getEntityIds(CacheType.ApmEntityIds);
 		MeasureConfigs.initMeasureConfigs(MeasureConfigs.TEST_MEASURE_DATA);
 	}
 
@@ -59,7 +54,7 @@ class QualityMeasureIdRoundTripTest {
 
 	@Test
 	void testRoundTripForQualityMeasureId() {
-		Converter converter = new Converter(new PathSource(JUNK_QRDA3_FILE), new Context(apmEntityIds));
+		Converter converter = new Converter(new PathSource(JUNK_QRDA3_FILE), new Context());
 		JsonWrapper qpp = converter.transform();
 
 		List<Map<String, ?>> qualityMeasures = JsonHelper.readJsonAtJsonPath(qpp.toString(),
@@ -73,7 +68,7 @@ class QualityMeasureIdRoundTripTest {
 
 	@Test
 	void testMeasureCMS165DoesNotContainUnexpectedValue() {
-		Converter converter = new Converter(new PathSource(JUNK_QRDA3_FILE), new Context(apmEntityIds));
+		Converter converter = new Converter(new PathSource(JUNK_QRDA3_FILE), new Context());
 		JsonWrapper qpp = converter.transform();
 		List<String> containsUnwantedValueList = JsonHelper.readJsonAtJsonPath(qpp.toString(),
 			"$.measurementSets[?(@.category=='quality')].measurements[0].value.value", new TypeRef<List<String>>() { });
@@ -86,7 +81,7 @@ class QualityMeasureIdRoundTripTest {
 
 	@Test
 	void testMeasureCMS68v8PerformanceRateUuid() {
-		Converter converter = new Converter(new PathSource(INVALID_PERFORMANCE_UUID_FILE), new Context(apmEntityIds));
+		Converter converter = new Converter(new PathSource(INVALID_PERFORMANCE_UUID_FILE), new Context());
 		List<Detail> details = new ArrayList<>();
 
 		try {
@@ -109,7 +104,7 @@ class QualityMeasureIdRoundTripTest {
 	@Test
 	void testMeasureCMS138v7PerformanceRateUuid() {
 		MeasureConfigs.initMeasureConfigs(MeasureConfigs.TEST_MEASURE_DATA);
-		Converter converter = new Converter(new PathSource(INVALID_PERFORMANCE_UUID_FILE), new Context(apmEntityIds));
+		Converter converter = new Converter(new PathSource(INVALID_PERFORMANCE_UUID_FILE), new Context());
 		List<Detail> details = new ArrayList<>();
 
 		try {
@@ -125,7 +120,7 @@ class QualityMeasureIdRoundTripTest {
 
 	@Test
 	void testMeasureCMS52v5WithInsensitiveTextUuid() {
-		Converter converter = new Converter(new PathSource(INSENSITIVE_TEXT_FILE), new Context(apmEntityIds));
+		Converter converter = new Converter(new PathSource(INSENSITIVE_TEXT_FILE), new Context());
 		List<Detail> details = new ArrayList<>();
 
 		try {
@@ -141,7 +136,7 @@ class QualityMeasureIdRoundTripTest {
 
 	@Test
 	void testMeasureCMS52v5InsensitiveMeasureDataUuid() {
-		Converter converter = new Converter(new PathSource(INSENSITIVE_TEXT_FILE), new Context(apmEntityIds));
+		Converter converter = new Converter(new PathSource(INSENSITIVE_TEXT_FILE), new Context());
 		List<Detail> details = new ArrayList<>();
 
 		LocalizedProblem error = ProblemCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(
@@ -160,7 +155,7 @@ class QualityMeasureIdRoundTripTest {
 
 	@Test
 	void test2020CorrectMultiToSinglePerfMeasureExample() {
-		Converter converter = new Converter(new PathSource(CORRECT_MULTI_TO_SINGLE_PERF_RATE_FILE), new Context(apmEntityIds));
+		Converter converter = new Converter(new PathSource(CORRECT_MULTI_TO_SINGLE_PERF_RATE_FILE), new Context());
 		JsonWrapper qpp = converter.transform();
 
 		String cms135MeasureId= "005";
@@ -172,7 +167,7 @@ class QualityMeasureIdRoundTripTest {
 
 	@Test
 	void testIncorrectMultiToSinglePerfMeasureExample() {
-		Converter converter = new Converter(new PathSource(INCORRECT_MULTI_TO_SINGLE_PERF_RATE_FILE), new Context(apmEntityIds));
+		Converter converter = new Converter(new PathSource(INCORRECT_MULTI_TO_SINGLE_PERF_RATE_FILE), new Context());
 		List<Detail> details = new ArrayList<>();
 
 		try {
@@ -190,7 +185,7 @@ class QualityMeasureIdRoundTripTest {
 
 	@Test
 	void testMissingPerfDenomAggregateCount() {
-		Converter converter = new Converter(new PathSource(MISSING_COUNT_FOR_PERF_DENOM), new Context(apmEntityIds));
+		Converter converter = new Converter(new PathSource(MISSING_COUNT_FOR_PERF_DENOM), new Context());
 		List<Detail> details = new ArrayList<>();
 
 		try {
@@ -209,7 +204,7 @@ class QualityMeasureIdRoundTripTest {
 
 	@Test
 	void testTopLevelMipsApmSampleFile() {
-		Converter converter = new Converter(new PathSource(MIPS_APM_FILE), new Context(apmEntityIds));
+		Converter converter = new Converter(new PathSource(MIPS_APM_FILE), new Context());
 		JsonWrapper qpp = converter.transform();
 
 		List<String> programName = JsonHelper.readJsonAtJsonPath(qpp.toString(),
