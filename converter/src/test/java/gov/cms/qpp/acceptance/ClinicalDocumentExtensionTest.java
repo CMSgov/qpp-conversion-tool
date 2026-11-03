@@ -1,9 +1,6 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.CacheBuilder;
-import gov.cms.qpp.model.CacheType;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -16,13 +13,9 @@ import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ProblemCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
-import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
-import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -65,8 +58,7 @@ class ClinicalDocumentExtensionTest {
 	}
 
 	private JsonWrapper convert(Path location) throws IOException {
-		ApmEntityIds apmEntityIds = CacheBuilder.getEntityIds(CacheType.ApmEntityIds);
-		Converter converter = new Converter(new PathSource(location), new Context(apmEntityIds));
+		Converter converter = new Converter(new PathSource(location), new Context());
 		return converter.transform();
 	}
 }
