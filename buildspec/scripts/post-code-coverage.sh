@@ -90,30 +90,33 @@ github_api() {
 }
 
 fetch_pages() {
-  local url="$1" page=1 items="[]" page_items count
+  local url="$1" output_file="$2" page=1 count
+  local page_file="$WORK_DIR/page.json" pages_file="$WORK_DIR/pages.jsonl"
+  : > "$pages_file"
   while :; do
-    page_items="$(github_api "${url}?per_page=100&page=${page}")"
-    count="$(jq -er 'if type == "array" then length else error("Expected a GitHub API array") end' <<< "$page_items")"
-    items="$(jq -cn --argjson items "$items" --argjson page "$page_items" '$items + $page')"
+    github_api "${url}?per_page=100&page=${page}" > "$page_file"
+    count="$(jq -er 'if type == "array" then length else error("Expected a GitHub API array") end' "$page_file")"
+    jq -c '.' "$page_file" >> "$pages_file"
     if [ "$count" -lt 100 ]; then break; fi
     page=$((page + 1))
   done
-  printf '%s\n' "$items"
+  jq -s 'add' "$pages_file" > "$output_file"
 }
 
-CHANGED_FILES="$(fetch_pages "${GITHUB_REPO_API_URL}/pulls/${PR_NUMBER}/files")"
+CHANGED_FILES="$WORK_DIR/changed-files.json"
+fetch_pages "${GITHUB_REPO_API_URL}/pulls/${PR_NUMBER}/files" "$CHANGED_FILES"
 
 jq -nr \
   --arg marker "$COVERAGE_COMMENT_MARKER" \
   --slurpfile coverage "$WORK_DIR/coverage.json" \
-  --argjson changed_files "$CHANGED_FILES" \
+  --slurpfile changed_files "$CHANGED_FILES" \
   --argjson minimum "$MINIMUM_COVERAGE" '
   def pct($value):
     if $value == null then "n/a" else "\(($value * 10 | floor) / 10)%" end;
   def row($name):
     "| \($name | gsub("\\|"; "\\\\|")) | \(pct(.statements)) | \(pct(.branches)) | \(pct(.functions)) | \(pct(.lines)) |";
   [
-    $changed_files[].filename as $filename |
+    $changed_files[0][].filename as $filename |
     ($coverage[0].files | map(select(.path as $path | $filename | endswith("/" + $path))))[0] as $file |
     select($file != null) |
     $file | row("`" + $filename + "`")
@@ -131,9 +134,10 @@ jq -nr \
 ' > "$WORK_DIR/comment.md"
 
 COMMENTS_URL="${GITHUB_REPO_API_URL}/issues/${PR_NUMBER}/comments"
-COMMENTS="$(fetch_pages "$COMMENTS_URL")"
+COMMENTS="$WORK_DIR/comments.json"
+fetch_pages "$COMMENTS_URL" "$COMMENTS"
 COMMENT_ID="$(jq -r --arg marker "$COVERAGE_COMMENT_MARKER" \
-  '[.[] | select((.body // "") | contains($marker))][0].id // empty' <<< "$COMMENTS")"
+  '[.[] | select((.body // "") | contains($marker))][0].id // empty' "$COMMENTS")"
 
 if [ -n "$COMMENT_ID" ]; then
   COMMENT_METHOD="PATCH"
