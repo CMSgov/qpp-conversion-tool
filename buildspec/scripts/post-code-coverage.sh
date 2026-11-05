@@ -105,7 +105,7 @@ CHANGED_FILES="$(fetch_pages "${GITHUB_REPO_API_URL}/pulls/${PR_NUMBER}/files")"
 
 jq -nr \
   --arg marker "$COVERAGE_COMMENT_MARKER" \
-  --argjson coverage "$(cat "$WORK_DIR/coverage.json")" \
+  --slurpfile coverage "$WORK_DIR/coverage.json" \
   --argjson changed_files "$CHANGED_FILES" \
   --argjson minimum "$MINIMUM_COVERAGE" '
   def pct($value):
@@ -114,13 +114,13 @@ jq -nr \
     "| \($name | gsub("\\|"; "\\\\|")) | \(pct(.statements)) | \(pct(.branches)) | \(pct(.functions)) | \(pct(.lines)) |";
   [
     $changed_files[].filename as $filename |
-    ($coverage.files | map(select(.path as $path | $filename | endswith("/" + $path))))[0] as $file |
+    ($coverage[0].files | map(select(.path as $path | $filename | endswith("/" + $path))))[0] as $file |
     select($file != null) |
     $file | row("`" + $filename + "`")
   ] as $rows |
   $marker + "\n## Conversion Tool Code Coverage\n\n" +
   "| Scope | Statements | Branches | Functions | Lines |\n|---|---:|---:|---:|---:|\n" +
-  ($coverage | row("**Overall**")) + "\n" +
+  ($coverage[0] | row("**Overall**")) + "\n" +
   (if ($rows | length) > 0 then
     "\n### Changed Java files\n\n| File | Statements | Branches | Functions | Lines |\n|---|---:|---:|---:|---:|\n" +
     ($rows | join("\n")) + "\n"
