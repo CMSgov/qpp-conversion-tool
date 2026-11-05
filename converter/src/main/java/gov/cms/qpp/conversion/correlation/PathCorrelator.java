@@ -12,7 +12,8 @@ import org.reflections.util.ClasspathHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 
 import gov.cms.qpp.conversion.correlation.model.Correlation;
@@ -20,6 +21,7 @@ import gov.cms.qpp.conversion.correlation.model.CorrelationConfig;
 import gov.cms.qpp.conversion.correlation.model.Goods;
 import gov.cms.qpp.conversion.correlation.model.PathCorrelation;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.util.JsonMapperFactory;
 
 /**
  * Maintains associations between QPP json paths and their pre-transformation xpaths.
@@ -48,10 +50,10 @@ public class PathCorrelator {
 
 		try {
 			InputStream input = ClasspathHelper.contextClassLoader().getResourceAsStream(config);
-			ObjectMapper mapper = new ObjectMapper();
+			ObjectMapper mapper = JsonMapperFactory.createMapper();
 			pathCorrelation = mapper.readValue(input, PathCorrelation.class);
 			flattenCorrelations(pathCorrelation);
-		} catch (IOException ioe) {
+		} catch (JacksonException ioe) {
 			String message = "Problem loading path correlation configuration";
 			DEV_LOG.error(message, ioe);
 			throw new PathCorrelationException(message, ioe);

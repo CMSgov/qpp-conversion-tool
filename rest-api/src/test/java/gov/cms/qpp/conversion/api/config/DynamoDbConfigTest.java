@@ -1,150 +1,59 @@
 package gov.cms.qpp.conversion.api.config;
 
-import org.junit.Before;
-import org.junit.Rule;
+import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.model.Metadata;
+import gov.cms.qpp.test.MockitoExtension;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.core.env.Environment;
-
-import gov.cms.qpp.conversion.api.model.Constants;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.services.kms.KmsClient;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
-@SuppressWarnings("unused") // Tests commented out pending PowerMock -> Mockito.mockStatic migration
-public class DynamoDbConfigTest {
+@ExtendWith(MockitoExtension.class)
+class DynamoDbConfigTest {
 
-//	private DynamoDbConfig underTest;
-//
-//	@Mock
-//	private Environment environment;
-//
-//	@Mock
-//	private AWSKMS awsKms;
-//
-//	@Mock
-//	private DynamoDBMapper dbMapper;
-//
-//	@Mock
-//	private AmazonDynamoDB amazonDynamoDB;
-//
-//	@Mock
-//	private DynamoDBMapperConfig mapConfig;
-//
-//	@Mock
-//	private DynamoDBMapperConfig mapConfigNamed;
-//
-//	@Mock
-//	private AttributeTransformer transformer;
-//
-//	@Rule
-//	private ExpectedException thrown = ExpectedException.none();
-//
-//	@Before
-//	public void setup() {
-//
-//		underTest = spy(new DynamoDbConfig(environment, awsKms));
-//
-//		when(underTest.encryptionTransformer(any(String.class))).thenReturn(transformer);
-//		when(underTest.tableNameOverrideConfig(any(String.class))).thenReturn(mapConfigNamed);
-//		when(underTest.getDynamoDbMapperConfig()).thenReturn(mapConfig);
-//
-//		mockStatic(DynamoDBMapper.class);
-//		mockStatic(DynamoDbConfigFactory.class);
-//
-//		MockitoAnnotations.initMocks(DynamoDbConfigTest.class);
-//	}
-//
-//	@Test
-//	public void testDefaultClient() {
-//		mockStatic(AmazonDynamoDBClientBuilder.class);
-//		when(AmazonDynamoDBClientBuilder.defaultClient()).thenReturn(Mockito.mock(AmazonDynamoDB.class));
-//		assertNotNull(underTest.dynamoDbClient());
-//		verify(underTest, times(0)).planB();
-//	}
-//
-//	@Test
-//	public void testRegionClient() {
-//		mockStatic(AmazonDynamoDBClientBuilder.class);
-//		when(AmazonDynamoDBClientBuilder.defaultClient()).thenThrow(new SdkClientException("meep"));
-//		doAnswer(invocationOnMock -> null).when(underTest).planB();
-//
-//		underTest.dynamoDbClient();
-//		verify(underTest, times(1)).planB();
-//	}
-//
-//	@Test
-//	public void dbMapperNoAudit() {
-//		when(environment.getProperty(eq(Constants.NO_AUDIT_ENV_VARIABLE))).thenReturn("true");
-//		when(environment.getProperty(eq(Constants.DYNAMO_TABLE_NAME_ENV_VARIABLE))).thenReturn(null);
-//		when(environment.getProperty(eq(Constants.KMS_KEY_ENV_VARIABLE))).thenReturn(null);
-//
-//		DynamoDBMapper dynamoDBMapper = underTest.dynamoDbMapper(amazonDynamoDB);
-//
-//		assertThat(dynamoDBMapper).isNull();
-//	}
-//
-//	@Test
-//	public void dbMapperInitWithNothing() {
-//		when(environment.getProperty(eq(Constants.NO_AUDIT_ENV_VARIABLE))).thenReturn(null);
-//		when(environment.getProperty(eq(Constants.DYNAMO_TABLE_NAME_ENV_VARIABLE))).thenReturn(null);
-//		when(environment.getProperty(eq(Constants.KMS_KEY_ENV_VARIABLE))).thenReturn("");
-//
-//		thrown.expect(BeanInitializationException.class);
-//		thrown.expectMessage(DynamoDbConfig.NO_KMS_KEY);
-//
-//		underTest.dynamoDbMapper(amazonDynamoDB);
-//	}
-//
-//	@Test
-//	public void dbMapperInitWithTableName() {
-//		when(environment.getProperty(eq(Constants.NO_AUDIT_ENV_VARIABLE))).thenReturn(null);
-//		when(environment.getProperty(eq(Constants.DYNAMO_TABLE_NAME_ENV_VARIABLE))).thenReturn("meep");
-//		when(environment.getProperty(eq(Constants.KMS_KEY_ENV_VARIABLE))).thenReturn(null);
-//
-//		thrown.expect(BeanInitializationException.class);
-//		thrown.expectMessage(DynamoDbConfig.NO_KMS_KEY);
-//
-//		underTest.dynamoDbMapper(amazonDynamoDB);
-//	}
-//
-//	@Test
-//	public void dbMapperInitWithKmsKey() throws Exception {
-//		when(environment.getProperty(eq(Constants.NO_AUDIT_ENV_VARIABLE))).thenReturn(null);
-//		when(environment.getProperty(eq(Constants.DYNAMO_TABLE_NAME_ENV_VARIABLE))).thenReturn(null);
-//		when(environment.getProperty(eq(Constants.KMS_KEY_ENV_VARIABLE))).thenReturn("meep");
-//
-//		mockStatic(DynamoDbConfigFactory.class);
-//		doReturn(dbMapper).when(DynamoDbConfigFactory.class, "createDynamoDbMapper", amazonDynamoDB, mapConfig, transformer);
-//
-//		underTest.dynamoDbMapper(amazonDynamoDB);
-//
-//		verifyStatic(DynamoDbConfigFactory.class, times(1));
-//		DynamoDbConfigFactory.createDynamoDbMapper(amazonDynamoDB, mapConfig, transformer);
-//	}
-//
-//	@Test
-//	public void dbMapperInitWithKmsKeyAndTableName() throws Exception {
-//		when(environment.getProperty(eq(Constants.NO_AUDIT_ENV_VARIABLE))).thenReturn(null);
-//		when(environment.getProperty(eq(Constants.DYNAMO_TABLE_NAME_ENV_VARIABLE))).thenReturn("meep");
-//		when(environment.getProperty(eq(Constants.KMS_KEY_ENV_VARIABLE))).thenReturn("meep");
-//
-//		mockStatic(DynamoDbConfigFactory.class);
-//		doReturn(dbMapper).when(DynamoDbConfigFactory.class, "createDynamoDbMapper", amazonDynamoDB, mapConfigNamed, transformer);
-//
-//		underTest.dynamoDbMapper(amazonDynamoDB);
-//
-//		verifyStatic(DynamoDbConfigFactory.class, times(1));
-//		DynamoDbConfigFactory.createDynamoDbMapper(amazonDynamoDB, mapConfigNamed, transformer);
-//	}
+	@Mock
+	private Environment environment;
+
+	@Mock
+	private KmsClient kmsClient;
+
+	private DynamoDbConfig underTest;
+
+	@BeforeEach
+	void setUp() {
+		underTest = new DynamoDbConfig(environment, kmsClient);
+	}
+
+	@Test
+	void createsMetadataTableWithLegacyEncryptionEnabled() {
+		when(environment.getProperty(Constants.KMS_KEY_ENV_VARIABLE)).thenReturn("test-kms-key");
+		when(environment.getProperty(Constants.DYNAMO_TABLE_NAME_ENV_VARIABLE)).thenReturn("metadata-table");
+
+		DynamoDbTable<Metadata> table = underTest.metadataTable();
+
+		assertThat(table).isNotNull();
+		assertThat(table.tableName()).isEqualTo("metadata-table");
+	}
+
+	@Test
+	void noAuditSkipsTableCreation() {
+		when(environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE)).thenReturn("true");
+
+		assertThat(underTest.metadataTable()).isNull();
+	}
+
+	@Test
+	void missingKmsKeyFailsStartup() {
+		when(environment.getProperty(Constants.KMS_KEY_ENV_VARIABLE)).thenReturn("");
+
+		assertThrows(BeanInitializationException.class, underTest::metadataTable);
+	}
 }

@@ -1,8 +1,8 @@
 package gov.cms.qpp.conversion;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
+import tools.jackson.databind.ObjectWriter;
+import tools.jackson.databind.json.JsonMapper;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.TransformException;
@@ -103,8 +103,10 @@ public class ConversionFileWriterWrapper {
 	 */
 	private void writeOutErrors(AllErrors allErrors, Path outFile) {
 		try (Writer writer = Files.newBufferedWriter(outFile)) {
-			ObjectWriter jsonObjectWriter = new ObjectMapper()
-					.setSerializationInclusion(JsonInclude.Include.NON_NULL)
+			ObjectWriter jsonObjectWriter = JsonMapper.builder()
+					.changeDefaultPropertyInclusion(inclusion ->
+							inclusion.withValueInclusion(JsonInclude.Include.NON_NULL))
+					.build()
 					.writer()
 					.withDefaultPrettyPrinter();
 			jsonObjectWriter.writeValue(writer, allErrors);

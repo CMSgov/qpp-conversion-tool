@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.api.exceptions;
 
-import com.amazonaws.AmazonServiceException;
+import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import com.google.common.truth.Truth;
 import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.Converter;
@@ -208,8 +208,10 @@ class GlobalExceptionHandlerTest implements LoggerContract {
 
 	@Test
 	void testHandleAmazonExceptionStatusCode() {
-		AmazonServiceException exception = new AmazonServiceException("some message");
-		exception.setStatusCode(404);
+		AwsServiceException exception = AwsServiceException.builder()
+			.message("some message")
+			.statusCode(404)
+			.build();
 
 		ResponseEntity<String> response = objectUnderTest.handleAmazonException(exception);
 

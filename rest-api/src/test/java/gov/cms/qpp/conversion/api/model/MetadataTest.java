@@ -5,10 +5,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.jupiter.api.Test;
+import gov.cms.qpp.conversion.model.error.Detail;
+import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -29,6 +33,11 @@ class MetadataTest {
 	void testDateCreatedOnConstruction() {
 		Metadata metadata = Metadata.create();
 		assertThat(metadata.getCreatedDate()).isNotNull();
+	}
+
+	@Test
+	void enhancedClientSchemaCanBeCreated() {
+		assertThat(TableSchema.fromBean(Metadata.class)).isNotNull();
 	}
 
 	@Test
@@ -83,16 +92,29 @@ class MetadataTest {
 		Metadata.InstantConverter instantConverter = new Metadata.InstantConverter();
 		Instant testInstant = Instant.parse(EXPECTED_DATE);
 
-		assertThat(instantConverter.convert(testInstant)).isEqualTo(EXPECTED_DATE);
+		assertThat(instantConverter.transformFrom(testInstant).s()).isEqualTo(EXPECTED_DATE);
 	}
 
 	@Test
 	void testConvertStringToInstant() {
 		Instant expected = Instant.parse(EXPECTED_DATE);
 		Metadata.InstantConverter instantConverter = new Metadata.InstantConverter();
-		Instant outcome = instantConverter.unconvert(EXPECTED_DATE);
+		Instant outcome = instantConverter.transformTo(AttributeValue.builder().s(EXPECTED_DATE).build());
 
 		assertThat(outcome).isEquivalentAccordingToCompareTo(expected);
+	}
+
+	@Test
+	void detailsConverterRoundTripsJson() {
+		Detail detail = new Detail();
+		detail.setMessage("validation detail");
+		Details details = new Details();
+		details.setDetails(List.of(detail));
+
+		Metadata.DetailsConverter converter = new Metadata.DetailsConverter();
+		Details decoded = converter.transformTo(converter.transformFrom(details));
+
+		assertThat(decoded).isEqualTo(details);
 	}
 
 	private Consumer<Method> harness(Metadata meta) {

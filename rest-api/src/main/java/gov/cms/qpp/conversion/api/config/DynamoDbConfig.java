@@ -1,16 +1,31 @@
 package gov.cms.qpp.conversion.api.config;
 
-import com.amazonaws.SdkClientException;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
-import com.amazonaws.services.dynamodbv2.datamodeling.AttributeEncryptor;
-import com.amazonaws.services.dynamodbv2.datamodeling.AttributeTransformer;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-import com.amazonaws.services.dynamodbv2.datamodeling.encryption.providers.DirectKmsMaterialProvider;
-import com.amazonaws.services.kms.AWSKMS;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import software.amazon.awssdk.core.client.config.ClientOverrideConfiguration;
+import software.amazon.awssdk.core.exception.SdkClientException;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+import software.amazon.awssdk.services.kms.KmsClient;
+import software.amazon.cryptography.dbencryptionsdk.dynamodb.DynamoDbEncryptionInterceptor;
+import software.amazon.cryptography.dbencryptionsdk.dynamodb.enhancedclient.CreateDynamoDbEncryptionInterceptorInput;
+import software.amazon.cryptography.dbencryptionsdk.dynamodb.enhancedclient.DynamoDbEnhancedClientEncryption;
+import software.amazon.cryptography.dbencryptionsdk.dynamodb.enhancedclient.DynamoDbEnhancedTableEncryptionConfig;
+import software.amazon.cryptography.dbencryptionsdk.dynamodb.model.LegacyOverride;
+import software.amazon.cryptography.dbencryptionsdk.dynamodb.model.LegacyPolicy;
+import software.amazon.cryptography.dbencryptionsdk.structuredencryption.model.CryptoAction;
+import software.amazon.cryptography.materialproviders.IKeyring;
+import software.amazon.cryptography.materialproviders.MaterialProviders;
+import software.amazon.cryptography.materialproviders.model.CreateAwsKmsMrkMultiKeyringInput;
+import software.amazon.cryptography.materialproviders.model.MaterialProvidersConfig;
+
+import com.amazonaws.services.dynamodbv2.datamodeling.sdkv2.encryption.DynamoDBEncryptor;
+import com.amazonaws.services.dynamodbv2.datamodeling.sdkv2.encryption.providers.DirectKmsMaterialProvider;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +35,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
 import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.model.Metadata;
 
-import java.util.Optional;
-
-import static gov.cms.qpp.conversion.api.config.DynamoDbConfigFactory.createDynamoDbMapper;
+import static gov.cms.qpp.conversion.api.config.DynamoDbConfigFactory.createDynamoDbTable;
 
 /**
  * Spring configuration file.
@@ -36,101 +50,116 @@ public class DynamoDbConfig {
 	private static final Logger API_LOG = LoggerFactory.getLogger(DynamoDbConfig.class);
 	static final String NO_KMS_KEY = "No KMS key specified!";
 
-	private Environment environment;
+	private final Environment environment;
 	/**
-	 * AWSKMS is thread-safe; suppress EI_EXPOSE_REP2 since we intend to share it.
+	 * KmsClient is thread-safe and intended for sharing.
 	 */
 	@SuppressFBWarnings("EI_EXPOSE_REP2")
-	private final AWSKMS awsKms;
+	private final KmsClient kmsClient;
 
 	/**
 	 * Ensure required dependencies are supplied.
 	 *
 	 * @param environment access to environment variables
-	 * @param awsKms KMS key
+	 * @param kmsClient KMS client
 	 */
-	public DynamoDbConfig(Environment environment, AWSKMS awsKms) {
+	public DynamoDbConfig(Environment environment, KmsClient kmsClient) {
 		this.environment = environment;
-		this.awsKms = awsKms;
+		this.kmsClient = kmsClient;
 	}
 
 	/**
-	 * Creates the DynamoDB client {@link Bean}.
-	 *
-	 * Uses the default client, but if a region is unspecified, uses {@code us-east-1}.
-	 *
-	 * @return The DynamoDB client.
-	 */
-	@Bean
-	public AmazonDynamoDB dynamoDbClient() {
-		AmazonDynamoDB client;
-
-		try {
-			client = AmazonDynamoDBClientBuilder.defaultClient();
-		} catch (SdkClientException exception) {
-			API_LOG.info("Default DynamoDB client failed to build, trying again with region us-east-1", exception);
-			client = planB();
-		}
-
-		return client;
-	}
-
-	/**
-	 * Returns the default client that uses {@code us-east-1}.
-	 *
-	 * @return The DynamoDB client.
-	 */
-	AmazonDynamoDB planB() {
-		return AmazonDynamoDBClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
-	}
-
-	/**
-	 * Creates a DynamoDB object mapper {@link Bean} that interacts with {@link DynamoDBTable} annotated POJOs.
-	 * Based on an available {@link AmazonDynamoDB} and {@link AWSKMS} {@link Bean}.
+	 * Creates an Enhanced Client table that interacts with {@link Metadata} records.
 	 *
 	 * Creates a DynamoDB object that depends on two different environment variables. {@code DYNAMO_TABLE_NAME} and
 	 * {@code KMS_KEY}.
 	 *
-	 * If {@code DYNAMO_TABLE_NAME} is specified, the value will be used for all read/write from/to the table of that name
-	 * regardless of what is specified for {@link DynamoDBTable}.  Else, the table specified for {@link DynamoDBTable} will be
-	 * used like normal.
+	 * If {@code DYNAMO_TABLE_NAME} is specified, the value will be used for all reads and writes. Otherwise,
+	 * {@code ConversionMetadata} is used.
 	 *
 	 * If {@code KMS_KEY} is specified, items in the tables will be encrypted.  Else, the items will not be encrypted.
 	 *
-	 * @param dynamoDbClient The {@link AmazonDynamoDB} {@link Bean}.
-	 * @return The DynamoDB object mapper
+	 * @return The metadata table
 	 */
 	@Bean
-	public DynamoDBMapper dynamoDbMapper(AmazonDynamoDB dynamoDbClient) {
-		DynamoDBMapper dynamoDbMapper;
-
+	public DynamoDbTable<Metadata> metadataTable() {
 		final Optional<String> kmsKey = getOptionalProperty(Constants.KMS_KEY_ENV_VARIABLE);
 		final Optional<String> tableName = getOptionalProperty(Constants.DYNAMO_TABLE_NAME_ENV_VARIABLE);
 		final Optional<String> noAudit = getOptionalProperty(Constants.NO_AUDIT_ENV_VARIABLE);
 
-		if (noAudit.isEmpty()) {
-			if (tableName.isPresent() && kmsKey.isPresent()) {
-				API_LOG.info("Using DynamoDB table name {} and KMS key {}.", tableName, kmsKey);
-				dynamoDbMapper = createDynamoDbMapper(
-					dynamoDbClient,
-					tableNameOverrideConfig(tableName.orElseThrow()),
-					encryptionTransformer(kmsKey.orElseThrow()));
-			} else if (kmsKey.isPresent()) {
-				API_LOG.warn("Using KMS key {}, but no DynamoDB table name specified.", tableName);
-				dynamoDbMapper = createDynamoDbMapper(
-					dynamoDbClient,
-					getDynamoDbMapperConfig(),
-					encryptionTransformer(kmsKey.orElseThrow()));
-			} else {
-				API_LOG.error(NO_KMS_KEY + " This is a fatal error.");
-				throw new BeanInitializationException(NO_KMS_KEY);
-			}
-		} else {
+		if (noAudit.isPresent()) {
 			API_LOG.info("Will not save any audit information.");
-			dynamoDbMapper = null;
+			return null;
 		}
 
-		return dynamoDbMapper;
+		if (kmsKey.isEmpty()) {
+			API_LOG.error(NO_KMS_KEY + " This is a fatal error.");
+			throw new BeanInitializationException(NO_KMS_KEY);
+		}
+
+		String tableNameOverride = tableName.orElse("ConversionMetadata");
+		API_LOG.info("Using DynamoDB table name {} and KMS key {}.", tableNameOverride, kmsKey);
+
+		TableSchema<Metadata> tableSchema = TableSchema.fromBean(Metadata.class);
+		MaterialProviders materialProviders = MaterialProviders.builder()
+			.MaterialProvidersConfig(MaterialProvidersConfig.builder().build())
+			.build();
+		IKeyring keyring = materialProviders.CreateAwsKmsMrkMultiKeyring(
+			CreateAwsKmsMrkMultiKeyringInput.builder().generator(kmsKey.orElseThrow()).build());
+
+		LegacyOverride legacyOverride = LegacyOverride.builder()
+			.encryptor(DynamoDBEncryptor.getInstance(new DirectKmsMaterialProvider(kmsClient, kmsKey.orElseThrow())))
+			.policy(LegacyPolicy.FORCE_LEGACY_ENCRYPT_ALLOW_LEGACY_DECRYPT)
+			.attributeActionsOnEncrypt(legacyAttributeActions())
+			.defaultAttributeFlag(CryptoAction.ENCRYPT_AND_SIGN)
+			.build();
+
+		Map<String, DynamoDbEnhancedTableEncryptionConfig> tableConfigs = new HashMap<>();
+		tableConfigs.put(tableNameOverride, DynamoDbEnhancedTableEncryptionConfig.builder()
+			.logicalTableName(tableNameOverride)
+			.schemaOnEncrypt(tableSchema)
+			.keyring(keyring)
+			.legacyOverride(legacyOverride)
+			.build());
+
+		DynamoDbEncryptionInterceptor encryptionInterceptor = DynamoDbEnhancedClientEncryption
+			.CreateDynamoDbEncryptionInterceptor(CreateDynamoDbEncryptionInterceptorInput.builder()
+				.tableEncryptionConfigs(tableConfigs)
+				.build());
+		DynamoDbClient encryptedClient;
+		try {
+			encryptedClient = DynamoDbClient.builder()
+				.overrideConfiguration(ClientOverrideConfiguration.builder()
+					.addExecutionInterceptor(encryptionInterceptor)
+					.build())
+				.build();
+		} catch (SdkClientException exception) {
+			API_LOG.info("Default DynamoDB client failed to build, trying again with region us-east-1", exception);
+			encryptedClient = DynamoDbClient.builder()
+				.region(Region.US_EAST_1)
+				.overrideConfiguration(ClientOverrideConfiguration.builder()
+					.addExecutionInterceptor(encryptionInterceptor)
+					.build())
+				.build();
+		}
+		DynamoDbEnhancedClient enhancedClient = DynamoDbEnhancedClient.builder()
+			.dynamoDbClient(encryptedClient)
+			.build();
+		return createDynamoDbTable(enhancedClient, tableNameOverride, tableSchema);
+	}
+
+	private static Map<String, CryptoAction> legacyAttributeActions() {
+		Map<String, CryptoAction> actions = new HashMap<>();
+		for (String attribute : new String[] {
+			"Uuid", "CreateDate", "Npi", "Apm", "ProgramName", "SubmissionYear", "SubmissionLocator", "QPPLocator",
+			"OverallStatus", "ConversionStatus", "ValidationStatus", Constants.DYNAMO_CPC_ATTRIBUTE,
+			Constants.DYNAMO_PCF_ATTRIBUTE, "ConversionErrorLocator", "ValidationErrorLocator",
+			"RawValidationErrorLocator", Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE,
+			Constants.DYNAMO_RTI_PROCESSED_CREATE_DATE_ATTRIBUTE, "Errors", "Warnings", "MetadataVersion"
+		}) {
+			actions.put(attribute, CryptoAction.SIGN_ONLY);
+		}
+		return actions;
 	}
 
 	/**
@@ -144,35 +173,4 @@ public class DynamoDbConfig {
 		return (property != null && !property.isEmpty()) ? Optional.of(property) : Optional.empty();
 	}
 
-	/**
-	 * Creates a DynamoDB configuration that forces the table name to the parameter.
-	 *
-	 * @param tableName The name of the table.
-	 * @return A DynamoDB configuration that forces the table name.
-	 */
-	DynamoDBMapperConfig tableNameOverrideConfig(String tableName) {
-		return DynamoDBMapperConfig.builder()
-			.withSaveBehavior(DynamoDBMapperConfig.SaveBehavior.PUT)
-			.withTableNameOverride(new DynamoDBMapperConfig.TableNameOverride(tableName))
-			.build();
-	}
-
-	/**
-	 * Creates a DynamoDB attribute transformer that encrypts items based on the KMS key parameter
-	 *
-	 * @param kmsKey The KMS key ARN to use to encrypt.
-	 * @return An encryption attribute transformer.
-	 */
-	AttributeTransformer encryptionTransformer(String kmsKey) {
-		return new AttributeEncryptor(new DirectKmsMaterialProvider(awsKms, kmsKey));
-	}
-
-	/**
-	 * Nameless db mapper config builder
-	 *
-	 * @return dynamo db mapper
-	 */
-	DynamoDBMapperConfig getDynamoDbMapperConfig() {
-		return DynamoDBMapperConfig.builder().build();
-	}
 }

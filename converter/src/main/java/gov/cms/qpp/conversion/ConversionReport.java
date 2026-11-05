@@ -4,8 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import gov.cms.qpp.conversion.encode.EncodeException;
@@ -15,12 +15,13 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.util.CloneHelper;
+import gov.cms.qpp.conversion.util.JsonMapperFactory;
 
 /**
  * Report on the state of a conversion.
  */
 public class ConversionReport {
-	private final ObjectMapper mapper = new ObjectMapper();
+	private final ObjectMapper mapper = JsonMapperFactory.createMapper();
 	private Source source;
 	private Node decoded;
 	private JsonWrapper encodedWithMetadata;
@@ -145,7 +146,7 @@ public class ConversionReport {
 					"ValidationErrors",
 					new ByteArrayInputStream(validationErrorBytes)
 			);
-		} catch (JsonProcessingException e) {
+		} catch (JacksonException e) {
 			throw new EncodeException("Issue serializing error report details", e);
 		}
 	}

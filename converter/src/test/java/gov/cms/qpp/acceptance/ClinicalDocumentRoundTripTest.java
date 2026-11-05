@@ -12,9 +12,9 @@ import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.reflections.util.ClasspathHelper;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectReader;
 
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
