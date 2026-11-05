@@ -34,7 +34,8 @@ class DynamoDbConfigTest {
 
 	@Test
 	void createsMetadataTableWithLegacyEncryptionEnabled() {
-		when(environment.getProperty(Constants.KMS_KEY_ENV_VARIABLE)).thenReturn("test-kms-key");
+		when(environment.getProperty(Constants.KMS_KEY_ENV_VARIABLE))
+			.thenReturn("arn:aws:kms:us-east-1:123456789012:key/mrk-12345678901234567890123456789012");
 		when(environment.getProperty(Constants.DYNAMO_TABLE_NAME_ENV_VARIABLE)).thenReturn("metadata-table");
 
 		DynamoDbTable<Metadata> table = underTest.metadataTable();

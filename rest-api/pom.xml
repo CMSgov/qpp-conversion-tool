@@ -39,6 +39,8 @@
              Boot 4.0.0 ships junit-jupiter 6.0.1 / junit-platform 6.0.1. -->
         <junit.jupiter.version>6.1.3</junit.jupiter.version>
         <junit.platform.version>6.1.3</junit.platform.version>
+        <jackson2.version>2.22.4</jackson2.version>
+        <netty.version>4.2.20.Final</netty.version>
         <io.rest-assured.version>6.3.0</io.rest-assured.version>
         <groovy.version>4.0.28</groovy.version>
         <io.hamcrest.version>3.0</io.hamcrest.version>
@@ -178,6 +180,14 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson2.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <!-- Framework BOM import: MUST be first to override Boot 4.0.6's Framework 7.0.7 with 7.0.8.
                  Maven uses "first declaration wins" for BOM imports. -->
             <dependency>
@@ -202,6 +212,14 @@
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-bom</artifactId>
                 <version>2.26.1</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-bom</artifactId>
+                <version>${netty.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
