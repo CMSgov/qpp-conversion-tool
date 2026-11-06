@@ -128,24 +128,6 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 	}
 
 	/**
-	 * Opens a stream to retrieve the APM Validation file
-	 *
-	 * @return file used for APM validation.
-	 */
-	@Override
-	public InputStream getApmValidationFile(String fileName) {
-		String bucketName = environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE);
-		if (StringUtils.isEmpty(bucketName)) {
-			API_LOG.warn("No bucket name and/or key specified");
-			return null;
-		}
-		API_LOG.info("Retrieving APM validation file from bucket {}", bucketName);
-
-		GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, fileName);
-		return retrieveManagedContentStream(getObjectRequest);
-	}
-
-	/**
 	 * Provides an {@link InputStream} whose close also closes the backing {@link S3Object}.
 	 */
 	private InputStream retrieveManagedContentStream(GetObjectRequest getObjectRequest) {

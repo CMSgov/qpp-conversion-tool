@@ -1,0 +1,42 @@
+version: 0.2
+
+env:
+  parameter-store:
+    SLACK_URL: "/slack/qpp-qppsf-api-team-feed"
+  variables:
+    GITLEAKS_VERSION: "7.4.0"
+    SLACK_CHANNEL: "qpp-qppsf-api-team-feed"
+
+phases:
+  install:
+    commands:
+      - echo "Installing Gitleaks version ${GITLEAKS_VERSION}"
+      - curl --fail --location --silent --show-error "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks-linux-amd64" --output /tmp/gitleaks
+      - install -m 0755 /tmp/gitleaks /usr/local/bin/gitleaks
+      - gitleaks --version
+      - jq --version
+
+  build:
+    commands:
+      - echo "Running Gitleaks scan on the repository..."
+      - gitleaks --path=. --config-path=.gitleaks.toml --verbose --redact --depth=25 --report=/tmp/gitleaks-report.json
+  post_build:
+    commands:
+      - |
+        if [ $CODEBUILD_BUILD_SUCCEEDING = 0 ]; then
+          set -eu
+          REPO_URL="${CODEBUILD_SOURCE_REPO_URL%.git}"
+          if [ ! -f /tmp/gitleaks-report.json ]; then
+            echo "Gitleaks scan failed without generating a findings report."
+            printf '[]' > /tmp/gitleaks-report.json
+          fi
+          PAYLOAD="$(jq -ce --arg repo "${REPO_URL}" \
+            --arg commit "${CODEBUILD_RESOLVED_SOURCE_VERSION}" \
+            --arg channel "${SLACK_CHANNEL}" '
+            {channel: $channel, text: ([
+              "Gitleaks scan failed",
+              "Commit: \($repo)/commit/\($commit)"
+            ] + (map("Finding: \($repo)/blob/\(.commit)/\(.file | split("/") | map(@uri) | join("/"))#L\(.lineNumber)") | unique) | join("\n"))}
+            ' /tmp/gitleaks-report.json)"
+          curl --fail --silent --show-error --header "Content-Type: application/json" --data "$PAYLOAD" "${SLACK_URL}"
+        fi

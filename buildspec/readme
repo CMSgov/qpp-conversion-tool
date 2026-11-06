@@ -40,3 +40,29 @@ artifacsts :
 
 
 # ecs deploy $CLUSTER_NAME $SERVICE_NAME -t $BRANCH-$COMMIT_SHORT_SHA
+
+Code coverage:
+  code_coverage.yaml runs Maven verification and JaCoCo coverage inside the
+  Maven/Java 21 Docker image used by the application build. The source checkout
+  is bind-mounted so JUnit and aggregate JaCoCo reports remain available on the
+  CodeBuild host. The post-build PR comment script runs on the host.
+  PR coverage tables show statements (JaCoCo instructions), branches, functions
+  (Java methods), and lines for the overall report and changed Java files.
+  The post-build script requires each of the four overall metrics to be at least
+  85%, including on non-PR builds. Missing or unavailable overall metrics fail
+  the gate. PR builds publish the coverage comment before checking the gate.
+  The coverage service is defined in docker-compose.coverage.yaml, separate
+  from the application test server in docker-compose.test.yaml.
+  Maven dependencies are bind-mounted from /root/.m2/repository and declared
+  as a CodeBuild cache path. Java and Maven are not required on the host.
+
+  The CodeBuild project must enable privileged mode for Docker and use an image
+  with Docker Compose v2, apt-get, curl, and Bash. The buildspec installs
+  xmlstarlet and jq for XML parsing and PR reporting; Python is not required.
+  Its service role needs access to the
+  Docker Hub parameters and GitHub token secret declared in the buildspec.
+
+  To run coverage locally from the repository root:
+    mkdir -p "$HOME/.m2/repository"
+    docker compose -f docker-compose.coverage.yaml run --rm coverage
+    docker compose -f docker-compose.coverage.yaml down

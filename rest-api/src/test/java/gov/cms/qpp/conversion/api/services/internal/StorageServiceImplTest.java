@@ -245,26 +245,6 @@ class StorageServiceImplTest {
 		verify(mockS3Obj, times(1)).close();
 	}
 
-	@Test
-	void test_getApmValidationFile() throws IOException {
-		byte[] expectedBytes = "APM".getBytes(StandardCharsets.UTF_8);
-		S3ObjectInputStream expectedStream = new S3ObjectInputStream(new ByteArrayInputStream(expectedBytes), null);
-		S3Object mockS3Obj = mock(S3Object.class);
-		Mockito.when(mockS3Obj.getObjectContent()).thenReturn(expectedStream);
-
-		Mockito.when(environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE)).thenReturn("Mock_Bucket");
-		Mockito.when(amazonS3Client.getObject(any(GetObjectRequest.class))).thenReturn(mockS3Obj);
-
-		byte[] actualBytes;
-		try (InputStream actual = underTest.getApmValidationFile(Constants.CPC_PLUS_APM_FILE_NAME_KEY)) {
-			assertThat(actual).isNotNull();
-			actualBytes = toByteArray(actual);
-		}
-
-		assertThat(actualBytes).isEqualTo(expectedBytes);
-		verify(mockS3Obj, times(1)).close();
-	}
-
 	private byte[] toByteArray(InputStream inputStream) throws IOException {
 		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 		byte[] data = new byte[1024];
