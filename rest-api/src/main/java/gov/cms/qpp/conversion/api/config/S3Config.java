@@ -1,11 +1,8 @@
 package gov.cms.qpp.conversion.api.config;
 
-import com.amazonaws.SdkClientException;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.transfer.TransferManager;
-import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
+import software.amazon.awssdk.core.exception.SdkClientException;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -29,9 +26,9 @@ public class S3Config {
 	 * @return The S3 client.
 	 */
 	@Bean
-	public AmazonS3 s3client() {
+	public S3Client s3client() {
 		try {
-			return AmazonS3ClientBuilder.defaultClient();
+			return S3Client.builder().build();
 		} catch (SdkClientException exception) {
 			API_LOG.info("Default S3 client failed to build, trying again with region us-east-1", exception);
 			return planB();
@@ -43,18 +40,7 @@ public class S3Config {
 	 *
 	 * @return The S3 client.
 	 */
-	AmazonS3 planB() {
-		return AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
-	}
-
-	/**
-	 * Creates a standard Transfer Manager {@link Bean} based on an available {@link AmazonS3} {@link Bean}.
-	 *
-	 * @param s3Client The {@link AmazonS3} {@link Bean}.
-	 * @return The S3 Transfer Manager.
-	 */
-	@Bean
-	public TransferManager s3TransferManager(AmazonS3 s3Client) {
-		return TransferManagerBuilder.standard().withS3Client(s3Client).build();
+	S3Client planB() {
+		return S3Client.builder().region(Region.US_EAST_1).build();
 	}
 }

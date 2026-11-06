@@ -11,7 +11,7 @@
 
 	<properties>
 		<java.version>21</java.version>
-		<aws.version>1.12.797</aws.version>
+		<aws.sdk.v2.version>2.57.9</aws.sdk.v2.version>
 		<junit.version>6.1.3</junit.version>
 		<junit.platform.version>6.1.3</junit.platform.version>
 		<jjwt.version>0.13.0</jjwt.version>
@@ -27,7 +27,7 @@
 		<maven.generate.phase>generate-sources</maven.generate.phase>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
-		<io.rest-assured.version>4.1.2</io.rest-assured.version>
+		<io.rest-assured.version>6.3.0</io.rest-assured.version>
 		<argLine/>
 		<javadoc.skip>false</javadoc.skip>
 	</properties>
@@ -226,6 +226,20 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>org.dafny</groupId>
+				<artifactId>DafnyRuntime</artifactId>
+				<version>4.9.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>software.amazon.awssdk</groupId>
+				<artifactId>bom</artifactId>
+				<version>${aws.sdk.v2.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
 				<version>2.0.20</version>
@@ -238,9 +252,9 @@
 			</dependency>
 
 			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
+				<groupId>tools.jackson.core</groupId>
 				<artifactId>jackson-core</artifactId>
-				<version>2.22.4</version>
+				<version>3.2.4</version>
 			</dependency>
 
 			<dependency>
@@ -250,15 +264,9 @@
 			</dependency>
 
 			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
+				<groupId>tools.jackson.core</groupId>
 				<artifactId>jackson-databind</artifactId>
-			<version>2.22.4</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.fasterxml.jackson.dataformat</groupId>
-				<artifactId>jackson-dataformat-cbor</artifactId>
-				<version>2.22.4</version>
+				<version>3.2.4</version>
 			</dependency>
 
 			<dependency>
@@ -330,19 +338,7 @@
 			<dependency>
 				<groupId>org.mockito</groupId>
 				<artifactId>mockito-core</artifactId>
-				<version>4.6.1</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.powermock</groupId>
-				<artifactId>powermock-module-junit4</artifactId>
-				<version>2.0.9</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.powermock</groupId>
-				<artifactId>powermock-api-mockito2</artifactId>
-				<version>2.0.9</version>
+				<version>5.24.0</version>
 			</dependency>
 
 			<dependency>
@@ -364,54 +360,6 @@
 			</dependency>
 
 			<dependency>
-				<groupId>com.amazonaws</groupId>
-				<artifactId>aws-java-sdk-s3</artifactId>
-				<version>${aws.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>commons-codec</groupId>
-						<artifactId>commons-codec</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-
-			<dependency>
-				<groupId>com.amazonaws</groupId>
-				<artifactId>aws-java-sdk-kms</artifactId>
-				<version>${aws.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>commons-codec</groupId>
-						<artifactId>commons-codec</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-
-			<dependency>
-				<groupId>com.amazonaws</groupId>
-				<artifactId>aws-java-sdk-dynamodb</artifactId>
-				<version>${aws.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>commons-codec</groupId>
-						<artifactId>commons-codec</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-
-			<dependency>
-				<groupId>com.amazonaws</groupId>
-				<artifactId>aws-java-sdk-core</artifactId>
-				<version>${aws.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.amazonaws</groupId>
-				<artifactId>aws-dynamodb-encryption-java</artifactId>
-				<version>1.15.2</version>
-			</dependency>
-
-			<dependency>
 				<groupId>commons-codec</groupId>
 				<artifactId>commons-codec</artifactId>
 				<version>1.23.0</version>
@@ -426,7 +374,7 @@
 			<dependency>
 				<groupId>com.jayway.jsonpath</groupId>
 				<artifactId>json-path</artifactId>
-				<version>2.9.0</version>
+				<version>3.0.0</version>
 				<exclusions>
 					<exclusion>
 						<groupId>org.ow2.asm</groupId>
@@ -442,7 +390,7 @@
 			<dependency>
 				<groupId>org.ow2.asm</groupId>
 				<artifactId>asm</artifactId>
-				<version>6.2</version> <!-- Use newer version of ASM -->
+				<version>9.11.1</version>
 			</dependency>
 
 			<dependency>
@@ -530,12 +478,6 @@
 			</dependency>
 
 			<dependency>
-				<groupId>com.fasterxml.jackson.module</groupId>
-				<artifactId>jackson-module-jaxb-annotations</artifactId>
-				<version>2.22.4</version>
-			</dependency>
-
-			<dependency>
 				<groupId>jakarta.activation</groupId>
 				<artifactId>jakarta.activation-api</artifactId>
 				<version>2.1.4</version>
@@ -575,23 +517,6 @@
 				<version>9.0</version>
 			</dependency>
 
-		<!-- Override tools.jackson.core (Jackson 3.x) transitive deps from logstash to fix CVEs -->
-		<dependency>
-			<groupId>tools.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-			<version>3.2.4</version>
-		</dependency>
-		<dependency>
-			<groupId>tools.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>3.2.4</version>
-		</dependency>
-		<dependency>
-			<groupId>tools.jackson.core</groupId>
-			<artifactId>jackson-annotations</artifactId>
-			<version>3.2.3</version>
-		</dependency>
-
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
@@ -618,7 +543,7 @@
 
 			<dependency>
 				<groupId>io.jsonwebtoken</groupId>
-				<artifactId>jjwt-jackson</artifactId>
+				<artifactId>jjwt-gson</artifactId>
 				<version>${jjwt.version}</version>
 			</dependency>
 
@@ -643,7 +568,7 @@
 			<dependency>
 				<groupId>org.hamcrest</groupId>
 				<artifactId>hamcrest-core</artifactId>
-				<version>2.2</version>
+				<version>3.0</version>
 			</dependency>
 
 			<dependency>
@@ -673,13 +598,7 @@
 			<dependency>
 				<groupId>jaxen</groupId>
 				<artifactId>jaxen</artifactId>
-				<version>1.2.0</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpclient</artifactId>
-				<version>4.5.14</version>
+				<version>2.0.6</version>
 			</dependency>
 
 		</dependencies>

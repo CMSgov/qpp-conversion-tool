@@ -1,10 +1,10 @@
 package stepDefinitions;
 
 import com.jayway.jsonpath.TypeRef;
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import model.EnvironmentConstants;
 import model.EnvironmentDataHolder;
 import model.ErrorHandler;
@@ -24,11 +24,10 @@ import gov.cms.qpp.conversion.util.JsonHelper;
 import java.util.List;
 import java.util.Map;
 
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ConverterApiSteps {
 
@@ -102,7 +101,7 @@ public class ConverterApiSteps {
 			String newExpected = "68";
 			List<String> acceptedJsonResponse =
 				JsonHelper.readJsonAtJsonPath(testResponse.getJsonResponse(), jsonPath, new TypeRef<List<String>>() { });
-			assertThat(acceptedJsonResponse, hasItem(newExpected));
+			assertTrue(acceptedJsonResponse.contains(newExpected));
 		}
 		else {
 			assertEquals(expected, testResponse.getStatus());
@@ -120,14 +119,14 @@ public class ConverterApiSteps {
 	public void json_response_should_not_contain(String jsonPath, String unexpected) {
 		List<String> acceptedJsonResponse =
 			JsonHelper.readJsonAtJsonPath(testResponse.getJsonResponse(), jsonPath, new TypeRef<List<String>>() { });
-		assertThat(acceptedJsonResponse, not(hasItem(unexpected)));
+		assertFalse(acceptedJsonResponse.contains(unexpected));
 	}
 
 	@And("the JSON response at (.*) should contain (.*)")
 	public void json_response_could_contain_this_many(String jsonPath, String expected) {
 		List<String> acceptedJsonResponse =
 			JsonHelper.readJsonAtJsonPath(testResponse.getJsonResponse(), jsonPath, new TypeRef<List<String>>() { });
-		assertThat(acceptedJsonResponse, hasItem(expected));
+		assertTrue(acceptedJsonResponse.contains(expected));
 
 	}
 }

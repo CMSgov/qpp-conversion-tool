@@ -1,9 +1,11 @@
 package gov.cms.qpp.conversion.api.services.internal;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
-import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
-import com.amazonaws.services.dynamodbv2.datamodeling.QueryResultPage;
+import software.amazon.awssdk.core.pagination.sync.SdkIterable;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbIndex;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.Key;
+import software.amazon.awssdk.enhanced.dynamodb.model.Page;
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryEnhancedRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,7 +44,7 @@ class DbServiceImplTest {
 	private DbServiceImpl underTest;
 
 	@Mock
-	private DynamoDBMapper dbMapper;
+	private DynamoDbTable<Metadata> metadataTable;
 
 	@Mock
 	private TaskExecutor taskExecutor;
@@ -52,8 +54,8 @@ class DbServiceImplTest {
 
 	@BeforeEach
 	void before() {
-		Optional<DynamoDBMapper> dbMapperWrapper = Optional.of(dbMapper);
-		underTest = new DbServiceImpl(taskExecutor, dbMapperWrapper, environment);
+		Optional<DynamoDbTable<Metadata>> tableWrapper = Optional.of(metadataTable);
+		underTest = new DbServiceImpl(taskExecutor, tableWrapper, environment);
 		doAnswer(invocationOnMock -> {
 			Runnable method = invocationOnMock.getArgument(0);
 			CompletableFuture.runAsync(method);
@@ -80,7 +82,7 @@ class DbServiceImplTest {
 		Metadata meta = writeMeta();
 
 		assertThat(meta).isNotNull();
-		verify(dbMapper, times(1)).save(any(Metadata.class));
+		verify(metadataTable, times(1)).putItem(any(Metadata.class));
 	}
 
 	@Test
@@ -90,7 +92,7 @@ class DbServiceImplTest {
 		Metadata meta = writeMeta();
 
 		assertThat(meta).isNotNull();
-		verify(dbMapper, times(1)).save(any(Metadata.class));
+		verify(metadataTable, times(1)).putItem(any(Metadata.class));
 	}
 
 	@Test
@@ -102,29 +104,30 @@ class DbServiceImplTest {
 
 		Metadata metadataOut = writeMeta(metadataIn);
 
-		verifyNoInteractions(dbMapper);
+		verifyNoInteractions(metadataTable);
 		assertWithMessage("The returned metadata must be an empty metadata.")
 				.that(metadataOut.getUuid()).isNull();
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	void testGetUnprocessedPcfMetaData() {
 		when(environment.getProperty(Constants.CPC_PLUS_UNPROCESSED_FILE_SEARCH_DATE_VARIABLE)).thenReturn("2020-01-01");
 
 		int itemsPerPartition = 11;
 		int itemLimitPerpartition = 10;
 
-		PaginatedQueryList<Metadata> mockMetadataPage = mock(PaginatedQueryList.class);
-		Answer<Stream<Metadata>> answer = (InvocationOnMock invocation) -> Stream.generate(Metadata::new).limit(itemsPerPartition);
-
-		when(mockMetadataPage.stream()).thenAnswer(answer);
-		when(dbMapper.query(eq(Metadata.class), any(DynamoDBQueryExpression.class)))
-			.thenReturn(mockMetadataPage);
+		DynamoDbIndex<Metadata> index = mock(DynamoDbIndex.class);
+		when(metadataTable.index(Constants.DYNAMO_PCF_ATTRIBUTE + "-" + Constants.CPC_ORG + "-index")).thenReturn(index);
+		List<Metadata> items = new ArrayList<>();
+		for (int indexNumber = 0; indexNumber < itemsPerPartition; indexNumber++) {
+			items.add(Metadata.create());
+		}
+		SdkIterable<Page<Metadata>> pages = () -> Stream.of(Page.create(items)).iterator();
+		when(index.query(any(QueryEnhancedRequest.class))).thenReturn(pages);
 
 		List<Metadata> metaDataList = underTest.getUnprocessedPcfMetaData(Constants.CPC_ORG);
 
-		verify(dbMapper, times(Constants.CPC_DYNAMO_PARTITIONS)).query(eq(Metadata.class), any(DynamoDBQueryExpression.class));
+		verify(index, times(Constants.CPC_DYNAMO_PARTITIONS)).query(any(QueryEnhancedRequest.class));
 		assertThat(metaDataList).hasSize(itemLimitPerpartition * Constants.CPC_DYNAMO_PARTITIONS);
 	}
 
@@ -132,11 +135,11 @@ class DbServiceImplTest {
 	void testGetMetadataById() {
 		String fakeUuid = "1337-f4ke-uuid";
 
-		when(dbMapper.load(eq(Metadata.class), anyString())).thenReturn(Metadata.create());
+		when(metadataTable.getItem(any(Key.class))).thenReturn(Metadata.create());
 
 		Metadata fakeMetadata = underTest.getMetadataById(fakeUuid);
 
-		verify(dbMapper, times(1)).load(eq(Metadata.class), anyString());
+		verify(metadataTable, times(1)).getItem(any(Key.class));
 
 		assertThat(fakeMetadata).isNotNull();
 	}

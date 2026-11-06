@@ -1,6 +1,6 @@
 services:
   coverage:
-    image: maven:3.9.15-eclipse-temurin-21-alpine
+    image: public.ecr.aws/docker/library/maven:3.10.0-eclipse-temurin-21-alpine
     working_dir: /usr/src/app
     volumes:
       - type: bind

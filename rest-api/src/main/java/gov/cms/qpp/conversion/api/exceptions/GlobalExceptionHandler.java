@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.api.exceptions;
 
-import com.amazonaws.AmazonServiceException;
+import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.QppValidationException;
@@ -142,12 +142,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(exception.getMessage(), httpHeaders, HttpStatus.BAD_REQUEST);
 	}
 
-	@ExceptionHandler(AmazonServiceException.class)
+	@ExceptionHandler(AwsServiceException.class)
 	@ResponseBody
-	ResponseEntity<String> handleAmazonException(AmazonServiceException exception) {
+	ResponseEntity<String> handleAmazonException(AwsServiceException exception) {
 		API_LOG.error("An AWS error occured", exception);
 
-		return ResponseEntity.status(exception.getStatusCode())
+		return ResponseEntity.status(exception.statusCode())
 			.contentType(MediaType.TEXT_PLAIN)
 			.body(exception.getMessage());
 	}

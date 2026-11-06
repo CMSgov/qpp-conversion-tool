@@ -3,7 +3,6 @@ package gov.cms.qpp.conversion.model.validation;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
@@ -12,8 +11,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.reflections.util.ClasspathHelper;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
+import gov.cms.qpp.conversion.util.JsonMapperFactory;
 
 class MeasureConfigTest {
 
@@ -22,7 +23,7 @@ class MeasureConfigTest {
 
 	@BeforeAll
 	static void setup() {
-		ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = JsonMapperFactory.createMapper();
 
 		InputStream stream =
 				ClasspathHelper.contextClassLoader().getResourceAsStream("measures-data-aci-test.json");
@@ -30,7 +31,7 @@ class MeasureConfigTest {
 		try {
 			TypeReference<List<MeasureConfig>> measureConfigType = new TypeReference<List<MeasureConfig>>() {};
 			measureConfigs = mapper.readValue(stream, measureConfigType);
-		} catch (IOException e) {
+		} catch (JacksonException e) {
 			throw new IllegalArgumentException("failure to correctly read measures config json", e);
 		}
 

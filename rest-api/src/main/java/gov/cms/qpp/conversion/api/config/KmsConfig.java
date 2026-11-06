@@ -1,9 +1,8 @@
 package gov.cms.qpp.conversion.api.config;
 
-import com.amazonaws.SdkClientException;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.kms.AWSKMS;
-import com.amazonaws.services.kms.AWSKMSClientBuilder;
+import software.amazon.awssdk.core.exception.SdkClientException;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.kms.KmsClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -27,17 +26,13 @@ public class KmsConfig {
 	 * @return The KMS client.
 	 */
 	@Bean
-	public AWSKMS awsKms() {
-		AWSKMS client = null;
-
+	public KmsClient awsKms() {
 		try {
-			client = AWSKMSClientBuilder.defaultClient();
+			return KmsClient.builder().build();
 		} catch (SdkClientException exception) {
 			API_LOG.info("Default KMS client failed to build, trying again with region us-east-1", exception);
-			client = planB();
+			return planB();
 		}
-
-		return client;
 	}
 
 	/**
@@ -45,7 +40,7 @@ public class KmsConfig {
 	 *
 	 * @return The KMS client.
 	 */
-	AWSKMS planB() {
-		return AWSKMSClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
+	KmsClient planB() {
+		return KmsClient.builder().region(Region.US_EAST_1).build();
 	}
 }

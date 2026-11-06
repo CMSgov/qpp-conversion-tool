@@ -2,24 +2,16 @@ package gov.cms.qpp.conversion.api.services.internal;
 
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FilterInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,18 +19,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.core.env.Environment;
 import org.springframework.core.task.TaskExecutor;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
-import com.amazonaws.services.s3.transfer.TransferManager;
-import com.amazonaws.services.s3.transfer.Upload;
-import com.amazonaws.services.s3.transfer.model.UploadResult;
+import software.amazon.awssdk.http.AbortableInputStream;
+import software.amazon.awssdk.core.ResponseInputStream;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectResponse;
+import software.amazon.awssdk.services.s3.model.ServerSideEncryption;
 
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.util.MeasuredInputStreamSupplier;
@@ -53,23 +45,16 @@ class StorageServiceImplTest {
 	private StorageServiceImpl underTest;
 
 	@Mock
-	private TransferManager transferManager;
-
-	@Mock
-	private Upload upload;
-
-	@Mock
 	private TaskExecutor taskExecutor;
 
 	@Mock
-	private AmazonS3 amazonS3Client;
+	private S3Client s3Client;
 
 	@Mock
 	private Environment environment;
 
 	private String bucketName = "test-bucket";
 	private String ksmKey = "test-key";
-	private UploadResult result;
 
 	@BeforeEach
 	void before() {
@@ -79,83 +64,80 @@ class StorageServiceImplTest {
 			return null;
 		}).when(taskExecutor).execute(any(Runnable.class));
 
-		result = new UploadResult();
-		result.setKey("meep");
-		when(transferManager.upload(any(PutObjectRequest.class))).thenReturn(upload);
+		when(s3Client.putObject(any(PutObjectRequest.class), any(RequestBody.class)))
+			.thenReturn(PutObjectResponse.builder().build());
 	}
 
 	@Test
-	void testPut() throws InterruptedException {
-		when(upload.waitForUploadResult()).thenReturn(result);
-		Mockito.when(environment.getProperty(eq(Constants.BUCKET_NAME_ENV_VARIABLE))).thenReturn(bucketName);
-		Mockito.when(environment.getProperty(eq(Constants.KMS_KEY_ENV_VARIABLE))).thenReturn(ksmKey);
+	void testPut() {
+		when(environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE)).thenReturn(bucketName);
+		when(environment.getProperty(Constants.KMS_KEY_ENV_VARIABLE)).thenReturn(ksmKey);
 
 		assertThat(storeFile()).isNotNull();
-		ArgumentCaptor<PutObjectRequest> objectReqestCaptor = ArgumentCaptor.forClass(PutObjectRequest.class);
-		verify(transferManager, times(1)).upload(objectReqestCaptor.capture());
-		assertThat(objectReqestCaptor.getValue().getMetadata().getContentLength()).isEqualTo(TEST_CONTENT_BYTES.length);
+		ArgumentCaptor<PutObjectRequest> requestCaptor = ArgumentCaptor.forClass(PutObjectRequest.class);
+		verify(s3Client, times(1)).putObject(requestCaptor.capture(), any(RequestBody.class));
+		assertThat(requestCaptor.getValue().contentLength()).isEqualTo((long) TEST_CONTENT_BYTES.length);
+		assertThat(requestCaptor.getValue().serverSideEncryption()).isEqualTo(ServerSideEncryption.AWS_KMS);
+		assertThat(requestCaptor.getValue().ssekmsKeyId()).isEqualTo(ksmKey);
 	}
 
 	@Test
-	void testPutFail() throws InterruptedException {
-		when(upload.waitForUploadResult()).thenThrow(InterruptedException.class);
-		Mockito.when(environment.getProperty(eq(Constants.BUCKET_NAME_ENV_VARIABLE))).thenReturn(bucketName);
-		Mockito.when(environment.getProperty(eq(Constants.KMS_KEY_ENV_VARIABLE))).thenReturn(ksmKey);
-
-		assertThrows(CompletionException.class, this::storeFile);
-	}
-
-	@Test
-	void testPutRecoverableFailure() throws InterruptedException {
-		when(upload.waitForUploadResult()).thenThrow(RuntimeException.class).thenReturn(result);
-		Mockito.when(environment.getProperty(eq(Constants.BUCKET_NAME_ENV_VARIABLE))).thenReturn(bucketName);
-		Mockito.when(environment.getProperty(eq(Constants.KMS_KEY_ENV_VARIABLE))).thenReturn(ksmKey);
+	void testPutRecoverableFailure() {
+		when(s3Client.putObject(any(PutObjectRequest.class), any(RequestBody.class)))
+			.thenThrow(RuntimeException.class)
+			.thenReturn(PutObjectResponse.builder().build());
+		when(environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE)).thenReturn(bucketName);
+		when(environment.getProperty(Constants.KMS_KEY_ENV_VARIABLE)).thenReturn(ksmKey);
 
 		assertThat(storeFile()).isNotNull();
-		verify(transferManager, times(2)).upload(any(PutObjectRequest.class));
+		verify(s3Client, times(2)).putObject(any(PutObjectRequest.class), any(RequestBody.class));
 	}
 
 	@Test
 	void testPutNoBucket() {
-		Mockito.when(environment.getProperty(eq(Constants.BUCKET_NAME_ENV_VARIABLE))).thenReturn("");
+		when(environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE)).thenReturn("");
 
 		assertThat(storeFile()).isEmpty();
-		verify(transferManager, times(0)).upload(any(PutObjectRequest.class));
+		verify(s3Client, times(0)).putObject(any(PutObjectRequest.class), any(RequestBody.class));
 	}
 
 	@Test
 	void testPutNoBucketSpecified() {
 		assertThat(storeFile()).isEmpty();
-		verify(transferManager, times(0)).upload(any(PutObjectRequest.class));
+		verify(s3Client, times(0)).putObject(any(PutObjectRequest.class), any(RequestBody.class));
 	}
 
 	@Test
 	void testNotSpecifyKmsKey() {
-		Mockito.when(environment.getProperty(eq(Constants.BUCKET_NAME_ENV_VARIABLE))).thenReturn(bucketName);
+		when(environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE)).thenReturn(bucketName);
 
 		String s3ObjectId = storeFile();
 		assertThat(s3ObjectId).isEqualTo("");
-		verify(transferManager, times(0)).upload(any(PutObjectRequest.class));
+		verify(s3Client, times(0)).putObject(any(PutObjectRequest.class), any(RequestBody.class));
 	}
 
 	@Test
 	void noBucket() {
-		Mockito.when(environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE)).thenReturn(null);
+		when(environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE)).thenReturn(null);
 		InputStream inStream = underTest.getFileByLocationId("meep");
 
 		assertThat(inStream).isNull();
+		verify(s3Client, times(0)).getObject(any(GetObjectRequest.class));
 	}
 
 	@Test
 	void envVariablesPresent() {
-		S3Object s3ObjectMock = mock(S3Object.class);
-		S3ObjectInputStream objectContent = new S3ObjectInputStream(new ByteArrayInputStream("1234".getBytes(StandardCharsets.UTF_8)), null);
-		when(s3ObjectMock.getObjectContent()).thenReturn(objectContent);
-		Mockito.when(amazonS3Client.getObject(any(GetObjectRequest.class))).thenReturn(s3ObjectMock);
-		Mockito.when(environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE)).thenReturn("meep");
-		underTest.getFileByLocationId("meep");
+		ResponseInputStream<GetObjectResponse> response = new ResponseInputStream<>(
+			GetObjectResponse.builder().build(), AbortableInputStream.create(new ByteArrayInputStream(new byte[0])));
+		when(s3Client.getObject(any(GetObjectRequest.class))).thenReturn(response);
+		when(environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE)).thenReturn("meep");
+		InputStream returned = underTest.getFileByLocationId("meep");
 
-		verify(s3ObjectMock, times(1)).getObjectContent();
+		assertThat(returned).isSameInstanceAs(response);
+		ArgumentCaptor<GetObjectRequest> requestCaptor = ArgumentCaptor.forClass(GetObjectRequest.class);
+		verify(s3Client).getObject(requestCaptor.capture());
+		assertThat(requestCaptor.getValue().bucket()).isEqualTo("meep");
+		assertThat(requestCaptor.getValue().key()).isEqualTo("meep");
 	}
 
 	private String storeFile() {
@@ -167,102 +149,54 @@ class StorageServiceImplTest {
 	
 	@Test
 	void test_getCpcPlusValidationFile_noBucket() {
-		Mockito.when(environment.getProperty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE)).thenReturn(null);
+		when(environment.getProperty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE)).thenReturn(null);
 		InputStream ins = underTest.getCpcPlusValidationFile();
 		assertThat(ins).isNull();
 		
-		Mockito.when(environment.getProperty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE)).thenReturn("");
+		when(environment.getProperty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE)).thenReturn("");
 		ins = underTest.getCpcPlusValidationFile();
 		assertThat(ins).isNull();
 		
-		Mockito.when(environment.getProperty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE)).thenReturn("   ");
+		when(environment.getProperty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE)).thenReturn("   ");
 		ins = underTest.getCpcPlusValidationFile();
 		assertThat(ins).isNull();
 	}
 	
 	@Test
 	void test_getCpcPlusValidationFile_noFileKey() {
-		Mockito.when(environment.getProperty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE)).thenReturn("Mock_Bucket");
+		when(environment.getProperty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE)).thenReturn("Mock_Bucket");
 		
-		Mockito.when(environment.getProperty(Constants.CPC_PLUS_FILENAME_VARIABLE)).thenReturn(null);
+		when(environment.getProperty(Constants.CPC_PLUS_FILENAME_VARIABLE)).thenReturn(null);
 		InputStream ins = underTest.getCpcPlusValidationFile();
 		assertThat(ins).isNull();
 		
-		Mockito.when(environment.getProperty(Constants.CPC_PLUS_FILENAME_VARIABLE)).thenReturn("");
+		when(environment.getProperty(Constants.CPC_PLUS_FILENAME_VARIABLE)).thenReturn("");
 		ins = underTest.getCpcPlusValidationFile();
 		assertThat(ins).isNull();
 	}
 	
-	@Test()
-	void test_getCpcPlusValidationFile_NPE() {
-		Mockito.when(environment.getProperty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE)).thenReturn("Mock_Bucket");
-		
-		// note that blank (all whitespace) is not tested in isEmpty checks.
-		Mockito.when(environment.getProperty(Constants.CPC_PLUS_FILENAME_VARIABLE)).thenReturn("   ");
-		assertThrows(NullPointerException.class, underTest::getCpcPlusValidationFile);
-	}
-	
 	@Test
-	void test_getCpcPlusValidationFile() throws IOException {
-		byte[] expectedBytes = "Mock Contents".getBytes(StandardCharsets.UTF_8);
-		S3ObjectInputStream expectedStream = new S3ObjectInputStream(new ByteArrayInputStream(expectedBytes), null);
-		S3Object mockS3Obj = mock(S3Object.class);
-		Mockito.when(mockS3Obj.getObjectContent()).thenReturn(expectedStream);
+	void test_getCpcPlusValidationFile_blankKeyIsPassedToS3() {
+		ResponseInputStream<GetObjectResponse> response = new ResponseInputStream<>(
+			GetObjectResponse.builder().build(), AbortableInputStream.create(new ByteArrayInputStream(new byte[0])));
+		when(s3Client.getObject(any(GetObjectRequest.class))).thenReturn(response);
+		when(environment.getProperty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE)).thenReturn("Mock_Bucket");
 		
-		Mockito.when(environment.getProperty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE)).thenReturn("Mock_Bucket");
-		Mockito.when(environment.getProperty(Constants.CPC_PLUS_FILENAME_VARIABLE)).thenReturn("Mock_Filename");
-		Mockito.when(amazonS3Client.getObject(any(GetObjectRequest.class))).thenReturn(mockS3Obj);
-		
-		byte[] actualBytes;
-		try (InputStream actual = underTest.getCpcPlusValidationFile()) {
-			assertThat(actual).isNotNull();
-			actualBytes = toByteArray(actual);
-		}
-		
-		assertThat(actualBytes).isEqualTo(expectedBytes);
-		verify(mockS3Obj, times(1)).close();
+		when(environment.getProperty(Constants.CPC_PLUS_FILENAME_VARIABLE)).thenReturn("   ");
+		assertThat(underTest.getCpcPlusValidationFile()).isSameInstanceAs(response);
+		ArgumentCaptor<GetObjectRequest> requestCaptor = ArgumentCaptor.forClass(GetObjectRequest.class);
+		verify(s3Client).getObject(requestCaptor.capture());
+		assertThat(requestCaptor.getValue().key()).isEqualTo("   ");
 	}
 
 	@Test
-	void managedInputStream_closeAddsSuppressedWhenSuperAndS3CloseFail() throws IOException {
-		byte[] bytes = "Mock Contents".getBytes(StandardCharsets.UTF_8);
-		S3ObjectInputStream expectedStream = new S3ObjectInputStream(new CloseFailingInputStream(bytes), null);
-		S3Object mockS3Obj = mock(S3Object.class);
-		Mockito.when(mockS3Obj.getObjectContent()).thenReturn(expectedStream);
-		doThrow(new IOException("S3 close failure")).when(mockS3Obj).close();
+	void test_getCpcPlusValidationFile() {
+		ResponseInputStream<GetObjectResponse> response = new ResponseInputStream<>(
+			GetObjectResponse.builder().build(), AbortableInputStream.create(new ByteArrayInputStream(new byte[0])));
+		when(environment.getProperty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE)).thenReturn("Mock_Bucket");
+		when(environment.getProperty(Constants.CPC_PLUS_FILENAME_VARIABLE)).thenReturn("Mock_Filename");
+		when(s3Client.getObject(any(GetObjectRequest.class))).thenReturn(response);
 		
-		Mockito.when(environment.getProperty(Constants.CPC_PLUS_BUCKET_NAME_VARIABLE)).thenReturn("Mock_Bucket");
-		Mockito.when(environment.getProperty(Constants.CPC_PLUS_FILENAME_VARIABLE)).thenReturn("Mock_Filename");
-		Mockito.when(amazonS3Client.getObject(any(GetObjectRequest.class))).thenReturn(mockS3Obj);
-		
-		InputStream managedStream = underTest.getCpcPlusValidationFile();
-		assertThat(managedStream).isNotNull();
-		IOException thrown = assertThrows(IOException.class, managedStream::close);
-		
-		assertThat(thrown.getMessage()).contains("Input stream close failure");
-		assertThat(thrown.getSuppressed()).hasLength(1);
-		assertThat(thrown.getSuppressed()[0].getMessage()).contains("S3 close failure");
-		verify(mockS3Obj, times(1)).close();
-	}
-
-	private byte[] toByteArray(InputStream inputStream) throws IOException {
-		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-		byte[] data = new byte[1024];
-		int bytesRead;
-		while ((bytesRead = inputStream.read(data)) != -1) {
-			buffer.write(data, 0, bytesRead);
-		}
-		return buffer.toByteArray();
-	}
-
-	private static final class CloseFailingInputStream extends FilterInputStream {
-		CloseFailingInputStream(byte[] data) {
-			super(new ByteArrayInputStream(data));
-		}
-
-		@Override
-		public void close() throws IOException {
-			throw new IOException("Input stream close failure");
-		}
+		assertThat(underTest.getCpcPlusValidationFile()).isSameInstanceAs(response);
 	}
 }
