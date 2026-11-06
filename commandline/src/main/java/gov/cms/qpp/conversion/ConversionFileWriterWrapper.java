@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectWriter;
 import tools.jackson.databind.json.JsonMapper;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
@@ -110,7 +111,7 @@ public class ConversionFileWriterWrapper {
 					.writer()
 					.withDefaultPrettyPrinter();
 			jsonObjectWriter.writeValue(writer, allErrors);
-		} catch (IOException exception) {
+		} catch (IOException | JacksonException exception) {
 			DEV_LOG.error("Could not write out error JSON to file " + outFile, exception);
 		}
 	}

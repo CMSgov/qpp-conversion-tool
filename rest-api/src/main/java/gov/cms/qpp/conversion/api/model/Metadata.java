@@ -18,6 +18,8 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbConvertedBy;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbIgnore;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSecondaryPartitionKey;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSecondarySortKey;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.cryptography.dbencryptionsdk.dynamodb.enhancedclient.DynamoDbEncryptionSignOnly;
 
@@ -286,6 +288,7 @@ public final class Metadata {
 	 */
 	@DynamoDbEncryptionSignOnly
 	@DynamoDbAttribute("OverallStatus")
+	@DynamoDbConvertedBy(LegacyBooleanConverter.class)
 	public Boolean getOverallStatus() {
 		return overallStatus;
 	}
@@ -326,6 +329,7 @@ public final class Metadata {
 	 */
 	@DynamoDbEncryptionSignOnly
 	@DynamoDbAttribute("ConversionStatus")
+	@DynamoDbConvertedBy(LegacyBooleanConverter.class)
 	public Boolean getConversionStatus() {
 		return conversionStatus;
 	}
@@ -346,6 +350,7 @@ public final class Metadata {
 	 */
 	@DynamoDbEncryptionSignOnly
 	@DynamoDbAttribute("ValidationStatus")
+	@DynamoDbConvertedBy(LegacyBooleanConverter.class)
 	public Boolean getValidationStatus() {
 		return validationStatus;
 	}
@@ -392,6 +397,9 @@ public final class Metadata {
 	 */
 	@DynamoDbEncryptionSignOnly
 	@DynamoDbAttribute(Constants.DYNAMO_PCF_ATTRIBUTE)
+	@DynamoDbSecondaryPartitionKey(indexNames = {
+		Constants.DYNAMO_PCF_ATTRIBUTE + "-" + Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE + "-index",
+		Constants.DYNAMO_PCF_ATTRIBUTE + "-" + Constants.DYNAMO_RTI_PROCESSED_CREATE_DATE_ATTRIBUTE + "-index"})
 	public String getPcf() {
 		return pcf;
 	}
@@ -521,6 +529,8 @@ public final class Metadata {
 	 */
 	@DynamoDbEncryptionSignOnly
 	@DynamoDbAttribute(Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE)
+	@DynamoDbSecondarySortKey(indexNames =
+		Constants.DYNAMO_PCF_ATTRIBUTE + "-" + Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE + "-index")
 	public String getCpcProcessedCreateDate() {
 		String combination = null;
 
@@ -541,6 +551,8 @@ public final class Metadata {
 	 */
 	@DynamoDbEncryptionSignOnly
 	@DynamoDbAttribute(Constants.DYNAMO_RTI_PROCESSED_CREATE_DATE_ATTRIBUTE)
+	@DynamoDbSecondarySortKey(indexNames =
+		Constants.DYNAMO_PCF_ATTRIBUTE + "-" + Constants.DYNAMO_RTI_PROCESSED_CREATE_DATE_ATTRIBUTE + "-index")
 	public String getRtiProcessedCreateDate() {
 		String combination = null;
 
@@ -836,6 +848,37 @@ public final class Metadata {
 		@Override
 		public AttributeValueType attributeValueType() {
 			return AttributeValueType.S;
+		}
+	}
+
+	/**
+	 * Reads legacy numeric (0/1) booleans as well as native BOOL values; writes the legacy numeric format.
+	 */
+	public static class LegacyBooleanConverter implements AttributeConverter<Boolean> {
+		@Override
+		public AttributeValue transformFrom(final Boolean value) {
+			return AttributeValue.builder().n(value ? "1" : "0").build();
+		}
+
+		@Override
+		public Boolean transformTo(final AttributeValue attributeValue) {
+			if (attributeValue.bool() != null) {
+				return attributeValue.bool();
+			}
+			if (attributeValue.n() != null) {
+				return !"0".equals(attributeValue.n());
+			}
+			return null;
+		}
+
+		@Override
+		public EnhancedType<Boolean> type() {
+			return EnhancedType.of(Boolean.class);
+		}
+
+		@Override
+		public AttributeValueType attributeValueType() {
+			return AttributeValueType.N;
 		}
 	}
 }

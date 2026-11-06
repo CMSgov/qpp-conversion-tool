@@ -151,7 +151,7 @@ public class DynamoDbConfig {
 	private static Map<String, CryptoAction> legacyAttributeActions() {
 		Map<String, CryptoAction> actions = new HashMap<>();
 		for (String attribute : new String[] {
-			"Uuid", "CreateDate", "Npi", "Apm", "ProgramName", "SubmissionYear", "SubmissionLocator", "QPPLocator",
+			"Uuid", "CreateDate", "Npi", "Apm", "ProgramName", "SubmissionYear", "SubmissionLocator", "QPPLocator", "Purpose",
 			"OverallStatus", "ConversionStatus", "ValidationStatus", Constants.DYNAMO_CPC_ATTRIBUTE,
 			Constants.DYNAMO_PCF_ATTRIBUTE, "ConversionErrorLocator", "ValidationErrorLocator",
 			"RawValidationErrorLocator", Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE,
