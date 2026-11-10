@@ -8,9 +8,8 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectWriter;
 
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
@@ -32,7 +31,6 @@ class AggregateCountFailureTest {
 		} catch(TransformException exception) {
 			AllErrors errors = exception.getDetails();
 			ObjectWriter jsonObjectWriter = new ObjectMapper()
-				.setSerializationInclusion(JsonInclude.Include.NON_NULL)
 				.writer()
 				.withDefaultPrettyPrinter();
 			errorContent = jsonObjectWriter.writeValueAsString(errors);

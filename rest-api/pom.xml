@@ -39,10 +39,12 @@
              Boot 4.0.0 ships junit-jupiter 6.0.1 / junit-platform 6.0.1. -->
         <junit.jupiter.version>6.1.3</junit.jupiter.version>
         <junit.platform.version>6.1.3</junit.platform.version>
-        <io.rest-assured.version>5.5.2</io.rest-assured.version>
+        <jackson2.version>2.22.4</jackson2.version>
+        <netty.version>4.2.20.Final</netty.version>
+        <io.rest-assured.version>6.3.0</io.rest-assured.version>
         <groovy.version>4.0.28</groovy.version>
-        <io.hamcrest.version>2.2</io.hamcrest.version>
-        <mockito.version>3.9.0</mockito.version>
+        <io.hamcrest.version>3.0</io.hamcrest.version>
+        <mockito.version>5.24.0</mockito.version>
         <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
 
         <!-- Spring Security aligned with Boot BOM to avoid split versions -->
@@ -178,6 +180,14 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson2.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <!-- Framework BOM import: MUST be first to override Boot 4.0.6's Framework 7.0.7 with 7.0.8.
                  Maven uses "first declaration wins" for BOM imports. -->
             <dependency>
@@ -202,6 +212,14 @@
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-bom</artifactId>
                 <version>2.26.1</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-bom</artifactId>
+                <version>${netty.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -274,7 +292,6 @@
         </dependency>
 
         <!-- Logging -->
-        <dependency><groupId>com.fasterxml.jackson.module</groupId><artifactId>jackson-module-jaxb-annotations</artifactId></dependency>
         <dependency><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></dependency>
         <dependency><groupId>ch.qos.logback</groupId><artifactId>logback-classic</artifactId></dependency>
         <dependency><groupId>net.logstash.logback</groupId><artifactId>logstash-logback-encoder</artifactId></dependency>
@@ -289,7 +306,7 @@
         <!-- JWT stack -->
         <dependency><groupId>io.jsonwebtoken</groupId><artifactId>jjwt-api</artifactId></dependency>
         <dependency><groupId>io.jsonwebtoken</groupId><artifactId>jjwt-impl</artifactId><scope>runtime</scope></dependency>
-        <dependency><groupId>io.jsonwebtoken</groupId><artifactId>jjwt-jackson</artifactId><scope>runtime</scope></dependency>
+        <dependency><groupId>io.jsonwebtoken</groupId><artifactId>jjwt-gson</artifactId><scope>runtime</scope></dependency>
 
         <!-- Internal modules -->
         <dependency>
@@ -311,11 +328,23 @@
 
         <!-- Misc -->
         <dependency><groupId>org.springframework.retry</groupId><artifactId>spring-retry</artifactId></dependency>
-        <dependency><groupId>com.jcabi</groupId><artifactId>jcabi-manifests</artifactId><version>1.1</version></dependency>
+        <dependency><groupId>com.jcabi</groupId><artifactId>jcabi-manifests</artifactId><version>2.2.0</version></dependency>
 
-        <!-- AWS v1 clients (monitor for CVEs periodically) -->
-        <dependency><groupId>com.amazonaws</groupId><artifactId>aws-java-sdk-core</artifactId></dependency>
-        <dependency><groupId>com.amazonaws</groupId><artifactId>aws-dynamodb-encryption-java</artifactId></dependency>
+        <!-- AWS SDK v2 clients and DynamoDB encryption -->
+        <dependency><groupId>software.amazon.awssdk</groupId><artifactId>kms</artifactId></dependency>
+        <dependency><groupId>software.amazon.awssdk</groupId><artifactId>s3</artifactId></dependency>
+        <dependency><groupId>software.amazon.awssdk</groupId><artifactId>dynamodb-enhanced</artifactId></dependency>
+        <dependency><groupId>software.amazon.awssdk</groupId><artifactId>apache-client</artifactId><scope>runtime</scope></dependency>
+        <dependency>
+            <groupId>software.amazon.cryptography</groupId>
+            <artifactId>aws-database-encryption-sdk-dynamodb</artifactId>
+            <version>4.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>software.amazon.cryptography</groupId>
+            <artifactId>aws-cryptographic-material-providers</artifactId>
+            <version>1.11.1</version>
+        </dependency>
 
         <!-- ===================== Tests ===================== -->
         <dependency><groupId>org.springframework.security</groupId><artifactId>spring-security-test</artifactId><scope>test</scope></dependency>
@@ -349,10 +378,8 @@
         <dependency><groupId>org.junit.vintage</groupId><artifactId>junit-vintage-engine</artifactId><version>${junit.jupiter.version}</version><scope>test</scope></dependency>
         <dependency><groupId>junit</groupId><artifactId>junit</artifactId><version>4.13.2</version><scope>test</scope></dependency>
 
-        <!-- Mockito / PowerMock -->
+        <!-- Mockito -->
         <dependency><groupId>org.mockito</groupId><artifactId>mockito-core</artifactId><version>${mockito.version}</version><scope>test</scope></dependency>
-        <dependency><groupId>org.powermock</groupId><artifactId>powermock-module-junit4</artifactId><scope>test</scope></dependency>
-        <dependency><groupId>org.powermock</groupId><artifactId>powermock-api-mockito2</artifactId><scope>test</scope></dependency>
 
         <!-- Shared test utilities from sibling module; we exclude groovy/rest-assured to avoid duplicate versions -->
         <dependency>

@@ -1,7 +1,8 @@
 package gov.cms.qpp.conversion.api.security;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -86,7 +87,7 @@ public class JwtAuthorizationFilter implements Filter {
 			if (data instanceof Map) {
 				return (Map<String, String>) data;
 			}
-		} catch (IOException | IllegalArgumentException e) {
+		} catch (JacksonException | IllegalArgumentException e) {
 			// Malformed token — treat as unauthenticated
 		}
 		return Collections.emptyMap();

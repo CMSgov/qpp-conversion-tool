@@ -1,14 +1,16 @@
 package gov.cms.qpp.conversion.encode;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.util.DefaultIndenter;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.util.DefaultIndenter;
+import tools.jackson.core.util.DefaultPrettyPrinter;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectWriter;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.module.SimpleModule;
+import tools.jackson.databind.ser.std.StdSerializer;
 import com.jayway.jsonpath.JsonPath;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -18,7 +20,6 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.util.FormatHelper;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
@@ -43,77 +44,79 @@ public class JsonWrapper implements Serializable {
 
 	public static enum Type {
 		BOOLEAN {
-			public void json(JsonWrapper value, JsonGenerator gen) throws IOException {
+			public void json(JsonWrapper value, JsonGenerator gen, SerializationContext provider) {
 				if (hasValue(value)) {
 					gen.writeBoolean(Boolean.parseBoolean(value.toObject().toString()));
 				}
 			}
 		},
 		DATE {
-			public void json(JsonWrapper value, JsonGenerator gen) throws IOException {
-				Type.STRING.json(value, gen);
+			public void json(JsonWrapper value, JsonGenerator gen, SerializationContext provider) {
+				Type.STRING.json(value, gen, provider);
 			}
 		},
 		INTEGER {
-			public void json(JsonWrapper value, JsonGenerator gen) throws IOException {
+			public void json(JsonWrapper value, JsonGenerator gen, SerializationContext provider) {
 				if (hasValue(value)) {
 					gen.writeNumber(Integer.parseInt(value.toObject().toString()));
 				}
 			}
 		},
 		FLOAT {
-			public void json(JsonWrapper value, JsonGenerator gen) throws IOException {
+			public void json(JsonWrapper value, JsonGenerator gen, SerializationContext provider) {
 				if (hasValue(value)) {
 					gen.writeNumber(Float.parseFloat(value.toObject().toString()));
 				}
 			}
 		},
 		STRING {
-			public void json(JsonWrapper value, JsonGenerator gen) throws IOException {
+			public void json(JsonWrapper value, JsonGenerator gen, SerializationContext provider) {
 				if (hasValue(value)) {
 					gen.writeString(value.toObject().toString());
 				}
 			}
 		},
 		MAP {
-			public void json(JsonWrapper value, JsonGenerator gen) throws IOException {
+			public void json(JsonWrapper value, JsonGenerator gen, SerializationContext provider) {
 				if (hasValue(value)) {
-					gen.writeObject(value.toObject());
+					provider.writeValue(gen, value.toObject());
 				}
 			}
 
-			public void metadata(JsonWrapper value, JsonGenerator gen) throws IOException {
+			public void metadata(JsonWrapper value, JsonGenerator gen, SerializationContext provider) {
 				gen.writeStartObject();
 				if (value.hasMetadata()) {
-					gen.writeObjectField(METADATA_HOLDER, value.getMetadata());
+					gen.writeName(METADATA_HOLDER);
+					provider.writeValue(gen, value.getMetadata());
 				}
 				value.stream().forEach(entry -> {
 					try {
-						gen.writeObjectField(entry.getKey(), entry);
-					} catch (IOException e) {
-						throw new EncodeException("Issue writing JSON metadata.", e);
+						gen.writeName(entry.getKey());
+						provider.writeValue(gen, entry);
+					} catch (JacksonException exception) {
+						throw new EncodeException("Issue writing JSON metadata.", exception);
 					}
 				});
 				gen.writeEndObject();
 			}
 		},
 		LIST {
-			public void json(JsonWrapper value, JsonGenerator gen) throws IOException {
+			public void json(JsonWrapper value, JsonGenerator gen, SerializationContext provider) {
 				if (hasValue(value)) {
-					gen.writeObject(value.toObject());
+					provider.writeValue(gen, value.toObject());
 				}
 			}
 
-			public void metadata(JsonWrapper value, JsonGenerator gen) throws IOException {
+			public void metadata(JsonWrapper value, JsonGenerator gen, SerializationContext provider) {
 				gen.writeStartArray();
 				if (value.hasMetadata()) {
-					gen.writeObject(value.getMetadata());
+					provider.writeValue(gen, value.getMetadata());
 				}
 				value.stream().forEach(entry -> {
 					try {
-						gen.writeObject(entry);
-					} catch (IOException e) {
-						throw new EncodeException("Issue writing JSON metadata.", e);
+						provider.writeValue(gen, entry);
+					} catch (JacksonException exception) {
+						throw new EncodeException("Issue writing JSON metadata.", exception);
 					}
 				});
 				gen.writeEndArray();
@@ -122,14 +125,14 @@ public class JsonWrapper implements Serializable {
 		UNKNOWN {
 		};
 
-		public boolean hasValue(JsonWrapper value) throws IOException {
+		public boolean hasValue(JsonWrapper value) {
 			return null != value && null != value.toObject() && !value.isType(UNKNOWN);
 		}
 
-		public void json(JsonWrapper value, JsonGenerator gen) throws IOException {
+		public void json(JsonWrapper value, JsonGenerator gen, SerializationContext provider) {
 		}
 
-		public void metadata(JsonWrapper value, JsonGenerator gen) throws IOException {
+		public void metadata(JsonWrapper value, JsonGenerator gen, SerializationContext provider) {
 		}
 	}
 
@@ -155,16 +158,16 @@ public class JsonWrapper implements Serializable {
 			super(JsonWrapper.class);
 		}
 
-		protected void jsonContainer(JsonWrapper value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-			value.getType().json(value, gen);
+		protected void jsonContainer(JsonWrapper value, JsonGenerator gen, SerializationContext provider) {
+			value.getType().json(value, gen, provider);
 		}
 
 		@Override
-		public void serialize(JsonWrapper value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+		public void serialize(JsonWrapper value, JsonGenerator gen, SerializationContext provider) {
 			if (value.isKind(Kind.CONTAINER)) {
 				jsonContainer(value, gen, provider);
 			} else {
-				value.getType().json(value, gen);
+				value.getType().json(value, gen, provider);
 			}
 		}
 	}
@@ -175,9 +178,9 @@ public class JsonWrapper implements Serializable {
 	 */
 	static class JsonWrapperMetadataSerilizer extends JsonWrapperSerilizer {
 
-		protected void jsonContainer(JsonWrapper value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+		protected void jsonContainer(JsonWrapper value, JsonGenerator gen, SerializationContext provider) {
 			if (value.hasMetadata()) {
-				value.getType().metadata(value, gen);
+				value.getType().metadata(value, gen, provider);
 			} else {
 				super.jsonContainer(value, gen, provider);
 			}
@@ -188,15 +191,19 @@ public class JsonWrapper implements Serializable {
 	 * Initialize the serializers
 	 */
 	static {
-		jsonMapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
 		module.addSerializer(JsonWrapper.class, new JsonWrapperSerilizer());
-		jsonMapper.registerModule(module);
+		jsonMapper = JsonMapper.builder()
+				.disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
+				.addModule(module)
+				.build();
 
-		metaMapper = new ObjectMapper();
 		module = new SimpleModule();
 		module.addSerializer(JsonWrapper.class, new JsonWrapperMetadataSerilizer());
-		metaMapper.registerModule(module);
+		metaMapper = JsonMapper.builder()
+				.disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
+				.addModule(module)
+				.build();
 	}
 
 	static ObjectWriter standardWriter() {
@@ -995,7 +1002,7 @@ public class JsonWrapper implements Serializable {
 	public String toString() {
 		try {
 			return jsonWriter.writeValueAsString(toObject());
-		} catch (JsonProcessingException e) {
+		} catch (JacksonException e) {
 			throw new EncodeException("Issue rendering JSON from JsonWrapper Map", e);
 		}
 	}
@@ -1009,7 +1016,7 @@ public class JsonWrapper implements Serializable {
 	public String toStringWithMetadata() {
 		try {
 			return withMetadataWriter.writeValueAsString(this);
-		} catch (JsonProcessingException e) {
+		} catch (JacksonException e) {
 			throw new EncodeException("Issue rendering JSON from JsonWrapper Map", e);
 		}
 	}

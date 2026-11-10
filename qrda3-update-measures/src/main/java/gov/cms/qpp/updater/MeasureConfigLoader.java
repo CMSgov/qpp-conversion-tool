@@ -1,11 +1,12 @@
 package gov.cms.qpp.updater;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
+import gov.cms.qpp.conversion.util.JsonMapperFactory;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +36,7 @@ public class MeasureConfigLoader {
 	}
 
 	private Map<String, MeasureConfig> grabConfiguration(String filename, Boolean useElectronicMeasureId) {
-		ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = JsonMapperFactory.createMapper();
 
 		InputStream measuresInput = this.getClass().getResourceAsStream(filename);
 
@@ -45,7 +46,7 @@ public class MeasureConfigLoader {
 			return configurations.stream()
 				.collect(Collectors.toMap(config -> MeasureConfigLoader.getMeasureId(config, useElectronicMeasureId),
 					Function.identity()));
-		} catch (IOException e) {
+		} catch (JacksonException e) {
 			String message = "failure to correctly read measures config json";
 			throw new IllegalArgumentException(message, e);
 		}
