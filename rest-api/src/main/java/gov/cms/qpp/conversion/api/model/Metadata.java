@@ -861,6 +861,7 @@ public final class Metadata {
 		}
 
 		@Override
+		@SuppressFBWarnings("NP_BOOLEAN_RETURN_NULL")
 		public Boolean transformTo(final AttributeValue attributeValue) {
 			if (attributeValue.bool() != null) {
 				return attributeValue.bool();
