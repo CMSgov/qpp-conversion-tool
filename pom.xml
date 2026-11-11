@@ -228,7 +228,7 @@
 			<dependency>
 				<groupId>org.dafny</groupId>
 				<artifactId>DafnyRuntime</artifactId>
-				<version>4.9.0</version>
+				<version>4.11.0</version>
 			</dependency>
 
 			<dependency>
