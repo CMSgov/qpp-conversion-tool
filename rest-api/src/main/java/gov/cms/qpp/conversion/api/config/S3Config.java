@@ -30,7 +30,9 @@ public class S3Config {
 		try {
 			return S3Client.builder().build();
 		} catch (SdkClientException exception) {
-			API_LOG.info("Default S3 client failed to build, trying again with region us-east-1", exception);
+			API_LOG.info("Default S3 client failed to build, trying again with region us-east-1: {}",
+					exception.getMessage());
+			API_LOG.debug("Default S3 client build failure details", exception);
 			return planB();
 		}
 	}
