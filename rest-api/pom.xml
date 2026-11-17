@@ -39,7 +39,7 @@
              Boot 4.0.0 ships junit-jupiter 6.0.1 / junit-platform 6.0.1. -->
         <junit.jupiter.version>6.1.3</junit.jupiter.version>
         <junit.platform.version>6.1.3</junit.platform.version>
-        <jackson2.version>2.22.4</jackson2.version>
+        <jackson2.version>2.23.0</jackson2.version>
         <netty.version>4.2.20.Final</netty.version>
         <io.rest-assured.version>6.3.0</io.rest-assured.version>
         <groovy.version>4.0.28</groovy.version>
