@@ -6,18 +6,18 @@
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-conversion-tool-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>2026.11.06.01-RELEASE</version>
+	<version>2026.11.09.01-RELEASE</version>
 	<name>QPP Conversion Tool</name>
 
 	<properties>
 		<java.version>21</java.version>
-		<aws.sdk.v2.version>2.57.9</aws.sdk.v2.version>
+		<aws.sdk.v2.version>2.59.1</aws.sdk.v2.version>
 		<junit.version>6.1.3</junit.version>
 		<junit.platform.version>6.1.3</junit.platform.version>
 		<jjwt.version>0.13.0</jjwt.version>
 <spring.framework.version>7.0.10</spring.framework.version>
 	<spring.security.version>7.1.2</spring.security.version>
-	<tomcat.embed.version>11.0.27</tomcat.embed.version>
+	<tomcat.embed.version>11.0.29</tomcat.embed.version>
 
 		<requiredCodeCoverage>0.90</requiredCodeCoverage>
 		<verificationsPhase>verify</verificationsPhase>
@@ -228,7 +228,7 @@
 			<dependency>
 				<groupId>org.dafny</groupId>
 				<artifactId>DafnyRuntime</artifactId>
-				<version>4.9.0</version>
+				<version>4.11.0</version>
 			</dependency>
 
 			<dependency>
@@ -254,19 +254,19 @@
 			<dependency>
 				<groupId>tools.jackson.core</groupId>
 				<artifactId>jackson-core</artifactId>
-				<version>3.2.4</version>
+				<version>3.3.0</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-annotations</artifactId>
-				<version>2.22</version>
+				<version>2.23</version>
 			</dependency>
 
 			<dependency>
 				<groupId>tools.jackson.core</groupId>
 				<artifactId>jackson-databind</artifactId>
-				<version>3.2.4</version>
+				<version>3.3.0</version>
 			</dependency>
 
 			<dependency>
@@ -420,19 +420,19 @@
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
-				<version>3.21.0</version>
+				<version>3.22.0</version>
 			</dependency>
 
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-classic</artifactId>
-				<version>1.6.6</version>
+				<version>1.6.7</version>
 			</dependency>
 
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-core</artifactId>
-				<version>1.6.6</version>
+				<version>1.6.7</version>
 			</dependency>
 
 			<dependency>
@@ -480,7 +480,7 @@
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
 				<artifactId>bcprov-jdk18on</artifactId>
-				<version>1.86</version>
+				<version>1.87</version>
 			</dependency>
 
 			<dependency>
