@@ -30,7 +30,9 @@ public class KmsConfig {
 		try {
 			return KmsClient.builder().build();
 		} catch (SdkClientException exception) {
-			API_LOG.info("Default KMS client failed to build, trying again with region us-east-1", exception);
+			API_LOG.info("Default KMS client failed to build, trying again with region us-east-1: {}",
+					exception.getMessage());
+			API_LOG.debug("Default KMS client build failure details", exception);
 			return planB();
 		}
 	}

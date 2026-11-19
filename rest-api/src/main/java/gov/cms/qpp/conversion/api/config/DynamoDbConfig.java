@@ -134,7 +134,9 @@ public class DynamoDbConfig {
 					.build())
 				.build();
 		} catch (SdkClientException exception) {
-			API_LOG.info("Default DynamoDB client failed to build, trying again with region us-east-1", exception);
+			API_LOG.info("Default DynamoDB client failed to build, trying again with region us-east-1: {}",
+					exception.getMessage());
+			API_LOG.debug("Default DynamoDB client build failure details", exception);
 			encryptedClient = DynamoDbClient.builder()
 				.region(Region.US_EAST_1)
 				.overrideConfiguration(ClientOverrideConfiguration.builder()
