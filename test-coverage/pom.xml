@@ -16,7 +16,7 @@
 
 	<properties>
 		<jackson2.version>2.23.0</jackson2.version>
-		<netty.version>4.2.20.Final</netty.version>
+		<netty.version>4.2.21.Final</netty.version>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/../test-coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 
