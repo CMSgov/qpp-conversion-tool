@@ -40,7 +40,7 @@
         <junit.jupiter.version>6.1.3</junit.jupiter.version>
         <junit.platform.version>6.1.3</junit.platform.version>
         <jackson2.version>2.23.0</jackson2.version>
-        <netty.version>4.2.20.Final</netty.version>
+        <netty.version>4.2.21.Final</netty.version>
         <io.rest-assured.version>6.3.0</io.rest-assured.version>
         <groovy.version>4.0.28</groovy.version>
         <io.hamcrest.version>3.0</io.hamcrest.version>
