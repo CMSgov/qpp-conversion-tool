@@ -77,6 +77,9 @@ public class JwtAuthorizationFilter implements Filter {
 		if (parts.length < 2) {
 			return Collections.emptyMap();
 		}
+		if (isMalformedSegment(parts[1])) {
+			return Collections.emptyMap();
+		}
 		try {
 			// Decode the payload (second part) directly — no signature verification needed.
 			// This works regardless of the alg header (HS256, RS256, none, etc.).
@@ -91,6 +94,15 @@ public class JwtAuthorizationFilter implements Filter {
 			// Malformed token — treat as unauthenticated
 		}
 		return Collections.emptyMap();
+	}
+
+	/**
+	 * Rejects segments that cannot be valid unpadded base64url before they reach the JDK decoder
+	 * (hardening for CVE-2026-114938). JWT segments are unpadded, so any '=' is malformed, and a
+	 * length of 1 mod 4 is impossible for valid base64.
+	 */
+	private static boolean isMalformedSegment(String segment) {
+		return segment.indexOf('=') >= 0 || segment.length() % 4 == 1;
 	}
 
 	private boolean isValidCpcPlusOrg(Map<String, String> payloadMap) {
