@@ -1,21 +1,18 @@
 package gov.cms.qpp.test.helper;
 
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.dynamodbv2.model.ScanRequest;
-import com.amazonaws.services.dynamodbv2.model.ScanResult;
-import com.amazonaws.services.kms.AWSKMS;
-import com.amazonaws.services.kms.AWSKMSClientBuilder;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.ObjectListing;
-import com.amazonaws.services.s3.model.S3ObjectSummary;
-import com.google.common.collect.Lists;
-
-import java.util.List;
 import java.util.Map;
+
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
+import software.amazon.awssdk.services.dynamodb.model.DeleteItemRequest;
+import software.amazon.awssdk.services.dynamodb.model.ScanRequest;
+import software.amazon.awssdk.services.dynamodb.model.ScanResponse;
+import software.amazon.awssdk.services.kms.KmsClient;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
 
 /**
  * A helper class for AWS testing
@@ -25,33 +22,33 @@ public class AwsTestHelper {
 	public static final String TEST_S3_BUCKET_NAME  = "qpp-qrda3converter-acceptance-test";
 
 	// Shared region constant
-	private static final Regions REGION = Regions.US_EAST_1;
+	private static final Region REGION = Region.US_EAST_1;
 
 	/**
 	 * Returns a new DynamoDB client for test operations.
 	 * (Eliminates MS_EXPOSE_REP by not exposing internal static fields.)
 	 */
-	public static AmazonDynamoDB getDynamoClient() {
-		return AmazonDynamoDBClientBuilder.standard()
-				.withRegion(REGION)
+	public static DynamoDbClient getDynamoClient() {
+		return DynamoDbClient.builder()
+				.region(REGION)
 				.build();
 	}
 
 	/**
 	 * Returns a new S3 client for test operations.
 	 */
-	public static AmazonS3 getS3Client() {
-		return AmazonS3ClientBuilder.standard()
-				.withRegion(REGION)
+	public static S3Client getS3Client() {
+		return S3Client.builder()
+				.region(REGION)
 				.build();
 	}
 
 	/**
 	 * Returns a new KMS client for test operations.
 	 */
-	public static AWSKMS getKmsClient() {
-		return AWSKMSClientBuilder.standard()
-				.withRegion(REGION)
+	public static KmsClient getKmsClient() {
+		return KmsClient.builder()
+				.region(REGION)
 				.build();
 	}
 
@@ -59,39 +56,46 @@ public class AwsTestHelper {
 	 * Cleans DynamoDB items via batch scan and delete for performance.
 	 */
 	public static void cleanDynamoDb() {
-		AmazonDynamoDB client = getDynamoClient();
-		ScanResult scanResult = client.scan(TEST_DYNAMO_TABLE_NAME, Lists.newArrayList("Uuid"));
-		List<Map<String, AttributeValue>> metadataList = scanResult.getItems();
-
-		while (scanResult.getLastEvaluatedKey() != null && !scanResult.getLastEvaluatedKey().isEmpty()) {
-			scanResult = client.scan(new ScanRequest()
-					.withTableName(TEST_DYNAMO_TABLE_NAME)
-					.withAttributesToGet("Uuid")
-					.withExclusiveStartKey(scanResult.getLastEvaluatedKey()));
-			metadataList.addAll(scanResult.getItems());
+		try (DynamoDbClient client = getDynamoClient()) {
+			Map<String, AttributeValue> startKey = Map.of();
+			do {
+				ScanRequest.Builder scanRequest = ScanRequest.builder()
+					.tableName(TEST_DYNAMO_TABLE_NAME)
+					.projectionExpression("Uuid");
+				if (!startKey.isEmpty()) {
+					scanRequest.exclusiveStartKey(startKey);
+				}
+				ScanResponse response = client.scan(scanRequest.build());
+				for (Map<String, AttributeValue> item : response.items()) {
+					client.deleteItem(DeleteItemRequest.builder()
+						.tableName(TEST_DYNAMO_TABLE_NAME)
+						.key(Map.of("Uuid", item.get("Uuid")))
+						.build());
+				}
+				startKey = response.lastEvaluatedKey();
+			} while (startKey != null && !startKey.isEmpty());
 		}
-
-		metadataList.forEach(map -> client.deleteItem(TEST_DYNAMO_TABLE_NAME, map));
 	}
 
 	/**
 	 * Cleans up the test S3 bucket by batch for performance purposes.
 	 */
 	public static void cleanS3() {
-		AmazonS3 client = getS3Client();
-		ObjectListing objectListing = client.listObjects(TEST_S3_BUCKET_NAME);
-		boolean firstTimeThrough = true;
-
-		do {
-			if (!firstTimeThrough) {
-				objectListing = client.listNextBatchOfObjects(objectListing);
-			}
-
-			for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
-				client.deleteObject(TEST_S3_BUCKET_NAME, objectSummary.getKey());
-			}
-
-			firstTimeThrough = false;
-		} while (objectListing.isTruncated());
+		try (S3Client client = getS3Client()) {
+			String continuationToken = null;
+			do {
+				ListObjectsV2Request.Builder request = ListObjectsV2Request.builder()
+					.bucket(TEST_S3_BUCKET_NAME);
+				if (continuationToken != null) {
+					request.continuationToken(continuationToken);
+				}
+				ListObjectsV2Response response = client.listObjectsV2(request.build());
+				response.contents().forEach(object -> client.deleteObject(DeleteObjectRequest.builder()
+					.bucket(TEST_S3_BUCKET_NAME)
+					.key(object.key())
+					.build()));
+				continuationToken = response.nextContinuationToken();
+			} while (continuationToken != null);
+		}
 	}
 }

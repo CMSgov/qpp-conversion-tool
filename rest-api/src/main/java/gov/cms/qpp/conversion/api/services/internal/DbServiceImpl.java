@@ -1,8 +1,10 @@
 package gov.cms.qpp.conversion.api.services.internal;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbIndex;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.Key;
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryEnhancedRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -15,12 +17,11 @@ import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.services.DbService;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -34,12 +35,12 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	private static final Logger API_LOG = LoggerFactory.getLogger(DbServiceImpl.class);
 	private static final int LIMIT = 4;
 
-	private final Optional<DynamoDBMapper> mapper;
+	private final Optional<DynamoDbTable<Metadata>> metadataTable;
 	private final Environment environment;
 
-	public DbServiceImpl(TaskExecutor taskExecutor, Optional<DynamoDBMapper> mapper, Environment environment) {
+	public DbServiceImpl(TaskExecutor taskExecutor, Optional<DynamoDbTable<Metadata>> metadataTable, Environment environment) {
 		super(taskExecutor);
-		this.mapper = mapper;
+		this.metadataTable = metadataTable;
 		this.environment = environment;
 	}
 
@@ -73,7 +74,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	 * @return
 	 */
 	public List<Metadata> getUnprocessedPcfMetaData(String orgAttribute) {
-		if (mapper.isPresent()) {
+		if (metadataTable.isPresent()) {
 			API_LOG.info("Getting list of unprocessed Pcf metadata...");
 
 			String cpcConversionStartDate = Optional.ofNullable(
@@ -81,19 +82,19 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 			String year = cpcConversionStartDate.substring(0, 4);
 			String indexName = Constants.DYNAMO_PCF_ATTRIBUTE + "-" + orgAttribute + "-index";
 
+			DynamoDbIndex<Metadata> index = metadataTable.orElseThrow().index(indexName);
 			return IntStream.range(0, Constants.CPC_DYNAMO_PARTITIONS).mapToObj(partition -> {
-				Map<String, AttributeValue> valueMap = new HashMap<>();
-				valueMap.put(":pcfValue", new AttributeValue().withS(Constants.PCF_DYNAMO_PARTITION_START + partition));
-				valueMap.put(":pcfProcessedValue", new AttributeValue().withS("false#"+year));
-
-				DynamoDBQueryExpression<Metadata> metadataQuery = new DynamoDBQueryExpression<Metadata>()
-					.withIndexName(indexName)
-					.withKeyConditionExpression(Constants.DYNAMO_PCF_ATTRIBUTE + " = :pcfValue and begins_with("
-						+ orgAttribute + ", :pcfProcessedValue)")
-					.withExpressionAttributeValues(valueMap)
-					.withConsistentRead(false);
-
-				return mapper.orElseThrow().query(Metadata.class, metadataQuery).stream().limit(10);
+				Key key = Key.builder()
+					.partitionValue(Constants.PCF_DYNAMO_PARTITION_START + partition)
+					.sortValue("false#" + year)
+					.build();
+				QueryEnhancedRequest metadataQuery = QueryEnhancedRequest.builder()
+					.queryConditional(QueryConditional.sortBeginsWith(key))
+					.consistentRead(false)
+					.build();
+				return index.query(metadataQuery).stream()
+					.flatMap(page -> page.items().stream())
+					.limit(10);
 			}).flatMap(Function.identity()).collect(Collectors.toList());
 		} else {
 			API_LOG.warn("Could not get unprocessed PCF metadata because the dynamodb mapper is absent");
@@ -108,9 +109,9 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	 * @return Metadata found
 	 */
 	public Metadata getMetadataById(String uuid) {
-		if (mapper.isPresent()) {
+		if (metadataTable.isPresent()) {
 			API_LOG.info("Read item {} from DynamoDB", uuid);
-			return mapper.orElseThrow().load(Metadata.class, uuid);
+			return metadataTable.orElseThrow().getItem(Key.builder().partitionValue(uuid).build());
 		} else {
 			API_LOG.warn("Skipping reading of item from DynamoDB with UUID {} because the dynamodb mapper is absent", uuid);
 			return null;
@@ -125,8 +126,11 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	 */
 	@Override
 	protected Metadata asynchronousAction(Metadata meta) {
-		if (mapper.isPresent()) {
-			mapper.orElseThrow().save(meta);
+		if (metadataTable.isPresent()) {
+			if (meta.getUuid() == null) {
+				meta.setUuid(UUID.randomUUID().toString());
+			}
+			metadataTable.orElseThrow().putItem(meta);
 			API_LOG.info("Wrote item to DynamoDB with UUID {}", meta.getUuid());
 		} else {
 			API_LOG.warn("Skipping writing of item to DynamoDB with UUID {} because the dynamodb mapper is absent", meta.getUuid());

@@ -82,7 +82,7 @@ public class QrdaUpdater {
 			Element measureComponent = measureComponents.stream().filter(
 				component -> component.getChild("section", rootNamespace)
 						.getChildren("templateId", rootNamespace).stream()
-						.anyMatch(templateIdElement -> TemplateId.MEASURE_SECTION_V3.getRoot()
+						.anyMatch(templateIdElement -> TemplateId.MEASURE_SECTION_V6.getRoot()
 							.equals(templateIdElement.getAttribute("root").getValue())))
 				.findFirst().orElse(null);
 
@@ -96,7 +96,7 @@ public class QrdaUpdater {
 			        Element measureRnrTemplateId = measureEntryOrganizer.getChildren("templateId", rootNamespace)
 						.stream()
 						.filter(childElement ->
-							TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V4.getRoot()
+								TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V6.getRoot()
 								.equals(childElement.getAttribute("root").getValue()))
 					.findAny().orElse(null);
 					if (measureRnrTemplateId != null) {

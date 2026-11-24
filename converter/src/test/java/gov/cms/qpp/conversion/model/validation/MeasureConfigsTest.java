@@ -10,7 +10,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
+import tools.jackson.core.JacksonException;
 
 class MeasureConfigsTest {
 
@@ -30,7 +30,7 @@ class MeasureConfigsTest {
 		IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () ->
 			MeasureConfigs.setMeasureDataFile("bad_formatted_measures_data.json"));
 
-		assertThat(thrown).hasCauseThat().isInstanceOf(JsonMappingException.class);
+		assertThat(thrown).hasCauseThat().isInstanceOf(JacksonException.class);
 	}
 
 	@Test

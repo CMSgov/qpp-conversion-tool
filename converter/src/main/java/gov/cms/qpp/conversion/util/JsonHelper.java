@@ -7,16 +7,16 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.Set;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.Configuration.Defaults;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.Option;
 import com.jayway.jsonpath.TypeRef;
-import com.jayway.jsonpath.spi.json.JacksonJsonProvider;
+import com.jayway.jsonpath.spi.json.JsonSmartJsonProvider;
 import com.jayway.jsonpath.spi.json.JsonProvider;
-import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
 import com.jayway.jsonpath.spi.mapper.MappingProvider;
 
 /**
@@ -25,17 +25,31 @@ import com.jayway.jsonpath.spi.mapper.MappingProvider;
 public class JsonHelper {
 
 	private static final String PROBLEM_PARSING_JSON = "Problem parsing json string";
+	private static final ObjectMapper JSON_MAPPER = JsonMapperFactory.createMapper();
+
+	private static final class Jackson3MappingProvider implements MappingProvider {
+		@Override
+		public <T> T map(Object source, Class<T> targetType, Configuration configuration) {
+			return JSON_MAPPER.convertValue(source, targetType);
+		}
+
+		@Override
+		public <T> T map(Object source, TypeRef<T> targetType, Configuration configuration) {
+			return JSON_MAPPER.convertValue(source,
+					JSON_MAPPER.getTypeFactory().constructType(targetType.getType()));
+		}
+	}
 
 	static {
 		Configuration.setDefaults(new Defaults() {
 			@Override
 			public JsonProvider jsonProvider() {
-				return new JacksonJsonProvider();
+				return new JsonSmartJsonProvider();
 			}
 
 			@Override
 			public MappingProvider mappingProvider() {
-				return new JacksonMappingProvider();
+				return new Jackson3MappingProvider();
 			}
 
 			@Override
@@ -64,9 +78,9 @@ public class JsonHelper {
 	public static <T> T readJson(String json, Class<T> valueType) {
 		T returnValue;
 		try {
-			returnValue = new ObjectMapper().readValue(json, valueType);
-		} catch (IOException ex) {
-			throw new JsonReadException(PROBLEM_PARSING_JSON, ex);
+			returnValue = JSON_MAPPER.readValue(json, valueType);
+		} catch (JacksonException ex) {
+			throw new JsonReadException(PROBLEM_PARSING_JSON, new IOException(ex));
 		}
 		return returnValue;
 	}
@@ -81,7 +95,7 @@ public class JsonHelper {
 	 * @throws IOException if problems arise while attempting to parse the resource at the given filePath
 	 */
 	public static <T> T readJson(Path filePath, Class<T> valueType) throws IOException {
-		return new ObjectMapper().readValue(Files.newBufferedReader(filePath), valueType);
+		return JSON_MAPPER.readValue(Files.newBufferedReader(filePath), valueType);
 	}
 
 	/**
@@ -96,9 +110,9 @@ public class JsonHelper {
 	public static <T> T readJson(InputStream json, Class<T> valueType) {
 		T returnValue;
 		try {
-			returnValue = new ObjectMapper().readValue(json, valueType);
-		} catch (IOException ex) {
-			throw new JsonReadException(PROBLEM_PARSING_JSON, ex);
+			returnValue = JSON_MAPPER.readValue(json, valueType);
+		} catch (JacksonException ex) {
+			throw new JsonReadException(PROBLEM_PARSING_JSON, new IOException(ex));
 		}
 		return returnValue;
 	}
@@ -115,9 +129,9 @@ public class JsonHelper {
 	public static <T> T readJson(InputStream json, TypeReference<T> valueType) {
 		T returnValue;
 		try {
-			returnValue = new ObjectMapper().readValue(json, valueType);
-		} catch (IOException ex) {
-			throw new JsonReadException(PROBLEM_PARSING_JSON, ex);
+			returnValue = JSON_MAPPER.readValue(json, valueType);
+		} catch (JacksonException ex) {
+			throw new JsonReadException(PROBLEM_PARSING_JSON, new IOException(ex));
 		}
 		return returnValue;
 	}
@@ -132,7 +146,7 @@ public class JsonHelper {
 	 * @throws IOException if problems arise while attempting to parse the json file
 	 */
 	public static <T> T readJson(Path filePath, TypeReference<T> valueType) throws IOException {
-		return new ObjectMapper().readValue(Files.newBufferedReader(filePath), valueType);
+		return JSON_MAPPER.readValue(Files.newBufferedReader(filePath), valueType);
 	}
 
 	/**

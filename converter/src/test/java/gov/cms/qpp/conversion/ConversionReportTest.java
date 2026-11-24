@@ -1,8 +1,7 @@
 package gov.cms.qpp.conversion;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
@@ -80,10 +79,10 @@ class ConversionReportTest {
 	}
 
 	@Test
-	void getBadReportDetails() throws NoSuchFieldException, IllegalAccessException, JsonProcessingException {
+	void getBadReportDetails() throws NoSuchFieldException, IllegalAccessException {
 		ObjectMapper mockMapper = mock(ObjectMapper.class);
 		when(mockMapper.writeValueAsBytes(any(AllErrors.class)))
-			.thenThrow(new JsonMappingException(null, "meep"));
+			.thenThrow(new JacksonException("meep") { });
 
 		Converter converter = new Converter(
 			new PathSource(Path.of("../qrda-files/valid-QRDA-III-latest.xml")));

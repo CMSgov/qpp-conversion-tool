@@ -1,11 +1,5 @@
 package gov.cms.qpp.conversion.api.acceptance;
 
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.model.ScanRequest;
-import com.amazonaws.services.dynamodbv2.model.ScanResult;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ObjectListing;
-import com.google.common.collect.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -13,6 +7,14 @@ import gov.cms.qpp.test.annotations.AcceptanceTest;
 import gov.cms.qpp.test.helper.AwsTestHelper;
 
 import java.nio.file.Path;
+
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
+import software.amazon.awssdk.services.dynamodb.model.ScanRequest;
+import software.amazon.awssdk.services.dynamodb.model.ScanResponse;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
 
 import static com.google.common.truth.Truth.assertThat;
 import static io.restassured.RestAssured.given;
@@ -82,30 +84,38 @@ class QrdaApiAcceptance {
 	}
 
 	private long getS3ObjectCount() {
-		AmazonS3 s3Client = AwsTestHelper.getS3Client();
-
-		ObjectListing objectListing = s3Client.listObjects(TEST_S3_BUCKET_NAME);
-		long objectCount = objectListing.getObjectSummaries().size();
-
-		while(objectListing.isTruncated()) {
-			objectListing = s3Client.listNextBatchOfObjects(objectListing);
-			objectCount += objectListing.getObjectSummaries().size();
+		try (S3Client s3Client = AwsTestHelper.getS3Client()) {
+			long objectCount = 0;
+			String continuationToken = null;
+			do {
+				ListObjectsV2Request.Builder request = ListObjectsV2Request.builder().bucket(TEST_S3_BUCKET_NAME);
+				if (continuationToken != null) {
+					request.continuationToken(continuationToken);
+				}
+				ListObjectsV2Response response = s3Client.listObjectsV2(request.build());
+				objectCount += response.contents().size();
+				continuationToken = response.nextContinuationToken();
+			} while (continuationToken != null);
+			return objectCount;
 		}
-
-		return objectCount;
 	}
 
 	private long getDynamoItemCount() {
-		AmazonDynamoDB dynamoClient = AwsTestHelper.getDynamoClient();
-
-		ScanResult scanResult = dynamoClient.scan(AwsTestHelper.TEST_DYNAMO_TABLE_NAME, Lists.newArrayList("Uuid"));
-		long itemCount = scanResult.getCount();
-
-		while(scanResult.getLastEvaluatedKey() != null && !scanResult.getLastEvaluatedKey().isEmpty()) {
-			scanResult = dynamoClient.scan(new ScanRequest().withTableName(AwsTestHelper.TEST_DYNAMO_TABLE_NAME).withAttributesToGet("Uuid").withExclusiveStartKey(scanResult.getLastEvaluatedKey()));
-			itemCount += scanResult.getCount();
+		try (DynamoDbClient dynamoClient = AwsTestHelper.getDynamoClient()) {
+			long itemCount = 0;
+			java.util.Map<String, AttributeValue> startKey = java.util.Map.of();
+			do {
+				ScanRequest.Builder request = ScanRequest.builder()
+					.tableName(AwsTestHelper.TEST_DYNAMO_TABLE_NAME)
+					.projectionExpression("Uuid");
+				if (!startKey.isEmpty()) {
+					request.exclusiveStartKey(startKey);
+				}
+				ScanResponse response = dynamoClient.scan(request.build());
+				itemCount += response.count();
+				startKey = response.lastEvaluatedKey();
+			} while (startKey != null && !startKey.isEmpty());
+			return itemCount;
 		}
-
-		return itemCount;
 	}
 }

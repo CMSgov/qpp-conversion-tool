@@ -82,7 +82,8 @@ phases:
       - echo $DOCKERHUB_TOKEN | docker login --username $DOCKERHUB_USER --password-stdin
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT}.dkr.ecr.us-east-1.amazonaws.com
       - TEXT_VALUE="Deploying QPP conversion tool service branch ${BRANCH} to ${ECS_ENV}-conversion-tool..."
-      - curl -X POST --fail --data-urlencode "payload={\"text\":\"Deployment Status\",\"channel\":\"${SLACK_CHANNEL}\",\"username\":\"CodeBuild\",\"icon_url\":\"${CODEBUILD_ICON}\",\"attachments\":[{\"title\":\"${TEXT_VALUE}\",\"color\":\"${SLACK_COLOR}\"}]}" ${SLACK_URL}
+      # Temporary disable Slack notification for deployment status
+      # - curl -X POST --fail --data-urlencode "payload={\"text\":\"Deployment Status\",\"channel\":\"${SLACK_CHANNEL}\",\"username\":\"CodeBuild\",\"icon_url\":\"${CODEBUILD_ICON}\",\"attachments\":[{\"title\":\"${TEXT_VALUE}\",\"color\":\"${SLACK_COLOR}\"}]}" ${SLACK_URL}
 
   build:
     commands:
@@ -104,7 +105,8 @@ phases:
       - echo "Code build exit number (1 is success) = $CODEBUILD_BUILD_SUCCEEDING"
       - if [ $CODEBUILD_BUILD_SUCCEEDING = 0 ]; then SLACK_COLOR="danger" && BUILD_STATUS="FAILED"; fi
       - TEXT_VALUE="Deployment of branch ${BRANCH} to QPP Conversion Tool service in $ENV-conversion-tool $BUILD_STATUS"
-      - curl -X POST --fail --data-urlencode "payload={\"text\":\"Deployment Status\",\"channel\":\"${SLACK_CHANNEL}\",\"username\":\"CodeBuild\",\"icon_url\":\"${CODEBUILD_ICON}\",\"attachments\":[{\"title\":\"${TEXT_VALUE}\",\"color\":\"${SLACK_COLOR}\"}]}" ${SLACK_URL}
+      # Temporary disable Slack notification for deployment status
+      # - curl -X POST --fail --data-urlencode "payload={\"text\":\"Deployment Status\",\"channel\":\"${SLACK_CHANNEL}\",\"username\":\"CodeBuild\",\"icon_url\":\"${CODEBUILD_ICON}\",\"attachments\":[{\"title\":\"${TEXT_VALUE}\",\"color\":\"${SLACK_COLOR}\"}]}" ${SLACK_URL}
       - |
           if [ "${CODEBUILD_BUILD_SUCCEEDING}" = 1 ]; then
             STATE="success"

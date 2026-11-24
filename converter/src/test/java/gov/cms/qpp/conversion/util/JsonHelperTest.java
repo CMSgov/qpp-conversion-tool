@@ -8,7 +8,7 @@ import java.lang.reflect.Constructor;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import com.fasterxml.jackson.core.type.TypeReference;
+import tools.jackson.core.type.TypeReference;
 import java.util.List;
 import java.util.Map;
 
@@ -126,6 +126,21 @@ class JsonHelperTest implements HelperContract {
 
 		assertWithMessage("Should contain 2 measures").that(measures).hasSize(2);
 		assertWithMessage("First measure ID").that(measures.getFirst().get("measureId")).isEqualTo("ACI_INFBLO_1");
+	}
+
+	@Test
+	void readJsonAtJsonPathUsesJacksonPropertyAliases() {
+		String json = "[{\"eMeasureId\":\"CMS123\",\"isRequired\":true}]";
+		List<MeasureConfig> configurations = JsonHelper.readJsonAtJsonPath(
+				json,
+				"$",
+				new TypeRef<List<MeasureConfig>>() { }
+		);
+
+		assertWithMessage("eMeasureId alias should populate the model")
+				.that(configurations.getFirst().getElectronicMeasureId()).isEqualTo("CMS123");
+		assertWithMessage("isRequired alias should populate the model")
+				.that(configurations.getFirst().isRequired()).isTrue();
 	}
 
 	@Override

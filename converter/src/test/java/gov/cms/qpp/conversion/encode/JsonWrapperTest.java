@@ -27,11 +27,14 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectWriter;
+import tools.jackson.databind.SerializationContext;
 import com.google.common.truth.Truth;
 import com.jayway.jsonpath.JsonPath;
 
@@ -43,6 +46,7 @@ import gov.cms.qpp.conversion.util.JsonHelper;
 class JsonWrapperTest {
 
 	private ObjectWriter ow = JsonWrapper.standardWriter();
+	private final SerializationContext serializationContext = mock(SerializationContext.class);
 	private JsonWrapper objectObjWrapper;
 	private JsonWrapper objectStrWrapper;
 	private JsonWrapper listObjWrapper;
@@ -948,7 +952,7 @@ class JsonWrapperTest {
 		JsonGenerator gen = mock(JsonGenerator.class);
 		JsonWrapper value = new JsonWrapper(Boolean.TRUE);
 		
-		Type.BOOLEAN.json(value, gen);
+		Type.BOOLEAN.json(value, gen, serializationContext);
 		
 		verify(gen, times(1)).writeBoolean(any(Boolean.class));
 	}
@@ -957,10 +961,10 @@ class JsonWrapperTest {
 		JsonGenerator gen = mock(JsonGenerator.class);
 		JsonWrapper value = new JsonWrapper((String)null);
 		
-		Type.BOOLEAN.json(value, gen);
+		Type.BOOLEAN.json(value, gen, serializationContext);
 		verify(gen, times(0)).writeBoolean(any(Boolean.class));
 		
-		Type.BOOLEAN.json(null, gen);
+		Type.BOOLEAN.json(null, gen, serializationContext);
 		verify(gen, times(0)).writeBoolean(any(Boolean.class));
 	}
 	@Test
@@ -968,7 +972,7 @@ class JsonWrapperTest {
 		JsonGenerator gen = mock(JsonGenerator.class);
 		JsonWrapper value = new JsonWrapper("01/01/2020");
 		
-		Type.DATE.json(value, gen);
+		Type.DATE.json(value, gen, serializationContext);
 		
 		verify(gen, times(1)).writeString(any(String.class));
 	}
@@ -977,10 +981,10 @@ class JsonWrapperTest {
 		JsonGenerator gen = mock(JsonGenerator.class);
 		JsonWrapper value = new JsonWrapper((String)null);
 		
-		Type.DATE.json(value, gen);
+		Type.DATE.json(value, gen, serializationContext);
 		verify(gen, times(0)).writeBoolean(any(Boolean.class));
 		
-		Type.DATE.json(null, gen);
+		Type.DATE.json(null, gen, serializationContext);
 		verify(gen, times(0)).writeBoolean(any(Boolean.class));
 	}
 	@Test
@@ -988,7 +992,7 @@ class JsonWrapperTest {
 		JsonGenerator gen = mock(JsonGenerator.class);
 		JsonWrapper value = new JsonWrapper(1);
 		
-		Type.INTEGER.json(value, gen);
+		Type.INTEGER.json(value, gen, serializationContext);
 		
 		verify(gen, times(1)).writeNumber(any(Integer.class));
 	}
@@ -997,10 +1001,10 @@ class JsonWrapperTest {
 		JsonGenerator gen = mock(JsonGenerator.class);
 		JsonWrapper value = new JsonWrapper((String)null);
 		
-		Type.INTEGER.json(value, gen);
+		Type.INTEGER.json(value, gen, serializationContext);
 		verify(gen, times(0)).writeNumber(any(Integer.class));
 
-		Type.INTEGER.json(null, gen);
+		Type.INTEGER.json(null, gen, serializationContext);
 		verify(gen, times(0)).writeNumber(any(Integer.class));
 	}
 	@Test
@@ -1008,7 +1012,7 @@ class JsonWrapperTest {
 		JsonGenerator gen = mock(JsonGenerator.class);
 		JsonWrapper value = new JsonWrapper(1.1f);
 		
-		Type.FLOAT.json(value, gen);
+		Type.FLOAT.json(value, gen, serializationContext);
 		
 		verify(gen, times(1)).writeNumber(any(Float.class));
 	}
@@ -1017,10 +1021,10 @@ class JsonWrapperTest {
 		JsonGenerator gen = mock(JsonGenerator.class);
 		JsonWrapper value = new JsonWrapper((String)null);
 		
-		Type.FLOAT.json(value, gen);
+		Type.FLOAT.json(value, gen, serializationContext);
 		verify(gen, times(0)).writeNumber(any(Float.class));
 
-		Type.FLOAT.json(null, gen);
+		Type.FLOAT.json(null, gen, serializationContext);
 		verify(gen, times(0)).writeNumber(any(Float.class));
 	}
 	@Test
@@ -1028,48 +1032,48 @@ class JsonWrapperTest {
 		JsonGenerator gen = mock(JsonGenerator.class);
 		JsonWrapper value = new JsonWrapper().put("name","value");
 		
-		Type.MAP.json(value, gen);
+		Type.MAP.json(value, gen, serializationContext);
 		
-		verify(gen, times(1)).writeObject(any(Map.class));
+		verify(serializationContext, times(1)).writeValue(gen, value.toObject());
 	}
 	@Test
 	void enumTypeMap_empty() throws Exception {
 		JsonGenerator gen = mock(JsonGenerator.class);
 		JsonWrapper value = new JsonWrapper((String)null);
 		
-		Type.MAP.json(value, gen);
-		verify(gen, times(0)).writeObject(any(Map.class));
+		Type.MAP.json(value, gen, serializationContext);
+		verify(serializationContext, times(0)).writeValue(any(), any());
 
-		Type.MAP.json(null, gen);
-		verify(gen, times(0)).writeObject(any(Map.class));
+		Type.MAP.json(null, gen, serializationContext);
+		verifyNoInteractions(serializationContext);
 		
 		value = new JsonWrapper();
-		Type.MAP.json(null, gen);
-		verify(gen, times(0)).writeObject(any(Map.class));
+		Type.MAP.json(null, gen, serializationContext);
+		verifyNoInteractions(serializationContext);
 	}
 	@Test
 	void enumTypeList() throws Exception {
 		JsonGenerator gen = mock(JsonGenerator.class);
 		JsonWrapper value = new JsonWrapper().put("value");
 		
-		Type.LIST.json(value, gen);
+		Type.LIST.json(value, gen, serializationContext);
 		
-		verify(gen, times(1)).writeObject(any(List.class));
+		verify(serializationContext, times(1)).writeValue(gen, value.toObject());
 	}
 	@Test
 	void enumTypeList_empty() throws Exception {
 		JsonGenerator gen = mock(JsonGenerator.class);
 		JsonWrapper value = new JsonWrapper((String)null);
 		
-		Type.LIST.json(value, gen);
-		verify(gen, times(0)).writeObject(any(List.class));
+		Type.LIST.json(value, gen, serializationContext);
+		verify(serializationContext, times(0)).writeValue(any(), any());
 
-		Type.LIST.json(null, gen);
-		verify(gen, times(0)).writeObject(any(List.class));
+		Type.LIST.json(null, gen, serializationContext);
+		verifyNoInteractions(serializationContext);
 		
 		value = new JsonWrapper();
-		Type.LIST.json(null, gen);
-		verify(gen, times(0)).writeObject(any(List.class));
+		Type.LIST.json(null, gen, serializationContext);
+		verifyNoInteractions(serializationContext);
 	}
 	
 	@Test
@@ -1077,103 +1081,110 @@ class JsonWrapperTest {
 		JsonGenerator gen = mock(JsonGenerator.class);
 		JsonWrapper value = new JsonWrapper("mock");
 		// this is odd coverage because only UNKNOWN calls the empty noop impls
-		Type.UNKNOWN.json(value, gen);
-		Type.UNKNOWN.metadata(value, gen);
+		Type.UNKNOWN.json(value, gen, serializationContext);
+		Type.UNKNOWN.metadata(value, gen, serializationContext);
 	}
 	
 	@Test
 	void metadataMap_noMetadata() throws Exception {
 		JsonGenerator gen = mock(JsonGenerator.class);
-		InOrder order = Mockito.inOrder(gen);
+		InOrder order = Mockito.inOrder(gen, serializationContext);
 
 		// wrapper uses a LinkedHashMap to preserve order
 		JsonWrapper value = new JsonWrapper().put("name","value").put("other","data");
 		
-		Type.MAP.metadata(value, gen);
+		Type.MAP.metadata(value, gen, serializationContext);
 
 		// cool, I tested taking these our of order - works like a charm
 		order.verify(gen, times(1)).writeStartObject();
-		order.verify(gen, times(2)).writeObjectField(any(), any());
+		order.verify(gen, times(1)).writeName(anyString());
+		order.verify(serializationContext).writeValue(Mockito.eq(gen), any());
+		order.verify(gen, times(1)).writeName(anyString());
+		order.verify(serializationContext).writeValue(Mockito.eq(gen), any());
 		order.verify(gen, times(1)).writeEndObject();
 	}
 	@Test
 	void metadataMap_withMetadata() throws Exception {
 		JsonGenerator gen = mock(JsonGenerator.class);
-		InOrder order = Mockito.inOrder(gen);
+		InOrder order = Mockito.inOrder(gen, serializationContext);
 		
 		JsonWrapper value = new JsonWrapper().put("name","value").putMetadata("meta", "data");
 		
-		Type.MAP.metadata(value, gen);
+		Type.MAP.metadata(value, gen, serializationContext);
 
 		// cool, I tested taking these our of order - works like a charm
 		order.verify(gen, times(1)).writeStartObject();
-		order.verify(gen, times(1)).writeObjectField(JsonWrapper.METADATA_HOLDER, value.getMetadata());
+		order.verify(gen, times(1)).writeName(JsonWrapper.METADATA_HOLDER);
+		order.verify(serializationContext, times(1)).writeValue(gen, value.getMetadata());
 		// mock instance does not call inner actions - how could it if it is only a MOCK!
 
-		order.verify(gen, times(1)).writeObjectField(any(),any());
+		order.verify(gen, times(1)).writeName(anyString());
+		order.verify(serializationContext, times(1)).writeValue(Mockito.eq(gen), any());
 		order.verify(gen, times(1)).writeEndObject();
 	}
 	@Test
-	void metadataMap_throwsIOE() throws Exception {
+	void metadataMap_wrapsJacksonException() throws Exception {
 		JsonGenerator gen = mock(JsonGenerator.class);
-		Mockito.doThrow(IOException.class).when(gen).writeObjectField(any(), any());
+		Mockito.doThrow(new JacksonException("failed") { }).when(serializationContext)
+				.writeValue(Mockito.eq(gen), any());
 
 		// wrapper uses a LinkedHashMap to preserve order
 		JsonWrapper value = new JsonWrapper().put("name","value");
 		
-		assertThrows(RuntimeException.class, () -> {Type.MAP.metadata(value, gen);});
+		assertThrows(EncodeException.class, () -> Type.MAP.metadata(value, gen, serializationContext));
 	}
 
 	@Test
 	void metadataList_noMetadata() throws Exception {
 		JsonGenerator gen = mock(JsonGenerator.class);
-		InOrder order = Mockito.inOrder(gen);
+		InOrder order = Mockito.inOrder(gen, serializationContext);
 
 		// wrapper uses a LinkedList to preserve order
 		JsonWrapper value = new JsonWrapper().put("value").put("data");
 		JsonWrapper item1 = value.get(0);
 		JsonWrapper item2 = value.get(1);
 		
-		Type.LIST.metadata(value, gen);
+		Type.LIST.metadata(value, gen, serializationContext);
 
 		// cool, I tested taking these our of order - works like a charm
 		order.verify(gen, times(1)).writeStartArray();
-		order.verify(gen, times(1)).writeObject(item1);
-		order.verify(gen, times(1)).writeObject(item2);
+		order.verify(serializationContext, times(1)).writeValue(gen, item1);
+		order.verify(serializationContext, times(1)).writeValue(gen, item2);
 		order.verify(gen, times(1)).writeEndArray();
 	}
 	@Test
 	void metadataList_withMetadata() throws Exception {
 		JsonGenerator gen = mock(JsonGenerator.class);
-		InOrder order = Mockito.inOrder(gen);
+		InOrder order = Mockito.inOrder(gen, serializationContext);
 		
 		JsonWrapper value = new JsonWrapper().put("value").putMetadata("meta", "data");
 		
 		JsonWrapper item1 = value.get(0);
 		
-		Type.LIST.metadata(value, gen);
+		Type.LIST.metadata(value, gen, serializationContext);
 
 		// cool, I tested taking these our of order - works like a charm
 		order.verify(gen, times(1)).writeStartArray();
-		order.verify(gen, times(1)).writeObject(value.getMetadata());
+		order.verify(serializationContext, times(1)).writeValue(gen, value.getMetadata());
 		// mock instance does not call inner actions - how could it if it is only a MOCK!
 //		order.verify(gen, times(1)).writeStartObject();
 //		order.verify(gen, times(1)).writeObjectField("meta","data");
 //		order.verify(gen, times(1)).writeEndObject();
-		order.verify(gen, times(1)).writeObject(item1);
+		order.verify(serializationContext, times(1)).writeValue(gen, item1);
 		order.verify(gen, times(1)).writeEndArray();
 	}
 	@Test
-	void metadataList_throwsIOE() throws Exception {
+	void metadataList_wrapsJacksonException() throws Exception {
 		JsonGenerator gen = mock(JsonGenerator.class);
 
 		// wrapper uses a LinkedList to preserve order
 		JsonWrapper value = new JsonWrapper().put("value");
 		JsonWrapper item1 = value.get(0);
 		
-		Mockito.doThrow(IOException.class).when(gen).writeObject(item1);
+		Mockito.doThrow(new JacksonException("failed") { }).when(serializationContext)
+				.writeValue(Mockito.eq(gen), Mockito.eq(item1));
 		
-		assertThrows(EncodeException.class, () -> {Type.LIST.metadata(value, gen);});
+		assertThrows(EncodeException.class, () -> Type.LIST.metadata(value, gen, serializationContext));
 	}
 	
 	@Test

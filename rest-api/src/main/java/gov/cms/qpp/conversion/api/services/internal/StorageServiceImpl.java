@@ -1,13 +1,10 @@
 package gov.cms.qpp.conversion.api.services.internal;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.SSEAwsKeyManagementParams;
-import com.amazonaws.services.s3.transfer.TransferManager;
-import com.amazonaws.services.s3.transfer.Upload;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.ServerSideEncryption;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,13 +13,11 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import gov.cms.qpp.conversion.api.exceptions.UncheckedInterruptedException;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.services.StorageService;
 
-import java.io.FilterInputStream;
-import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
@@ -31,30 +26,27 @@ import java.util.function.Supplier;
  * Used to store an {@link InputStream} in S3.
  */
 @Service
-public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObjectRequest>, String>
+
+public class StorageServiceImpl extends AnyOrderActionService<Supplier<S3UploadRequest>, String>
 		implements StorageService {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(StorageServiceImpl.class);
 
-	private final TransferManager s3TransferManager;
+	private final S3Client s3Client;
 	private final Environment environment;
-	private final AmazonS3 amazonS3;
 
 	/**
 	 * Injected AWS clients and environment are thread-safe and intended for sharing.
 	 */
 	@SuppressFBWarnings("EI_EXPOSE_REP2")
-	public StorageServiceImpl(TaskExecutor taskExecutor, TransferManager s3TransferManager,
-			Environment environment, AmazonS3 amazonS3) {
+	public StorageServiceImpl(TaskExecutor taskExecutor, S3Client s3Client, Environment environment) {
 		super(taskExecutor);
 
-		Objects.requireNonNull(s3TransferManager, "s3TransferManager");
+		Objects.requireNonNull(s3Client, "s3Client");
 		Objects.requireNonNull(environment, "environment");
-		Objects.requireNonNull(amazonS3, "amazonS3");
 
-		this.s3TransferManager = s3TransferManager;
+		this.s3Client = s3Client;
 		this.environment = environment;
-		this.amazonS3 = amazonS3;
 	}
 
 	/**
@@ -74,11 +66,15 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 			return CompletableFuture.completedFuture("");
 		}
 
-		ObjectMetadata s3ObjectMetadata = new ObjectMetadata();
-		s3ObjectMetadata.setContentLength(size);
-
-		Supplier<PutObjectRequest> putObjectRequest = () -> new PutObjectRequest(bucketName, keyName, inStream.get(), s3ObjectMetadata)
-			.withSSEAwsKeyManagementParams(new SSEAwsKeyManagementParams(kmsKey));
+		Supplier<S3UploadRequest> putObjectRequest = () -> new S3UploadRequest(
+			PutObjectRequest.builder()
+				.bucket(bucketName)
+				.key(keyName)
+				.contentLength(size)
+				.serverSideEncryption(ServerSideEncryption.AWS_KMS)
+				.ssekmsKeyId(kmsKey)
+				.build(),
+			inStream.get());
 
 		API_LOG.info("Writing object {} to S3 bucket {}", keyName, bucketName);
 		return actOnItem(putObjectRequest);
@@ -100,10 +96,10 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 
 		API_LOG.info("Retrieving file {} from bucket {}", fileLocationId, bucketName);
 
-		GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, fileLocationId);
-		InputStream objectContent = retrieveManagedContentStream(getObjectRequest);
+		GetObjectRequest getObjectRequest = GetObjectRequest.builder().bucket(bucketName).key(fileLocationId).build();
+		InputStream objectContent = s3Client.getObject(getObjectRequest);
 
-		API_LOG.info("Successfully retrieved file {} from S3 bucket {}", getObjectRequest.getKey(), getObjectRequest.getBucketName());
+		API_LOG.info("Successfully retrieved file {} from S3 bucket {}", getObjectRequest.key(), getObjectRequest.bucket());
 
 		return objectContent;
 	}
@@ -123,40 +119,28 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 		}
 		API_LOG.info("Retrieving CPC+ validation file from bucket {}", bucketName);
 
-		GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, key);
-		return retrieveManagedContentStream(getObjectRequest);
+		GetObjectRequest getObjectRequest = GetObjectRequest.builder().bucket(bucketName).key(key).build();
+		return s3Client.getObject(getObjectRequest);
 	}
 
 	/**
-	 * Provides an {@link InputStream} whose close also closes the backing {@link S3Object}.
-	 */
-	private InputStream retrieveManagedContentStream(GetObjectRequest getObjectRequest) {
-		S3Object s3Object = amazonS3.getObject(getObjectRequest);
-		return new ManagedS3InputStream(s3Object);
-	}
-
-	/**
-	 * Uses the {@link TransferManager} to upload a file.
+	 * Uses the S3 client to upload a file.
 	 *
 	 * @param objectToActOn The put request.
 	 * @return The object key in the bucket.
 	 */
 	@Override
-	protected String asynchronousAction(Supplier<PutObjectRequest> objectToActOn) {
-		String returnValue;
-
-		PutObjectRequest request = objectToActOn.get();
-		try {
-			Upload upload = s3TransferManager.upload(request);
-			returnValue = upload.waitForUploadResult().getKey();
-		} catch (InterruptedException exception) {
-			Thread.currentThread().interrupt();
-			throw new UncheckedInterruptedException(exception);
+	protected String asynchronousAction(Supplier<S3UploadRequest> objectToActOn) {
+		S3UploadRequest uploadRequest = objectToActOn.get();
+		PutObjectRequest request = uploadRequest.request();
+		try (InputStream inputStream = uploadRequest.inputStream()) {
+			s3Client.putObject(request, RequestBody.fromInputStream(inputStream, request.contentLength()));
+		} catch (java.io.IOException exception) {
+			throw new UncheckedIOException(exception);
 		}
 
-		API_LOG.info("Successfully wrote object {} to S3 bucket {}", returnValue, request.getBucketName());
-
-		return returnValue;
+		API_LOG.info("Successfully wrote object {} to S3 bucket {}", request.key(), request.bucket());
+		return request.key();
 	}
 
 	@Override
@@ -164,33 +148,7 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 		return "Write to Storage";
 	}
 
-	private static final class ManagedS3InputStream extends FilterInputStream {
-		private final S3Object s3Object;
+}
 
-		ManagedS3InputStream(S3Object s3Object) {
-			super(s3Object.getObjectContent());
-			this.s3Object = s3Object;
-		}
-
-		@Override
-		public void close() throws IOException {
-			IOException firstException = null;
-			try {
-				super.close();
-			} catch (IOException e) {
-				firstException = e;
-				throw e;
-			} finally {
-				try {
-					s3Object.close();
-				} catch (IOException e) {
-					if (firstException != null) {
-						firstException.addSuppressed(e);
-					} else {
-						throw e;
-					}
-				}
-			}
-		}
-	}
+record S3UploadRequest(PutObjectRequest request, InputStream inputStream) {
 }

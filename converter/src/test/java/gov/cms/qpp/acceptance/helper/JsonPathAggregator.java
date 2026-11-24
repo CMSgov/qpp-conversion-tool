@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import tools.jackson.databind.JsonNode;
 import com.google.common.collect.Sets;
 import gov.cms.qpp.conversion.model.Constants;
 
@@ -33,7 +33,7 @@ public class JsonPathAggregator {
 				aggregatePaths(newContext, child);
 			}
 		} else if (node.isObject()) {
-			node.fieldNames().forEachRemaining( name -> {
+			node.propertyNames().forEach(name -> {
 				if (excluded.contains(name)) {
 					return;
 				}

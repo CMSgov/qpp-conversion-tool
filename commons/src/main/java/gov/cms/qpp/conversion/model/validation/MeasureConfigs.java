@@ -1,12 +1,11 @@
 package gov.cms.qpp.conversion.model.validation;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.type.TypeReference;
+import gov.cms.qpp.conversion.util.JsonMapperFactory;
 import org.reflections.util.ClasspathHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +14,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import tools.jackson.core.JacksonException;
 
 public class MeasureConfigs {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(MeasureConfigs.class);
@@ -66,7 +67,7 @@ public class MeasureConfigs {
 	}
 
 	public static Map<String, MeasureConfig> grabConfiguration(String fileName) {
-		ObjectMapper mapper = new ObjectMapper();
+		var mapper = JsonMapperFactory.createMapper();
 
 		InputStream measuresInput = ClasspathHelper.contextClassLoader().getResourceAsStream(fileName);
 
@@ -75,7 +76,7 @@ public class MeasureConfigs {
 			List<MeasureConfig> configurations = mapper.readValue(measuresInput, measureConfigType);
 			return configurations.stream()
 					.collect(Collectors.toMap(MeasureConfigs::getMeasureId, Function.identity()));
-		} catch (IOException e) {
+		} catch (JacksonException e) {
 			String message = "failure to correctly read measures config json";
 			DEV_LOG.error(message);
 			throw new IllegalArgumentException(message, e);

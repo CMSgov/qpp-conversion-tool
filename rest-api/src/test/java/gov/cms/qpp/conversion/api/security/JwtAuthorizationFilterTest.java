@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.api.security;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -71,6 +72,29 @@ class JwtAuthorizationFilterTest {
 		when(request.getHeader("Authorization")).thenReturn("Bearer " + jwt);
 
 		filter.doFilter(request, response, chain);
+
+		assertNull(SecurityContextHolder.getContext().getAuthentication());
+		verify(chain).doFilter(request, response);
+	}
+
+	@Test
+	void doFilter_paddedPayload_doesNotSetAuthentication_andContinuesChain() throws Exception {
+		String payloadJson = "{\"data\":{\"id\":\"user-1234\",\"name\":\"cpc-test\",\"orgType\":\"CPC\"}}";
+		String padded = java.util.Base64.getUrlEncoder().encodeToString(payloadJson.getBytes(StandardCharsets.UTF_8));
+		assertTrue(padded.contains("="));
+
+		assertRejected("e30." + padded + ".sig");
+	}
+
+	@Test
+	void doFilter_payloadLengthImpossibleForBase64_doesNotSetAuthentication() throws Exception {
+		assertRejected("e30.abcde.sig");
+	}
+
+	private void assertRejected(String jwt) throws Exception {
+		when(request.getHeader("Authorization")).thenReturn("Bearer " + jwt);
+
+		new JwtAuthorizationFilter().doFilter(request, response, chain);
 
 		assertNull(SecurityContextHolder.getContext().getAuthentication());
 		verify(chain).doFilter(request, response);

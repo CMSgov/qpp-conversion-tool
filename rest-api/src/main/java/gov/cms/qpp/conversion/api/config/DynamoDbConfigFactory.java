@@ -1,13 +1,13 @@
 package gov.cms.qpp.conversion.api.config;
 
 
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.datamodeling.AttributeTransformer;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
+import gov.cms.qpp.conversion.api.model.Metadata;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 
 /**
- * Creates an appropriate {@link DynamoDBMapper} depending on what method is called.
+ * Creates a DynamoDB Enhanced Client table for metadata.
  */
 public class DynamoDbConfigFactory {
 
@@ -17,17 +17,15 @@ public class DynamoDbConfigFactory {
 	private DynamoDbConfigFactory(){}
 
 	/**
-	 * Creates a {@link DynamoDBMapper} with a customized configuration and customized attribute transformer.
+	 * Creates a table interface with a supplied schema.
 	 *
-	 * @param dynamoDb The DynamoDB client.
-	 * @param config The configuration to use.
-	 * @param transformer The attribute transformer to use.
-	 * @return A DynamoDB mapper.
+	 * @param enhancedClient The Enhanced Client.
+	 * @param tableName The DynamoDB table name.
+	 * @param schema The metadata table schema.
+	 * @return A DynamoDB table.
 	 */
-	public static DynamoDBMapper createDynamoDbMapper(
-			final AmazonDynamoDB dynamoDb,
-			final DynamoDBMapperConfig config,
-			final AttributeTransformer transformer) {
-		return new DynamoDBMapper(dynamoDb, config, transformer);
+	public static DynamoDbTable<Metadata> createDynamoDbTable(
+			DynamoDbEnhancedClient enhancedClient, String tableName, TableSchema<Metadata> schema) {
+		return enhancedClient.table(tableName, schema);
 	}
 }

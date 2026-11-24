@@ -82,9 +82,11 @@ docker compose -f ./docker-compose.test.yaml up --build
 curl -X POST \
   http://localhost:3000 \
   -H 'cache-control: no-cache' \
-  -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
   -F file=@./qrda-files/valid-QRDA-III-latest.xml
 ```
+
+Do not set a `content-type` header manually. When using `-F`, curl generates the multipart boundary itself; overriding the
+header with a different boundary causes a `415 Unsupported Media Type` ("Could not parse Content-Type") response.
 
 The response body will either be the QPP JSON on success or error JSON on an error.
 The HTTP Status will be `201 Created` on success or `422 Unprocessable entity` on an error.

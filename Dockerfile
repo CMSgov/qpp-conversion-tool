@@ -41,10 +41,12 @@ RUN mvn -B -ntp \
 # -----------------------------
 # Final runtime stage
 # -----------------------------
-# Uses a pinned Alpine-based Java 21 JRE image.
+# Uses an Alpine-based Java 21 JRE image pinned to the Alpine release only.
+# The Java patch version is intentionally NOT pinned so each build picks up the
+# latest Temurin 21 security patches (must be 21.0.13.1+ for CVE-2026-114938).
 # This avoids the Ubuntu-based OS package vulnerabilities reported by Snyk
-# while keeping the runtime image smaller and more reproducible.
-FROM eclipse-temurin:21.0.13_9-jre-alpine-3.23
+# while keeping the runtime image smaller.
+FROM eclipse-temurin:21-jre-alpine-3.23
 
 # Install curl for health checks
 RUN apk add --no-cache curl
@@ -65,8 +67,8 @@ COPY --from=builder /usr/src/app/rest-api/target/rest-api.jar /usr/src/run/rest-
 # 4. Validate that the required runtime files exist during image build.
 #
 # We intentionally do not run "apk upgrade" here.
-# The runtime image is pinned, so OS package versions come from the selected base image.
-# This keeps builds more reproducible and avoids transient failures from Alpine package repos.
+# OS package versions come from the selected base image, which avoids transient
+# failures from Alpine package repos.
 RUN sed -i 's/\r$//' /usr/src/run/qppConverter.sh \
     && sed -i '1s|^#!/bin/bash|#!/bin/sh|' /usr/src/run/qppConverter.sh \
     && chmod +x /usr/src/run/qppConverter.sh \
